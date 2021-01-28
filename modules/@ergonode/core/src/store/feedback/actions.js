@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import {
-    getMappedErrorsV2,
+    getMappedScopedErrors,
 } from '@Core/models/mappers/errorsMapper';
 
 import {
@@ -55,7 +55,7 @@ export default {
         fieldKeys = {},
     }) {
         if (errors) {
-            commit(types.SET_ERRORS, getMappedErrorsV2({
+            commit(types.SET_ERRORS, getMappedScopedErrors({
                 errors,
                 fieldKeys,
                 scope,
@@ -66,6 +66,12 @@ export default {
         commit,
     }, scope = 'default') {
         commit(types.REMOVE_SCOPE_ERRORS, scope);
+    },
+    removeScopeData({
+        commit,
+    }, scope = 'default') {
+        commit(types.REMOVE_SCOPE_ERRORS, scope);
+        commit(types.REMOVE_SCOPE_CHANGE_VALUES, scope);
     },
     removeScopeError({
         commit,

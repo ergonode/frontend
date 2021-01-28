@@ -6,11 +6,11 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <AttributeForm
-                :submit-title="$t('core.buttons.submit')"
+                :submit-title="$t('@Attributes._.submit')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="errors"
-                :changed-values="changeValues"
+                :change-values="changeValues"
                 @submit="onSubmit" />
         </template>
     </CenterViewTemplate>
@@ -21,7 +21,7 @@ import AttributeForm from '@Attributes/components/Forms/AttributeForm';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
@@ -61,7 +61,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('attribute.messages.updateSuccess'),
+                message: this.$t('@Attributes.attribute.components.AttributeGeneralTab.updateSuccess'),
             });
 
             this.isSubmitting = false;

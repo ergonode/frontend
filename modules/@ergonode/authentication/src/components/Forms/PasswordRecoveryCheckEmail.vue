@@ -15,15 +15,15 @@
             <FormHeader :title="$t('authentication.forms.newPassword.title')" />
         </template>
         <template #body>
-            <FormParagraph :text="$t('authentication.forms.checkEmail.info')" />
-            <p class="recovery-form__info">
-                <span
-                    v-text="$t('authentication.forms.checkEmail.infoText')" />
-                <span
-                    v-text="$t('authentication.forms.checkEmail.infoLink')"
-                    @click="onRedirectToHelp"
-                    class="link" />
-            </p>
+            <Paragraph :title="$t('authentication.forms.checkEmail.info')" />
+            <Paragraph :title="$t('authentication.forms.checkEmail.infoText')">
+                <template #infoLink>
+                    <a
+                        class="paragraph__link"
+                        v-text="$t('authentication.forms.checkEmail.infoLink')"
+                        @click="onRedirectToHelp" />
+                </template>
+            </Paragraph>
         </template>
     </LoginForm>
 </template>
@@ -35,17 +35,17 @@ import {
 } from '@Authentication/defaults/login-state';
 import Fab from '@UI/components/Fab/Fab';
 import FormHeader from '@UI/components/Form/FormHeader';
-import FormParagraph from '@UI/components/Form/FormParagraph';
 import IconArrowPointer from '@UI/components/Icons/Arrows/IconArrowPointer';
+import Paragraph from '@UI/components/Paragraph/Paragraph';
 
 export default {
     name: 'PasswordRecoveryCheckEmail',
     components: {
         FormHeader,
-        FormParagraph,
         LoginForm,
         Fab,
         IconArrowPointer,
+        Paragraph,
     },
     methods: {
         onBack() {
@@ -62,16 +62,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .recovery-form {
-        &__info {
-            margin: 0;
-            color: $GRAPHITE_DARK;
-            font: $FONT_MEDIUM_14_20;
-
-            .link {
-                text-decoration: underline;
-                cursor: pointer;
-            }
-        }
+    .paragraph__link {
+        text-decoration: underline;
+        cursor: pointer;
     }
 </style>

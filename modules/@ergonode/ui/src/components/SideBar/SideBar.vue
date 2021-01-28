@@ -109,11 +109,6 @@ export default {
             default: false,
         },
     },
-    data() {
-        return {
-            selectedItems: {},
-        };
-    },
     computed: {
         isAnyItem() {
             return this.items.length > 0;
@@ -126,9 +121,6 @@ export default {
         },
         isSearchPlaceholderVisible() {
             return !this.isAnyItem && this.isAnySearchPhrase;
-        },
-        isSelectContentVisible() {
-            return this.isAnyItem || this.isAnySearchPhrase;
         },
     },
     methods: {

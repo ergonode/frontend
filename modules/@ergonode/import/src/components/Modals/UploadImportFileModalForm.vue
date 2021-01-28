@@ -10,7 +10,7 @@
             <Form>
                 <template #body>
                     <FormSection>
-                        <FormParagraph :text="paragraphText" />
+                        <Paragraph :title="paragraphText" />
                         <UploadFile
                             :value="Boolean(csvFile)"
                             accept-files="csv/*"
@@ -28,16 +28,12 @@
                     </FormSection>
                 </template>
                 <template #submit>
-                    <Button
-                        title="IMPORT NOW"
-                        :disabled="isSubmitting"
-                        @click.native="onSubmit">
-                        <template
-                            v-if="isSubmitting"
-                            #prepend="{ color }">
-                            <IconSpinner :fill-color="color" />
-                        </template>
-                    </Button>
+                    <UploadImportButton
+                        :scope="scope"
+                        :change-values="changeValues"
+                        :errors="errors"
+                        :csv-file="csvFile"
+                        @uploaded="onClose" />
                 </template>
             </Form>
         </template>
@@ -46,24 +42,20 @@
 
 <script>
 import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
-import {
     THEME,
 } from '@Core/defaults/theme';
-import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
+import UploadImportButton from '@Import/components/Buttons/UploadImportButton';
 import UploadFile from '@Media/components/Inputs/UploadFile/UploadFile';
 import {
     GREEN,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Button from '@UI/components/Button/Button';
 import Form from '@UI/components/Form/Form';
-import FormParagraph from '@UI/components/Form/FormParagraph';
 import FormSection from '@UI/components/Form/Section/FormSection';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import IconFile from '@UI/components/Icons/Others/IconFile';
 import LinkButton from '@UI/components/LinkButton/LinkButton';
 import ModalForm from '@UI/components/Modal/ModalForm';
+import Paragraph from '@UI/components/Paragraph/Paragraph';
 import {
     mapActions,
 } from 'vuex';
@@ -71,22 +63,20 @@ import {
 export default {
     name: 'UploadImportFileModalForm',
     components: {
-        IconSpinner,
+        UploadImportButton,
         UploadFile,
         LinkButton,
         IconFile,
         Form,
         FormSection,
-        FormParagraph,
+        Paragraph,
         ModalForm,
-        Button,
     },
     mixins: [
-        scopeErrorsMixin,
+        modalFeedbackMixin,
     ],
     data() {
         return {
-            isSubmitting: false,
             csvFile: null,
         };
     },
@@ -102,48 +92,31 @@ export default {
         },
     },
     methods: {
-        ...mapActions('import', [
-            'uploadImportFile',
+        ...mapActions('feedback', [
+            'onScopeValueChange',
         ]),
         onRemoveFile() {
             this.csvFile = null;
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'upload',
+                value: null,
+            });
         },
         onFileUpload(file) {
             this.csvFile = file;
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'upload',
+                value: file,
+            });
         },
         onClose() {
-            this.removeScopeErrors(this.scope);
+            this.removeScopeData(this.scope);
 
             this.$emit('close');
-        },
-        onSubmit() {
-            if (this.isSubmitting || !this.csvFile) {
-                return;
-            }
-            this.isSubmitting = true;
-
-            this.uploadImportFile({
-                scope: this.scope,
-                file: this.csvFile,
-                onSuccess: this.onCreateSuccess,
-                onError: this.onCreateError,
-            });
-        },
-        onCreateSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'File uploaded',
-            });
-
-            this.isSubmitting = false;
-
-            this.$emit('created');
-            this.onClose();
-        },
-        onCreateError(errors) {
-            this.onError(errors);
-
-            this.isSubmitting = false;
         },
     },
 };

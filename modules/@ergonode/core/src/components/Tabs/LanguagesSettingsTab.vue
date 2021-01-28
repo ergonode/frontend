@@ -23,68 +23,48 @@
                 :scope="scope"
                 :errors="errors"
                 :change-values="changeValues" />
-            <Button
-                :title="$t('core.buttons.submit')"
-                :floating="{ bottom: '24px', right: '24px' }"
-                @click.native="onSubmit">
-                <template
-                    v-if="isSubmitting"
-                    #prepend="{ color }">
-                    <IconSpinner :fill-color="color" />
-                </template>
-            </Button>
+            <UpdateLanguagesInheritanceButton
+                :scope="scope"
+                :change-values="changeValues"
+                :errors="errors" />
         </template>
     </GridViewTemplate>
 </template>
 
 <script>
+import UpdateLanguagesInheritanceButton from '@Core/components/Buttons/UpdateLanguagesInheritanceButton';
 import LanguageInheritanceTreeDesigner from '@Core/components/LanguageInheritanceTreeDesigner/LanguageInheritanceTreeDesigner';
 import PRIVILEGES from '@Core/config/privileges';
 import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
-import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
-import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
-import {
-    getParsedTree,
-} from '@Core/models/mappers/treeDesignerMapper';
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import {
     GRAPHITE_LIGHT,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Button from '@UI/components/Button/Button';
 import DropZone from '@UI/components/DropZone/DropZone';
 import IconRemoveFilter from '@UI/components/Icons/Actions/IconRemoveFilter';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
 import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
 export default {
     name: 'LanguagesSettingsTab',
     components: {
+        UpdateLanguagesInheritanceButton,
         GridViewTemplate,
-        Button,
         IconRemoveFilter,
         DropZone,
         FadeTransition,
-        IconSpinner,
         LanguageInheritanceTreeDesigner,
         VerticalTabBar,
     },
     mixins: [
         tabFeedbackMixin,
     ],
-    data() {
-        return {
-            isSubmitting: false,
-        };
-    },
     computed: {
         ...mapState('authentication', {
             languageCode: state => state.user.language,
@@ -124,68 +104,6 @@ export default {
                 disabled: true,
             });
         });
-    },
-    methods: {
-        ...mapActions('list', [
-            'setDisabledElement',
-        ]),
-        ...mapActions('core', [
-            'setLanguageTree',
-            'setDefaultLanguage',
-            'updateLanguageTree',
-        ]),
-        ...mapActions('authentication', [
-            'getUser',
-        ]),
-        onSubmit() {
-            if (this.isSubmitting) {
-                return;
-            }
-
-            if (this.inheritedLanguagesTree.length) {
-                this.isSubmitting = true;
-
-                const [
-                    languages,
-                ] = getParsedTree({
-                    data: this.inheritedLanguagesTree,
-                    childrenId: 'language_id',
-                });
-
-                this.removeScopeErrors(this.scope);
-
-                this.updateLanguageTree({
-                    languages,
-                    onSuccess: () => this.onUpdateSuccess(languages),
-                    onError: this.onUpdateError,
-                });
-            }
-        },
-        async onUpdateSuccess(languages) {
-            this.setLanguageTree(languages);
-
-            await this.getUser({
-                onSuccess: this.onGetUserSuccess,
-            });
-        },
-        onUpdateError(message) {
-            this.$addAlert({
-                type: ALERT_TYPE.ERROR,
-                message,
-            });
-            this.isSubmitting = false;
-        },
-        onGetUserSuccess() {
-            this.setDefaultLanguage();
-
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Languages tree has been updated',
-            });
-            this.isSubmitting = false;
-
-            this.markChangeValuesAsSaved(this.scope);
-        },
     },
 };
 </script>

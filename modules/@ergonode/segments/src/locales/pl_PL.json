@@ -1,8 +1,13 @@
 {
-    "segment": {
-        "grid": {
-            "placeholderTitle": "Brak segmentów",
-            "placeholderSubtitle": "W systemie nie ma segmentów, stwórz pierwszy."
-        }
+  "segment": {
+    "form": {
+      "segmentsLabel": "Z reguł segmentacji",
+      "noSegmentsTitle": "Brak segmentów",
+      "noSegmentsSubtitle": "W systemie nie ma segmentów, stwórz pierwszy."
+    },
+    "grid": {
+      "placeholderTitle": "Brak segmentów",
+      "placeholderSubtitle": "W systemie nie ma segmentów, stwórz pierwszy."
     }
+  }
 }

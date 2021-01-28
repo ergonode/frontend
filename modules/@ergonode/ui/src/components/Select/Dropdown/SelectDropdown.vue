@@ -6,49 +6,50 @@
     <Dropdown
         :parent-reference="parentReference"
         :visible="isVisible"
-        :fixed="isFixedContent"
+        :fixed="fixedContent"
         @click-outside="onClickOutside">
-        <slot
-            name="placeholder"
-            :is-visible="isPlaceholderVisible">
-            <DropdownPlaceholder v-if="isPlaceholderVisible" />
-        </slot>
-        <slot
-            :is-visible="isDropdownContentVisible"
-            name="dropdown">
-            <SelectList
-                v-if="isDropdownContentVisible"
-                :value="value"
-                :search-value="searchValue"
-                :items="options"
-                :size="size"
-                :searchable="searchable"
-                :multiselect="multiselect"
-                @input="onValueChange"
-                @search="onSearch">
-                <template #item="{ index, item, isSelected }">
-                    <slot
-                        name="item"
-                        :item="item"
-                        :index="index"
-                        :is-selected="isSelected" />
-                </template>
-            </SelectList>
-        </slot>
-        <slot
-            v-if="isFooterVisible"
-            name="footer"
-            :clear="onClear"
-            :apply="onDismiss">
-            <MultiselectDropdownFooter
-                v-if="multiselect"
-                :size="size"
-                @clear="onClear"
-                @apply="onDismiss" />
-            <SelectDropdownApplyFooter
-                v-else
-                :size="size"
-                @clear="onClear" />
+        <slot name="body">
+            <slot name="dropdown">
+                <SelectList
+                    :value="value"
+                    :search-value="searchValue"
+                    :items="options"
+                    :size="size"
+                    :searchable="searchable"
+                    :multiselect="multiselect"
+                    @input="onValueChange"
+                    @search="onSearch">
+                    <template #item="{ index, item, isSelected }">
+                        <slot
+                            name="item"
+                            :item="item"
+                            :index="index"
+                            :is-selected="isSelected" />
+                    </template>
+                    <template #noDataPlaceholder>
+                        <slot name="noDataPlaceholder" />
+                    </template>
+                    <template #noResultsPlaceholder>
+                        <slot name="noResultsPlaceholder" />
+                    </template>
+                </SelectList>
+            </slot>
+            <slot
+                v-if="isFooterVisible"
+                name="footer"
+                :clear="onClear"
+                :apply="onDismiss">
+                <MultiselectDropdownFooter
+                    v-if="multiselect"
+                    :size="size"
+                    @clear="onClear"
+                    @apply="onDismiss" />
+                <SelectDropdownApplyFooter
+                    v-else
+                    :size="size"
+                    @clear="onClear"
+                    @apply="onDismiss" />
+            </slot>
         </slot>
     </Dropdown>
 </template>
@@ -60,7 +61,6 @@ import {
 import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
 import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
 import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import SelectList from '@UI/components/SelectList/SelectList';
 
 export default {
@@ -70,7 +70,6 @@ export default {
         SelectDropdownApplyFooter,
         Dropdown,
         SelectList,
-        DropdownPlaceholder,
     },
     props: {
         /**
@@ -153,13 +152,6 @@ export default {
         },
     },
     computed: {
-        isFixedContent() {
-            if (this.isAnyOption) {
-                return this.fixedContent;
-            }
-
-            return !(this.isPlaceholderVisible || this.isSearchPlaceholderVisible);
-        },
         isAnyOption() {
             return this.options.length > 0;
         },
@@ -172,12 +164,13 @@ export default {
         isPlaceholderVisible() {
             return !this.isAnyOption && !this.isAnySearchPhrase;
         },
-        isDropdownContentVisible() {
-            return this.isAnyOption || this.isAnySearchPhrase;
-        },
         isFooterVisible() {
-            if (this.isAnySearchPhrase) {
-                return this.clearable && this.isAnyOption;
+            if (this.isSearchPlaceholderVisible) {
+                return this.clearable;
+            }
+
+            if (this.isPlaceholderVisible) {
+                return false;
             }
 
             return this.clearable;

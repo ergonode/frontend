@@ -11,9 +11,7 @@
 </template>
 
 <script>
-import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
-import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
-import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import AttachedProductsToGroupGrid from '@Products/extends/components/Grids/AttachedProductsToGroupGrid';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
@@ -24,8 +22,6 @@ export default {
         CenterViewTemplate,
     },
     mixins: [
-        gridDraftMixin,
-        extendedGridComponentsMixin,
         tabFeedbackMixin,
     ],
 };

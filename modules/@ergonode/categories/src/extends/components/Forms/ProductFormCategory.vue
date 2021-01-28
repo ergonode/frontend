@@ -10,7 +10,7 @@
 
 <script>
 import CategorySelect from '@Categories/components/Selects/CategorySelect';
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import {
     mapActions,
     mapState,

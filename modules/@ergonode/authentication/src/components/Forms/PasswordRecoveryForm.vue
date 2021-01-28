@@ -17,13 +17,12 @@
             <FormHeader :title="$t('authentication.forms.passwordRecovery.title')" />
         </template>
         <template #body>
-            <FormParagraph :text="$t('authentication.forms.passwordRecovery.info')" />
+            <Paragraph :title="$t('authentication.forms.passwordRecovery.info')" />
             <TextField
                 v-model="email"
                 required
                 :error-messages="errors[emialFieldKey]"
-                :label="$t('authentication.forms.passwordRecovery.field')"
-                @keydown.enter.prevent="onSubmit" />
+                :label="$t('authentication.forms.passwordRecovery.field')" />
         </template>
     </LoginForm>
 </template>
@@ -33,11 +32,11 @@ import LoginForm from '@Authentication/components/Forms/LoginForm';
 import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
-import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import Fab from '@UI/components/Fab/Fab';
 import FormHeader from '@UI/components/Form/FormHeader';
-import FormParagraph from '@UI/components/Form/FormParagraph';
 import IconArrowPointer from '@UI/components/Icons/Arrows/IconArrowPointer';
+import Paragraph from '@UI/components/Paragraph/Paragraph';
 import TextField from '@UI/components/TextField/TextField';
 import {
     mapActions,
@@ -49,12 +48,12 @@ export default {
         FormHeader,
         LoginForm,
         Fab,
-        FormParagraph,
+        Paragraph,
         IconArrowPointer,
         TextField,
     },
     mixins: [
-        scopeErrorsMixin,
+        modalFeedbackMixin,
     ],
     data() {
         return {
@@ -98,6 +97,7 @@ export default {
             this.isSubmitting = false;
         },
         onRedirect() {
+            this.removeScopeErrors(this.scope);
             this.$emit('redirect-to', LOGIN_STATE.CREDENTIALS);
         },
     },

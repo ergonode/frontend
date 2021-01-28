@@ -1,8 +1,13 @@
 {
-    "collection": {
-        "grid": {
-            "placeholderTitle": "Brak segmentów",
-            "placeholderSubtitle": "W systemie nie ma segmentów, stwórz pierwszy."
-        }
+  "collection": {
+    "form": {
+      "typeLabel": "Typ",
+      "noCollectionTypeTitle": "Brak typów kolekcji",
+      "noCollectionTypeSubtitle": "W systemie nie ma kolekcji, skontaktuj się z administratorem."
+    },
+    "grid": {
+      "placeholderTitle": "Brak kolekcji",
+      "placeholderSubtitle": "W systemie nie ma kolekcji, stwórz pierwszą."
     }
+  }
 }

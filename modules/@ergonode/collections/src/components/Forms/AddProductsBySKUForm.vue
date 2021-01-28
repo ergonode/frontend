@@ -9,6 +9,7 @@
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
         :errors="errors"
+        :change-values="changeValues"
         @proceed="onProceed"
         @submit="onSubmit">
         <template #body>
@@ -46,6 +47,10 @@ export default {
     ],
     props: {
         errors: {
+            type: Object,
+            default: () => ({}),
+        },
+        changeValues: {
             type: Object,
             default: () => ({}),
         },

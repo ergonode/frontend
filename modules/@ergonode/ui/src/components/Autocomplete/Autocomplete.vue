@@ -40,10 +40,14 @@
                     :color="graphiteColor" />
             </FadeTransition>
         </template>
-        <template #placeholder="{ isVisible }">
-            <slot
-                name="placeholder"
-                :is-visible="isVisible" />
+        <template #dropdownBody>
+            <Preloader v-if="isPreloaderVisible" />
+        </template>
+        <template #noDataPlaceholder>
+            <slot name="noDataPlaceholder" />
+        </template>
+        <template #noResultsPlaceholder>
+            <slot name="noResultsPlaceholder" />
         </template>
         <template #details>
             <slot name="details" />
@@ -82,6 +86,7 @@ import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import ListElementAction from '@UI/components/List/ListElementAction';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
+import Preloader from '@UI/components/Preloader/Preloader';
 import Select from '@UI/components/Select/Select';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
@@ -91,6 +96,7 @@ import {
 export default {
     name: 'Autocomplete',
     components: {
+        Preloader,
         Select,
         IconSpinner,
         FadeTransition,
@@ -249,6 +255,13 @@ export default {
             type: String,
             default: '',
         },
+        /**
+         * Listen for custom event to trigger fetch data
+         */
+        customFetchEvent: {
+            type: String,
+            default: '',
+        },
     },
     data() {
         return {
@@ -286,6 +299,9 @@ export default {
 
             return '';
         },
+        isPreloaderVisible() {
+            return this.isFetchingData && this.allOptions.length === 0;
+        },
     },
     async created() {
         this.onDebounceGetOptions = debounce(this.getOptions, 500);
@@ -293,6 +309,21 @@ export default {
         await this.getOptions();
 
         this.allOptions = this.options;
+
+        if (this.customFetchEvent !== '') {
+            document.documentElement.addEventListener(
+                this.customFetchEvent,
+                this.onCustomFetchEvent,
+            );
+        }
+    },
+    beforeDestroy() {
+        if (this.customFetchEvent !== '') {
+            document.documentElement.removeEventListener(
+                this.customFetchEvent,
+                this.onCustomFetchEvent,
+            );
+        }
     },
     methods: {
         onSearch(value) {
@@ -321,6 +352,11 @@ export default {
             } else {
                 this.$emit('input', value);
             }
+        },
+        async onCustomFetchEvent() {
+            await this.getOptions();
+
+            this.allOptions = this.options;
         },
         async getOptions() {
             try {

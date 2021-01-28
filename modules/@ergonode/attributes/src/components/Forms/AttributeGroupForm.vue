@@ -4,12 +4,13 @@
  */
 <template>
     <Form
-        :title="$t('attributeGroup.form.title')"
+        :title="$t('@Attributes.attributeGroup.components.AttributeGroupForm.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
         :errors="errors"
+        :change-values="changeValues"
         @proceed="onProceed"
         @submit="onSubmit">
         <template #body>
@@ -20,8 +21,8 @@
                     required
                     :error-messages="errors[codeFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :label="$t('attributeGroup.form.nameLabel')"
-                    :hint="$t('attributeGroup.form.nameHint')"
+                    :label="$t('@Attributes.attributeGroup.components.AttributeGroupForm.nameLabel')"
+                    :hint="$t('@Attributes.attributeGroup.components.AttributeGroupForm.nameHint')"
                     @input="setCodeValue" />
                 <Divider v-if="extendedForm.length" />
                 <template v-for="(field, index) in extendedForm">
@@ -37,8 +38,8 @@
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';

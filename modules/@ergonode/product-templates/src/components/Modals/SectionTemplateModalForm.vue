@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import IconFontSize from '@UI/components/Icons/Editor/IconFontSize';

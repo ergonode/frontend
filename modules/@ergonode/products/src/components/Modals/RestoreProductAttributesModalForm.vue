@@ -10,7 +10,9 @@
             <RestoreForm
                 :submit-title="$t('product.buttons.restore')"
                 :proceed-title="$t('product.buttons.proceed')"
+                :scope="scope"
                 :errors="scopeErrors"
+                :change-values="scopeChangeValues"
                 :elements-to-restore="elementsToRestore"
                 :elements="elements"
                 :language-code="languageCode"
@@ -26,7 +28,7 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import RestoreForm from '@Products/components/Forms/RestoreForm';
 import ModalForm from '@UI/components/Modal/ModalForm';
 import {
@@ -40,7 +42,7 @@ export default {
         RestoreForm,
     },
     mixins: [
-        scopeErrorsMixin,
+        modalFeedbackMixin,
     ],
     props: {
         languageCode: {
@@ -66,7 +68,7 @@ export default {
             this.elementsToRestore = elements;
         },
         onClose() {
-            this.removeScopeErrors(this.scope);
+            this.removeScopeData(this.scope);
 
             this.$emit('close');
         },

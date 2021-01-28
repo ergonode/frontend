@@ -12,26 +12,27 @@
       "selectVisibleCheckBox": "Select visible",
       "showAllExpandNumericButton": "Show all",
       "searchPlaceholder": "Search for category...",
-      "noCategoryButton": "GO TO CATEGORIES",
       "clearSearchButtonLabel": "Clear categories visibility",
       "noVisibleCategoriesPlaceholderTitle": "No categories",
       "noVisibleCategoriesPlaceholderSubtitle": "They are no selected categories for given criteria."
     },
     "sideBar": {
-      "searchHeader": "Categories"
+      "searchHeader": "Categories",
+      "placeholderTitle": "No categories",
+      "placeholderSubtitle": "There are no categories in the system, you can create the first one."
     },
     "grid": {
       "placeholderTitle": "No categories",
       "placeholderSubtitle": "There are no categories in the system, so you can create the first one."
     },
     "messages": {
-        "deleteTitle": "Are you sure you want to delete this category?",
-        "deleteConfirm": "YES, REMOVE",
-        "deleteSuccess": "Category removed"
+      "deleteTitle": "Are you sure you want to delete this category?",
+      "deleteConfirm": "YES, REMOVE",
+      "deleteSuccess": "Category removed"
     },
     "errors": {
-        "getRequest": "Category hasn’t been fetched properly",
-        "deleteRequest": "Category hasn’t been deleted"
+      "getRequest": "Category hasn’t been fetched properly",
+      "deleteRequest": "Category hasn’t been deleted"
     }
   }
 }

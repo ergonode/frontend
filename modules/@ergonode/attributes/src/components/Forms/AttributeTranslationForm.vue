@@ -10,14 +10,14 @@
                     <TextField
                         :data-cy="dataCyGenerator(labelFieldKey)"
                         :value="translations.label[languageCode]"
-                        :label="$t('attribute.translation.nameLabel')"
+                        :label="$t('@Attributes.attribute.components.AttributeTranslationForm.nameLabel')"
                         :error-messages="translationErrors[labelFieldKey]"
                         :disabled="!isAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, labelFieldKey)" />
                     <TextArea
                         :data-cy="dataCyGenerator(hintFieldKey)"
                         :value="translations.hint[languageCode]"
-                        :label="$t('attribute.translation.hintLabel')"
+                        :label="$t('@Attributes.attribute.components.AttributeTranslationForm.hintLabel')"
                         resize="none"
                         height="150px"
                         :error-messages="translationErrors[hintFieldKey]"

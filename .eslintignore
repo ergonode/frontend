@@ -6,3 +6,5 @@ vendor/
 .history/
 .vscode/
 modules.config.js
+package.json
+package-lock.json

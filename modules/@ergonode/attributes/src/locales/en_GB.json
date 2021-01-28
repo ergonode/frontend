@@ -1,117 +1,165 @@
 {
+  "@Attributes": {
+    "_": {
+      "submit": "Save changes",
+      "create": "Create",
+      "proceed": "Create & Edit",
+      "cancel": "Cancel",
+      "deleteConfirm": "Yes, remove",
+      "notAssigned": "Not assigned"
+    },
     "attribute": {
-        "page": {
-            "title": "Attributes",
-            "head": "Attributes - Ergonode",
-            "addButton": "New attribute",
-            "removeButton": "Remove attribute"
+      "_": {
+        "title": "Attributes",
+        "headTitle": "Attributes - Ergonode",
+        "noAttributes": "No attributes",
+        "createFirst": "There are no attributes in the system, you can create the first one."
+      },
+      "components": {
+        "AttributeForm": {
+          "title": "Options",
+          "sectionTitle": "Configuration",
+          "typeLabel": "Type",
+          "nameLabel": "System name",
+          "nameHint": "System name must be unique",
+          "scopeLabel": "Scope",
+          "scopeHint": "Global means the same attribute values for each language, inherited from the root language ({lang}). Option values can be translated, but cannot be changed in the product template."
         },
-        "form":{
-            "createTitle": "Create attribute",
-            "title": "Options",
-            "sectionTitle": "Configuration",
-            "nameLabel": "System name",
-            "nameHint": "System name must be unique",
-            "noGroupButton": "GO TO ATTRIBUTE GROUPS",
-            "noGroupTitle": "No attribute groups",
-            "noGroupSubtitle": "There are no attribute groups in the system, so you can create the first one.",
-            "groupLabel": "Groups",
-            "typeLabel": "Type",
-            "scopeLabel": "Scope",
-            "scopeHint": "Global means the same attribute values for each language, inherited from the root language ({lang}). Option values can be translated, but cannot be changed in the product template.",
-            "types": {
-                "richTextLabel": "Rich text content enabled",
-                "addOption": "ADD OPTION",
-                "optionTitle": "Option values",
-                "optionLabel": "Option code"
-            }
+        "AttributeTranslationForm": {
+          "nameLabel": "Attribute name",
+          "hintLabel": "Tooltip for writers"
         },
-        "sideBar": {
-            "searchHeader": "Attributes",
-            "searchHeader2": "System attributes",
-            "group": {
-                "notAssigned": "Not assigned"
-            },
-            "placeholderTitle": "No attributes",
-            "placeholderSubtitle": "There are no attributes in the system, you can create the first one."
+        "CreateAttributeButton": {
+          "addButton": "New attribute"
         },
-        "translation": {
-            "nameLabel": "Attribute name",
-            "hintLabel": "Tooltip for writers",
-            "placeholderLabel": "Placeholder"
+        "RemoveAttributeButton": {
+          "removeButton": "Remove attribute",
+          "deleteTitle": "Are you sure you want to delete this attribute?",
+          "deleteSuccess": "Attribute removed",
+          "deleteRequest": "Attribute hasn’t been deleted"
         },
-        "grid": {
-            "placeholderTitle": "No attributes",
-            "placeholderSubtitle": "There are no attributes in the system, you can create the first one."
+        "UpdateAttributeTranslationButton": {
+          "updateSuccess": "Attribute translations have been updated"
         },
-        "messages": {
-            "deleteTitle": "Are you sure you want to delete this attribute?",
-            "deleteConfirm": "YES, REMOVE",
-            "deleteSuccess": "Attribute removed",
-            "deleteCancel": "Removing attribute has been canceled",
-            "createSuccess": "Attribute created",
-            "createCancel": "Creating attribute has been canceled",
-            "updateSuccess": "Attribute has been updated",
-            "updateCancel": "Updating attribute has been canceled",
-            "updateTranslationSuccess": "Attribute translations have been updated"
+        "AttributesGrid": {
+          "getRequest": "Attributes haven’t been fetched properly"
         },
-        "errors": {
-            "getRequest": "Attribute hasn’t been fetched properly",
-            "getOptionRequest": "Attribute options hasn’t been fetched properly",
-            "deleteRequest": "Attribute hasn’t been deleted",
-            "optionUniq": "Option code must be unique",
-            "optionEmpty": "Option cannot be empty"
+        "CreateAttributeModalForm": {
+          "create": "Create attribute",
+          "createSuccess": "Attribute created"
         },
-        "extends": {
-            "template": {
-                "form": {
-                    "title": "Presentation product",
-                    "defaultLabel": "Default label attribute",
-                    "defaultImage": "Default image attribute",
-                    "noLabelButton": "GO TO ATTRIBUTES",
-                    "noLabelTitle": "No text attributes",
-                    "noLabelSubtitle" : "There are no text attributes in the system, so you can create the first one.",
-                    "noImageButton": "GO TO ATTRIBUTES",
-                    "noImageTitle": "No image attributes",
-                    "noImageSubtitle" : "There are no image attributes in the system, so you can create the first one."
-                }
-            }
+        "SystemAttributesSideBar": {
+          "title": "System attributes"
+        },
+        "AttributeGeneralTab": {
+          "updateSuccess": "Attribute has been updated"
         }
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Attribute hasn’t been fetched properly"
+        }
+      },
+      "store": {
+        "action": {
+          "createCancel": "Creating attribute has been canceled",
+          "updateCancel": "Updating attribute has been canceled",
+          "deleteCancel": "Removing attribute has been canceled"
+        }
+      }
     },
     "attributeGroup": {
-        "page": {
-            "title": "Attribute groups",
-            "head": "Attribute groups - Ergonode",
-            "addButton": "NEW ATTRIBUTE GROUP",
-            "removeButton": "REMOVE ATTRIBUTE GROUP"
+      "_": {
+        "title": "Attribute Group",
+        "headTitle": "Attribute groups - Ergonode",
+        "noGroups": "No attribute groups",
+        "createFirst": "There are no attribute groups in the system, you can create the first one."
+      },
+      "components": {
+        "AttributeGroupForm": {
+          "title": "Options",
+          "nameLabel": "System name",
+          "nameHint": "System name must be unique"
         },
-        "form":{
-            "createTitle": "Create attribute group",
-            "title": "Options",
-            "nameLabel": "System name",
-            "nameHint": "System name must be unique"
+        "AttributeGroupTranslationForm": {
+          "nameLabel": "Group name"
         },
-        "translation": {
-            "nameLabel": "Group name"
+        "AttributeGroupsAutocomplete": {
+          "groupLabel": "Groups"
         },
-        "grid": {
-            "placeholderTitle": "No attribute groups",
-            "placeholderSubtitle": "There are no attribute groups in the system, you can create the first one."
+        "CreateAttributeGroupButton": {
+          "addButton": "NEW ATTRIBUTE GROUP"
         },
-        "messages": {
-            "deleteTitle": "Are you sure you want to delete this attribute group?",
-            "deleteConfirm": "YES, REMOVE",
-            "deleteSuccess": "Attribute group removed",
-            "deleteCancel": "Removing attribute group has been canceled",
-            "createSuccess": "Attribute group created",
-            "createCancel": "Creating attribute group has been canceled",
-            "updateSuccess": "Attribute group has been updated",
-            "updateCancel": "Updating attribute group has been canceled",
-            "updateTranslationSuccess": "Attribute group translations have been updated"
+        "RemoveAttributeGroupButton": {
+          "deleteButton": "REMOVE ATTRIBUTE GROUP",
+          "deleteTitle": "Are you sure you want to delete this attribute group?",
+          "deleteSuccess": "Attribute group removed",
+          "deleteRequest": "Attribute group hasn’t been deleted"
         },
-        "errors": {
-            "getRequest": "Attribute group hasn’t been fetched properly",
-            "deleteRequest": "Attribute group hasn’t been deleted"
+        "UpdateAttributeGroupTranslationButton": {
+          "updateSuccess": "Attribute group translations have been updated"
+        },
+        "AttributeGroupsGrid": {
+          "getRequest": "Attribute groups haven’t been fetched properly"
+        },
+        "CreateAttributeGroupModalForm": {
+          "create": "Create attribute group",
+          "createSuccess": "Attribute group created"
+        },
+        "AttributeGroupGeneralTab": {
+          "updateSuccess": "Attribute group has been updated"
         }
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Attribute group hasn’t been fetched properly"
+        }
+      },
+      "store": {
+        "action": {
+          "updateCancel": "Updating attribute group has been canceled",
+          "createCancel": "Creating attribute group has been canceled",
+          "deleteCancel": "Removing attribute group has been canceled"
+        }
+      }
+    },
+    "attributeExtend": {
+      "components": {
+        "AttributeOptionKeyValues": {
+          "addOption": "ADD OPTION",
+          "optionLabel": "Option code"
+        },
+        "AttributeOptionValues": {
+          "optionTitle": "Option values"
+        },
+        "AttributeFormParamsToggle": {
+          "richTextLabel": "Rich text content enabled"
+        },
+        "AttributeTranslationFormPlaceholder": {
+          "placeholderLabel": "Placeholder"
+        }
+      },
+      "methods": {
+        "optionUniq": "Option code must be unique",
+        "optionEmpty": "Option cannot be empty",
+        "getOptionRequest": "Attribute options hasn’t been fetched properly",
+        "configFormat": "Format",
+        "configUnit": "Unit",
+        "configCurrency": "Currency"
+      }
+    },
+    "productTemplate": {
+      "components": {
+        "ProductTemplateFormPresentation": {
+          "title": "Presentation product",
+          "defaultLabel": "Default label attribute",
+          "defaultImage": "Default image attribute",
+          "noLabelTitle": "No text attributes",
+          "noLabelSubtitle": "There are no text attributes in the system, so you can create the first one.",
+          "noImageTitle": "No image attributes",
+          "noImageSubtitle": "There are no image attributes in the system, so you can create the first one."
+        }
+      }
     }
+  }
 }

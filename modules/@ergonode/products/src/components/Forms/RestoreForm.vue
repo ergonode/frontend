@@ -7,6 +7,7 @@
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :errors="errors"
+        :change-values="changeValues"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
         @proceed="onProceed"
@@ -33,8 +34,8 @@ import {
     SCOPE,
     SYSTEM_TYPES,
 } from '@Attributes/defaults/attributes';
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import CheckBox from '@UI/components/CheckBox/CheckBox';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';

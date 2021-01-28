@@ -11,7 +11,9 @@
                 submit-title="ADD ATTRIBUTES"
                 :proceed-title="$t('product.buttons.cancel')"
                 :is-submitting="isSubmitting"
+                :scope="scope"
                 :errors="scopeErrors"
+                :change-values="scopeChangeValues"
                 :bindings="localBindings"
                 @input="onFormValueChange"
                 @submit="onSubmit"
@@ -27,7 +29,7 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
-import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import ProductAttributesBindingForm
     from '@Products/extends/components/Forms/ProductAttributesBindingForm';
 import ModalForm from '@UI/components/Modal/ModalForm';
@@ -43,7 +45,7 @@ export default {
         ProductAttributesBindingForm,
     },
     mixins: [
-        scopeErrorsMixin,
+        modalFeedbackMixin,
     ],
     data() {
         return {
@@ -79,7 +81,7 @@ export default {
             this.localBindings = value;
         },
         onClose() {
-            this.removeScopeErrors(this.scope);
+            this.removeScopeData(this.scope);
 
             this.$emit('close');
         },

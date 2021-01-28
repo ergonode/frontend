@@ -10,6 +10,12 @@
       "noVisibleCategoriesInTreePlaceholderTitle": "Brak kategorii",
       "noVisibleCategoriesInTreePlaceholderSubtitle": "Nie ma zaznaczonych kategorii dla wybranych kryteriów."
     },
+    "sideBar": {
+      "searchHeader": "Kategorie",
+      "placeholderTitle": "Brak drzew kategorii",
+      "placeholderSubtitle": "W systemie nie ma drzew kategorii, które posiadają kategorie.",
+      "groupSubtitle": "Podkategorii"
+    },
     "advancedFilter": {
       "label": "Drzewo kategorii"
     },

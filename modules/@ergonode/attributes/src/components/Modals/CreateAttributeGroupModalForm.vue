@@ -4,15 +4,17 @@
  */
 <template>
     <ModalForm
-        :title="$t('attributeGroup.form.createTitle')"
+        :title="$t('@Attributes.attributeGroup.components.CreateAttributeGroupModalForm.create')"
         @close="onClose">
         <template #body>
             <AttributeGroupForm
-                :submit-title="$t('core.buttons.create')"
-                :proceed-title="$t('core.buttons.proceed')"
+                :submit-title="$t('@Attributes._.create')"
+                :proceed-title="$t('@Attributes._.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
+                :scope="scope"
                 :errors="scopeErrors"
+                :change-values="scopeChangeValues"
                 @submit="onSubmit"
                 @proceed="onProceed" />
         </template>
@@ -30,7 +32,7 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
-import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
@@ -43,7 +45,7 @@ export default {
         AttributeGroupForm,
     },
     mixins: [
-        scopeErrorsMixin,
+        modalFeedbackMixin,
     ],
     data() {
         return {
@@ -63,7 +65,7 @@ export default {
         ]),
         onClose() {
             this.__clearStorage();
-            this.removeScopeErrors(this.scope);
+            this.removeScopeData(this.scope);
 
             this.$emit('close');
         },
@@ -97,7 +99,7 @@ export default {
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('attributeGroup.messages.createSuccess'),
+                message: this.$t('@Attributes.attributeGroup.components.CreateAttributeGroupModalForm.createSuccess'),
             });
 
             this.isSubmitting = false;

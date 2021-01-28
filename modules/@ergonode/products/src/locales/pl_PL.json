@@ -1,23 +1,23 @@
 {
-    "product": {
-        "buttons": {
-            "create": "STWÓRZ",
-            "proceed": "STWÓRZ & EDYTUJ",
-            "submit": "ZAPISZ ZMIANY",
-            "restore": "PRZYWRÓC",
-            "cancel": "ANULUJ"
-        },
-        "grid": {
-            "placeholderTitle": "Brak produktów",
-            "placeholderSubtitle": "W systemie nie ma produktów, stwórz pierwszy.",
-            "groupPlaceholderTitle": "Brak produktów w grupie",
-            "groupPlaceholderSubtitle": "Brak produktów w grupie, dodaj pierwszy.",
-            "variantPlaceholderTitle": "Brak wariantów produktowych",
-            "variantPlaceholderSubtitle": "Wybierz produkty, które wspólnie stworzą produkt z wariantami. Możesz wybrać między produktami, które posiadają wartości z dowiązanych atrybutów.",
-            "productsToAttachForGroupPlaceholderTitle": "Brak produktów",
-            "productsToAttachForGroupPlaceholderSubtitle": "Brak produktów z wariantami albo produktów prostych w systemie, stwórz pierwszy.",
-            "productVariantsToAttachPlaceholderTitle": "Brak produktów do dowiązania",
-            "productVariantsToAttachPlaceholderSubtitle": "Brak produktów prostych, które pasują do kreteriów dowiązujących jako wariant, rozwiaż ponowne wybranie atrybudów, po których będą dowiązane produktu, albo uzupełnij brakujące wartości w produktach."
-        }
+  "product": {
+    "buttons": {
+      "create": "STWÓRZ",
+      "proceed": "STWÓRZ & EDYTUJ",
+      "submit": "ZAPISZ ZMIANY",
+      "restore": "PRZYWRÓC",
+      "cancel": "ANULUJ"
+    },
+    "grid": {
+      "placeholderTitle": "Brak produktów",
+      "placeholderSubtitle": "W systemie nie ma produktów, stwórz pierwszy.",
+      "groupPlaceholderTitle": "Brak produktów w grupie",
+      "groupPlaceholderSubtitle": "Brak produktów w grupie, dodaj pierwszy.",
+      "variantPlaceholderTitle": "Brak wariantów produktowych",
+      "variantPlaceholderSubtitle": "Wybierz produkty, które wspólnie stworzą produkt z wariantami. Możesz wybrać między produktami, które posiadają wartości z dowiązanych atrybutów.",
+      "productsToAttachForGroupPlaceholderTitle": "Brak produktów",
+      "productsToAttachForGroupPlaceholderSubtitle": "Brak produktów z wariantami albo produktów prostych w systemie, stwórz pierwszy.",
+      "productVariantsToAttachPlaceholderTitle": "Brak produktów do dowiązania",
+      "productVariantsToAttachPlaceholderSubtitle": "Brak produktów prostych, które pasują do kreteriów dowiązujących jako wariant, rozwiaż ponowne wybranie atrybudów, po których będą dowiązane produktu, albo uzupełnij brakujące wartości w produktach."
     }
+  }
 }

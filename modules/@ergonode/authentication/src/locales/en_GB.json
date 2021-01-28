@@ -1,56 +1,57 @@
 {
-    "authentication": {
-        "layout": {
-            "help":"Help"
+  "authentication": {
+    "layout": {
+      "help": "Help",
+      "userGuide": "User guide"
+    },
+    "forms": {
+      "login": {
+        "button": "LOG IN",
+        "email": "E-mail",
+        "password": "Password",
+        "toggle": "Show password",
+        "forgot": "Forgot password?"
+      },
+      "passwordRecovery": {
+        "title": "Password recovery",
+        "info": "Enter your e-mail address, we will send you the link to reset your password.",
+        "redirectTo": "BACK TO LOG IN PAGE",
+        "field": "E-mail",
+        "button": "Recover password"
+      },
+      "newPassword": {
+        "title": "Create new password",
+        "info": "Your password should contain:",
+        "field": "Password",
+        "toggle": "Show password",
+        "button": "Set Password",
+        "validation": {
+          "hasMinimumLength": "at least {length} characters,",
+          "hasUppercase": "at least 1 uppercase letter (A-Z),",
+          "hasLowercase": "at least 1 lowercase letter (a-z),",
+          "hasDigital": "at least 1 digit (0-9)."
         },
-        "forms":{
-            "login": {
-                "button": "LOG IN",
-                "email": "E-mail",
-                "password": "Password",
-                "toggle": "Show password",
-                "forgot": "Forgot password ?"
-            },
-            "passwordRecovery": {
-                "title": "Password recovery",
-                "info": "Enter your e-mail address, we will send you the link to reset your password.",
-                "redirectTo": "BACK TO LOG IN PAGE",
-                "field": "E-mail",
-                "button": "Recover password"
-            },
-            "newPassword": {
-                "title": "Create new password",
-                "info": "Your password should contain:",
-                "field": "Password",
-                "toggle": "Show password",
-                "button": "Set Password",
-                "validation": {
-                    "hasMinimumLength": "at least {length} characters,",
-                    "hasUppercase": "at least 1 uppercase letter (A-Z),",
-                    "hasLowercase": "at least 1 lowercase letter (a-z),",
-                    "hasDigital": "at least 1 digit (0-9)."
-                },
-                "alertSuccess": "Password have been updated",
-                "alertError": "Errors occurred after data validation"
-            },
-            "help": {
-                "title": "Help",
-                "info": "If you have any problems with your account, please contact the system administrator.",
-                "redirectTo": "BACK TO LOG IN PAGE"
-            },
-            "checkEmail": {
-                "title": "Check your e-mail",
-                "info": "The link to reset your password will be sent to the provided e-mail address.",
-                "infoText": "If it does not arrive, please ",
-                "infoLink": "contact the system administrator.",
-                "redirectTo": "BACK TO LOG IN PAGE"
-            }
-        },
-        "errors": {
-            "getUser": "User data hasn`t been fetched properly",
-            "emailRequired": "E-mail is required",
-            "passwordRequired": "Password is required",
-            "passwordValidation": "The entered password does not meet the security requirements"
-        }
+        "alertSuccess": "Password have been updated",
+        "alertError": "Errors occurred after data validation"
+      },
+      "help": {
+        "title": "Help",
+        "info": "If you have any problems with your account, please contact the system administrator.",
+        "redirectTo": "BACK TO LOG IN PAGE"
+      },
+      "checkEmail": {
+        "title": "Check your e-mail",
+        "info": "The link to reset your password will be sent to the provided e-mail address.",
+        "infoText": "If it does not arrive, please [[infoLink]]",
+        "infoLink": "contact the system administrator.",
+        "redirectTo": "BACK TO LOG IN PAGE"
+      }
+    },
+    "errors": {
+      "getUser": "User data hasn`t been fetched properly",
+      "emailRequired": "E-mail is required",
+      "passwordRequired": "Password is required",
+      "passwordValidation": "The entered password does not meet the security requirements"
     }
+  }
 }

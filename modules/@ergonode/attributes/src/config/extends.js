@@ -16,11 +16,11 @@ import {
     setTextAreaData,
     setTranslation,
     updateOptionsData,
-} from '@Attributes/extends/methods/attribute';
+} from '@Attributes/extends/attribute/methods';
 import {
     prepareTemplateData,
     setTemplateData,
-} from '@Attributes/extends/methods/template';
+} from '@Attributes/extends/productTemplate/methods';
 
 import {
     Components,
@@ -36,6 +36,7 @@ const getTypeConfiguration = ({
         return {
             params: {
                 key: 'format',
+                translation: $this.app.i18n.t('@Attributes.attributeExtend.methods.configFormat'),
                 value: $this.state.dictionaries.dateFormats,
                 fieldName: 'parameters',
             },
@@ -44,6 +45,7 @@ const getTypeConfiguration = ({
         return {
             params: {
                 key: 'unit',
+                translation: $this.app.i18n.t('@Attributes.attributeExtend.methods.configUnit'),
                 value: $this.state.dictionaries.units,
                 fieldName: 'parameters',
             },
@@ -52,6 +54,7 @@ const getTypeConfiguration = ({
         return {
             params: {
                 key: 'currency',
+                translation: $this.app.i18n.t('@Attributes.attributeExtend.methods.configCurrency'),
                 value: $this.state.dictionaries.currencies,
                 fieldName: 'parameters',
             },
@@ -97,6 +100,20 @@ export default {
         productTemplate: Store.Template,
     },
     extendMethods: {
+        '@Products/components/Tabs/ProductCatalogTab/verticalTabs': ({}) => [
+            {
+                title: 'Product attributes',
+                component: () => import('@Attributes/extends/components/VerticalTabs/AttributesVerticalTab'),
+                icon: () => import('@Attributes/components/Icons/IconAttributes'),
+                props: {},
+            },
+            {
+                title: 'System attributes',
+                component: () => import('@Attributes/extends/components/VerticalTabs/SystemAttributesVerticalTab'),
+                icon: () => import('@Core/components/Icons/Menu/IconSettings'),
+                props: {},
+            },
+        ],
         '@Attributes/store/attribute/action/createAttribute/__before': ({
             $this, type,
         }) => {

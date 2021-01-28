@@ -1,8 +1,8 @@
 {
-    "channel": {
-        "grid": {
-            "placeholderTitle": "Brak kanałów",
-            "placeholderSubtitle": "W systemie nie ma kanałów, stwórz pierwszy."
-        }
+  "channel": {
+    "grid": {
+      "placeholderTitle": "Brak kanałów",
+      "placeholderSubtitle": "W systemie nie ma kanałów, stwórz pierwszy."
     }
+  }
 }

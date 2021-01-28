@@ -65,6 +65,11 @@ export default {
         store,
         params,
     }) {
+        await store.dispatch('dictionaries/getInitialDictionaries', {
+            keys: [
+                'sources',
+            ],
+        });
         await store.dispatch('import/getImportProfile', {
             id: params.id,
             onError: () => {

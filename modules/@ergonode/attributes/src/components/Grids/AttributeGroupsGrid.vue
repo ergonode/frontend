@@ -24,8 +24,8 @@
         @remove-all-filters="onRemoveAllFilters">
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('attributeGroup.grid.placeholderTitle')"
-                :subtitle="$t('attributeGroup.grid.placeholderSubtitle')">
+                :title="$t('@Attributes.attributeGroup._.noGroups')"
+                :subtitle="$t('@Attributes.attributeGroup._.createFirst')">
                 <template #action>
                     <CreateAttributeGroupButton />
                 </template>
@@ -176,7 +176,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Attribute groups haven’t been fetched properly',
+                message: this.$t('@Attributes.attributeGroup.components.AttributeGroupsGrid.getRequest'),
             });
         },
         onRemoveAllFilters() {

@@ -20,6 +20,7 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import LazyImage from '@UI/components/LazyImage/LazyImage';
 import {
     mapState,
 } from 'vuex';
@@ -27,7 +28,7 @@ import {
 export default {
     name: 'UserFabAvatar',
     components: {
-        LazyImage: () => import('@UI/components/LazyImage/LazyImage'),
+        LazyImage,
     },
     props: {
         /**

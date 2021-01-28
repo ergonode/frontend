@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <InputSolidStyle class="category-select">
+    <InputSolidStyle :class="classes">
         <template #activator>
             <InputController>
                 <InputLabel
@@ -52,6 +52,7 @@
                 <template v-else>
                     <TreeAccordion
                         v-if="isCategoryTreeSelected"
+                        class="category-select__list"
                         :search-placeholder="$t('category.form.searchPlaceholder')"
                         :value="selectedOptions"
                         :search-value="searchValue"
@@ -64,16 +65,14 @@
                         @input="onValueChange"
                         @search="onSearch">
                         <template #appendSearchHeader>
-                            <CheckBox
-                                class="select-list-header-select-all"
-                                :value="treeCategoriesSelectionState"
-                                :label="$t('category.form.selectVisibleCheckBox')"
+                            <CategorySelectAllTreeCheckBox
+                                :value="value"
+                                :categories="categoryTreeItems"
                                 :disabled="!isAnyCategoryInTreeAfterFiltering"
-                                reversed
                                 @input="onSelectAllVisible" />
                         </template>
                         <template #body>
-                            <DropdownPlaceholder
+                            <SelectListNoDataPlaceholder
                                 v-if="!isAnyCategoryInTree"
                                 :title="categoryTreePlaceholder.title"
                                 :subtitle="categoryTreePlaceholder.subtitle">
@@ -84,24 +83,25 @@
                                         :disabled="!isAllowedToUpdateTree"
                                         @click.native="onNavigateToCategoryTree" />
                                 </template>
-                            </DropdownPlaceholder>
-                            <DropdownPlaceholder
+                            </SelectListNoDataPlaceholder>
+                            <SelectListNoDataPlaceholder
                                 v-else-if="isVisibleSelectedAnyCategoryInTree"
                                 :title="categoryTreeNonVisiblePlaceholder.title"
                                 :subtitle="categoryTreeNonVisiblePlaceholder.subtitle">
                                 <template #action>
-                                    <ClearSearchButton
+                                    <PlaceholderClearSearchButton
                                         :title="$t('category.form.clearSearchButtonLabel')"
                                         @click.native="onClearVisibilitySelection" />
                                 </template>
-                            </DropdownPlaceholder>
+                            </SelectListNoDataPlaceholder>
                         </template>
                     </TreeAccordion>
                     <SelectList
                         v-else
+                        class="category-select__list"
                         :value="selectedOptions"
                         :search-value="searchValue"
-                        :items="categoryItems"
+                        :items="visibleCategoryItems"
                         :size="smallSize"
                         :search-placeholder="$t('category.form.searchPlaceholder')"
                         :searchable="true"
@@ -110,37 +110,32 @@
                         @input="onValueChange"
                         @search="onSearch">
                         <template #appendSearchHeader>
-                            <CheckBox
-                                class="select-list-header-select-all"
-                                :value="categoriesSelectionState"
-                                :label="$t('category.form.selectVisibleCheckBox')"
+                            <CategorySelectAllCheckBox
+                                :value="value"
+                                :categories="categoryItems"
                                 :disabled="!isAnyCategoryAfterFiltering"
-                                reversed
-                                @input="onSelectAllVisible" />
+                                @input="onSelectAllVisible"
+                            />
                         </template>
-                        <template #body>
-                            <DropdownPlaceholder
+                        <template #noDataPlaceholder>
+                            <SelectListNoDataPlaceholder
                                 v-if="!isAnyCategory"
                                 :title="categoriesPlaceholder.title"
                                 :subtitle="categoriesPlaceholder.subtitle">
                                 <template #action>
-                                    <Button
-                                        :title="$t('category.form.noCategoryButton')"
-                                        :size="smallSize"
-                                        :disabled="!isAllowedToCreateCategory"
-                                        @click.native="onNavigateToCategories" />
+                                    <CreateCategoryButton />
                                 </template>
-                            </DropdownPlaceholder>
-                            <DropdownPlaceholder
+                            </SelectListNoDataPlaceholder>
+                            <SelectListNoDataPlaceholder
                                 v-else-if="isVisibleSelectedAnyCategory"
                                 :title="categoriesNonVisiblePlaceholder.title"
                                 :subtitle="categoriesNonVisiblePlaceholder.subtitle">
                                 <template #action>
-                                    <ClearSearchButton
+                                    <PlaceholderClearSearchButton
                                         :title="$t('category.form.clearSearchButtonLabel')"
                                         @click.native="onClearVisibilitySelection" />
                                 </template>
-                            </DropdownPlaceholder>
+                            </SelectListNoDataPlaceholder>
                         </template>
                         <template #item="{ item, isSelected }">
                             <ListElementAction :size="smallSize">
@@ -154,7 +149,7 @@
                         </template>
                     </SelectList>
                     <div
-                        v-show="isAnyCategoryAfterFiltering && !isCategoryTreeSelected"
+                        v-show="isExpandButtonVisible"
                         class="category-select__expand-more">
                         <ExpandNumericButton
                             :title="$t('category.form.showAllExpandNumericButton')"
@@ -170,10 +165,13 @@
 </template>
 
 <script>
+import CreateCategoryButton from '@Categories/components/Buttons/CreateCategoryButton';
+import CategorySelectAllCheckBox from '@Categories/components/Selects/CategorySelectAllCategories';
+import CategorySelectAllTreeCheckBox from '@Categories/components/Selects/CategorySelectAllTreeCategories';
 import CATEGORY_PRIVILEGES from '@Categories/config/privileges';
 import {
-    ROUTE_NAME as CATEGORIES_ROUTE_NAME,
-} from '@Categories/config/routes';
+    CATEGORY_CREATED_EVENT_NAME,
+} from '@Categories/defaults/attributes';
 import {
     getAutocomplete,
 } from '@Categories/services';
@@ -190,6 +188,9 @@ import {
     ROUTE_NAME as CATEGORY_TREES_ROUTE_NAME,
 } from '@Trees/config/routes';
 import {
+    getMappedCategories,
+} from '@Trees/models/treeMapper';
+import {
     get,
 } from '@Trees/services';
 import AdvancedFilters from '@UI/components/AdvancedFilters/AdvancedFilters';
@@ -202,17 +203,22 @@ import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
 import ListElementAction from '@UI/components/List/ListElementAction';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
+import PlaceholderClearSearchButton from '@UI/components/Placeholder/PlaceholderClearSearchButton';
 import Preloader from '@UI/components/Preloader/Preloader';
-import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import SelectList from '@UI/components/SelectList/SelectList';
+import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
 import Toggler from '@UI/components/Toggler/Toggler';
 import TreeAccordion from '@UI/components/TreeAccordion/TreeAccordion';
 
 export default {
     name: 'CategorySelect',
     components: {
-        ClearSearchButton,
+        PlaceholderClearSearchButton,
+        Button,
+        CreateCategoryButton,
+        CategorySelectAllTreeCheckBox,
+        CategorySelectAllCheckBox,
+        SelectListNoDataPlaceholder,
         TreeAccordion,
         InputSolidStyle,
         InputController,
@@ -220,7 +226,6 @@ export default {
         ListElementTitle,
         ListElementAction,
         ListElementDescription,
-        DropdownPlaceholder,
         Toggler,
         CheckBox,
         ExpandNumericButton,
@@ -228,7 +233,6 @@ export default {
         Preloader,
         SelectList,
         AdvancedFiltersRemoveAllButton,
-        Button,
     },
     props: {
         /**
@@ -259,49 +263,21 @@ export default {
         };
     },
     computed: {
+        classes() {
+            return [
+                'category-select',
+                {
+                    'category-select--no-data': !((this.isCategoryTreeSelected && this.isAnyCategoryInTreeAfterFiltering) || (!this.isCategoryTreeSelected && this.isAnyCategoryAfterFiltering)),
+                },
+            ];
+        },
         categorySelectItemsClasses() {
             return [
                 'category-select__items',
                 {
-                    'category-select__items--expanded': this.isCategoriesExpanded,
-                    'category-select__items--has-any-items': (this.isCategoryTreeSelected && this.isAnyCategoryInTreeAfterFiltering) || (!this.isCategoryTreeSelected && this.isAnyCategoryAfterFiltering),
-                    'category-select__items--visible-expander': !this.isCategoryTreeSelected && this.isAnyCategoryAfterFiltering,
+                    'category-select__items--visible-expander': this.isExpandButtonVisible,
                 },
             ];
-        },
-        categoriesSelectionState() {
-            const value = this.categoryItems.filter(
-                category => this.value.some(
-                    id => id === category.id,
-                ),
-            );
-
-            if (value.length === 0) {
-                return 0;
-            }
-
-            if (value.length === this.categoryItems.length) {
-                return 1;
-            }
-
-            return 2;
-        },
-        treeCategoriesSelectionState() {
-            const categoriesIdsInTree = this.selectedTreeCategoryIds.filter(
-                categoryId => this.value.some(
-                    id => id === categoryId,
-                ),
-            );
-
-            if (categoriesIdsInTree.length === 0) {
-                return 0;
-            }
-
-            if (categoriesIdsInTree.length === this.categoryTreeItems.length) {
-                return 1;
-            }
-
-            return 2;
         },
         label() {
             return this.$t('category.form.selectLabel');
@@ -357,27 +333,6 @@ export default {
         extendedFilterComponents() {
             return this.$getExtendSlot('@UI/components/AdvancedFilters/Type');
         },
-        selectedTreeCategoryIds() {
-            if (!this.isCategoryTreeSelected) {
-                return [];
-            }
-
-            const getMappedCategoriesIds = (treeCategories = [], result = []) => {
-                const children = result;
-
-                treeCategories.forEach((treeCategory) => {
-                    children.push(treeCategory.id);
-
-                    if (treeCategory.children) {
-                        children.push(...getMappedCategoriesIds(treeCategory.children));
-                    }
-                });
-
-                return children;
-            };
-
-            return getMappedCategoriesIds(this.categoryTreeItems);
-        },
         categoryTreeItems() {
             if (this.value.length || !this.isSelectedOnlyVisibleCategories) {
                 return dfsSearch(
@@ -393,6 +348,13 @@ export default {
 
             return [];
         },
+        visibleCategoryItems() {
+            if (!this.isCategoriesExpanded) {
+                return this.categoryItems.slice(0, 7);
+            }
+
+            return this.categoryItems;
+        },
         categoryItems() {
             if (this.value.length || !this.isSelectedOnlyVisibleCategories) {
                 return simpleSearch(
@@ -407,6 +369,11 @@ export default {
             }
 
             return [];
+        },
+        isExpandButtonVisible() {
+            return this.isAnyCategoryAfterFiltering
+                && !this.isCategoryTreeSelected
+                && this.categoryItems.length > 7;
         },
         isSelectedCategoriesTogglerDisabled() {
             if (this.isCategoryTreeSelected) {
@@ -456,29 +423,30 @@ export default {
             ]);
         },
     },
+    mounted() {
+        document.documentElement.addEventListener(
+            CATEGORY_CREATED_EVENT_NAME,
+            this.onCategoryCreated,
+        );
+    },
+    beforeDestroy() {
+        document.documentElement.removeEventListener(
+            CATEGORY_CREATED_EVENT_NAME,
+            this.onCategoryCreated,
+        );
+    },
     methods: {
+        async onCategoryCreated() {
+            this.isFetchingData = true;
+
+            this.allCategories = await getAutocomplete({
+                $axios: this.$axios,
+            });
+
+            this.isFetchingData = false;
+        },
         onSelectAllVisible(value) {
-            if (value) {
-                if (this.isCategoryTreeSelected) {
-                    this.$emit('input', [
-                        ...new Set([
-                            ...this.selectedTreeCategoryIds,
-                            ...this.categoryItems.map(category => category.id),
-                        ]),
-                    ]);
-                } else {
-                    this.$emit('input', [
-                        ...new Set([
-                            ...this.value,
-                            ...this.categoryItems.map(category => category.id),
-                        ]),
-                    ]);
-                }
-            } else if (this.isCategoryTreeSelected) {
-                this.$emit('input', this.value.filter(id => !this.selectedTreeCategoryIds.some(categoryId => categoryId === id)));
-            } else {
-                this.$emit('input', this.value.filter(id => !this.categoryItems.some(category => category.id === id)));
-            }
+            this.$emit('input', value);
         },
         onToggleBetweenCategoriesVisibility(value) {
             this.isSelectedOnlyVisibleCategories = value;
@@ -498,26 +466,12 @@ export default {
                     id: filters.categoryTree,
                 });
 
-                const getMappedCategories = (treeCategories = []) => {
-                    const children = [];
-
-                    treeCategories.forEach((treeCategory) => {
-                        const category = this.allCategories.find(({
-                            id,
-                        }) => id === treeCategory.category_id);
-
-                        children.push({
-                            ...category,
-                            children: getMappedCategories(treeCategory.children),
-                        });
-                    });
-
-                    return children;
-                };
-
                 this.allCategoryTrees = {
                     ...this.allCategoryTrees,
-                    [filters.categoryTree]: getMappedCategories(categoryTree.categories),
+                    [filters.categoryTree]: getMappedCategories({
+                        tree: categoryTree.categories,
+                        categories: this.allCategories,
+                    }),
                 };
 
                 this.isFetchingData = false;
@@ -548,11 +502,6 @@ export default {
         },
         onItemsExpand() {
             this.isCategoriesExpanded = !this.isCategoriesExpanded;
-        },
-        onNavigateToCategories() {
-            this.$router.push({
-                name: CATEGORIES_ROUTE_NAME.CATEGORIES_GRID,
-            });
         },
         onNavigateToCategoryTree() {
             this.$router.push({
@@ -585,6 +534,10 @@ export default {
             }
         }
 
+        &__list {
+            padding: 0 8px;
+        }
+
         &__header {
             display: flex;
             flex-direction: column;
@@ -598,19 +551,11 @@ export default {
             display: flex;
             flex-direction: column;
             border: $BORDER_1_GREY;
+            padding: 12px 0;
             border-top: unset;
-            padding-top: 12px;
             box-sizing: border-box;
             transition: border-color 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
             will-change: border-color;
-
-            &:not(&--expanded) {
-                max-height: 376px;
-            }
-
-            &--has-any-items {
-                padding-bottom: 12px;
-            }
 
             &--visible-expander {
                 padding-bottom: 48px;
@@ -633,9 +578,5 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
-    }
-
-    .select-list-header-select-all {
-        margin-right: 12px;
     }
 </style>

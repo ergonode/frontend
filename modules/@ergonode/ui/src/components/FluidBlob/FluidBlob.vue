@@ -17,11 +17,11 @@ export default {
         position: absolute;
         top: 50%;
         left: 50%;
-        z-index: 0;
+        z-index: $Z_INDEX_LVL_0;
         width: 600px;
         height: 600px;
         transform: translate(-50%, -50%);
-        background: $GREEN;
+        background: $WHITE;
         will-change: border-radius;
         animation: fluid 20s infinite;
     }

@@ -1,22 +1,22 @@
 {
-    "core": {
-        "buttons": {
-            "create": "CREATE",
-            "proceed": "CREATE & EDIT",
-            "submit": "SAVE CHANGES",
-            "restore": "RESTORE",
-            "cancel": "CANCEL",
-            "clear": "Clear"
-        },
-        "errors": {
-            "network": "Network Error",
-            "internal": "Internal Server Error",
-            "wrongCredentials": "Couldn't authenticate user. Please verify credentials",
-            "nonAuthorized": "Authentication needed",
-            "accessDenied": "Access denied",
-            "mediaNotFound": "Media not found",
-            "pageNotFound": "Page not found",
-            "unsupportedMessage": "Unsupported message, please contact support with reproduction steps"
-        }
+  "core": {
+    "buttons": {
+      "create": "CREATE",
+      "proceed": "CREATE & EDIT",
+      "submit": "SAVE CHANGES",
+      "restore": "RESTORE",
+      "cancel": "CANCEL",
+      "clear": "Clear"
+    },
+    "errors": {
+      "network": "Network Error",
+      "internal": "Internal Server Error",
+      "wrongCredentials": "Couldn't authenticate user. Please verify credentials",
+      "nonAuthorized": "Authentication needed",
+      "accessDenied": "Access denied",
+      "mediaNotFound": "Media not found",
+      "pageNotFound": "Page not found",
+      "unsupportedMessage": "Unsupported message, please contact support with reproduction steps"
     }
+  }
 }

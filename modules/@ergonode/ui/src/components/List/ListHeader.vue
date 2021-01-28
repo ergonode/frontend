@@ -39,9 +39,9 @@ export default {
         &__title {
             grid-column: 1 / 3;
             grid-row: 1;
-            margin-left: 4px;
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_16_24;
+            word-break: break-word;
         }
     }
 </style>

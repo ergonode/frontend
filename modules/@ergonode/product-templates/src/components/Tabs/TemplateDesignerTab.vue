@@ -23,42 +23,31 @@
                 :scope="scope"
                 :errors="errors"
                 :changed-values="changeValues" />
-            <Button
-                :title="$t('core.buttons.submit')"
-                :floating="{ bottom: '24px', right: '24px' }"
-                @click.native="onSubmit">
-                <template
-                    v-if="isSubmitting"
-                    #prepend="{ color }">
-                    <IconSpinner :fill-color="color" />
-                </template>
-            </Button>
+            <UpdateTemplateDesignerButton
+                :scope="scope"
+                :errors="errors"
+                :change-values="changeValues" />
         </template>
     </GridViewTemplate>
 </template>
 
 <script>
 import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
-import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import UpdateTemplateDesignerButton from '@Templates/components/Buttons/UpdateTemplateDesignerButton';
 import TemplateDesigner from '@Templates/components/TemplateDesigner/TemplateDesigner';
 import PRIVILEGES from '@Templates/config/privileges';
 import {
     GRAPHITE_LIGHT,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Button from '@UI/components/Button/Button';
 import DropZone from '@UI/components/DropZone/DropZone';
 import IconRemoveFilter from '@UI/components/Icons/Actions/IconRemoveFilter';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
 import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
@@ -66,8 +55,7 @@ export default {
     name: 'TemplateDesignerTab',
     components: {
         TemplateDesigner,
-        Button,
-        IconSpinner,
+        UpdateTemplateDesignerButton,
         DropZone,
         FadeTransition,
         GridViewTemplate,
@@ -96,7 +84,7 @@ export default {
             return [
                 {
                     title: 'Product attributes',
-                    component: () => import('@Attributes/components/VerticalTabs/AttributesVerticalTab'),
+                    component: () => import('@Attributes/extends/components/VerticalTabs/AttributesVerticalTab'),
                     props: {
                         isSelectLanguage: false,
                         disabled: !this.isAllowedToUpdate,
@@ -117,39 +105,6 @@ export default {
             return this.$hasAccess([
                 PRIVILEGES.TEMPLATE_DESIGNER.update,
             ]);
-        },
-    },
-    methods: {
-        ...mapActions('productTemplate', [
-            'updateTemplate',
-        ]),
-        onSubmit() {
-            if (this.isSubmitting) {
-                return;
-            }
-            this.isSubmitting = true;
-
-            this.removeScopeErrors();
-            this.updateTemplate({
-                scope: this.scope,
-                onSuccess: this.onUpdateSuccess,
-                onError: this.onUpdateError,
-            });
-        },
-        onUpdateSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Template has been updated',
-            });
-
-            this.isSubmitting = false;
-
-            this.markChangeValuesAsSaved(this.scope);
-        },
-        onUpdateError(errors) {
-            this.onError(errors);
-
-            this.isSubmitting = false;
         },
     },
 };
