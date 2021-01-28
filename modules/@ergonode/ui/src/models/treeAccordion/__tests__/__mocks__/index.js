@@ -54,9 +54,24 @@ export const tree = [
 ];
 
 export const selectedNodes = {
-    1: 2,
-    2: 1,
-    3: 0,
-    4: 0,
-    5: 0,
+    1: {
+        all: 2,
+        selected: 2,
+    },
+    2: {
+        all: 1,
+        selected: 1,
+    },
+    3: {
+        all: 0,
+        selected: 0,
+    },
+    4: {
+        all: 1,
+        selected: 0,
+    },
+    5: {
+        all: 0,
+        selected: 0,
+    },
 };
