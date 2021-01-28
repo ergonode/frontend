@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## CHANGELOG FOR v1.0.0-beta.8
+
+- feature [#650](https://github.com/ergonode/frontend/pull/650) Missing logic for changed values by user (derpdead)
+- feature [#655](https://github.com/ergonode/frontend/pull/655) Add badges to CategorySelect (derpdead)
+- feature [#656](https://github.com/ergonode/frontend/pull/656) SideBar placeholders (derpdead)
+- feature [#657](https://github.com/ergonode/frontend/pull/657) Support for logo icon bounds (derpdead)
+- feature [#647](https://github.com/ergonode/frontend/pull/647) Paragraph component (bleto)
+- feature [#666](https://github.com/ergonode/frontend/pull/666) Dropdown placeholders (derpdead)
+- performance [#652](https://github.com/ergonode/frontend/pull/652) Dropdown position calculations (derpdead)
+- refactor [#642](https://github.com/ergonode/frontend/pull/642) Global css (MichaelGitArt)
+- refactor [#663](https://github.com/ergonode/frontend/pull/663) Authentication module (bleto)
+- bugfix [#651](https://github.com/ergonode/frontend/pull/651) Flashing user interface translations (derpdead)
+- bugfix [#653](https://github.com/ergonode/frontend/pull/653) Missing initial sources dictionary (derpdead)
+- bugfix [#654](https://github.com/ergonode/frontend/pull/654) Prevent duplicating attribute groups at SideBar (derpdead)
+- bugfix [#658](https://github.com/ergonode/frontend/pull/658) Validation mapper (derpdead)
+- bugfix [#659](https://github.com/ergonode/frontend/pull/659) Grid table layout shifts (derpdead)
+- bugfix [#660](https://github.com/ergonode/frontend/pull/659) Password recovery and infographics (bleto)
+- bugfix [#667](https://github.com/ergonode/frontend/pull/667) bugfixes (derpdead)
+
 ## CHANGELOG FOR v1.0.0-beta.7
 
 - feature [#623](https://github.com/ergonode/frontend/pull/623) Remove drafts (derpdead)
