@@ -34,12 +34,12 @@ export const Icons = {
 // Extends
 
 export const Components = {
-    FormParamsSelect: () => import('@Attributes/extends/attribute/components/Forms/FormParamsSelect').then(m => m.default || m),
-    FormParamsToggle: () => import('@Attributes/extends/attribute/components/Forms/FormParamsToggle').then(m => m.default || m),
-    FormOptions: () => import('@Attributes/extends/attribute/components/Forms/FormOptions').then(m => m.default || m),
-    TranslationFormPlaceholder: () => import('@Attributes/extends/attribute/components/Forms/TranslationFormPlaceholder').then(m => m.default || m),
-    TranslationFormOptions: () => import('@Attributes/extends/attribute/components/Forms/TranslationFormOptions').then(m => m.default || m),
-    FormPresentation: () => import('@Attributes/extends/productTemplate/components/Forms/FormPresentation').then(m => m.default || m),
+    AttributeFormParamsSelect: () => import('@Attributes/extends/attribute/components/Forms/AttributeFormParamsSelect').then(m => m.default || m),
+    AttributeFormParamsToggle: () => import('@Attributes/extends/attribute/components/Forms/AttributeFormParamsToggle').then(m => m.default || m),
+    AttributeFormOptions: () => import('@Attributes/extends/attribute/components/Forms/AttributeFormOptions').then(m => m.default || m),
+    AttributeTranslationFormPlaceholder: () => import('@Attributes/extends/attribute/components/Forms/AttributeTranslationFormPlaceholder').then(m => m.default || m),
+    AttributeTranslationFormOptions: () => import('@Attributes/extends/attribute/components/Forms/AttributeTranslationFormOptions').then(m => m.default || m),
+    ProductTemplateFormPresentation: () => import('@Attributes/extends/productTemplate/components/Forms/ProductTemplateFormPresentation').then(m => m.default || m),
 };
 
 export const Store = {

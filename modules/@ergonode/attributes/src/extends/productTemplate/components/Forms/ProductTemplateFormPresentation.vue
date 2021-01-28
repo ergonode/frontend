@@ -3,11 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormSection :title="$t('@Attributes.productsTemplate.components.FormPresentation.title')">
+    <FormSection :title="$t('@Attributes.productTemplate.components.ProductTemplateFormPresentation.title')">
         <AttributesAutocomplete
             :data-cy="dataCyGenerator('default-label')"
             :value="defaultTextAttribute"
-            :label="$t('@Attributes.productsTemplate.components.FormPresentation.defaultLabel')"
+            :label="$t('@Attributes.productTemplate.components.ProductTemplateFormPresentation.defaultLabel')"
             :searchable="true"
             :clearable="true"
             :disabled="disabled"
@@ -19,7 +19,7 @@
         <AttributesAutocomplete
             :data-cy="dataCyGenerator('default-image')"
             :value="defaultImageAttribute"
-            :label="$t('@Attributes.productsTemplate.components.FormPresentation.defaultImage')"
+            :label="$t('@Attributes.productTemplate.components.ProductTemplateFormPresentation.defaultImage')"
             :clearable="true"
             :disabled="disabled"
             :params="autocompleteDefaultImageParams"
@@ -43,7 +43,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'FormPresentation',
+    name: 'ProductTemplateFormPresentation',
     components: {
         AttributesAutocomplete,
         FormSection,
@@ -81,14 +81,14 @@ export default {
         },
         noImageAttributeDataPlaceholder() {
             return {
-                title: this.$t('@Attributes.productsTemplate.components.FormPresentation.noImageTitle'),
-                subtitle: this.$t('@Attributes.productsTemplate.components.FormPresentation.noImageSubtitle'),
+                title: this.$t('@Attributes.productTemplate.components.ProductTemplateFormPresentation.noImageTitle'),
+                subtitle: this.$t('@Attributes.productTemplate.components.ProductTemplateFormPresentation.noImageSubtitle'),
             };
         },
         noTextAttributeDataPlaceholder() {
             return {
-                title: this.$t('@Attributes.productsTemplate.components.FormPresentation.noLabelTitle'),
-                subtitle: this.$t('@Attributes.productsTemplate.components.FormPresentation.noLabelSubtitle'),
+                title: this.$t('@Attributes.productTemplate.components.ProductTemplateFormPresentation.noLabelTitle'),
+                subtitle: this.$t('@Attributes.productTemplate.components.ProductTemplateFormPresentation.noLabelSubtitle'),
             };
         },
     },

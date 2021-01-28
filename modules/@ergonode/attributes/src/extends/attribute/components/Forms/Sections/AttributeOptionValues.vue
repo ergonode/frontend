@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormSection :title="$t('@Attributes.attributeExtend.components.OptionValues.optionTitle')">
-        <OptionValue
+    <FormSection :title="$t('@Attributes.attributeExtend.components.AttributeOptionValues.optionTitle')">
+        <AttributeOptionValue
             v-for="(index, i) in optionIndexes"
             :data-cy="`attribute-option_${languageCode}_${i}`"
             :key="index"
@@ -16,16 +16,16 @@
 </template>
 
 <script>
-import OptionValue from '@Attributes/extends/attribute/components/Forms/Sections/OptionValue';
+import AttributeOptionValue from '@Attributes/extends/attribute/components/Forms/Sections/AttributeOptionValue';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import {
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'OptionValues',
+    name: 'AttributeOptionValues',
     components: {
-        OptionValue,
+        AttributeOptionValue,
         FormSection,
     },
     props: {

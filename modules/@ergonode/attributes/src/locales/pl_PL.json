@@ -43,7 +43,7 @@
           "updateSuccess": "Tłumaczenia atrybutów zostały zaktualizowane"
         },
         "AttributesGrid": {
-          "fetchError": "Atrybuty nie został pobrane prawidłowo"
+          "getRequest": "Atrybuty nie został pobrane prawidłowo"
         },
         "CreateAttributeModalForm": {
           "create": "Stwórz atrybut",
@@ -101,7 +101,7 @@
           "updateSuccess": "Tłumaczenia grupy atrybutów zostały zaktualizowane"
         },
         "AttributeGroupsGrid": {
-          "fetchError": "Grupa atrybutów nie została pobrana prawidłowo"
+          "getRequest": "Grupa atrybutów nie została pobrana prawidłowo"
         },
         "CreateAttributeGroupModalForm": {
           "create": "Stwórz grupę atrybutów",
@@ -126,17 +126,17 @@
     },
     "attributeExtend": {
       "components": {
-        "OptionKeyValues": {
+        "AttributeOptionKeyValues": {
           "addOption": "Dodaj opcję",
           "optionLabel": "Kod opcji"
         },
-        "OptionValues": {
+        "AttributeOptionValues": {
           "optionTitle": "Wartość opcji"
         },
-        "FormParamsToggle": {
+        "AttributeFormParamsToggle": {
           "richTextLabel": "Wzbogacona zawartość tekstowa włączona"
         },
-        "TranslationFormPlaceholder": {
+        "AttributeTranslationFormPlaceholder": {
           "placeholderLabel": "Placeholder"
         }
       },
@@ -149,9 +149,9 @@
         "configCurrency": "Waluta"
       }
     },
-    "productsTemplate": {
+    "productTemplate": {
       "components": {
-        "FormPresentation": {
+        "ProductTemplateFormPresentation": {
           "title": "Produkt prezentacyjny",
           "defaultLabel": "Domyślna atrybut etykiety",
           "defaultImage": "Domyślny atrybut obrazu",

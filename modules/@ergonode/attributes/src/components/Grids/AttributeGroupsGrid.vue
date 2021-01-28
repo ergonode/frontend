@@ -176,7 +176,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: this.$t('@Attributes.attributeGroup.components.AttributeGroupsGrid.fetchError'),
+                message: this.$t('@Attributes.attributeGroup.components.AttributeGroupsGrid.getRequest'),
             });
         },
         onRemoveAllFilters() {

@@ -283,7 +283,7 @@ export default {
         '@Attributes/components/Forms/AttributeForm': {
             [TYPES.DATE]: [
                 {
-                    component: Components.FormParamsSelect,
+                    component: Components.AttributeFormParamsSelect,
                     props: {
                         getParams: $this => getTypeConfiguration({
                             $this: $this.$store,
@@ -294,7 +294,7 @@ export default {
             ],
             [TYPES.UNIT]: [
                 {
-                    component: Components.FormParamsSelect,
+                    component: Components.AttributeFormParamsSelect,
                     props: {
                         getParams: $this => getTypeConfiguration({
                             $this: $this.$store,
@@ -305,7 +305,7 @@ export default {
             ],
             [TYPES.PRICE]: [
                 {
-                    component: Components.FormParamsSelect,
+                    component: Components.AttributeFormParamsSelect,
                     props: {
                         getParams: $this => getTypeConfiguration({
                             $this: $this.$store,
@@ -316,7 +316,7 @@ export default {
             ],
             [TYPES.TEXT_AREA]: [
                 {
-                    component: Components.FormParamsToggle,
+                    component: Components.AttributeFormParamsToggle,
                     props: {
                         getParams: () => getTypeConfiguration({
                             type: TYPES.TEXT_AREA,
@@ -326,39 +326,39 @@ export default {
             ],
             [TYPES.SELECT]: [
                 {
-                    component: Components.FormOptions,
+                    component: Components.AttributeFormOptions,
                 },
             ],
             [TYPES.MULTI_SELECT]: [
                 {
-                    component: Components.FormOptions,
+                    component: Components.AttributeFormOptions,
                 },
             ],
         },
         '@Attributes/components/Forms/AttributeTranslationForm': {
             [TYPES.NUMERIC]: [
                 {
-                    component: Components.TranslationFormPlaceholder,
+                    component: Components.AttributeTranslationFormPlaceholder,
                 },
             ],
             [TYPES.TEXT]: [
                 {
-                    component: Components.TranslationFormPlaceholder,
+                    component: Components.AttributeTranslationFormPlaceholder,
                 },
             ],
             [TYPES.TEXT_AREA]: [
                 {
-                    component: Components.TranslationFormPlaceholder,
+                    component: Components.AttributeTranslationFormPlaceholder,
                 },
             ],
             [TYPES.SELECT]: [
                 {
-                    component: Components.TranslationFormOptions,
+                    component: Components.AttributeTranslationFormOptions,
                 },
             ],
             [TYPES.MULTI_SELECT]: [
                 {
-                    component: Components.TranslationFormOptions,
+                    component: Components.AttributeTranslationFormOptions,
                 },
             ],
         },
@@ -412,7 +412,7 @@ export default {
         '@Templates/components/Forms/ProductTemplateForm': {
             __ALL: [
                 {
-                    component: Components.FormPresentation,
+                    component: Components.ProductTemplateFormPresentation,
                 },
             ],
         },

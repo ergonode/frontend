@@ -23,7 +23,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'OptionValue',
+    name: 'AttributeOptionValue',
     components: {
         TextField,
     },

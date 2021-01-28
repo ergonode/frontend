@@ -26,7 +26,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'FormParamsSelect',
+    name: 'AttributeFormParamsSelect',
     components: {
         Select,
     },

@@ -115,7 +115,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.code} - ${this.$t('@Attributes.attributeGroup._.header')}`,
+            title: `${this.code} - ${this.$t('@Attributes.attributeGroup._.headTitle')}`,
         };
     },
 };

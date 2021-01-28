@@ -42,7 +42,7 @@
           "updateSuccess": "Attribute translations have been updated"
         },
         "AttributesGrid": {
-          "fetchError": "Attributes haven’t been fetched properly"
+          "getRequest": "Attributes haven’t been fetched properly"
         },
         "CreateAttributeModalForm": {
           "create": "Create attribute",
@@ -100,7 +100,7 @@
           "updateSuccess": "Attribute group translations have been updated"
         },
         "AttributeGroupsGrid": {
-          "fetchError": "Attribute groups haven’t been fetched properly"
+          "getRequest": "Attribute groups haven’t been fetched properly"
         },
         "CreateAttributeGroupModalForm": {
           "create": "Create attribute group",
@@ -125,17 +125,17 @@
     },
     "attributeExtend": {
       "components": {
-        "OptionKeyValues": {
+        "AttributeOptionKeyValues": {
           "addOption": "ADD OPTION",
           "optionLabel": "Option code"
         },
-        "OptionValues": {
+        "AttributeOptionValues": {
           "optionTitle": "Option values"
         },
-        "FormParamsToggle": {
+        "AttributeFormParamsToggle": {
           "richTextLabel": "Rich text content enabled"
         },
-        "TranslationFormPlaceholder": {
+        "AttributeTranslationFormPlaceholder": {
           "placeholderLabel": "Placeholder"
         }
       },
@@ -148,9 +148,9 @@
         "configCurrency": "Currency"
       }
     },
-    "productsTemplate": {
+    "productTemplate": {
       "components": {
-        "FormPresentation": {
+        "ProductTemplateFormPresentation": {
           "title": "Presentation product",
           "defaultLabel": "Default label attribute",
           "defaultImage": "Default image attribute",

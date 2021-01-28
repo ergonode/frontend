@@ -6,7 +6,7 @@
     <TextArea
         :data-cy="dataCyGenerator(placeholderFieldKey)"
         :value="translations.placeholder[languageCode]"
-        :label="$t('@Attributes.attributeExtend.components.TranslationFormPlaceholder.placeholderLabel')"
+        :label="$t('@Attributes.attributeExtend.components.AttributeTranslationFormPlaceholder.placeholderLabel')"
         resize="none"
         height="150px"
         :error-messages="errors[placeholderFieldKey]"
@@ -20,7 +20,7 @@ import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 import TextArea from '@UI/components/TextArea/TextArea';
 
 export default {
-    name: 'TranslationFormPlaceholder',
+    name: 'AttributeTranslationFormPlaceholder',
     components: {
         TextArea,
     },

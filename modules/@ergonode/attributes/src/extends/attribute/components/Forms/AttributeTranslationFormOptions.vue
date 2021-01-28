@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <OptionValues
+    <AttributeOptionValues
         :language-code="languageCode"
         :scope="scope"
         :change-values="changeValues"
@@ -13,13 +13,13 @@
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
-import OptionValues from '@Attributes/extends/attribute/components/Forms/Sections/OptionValues';
+import AttributeOptionValues from '@Attributes/extends/attribute/components/Forms/Sections/AttributeOptionValues';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 
 export default {
-    name: 'TranslationFormOptions',
+    name: 'AttributeTranslationFormOptions',
     components: {
-        OptionValues,
+        AttributeOptionValues,
     },
     mixins: [
         translationCardMixin,
