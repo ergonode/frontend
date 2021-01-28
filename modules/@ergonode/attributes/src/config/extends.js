@@ -103,13 +103,13 @@ export default {
         '@Products/components/Tabs/ProductCatalogTab/verticalTabs': ({}) => [
             {
                 title: 'Product attributes',
-                component: () => import('@Attributes/extends/components/VerticalTabs/AttributesVerticalTab'),
+                component: () => import('@Attributes/extends/attribute/components/VerticalTabs/AttributesVerticalTab'),
                 icon: () => import('@Attributes/components/Icons/IconAttributes'),
                 props: {},
             },
             {
                 title: 'System attributes',
-                component: () => import('@Attributes/extends/components/VerticalTabs/SystemAttributesVerticalTab'),
+                component: () => import('@Attributes/extends/attribute/components/VerticalTabs/SystemAttributesVerticalTab'),
                 icon: () => import('@Core/components/Icons/Menu/IconSettings'),
                 props: {},
             },
