@@ -24,7 +24,7 @@
             </Fab>
         </div>
         <VerticalTabContent
-            v-show="isExpanded"
+            v-if="isContentVisible"
             :item="items[selectedTabIndex]" />
         <slot />
     </div>
@@ -72,6 +72,9 @@ export default {
         },
         expendStateIcon() {
             return this.isExpanded ? ARROW.LEFT : ARROW.RIGHT;
+        },
+        isContentVisible() {
+            return this.isExpanded && this.items.length > 0;
         },
     },
     methods: {

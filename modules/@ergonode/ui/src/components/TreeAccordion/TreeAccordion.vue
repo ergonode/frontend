@@ -9,9 +9,9 @@
         <template #header>
             <div
                 v-if="!isPlaceholderVisible"
-                class="select-list-header">
+                class="tree-accordion-header">
                 <slot name="prependHeader" />
-                <div class="select-list-header__search">
+                <div class="tree-accordion-header__search">
                     <SelectListSearch
                         v-if="searchable"
                         :placeholder="searchPlaceholder"
@@ -45,7 +45,7 @@
                 :item="item"
                 :size="size"
                 :multiselect="multiselect"
-                :selected-nodes-count="selectedNodesCount[item.id]"
+                :selected-nodes="selectedNodes[item.id]"
                 :selected="selectedItems[item.id]"
                 @expand="onExpand"
                 @input="onValueChange" />
@@ -64,7 +64,7 @@ import SelectListSearch from '@UI/components/SelectList/SelectListSearch';
 import TreeAccordionItem from '@UI/components/TreeAccordion/TreeAccordionItem';
 import {
     getSelectedItems,
-    getSelectedNodesCount,
+    getSelectedNodes,
 } from '@UI/models/treeAccordion';
 import {
     ExpandingList,
@@ -150,8 +150,8 @@ export default {
         };
     },
     computed: {
-        selectedNodesCount() {
-            return getSelectedNodesCount({
+        selectedNodes() {
+            return getSelectedNodes({
                 value: this.value,
                 treeStructure: this.items,
             });
@@ -167,9 +167,6 @@ export default {
         },
         isSearchPlaceholderVisible() {
             return !this.isAnyItem && this.isAnySearchPhrase;
-        },
-        isSelectContentVisible() {
-            return this.isAnyItem || this.isAnySearchPhrase;
         },
     },
     watch: {
@@ -212,7 +209,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .select-list-header {
+    .tree-accordion-header {
         position: sticky;
         top: 0;
         z-index: $Z_INDEX_LVL_1;
@@ -224,10 +221,6 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        &__select-all {
-            margin-right: 12px;
         }
     }
 </style>

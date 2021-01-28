@@ -13,4 +13,14 @@ export default {
             CATEGORY_TREE: Components.AdvancedFilterCategoryTreeType,
         },
     },
+    extendMethods: {
+        '@Products/components/Tabs/ProductCatalogTab/verticalTabs': ({}) => [
+            {
+                title: 'Categories',
+                component: () => import('@Trees/extends/components/VerticalTabs/CategoryTreesVerticalTab'),
+                icon: () => import('@Trees/components/Icons/IconTree'),
+                props: {},
+            },
+        ],
+    },
 };

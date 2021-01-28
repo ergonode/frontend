@@ -52,11 +52,11 @@
 
 <script>
 import CreateAttributeButton from '@Attributes/components/Buttons/CreateAttributeButton';
-import AttributeSideBarElement from '@Attributes/components/SideBars/AttributeSideBarElement';
-import AttributeSideBarGroupElement from '@Attributes/components/SideBars/AttributeSideBarGroupElement';
 import {
     ATTRIBUTE_CREATED_EVENT_NAME,
 } from '@Attributes/defaults/attributes';
+import AttributeSideBarElement from '@Attributes/extends/components/SideBars/AttributeSideBarElement';
+import AttributeSideBarGroupElement from '@Attributes/extends/components/SideBars/AttributeSideBarGroupElement';
 import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
 import {
     UNASSIGNED_GROUP_ID,
@@ -75,6 +75,7 @@ import ListSearchSelectHeader from '@UI/components/List/ListSearchSelectHeader';
 import Preloader from '@UI/components/Preloader/Preloader';
 import SideBar from '@UI/components/SideBar/SideBar';
 import SideBarNoDataPlaceholder from '@UI/components/SideBar/SideBarNoDataPlaceholder';
+import debounce from 'debounce';
 import {
     mapActions,
     mapState,
@@ -123,6 +124,7 @@ export default {
             expandedGroup: {},
             languageCode: '',
             searchValue: '',
+            onDebounceGetItems: null,
         };
     },
     computed: {
@@ -137,6 +139,8 @@ export default {
     },
     created() {
         this.languageCode = this.defaultLanguageCode;
+
+        this.onDebounceGetItems = debounce(this.getAllGroupsItems, 500);
     },
     mounted() {
         document.documentElement.addEventListener(
@@ -329,29 +333,32 @@ export default {
             this.searchValue = value;
 
             if (value !== '') {
-                const params = {
-                    limit: 99999,
-                    offset: 0,
-                    view: 'list',
-                    field: 'code',
-                    order: 'ASC',
-                };
-
-                if (this.searchValue !== '') {
-                    params.filter = `code=${this.searchValue}`;
-                }
-
-                await getItems({
-                    $axios: this.$axios,
-                    path: `${this.languageCode}/attributes`,
-                    languageCode: this.languageCode,
-                    params,
-                    onSuccess: this.getAllGroupsItemsSuccess,
-                });
+                this.onDebounceGetItems();
             } else {
                 this.groupedAttributes = deepClone(this.groupedAttributesBeforeSearch);
                 this.groupedAttributesBeforeSearch = {};
             }
+        },
+        async getAllGroupsItems() {
+            const params = {
+                limit: 99999,
+                offset: 0,
+                view: 'list',
+                field: 'code',
+                order: 'ASC',
+            };
+
+            if (this.searchValue !== '') {
+                params.filter = `code=${this.searchValue}`;
+            }
+
+            await getItems({
+                $axios: this.$axios,
+                path: `${this.languageCode}/attributes`,
+                languageCode: this.languageCode,
+                params,
+                onSuccess: this.getAllGroupsItemsSuccess,
+            });
         },
         getAllGroupsItemsSuccess({
             items,

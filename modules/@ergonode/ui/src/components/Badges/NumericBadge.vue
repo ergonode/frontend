@@ -26,7 +26,10 @@ export default {
          * Number displaying inside badge
          */
         number: {
-            type: Number,
+            type: [
+                String,
+                Number,
+            ],
             default: 0,
         },
         /**

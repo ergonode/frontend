@@ -4,69 +4,67 @@
  */
 <template>
     <SideBar
-        :title="$t('category.sideBar.searchHeader')"
-        :items="categoriesByLanguage"
+        :title="$t('@Attributes.attribute.components.SystemAttributesSideBar.title')"
+        :items="attributesByLanguage"
         :searchable="true"
         :search-value="searchValue"
         @search="onSearch">
+        <template #header>
+            <ListSearchSelectHeader
+                v-if="isSelectLanguage"
+                :title="$t('@Attributes.attribute.components.SystemAttributesSideBar.title')"
+                :search-value="searchValue"
+                @search="onSearch">
+                <template #select>
+                    <LanguageTreeSelect
+                        :value="languageCode"
+                        @input="onSelectLanguage" />
+                </template>
+            </ListSearchSelectHeader>
+        </template>
         <template #body>
             <Preloader v-if="isPrefetchingData" />
         </template>
-        <template #noDataPlaceholder>
-            <SideBarNoDataPlaceholder
-                :title="$t('category.sideBar.placeholderTitle')"
-                :subtitle="$t('category.sideBar.placeholderSubtitle')">
-                <template #action>
-                    <CreateCategoryButton />
-                </template>
-            </SideBarNoDataPlaceholder>
-        </template>
         <template #item="{ item }">
-            <CategorySideBarElement
+            <AttributeSideBarElement
                 :item="item"
                 :language-code="languageCode"
-                :is-draggable="!disabled" />
+                :is-draggable="isAllowedToUpdate" />
         </template>
     </SideBar>
 </template>
 
 <script>
-import CreateCategoryButton from '@Categories/components/Buttons/CreateCategoryButton';
-import CategorySideBarElement from '@Categories/components/SideBars/CategorySideBarElement';
-import {
-    CATEGORY_CREATED_EVENT_NAME,
-} from '@Categories/defaults/attributes';
+import PRIVILEGES from '@Attributes/config/privileges';
+import AttributeSideBarElement from '@Attributes/extends/components/SideBars/AttributeSideBarElement';
+import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
 import {
     deepClone,
 } from '@Core/models/objectWrapper';
 import {
     getItems,
 } from '@Core/services/sidebar';
+import ListSearchSelectHeader from '@UI/components/List/ListSearchSelectHeader';
 import Preloader from '@UI/components/Preloader/Preloader';
 import SideBar from '@UI/components/SideBar/SideBar';
-import SideBarNoDataPlaceholder from '@UI/components/SideBar/SideBarNoDataPlaceholder';
+import debounce from 'debounce';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'CategoriesSideBar',
+    name: 'SystemAttributesSideBar',
     components: {
         Preloader,
-        SideBarNoDataPlaceholder,
-        CreateCategoryButton,
-        CategorySideBarElement,
+        ListSearchSelectHeader,
+        AttributeSideBarElement,
         SideBar,
+        LanguageTreeSelect,
     },
     props: {
         isSelectLanguage: {
             type: Boolean,
             default: true,
-        },
-        disabled: {
-            type: Boolean,
-            default: false,
         },
     },
     async fetch() {
@@ -77,44 +75,39 @@ export default {
     data() {
         return {
             isPrefetchingData: true,
-            categories: {},
-            categoriesBeforeSearch: {},
+            attributes: {},
+            attributesBeforeSearch: {},
             languageCode: '',
             searchValue: '',
+            onDebounceGetItems: null,
         };
     },
     computed: {
+        ...mapState('authentication', {
+            languagePrivileges: state => state.user.languagePrivileges,
+        }),
         ...mapState('core', [
             'defaultLanguageCode',
         ]),
-        categoriesByLanguage() {
-            return this.categories[this.languageCode] || [];
+        attributesByLanguage() {
+            return this.attributes[this.languageCode] || [];
+        },
+        isAllowedToUpdate() {
+            if (this.languageCode === '') {
+                return false;
+            }
+
+            return this.$hasAccess([
+                PRIVILEGES.ATTRIBUTE.update,
+            ]) && this.languagePrivileges[this.languageCode].read;
         },
     },
     created() {
         this.languageCode = this.defaultLanguageCode;
-    },
-    mounted() {
-        document.documentElement.addEventListener(
-            CATEGORY_CREATED_EVENT_NAME,
-            this.onCategoryCreated,
-        );
-    },
-    beforeDestroy() {
-        this.setDisabledElements({});
 
-        document.documentElement.removeEventListener(
-            CATEGORY_CREATED_EVENT_NAME,
-            this.onCategoryCreated,
-        );
+        this.onDebounceGetItems = debounce(this.getItems, 500);
     },
     methods: {
-        ...mapActions('list', [
-            'setDisabledElements',
-        ]),
-        async onCategoryCreated() {
-            await this.getItems();
-        },
         async getItems() {
             const params = {
                 limit: 99999,
@@ -131,7 +124,7 @@ export default {
             await getItems({
                 $axios: this.$axios,
                 languageCode: this.languageCode,
-                path: `${this.languageCode}/categories`,
+                path: `${this.languageCode}/attributes/system`,
                 params,
                 onSuccess: this.getItemsSuccess,
             });
@@ -140,29 +133,29 @@ export default {
             items,
             languageCode,
         }) {
-            this.categories = {
-                ...this.categories,
+            this.attributes = {
+                ...this.attributes,
                 [languageCode]: items,
             };
         },
         async onSearch(value) {
             if (this.searchValue === '') {
-                this.categoriesBeforeSearch = deepClone(this.categories);
+                this.attributesBeforeSearch = deepClone(this.attributes);
             }
 
             this.searchValue = value;
 
             if (value !== '') {
-                await this.getItems();
+                this.onDebounceGetItems();
             } else {
-                this.categories = deepClone(this.categoriesBeforeSearch);
-                this.categoriesBeforeSearch = {};
+                this.attributes = deepClone(this.attributesBeforeSearch);
+                this.attributesBeforeSearch = {};
             }
         },
         async onSelectLanguage(value) {
             this.languageCode = value;
 
-            if (typeof this.categories[value] === 'undefined') {
+            if (typeof this.attributes[value] === 'undefined') {
                 this.isPrefetchingData = true;
 
                 await this.getItems();

@@ -10,6 +10,12 @@
       "noVisibleCategoriesInTreePlaceholderTitle": "No categories",
       "noVisibleCategoriesInTreePlaceholderSubtitle": "They are no selected categories for given criteria."
     },
+    "sideBar": {
+      "searchHeader": "Categories",
+      "placeholderTitle": "No category trees",
+      "placeholderSubtitle": "There are no category trees in the system that contain categories.",
+      "groupSubtitle": "Categories"
+    },
     "advancedFilter": {
       "label": "Category tree"
     },

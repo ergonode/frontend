@@ -169,7 +169,7 @@ export default {
             return [
                 {
                     title: 'Product attributes',
-                    component: () => import('@Attributes/components/VerticalTabs/AttributesVerticalTab'),
+                    component: () => import('@Attributes/extends/components/VerticalTabs/AttributesVerticalTab'),
                     props: {
                         isSelectLanguage: false,
                         disabled: !this.isAllowedToUpdate,
