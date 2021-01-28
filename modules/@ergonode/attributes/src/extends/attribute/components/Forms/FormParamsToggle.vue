@@ -5,7 +5,7 @@
 <template>
     <Toggler
         :value="value"
-        :label="$t('attribute.form.types.richTextLabel')"
+        :label="$t('@Attributes.attributeExtend.components.FormParamsToggle.richTextLabel')"
         @input="setParameterValue" />
 </template>
 
@@ -16,7 +16,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'AttributeFormParamsToggle',
+    name: 'FormParamsToggle',
     components: {
         Toggler,
     },

@@ -6,7 +6,7 @@
     <FormListSection
         data-cy="attribute-add-options"
         :disabled="disabled"
-        :add-list-title="$t('attribute.form.types.addOption')"
+        :add-list-title="$t('@Attributes.attributeExtend.components.OptionKeyValues.addOption')"
         @add="addOptionKey">
         <FormListSubsection v-if="optionIndexes.length">
             <FormListElementField
@@ -21,7 +21,7 @@
                     required
                     :size="smallSize"
                     :disabled="disabled"
-                    :label="$t('attribute.form.types.optionLabel')"
+                    :label="$t('@Attributes.attributeExtend.components.OptionKeyValues.optionLabel')"
                     :error-messages="errorMessages[`option_${fieldKey}`]"
                     @input="value => updateAttributeOptionKey({
                         index: fieldKey,
@@ -50,7 +50,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'AttributeOptionKeyValues',
+    name: 'OptionKeyValues',
     components: {
         FormListElementField,
         FormListSection,

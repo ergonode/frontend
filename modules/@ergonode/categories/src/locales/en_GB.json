@@ -26,13 +26,13 @@
       "placeholderSubtitle": "There are no categories in the system, so you can create the first one."
     },
     "messages": {
-        "deleteTitle": "Are you sure you want to delete this category?",
-        "deleteConfirm": "YES, REMOVE",
-        "deleteSuccess": "Category removed"
+      "deleteTitle": "Are you sure you want to delete this category?",
+      "deleteConfirm": "YES, REMOVE",
+      "deleteSuccess": "Category removed"
     },
     "errors": {
-        "getRequest": "Category hasn’t been fetched properly",
-        "deleteRequest": "Category hasn’t been deleted"
+      "getRequest": "Category hasn’t been fetched properly",
+      "deleteRequest": "Category hasn’t been deleted"
     }
   }
 }

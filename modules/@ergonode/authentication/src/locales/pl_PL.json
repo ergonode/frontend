@@ -1,57 +1,57 @@
 {
   "authentication": {
-      "layout": {
-          "help":"Pomoc",
-          "userGuide":"Pomoc użytkownika"
+    "layout": {
+      "help": "Pomoc",
+      "userGuide": "Pomoc użytkownika"
+    },
+    "forms": {
+      "login": {
+        "button": "Zaloguj",
+        "email": "E-mail",
+        "password": "Hasło",
+        "toggle": "Pokaż hasło",
+        "forgot": "Zapomniałeś hasła?"
       },
-      "forms":{
-          "login": {
-              "button": "Zaloguj",
-              "email": "E-mail",
-              "password": "Hasło",
-              "toggle": "Pokaż hasło",
-              "forgot": "Zapomniałeś hasła?"
-          },
-          "passwordRecovery": {
-              "title": "Przypomnienie hasła",
-              "info": "Podaj swój adres e-mail, a my wyślemy Ci link do zresetowania hasła.",
-              "redirectTo": "POWRÓT DO STRONY LOGOWANIA",
-              "field": "E-mail",
-              "button": "Odzyskaj hasło"
-          },
-          "newPassword": {
-              "title": "Stwórz nowe hasło",
-              "info": "Twoje hasłow powinno zawierać:",
-              "field": "Hasło",
-              "toggle": "Pokaż hasło",
-              "button": "Ustaw hasło",
-              "validation": {
-                  "hasMinimumLength": "co najmniej {length} znaków,",
-                  "hasUppercase": "co najmniej 1 dużą literę (A-Z),",
-                  "hasLowercase": "co najmniej 1 małą literę (a-z),",
-                  "hasDigital": "co njamniej 1 cyfrę (0-9)."
-              },
-              "alertSuccess": "Hasło zostało uaktualnione",
-              "alertError": "Wystąpiły błędy poczas walidacji danych"
-          },
-          "help": {
-              "title": "Pomoc",
-              "info": "W razie jakichkolwiek problemów z kontem, prosimy o kontakt z administratorem systemu.",
-              "redirectTo": "POWRÓT DO STRONY LOGOWANIA"
-          },
-          "checkEmail": {
-              "title": "Sprawdź swój e-mail",
-              "info": "Link do zresetowania hasła zostanie wysłany na podany adres e-mail.",
-              "infoText": "Jeśli nie dotrze, prosimy [[infoLink]]",
-              "infoLink": "o kontakt z administratorem systemu.",
-              "redirectTo": "POWRÓT DO STRONY LOGOWANIA"
-          }
+      "passwordRecovery": {
+        "title": "Przypomnienie hasła",
+        "info": "Podaj swój adres e-mail, a my wyślemy Ci link do zresetowania hasła.",
+        "redirectTo": "POWRÓT DO STRONY LOGOWANIA",
+        "field": "E-mail",
+        "button": "Odzyskaj hasło"
       },
-      "errors": {
-          "getUser": "Dane użytkownika nie zostały pobrane prawidłowo",
-          "emailRequired": "E-mail jest wymagany",
-          "passwordRequired": "Hasło jest wymagane",
-          "passwordValidation": "Wprowadzone hasło nie spełnia wymogów bezpieczeństwa"
+      "newPassword": {
+        "title": "Stwórz nowe hasło",
+        "info": "Twoje hasłow powinno zawierać:",
+        "field": "Hasło",
+        "toggle": "Pokaż hasło",
+        "button": "Ustaw hasło",
+        "validation": {
+          "hasMinimumLength": "co najmniej {length} znaków,",
+          "hasUppercase": "co najmniej 1 dużą literę (A-Z),",
+          "hasLowercase": "co najmniej 1 małą literę (a-z),",
+          "hasDigital": "co njamniej 1 cyfrę (0-9)."
+        },
+        "alertSuccess": "Hasło zostało uaktualnione",
+        "alertError": "Wystąpiły błędy poczas walidacji danych"
+      },
+      "help": {
+        "title": "Pomoc",
+        "info": "W razie jakichkolwiek problemów z kontem, prosimy o kontakt z administratorem systemu.",
+        "redirectTo": "POWRÓT DO STRONY LOGOWANIA"
+      },
+      "checkEmail": {
+        "title": "Sprawdź swój e-mail",
+        "info": "Link do zresetowania hasła zostanie wysłany na podany adres e-mail.",
+        "infoText": "Jeśli nie dotrze, prosimy [[infoLink]]",
+        "infoLink": "o kontakt z administratorem systemu.",
+        "redirectTo": "POWRÓT DO STRONY LOGOWANIA"
       }
+    },
+    "errors": {
+      "getUser": "Dane użytkownika nie zostały pobrane prawidłowo",
+      "emailRequired": "E-mail jest wymagany",
+      "passwordRequired": "Hasło jest wymagane",
+      "passwordValidation": "Wprowadzone hasło nie spełnia wymogów bezpieczeństwa"
+    }
   }
 }

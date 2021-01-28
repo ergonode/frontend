@@ -1,4 +1,173 @@
 {
+  "@Attributes": {
+    "_": {
+      "submit": "ZAPISZ ZMIANY",
+      "create": "",
+      "proceed": "CREATE & EDIT",
+      "deleteConfirm": "YES, REMOVE",
+      "notAssigned": "Not assigned"
+    },
+    "attribute": {
+      "_": {
+        "title": "Attributes",
+        "header": "Attributes - Ergonode"
+      },
+      "components": {
+        "AttributeForm": {
+          "title": "Options",
+          "sectionTitle": "Configuration",
+          "typeLabel": "Type",
+          "nameLabel": "System name",
+          "nameHint": "System name must be unique",
+          "scopeLabel": "Scope",
+          "scopeHint": "Global means the same attribute values for each language, inherited from the root language ({lang}). Option values can be translated, but cannot be changed in the product template."
+        },
+        "AttributeTranslationForm": {
+          "nameLabel": "Attribute name",
+          "hintLabel": "Tooltip for writers"
+        },
+        "CreateAttributeButton": {
+          "addButton": "New attribute"
+        },
+        "RemoveAttributeButton": {
+          "removeButton": "Remove attribute",
+          "deleteTitle": "Are you sure you want to delete this attribute?",
+          "deleteSuccess": "Attribute removed",
+          "deleteRequest": "Attribute hasn’t been deleted"
+        },
+        "UpdateAttributeTranslationButton": {
+          "updateSuccess": "Attribute translations have been updated"
+        },
+        "AttributesGrid": {
+          "placeholderTitle": "No attributes",
+          "placeholderSubtitle": "There are no attributes in the system, you can create the first one.",
+          "fetchError": "Attributes haven’t been fetched properly"
+        },
+        "CreateAttributeModalForm": {
+          "create": "Create attribute",
+          "createSuccess": "Attribute created"
+        },
+        "AttributesSideBar": {
+          "placeholderTitle": "No attributes",
+          "placeholderSubtitle": "There are no attributes in the system, you can create the first one."
+        },
+        "SystemAttributesSideBar": {
+          "title": "System attributes"
+        },
+        "AttributeGeneralTab": {
+          "updateSuccess": "Attribute has been updated"
+        }
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Attribute hasn’t been fetched properly"
+        }
+      },
+      "store": {
+        "action": {
+          "createCancel": "Creating attribute has been canceled",
+          "updateCancel": "Updating attribute has been canceled",
+          "deleteCancel": "Removing attribute has been canceled"
+        }
+      }
+    },
+    "attributeGroup": {
+      "_": {
+        "title": "Attribute Group",
+        "header": "Attribute groups - Ergonode"
+      },
+      "components": {
+        "AttributeGroupForm": {
+          "title": "Options",
+          "nameLabel": "System name",
+          "nameHint": "System name must be unique"
+        },
+        "AttributeGroupTranslationForm": {
+          "nameLabel": "Group name"
+        },
+        "AttributeGroupsAutocomplete": {
+          "groupLabel": "Groups",
+          "noGroupTitle": "No attribute groups",
+          "noGroupSubtitle": "There are no attribute groups in the system, so you can create the first one."
+        },
+        "CreateAttributeGroupButton": {
+          "addButton": "NEW ATTRIBUTE GROUP"
+        },
+        "RemoveAttributeGroupButton": {
+          "removeButton": "REMOVE ATTRIBUTE GROUP",
+          "deleteTitle": "Are you sure you want to delete this attribute group?",
+          "deleteConfirm": "YES, REMOVE",
+          "deleteSuccess": "Attribute group removed",
+          "deleteRequest": "Attribute group hasn’t been deleted"
+        },
+        "UpdateAttributeGroupTranslationButton": {
+          "updateSuccess": "Attribute group translations have been updated"
+        },
+        "AttributeGroupsGrid": {
+          "placeholderTitle": "No attribute groups",
+          "placeholderSubtitle": "There are no attribute groups in the system, you can create the first one.",
+          "fetchError": "Attribute groups haven’t been fetched properly"
+        },
+        "CreateAttributeGroupModalForm": {
+          "create": "Create attribute group",
+          "createSuccess": "Attribute group created"
+        },
+        "AttributeGroupGeneralTab": {
+          "updateSuccess": "Attribute group has been updated"
+        }
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Attribute group hasn’t been fetched properly"
+        }
+      },
+      "store": {
+        "action": {
+          "updateCancel": "Updating attribute group has been canceled",
+          "createCancel": "Creating attribute group has been canceled",
+          "deleteCancel": "Removing attribute group has been canceled"
+        }
+      }
+    },
+    "attributeExtend": {
+      "components": {
+        "OptionKeyValues": {
+          "addOption": "ADD OPTION",
+          "optionLabel": "Option code"
+        },
+        "OptionValues": {
+          "optionTitle": "Option values"
+        },
+        "FormParamsToggle": {
+          "richTextLabel": "Rich text content enabled"
+        },
+        "TranslationFormPlaceholder": {
+          "placeholderLabel": "Placeholder"
+        }
+      },
+      "methods": {
+        "optionUniq": "Option code must be unique",
+        "optionEmpty": "Option cannot be empty",
+        "getOptionRequest": "Attribute options hasn’t been fetched properly",
+        "configFormat": "Format",
+        "configUnit": "Unit",
+        "configCurrency": "Currency"
+      }
+    },
+    "productsTemplate": {
+      "components": {
+        "FormPresentation": {
+          "title": "Presentation product",
+          "defaultLabel": "Default label attribute",
+          "defaultImage": "Default image attribute",
+          "noLabelTitle": "No text attributes",
+          "noLabelSubtitle": "There are no text attributes in the system, so you can create the first one.",
+          "noImageTitle": "No image attributes",
+          "noImageSubtitle": "There are no image attributes in the system, so you can create the first one."
+        }
+      }
+    }
+  },
   "attribute": {
     "page": {
       "title": "Atrybuty",
@@ -29,7 +198,7 @@
       "searchHeader": "Atrybuty",
       "searchHeader2": "Atrybuty systemowe",
       "group": {
-          "notAssigned": "Nie przypisane"
+        "notAssigned": "Nie przypisane"
       },
       "placeholderTitle": "Brak atrybutów",
       "placeholderSubtitle": "W systemie nie ma atrybutów, stwórz pierwszy."

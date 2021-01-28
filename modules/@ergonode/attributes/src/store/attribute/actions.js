@@ -85,7 +85,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: this.app.i18n.t('attribute.messages.createCancel'),
+                    message: this.app.i18n.t('@Attributes.attribute.store.action.createCancel'),
                 });
 
                 return;
@@ -283,7 +283,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: this.app.i18n.t('attribute.messages.updateCancel'),
+                    message: this.app.i18n.t('@Attributes.attribute.store.action.updateCancel'),
                 });
 
                 return;
@@ -335,7 +335,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: this.app.i18n.t('attribute.messages.deleteCancel'),
+                    message: this.app.i18n.t('@Attributes.attribute.store.action.deleteCancel'),
                 });
 
                 return;

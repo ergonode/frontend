@@ -1,7 +1,7 @@
 {
-    "activityLogs": {
-        "page": {
-            "title": "Users activity logs"
-        }
+  "activityLogs": {
+    "page": {
+      "title": "Users activity logs"
     }
+  }
 }

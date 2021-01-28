@@ -4,12 +4,12 @@
  */
 <template>
     <ModalForm
-        :title="$t('attributeGroup.form.createTitle')"
+        :title="$t('@Attributes.attributeGroup.components.CreateAttributeGroupModalForm.create')"
         @close="onClose">
         <template #body>
             <AttributeGroupForm
-                :submit-title="$t('core.buttons.create')"
-                :proceed-title="$t('core.buttons.proceed')"
+                :submit-title="$t('@Attributes._.create')"
+                :proceed-title="$t('@Attributes._.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :scope="scope"
@@ -99,7 +99,7 @@ export default {
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('attributeGroup.messages.createSuccess'),
+                message: this.$t('@Attributes.attributeGroup.components.CreateAttributeGroupModalForm.createSuccess'),
             });
 
             this.isSubmitting = false;

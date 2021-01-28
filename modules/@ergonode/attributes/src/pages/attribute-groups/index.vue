@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar
-            :title="$t('attributeGroup.page.title')"
+            :title="$t('@Attributes.attributeGroup._.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <template
@@ -77,7 +77,7 @@ export default {
     },
     head() {
         return {
-            title: this.$t('attributeGroup.page.head'),
+            title: this.$t('@Attributes.attributeGroup._.header'),
         };
     },
 };

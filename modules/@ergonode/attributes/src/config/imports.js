@@ -18,15 +18,6 @@ export const Tabs = {
     AttributeGroupTranslationsTab: () => import('@Attributes/components/Tabs/AttributeGroupTranslationsTab').then(m => m.default || m),
 };
 
-export const Components = {
-    AttributeFormParamsSelect: () => import('@Attributes/extends/components/Forms/AttributeFormParamsSelect').then(m => m.default || m),
-    AttributeFormParamsToggle: () => import('@Attributes/extends/components/Forms/AttributeFormParamsToggle').then(m => m.default || m),
-    AttributeFormOptions: () => import('@Attributes/extends/components/Forms/AttributeFormOptions').then(m => m.default || m),
-    AttributeTranslationFormPlaceholder: () => import('@Attributes/extends/components/Forms/AttributeTranslationFormPlaceholder').then(m => m.default || m),
-    AttributeTranslationFormOptions: () => import('@Attributes/extends/components/Forms/AttributeTranslationFormOptions').then(m => m.default || m),
-    ProductTemplateFormPresentation: () => import('@Attributes/extends/components/Forms/ProductTemplateFormPresentation').then(m => m.default || m),
-};
-
 export const Icons = {
     Templates: () => import('@Core/components/Icons/Menu/IconTemplates').then(m => m.default || m),
     IconTextArea: () => import('@Attributes/components/Icons/IconTextArea').then(m => m.default || m),
@@ -40,7 +31,18 @@ export const Icons = {
     IconUnit: () => import('@Attributes/components/Icons/IconMultiSelect').then(m => m.default || m),
 };
 
+// Extends
+
+export const Components = {
+    FormParamsSelect: () => import('@Attributes/extends/attribute/components/Forms/FormParamsSelect').then(m => m.default || m),
+    FormParamsToggle: () => import('@Attributes/extends/attribute/components/Forms/FormParamsToggle').then(m => m.default || m),
+    FormOptions: () => import('@Attributes/extends/attribute/components/Forms/FormOptions').then(m => m.default || m),
+    TranslationFormPlaceholder: () => import('@Attributes/extends/attribute/components/Forms/TranslationFormPlaceholder').then(m => m.default || m),
+    TranslationFormOptions: () => import('@Attributes/extends/attribute/components/Forms/TranslationFormOptions').then(m => m.default || m),
+    FormPresentation: () => import('@Attributes/extends/productTemplate/components/Forms/FormPresentation').then(m => m.default || m),
+};
+
 export const Store = {
-    Attribute: () => import('@Attributes/extends/store/attribute').then(m => m.default || m),
-    Template: () => import('@Attributes/extends/store/productTemplate').then(m => m.default || m),
+    Attribute: () => import('@Attributes/extends/attribute/store').then(m => m.default || m),
+    Template: () => import('@Attributes/extends/productTemplate/store').then(m => m.default || m),
 };

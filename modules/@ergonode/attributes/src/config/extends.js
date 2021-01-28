@@ -16,11 +16,11 @@ import {
     setTextAreaData,
     setTranslation,
     updateOptionsData,
-} from '@Attributes/extends/methods/attribute';
+} from '@Attributes/extends/attribute/methods';
 import {
     prepareTemplateData,
     setTemplateData,
-} from '@Attributes/extends/methods/template';
+} from '@Attributes/extends/productTemplate/methods';
 
 import {
     Components,
@@ -36,6 +36,7 @@ const getTypeConfiguration = ({
         return {
             params: {
                 key: 'format',
+                translation: $this.app.i18n.t('@Attributes.attributeExtend.methods.configFormat'),
                 value: $this.state.dictionaries.dateFormats,
                 fieldName: 'parameters',
             },
@@ -44,6 +45,7 @@ const getTypeConfiguration = ({
         return {
             params: {
                 key: 'unit',
+                translation: $this.app.i18n.t('@Attributes.attributeExtend.methods.configUnit'),
                 value: $this.state.dictionaries.units,
                 fieldName: 'parameters',
             },
@@ -52,6 +54,7 @@ const getTypeConfiguration = ({
         return {
             params: {
                 key: 'currency',
+                translation: $this.app.i18n.t('@Attributes.attributeExtend.methods.configCurrency'),
                 value: $this.state.dictionaries.currencies,
                 fieldName: 'parameters',
             },
@@ -280,7 +283,7 @@ export default {
         '@Attributes/components/Forms/AttributeForm': {
             [TYPES.DATE]: [
                 {
-                    component: Components.AttributeFormParamsSelect,
+                    component: Components.FormParamsSelect,
                     props: {
                         getParams: $this => getTypeConfiguration({
                             $this: $this.$store,
@@ -291,7 +294,7 @@ export default {
             ],
             [TYPES.UNIT]: [
                 {
-                    component: Components.AttributeFormParamsSelect,
+                    component: Components.FormParamsSelect,
                     props: {
                         getParams: $this => getTypeConfiguration({
                             $this: $this.$store,
@@ -302,7 +305,7 @@ export default {
             ],
             [TYPES.PRICE]: [
                 {
-                    component: Components.AttributeFormParamsSelect,
+                    component: Components.FormParamsSelect,
                     props: {
                         getParams: $this => getTypeConfiguration({
                             $this: $this.$store,
@@ -313,7 +316,7 @@ export default {
             ],
             [TYPES.TEXT_AREA]: [
                 {
-                    component: Components.AttributeFormParamsToggle,
+                    component: Components.FormParamsToggle,
                     props: {
                         getParams: () => getTypeConfiguration({
                             type: TYPES.TEXT_AREA,
@@ -323,39 +326,39 @@ export default {
             ],
             [TYPES.SELECT]: [
                 {
-                    component: Components.AttributeFormOptions,
+                    component: Components.FormOptions,
                 },
             ],
             [TYPES.MULTI_SELECT]: [
                 {
-                    component: Components.AttributeFormOptions,
+                    component: Components.FormOptions,
                 },
             ],
         },
         '@Attributes/components/Forms/AttributeTranslationForm': {
             [TYPES.NUMERIC]: [
                 {
-                    component: Components.AttributeTranslationFormPlaceholder,
+                    component: Components.TranslationFormPlaceholder,
                 },
             ],
             [TYPES.TEXT]: [
                 {
-                    component: Components.AttributeTranslationFormPlaceholder,
+                    component: Components.TranslationFormPlaceholder,
                 },
             ],
             [TYPES.TEXT_AREA]: [
                 {
-                    component: Components.AttributeTranslationFormPlaceholder,
+                    component: Components.TranslationFormPlaceholder,
                 },
             ],
             [TYPES.SELECT]: [
                 {
-                    component: Components.AttributeTranslationFormOptions,
+                    component: Components.TranslationFormOptions,
                 },
             ],
             [TYPES.MULTI_SELECT]: [
                 {
-                    component: Components.AttributeTranslationFormOptions,
+                    component: Components.TranslationFormOptions,
                 },
             ],
         },
@@ -409,7 +412,7 @@ export default {
         '@Templates/components/Forms/ProductTemplateForm': {
             __ALL: [
                 {
-                    component: Components.ProductTemplateFormPresentation,
+                    component: Components.FormPresentation,
                 },
             ],
         },

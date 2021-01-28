@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <AttributeOptionKeyValues
+    <OptionKeyValues
         key="attrHasOptions"
         :errors="errors"
         :disabled="!isAllowedToUpdate" />
@@ -11,16 +11,16 @@
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
-import AttributeOptionKeyValues from '@Attributes/extends/components/Forms/Sections/AttributeOptionKeyValues';
+import OptionKeyValues from '@Attributes/extends/attribute/components/Forms/Sections/OptionKeyValues';
 import {
     mapActions,
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'AttributeFormOptions',
+    name: 'FormOptions',
     components: {
-        AttributeOptionKeyValues,
+        OptionKeyValues,
     },
     props: {
         errors: {
