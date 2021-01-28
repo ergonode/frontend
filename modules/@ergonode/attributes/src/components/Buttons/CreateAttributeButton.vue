@@ -5,7 +5,7 @@
 <template>
     <Button
         data-cy="new-attribute"
-        :title="$t('attribute.page.addButton')"
+        :title="$t('@Attributes.attribute.components.CreateAttributeButton.addButton')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">

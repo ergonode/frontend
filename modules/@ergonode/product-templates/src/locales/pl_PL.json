@@ -1,13 +1,13 @@
 {
-    "productTemplate": {
-        "grid": {
-            "placeholderTitle": "Brak szablonów produktowych",
-            "placeholderSubtitle": "W systemie nie ma szablonów produktowych, stwórz pierwszy."
-        },
-        "autocomplete": {
-            "productTemplate": "Szablon produktu",
-            "productTemplateNoDataPlaceholderTitle": "Brak szablonów produktowych",
-            "productTemplateNoDataPlaceholderSubtitle": "W systemie nie ma szablonów produktowych, stwórz pierwszy."
-        }
+  "productTemplate": {
+    "grid": {
+      "placeholderTitle": "Brak szablonów produktowych",
+      "placeholderSubtitle": "W systemie nie ma szablonów produktowych, stwórz pierwszy."
+    },
+    "autocomplete": {
+      "productTemplate": "Szablon produktu",
+      "productTemplateNoDataPlaceholderTitle": "Brak szablonów produktowych",
+      "productTemplateNoDataPlaceholderSubtitle": "W systemie nie ma szablonów produktowych, stwórz pierwszy."
     }
+  }
 }

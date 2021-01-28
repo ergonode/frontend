@@ -7,7 +7,7 @@
         data-cy="delete-attribute"
         :theme="secondaryTheme"
         :size="smallSize"
-        :title="$t('attribute.page.removeButton')"
+        :title="$t('@Attributes.attribute.components.RemoveAttributeButton.removeButton')"
         :disabled="!isAllowedToDelete"
         @click.native="onRemove">
         <template #prepend="{ color }">
@@ -63,8 +63,9 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: this.$t('attribute.messages.deleteTitle'),
-                applyTitle: this.$t('attribute.messages.deleteConfirm'),
+                title: this.$t('@Attributes.attribute.components.RemoveAttributeButton.deleteTitle'),
+                applyTitle: this.$t('@Attributes._.deleteConfirm'),
+                cancelTitle: this.$t('@Attributes._.cancel'),
                 action: () => {
                     this.removeAttribute({
                         onSuccess: this.onRemoveSuccess,
@@ -76,7 +77,7 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('attribute.messages.deleteSuccess'),
+                message: this.$t('@Attributes.attribute.components.RemoveAttributeButton.deleteSuccess'),
             });
             this.$router.push({
                 name: ROUTE_NAME.ATTRIBUTES_GRID,
@@ -85,7 +86,7 @@ export default {
         onRemoveError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: this.$t('attribute.errors.deleteRequest'),
+                message: this.$t('@Attributes.attribute.components.RemoveAttributeButton.deleteRequest'),
             });
         },
     },

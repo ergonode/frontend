@@ -10,7 +10,7 @@
         :searchable="true"
         :multiselect="multiselect"
         :clearable="clearable"
-        :label="$t('attribute.form.groupLabel')"
+        :label="$t('@Attributes.attributeGroup.components.AttributeGroupsAutocomplete.groupLabel')"
         :custom-fetch-event="attributeGroupCreatedEventName"
         :error-messages="errorMessages"
         :disabled="disabled"
@@ -82,8 +82,8 @@ export default {
         },
         noDataPlaceholder() {
             return {
-                title: this.$t('attributeGroup.form.noGroupTitle'),
-                subtitle: this.$t('attributeGroup.form.noGroupSubtitle'),
+                title: this.$t('@Attributes.attributeGroup._.noGroups'),
+                subtitle: this.$t('@Attributes.attributeGroup._.createFirst'),
             };
         },
     },

@@ -1,8 +1,8 @@
 {
-    "transition": {
-        "grid": {
-            "placeholderTitle": "No status transitions",
-            "placeholderSubtitle": "There are no status transitions in the system, you can create the first one."
-        }
+  "transition": {
+    "grid": {
+      "placeholderTitle": "No status transitions",
+      "placeholderSubtitle": "There are no status transitions in the system, you can create the first one."
     }
+  }
 }

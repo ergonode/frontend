@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormSection :title="$t('attribute.form.types.optionTitle')">
+    <FormSection :title="$t('@Attributes.attributeExtend.components.AttributeOptionValues.optionTitle')">
         <AttributeOptionValue
             v-for="(index, i) in optionIndexes"
             :data-cy="`attribute-option_${languageCode}_${i}`"
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import AttributeOptionValue from '@Attributes/extends/components/Forms/Sections/AttributeOptionValue';
+import AttributeOptionValue from '@Attributes/extends/attribute/components/Forms/Sections/AttributeOptionValue';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import {
     mapState,

@@ -6,7 +6,7 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <AttributeForm
-                :submit-title="$t('core.buttons.submit')"
+                :submit-title="$t('@Attributes._.submit')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="errors"
@@ -61,7 +61,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('attribute.messages.updateSuccess'),
+                message: this.$t('@Attributes.attribute.components.AttributeGeneralTab.updateSuccess'),
             });
 
             this.isSubmitting = false;
