@@ -7,7 +7,9 @@
         :items="items"
         :expanded="expanded">
         <template #header>
-            <div class="select-list-header">
+            <div
+                v-if="!isPlaceholderVisible"
+                class="select-list-header">
                 <slot name="prependHeader" />
                 <div class="select-list-header__search">
                     <SelectListSearch
@@ -23,14 +25,16 @@
         </template>
         <template #body>
             <slot name="body">
-                <DropdownPlaceholder
-                    v-if="isSearchPlaceholderVisible"
-                    :title="placeholder.title"
-                    :subtitle="placeholder.subtitle">
-                    <template #action>
-                        <ClearSearchButton @click.native.stop="onClearSearch" />
-                    </template>
-                </DropdownPlaceholder>
+                <slot
+                    v-if="isPlaceholderVisible"
+                    name="noDataPlaceholder">
+                    <SelectListNoDataPlaceholder />
+                </slot>
+                <slot
+                    v-else-if="isSearchPlaceholderVisible"
+                    name="noResultsPlaceholder">
+                    <SelectListNoResultsPlaceholder @clear="onClearSearch" />
+                </slot>
             </slot>
         </template>
         <template #footer>
@@ -54,8 +58,8 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
+import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
+import SelectListNoResultsPlaceholder from '@UI/components/SelectList/SelectListNoResultsPlaceholder';
 import SelectListSearch from '@UI/components/SelectList/SelectListSearch';
 import TreeAccordionItem from '@UI/components/TreeAccordion/TreeAccordionItem';
 import {
@@ -69,10 +73,10 @@ import {
 export default {
     name: 'TreeAccordion',
     components: {
+        SelectListNoResultsPlaceholder,
+        SelectListNoDataPlaceholder,
         ExpandingList,
         TreeAccordionItem,
-        DropdownPlaceholder,
-        ClearSearchButton,
         SelectListSearch,
     },
     props: {
@@ -146,12 +150,6 @@ export default {
         };
     },
     computed: {
-        placeholder() {
-            return {
-                title: 'No results',
-                subtitle: 'Clear the search and try with another phrase.',
-            };
-        },
         selectedNodesCount() {
             return getSelectedNodesCount({
                 value: this.value,

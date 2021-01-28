@@ -76,7 +76,7 @@ export default {
         position: fixed;
         top: 0;
         left: 0;
-        z-index: $Z_INDEX_MODAL;
+        z-index: $Z_INDEX_MAX;
         display: flex;
         justify-content: center;
         align-items: center;

@@ -16,9 +16,7 @@
                 class="placeholder__subtitle"
                 v-text="subtitle" />
         </div>
-        <div class="placeholder__action">
-            <slot name="action" />
-        </div>
+        <slot name="action" />
     </div>
 </template>
 
@@ -112,7 +110,11 @@ export default {
     .placeholder {
         $placeholder: &;
 
+        display: grid;
         flex: 1;
+        grid-template-rows: max-content;
+        grid-auto-flow: row;
+        grid-row-gap: 16px;
         box-sizing: border-box;
         color: $GRAPHITE_DARK;
 
@@ -124,7 +126,7 @@ export default {
             }
 
             #{$placeholder}__description {
-                grid-template-columns: 228px;
+                grid-template-columns: minmax(min-content, 228px);
             }
         }
 
@@ -136,7 +138,7 @@ export default {
             }
 
             #{$placeholder}__description {
-                grid-template-columns: 272px;
+                grid-template-columns: minmax(min-content, 272px);
             }
         }
 
@@ -156,10 +158,6 @@ export default {
             grid-auto-flow: row;
             row-gap: 8px;
             word-break: break-word;
-        }
-
-        &__action {
-            margin-top: 16px;
         }
     }
 </style>
