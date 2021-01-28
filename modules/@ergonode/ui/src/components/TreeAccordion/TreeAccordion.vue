@@ -45,7 +45,7 @@
                 :item="item"
                 :size="size"
                 :multiselect="multiselect"
-                :selected-nodes-count="selectedNodesCount[item.id]"
+                :selected-nodes="selectedNodes[item.id]"
                 :selected="selectedItems[item.id]"
                 @expand="onExpand"
                 @input="onValueChange" />
@@ -64,7 +64,7 @@ import SelectListSearch from '@UI/components/SelectList/SelectListSearch';
 import TreeAccordionItem from '@UI/components/TreeAccordion/TreeAccordionItem';
 import {
     getSelectedItems,
-    getSelectedNodesCount,
+    getSelectedNodes,
 } from '@UI/models/treeAccordion';
 import {
     ExpandingList,
@@ -150,8 +150,8 @@ export default {
         };
     },
     computed: {
-        selectedNodesCount() {
-            return getSelectedNodesCount({
+        selectedNodes() {
+            return getSelectedNodes({
                 value: this.value,
                 treeStructure: this.items,
             });

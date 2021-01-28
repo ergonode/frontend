@@ -53,7 +53,7 @@ export const tree = [
     },
 ];
 
-export const selectedNodesCount = {
+export const selectedNodes = {
     1: 2,
     2: 1,
     3: 0,

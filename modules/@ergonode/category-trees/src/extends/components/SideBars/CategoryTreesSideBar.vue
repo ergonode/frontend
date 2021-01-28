@@ -36,9 +36,9 @@
                 @click.native="onExpandGroup({ item, onExpand })" />
             <TreeAccordionItem
                 v-else
-                :item="{...item, level: item.level - 1 }"
+                :item="{...item, level: item.level - 1}"
                 :multiselect="true"
-                :selected-nodes-count="selectedNodesCount[item.id]"
+                :selected-nodes="selectedNodes[item.id]"
                 :selected="selectedCategories[item.id]"
                 @expand="onExpand"
                 @input="onSelectCategory" />
@@ -82,7 +82,7 @@ import SideBar from '@UI/components/SideBar/SideBar';
 import SideBarNoDataPlaceholder from '@UI/components/SideBar/SideBarNoDataPlaceholder';
 import TreeAccordionItem from '@UI/components/TreeAccordion/TreeAccordionItem';
 import {
-    getSelectedNodesCount,
+    getSelectedNodes,
 } from '@UI/models/treeAccordion';
 import {
     debounce,
@@ -150,8 +150,8 @@ export default {
         ...mapState('core', [
             'defaultLanguageCode',
         ]),
-        selectedNodesCount() {
-            return getSelectedNodesCount({
+        selectedNodes() {
+            return getSelectedNodes({
                 value: Object.keys(this.selectedCategories).map(key => ({
                     id: key,
                 })),

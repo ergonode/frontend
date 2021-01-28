@@ -8,7 +8,7 @@ export const getSelectedItems = value => value.reduce((prev, curr) => ({
     [curr.id]: true,
 }), {});
 
-export const getSelectedNodesCount = ({
+export const getSelectedNodes = ({
     value,
     treeStructure,
 }) => {
@@ -18,15 +18,27 @@ export const getSelectedNodesCount = ({
         const selectedValue = value.find(({
             id,
         }) => id === tree.id);
-        let sum = 0;
+        const sum = {
+            all: 0,
+            selected: 0,
+        };
 
         (tree.children || []).forEach((node) => {
-            sum += count(node);
+            const {
+                all,
+                selected,
+            } = count(node);
+
+            sum.all += all;
+            sum.selected += selected;
         });
 
         nodesCount[tree.id] = sum;
 
-        return sum + (selectedValue ? 1 : 0);
+        return {
+            all: sum.all + 1,
+            selected: sum.selected + (selectedValue ? 1 : 0),
+        };
     };
 
     count({

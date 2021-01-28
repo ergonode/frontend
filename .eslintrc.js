@@ -144,17 +144,6 @@ module.exports = {
             'error',
             'PascalCase',
         ],
-        'vue/no-unused-properties': [
-            'error',
-            {
-                groups: [
-                    'props',
-                    'data',
-                    'computed',
-                    'methods',
-                ],
-            },
-        ],
         'vue/order-in-components': [
             'error',
             {
