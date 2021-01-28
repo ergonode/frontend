@@ -24,8 +24,8 @@
         @remove-all-filters="onRemoveAllFilters">
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('@Attributes.attribute.components.AttributesGrid.placeholderTitle')"
-                :subtitle="$t('@Attributes.attribute.components.AttributesGrid.placeholderSubtitle')">
+                :title="$t('@Attributes.attribute._.noAttributes')"
+                :subtitle="$t('@Attributes.attribute._.createFirst')">
                 <template #action>
                     <CreateAttributeButton />
                 </template>

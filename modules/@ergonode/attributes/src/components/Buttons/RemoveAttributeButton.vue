@@ -65,6 +65,7 @@ export default {
                 type: MODAL_TYPE.DESTRUCTIVE,
                 title: this.$t('@Attributes.attribute.components.RemoveAttributeButton.deleteTitle'),
                 applyTitle: this.$t('@Attributes._.deleteConfirm'),
+                cancelTitle: this.$t('@Attributes._.cancel'),
                 action: () => {
                     this.removeAttribute({
                         onSuccess: this.onRemoveSuccess,

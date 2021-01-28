@@ -24,8 +24,8 @@
         @remove-all-filters="onRemoveAllFilters">
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('@Attributes.attributeGroup.components.AttributeGroupsGrid.placeholderTitle')"
-                :subtitle="$t('@Attributes.attributeGroup.components.AttributeGroupsGrid.placeholderSubtitle')">
+                :title="$t('@Attributes.attributeGroup._.noGroups')"
+                :subtitle="$t('@Attributes.attributeGroup._.createFirst')">
                 <template #action>
                     <CreateAttributeGroupButton />
                 </template>

@@ -28,8 +28,8 @@
         </template>
         <template #noDataPlaceholder>
             <SideBarNoDataPlaceholder
-                :title="$t('@Attributes.attribute.components.AttributesSideBar.placeholderTitle')"
-                :subtitle="$t('@Attributes.attribute.components.AttributesSideBar.placeholderSubtitle')">
+                :title="$t('@Attributes.attribute._.noAttributes')"
+                :subtitle="$t('@Attributes.attribute._.createFirst')">
                 <template #action>
                     <CreateAttributeButton />
                 </template>

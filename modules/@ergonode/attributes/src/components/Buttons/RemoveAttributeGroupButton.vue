@@ -7,7 +7,7 @@
         data-cy="delete-attribute-group"
         :theme="secondaryTheme"
         :size="smallSize"
-        :title="$t('@Attributes.attributeGroup.components.RemoveAttributeGroupButton.removeButton')"
+        :title="$t('@Attributes.attributeGroup.components.RemoveAttributeGroupButton.deleteButton')"
         :disabled="!isAllowedToDelete"
         @click.native="onRemove">
         <template #prepend="{ color }">
@@ -65,6 +65,7 @@ export default {
                 type: MODAL_TYPE.DESTRUCTIVE,
                 title: this.$t('@Attributes.attributeGroup.components.RemoveAttributeGroupButton.deleteTitle'),
                 applyTitle: this.$t('@Attributes._.deleteConfirm'),
+                cancelTitle: this.$t('@Attributes._.cancel'),
                 action: () => this.removeAttributeGroup({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,

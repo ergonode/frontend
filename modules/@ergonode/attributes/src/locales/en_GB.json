@@ -1,16 +1,19 @@
 {
   "@Attributes": {
     "_": {
-      "submit": "SAVE CHANGES",
-      "create": "CREATE",
-      "proceed": "CREATE & EDIT",
-      "deleteConfirm": "YES, REMOVE",
+      "submit": "Save changes",
+      "create": "Create",
+      "proceed": "Create & Edit",
+      "cancel": "Cancel",
+      "deleteConfirm": "Yes, remove",
       "notAssigned": "Not assigned"
     },
     "attribute": {
       "_": {
         "title": "Attributes",
-        "header": "Attributes - Ergonode"
+        "headTitle": "Attributes - Ergonode",
+        "noAttributes": "No attributes",
+        "createFirst": "There are no attributes in the system, you can create the first one."
       },
       "components": {
         "AttributeForm": {
@@ -39,17 +42,11 @@
           "updateSuccess": "Attribute translations have been updated"
         },
         "AttributesGrid": {
-          "placeholderTitle": "No attributes",
-          "placeholderSubtitle": "There are no attributes in the system, you can create the first one.",
           "fetchError": "Attributes haven’t been fetched properly"
         },
         "CreateAttributeModalForm": {
           "create": "Create attribute",
           "createSuccess": "Attribute created"
-        },
-        "AttributesSideBar": {
-          "placeholderTitle": "No attributes",
-          "placeholderSubtitle": "There are no attributes in the system, you can create the first one."
         },
         "SystemAttributesSideBar": {
           "title": "System attributes"
@@ -74,7 +71,9 @@
     "attributeGroup": {
       "_": {
         "title": "Attribute Group",
-        "header": "Attribute groups - Ergonode"
+        "headTitle": "Attribute groups - Ergonode",
+        "noGroups": "No attribute groups",
+        "createFirst": "There are no attribute groups in the system, you can create the first one."
       },
       "components": {
         "AttributeGroupForm": {
@@ -86,17 +85,14 @@
           "nameLabel": "Group name"
         },
         "AttributeGroupsAutocomplete": {
-          "groupLabel": "Groups",
-          "noGroupTitle": "No attribute groups",
-          "noGroupSubtitle": "There are no attribute groups in the system, so you can create the first one."
+          "groupLabel": "Groups"
         },
         "CreateAttributeGroupButton": {
           "addButton": "NEW ATTRIBUTE GROUP"
         },
         "RemoveAttributeGroupButton": {
-          "removeButton": "REMOVE ATTRIBUTE GROUP",
+          "deleteButton": "REMOVE ATTRIBUTE GROUP",
           "deleteTitle": "Are you sure you want to delete this attribute group?",
-          "deleteConfirm": "YES, REMOVE",
           "deleteSuccess": "Attribute group removed",
           "deleteRequest": "Attribute group hasn’t been deleted"
         },
@@ -104,8 +100,6 @@
           "updateSuccess": "Attribute group translations have been updated"
         },
         "AttributeGroupsGrid": {
-          "placeholderTitle": "No attribute groups",
-          "placeholderSubtitle": "There are no attribute groups in the system, you can create the first one.",
           "fetchError": "Attribute groups haven’t been fetched properly"
         },
         "CreateAttributeGroupModalForm": {

@@ -1,242 +1,160 @@
 {
   "@Attributes": {
     "_": {
-      "submit": "ZAPISZ ZMIANY",
-      "create": "",
-      "proceed": "CREATE & EDIT",
-      "deleteConfirm": "YES, REMOVE",
-      "notAssigned": "Not assigned"
+      "submit": "Zapisz zmiany",
+      "create": "Stwórz",
+      "proceed": "Stwórz & Edytuj",
+      "cancel": "Anuluj",
+      "deleteConfirm": "Tak, usuń",
+      "notAssigned": "Nie przypisane"
     },
     "attribute": {
       "_": {
-        "title": "Attributes",
-        "header": "Attributes - Ergonode"
+        "title": "Atrybuty",
+        "headTitle": "Atrybuty - Ergonode",
+        "noAttributes": "Brak atrybutów",
+        "createFirst": "W systemie nie ma atrybutów, stwórz pierwszy."
       },
       "components": {
         "AttributeForm": {
-          "title": "Options",
-          "sectionTitle": "Configuration",
-          "typeLabel": "Type",
-          "nameLabel": "System name",
-          "nameHint": "System name must be unique",
-          "scopeLabel": "Scope",
-          "scopeHint": "Global means the same attribute values for each language, inherited from the root language ({lang}). Option values can be translated, but cannot be changed in the product template."
+          "title": "Opcje",
+          "sectionTitle": "Konfiguracja",
+          "typeLabel": "Typ",
+          "nameLabel": "Nazwa systemowa",
+          "nameHint": "Nazwa systemowa musi być unikalna",
+          "groupLabel": "Grupa",
+          "scopeLabel": "Zakres",
+          "scopeHint": "Global oznacza że ta sama wartość atrybutu dla każdego języja, będzie odziedziczona po jezyku głownym. Wartości opcji mogą być tłumaczone, ale nie mogą być zmienione w szablonie produktu. "
         },
         "AttributeTranslationForm": {
-          "nameLabel": "Attribute name",
-          "hintLabel": "Tooltip for writers"
+          "nameLabel": "Nazwa atrybutu",
+          "hintLabel": "Podpowiedź dla pisarzy"
         },
         "CreateAttributeButton": {
-          "addButton": "New attribute"
+          "addButton": "Nowy atrybut"
         },
         "RemoveAttributeButton": {
-          "removeButton": "Remove attribute",
-          "deleteTitle": "Are you sure you want to delete this attribute?",
-          "deleteSuccess": "Attribute removed",
-          "deleteRequest": "Attribute hasn’t been deleted"
+          "removeButton": "Usuń atrybut",
+          "deleteTitle": "Czy jesteś pewny że chcesz usunąć ten atrybut?",
+          "deleteSuccess": "Atrybut usuniety",
+          "deleteRequest": "Atrybut nie został usunięty"
         },
         "UpdateAttributeTranslationButton": {
-          "updateSuccess": "Attribute translations have been updated"
+          "updateSuccess": "Tłumaczenia atrybutów zostały zaktualizowane"
         },
         "AttributesGrid": {
-          "placeholderTitle": "No attributes",
-          "placeholderSubtitle": "There are no attributes in the system, you can create the first one.",
-          "fetchError": "Attributes haven’t been fetched properly"
+          "fetchError": "Atrybuty nie został pobrane prawidłowo"
         },
         "CreateAttributeModalForm": {
-          "create": "Create attribute",
-          "createSuccess": "Attribute created"
-        },
-        "AttributesSideBar": {
-          "placeholderTitle": "No attributes",
-          "placeholderSubtitle": "There are no attributes in the system, you can create the first one."
+          "create": "Stwórz atrybut",
+          "createSuccess": "Atrybut stworzony"
         },
         "SystemAttributesSideBar": {
-          "title": "System attributes"
+          "title": "Atrybuty systemowe"
         },
         "AttributeGeneralTab": {
-          "updateSuccess": "Attribute has been updated"
+          "updateSuccess": "Atrybut został uaktualniony"
         }
       },
       "pages": {
         "id": {
-          "getRequest": "Attribute hasn’t been fetched properly"
+          "getRequest": "Atrybut nie został pobrany prawidłowo"
         }
       },
       "store": {
         "action": {
-          "createCancel": "Creating attribute has been canceled",
-          "updateCancel": "Updating attribute has been canceled",
-          "deleteCancel": "Removing attribute has been canceled"
+          "createCancel": "Tworzenie atrybutu zostało przerwane",
+          "updateCancel": "Aktualizacja atrybutu została przerwana",
+          "deleteCancel": "Usuwanie atrybutu zostało przerwane"
         }
       }
     },
     "attributeGroup": {
       "_": {
-        "title": "Attribute Group",
-        "header": "Attribute groups - Ergonode"
+        "title": "Grupy atrybutów",
+        "headTitle": "Grupy atrybutów - Ergonode",
+        "noGroups": "Brak grup atrybutów",
+        "createFirst": "W systemie nie ma grup atrybutów, stwórz pierwszą."
       },
       "components": {
         "AttributeGroupForm": {
-          "title": "Options",
-          "nameLabel": "System name",
-          "nameHint": "System name must be unique"
+          "title": "Opcje",
+          "nameLabel": "Nazwa systemowa",
+          "nameHint": "Nazwa systemowa musi być unikalna"
         },
         "AttributeGroupTranslationForm": {
-          "nameLabel": "Group name"
+          "nameLabel": "Nazwa grupy"
         },
         "AttributeGroupsAutocomplete": {
-          "groupLabel": "Groups",
-          "noGroupTitle": "No attribute groups",
-          "noGroupSubtitle": "There are no attribute groups in the system, so you can create the first one."
+          "groupLabel": "Grupy"
         },
         "CreateAttributeGroupButton": {
-          "addButton": "NEW ATTRIBUTE GROUP"
+          "addButton": "Nowa grupa atrybutów"
         },
         "RemoveAttributeGroupButton": {
-          "removeButton": "REMOVE ATTRIBUTE GROUP",
-          "deleteTitle": "Are you sure you want to delete this attribute group?",
-          "deleteConfirm": "YES, REMOVE",
-          "deleteSuccess": "Attribute group removed",
-          "deleteRequest": "Attribute group hasn’t been deleted"
+          "deleteButton": "Usuń grupę atrybutów",
+          "deleteTitle": "Czy na pewno chcesz usunąć tę grupę atrybutów?",
+          "deleteSuccess": "Usunięto grupę atrybutów",
+          "deleteRequest": "Grupa atrybutów nie została usunięta"
         },
         "UpdateAttributeGroupTranslationButton": {
-          "updateSuccess": "Attribute group translations have been updated"
+          "updateSuccess": "Tłumaczenia grupy atrybutów zostały zaktualizowane"
         },
         "AttributeGroupsGrid": {
-          "placeholderTitle": "No attribute groups",
-          "placeholderSubtitle": "There are no attribute groups in the system, you can create the first one.",
-          "fetchError": "Attribute groups haven’t been fetched properly"
+          "fetchError": "Grupa atrybutów nie została pobrana prawidłowo"
         },
         "CreateAttributeGroupModalForm": {
-          "create": "Create attribute group",
-          "createSuccess": "Attribute group created"
+          "create": "Stwórz grupę atrybutów",
+          "createSuccess": "Grupa atrybutów została stworzona"
         },
         "AttributeGroupGeneralTab": {
-          "updateSuccess": "Attribute group has been updated"
+          "updateSuccess": "Grupa atrybutów została zaktualizowana"
         }
       },
       "pages": {
         "id": {
-          "getRequest": "Attribute group hasn’t been fetched properly"
+          "getRequest": "Grupa atrybutów nie została pobrana prawidłowo"
         }
       },
       "store": {
         "action": {
-          "updateCancel": "Updating attribute group has been canceled",
-          "createCancel": "Creating attribute group has been canceled",
-          "deleteCancel": "Removing attribute group has been canceled"
+          "updateCancel": "Aktualizacja grupy atrybutów została anulowana",
+          "createCancel": "Tworzenie grupy atrybutów zostało anulowane",
+          "deleteCancel": "Usuwanie grupy atrybutów zostało anulowane"
         }
       }
     },
     "attributeExtend": {
       "components": {
         "OptionKeyValues": {
-          "addOption": "ADD OPTION",
-          "optionLabel": "Option code"
+          "addOption": "Dodaj opcję",
+          "optionLabel": "Kod opcji"
         },
         "OptionValues": {
-          "optionTitle": "Option values"
+          "optionTitle": "Wartość opcji"
         },
         "FormParamsToggle": {
-          "richTextLabel": "Rich text content enabled"
+          "richTextLabel": "Wzbogacona zawartość tekstowa włączona"
         },
         "TranslationFormPlaceholder": {
           "placeholderLabel": "Placeholder"
         }
       },
       "methods": {
-        "optionUniq": "Option code must be unique",
-        "optionEmpty": "Option cannot be empty",
-        "getOptionRequest": "Attribute options hasn’t been fetched properly",
+        "optionUniq": "Kod opcji musi być unikalny",
+        "optionEmpty": "Opcja nie może być pusta",
+        "getOptionRequest": "Opcje atrybutu nie zostały pobrane prawidłowo",
         "configFormat": "Format",
-        "configUnit": "Unit",
-        "configCurrency": "Currency"
+        "configUnit": "Jednostka",
+        "configCurrency": "Waluta"
       }
     },
     "productsTemplate": {
       "components": {
         "FormPresentation": {
-          "title": "Presentation product",
-          "defaultLabel": "Default label attribute",
-          "defaultImage": "Default image attribute",
-          "noLabelTitle": "No text attributes",
-          "noLabelSubtitle": "There are no text attributes in the system, so you can create the first one.",
-          "noImageTitle": "No image attributes",
-          "noImageSubtitle": "There are no image attributes in the system, so you can create the first one."
-        }
-      }
-    }
-  },
-  "attribute": {
-    "page": {
-      "title": "Atrybuty",
-      "head": "Atrybuty - Ergonode",
-      "addButton": "Nowy atrybut",
-      "removeButton": "Usuń atrybut"
-    },
-    "form": {
-      "createTitle": "Stwórz atrybut",
-      "title": "Opcje",
-      "sectionTitle": "Konfiguracja",
-      "nameLabel": "Nazwa systemowa",
-      "nameHint": "Nazwa systemowa musi być unikalna",
-      "groupLabel": "Grupa",
-      "typeLabel": "Typ",
-      "scopeLabel": "Scope",
-      "noAttributeTitle": "Brak atrybutów",
-      "noAttributeSubtitle": "W systemie nie ma atrybutów, stwórz pierwszy.",
-      "scopeHint": "Global oznacza że ta sama wartość atrybutu dla każdego języja, będzie odziedziczona po jezyku głownym. Wartości opcji mogą być tłumaczone, ale nie mogą być zmienione w szablonie produktu. ",
-      "types": {
-        "richTextLabel": "Zawartość Rich text włączona",
-        "addOption": "Dodaj opcje",
-        "optionTitle": "Wartość opcji",
-        "optionLabel": "Kod opcji"
-      }
-    },
-    "sideBar": {
-      "searchHeader": "Atrybuty",
-      "searchHeader2": "Atrybuty systemowe",
-      "group": {
-        "notAssigned": "Nie przypisane"
-      },
-      "placeholderTitle": "Brak atrybutów",
-      "placeholderSubtitle": "W systemie nie ma atrybutów, stwórz pierwszy."
-    },
-    "translation": {
-      "nameLabel": "Nazwa atrybutu",
-      "hintLabel": "Podpowiedź dla pisarzy",
-      "placeholderLabel": "Placeholder"
-    },
-    "grid": {
-      "placeholderTitle": "Brak atrybutów",
-      "placeholderSubtitle": "W systemie nie ma atrybutów, stwórz pierwszy."
-    },
-    "messages": {
-      "deleteTitle": "Czy jesteś pewny że chcesz usunąć ten atrybut?",
-      "deleteConfirm": "Tak, usuń",
-      "deleteSuccess": "Atrybut usuniety",
-      "deleteCancel": "Usuwanie atrybutu zostało przerwane",
-      "createSuccess": "Atrybut stworzony",
-      "createCancel": "Tworzenie atrybutu zostało przerwane",
-      "updateSuccess": "Atrybut został uaktualniony",
-      "updateCancel": "Aktualizacja atrybutu została przerwana",
-      "updateTranslationSuccess": "Tłumaczenia atrybutów zostały zaktualizowane"
-    },
-    "errors": {
-      "getRequest": "Atrybut nie został prawidłowo pobrany",
-      "getOptionRequest": "Opcje atrybutu nie zostały pobrane prawidłowo",
-      "deleteRequest": "Atrybut nie został usunięty",
-      "optionUniq": "Kod opcji musi być unikalny",
-      "optionEmpty": "Opcja nie może być pusta"
-    },
-    "extends": {
-      "template": {
-        "form": {
           "title": "Produkt prezentacyjny",
           "defaultLabel": "Domyślna atrybut etykiety",
           "defaultImage": "Domyślny atrybut obrazu",
-          "noLabelButton": "Przejdź do atrybutów",
           "noLabelTitle": "Brak atrybutu takstowego",
           "noLabelSubtitle": "W systemie nie ma żadnych atrybutów tekstowych, więc można utworzyć pierwszy.",
           "noImageButton": "Przejdź do atrybutów",
@@ -244,44 +162,6 @@
           "noImageSubtitle": "W systemie nie ma żadnych atrybutów obrazu, więc można utworzyć pierwszy."
         }
       }
-    }
-  },
-  "attributeGroup": {
-    "page": {
-      "title": "Grupy atrybutów",
-      "head": "Grupy atrybutów - Ergonode",
-      "addButton": "Nowa grupa atrybutów",
-      "removeButton": "Usuń grupę atrybutów"
-    },
-    "form": {
-      "createTitle": "Stwórz grupę atrybutów",
-      "title": "Opcje",
-      "nameLabel": "Nazwa systemowa",
-      "nameHint": "Nazwa systemowa musi być unikalna",
-      "noGroupTitle": "Brak grup atrybutów",
-      "noGroupSubtitle": "W systemie nie ma grup atrybutów, stwórz pierwszą."
-    },
-    "translation": {
-      "nameLabel": "Nazwa grupy"
-    },
-    "grid": {
-      "placeholderTitle": "Brak grup atrybutów",
-      "placeholderSubtitle": "W systemie nie ma grup atrybutów, stwórz pierwszą."
-    },
-    "messages": {
-      "deleteTitle": "Czy na pewno chcesz usunąć tę grupę atrybutów?",
-      "deleteConfirm": "Tak, usuń",
-      "deleteSuccess": "Usunięto grupę atrybutów",
-      "deleteCancel": "Usunięcie grupy atrybutów zostało anulowane",
-      "createSuccess": "Tworzenie grupy atrybutów zostało anulowane",
-      "createCancel": "Creating attribute group has been canceled",
-      "updateSuccess": "Grupa atrybutów została zaktualizowana",
-      "updateCancel": "Aktualizacja grupy atrybutów została anulowana",
-      "updateTranslationSuccess": "Tłumaczenia grupy atrybutów zostały zaktualizowane"
-    },
-    "errors": {
-      "getRequest": "Grupa atrybutów nie została pobrana prawidłowo ",
-      "deleteRequest": "Grupa atrybutów nie została usunięta"
     }
   }
 }

@@ -77,7 +77,7 @@ export default {
     },
     head() {
         return {
-            title: this.$t('@Attributes.attributeGroup._.header'),
+            title: this.$t('@Attributes.attributeGroup._.headTitle'),
         };
     },
 };

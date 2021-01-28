@@ -82,8 +82,8 @@ export default {
         },
         noDataPlaceholder() {
             return {
-                title: this.$t('@Attributes.attributeGroup.components.AttributeGroupsAutocomplete.noGroupTitle'),
-                subtitle: this.$t('@Attributes.attributeGroup.components.AttributeGroupsAutocomplete.noGroupSubtitle'),
+                title: this.$t('@Attributes.attributeGroup._.noGroups'),
+                subtitle: this.$t('@Attributes.attributeGroup._.createFirst'),
             };
         },
     },
