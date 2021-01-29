@@ -49,6 +49,5 @@ export default {
         color: $GRAPHITE_LIGHT;
         font: $FONT_MEDIUM_12_16;
     }
-
 }
 </style>
