@@ -72,6 +72,15 @@ export default {
             ]);
         },
     },
+    created() {
+        this.inheritedLanguagesTree.forEach((node) => {
+            this.setDisabledElement({
+                languageCode: this.languageCode,
+                elementId: node.id,
+                disabled: true,
+            });
+        });
+    },
     methods: {
         ...mapActions('core', [
             '__setState',

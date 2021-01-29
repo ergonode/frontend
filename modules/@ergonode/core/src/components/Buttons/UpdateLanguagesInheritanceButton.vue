@@ -33,11 +33,8 @@ import {
 } from '@Core/defaults/alerts';
 import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
 import {
-    getMappedTreeData,
-} from '@Core/models/mappers/languageTreeMapper';
-import {
-    isEmpty,
-} from '@Core/models/objectWrapper';
+    getParsedTree,
+} from '@Core/models/mappers/treeDesignerMapper';
 import Button from '@UI/components/Button/Button';
 import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';

@@ -35,7 +35,7 @@
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
-import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import UpdateTemplateDesignerButton from '@Templates/components/Buttons/UpdateTemplateDesignerButton';
 import TemplateDesigner from '@Templates/components/TemplateDesigner/TemplateDesigner';
 import PRIVILEGES from '@Templates/config/privileges';

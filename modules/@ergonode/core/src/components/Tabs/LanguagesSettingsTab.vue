@@ -66,12 +66,6 @@ export default {
         tabFeedbackMixin,
     ],
     computed: {
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
-        }),
-        ...mapState('core', [
-            'inheritedLanguagesTree',
-        ]),
         ...mapState('draggable', [
             'isElementDragging',
         ]),
@@ -95,15 +89,6 @@ export default {
         graphiteLightColor() {
             return GRAPHITE_LIGHT;
         },
-    },
-    created() {
-        this.inheritedLanguagesTree.forEach((node) => {
-            this.setDisabledElement({
-                languageCode: this.languageCode,
-                elementId: node.id,
-                disabled: true,
-            });
-        });
     },
 };
 </script>

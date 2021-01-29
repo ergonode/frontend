@@ -37,7 +37,6 @@ import {
 } from '@Core/defaults/grid';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import UpdateCategoryTreeDesignerButton from '@Trees/components/Buttons/UpdateCategoryTreeDesignerButton';
-import CategoryTreeWrapper from '@Trees/components/CategoryTreeDesigner/CategoryTreeWrapper';
 import CategoryTreeDesigner from '@Trees/components/TreeDesigners/CategoryTreeDesigner';
 import PRIVILEGES from '@Trees/config/privileges';
 import {
