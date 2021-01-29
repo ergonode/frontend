@@ -127,7 +127,6 @@ export default {
             } = categoryTreeData;
 
             const reducer = (categoryId) => {
-                console.log(categoriesData, categoryId);
                 const {
                     code: categoryCode,
                     label: categoryLabel,
@@ -181,7 +180,6 @@ export default {
             });
             // EXTENDED AFTER METHOD
         } catch (e) {
-            console.log(e);
             if (this.app.$axios.isCancel(e)) {
                 return;
             }
