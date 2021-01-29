@@ -19,7 +19,10 @@
             </VerticalTabBar>
         </template>
         <template #grid>
-            <LanguagesTreeWrapper />
+            <LanguageInheritanceTreeDesigner
+                :scope="scope"
+                :errors="errors"
+                :change-values="changeValues" />
             <UpdateLanguagesInheritanceButton
                 :scope="scope"
                 :change-values="changeValues"
@@ -30,7 +33,7 @@
 
 <script>
 import UpdateLanguagesInheritanceButton from '@Core/components/Buttons/UpdateLanguagesInheritanceButton';
-import LanguagesTreeWrapper from '@Core/components/LanguagesTreeDesigner/LanguagesTreeWrapper';
+import LanguageInheritanceTreeDesigner from '@Core/components/LanguageInheritanceTreeDesigner/LanguageInheritanceTreeDesigner';
 import PRIVILEGES from '@Core/config/privileges';
 import {
     DRAGGED_ELEMENT,
@@ -45,7 +48,6 @@ import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
 import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
@@ -57,39 +59,12 @@ export default {
         IconRemoveFilter,
         DropZone,
         FadeTransition,
-        LanguagesTreeWrapper,
+        LanguageInheritanceTreeDesigner,
         VerticalTabBar,
     },
     mixins: [
         tabFeedbackMixin,
     ],
-    asyncData({
-        store,
-    }) {
-        const {
-            language: languageCode,
-        } = store.state.authentication.user;
-        const {
-            languagesTree,
-        } = store.state.core;
-        const treeToSet = languagesTree.map((item, i) => {
-            store.dispatch('list/setDisabledElement', {
-                languageCode,
-                elementId: item.id,
-                disabled: true,
-            });
-
-            return {
-                ...item,
-                row: i,
-                column: item.level,
-                expanded: false,
-            };
-        });
-
-        store.dispatch('gridDesigner/setGridData', treeToSet);
-        store.dispatch('gridDesigner/setFullGridData', treeToSet);
-    },
     computed: {
         ...mapState('draggable', [
             'isElementDragging',
@@ -114,14 +89,6 @@ export default {
         graphiteLightColor() {
             return GRAPHITE_LIGHT;
         },
-    },
-    beforeDestroy() {
-        this.__clearGridDesignerStorage();
-    },
-    methods: {
-        ...mapActions('gridDesigner', {
-            __clearGridDesignerStorage: '__clearStorage',
-        }),
     },
 };
 </script>

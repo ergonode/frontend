@@ -110,6 +110,7 @@ export default {
             removeElementCopyFromDocumentBody(event);
 
             this.isDragged = false;
+
             this.__setState({
                 key: 'isElementDragging',
                 value: null,

@@ -6,7 +6,7 @@ import {
     arraysAreEqual,
     arrayToObject,
     firstElementInList,
-    getObjectWithMaxValueInArrayByObjectKey,
+    getMaxValueObject,
     insertValueAtIndex,
     lastElementInList,
     removeValueAtIndex,
@@ -83,13 +83,13 @@ describe('arrayWrapper/maxObjectValueInArrayByObjectKeyByObjectKey', () => {
             null,
         ];
 
-        const maxObject = getObjectWithMaxValueInArrayByObjectKey(array, 'a');
+        const maxObject = getMaxValueObject(array, 'a');
 
         expect(maxObject.a).toEqual(6);
     });
 
     it('Array has no elements', () => {
-        const maxObject = getObjectWithMaxValueInArrayByObjectKey([], 'a');
+        const maxObject = getMaxValueObject([], 'a');
 
         expect(maxObject).toEqual(null);
     });

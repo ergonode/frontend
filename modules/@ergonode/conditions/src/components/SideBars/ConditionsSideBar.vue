@@ -5,7 +5,13 @@
 <template>
     <SideBar
         title="Conditions"
-        :items="items">
+        :search-value="searchValue"
+        :searchable="true"
+        :items="conditions"
+        @search="onSearch">
+        <template #body>
+            <Preloader v-if="isPrefetchingData" />
+        </template>
         <template #item="{ item }">
             <ConditionSideBarElement
                 :item="item"
@@ -16,14 +22,16 @@
 
 <script>
 import ConditionSideBarElement from '@Conditions/components/SideBars/ConditionSideBarElement';
+import Preloader from '@UI/components/Preloader/Preloader';
 import SideBar from '@UI/components/SideBar/SideBar';
 import {
-    mapState,
+    mapActions,
 } from 'vuex';
 
 export default {
     name: 'ConditionsSideBar',
     components: {
+        Preloader,
         ConditionSideBarElement,
         SideBar,
     },
@@ -32,11 +40,48 @@ export default {
             type: Boolean,
             default: false,
         },
+        group: {
+            type: String,
+            required: true,
+        },
     },
-    computed: {
-        ...mapState('condition', {
-            items: state => state.conditionsDictionary,
-        }),
+    async fetch() {
+        await this.getConditions({
+            group: this.group,
+            onSuccess: this.getConditionsSuccess,
+            onError: this.getConditionsError,
+        });
+    },
+    data() {
+        return {
+            searchValue: '',
+            allConditions: [],
+            conditions: [],
+            isPrefetchingData: true,
+        };
+    },
+    methods: {
+        ...mapActions('condition', [
+            'getConditions',
+        ]),
+        onSearch(value) {
+            const lowerCaseSearchValue = value.toLowerCase();
+
+            this.conditions = this.allConditions.filter(({
+                name,
+            }) => name.toLowerCase().includes(lowerCaseSearchValue));
+
+            this.searchValue = value;
+        },
+        getConditionsSuccess(conditions) {
+            this.allConditions = conditions;
+            this.conditions = conditions;
+
+            this.isPrefetchingData = false;
+        },
+        getConditionsError() {
+            this.isPrefetchingData = false;
+        },
     },
 };
 </script>

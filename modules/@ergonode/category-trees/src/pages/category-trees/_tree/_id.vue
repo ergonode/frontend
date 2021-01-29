@@ -81,12 +81,15 @@ export default {
         },
     },
     beforeDestroy() {
-        this.__clearGridDesignerStorage();
+        this.__clearListStorage();
         this.__clearStorage();
         this.__clearTranslationsStorage();
         this.__clearFeedbackStorage();
     },
     methods: {
+        ...mapActions('list', {
+            __clearListStorage: '__clearStorage',
+        }),
         ...mapActions('categoryTree', [
             '__clearStorage',
         ]),
@@ -95,9 +98,6 @@ export default {
         }),
         ...mapActions('tab', {
             __clearTranslationsStorage: '__clearStorage',
-        }),
-        ...mapActions('gridDesigner', {
-            __clearGridDesignerStorage: '__clearStorage',
         }),
     },
     head() {

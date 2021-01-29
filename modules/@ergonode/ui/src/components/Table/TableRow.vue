@@ -17,6 +17,6 @@ export default {
 
 <style lang="scss" scoped>
     .table-row {
-        border: 1px solid $GREY;
+        border: $BORDER_1_GREY;
     }
 </style>

@@ -5,7 +5,7 @@
 
 import {
     TYPES,
-} from '@Conditions/defaults/conditionsDesigner';
+} from '@Conditions/defaults/treeDesigner';
 
 export function hasOptions(type) {
     return type === TYPES.SELECT || type === TYPES.MULTI_SELECT;

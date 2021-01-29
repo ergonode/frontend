@@ -19,7 +19,7 @@
             </VerticalTabBar>
         </template>
         <template #grid>
-            <ConditionSetWrapper
+            <ConditionSetTreeDesigner
                 :scope="scope"
                 :change-values="changeValues"
                 :errors="errors"
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import ConditionSetWrapper from '@Conditions/components/ConditionSetDesigner/ConditionSetWrapper';
+import ConditionSetTreeDesigner from '@Conditions/components/TreeDesigners/ConditionSetTreeDesigner';
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
@@ -63,18 +63,11 @@ export default {
         DropZone,
         FadeTransition,
         VerticalTabBar,
-        ConditionSetWrapper,
+        ConditionSetTreeDesigner,
     },
     mixins: [
         tabFeedbackMixin,
     ],
-    async fetch({
-        store,
-    }) {
-        await store.dispatch('condition/getConditions', {
-            group: 'workflow',
-        });
-    },
     data() {
         return {
             isSubmitting: false,
@@ -97,6 +90,7 @@ export default {
                     icon: () => import('@Categories/components/Icons/IconCategory'),
                     props: {
                         disabled: !this.isAllowedToUpdate,
+                        group: 'workflow',
                     },
                 },
             ];
@@ -109,13 +103,9 @@ export default {
         },
     },
     beforeDestroy() {
-        this.__clearGridDesignerStorage();
         this.__clearConditionStorage();
     },
     methods: {
-        ...mapActions('gridDesigner', {
-            __clearGridDesignerStorage: '__clearStorage',
-        }),
         ...mapActions('condition', {
             __clearConditionStorage: '__clearStorage',
         }),

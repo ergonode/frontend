@@ -33,11 +33,8 @@ import {
 } from '@Core/defaults/alerts';
 import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
 import {
-    getMappedTreeData,
-} from '@Core/models/mappers/languageTreeMapper';
-import {
-    isEmpty,
-} from '@Core/models/objectWrapper';
+    getParsedTree,
+} from '@Core/models/mappers/treeDesignerMapper';
 import Button from '@UI/components/Button/Button';
 import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
@@ -64,8 +61,8 @@ export default {
         };
     },
     computed: {
-        ...mapState('gridDesigner', [
-            'fullGridData',
+        ...mapState('core', [
+            'inheritedLanguagesTree',
         ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
@@ -87,12 +84,15 @@ export default {
                 return;
             }
 
-            if (!isEmpty(this.fullGridData)) {
+            if (this.inheritedLanguagesTree.length) {
                 this.isSubmitting = true;
 
                 const [
                     languages,
-                ] = getMappedTreeData(this.fullGridData);
+                ] = getParsedTree({
+                    data: this.inheritedLanguagesTree,
+                    childrenId: 'language_id',
+                });
 
                 this.removeScopeErrors(this.scope);
 

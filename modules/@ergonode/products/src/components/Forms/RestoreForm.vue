@@ -70,11 +70,11 @@ export default {
     },
     computed: {
         ...mapState('core', [
-            'languagesTree',
+            'inheritedLanguagesTree',
             'languages',
         ]),
         language() {
-            return this.languagesTree.find(({
+            return this.inheritedLanguagesTree.find(({
                 code,
             }) => code === this.languageCode);
         },

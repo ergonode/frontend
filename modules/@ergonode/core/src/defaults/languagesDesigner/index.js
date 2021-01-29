@@ -4,4 +4,4 @@
  */
 export const ROW_HEIGHT = 64;
 export const COLUMNS = 6;
-export const CONTEXT_NAME = 'language';
+export const GRID_GAP = 8;

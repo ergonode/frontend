@@ -3,9 +3,9 @@
  * See LICENSE for license details.
  */
 export default {
-    rootLanguage: state => state.languagesTree.find(({
-        level,
-    }) => level === 0),
+    rootLanguage: state => state.inheritedLanguagesTree.find(({
+        column,
+    }) => column === 0),
     getLanguage: state => languageId => state.languages.find(({
         id,
     }) => id === languageId),

@@ -6,101 +6,143 @@ import {
     getUUID,
 } from '@Core/models/stringWrapper';
 
-export function getMappedConditionSetData(conditionSetData, conditions) {
-    const mappedData = [];
+export function getParsedConditions({
+    values,
+    conditions,
+    tree,
+}) {
+    const parsedConditions = {};
 
-    Object.keys(conditionSetData).forEach((key) => {
-        const [
-            conditionId,
-        ] = key.split('--');
-        const conditionData = {
-            ...conditionSetData[key],
-        };
+    tree.forEach((node) => {
         const {
-            parameters,
-        } = conditions[conditionId];
+            id,
+            type,
+        } = node;
 
-        Object.keys(conditionData).forEach((conditionKey) => {
-            const parameter = parameters.find(({
-                name,
-            }) => name === conditionKey);
+        parsedConditions[id] = {
+            type,
+        };
 
-            if (parameter && (parameter.options || parameter.complexOptions)) {
-                if (Array.isArray(conditionData[conditionKey])) {
-                    conditionData[conditionKey] = conditionData[conditionKey].map(
-                        option => option.id,
-                    );
-                } else {
-                    conditionData[conditionKey] = conditionData[conditionKey].id;
+        const condition = conditions[type];
+
+        condition.parameters.forEach((parameter) => {
+            let value = '';
+
+            if (values[id]) {
+                value = values[id][parameter.name];
+
+                if (Array.isArray(value)) {
+                    value = value.map(conditionValue => conditionValue.id);
+                } else if (typeof value === 'object') {
+                    value = value.id;
                 }
             }
-        });
 
-        mappedData.push({
-            type: conditionId,
-            ...conditionData,
+            parsedConditions[id][parameter.name] = value;
         });
     });
 
-    return mappedData;
+    return Object.keys(parsedConditions).reduce((prev, curr) => [
+        ...prev,
+        parsedConditions[curr],
+    ], []);
 }
 
-export function getParsedConditionSetData(conditions, conditionsData) {
-    const parsedData = {
-        conditionsData: {},
-        conditionsTree: [],
-    };
+export function getMappedInitialTypeConditionValues({
+    parameters,
+    value,
+}) {
+    const mappedCondition = {};
 
-    for (let i = 0; i < conditions.length; i += 1) {
+    for (let i = 0; i < parameters.length; i += 1) {
         const {
-            type, ...parameters
-        } = conditions[i];
-        const uniqId = `${type}--${getUUID()}`;
+            name,
+            options,
+            affectedBy,
+            complexOptions,
+        } = parameters[i];
 
-        Object.keys(parameters).forEach((key) => {
-            const {
-                options,
-                complexOptions = null,
-                affectedBy = null,
-            } = conditionsData[type].parameters.find(param => param.name === key);
+        if (value[name]) {
+            mappedCondition[name] = value[name];
 
-            if (affectedBy && complexOptions) {
-                const affectedByOptionId = conditions[i][affectedBy];
-
-                parameters[key] = {
-                    id: parameters[key],
-                    key: parameters[key],
-                    value: complexOptions[affectedByOptionId][parameters[key]],
+            if (Array.isArray(value[name])) {
+                mappedCondition[name] = value[name].map(option => ({
+                    id: option,
+                    key: option,
+                    value: complexOptions && affectedBy
+                        ? complexOptions[value[affectedBy]][option]
+                        : options[option],
+                }));
+            } else if (options || complexOptions) {
+                mappedCondition[name] = {
+                    id: value[name],
+                    key: value[name],
+                    value: complexOptions && affectedBy
+                        ? complexOptions[value[affectedBy]][value[name]]
+                        : options[value[name]],
                 };
             }
-            if (options) {
-                if (Array.isArray(parameters[key])) {
-                    parameters[key] = parameters[key].map(option => ({
-                        id: option,
-                        key: option,
-                        value: options[option],
-                    }));
-                } else {
-                    parameters[key] = {
-                        id: parameters[key],
-                        key: parameters[key],
-                        value: options[parameters[key]],
-                    };
-                }
-            }
-        });
+        }
+    }
 
-        parsedData.conditionsData[uniqId] = parameters;
-        parsedData.conditionsTree.push({
-            id: uniqId,
-            code: null,
-            name: type,
+    return mappedCondition;
+}
+
+export function getMappedInitialTypeConditionsValues({
+    tree,
+    type,
+    parameters,
+    values,
+}) {
+    const mappedConditions = {};
+
+    tree.forEach((node) => {
+        if (values[node.id] && values[node.id].__initial && node.type === type) {
+            mappedConditions[node.id] = getMappedInitialTypeConditionValues({
+                parameters,
+                value: values[node.id],
+            });
+        }
+    });
+
+    return mappedConditions;
+}
+
+export function getMappedTree({
+    conditions,
+}) {
+    const mappedTree = [];
+
+    for (let i = 0; i < conditions.length; i += 1) {
+        const id = getUUID();
+
+        mappedTree.push({
+            id,
+            type: conditions[i].type,
             row: i,
             column: 0,
-            parent: 'root',
-            children: 0,
-            expanded: false,
+            parent: null,
         });
     }
-    return parsedData;
+
+    return mappedTree;
+}
+
+export function getMappedInitialConditionsValues({
+    tree,
+    conditions,
+}) {
+    const conditionsValues = {};
+
+    for (let i = 0; i < tree.length; i += 1) {
+        const condition = conditions[i];
+        const node = tree[i];
+
+        conditionsValues[node.id] = {
+            ...condition,
+            __initial: true,
+        };
+    }
+
+    return conditionsValues;
 }

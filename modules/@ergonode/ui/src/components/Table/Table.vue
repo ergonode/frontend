@@ -50,7 +50,7 @@ export default {
 
 <style lang="scss" scoped>
     .table {
-        border: 1px solid $GREY;
+        border: $BORDER_1_GREY;
 
         &__body {
             background-color: $WHITESMOKE;
