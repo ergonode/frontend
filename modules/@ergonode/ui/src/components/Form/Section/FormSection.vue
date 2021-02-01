@@ -36,7 +36,7 @@ export default {
                 return {
                     display: 'grid',
                     gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
-                    columnGap: '16px',
+                    gap: '24px 16px',
                 };
             }
 
