@@ -36,18 +36,18 @@
                 <TextField
                     :value="hour"
                     :disabled="!isAllowedToUpdate"
-                    :input="numberInputType"
                     :error-messages="errors[hourFieldKey]"
                     required
                     label="Hours"
+                    v-mask="'#########'"
                     @input="setHourChange" />
                 <TextField
                     :value="minute"
                     :disabled="!isAllowedToUpdate"
-                    :input="numberInputType"
                     :error-messages="errors[minuteFieldKey]"
                     required
                     label="Minutes"
+                    v-mask="minuteMask"
                     @input="setMinuteChange" />
             </FormSection>
             <FormSection title="Start date and time">
@@ -164,20 +164,18 @@ export default {
 
             return minute || null;
         },
+        minuteMask() {
+            return [
+                /[0-5]/,
+                /[0-9]/,
+            ];
+        },
         format() {
             return DEFAULT_FORMAT;
         },
         timeInputType() {
             return {
                 type: 'time',
-            };
-        },
-        numberInputType() {
-            return {
-                type: 'number',
-                step: '1',
-                min: '0',
-                max: '59',
             };
         },
         activeFieldKey() {
