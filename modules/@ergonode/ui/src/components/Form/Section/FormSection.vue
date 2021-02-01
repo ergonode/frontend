@@ -8,7 +8,7 @@
             v-if="title"
             class="form-section__title"
             v-text="title" />
-        <fieldset class="form-section__fields">
+        <fieldset :style="fieldsetStyle">
             <slot />
         </fieldset>
     </section>
@@ -25,6 +25,19 @@ export default {
             type: String,
             default: '',
         },
+        columns: {
+            type: Number,
+            default: 1,
+        },
+    },
+    computed: {
+        fieldsetStyle() {
+            return {
+                display: 'grid',
+                gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
+                gap: '24px 16px',
+            };
+        },
     },
 };
 </script>
@@ -39,10 +52,6 @@ export default {
         &__title {
             color: $GRAPHITE_DARK;
             font: $FONT_SEMI_BOLD_14_20;
-        }
-
-        &__fields {
-            display: contents;
         }
     }
 </style>

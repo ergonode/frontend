@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="Configuration"
+        title="Scheduler"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
@@ -18,33 +18,57 @@
             <FormSection>
                 <Toggler
                     :value="isActive"
-                    label="Is active"
+                    label="Enable scheduler"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[activeFieldKey]"
                     @input="setIsActiveValue" />
+                <Divider />
+            </FormSection>
+            <FormSection title="Recurence time">
+                <Paragraph
+                    class="scheduler-form-paragraph"
+                    :title="formParagraphTitle">
+                    <template #boldExample>
+                        <b>36 hours 30 minutes</b>
+                    </template>
+                </Paragraph>
+            </FormSection>
+            <FormSection :columns="2">
+                <TextField
+                    :value="hour"
+                    :disabled="!isAllowedToUpdate"
+                    :error-messages="errors[hourFieldKey]"
+                    required
+                    label="Hours"
+                    v-mask="'#########'"
+                    @input="setHourChange" />
+                <TextField
+                    :value="minute"
+                    :disabled="!isAllowedToUpdate"
+                    :error-messages="errors[minuteFieldKey]"
+                    required
+                    label="Minutes"
+                    v-mask="minuteMask"
+                    @input="setMinuteChange" />
+            </FormSection>
+            <FormSection title="Start date and time">
+                <Divider />
                 <DatePicker
                     :value="date"
                     :placeholder="format"
                     :format="format"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[startFieldKey]"
-                    label="Date"
+                    required
+                    label="Start date"
                     @input="setDateChange" />
                 <TextField
                     :value="time"
                     :disabled="!isAllowedToUpdate"
                     :input="timeInputType"
-                    label="Started on"
+                    required
+                    label="Start time"
                     @input="setTimeChange" />
-                <Divider />
-                <TextField
-                    :value="recurrency"
-                    :disabled="!isAllowedToUpdate"
-                    :input="timeInputType"
-                    :error-messages="errors[hourFieldKey]"
-                    label="Recurrency"
-                    hint="The time interval determining how often process would be executed"
-                    @input="setRecurrencyChange" />
             </FormSection>
         </template>
     </Form>
@@ -58,6 +82,7 @@ import DatePicker from '@UI/components/DatePicker/DatePicker';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
+import Paragraph from '@UI/components/Paragraph/Paragraph';
 import TextField from '@UI/components/TextField/TextField';
 import Toggler from '@UI/components/Toggler/Toggler';
 import {
@@ -85,6 +110,7 @@ export default {
         TextField,
         Toggler,
         Divider,
+        Paragraph,
     },
     mixins: [
         formActionsMixin,
@@ -125,21 +151,25 @@ export default {
 
             return start ? formatDate(parseISO(start), DEFAULT_HOUR_FORMAT) : null;
         },
-        recurrency() {
+        hour() {
             const {
                 hour,
+            } = this.schedulerConfiguration;
+
+            return hour || null;
+        },
+        minute() {
+            const {
                 minute,
             } = this.schedulerConfiguration;
 
-            if (typeof hour !== 'undefined' && typeof minute !== 'undefined') {
-                const parseTime = parseDate(`${hour}:${minute}`, DEFAULT_HOUR_FORMAT, new Date());
-
-                return hour !== null && minute !== null
-                    ? formatDate(parseTime, DEFAULT_HOUR_FORMAT)
-                    : null;
-            }
-
-            return null;
+            return minute || null;
+        },
+        minuteMask() {
+            return [
+                /[0-5]/,
+                /[0-9]/,
+            ];
         },
         format() {
             return DEFAULT_FORMAT;
@@ -157,6 +187,12 @@ export default {
         },
         hourFieldKey() {
             return 'hour';
+        },
+        minuteFieldKey() {
+            return 'minute';
+        },
+        formParagraphTitle() {
+            return 'Time interval determining how often process would be executed: [[boldExample]]';
         },
     },
     watch: {
@@ -230,15 +266,27 @@ export default {
                 value: date,
             });
         },
-        setRecurrencyChange(value) {
-            const [
-                hour,
-                minute,
-            ] = value.split(':');
+        setHourChange(value) {
             const tmpScheduler = {
                 ...this.schedulerConfiguration,
-                hour: hour ? parseInt(hour, 10) : 0,
-                minute: minute ? parseInt(minute, 10) : 0,
+                hour: value ? parseInt(value, 10) : 0,
+            };
+
+            this.__setState({
+                key: 'scheduler',
+                value: JSON.stringify(tmpScheduler),
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.hourFieldKey,
+                value,
+            });
+        },
+        setMinuteChange(value) {
+            const tmpScheduler = {
+                ...this.schedulerConfiguration,
+                minute: value ? parseInt(value, 10) : null,
             };
 
             this.__setState({
@@ -255,3 +303,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .scheduler-form-paragraph {
+        font: $FONT_MEDIUM_12_16;
+    }
+</style>

@@ -30,5 +30,9 @@ export default {
             ssr: true,
             src: './plugins/alerts',
         },
+        {
+            ssr: true,
+            src: './plugins/mask',
+        },
     ],
 };
