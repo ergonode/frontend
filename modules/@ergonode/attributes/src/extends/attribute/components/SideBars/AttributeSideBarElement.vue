@@ -5,7 +5,6 @@
 <template>
     <ListDraggableElement
         :draggable-id="`${item.id}/${item.code}:${languageCode}`"
-        :draggable="isDraggable"
         :disabled="isDisabled"
         :hint="hint"
         :label="title"
@@ -66,9 +65,9 @@ export default {
             type: String,
             required: true,
         },
-        isDraggable: {
+        disabled: {
             type: Boolean,
-            default: true,
+            default: false,
         },
     },
     computed: {
@@ -76,8 +75,9 @@ export default {
             'disabledElements',
         ]),
         isDisabled() {
-            return this.disabledElements[this.languageCode]
-                && this.disabledElements[this.languageCode][this.item.id];
+            return this.disabled
+                || (this.disabledElements[this.languageCode]
+                    && this.disabledElements[this.languageCode][this.item.id]);
         },
         iconFillColor() {
             return this.isDisabled ? GREY : GRAPHITE;

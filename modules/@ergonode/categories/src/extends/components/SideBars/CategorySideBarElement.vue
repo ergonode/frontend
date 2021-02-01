@@ -5,7 +5,6 @@
 <template>
     <ListDraggableElement
         :draggable-id="item.id"
-        :draggable="isDraggable"
         :disabled="isDisabled"
         :hint="hint"
         :label="title"
@@ -48,7 +47,7 @@ export default {
             type: String,
             required: true,
         },
-        isDraggable: {
+        disabled: {
             type: Boolean,
             default: false,
         },
@@ -57,10 +56,6 @@ export default {
         ...mapState('list', [
             'disabledElements',
         ]),
-        isDisabled() {
-            return this.disabledElements[this.languageCode]
-                && this.disabledElements[this.languageCode][this.item.id];
-        },
         hint() {
             return this.item.name ? `#${this.item.code} ${this.languageCode}` : '';
         },
@@ -69,6 +64,11 @@ export default {
         },
         itemCount() {
             return `${this.item.elements_count || 0} Product${this.item.elements_count === 1 ? '' : 's'}`;
+        },
+        isDisabled() {
+            return this.disabled
+                || (this.disabledElements[this.languageCode]
+                    && this.disabledElements[this.languageCode][this.item.id]);
         },
     },
     methods: {

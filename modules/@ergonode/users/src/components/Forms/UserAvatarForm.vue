@@ -9,6 +9,7 @@
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :disabled="!isAllowedToUpdate"
         :errors="errors"
         :change-values="changeValues"
         @proceed="onProceed"

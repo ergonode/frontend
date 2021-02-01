@@ -9,7 +9,7 @@
         <template #item="{ item }">
             <WidgetSideBarElement
                 :item="item"
-                :is-draggable="!disabled" />
+                :disabled="disabled" />
         </template>
     </SideBar>
 </template>

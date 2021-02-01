@@ -45,7 +45,7 @@
                 v-else
                 :item="item"
                 :language-code="languageCode"
-                :is-draggable="!disabled" />
+                :disabled="disabled" />
         </template>
     </SideBar>
 </template>

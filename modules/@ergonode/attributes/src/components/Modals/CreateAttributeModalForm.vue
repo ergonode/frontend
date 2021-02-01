@@ -122,6 +122,7 @@ export default {
         onProceedSuccess(id) {
             this.isProceeding = false;
 
+            this.onClose();
             this.$router.push({
                 name: ROUTE_NAME.ATTRIBUTE_EDIT_GENERAL,
                 params: {

@@ -124,6 +124,7 @@ export default {
         onProceedSuccess() {
             this.isProceeding = false;
 
+            this.onClose();
             this.$router.push({
                 name: ROUTE_NAME.STATUS_TRANSITION_EDIT_GENERAL,
                 params: {

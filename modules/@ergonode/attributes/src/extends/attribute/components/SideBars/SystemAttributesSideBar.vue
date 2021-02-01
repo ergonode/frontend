@@ -29,7 +29,7 @@
             <AttributeSideBarElement
                 :item="item"
                 :language-code="languageCode"
-                :is-draggable="isAllowedToUpdate" />
+                :disabled="!isAllowedToUpdate" />
         </template>
     </SideBar>
 </template>

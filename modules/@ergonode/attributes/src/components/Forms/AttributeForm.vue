@@ -9,6 +9,7 @@
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :disabled="!isAllowedToUpdate"
         :errors="errors"
         :change-values="changeValues"
         :errors-presentation-mapper="errorMapper"
@@ -148,7 +149,9 @@ export default {
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.update,
-            ]);
+            ]) || (!this.isDisabled && this.$hasAccess([
+                PRIVILEGES.ATTRIBUTE.create,
+            ]));
         },
         attributeTypeOptions() {
             return Object.values(this.attrTypes).sort();

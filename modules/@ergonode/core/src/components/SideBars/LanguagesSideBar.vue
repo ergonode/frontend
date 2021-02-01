@@ -13,7 +13,7 @@
             <LanguageSideBarElement
                 :item="item"
                 :language-code="userLanguageCode"
-                :is-draggable="!disabled" />
+                :disabled="disabled" />
         </template>
     </SideBar>
 </template>

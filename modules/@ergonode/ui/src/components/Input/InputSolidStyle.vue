@@ -213,7 +213,7 @@ export default {
         }
 
         &--disabled {
-            cursor: default;
+            cursor: not-allowed;
 
             fieldset {
                 background-color: $WHITESMOKE;

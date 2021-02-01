@@ -42,6 +42,7 @@
                             v-if="isSubmitButtonVisible"
                             data-cy="submit"
                             :title="submitTitle"
+                            :disabled="disabled"
                             type="submit">
                             <template #append="{ color }">
                                 <IconSpinner
@@ -110,6 +111,13 @@ export default {
         title: {
             type: String,
             default: '',
+        },
+        /**
+         * Determinate if the component is disabled
+         */
+        disabled: {
+            type: Boolean,
+            default: false,
         },
         /**
          * The validation errors
