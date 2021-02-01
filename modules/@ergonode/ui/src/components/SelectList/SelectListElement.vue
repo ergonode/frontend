@@ -15,7 +15,9 @@
                 <ListElementAction
                     v-if="multiselect"
                     :size="size">
-                    <CheckBox :value="selected" />
+                    <CheckBox
+                        :value="selected"
+                        :disabled="value.disabled" />
                 </ListElementAction>
                 <ListElementDescription>
                     <ListElementTitle
@@ -101,7 +103,9 @@ export default {
     },
     methods: {
         onSelectValue() {
-            this.$emit('input', this.index);
+            if (this.isOptionValid || (!this.isOptionValid && !this.value.disabled)) {
+                this.$emit('input', this.index);
+            }
         },
     },
 };

@@ -15,7 +15,7 @@
         <template #item="{ item }">
             <ConditionSideBarElement
                 :item="item"
-                :is-draggable="!disabled" />
+                :disabled="disabled" />
         </template>
     </SideBar>
 </template>

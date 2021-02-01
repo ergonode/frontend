@@ -5,7 +5,7 @@
 <template>
     <li
         :class="classes"
-        :draggable="!isDragged && draggable"
+        :draggable="!isDragged && !disabled"
         :title="hint"
         @dragstart="onDragStart"
         @dragend="onDragEnd">
@@ -41,13 +41,6 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
-        },
-        /**
-         * Determines state of draggable attribute
-         */
-        draggable: {
-            type: Boolean,
-            default: true,
         },
         /**
          * Unique draggable identifier
@@ -147,7 +140,6 @@ export default {
 
         &--disabled {
             position: relative;
-            pointer-events: none;
             cursor: not-allowed;
 
             &:before {

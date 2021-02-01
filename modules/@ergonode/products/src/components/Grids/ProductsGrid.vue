@@ -26,7 +26,7 @@
                 :is-header-visible="true"
                 :is-basic-filter="true"
                 :is-collection-layout="true"
-                :is-select-column="true"
+                :is-select-column="batchActions.length > 0"
                 @edit-row="onEditRow"
                 @preview-row="onEditRow"
                 @cell-value="onCellValueChange"

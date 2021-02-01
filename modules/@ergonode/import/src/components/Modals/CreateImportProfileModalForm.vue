@@ -120,6 +120,7 @@ export default {
 
             this.removeScopeErrors(this.scope);
 
+            this.onClose();
             this.$router.push({
                 name: ROUTE_NAME.IMPORT_EDIT_GENERAL,
                 params: {

@@ -126,6 +126,7 @@ export default {
 
             this.isProceeding = false;
 
+            this.onClose();
             await this.$router.push({
                 name: ROUTE_NAME.SETTINGS_UNIT_EDIT_GENERAL,
                 params: {

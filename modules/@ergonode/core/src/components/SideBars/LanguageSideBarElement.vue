@@ -5,8 +5,7 @@
 <template>
     <ListDraggableElement
         :draggable-id="item.id"
-        :draggable="isDraggable"
-        :disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
+        :disabled="disabled"
         :hint="item.name ? `#${item.code}` : ''"
         :label="item.name"
         @drag="onDrag">
@@ -51,9 +50,9 @@ export default {
             required: true,
         },
         /**
-         * Determines state of draggable attribute
+         * Determinate if the component is disabled
          */
-        isDraggable: {
+        disabled: {
             type: Boolean,
             default: false,
         },
@@ -62,6 +61,11 @@ export default {
         ...mapState('list', [
             'disabledElements',
         ]),
+        isDisabled() {
+            return this.disabled
+                || (this.disabledElements[this.languageCode]
+                    && this.disabledElements[this.languageCode][this.item.id]);
+        },
     },
     methods: {
         ...mapActions('draggable', [

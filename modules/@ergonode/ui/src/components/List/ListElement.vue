@@ -82,7 +82,6 @@ export default {
         &--disabled {
             color: $GRAPHITE_LIGHT;
             cursor: not-allowed;
-            pointer-events: none;
         }
 
         &:not(&--disabled):hover {

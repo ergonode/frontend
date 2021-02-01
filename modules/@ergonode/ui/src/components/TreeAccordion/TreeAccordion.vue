@@ -115,6 +115,9 @@ export default {
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
         },
+        /**
+         * List of items
+         */
         items: {
             type: Array,
             default: () => [],

@@ -9,6 +9,7 @@
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :disabled="!isAllowedToUpdate"
         :errors="errors"
         :change-values="changeValues"
         @proceed="onProceed"
@@ -72,6 +73,7 @@ export default {
     ],
     computed: {
         ...mapState('unit', [
+            'id',
             'name',
             'symbol',
         ]),
@@ -80,10 +82,15 @@ export default {
                 key: '@Core/components/Forms/UnitForm',
             });
         },
+        isDisabled() {
+            return Boolean(this.id);
+        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.SETTINGS.update,
-            ]);
+            ]) || (!this.isDisabled && this.$hasAccess([
+                PRIVILEGES.SETTINGS.create,
+            ]));
         },
         nameFieldKey() {
             return 'name';

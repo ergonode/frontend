@@ -298,6 +298,7 @@ export default {
 
         &:disabled {
             color: $GRAPHITE_LIGHT;
+            cursor: not-allowed;
         }
 
         &--small {

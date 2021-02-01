@@ -4,7 +4,7 @@
  */
 <template>
     <ListDraggableElement
-        :draggable="isDraggable"
+        :disabled="disabled"
         :draggable-id="item.type"
         :label="item.label"
         @drag="onDrag">
@@ -44,7 +44,7 @@ export default {
             type: Object,
             required: true,
         },
-        isDraggable: {
+        disabled: {
             type: Boolean,
             default: false,
         },

@@ -68,7 +68,7 @@
                             <CategorySelectAllTreeCheckBox
                                 :value="value"
                                 :categories="categoryTreeItems"
-                                :disabled="!isAnyCategoryInTreeAfterFiltering"
+                                :disabled="disabled || !isAnyCategoryInTreeAfterFiltering"
                                 @input="onSelectAllVisible" />
                         </template>
                         <template #body>
@@ -113,7 +113,7 @@
                             <CategorySelectAllCheckBox
                                 :value="value"
                                 :categories="categoryItems"
-                                :disabled="!isAnyCategoryAfterFiltering"
+                                :disabled="disabled || !isAnyCategoryAfterFiltering"
                                 @input="onSelectAllVisible"
                             />
                         </template>
@@ -139,7 +139,9 @@
                         </template>
                         <template #item="{ item, isSelected }">
                             <ListElementAction :size="smallSize">
-                                <CheckBox :value="isSelected" />
+                                <CheckBox
+                                    :value="isSelected"
+                                    :disabled="item.disabled" />
                             </ListElementAction>
                             <ListElementDescription>
                                 <ListElementTitle
@@ -242,11 +244,20 @@ export default {
             type: Array,
             default: () => [],
         },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
     async fetch() {
-        this.allCategories = await getAutocomplete({
+        const categories = await getAutocomplete({
             $axios: this.$axios,
         });
+
+        this.allCategories = categories.map(category => ({
+            ...category,
+            disabled: this.disabled,
+        }));
 
         this.isFetchingData = false;
     },

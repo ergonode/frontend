@@ -5,6 +5,7 @@
 <template>
     <ListElement
         :size="size"
+        :disabled="item.disabled"
         @click.native.prevent="onSelect">
         <div class="tree-accordion-item">
             <TreeAccordionItemNode
@@ -112,7 +113,9 @@ export default {
             this.$emit('expand', this.item);
         },
         onSelect() {
-            this.$emit('input', this.item);
+            if (!this.item.disabled) {
+                this.$emit('input', this.item);
+            }
         },
     },
 };
