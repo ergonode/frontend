@@ -10,10 +10,10 @@
         <div class="notifications-list-no-data-placeholder__description">
             <span
                 class="notifications-list-no-data-placeholder__title"
-                v-text="$t('@Noticiations.notification.NotificationsListNoDataPlaceholder.noActions')" />
+                v-text="$t('@Notifications.notification.components.NotificationsListNoDataPlaceholder.noActions')" />
             <span
                 class="notifications-list-no-data-placeholder__subtitle"
-                v-text="$t('@Noticiations.notification.NotificationsListNoDataPlaceholder.info')" />
+                v-text="$t('@Notifications.notification.components.NotificationsListNoDataPlaceholder.info')" />
         </div>
     </div>
 </template>
