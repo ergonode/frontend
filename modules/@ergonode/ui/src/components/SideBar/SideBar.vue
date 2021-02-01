@@ -39,10 +39,11 @@
                 <SideBarFooter />
             </slot>
         </template>
-        <template #item="{ item, onExpand }">
+        <template #item="{ item, index, onExpand }">
             <slot
                 name="item"
                 :item="item"
+                :index="index"
                 :on-expand="onExpand" />
         </template>
     </ExpandingList>
