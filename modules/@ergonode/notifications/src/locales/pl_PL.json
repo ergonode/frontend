@@ -1,0 +1,16 @@
+{
+  "@Notifications": {
+    "_": {},
+    "notification": {
+      "_": {},
+      "components": {
+        "NotificationsListNoDataPlaceholder": {
+          "noActions": "Brak kacji",
+          "info": "Aktualizacje produktu, procesowane operacje oraz inne aktywności pojawią się tutaj."
+        }
+      },
+      "pages": {},
+      "store": {}
+    }
+  }
+}

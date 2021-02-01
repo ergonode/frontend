@@ -10,10 +10,10 @@
         <div class="notifications-list-no-data-placeholder__description">
             <span
                 class="notifications-list-no-data-placeholder__title"
-                v-text="title" />
+                v-text="$t('@Noticiations.notification.NotificationsListNoDataPlaceholder.noActions')" />
             <span
                 class="notifications-list-no-data-placeholder__subtitle"
-                v-text="subtitle" />
+                v-text="$t('@Noticiations.notification.NotificationsListNoDataPlaceholder.info')" />
         </div>
     </div>
 </template>
@@ -29,12 +29,6 @@ export default {
     computed: {
         bgUrl() {
             return require('@Notifications/assets/images/infographicts/no_data_placeholder.svg');
-        },
-        title() {
-            return 'No actions';
-        },
-        subtitle() {
-            return 'Product updates, processing operations and other activities will appear here.';
         },
     },
 };

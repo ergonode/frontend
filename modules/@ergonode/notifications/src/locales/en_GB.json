@@ -1,0 +1,16 @@
+{
+  "@Notifications": {
+    "_": {},
+    "notification": {
+      "_": {},
+      "components": {
+        "NotificationsListNoDataPlaceholder": {
+          "noActions": "No actions",
+          "info": "Product updates, processing operations and other activities will appear here."
+        }
+      },
+      "pages": {},
+      "store": {}
+    }
+  }
+}
