@@ -32,16 +32,10 @@ export default {
     },
     computed: {
         fieldsetStyle() {
-            if (this.columns > 1) {
-                return {
-                    display: 'grid',
-                    gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
-                    gap: '24px 16px',
-                };
-            }
-
             return {
-                display: 'contents',
+                display: 'grid',
+                gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
+                gap: '24px 16px',
             };
         },
     },
