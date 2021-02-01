@@ -116,7 +116,7 @@ export default {
         this.categoryTrees = treesData
             .map(tree => ({
                 ...tree,
-                name: tree.name[this.defaultLanguageCode],
+                name: tree.name[this.defaultLanguageCode] || tree.code,
                 children: getMappedCategories({
                     tree: tree.categories || [],
                     categories,

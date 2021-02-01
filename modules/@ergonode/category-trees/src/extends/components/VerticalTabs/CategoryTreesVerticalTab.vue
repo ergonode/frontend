@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="category-vertical-tab">
+    <div class="category-trees-vertical-tab">
         <CategoryTreesSideBar />
         <CreateCategoryFab :floating="{ bottom: '16px', right: '16px' }" />
     </div>
