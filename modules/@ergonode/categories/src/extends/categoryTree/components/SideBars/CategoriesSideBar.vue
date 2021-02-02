@@ -35,7 +35,7 @@ import CreateCategoryButton from '@Categories/components/Buttons/CreateCategoryB
 import {
     CATEGORY_CREATED_EVENT_NAME,
 } from '@Categories/defaults/attributes';
-import CategorySideBarElement from '@Categories/extends/components/SideBars/CategorySideBarElement';
+import CategorySideBarElement from '@Categories/extends/categoryTree/components/SideBars/CategorySideBarElement';
 import {
     deepClone,
 } from '@Core/models/objectWrapper';

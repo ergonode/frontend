@@ -21,7 +21,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'ProductFormCategory',
+    name: 'ProductFormTemplate',
     components: {
         ProductTemplateAutocomplete,
     },

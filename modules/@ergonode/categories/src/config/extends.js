@@ -5,7 +5,7 @@
 import {
     getCategory,
     setCategory,
-} from '@Categories/extends/methods';
+} from '@Categories/extends/product/methods';
 
 import {
     Components,
