@@ -12,22 +12,20 @@
         </template>
         <template #dropdown>
             <div class="notifications-dropdown">
-                <List v-if="notifications.length">
-                    <NotificationsListElement
-                        v-for="notification in notifications"
-                        :key="notification.id"
-                        :notification="notification" />
-                    <NotificationsListFooter>
-                        <Button
-                            title="SEE ALL NOTIFICATIONS"
-                            @click.native="navigateToAllNotifications" />
-                    </NotificationsListFooter>
+                <List>
+                    <template v-if="notifications.length">
+                        <NotificationsListElement
+                            v-for="notification in notifications"
+                            :key="notification.id"
+                            :notification="notification" />
+                        <NotificationsListFooter>
+                            <Button
+                                title="SEE ALL NOTIFICATIONS"
+                                @click.native="navigateToAllNotifications" />
+                        </NotificationsListFooter>
+                    </template>
+                    <NotificationsListNoDataPlaceholder v-else />
                 </List>
-                <NotificationsListPlaceholder
-                    v-else
-                    title="Nothing to see here"
-                    subtitle="Here you can see important notifications of product update"
-                    :bg-url="require('@UI/assets/images/placeholders/notify.svg')" />
             </div>
         </template>
     </ToolBarSelectButton>
@@ -37,7 +35,7 @@
 import IconBell from '@Notifications/components/Icons/IconBell';
 import NotificationsListElement from '@Notifications/components/List/NotificationsListElement';
 import NotificationsListFooter from '@Notifications/components/List/NotificationsListFooter';
-import NotificationsListPlaceholder from '@Notifications/components/List/NotificationsListPlaceholder';
+import NotificationsListNoDataPlaceholder from '@Notifications/components/List/NotificationsListNoDataPlaceholder';
 import {
     ROUTE_NAME,
 } from '@Notifications/config/routes';
@@ -63,7 +61,7 @@ export default {
         List,
         NotificationsListElement,
         NotificationsListFooter,
-        NotificationsListPlaceholder,
+        NotificationsListNoDataPlaceholder,
     },
     computed: {
         ...mapState('notification', {
@@ -97,6 +95,7 @@ export default {
         display: flex;
         flex: 1;
         flex-direction: column;
+        align-items: center;
         width: 400px;
         height: calc(100vh - 48px);
     }
