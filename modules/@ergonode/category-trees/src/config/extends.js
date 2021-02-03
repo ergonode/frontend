@@ -17,7 +17,7 @@ export default {
         '@Products/components/Tabs/ProductCatalogTab/verticalTabs': ({}) => [
             {
                 title: 'Categories',
-                component: () => import('@Trees/extends/components/VerticalTabs/CategoryTreesVerticalTab'),
+                component: () => import('@Trees/extends/product/components/VerticalTabs/CategoryTreesVerticalTab'),
                 icon: () => import('@Trees/components/Icons/IconTree'),
                 props: {},
             },

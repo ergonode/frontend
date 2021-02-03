@@ -59,7 +59,7 @@ import {
     getMappedFilters,
     getParsedFilters,
 } from '@Core/models/mappers/gridDataMapper';
-import CategoryTreeSideBarGroupElement from '@Trees/extends/components/SideBars/CategoryTreeSideBarGroupElement';
+import CategoryTreeSideBarGroupElement from '@Trees/extends/product/components/SideBars/CategoryTreeSideBarGroupElement';
 import {
     getCategoriesCount,
     getMappedCategories,
