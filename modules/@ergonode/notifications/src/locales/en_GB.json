@@ -16,6 +16,9 @@
         },
         "NotificationListItem": {
           "markAsRead": "Mark as read"
+        },
+        "NotificationList": {
+          "title": "Notifications"
         }
       },
       "pages": {},

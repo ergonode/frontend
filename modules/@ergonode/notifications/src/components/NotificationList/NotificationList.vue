@@ -9,7 +9,7 @@
             <NotificationListHeader />
             <NotificationListSection
                 v-if="notifications.length"
-                title="Notifications">
+                :title="$t('@Notifications.notification.components.NotificationList.title')">
                 <template #body>
                     <NotificationListItem
                         v-for="notification in notifications"

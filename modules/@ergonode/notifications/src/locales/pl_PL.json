@@ -14,11 +14,11 @@
         "NotificationListMenu": {
           "markAllAsRead": "Oznacz wszystkie jako przeczytane"
         },
-        "NotificationListFooter": {
-          "seeAllActionsTitle": "ZOBACZ WSZYSTKIE AKCJE"
-        },
         "NotificationListItem": {
           "markAsRead": "Oznacz jako przeczytany"
+        },
+        "NotificationList": {
+          "title": "Notyfikacje"
         }
       },
       "pages": {},
