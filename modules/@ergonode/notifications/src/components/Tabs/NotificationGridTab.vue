@@ -6,29 +6,9 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <div class="notifications-list">
-                <List v-if="notifications.length">
-                    <NotificationsListElement
-                        v-for="notification in notifications"
-                        :key="notification.id"
-                        :notification="notification" />
-                    <NotificationsListFooter v-if="isMoreButtonVisible">
-                        <Button
-                            :title="buttonTitle"
-                            @click.native="onLoadMoreNotifications">
-                            <template
-                                v-if="isFetchingData"
-                                #append="{ color }">
-                                <IconSpinner :fill-color="color" />
-                            </template>
-                        </Button>
-                    </NotificationsListFooter>
-                </List>
-                <ListPlaceholder
-                    v-else
-                    :orientation="horizontalOrientation"
-                    title="Nothing to see here"
-                    subtitle="Here you can see important notifications of product update"
-                    :bg-url="require('@UI/assets/images/placeholders/notify.svg')" />
+                <Preloader v-if="isFetchingData" />
+                <NotificationList v-else-if="notifications.length" />
+                <NotificationListNoDataPlaceholder v-else />
             </div>
         </template>
     </CenterViewTemplate>
@@ -41,13 +21,12 @@ import {
 import {
     ORIENTATION,
 } from '@Core/defaults/layout';
-import NotificationsListElement from '@Notifications/components/List/NotificationsListElement';
-import NotificationsListFooter from '@Notifications/components/List/NotificationsListFooter';
-import Button from '@UI/components/Button/Button';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import NotificationList from '@Notifications/components/NotificationList/NotificationList';
+import NotificationListNoDataPlaceholder
+    from '@Notifications/components/NotificationList/NotificationListNoDataPlaceholder';
+import NotificationBadge from '@UI/components/Badges/NotificationBadge';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
-import List from '@UI/components/List/List';
-import ListPlaceholder from '@UI/components/List/ListPlaceholder';
+import Preloader from '@UI/components/Preloader/Preloader';
 import {
     mapActions,
     mapState,
@@ -57,13 +36,17 @@ export default {
     name: 'NotificationGridTab',
     components: {
         CenterViewTemplate,
-        Button,
-        List,
-        IconSpinner,
-        ListPlaceholder,
-        NotificationsListElement,
-        NotificationsListFooter,
+        Preloader,
+        NotificationList,
+        NotificationListNoDataPlaceholder,
     },
+    // fetch() {
+    //     this.isFetchingData = true;
+    //
+    //     await this.getNotifications({});
+    //
+    //     this.isFetchingData = false;
+    // },
     data() {
         return {
             isFetchingData: false,
@@ -108,7 +91,7 @@ export default {
                 value: this.limit + DATA_LIMIT,
             });
 
-            await this.requestForNotifications({
+            await this.getNotifications({
                 onSuccess: this.onLoadMoreNotificationsSuccess,
                 onError: this.onLoadMoreNotificationsError,
             });

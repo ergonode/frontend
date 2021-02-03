@@ -124,7 +124,6 @@ export default {
         min-height: 48px;
         padding: 0 16px 0 12px;
         box-sizing: border-box;
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         user-select: none;
         cursor: grab;
 

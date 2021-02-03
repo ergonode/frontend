@@ -7,6 +7,7 @@ import {
     check,
     getAll,
     update,
+    updateAll,
 } from '@Notifications/services/index';
 
 export default {
@@ -41,7 +42,7 @@ export default {
             onError(e);
         }
     },
-    async requestForNotifications({
+    async getNotifications({
         commit,
         state,
     }, {
@@ -52,6 +53,7 @@ export default {
             const params = {
                 limit: state.limit,
                 offset: 0,
+                view: 'list',
                 order: 'DESC',
                 field: 'created_at',
             };
@@ -88,7 +90,17 @@ export default {
         });
 
         dispatch('checkNotificationCount', {});
-        dispatch('requestForNotifications', {});
+        dispatch('getNotifications', {});
+    },
+    async markAllNotificationsAsRead({
+        dispatch,
+    }) {
+        await updateAll({
+            $axios: this.app.$axios,
+        });
+
+        dispatch('checkNotificationCount', {});
+        dispatch('getNotifications', {});
     },
     increaseRequestTimeInterval({
         commit, state,

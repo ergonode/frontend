@@ -18,6 +18,12 @@ export const update = ({
     withLanguage: false,
 });
 
+export const updateAll = ({
+    $axios,
+}) => $axios.$post('profile/notifications/mark-all', {}, {
+    withLanguage: false,
+});
+
 export const check = ({
     $axios,
 }) => $axios.$get('profile/notifications/check', {

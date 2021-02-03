@@ -66,10 +66,10 @@ export function getUUID() {
  * @returns {string} formatted bytes string
  */
 export function formatBytes(bytes, decimals = 2) {
-    if (bytes === '0') return '0 Bytes';
+    if (bytes === '0' || !bytes) return '0 Bytes';
 
     const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
+    const dm = Math.max(0, decimals);
     const sizes = [
         'Bytes',
         'KB',
@@ -85,4 +85,38 @@ export function formatBytes(bytes, decimals = 2) {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
 
     return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
+}
+
+/**
+ * Based at given text generating slots
+ * @param text
+ * @param character
+ * @returns {[]}
+ */
+export function getSlots(text, character = '"') {
+    const slots = [];
+
+    let startQuote = false;
+    let word = '';
+
+    for (let i = 0; i < text.length; i += 1) {
+        const char = text[i];
+
+        if (char === character) {
+            startQuote = !startQuote;
+        } else if (startQuote) {
+            word += char;
+        }
+
+        if (!startQuote && word !== '') {
+            slots.push({
+                name: getUUID(),
+                text: word,
+            });
+
+            word = '';
+        }
+    }
+
+    return slots;
 }

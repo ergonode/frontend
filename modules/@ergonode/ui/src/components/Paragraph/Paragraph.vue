@@ -21,10 +21,11 @@ export default {
         if (!isEmpty(this.$slots)) {
             paragraphContent = this.title.split(' ').map((word) => {
                 // pattern to search `[[slot_name]]`
-                const regex = /\[\[([a-zA-Z1-9_]+)\]\]/g;
-                const key = word.replace(regex, '$1');
+                const regex = /\[\[([0-9a-zA-Z]+)\]\]/g;
 
-                if (regex.test(word) && this.$slots[key]) {
+                if (regex.test(word)) {
+                    const key = word.replace(/\[|\]/g, '');
+
                     return this.$slots[key];
                 }
                 return ` ${word} `;

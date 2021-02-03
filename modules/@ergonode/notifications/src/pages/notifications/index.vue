@@ -31,7 +31,7 @@ export default {
     async fetch({
         store,
     }) {
-        await store.dispatch('notification/requestForNotifications', {});
+        await store.dispatch('notification/getNotifications', {});
     },
     computed: {
         tabs() {

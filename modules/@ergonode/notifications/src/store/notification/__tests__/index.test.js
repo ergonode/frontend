@@ -72,7 +72,7 @@ describe('Notifications', () => {
                 read_at: null,
             };
 
-            action = 'requestForNotifications';
+            action = 'getNotifications';
             mockAxiosGetResult = {
                 collection: [
                     mockedNotification,
