@@ -37,6 +37,7 @@ export default {
 <style lang="scss" scoped>
     .notification-list-no-data-placeholder {
         display: flex;
+        align-self: center;
         flex-direction: column;
         align-items: center;
         width: 320px;

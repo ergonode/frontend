@@ -4,30 +4,13 @@
  */
 <template>
     <div class="notification-list-footer">
-        <Button
-            :title="$t('@Notifications.notification.components.NotificationListFooter.seeAllActionsTitle')"
-            @click.native="onNavigateToAllNotifications" />
+        <slot />
     </div>
 </template>
 
 <script>
-import {
-    ROUTE_NAME,
-} from '@Notifications/config/routes';
-import Button from '@UI/components/Button/Button';
-
 export default {
     name: 'NotificationListFooter',
-    components: {
-        Button,
-    },
-    methods: {
-        onNavigateToAllNotifications() {
-            this.$router.push({
-                name: ROUTE_NAME.NOTIFICATIONS_GRID,
-            });
-        },
-    },
 };
 </script>
 
@@ -37,6 +20,6 @@ export default {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 8px 0;
+        padding-bottom: 8px;
     }
 </style>

@@ -4,7 +4,7 @@
  */
 <template>
     <div class="notification-list-item-menu">
-        <ActionIconButton
+        <ActionFab
             :theme="secondaryPlainTheme"
             :size="smallSize"
             :options="items"
@@ -20,7 +20,7 @@
                         :title="option.text" />
                 </ListElementDescription>
             </template>
-        </ActionIconButton>
+        </ActionFab>
     </div>
 </template>
 
@@ -29,7 +29,7 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import ActionIconButton from '@UI/components/ActionIconButton/ActionIconButton';
+import ActionFab from '@UI/components/ActionFab/ActionFab';
 import IconDots from '@UI/components/Icons/Others/IconDots';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
@@ -37,7 +37,7 @@ import ListElementTitle from '@UI/components/List/ListElementTitle';
 export default {
     name: 'NotificationListItemMenu',
     components: {
-        ActionIconButton,
+        ActionFab,
         IconDots,
         ListElementDescription,
         ListElementTitle,

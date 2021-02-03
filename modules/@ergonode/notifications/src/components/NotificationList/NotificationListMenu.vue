@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <ActionIconButton
-        :theme="secondaryTheme"
+    <ActionFab
+        :theme="secondaryPlainTheme"
         :size="smallSize"
         :options="items"
         @input="onSelectValue">
@@ -18,7 +18,7 @@
                     :title="option.text" />
             </ListElementDescription>
         </template>
-    </ActionIconButton>
+    </ActionFab>
 </template>
 
 <script>
@@ -26,7 +26,7 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import ActionIconButton from '@UI/components/ActionIconButton/ActionIconButton';
+import ActionFab from '@UI/components/ActionFab/ActionFab';
 import IconDots from '@UI/components/Icons/Others/IconDots';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
@@ -37,7 +37,7 @@ import {
 export default {
     name: 'NotificationListMenu',
     components: {
-        ActionIconButton,
+        ActionFab,
         IconDots,
         ListElementDescription,
         ListElementTitle,
@@ -46,7 +46,7 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
-        secondaryTheme() {
+        secondaryPlainTheme() {
             return THEME.SECONDARY;
         },
         markAllAsRead() {

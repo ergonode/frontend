@@ -10,8 +10,12 @@ import {
     updateAll,
 } from '@Notifications/services/index';
 
+import {
+    types,
+} from './mutations';
+
 export default {
-    async checkNotificationCount({
+    async checkUnreadNotifications({
         commit,
         dispatch,
     }, {
@@ -29,7 +33,7 @@ export default {
             dispatch('setRequestTimeout');
 
             commit('__SET_STATE', {
-                key: 'count',
+                key: 'unread',
                 value: unread,
             });
 
@@ -50,27 +54,41 @@ export default {
         onError = () => {},
     }) {
         try {
-            const params = {
-                limit: state.limit,
-                offset: 0,
-                view: 'list',
-                order: 'DESC',
-                field: 'created_at',
-            };
+            if (state.notifications.length < state.count || !state.notifications.length) {
+                const params = {
+                    limit: state.limit,
+                    offset: state.offset,
+                    view: 'list',
+                    order: 'DESC',
+                    field: 'created_at',
+                };
 
-            const {
-                collection,
-            } = await getAll({
-                $axios: this.app.$axios,
-                params,
-            });
+                const {
+                    collection,
+                    info,
+                } = await getAll({
+                    $axios: this.app.$axios,
+                    params,
+                });
 
-            commit('__SET_STATE', {
-                key: 'notifications',
-                value: collection,
-            });
+                commit('__SET_STATE', {
+                    key: 'notifications',
+                    value: [
+                        ...state.notifications,
+                        ...collection,
+                    ],
+                });
+                commit('__SET_STATE', {
+                    key: 'offset',
+                    value: state.offset + state.limit,
+                });
+                commit('__SET_STATE', {
+                    key: 'count',
+                    value: info.count,
+                });
 
-            onSuccess();
+                onSuccess();
+            }
         } catch (e) {
             if (this.app.$axios.isCancel(e)) {
                 return;
@@ -89,8 +107,7 @@ export default {
             id,
         });
 
-        dispatch('checkNotificationCount', {});
-        dispatch('getNotifications', {});
+        dispatch('updateNotificationReadTime', id);
     },
     async markAllNotificationsAsRead({
         dispatch,
@@ -99,8 +116,23 @@ export default {
             $axios: this.app.$axios,
         });
 
-        dispatch('checkNotificationCount', {});
-        dispatch('getNotifications', {});
+        dispatch('updateAllNotificationsReadTime');
+    },
+    updateNotificationReadTime({
+        state,
+        commit,
+    }, id) {
+        const index = state.notifications.findIndex(notification => notification.id === id);
+
+        commit(types.UPDATE_NOTIFICATION_READ_TIME, {
+            index,
+            readTime: new Date().toISOString(),
+        });
+    },
+    updateAllNotificationsReadTime({
+        commit,
+    }) {
+        commit(types.UPDATE_ALL_NOTIFICATIONS_READ_TIME, new Date().toISOString());
     },
     increaseRequestTimeInterval({
         commit, state,
@@ -126,7 +158,7 @@ export default {
         dispatch('invalidateRequestTimeout');
 
         const timeout = setTimeout(() => {
-            dispatch('checkNotificationCount', {});
+            dispatch('checkUnreadNotifications', {});
         }, state.requestTimeInterval);
 
         commit('__SET_STATE', {

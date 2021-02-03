@@ -14,9 +14,6 @@
         "NotificationListMenu": {
           "markAllAsRead": "Mark all as read"
         },
-        "NotificationListFooter": {
-          "seeAllActionsTitle": "SEE ALL ACTIONS"
-        },
         "NotificationListItem": {
           "markAsRead": "Mark as read"
         }

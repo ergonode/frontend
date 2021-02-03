@@ -7,8 +7,8 @@
         <template #input>
             <IconBell :fill-color="whiteColor" />
             <NotificationBadge
-                v-if="notificationsCount > 0"
-                :number="notificationsCount" />
+                v-if="unread > 0"
+                :number="unread" />
         </template>
         <template #dropdown>
             <div class="notifications-dropdown">
@@ -39,9 +39,9 @@ export default {
         NotificationBadge,
     },
     computed: {
-        ...mapState('notification', {
-            notificationsCount: state => state.count,
-        }),
+        ...mapState('notification', [
+            'unread',
+        ]),
         whiteColor() {
             return WHITE;
         },
@@ -52,9 +52,6 @@ export default {
 <style lang="scss" scoped>
     .notifications-dropdown {
         display: flex;
-        flex: 1;
-        flex-direction: column;
-        align-items: center;
         width: 400px;
         height: calc(100vh - 48px);
     }
