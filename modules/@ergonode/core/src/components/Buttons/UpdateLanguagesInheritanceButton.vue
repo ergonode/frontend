@@ -101,6 +101,11 @@ export default {
                     onSuccess: () => this.onUpdateSuccess(languages),
                     onError: this.onUpdateError,
                 });
+            } else {
+                this.$addAlert({
+                    type: ALERT_TYPE.INFO,
+                    message: 'Language inheritance tree cannot be saved without any language',
+                });
             }
         },
         async onUpdateSuccess(languages) {

@@ -30,11 +30,11 @@ export function getFixedMousePosition(event) {
 
     // Firefox does not support pageX, pageY...
     if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-        xPos = event.screenX;
-        yPos = event.screenY;
+        xPos = event.x || event.screenX;
+        yPos = event.y || event.screenY;
     } else {
-        xPos = event.pageX;
-        yPos = event.pageY;
+        xPos = event.x;
+        yPos = event.y;
     }
 
     return {
