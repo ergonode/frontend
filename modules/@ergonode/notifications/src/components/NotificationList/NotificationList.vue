@@ -9,7 +9,8 @@
             <NotificationListHeader />
             <NotificationListExpandingSection
                 v-if="processingSection.length"
-                :title="$t('@Notifications.notification.components.NotificationList.processingSectionTitle')">
+                :title="$t('@Notifications.notification.components.NotificationList.processingSectionTitle')"
+                :notifications-count="processingSectionNotificationsCount">
                 <template #body>
                     <template v-for="processing in processingSection">
                         <Component
@@ -106,6 +107,11 @@ export default {
             count: state => state.count,
             oldNotifications: state => state.notifications,
         }),
+        processingSectionNotificationsCount() {
+            return this.processingSection.reduce(
+                (prev, curr) => prev + curr.notifications.length, 0,
+            );
+        },
         processingSection() {
             return this.notifications[ACTION_CENTER_SECTIONS.PROCESSING];
         },

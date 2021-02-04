@@ -5,39 +5,26 @@
 <template>
     <NotificationListItemTemplate :item="item">
         <template #prepend>
-            <CircleProgressBar
-                :radius="radius"
-                :progress="progress"
-                :stroke="stroke" />
+            <NotificationListItemError :item="item" />
         </template>
     </NotificationListItemTemplate>
 </template>
 
 <script>
+
+import NotificationListItemError from '@Notifications/components/NotificationList/Item/NotificationListItemError';
 import NotificationListItemTemplate from '@Notifications/components/NotificationList/Item/NotificationListItemTemplate';
-import CircleProgressBar from '@UI/components/ProgressBar/Circle/CircleProgressBar';
 
 export default {
-    name: 'NotificationListExportProcessingItem',
+    name: 'NotificationListExportSuccessItem',
     components: {
         NotificationListItemTemplate,
-        CircleProgressBar,
+        NotificationListItemError,
     },
     props: {
         item: {
             type: Object,
             required: true,
-        },
-    },
-    computed: {
-        radius() {
-            return 20;
-        },
-        progress() {
-            return (this.item.processed / this.item.items) * 100;
-        },
-        stroke() {
-            return 2;
         },
     },
 };

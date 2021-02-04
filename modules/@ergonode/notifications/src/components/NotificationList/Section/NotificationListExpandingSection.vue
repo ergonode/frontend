@@ -6,15 +6,15 @@
     <NotificationListSection :title="title">
         <template #appendHeader>
             <div class="notification-list-expanding-section-header-actions">
-                <NumericBadge number="10" />
-                <IconButton
-                    :size="tinySize"
-                    :theme="secondaryPlainTheme"
+                <NumericBadge :number="notificationsCount" />
+                <Fab
+                    :size="smallSize"
+                    :theme="secondaryTheme"
                     @click.native="onExpandItem">
                     <template #icon>
                         <IconArrowDouble :state="buttonExpanderIconState" />
                     </template>
-                </IconButton>
+                </Fab>
             </div>
         </template>
         <template #body>
@@ -36,7 +36,7 @@ import {
 } from '@Core/defaults/theme';
 import NotificationListSection from '@Notifications/components/NotificationList/Section/NotificationListSection';
 import NumericBadge from '@UI/components/Badges/NumericBadge';
-import IconButton from '@UI/components/IconButton/IconButton';
+import Fab from '@UI/components/Fab/Fab';
 import IconArrowDouble from '@UI/components/Icons/Arrows/IconArrowDouble';
 
 export default {
@@ -44,13 +44,17 @@ export default {
     components: {
         NotificationListSection,
         IconArrowDouble,
-        IconButton,
+        Fab,
         NumericBadge,
     },
     props: {
         title: {
             type: String,
             default: '',
+        },
+        notificationsCount: {
+            type: Number,
+            default: 0,
         },
     },
     data() {
@@ -59,11 +63,11 @@ export default {
         };
     },
     computed: {
-        tinySize() {
-            return SIZE.TINY;
+        smallSize() {
+            return SIZE.SMALL;
         },
-        secondaryPlainTheme() {
-            return THEME.SECONDARY_PLAIN;
+        secondaryTheme() {
+            return THEME.SECONDARY;
         },
         buttonExpanderIconState() {
             return this.isExpanded ? ARROW.DOWN : ARROW.UP;
