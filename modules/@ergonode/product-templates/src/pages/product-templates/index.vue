@@ -8,6 +8,13 @@
             title="Templates"
             :is-read-only="isReadOnly">
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <CreateProductTemplateButton />
             </template>
         </TitleBar>
@@ -16,6 +23,13 @@
                 <ProductTemplatesGrid />
             </template>
         </CenterViewTemplate>
+        <template
+            v-for="(modal, index) in extendedModals">
+            <Component
+                :is="modal.component"
+                :key="index"
+                v-bind="bindingProps(modal)" />
+        </template>
     </Page>
 </template>
 
@@ -41,8 +55,24 @@ export default {
         beforeRouteLeaveMixin,
     ],
     computed: {
+        extendedMainAction() {
+            return this.$getExtendSlot('@Templates/pages/product-templates/mainAction');
+        },
+        extendedModals() {
+            return this.$getExtendSlot('@Templates/pages/product-templates/injectModal');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.TEMPLATE_DESIGNER.namespace);
+        },
+    },
+    methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.TEMPLATE_DESIGNER,
+                ...props,
+            };
         },
     },
     head() {
