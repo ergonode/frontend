@@ -11,6 +11,13 @@
                 <NavigateBackFab :previous-route="previousRoute" />
             </template>
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <RemoveCategoryTreeButton />
             </template>
         </TitleBar>
@@ -76,6 +83,9 @@ export default {
         ...mapState('categoryTree', [
             'code',
         ]),
+        extendedMainAction() {
+            return this.$getExtendSlot('@Trees/pages/category-trees/_tree/mainAction');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.CATEGORY_TREE.namespace);
         },
@@ -99,6 +109,14 @@ export default {
         ...mapActions('tab', {
             __clearTranslationsStorage: '__clearStorage',
         }),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.CATEGORY_TREE,
+                ...props,
+            };
+        },
     },
     head() {
         return {

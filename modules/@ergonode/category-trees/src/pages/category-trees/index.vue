@@ -8,12 +8,26 @@
             title="Category trees"
             :is-read-only="isReadOnly">
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <CreateCategoryTreeButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
             :items="asyncTabs" />
+        <template
+            v-for="(modal, index) in extendedModals">
+            <Component
+                :is="modal.component"
+                :key="index"
+                v-bind="bindingProps(modal)" />
+        </template>
     </Page>
 </template>
 
@@ -39,8 +53,24 @@ export default {
         asyncTabsMixin,
     ],
     computed: {
+        extendedMainAction() {
+            return this.$getExtendSlot('@Trees/pages/category-trees/mainAction');
+        },
+        extendedModals() {
+            return this.$getExtendSlot('@Trees/pages/category-trees/injectModal');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.CATEGORY_TREE.namespace);
+        },
+    },
+    methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.CATEGORY_TREE,
+                ...props,
+            };
         },
     },
     head() {
