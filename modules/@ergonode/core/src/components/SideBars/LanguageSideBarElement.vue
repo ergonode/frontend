@@ -5,7 +5,7 @@
 <template>
     <ListDraggableElement
         :draggable-id="item.id"
-        :disabled="disabled"
+        :disabled="isDisabled"
         :hint="item.name ? `#${item.code}` : ''"
         :label="item.name"
         @drag="onDrag">

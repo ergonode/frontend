@@ -420,6 +420,9 @@ export default {
                 row: fixedRow,
                 column,
             });
+            const fixedColumn = this.singleRoot && column === 0 && this.items.length > 0
+                ? column + 1
+                : column;
 
             if (row < this.items.length) {
                 this.$emit('shift-items', {
@@ -431,7 +434,7 @@ export default {
                     item: {
                         id: 'ghost_item',
                         row: fixedRow,
-                        column,
+                        column: fixedColumn,
                         parent: parent.id,
                     },
                 });
@@ -439,21 +442,21 @@ export default {
                     key: 'ghostIndex',
                     value: {
                         row: fixedRow,
-                        column,
+                        column: fixedColumn,
                     },
                 });
             } else {
                 this.$emit('add-item', {
                     id: 'ghost_item',
                     row: this.items.length,
-                    column,
+                    column: fixedColumn,
                     parent: parent.id,
                 });
                 this.__setState({
                     key: 'ghostIndex',
                     value: {
                         row: fixedRow + 1,
-                        column,
+                        column: fixedColumn,
                     },
                 });
             }

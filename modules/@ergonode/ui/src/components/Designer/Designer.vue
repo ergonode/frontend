@@ -131,7 +131,7 @@ export default {
     },
     watch: {
         lastItemRow() {
-            this.setRows(this.rows);
+            this.setRows(Math.max(this.lastItemRow + 1, this.rows));
         },
     },
     methods: {

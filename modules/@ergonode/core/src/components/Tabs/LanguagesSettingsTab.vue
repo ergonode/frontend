@@ -10,7 +10,7 @@
                     <DropZone
                         v-show="isDropZoneVisible"
                         :hover-background-color="graphiteLightColor"
-                        title="REMOVE CATEGORY">
+                        title="REMOVE LANGUAGE">
                         <template #icon="{ color }">
                             <IconRemoveFilter :fill-color="color" />
                         </template>
@@ -48,6 +48,7 @@ import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
 import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -89,6 +90,16 @@ export default {
         graphiteLightColor() {
             return GRAPHITE_LIGHT;
         },
+    },
+    async beforeDestroy() {
+        if (!this.changeValues.saved) {
+            await this.getLanguageTree({});
+        }
+    },
+    methods: {
+        ...mapActions('core', [
+            'getLanguageTree',
+        ]),
     },
 };
 </script>
