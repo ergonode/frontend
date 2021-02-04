@@ -11,6 +11,13 @@
                 <NavigateBackFab :previous-route="previousRoute" />
             </template>
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <RemoveCategoryButton />
             </template>
         </TitleBar>
@@ -76,6 +83,9 @@ export default {
         ...mapState('category', [
             'code',
         ]),
+        extendedMainAction() {
+            return this.$getExtendSlot('@Categories/pages/categories/_category/mainAction');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.CATEGORY.namespace);
         },
@@ -95,6 +105,14 @@ export default {
         ...mapActions('tab', {
             __clearTranslationsStorage: '__clearStorage',
         }),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.CATEGORY,
+                ...props,
+            };
+        },
     },
     head() {
         return {

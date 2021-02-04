@@ -8,14 +8,29 @@
             :title="$t('category.page.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <CreateCategoryButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
             :items="asyncTabs" />
+        <template
+            v-for="(modal, index) in extendedModals">
+            <Component
+                :is="modal.component"
+                :key="index"
+                v-bind="bindingProps(modal)" />
+        </template>
     </Page>
 </template>
+
 <script>
 import CreateCategoryButton from '@Categories/components/Buttons/CreateCategoryButton';
 import PRIVILEGES from '@Categories/config/privileges';
@@ -38,8 +53,24 @@ export default {
         asyncTabsMixin,
     ],
     computed: {
+        extendedMainAction() {
+            return this.$getExtendSlot('@Categories/pages/categories/mainAction');
+        },
+        extendedModals() {
+            return this.$getExtendSlot('@Categories/pages/categories/injectModal');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.CATEGORY.namespace);
+        },
+    },
+    methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.CATEGORY,
+                ...props,
+            };
         },
     },
     head() {
