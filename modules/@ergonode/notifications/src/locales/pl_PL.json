@@ -4,9 +4,21 @@
     "notification": {
       "_": {},
       "components": {
-        "NotificationsListNoDataPlaceholder": {
+        "NotificationListNoDataPlaceholder": {
           "noActions": "Brak kacji",
           "info": "Aktualizacje produktu, procesowane operacje oraz inne aktywności pojawią się tutaj."
+        },
+        "NotificationListHeader": {
+          "title": "Centrum akcji"
+        },
+        "NotificationListMenu": {
+          "markAllAsRead": "Oznacz wszystkie jako przeczytane"
+        },
+        "NotificationListItem": {
+          "markAsRead": "Oznacz jako przeczytany"
+        },
+        "NotificationList": {
+          "title": "Notyfikacje"
         }
       },
       "pages": {},

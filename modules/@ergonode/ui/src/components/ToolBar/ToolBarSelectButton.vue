@@ -37,6 +37,16 @@ export default {
             isClickedOutside: false,
         };
     },
+    watch: {
+        isFocused() {
+            if (this.isFocused) {
+                window.addEventListener('click', this.onClickOutside);
+            } else {
+                window.removeEventListener('click', this.onClickOutside);
+            }
+            this.$emit('focus', this.isFocused);
+        },
+    },
     beforeDestroy() {
         window.removeEventListener('click', this.onClickOutside);
     },
@@ -46,31 +56,14 @@ export default {
                 window.addEventListener('click', this.onClickOutside);
             }
         },
-        onClickOutside(event) {
-            let isClickedInsideMenu = false;
+        onClickOutside({
+            pageX, pageY,
+        }) {
+            const {
+                menu,
+            } = this.$refs;
 
-            if (this.isFocused) {
-                const {
-                    pageX, pageY,
-                } = event;
-                const {
-                    menu,
-                } = this.$refs;
-
-                isClickedInsideMenu = !isMouseOutsideElement(menu, pageX, pageY);
-
-                if (!isClickedInsideMenu) {
-                    this.isFocused = false;
-                }
-            } else {
-                this.isFocused = !this.isFocused;
-            }
-
-            if (!this.isFocused) {
-                window.removeEventListener('click', this.onClickOutside);
-            }
-
-            this.$emit('focus', this.isFocused);
+            this.isFocused = !isMouseOutsideElement(menu, pageX, pageY);
         },
     },
 };
@@ -85,7 +78,6 @@ export default {
         display: flex;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_2_DP;
-        transition: all 0.4s ease;
         color: $GRAPHITE;
     }
 </style>

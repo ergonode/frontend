@@ -3,17 +3,17 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="notifications-list-no-data-placeholder">
+    <div class="notification-list-no-data-placeholder">
         <Infographic
-            class="notifications-list-no-data-placeholder__infographic"
+            class="notification-list-no-data-placeholder__infographic"
             :bg-url="bgUrl" />
-        <div class="notifications-list-no-data-placeholder__description">
+        <div class="notification-list-no-data-placeholder__description">
             <span
-                class="notifications-list-no-data-placeholder__title"
-                v-text="$t('@Notifications.notification.components.NotificationsListNoDataPlaceholder.noActions')" />
+                class="notification-list-no-data-placeholder__title"
+                v-text="$t('@Notifications.notification.components.NotificationListNoDataPlaceholder.noActions')" />
             <span
-                class="notifications-list-no-data-placeholder__subtitle"
-                v-text="$t('@Notifications.notification.components.NotificationsListNoDataPlaceholder.info')" />
+                class="notification-list-no-data-placeholder__subtitle"
+                v-text="$t('@Notifications.notification.components.NotificationListNoDataPlaceholder.info')" />
         </div>
     </div>
 </template>
@@ -22,7 +22,7 @@
 import Infographic from '@Authentication/components/Infographic/Infographic';
 
 export default {
-    name: 'NotificationsListNoDataPlaceholder',
+    name: 'NotificationListNoDataPlaceholder',
     components: {
         Infographic,
     },
@@ -35,8 +35,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .notifications-list-no-data-placeholder {
+    .notification-list-no-data-placeholder {
         display: flex;
+        align-self: center;
         flex-direction: column;
         align-items: center;
         width: 320px;

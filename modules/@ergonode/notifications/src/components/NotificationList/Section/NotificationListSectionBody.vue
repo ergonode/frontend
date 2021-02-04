@@ -3,23 +3,20 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="notification-list-footer">
-        <slot />
+    <div class="notification-list-section-body">
+        <slot name="body" />
     </div>
 </template>
 
 <script>
 export default {
-    name: 'NotificationsListFooter',
+    name: 'NotificationListSectionBody',
 };
 </script>
 
 <style lang="scss" scoped>
-    .notification-list-footer {
+    .notification-list-section-body {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 24px 0;
     }
 </style>
