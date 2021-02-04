@@ -10,6 +10,15 @@
             <template #prependHeader>
                 <NavigateBackFab :previous-route="previousRoute" />
             </template>
+            <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
+            </template>
         </TitleBar>
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
@@ -75,6 +84,9 @@ export default {
         title() {
             return `${this.firstName} ${this.lastName}`;
         },
+        extendedMainAction() {
+            return this.$getExtendSlot('@Users/pages/users/_user/mainAction');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.USER.namespace);
         },
@@ -90,6 +102,14 @@ export default {
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
         }),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.USER,
+                ...props,
+            };
+        },
     },
     head() {
         return {
