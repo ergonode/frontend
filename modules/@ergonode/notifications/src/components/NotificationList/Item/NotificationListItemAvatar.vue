@@ -42,7 +42,7 @@ export default {
                 : null;
         },
         isRead() {
-            return this.item.read_at !== null;
+            return this.item.readAt !== null;
         },
     },
 };

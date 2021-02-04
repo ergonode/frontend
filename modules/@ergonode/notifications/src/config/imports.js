@@ -5,4 +5,5 @@
 
 export const Components = {
     ToolBarNotificationButton: () => import('@Notifications/components/ToolBar/ToolBarNotificationButton').then(m => m.default || m),
+    NotificationListItem: () => import('@Notifications/components/NotificationList/Item/NotificationListItem').then(m => m.default || m),
 };

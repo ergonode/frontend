@@ -12,6 +12,7 @@ export default () => ({
     count: 0,
     unread: 0,
     notifications: [],
+    processingNotifications: [],
     requestTimeInterval: 1000,
     requestTimeout: null,
 });

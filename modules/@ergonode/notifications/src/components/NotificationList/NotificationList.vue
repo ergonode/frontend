@@ -5,16 +5,32 @@
 <template>
     <div class="notification-list">
         <Preloader v-if="isFetchingData" />
-        <template v-else-if="notifications.length">
+        <template v-else-if="processingSection.length || notificationsSection.length">
             <NotificationListHeader />
-            <NotificationListSection
-                v-if="notifications.length"
-                :title="$t('@Notifications.notification.components.NotificationList.title')">
+            <NotificationListExpandingSection
+                v-if="processingSection.length"
+                :title="$t('@Notifications.notification.components.NotificationList.processingSectionTitle')">
                 <template #body>
-                    <NotificationListItem
-                        v-for="notification in notifications"
-                        :key="notification.id"
-                        :item="notification" />
+                    <template v-for="processing in processingSection">
+                        <Component
+                            v-for="notification in processing.notifications"
+                            :is="processing.component"
+                            :key="notification.id"
+                            :item="notification" />
+                    </template>
+                </template>
+            </NotificationListExpandingSection>
+            <NotificationListSection
+                v-if="notificationsSection.length"
+                :title="$t('@Notifications.notification.components.NotificationList.notificationSectionTitle')">
+                <template #body>
+                    <template v-for="ended in notificationsSection">
+                        <Component
+                            v-for="notification in ended.notifications"
+                            :is="ended.component"
+                            :key="notification.id"
+                            :item="notification" />
+                    </template>
                 </template>
             </NotificationListSection>
             <IntersectionObserver
@@ -38,17 +54,24 @@ import NotificationListFooter from '@Notifications/components/NotificationList/N
 import NotificationListHeader from '@Notifications/components/NotificationList/NotificationListHeader';
 import NotificationListNoDataPlaceholder
     from '@Notifications/components/NotificationList/NotificationListNoDataPlaceholder';
+import NotificationListExpandingSection
+    from '@Notifications/components/NotificationList/Section/NotificationListExpandingSection';
 import NotificationListSection from '@Notifications/components/NotificationList/Section/NotificationListSection';
+import {
+    ACTION_CENTER_SECTIONS,
+} from '@Notifications/defaults';
 import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import Preloader from '@UI/components/Preloader/Preloader';
 import {
     mapActions,
+    mapGetters,
     mapState,
 } from 'vuex';
 
 export default {
     name: 'NotificationList',
     components: {
+        NotificationListExpandingSection,
         NotificationListItem,
         NotificationListSection,
         NotificationListHeader,
@@ -61,7 +84,10 @@ export default {
         if (!this.notifications.length) {
             this.isFetchingData = true;
 
-            await this.getNotifications({});
+            await Promise.all([
+                this.getNotifications({}),
+                this.getProcessingNotifications({}),
+            ]);
 
             this.isFetchingData = false;
         }
@@ -73,15 +99,23 @@ export default {
         };
     },
     computed: {
-        ...mapState('notification', [
+        ...mapGetters('notification', [
             'notifications',
-            'processingNotifications',
-            'count',
         ]),
+        ...mapState('notification', {
+            count: state => state.count,
+            oldNotifications: state => state.notifications,
+        }),
+        processingSection() {
+            return this.notifications[ACTION_CENTER_SECTIONS.PROCESSING];
+        },
+        notificationsSection() {
+            return this.notifications[ACTION_CENTER_SECTIONS.NOTIFICATIONS];
+        },
         isMoreNotifications() {
             const {
                 length: listLength,
-            } = this.notifications;
+            } = this.oldNotifications;
 
             return listLength
                 && listLength < this.count
@@ -101,6 +135,7 @@ export default {
     methods: {
         ...mapActions('notification', [
             'getNotifications',
+            'getProcessingNotifications',
             '__setState',
         ]),
         async onIntersect(isIntersecting) {

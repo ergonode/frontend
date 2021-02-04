@@ -18,7 +18,8 @@
           "markAsRead": "Oznacz jako przeczytany"
         },
         "NotificationList": {
-          "title": "Notyfikacje"
+          "processingSectionTitle": "Procesowanie",
+          "notificationSectionTitle": "Notyfikacje"
         }
       },
       "pages": {},
