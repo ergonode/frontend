@@ -61,23 +61,6 @@ export default {
                         message: `Exporting "${notification.name}"`,
                     });
                 }
-
-                // TODO: When BE will introduce notifications for exports
-                // else if (processed === items && errors === 0) {
-                //     successNotifications.notifications.push({
-                //         ...notification,
-                //         createdAt: notification.started_at,
-                //         readAt: false,
-                //         message: `Export "${notification.name}" has been finished`,
-                //     });
-                // } else if (errors > 0) {
-                //     warningNotifications.notifications.push({
-                //         ...notification,
-                //         createdAt: notification.started_at,
-                //         readAt: false,
-                //         message: `Export "${notification.name}" has been finished with "${errors}" errors`,
-                //     });
-                // }
             });
 
             return [
