@@ -5,12 +5,15 @@
 <template>
     <Login
         @redirect-to="onRedirectTo">
-        <template #form>
+        <template
+            v-if="loginFormComponents"
+            #form>
             <Component
                 :is="loginFormComponents.formComponent"
                 @redirect-to="onRedirectTo" />
         </template>
         <Infographic
+            v-if="loginFormComponents"
             :bg-url="loginFormComponents.bgUrl"
             :bg-position="loginFormComponents.bgPosition" />
     </Login>
@@ -31,6 +34,9 @@ import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
 import {
+    isEmpty,
+} from '@Core/models/objectWrapper';
+import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -43,7 +49,8 @@ export default {
     },
     data() {
         return {
-            loginState: LOGIN_STATE.CREDENTIALS,
+            activeLoginState: LOGIN_STATE.CREDENTIALS,
+            extendedLoginStates: {},
         };
     },
     computed: {
@@ -51,7 +58,11 @@ export default {
             'isLogged',
         ]),
         loginFormComponents() {
-            switch (this.loginState) {
+            if (!LOGIN_STATE[this.activeLoginState] && !isEmpty(this.extendedLoginStates)) {
+                return this.extendedLoginStates[this.activeLoginState];
+            }
+
+            switch (this.activeLoginState) {
             case LOGIN_STATE.CREDENTIALS:
                 return {
                     formComponent: LoginCredentialsForm,
@@ -88,6 +99,16 @@ export default {
             }
         },
     },
+    async mounted() {
+        const extendedLoginStates = await this.$getExtendMethod('@Authentication/pages/login/loginState');
+
+        extendedLoginStates.forEach((states) => {
+            this.extendedLoginStates = {
+                ...this.extendedLoginStates,
+                ...states,
+            };
+        });
+    },
     created() {
         const {
             loginState = null,
@@ -101,7 +122,7 @@ export default {
         }
 
         if (loginState) {
-            this.loginState = loginState;
+            this.activeLoginState = loginState;
         }
 
         if (alert) {
@@ -113,7 +134,7 @@ export default {
             'resetState',
         ]),
         onRedirectTo(state) {
-            this.loginState = state;
+            this.activeLoginState = state;
         },
     },
     layout: 'login',

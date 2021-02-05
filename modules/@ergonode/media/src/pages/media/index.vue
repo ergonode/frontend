@@ -8,12 +8,26 @@
             title="Media"
             :is-read-only="isReadOnly">
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <UploadResourcesButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
             :items="asyncTabs" />
+        <template
+            v-for="(modal, index) in extendedModals">
+            <Component
+                :is="modal.component"
+                :key="index"
+                v-bind="bindingProps(modal)" />
+        </template>
     </Page>
 </template>
 
@@ -39,8 +53,24 @@ export default {
         asyncTabsMixin,
     ],
     computed: {
+        extendedMainAction() {
+            return this.$getExtendSlot('@Media/pages/media/mainAction');
+        },
+        extendedModals() {
+            return this.$getExtendSlot('@Media/pages/media/injectModal');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.MULTIMEDIA.namespace);
+        },
+    },
+    methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.MULTIMEDIA,
+                ...props,
+            };
         },
     },
     head() {

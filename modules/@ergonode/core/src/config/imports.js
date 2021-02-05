@@ -15,6 +15,11 @@ export const Tabs = {
     UnitGeneralTab: () => import('@Core/components/Tabs/UnitGeneralTab').then(m => m.default || m),
 };
 
+export const Components = {
+    LanguagesVerticalTab: () => import('@Core/components/VerticalTabs/LanguagesVerticalTab').then(m => m.default || m),
+};
+
 export const Icons = {
     Settings: () => import('@Core/components/Icons/Menu/IconSettings'),
+    IconTranslate: () => import('@UI/components/Icons/Others/IconTranslate'),
 };

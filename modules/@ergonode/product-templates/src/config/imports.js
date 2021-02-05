@@ -14,10 +14,12 @@ export const Tabs = {
 
 export const Icons = {
     Templates: () => import('@Core/components/Icons/Menu/IconTemplates'),
+    IconWidget: () => import('@Core/components/Icons/Widgets/IconWidget'),
 };
 
 export const Components = {
     ProductFormTemplate: () => import('@Templates/extends/components/Forms/ProductFormTemplate'),
+    WidgetsVerticalTab: () => import('@Templates/components/VerticalTabs/WidgetsVerticalTab'),
 };
 
 export const Store = {

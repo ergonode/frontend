@@ -27,7 +27,7 @@ export default {
     computed: {
         styles() {
             return {
-                gridTemplateColumns: `repeat(${this.parameters.length}, minmax(max-content, 33%))`,
+                gridTemplateColumns: `repeat(${this.parameters.length}, minmax(min-content, 33%))`,
             };
         },
     },

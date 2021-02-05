@@ -8,12 +8,26 @@
             :title="$t('role.page.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <CreateRoleButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
             :items="asyncTabs" />
+        <template
+            v-for="(modal, index) in extendedModals">
+            <Component
+                :is="modal.component"
+                :key="index"
+                v-bind="bindingProps(modal)" />
+        </template>
     </Page>
 </template>
 
@@ -39,8 +53,24 @@ export default {
         asyncTabsMixin,
     ],
     computed: {
+        extendedMainAction() {
+            return this.$getExtendSlot('@Users/pages/roles/mainAction');
+        },
+        extendedModals() {
+            return this.$getExtendSlot('@Users/pages/roles/injectModal');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.USER_ROLE.namespace);
+        },
+    },
+    methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.USER_ROLE,
+                ...props,
+            };
         },
     },
     head() {

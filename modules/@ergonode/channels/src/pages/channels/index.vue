@@ -8,12 +8,26 @@
             title="Channel"
             :is-read-only="isReadOnly">
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <CreateChannelButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
             :items="asyncTabs" />
+        <template
+            v-for="(modal, index) in extendedModals">
+            <Component
+                :is="modal.component"
+                :key="index"
+                v-bind="bindingProps(modal)" />
+        </template>
     </Page>
 </template>
 
@@ -39,8 +53,24 @@ export default {
         asyncTabsMixin,
     ],
     computed: {
+        extendedMainAction() {
+            return this.$getExtendSlot('@Channels/pages/channels/mainAction');
+        },
+        extendedModals() {
+            return this.$getExtendSlot('@Channels/pages/channels/injectModal');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.CHANNEL.namespace);
+        },
+    },
+    methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.CHANNEL,
+                ...props,
+            };
         },
     },
     head() {

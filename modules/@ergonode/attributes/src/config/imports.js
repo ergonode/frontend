@@ -20,6 +20,7 @@ export const Tabs = {
 
 export const Icons = {
     Templates: () => import('@Core/components/Icons/Menu/IconTemplates').then(m => m.default || m),
+    IconSettings: () => import('@Core/components/Icons/Menu/IconSettings').then(m => m.default || m),
     IconTextArea: () => import('@Attributes/components/Icons/IconTextArea').then(m => m.default || m),
     IconText: () => import('@Attributes/components/Icons/IconText').then(m => m.default || m),
     IconDate: () => import('@Attributes/components/Icons/IconDate').then(m => m.default || m),
@@ -29,6 +30,7 @@ export const Icons = {
     IconNumeric: () => import('@Attributes/components/Icons/IconNumeric').then(m => m.default || m),
     IconPrice: () => import('@Attributes/components/Icons/IconPrice').then(m => m.default || m),
     IconUnit: () => import('@Attributes/components/Icons/IconMultiSelect').then(m => m.default || m),
+    IconAttributes: () => import('@Attributes/components/Icons/IconAttributes').then(m => m.default || m),
 };
 
 // Extends
@@ -40,6 +42,8 @@ export const Components = {
     AttributeTranslationFormPlaceholder: () => import('@Attributes/extends/attribute/components/Forms/AttributeTranslationFormPlaceholder').then(m => m.default || m),
     AttributeTranslationFormOptions: () => import('@Attributes/extends/attribute/components/Forms/AttributeTranslationFormOptions').then(m => m.default || m),
     ProductTemplateFormPresentation: () => import('@Attributes/extends/productTemplate/components/Forms/ProductTemplateFormPresentation').then(m => m.default || m),
+    AttributesVerticalTab: () => import('@Attributes/extends/attribute/components/VerticalTabs/AttributesVerticalTab').then(m => m.default || m),
+    SystemAttributesVerticalTab: () => import('@Attributes/extends/attribute/components/VerticalTabs/SystemAttributesVerticalTab').then(m => m.default || m),
 };
 
 export const Store = {

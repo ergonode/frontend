@@ -11,7 +11,7 @@
 
 <script>
 import CreateCategoryFab from '@Categories/components/Buttons/CreateCategoryFab';
-import CategoryTreesSideBar from '@Trees/extends/components/SideBars/CategoryTreesSideBar';
+import CategoryTreesSideBar from '@Trees/extends/product/components/SideBars/CategoryTreesSideBar';
 
 export default {
     name: 'CategoryTreesVerticalTab',

@@ -35,6 +35,15 @@
                 </template>
             </GridNoDataPlaceholder>
         </template>
+        <template #actionsHeader>
+            <template
+                v-for="(actionItem, index) in extendedActionHeader">
+                <Component
+                    :is="actionItem.component"
+                    :key="index"
+                    v-bind="bindingProps(actionItem)" />
+            </template>
+        </template>
     </Grid>
 </template>
 
@@ -99,6 +108,9 @@ export default {
         };
     },
     computed: {
+        extendedActionHeader() {
+            return this.$getExtendSlot('@Templates/components/Grids/ProductTemplatesGrid/actionsHeader');
+        },
         collectionCellBinding() {
             return {
                 imageColumn: 'image_id',
@@ -148,6 +160,14 @@ export default {
         );
     },
     methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.TEMPLATE_DESIGNER,
+                ...props,
+            };
+        },
         onProductTemplateCreated() {
             this.onFetchData();
         },

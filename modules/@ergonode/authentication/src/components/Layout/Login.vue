@@ -25,6 +25,13 @@
                 <LinkButton
                     :title="$t('authentication.layout.userGuide')"
                     @click.native="onUserGuideOpen" />
+                <template
+                    v-for="(footerInfo, index) in extendedFooterInfo">
+                    <Component
+                        :is="footerInfo.component"
+                        :key="index"
+                        v-bind="footerInfo.props" />
+                </template>
             </div>
             <IconLogoName
                 class="login__footer-logo"
@@ -74,6 +81,9 @@ export default {
         };
     },
     computed: {
+        extendedFooterInfo() {
+            return this.$getExtendSlot('@Authentication/components/Layout/Login/footerInfo');
+        },
         smallSize() {
             return SIZE.SMALL;
         },
