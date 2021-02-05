@@ -15,12 +15,14 @@ export const Tabs = {
 
 export const Icons = {
     Templates: () => import('@Core/components/Icons/Menu/IconTemplates'),
+    IconTree: () => import('@Categories/components/Icons/IconTree'),
 };
 
 // Extends
 
 export const Components = {
     ProductFormCategory: () => import('@Categories/extends/product/components/Forms/ProductFormCategory'),
+    CategoriesVerticalTab: () => import('@Categories/extends/categoryTree/components/VerticalTabs/CategoriesVerticalTab'),
 };
 
 export const Store = {

@@ -16,8 +16,10 @@ export const Tabs = {
 
 export const Icons = {
     Templates: () => import('@Core/components/Icons/Menu/IconTemplates'),
+    IconTree: () => import('@Trees/components/Icons/IconTree'),
 };
 
 export const Components = {
     AdvancedFilterCategoryTreeType: () => import('@Trees/components/AdvancedFilters/Type/AdvancedFilterCategoryTreeType'),
+    CategoryTreesVerticalTab: () => import('@Trees/extends/product/components/VerticalTabs/CategoryTreesVerticalTab'),
 };

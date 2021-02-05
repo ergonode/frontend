@@ -100,17 +100,30 @@ export default {
         productTemplate: Store.Template,
     },
     extendMethods: {
+        '@Templates/components/Tabs/TemplateDesignerTab/verticalTabs': ({
+            props,
+        }) => [
+            {
+                title: 'Product attributes',
+                component: Components.AttributesVerticalTab,
+                icon: Icons.IconAttributes,
+                props: {
+                    isSelectLanguage: false,
+                    ...props,
+                },
+            },
+        ],
         '@Products/components/Tabs/ProductCatalogTab/verticalTabs': ({}) => [
             {
                 title: 'Product attributes',
-                component: () => import('@Attributes/extends/attribute/components/VerticalTabs/AttributesVerticalTab'),
-                icon: () => import('@Attributes/components/Icons/IconAttributes'),
+                component: Components.AttributesVerticalTab,
+                icon: Icons.IconAttributes,
                 props: {},
             },
             {
                 title: 'System attributes',
-                component: () => import('@Attributes/extends/attribute/components/VerticalTabs/SystemAttributesVerticalTab'),
-                icon: () => import('@Core/components/Icons/Menu/IconSettings'),
+                component: Components.SystemAttributesVerticalTab,
+                icon: Icons.IconSettings,
                 props: {},
             },
         ],

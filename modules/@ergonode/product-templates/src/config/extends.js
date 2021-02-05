@@ -5,6 +5,7 @@
 
 import {
     Components,
+    Icons,
     Store,
 } from '@Templates/config/imports';
 import {
@@ -27,6 +28,16 @@ export default {
         },
     },
     extendMethods: {
+        '@Templates/components/Tabs/TemplateDesignerTab/verticalTabs': ({
+            props,
+        }) => [
+            {
+                title: 'Widgets',
+                component: Components.WidgetsVerticalTab,
+                icon: Icons.IconWidget,
+                props,
+            },
+        ],
         '@Products/store/product/action/getProduct/__after': ({
             $this, data,
         }) => {

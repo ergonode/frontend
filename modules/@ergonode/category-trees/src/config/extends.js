@@ -5,6 +5,7 @@
 
 import {
     Components,
+    Icons,
 } from './imports';
 
 export default {
@@ -17,8 +18,8 @@ export default {
         '@Products/components/Tabs/ProductCatalogTab/verticalTabs': ({}) => [
             {
                 title: 'Categories',
-                component: () => import('@Trees/extends/product/components/VerticalTabs/CategoryTreesVerticalTab'),
-                icon: () => import('@Trees/components/Icons/IconTree'),
+                component: Components.CategoryTreesVerticalTab,
+                icon: Icons.IconTree,
                 props: {},
             },
         ],

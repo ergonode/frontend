@@ -9,6 +9,7 @@ import {
 
 import {
     Components,
+    Icons,
     Store,
 } from './imports';
 
@@ -27,6 +28,19 @@ export default {
         },
     },
     extendMethods: {
+        '@Trees/components/Tabs/CategoryTreeDesignerTab/verticalTabs': ({
+            props,
+        }) => [
+            {
+                title: 'Conditions',
+                component: Components.CategoriesVerticalTab,
+                icon: Icons.IconTree,
+                props: {
+                    isSelectLanguage: true,
+                    ...props,
+                },
+            },
+        ],
         '@Products/store/product/action/getProduct/__after': ({
             $this, data,
         }) => {

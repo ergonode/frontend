@@ -65,30 +65,38 @@ export default {
     mixins: [
         tabFeedbackMixin,
     ],
+    data() {
+        return {
+            verticalTabs: [],
+        };
+    },
     computed: {
         ...mapState('draggable', [
             'isElementDragging',
         ]),
-        verticalTabs() {
-            return [
-                {
-                    title: 'System languages',
-                    component: () => import('@Core/components/VerticalTabs/LanguagesVerticalTab'),
-                    icon: () => import('@UI/components/Icons/Others/IconTranslate'),
-                    props: {
-                        disabled: !this.$hasAccess([
-                            PRIVILEGES.SETTINGS.update,
-                        ]),
-                    },
-                },
-            ];
-        },
         isDropZoneVisible() {
             return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;
         },
         graphiteLightColor() {
             return GRAPHITE_LIGHT;
         },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.SETTINGS.update,
+            ]);
+        },
+    },
+    async mounted() {
+        const extendedVerticalTabs = await this.$getExtendMethod('@Core/components/Tabs/LanguagesSettingsTab/verticalTabs', {
+            $this: this,
+            props: {
+                disabled: !this.isAllowedToUpdate,
+            },
+        });
+
+        extendedVerticalTabs.forEach((tabs) => {
+            this.verticalTabs.push(...tabs);
+        });
     },
 };
 </script>

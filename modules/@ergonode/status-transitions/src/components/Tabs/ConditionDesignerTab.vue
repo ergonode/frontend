@@ -70,7 +70,7 @@ export default {
     ],
     data() {
         return {
-            isSubmitting: false,
+            verticalTabs: [],
         };
     },
     computed: {
@@ -82,25 +82,24 @@ export default {
                 PRIVILEGES.WORKFLOW.update,
             ]);
         },
-        verticalTabs() {
-            return [
-                {
-                    title: 'Conditions',
-                    component: () => import('@Conditions/components/VerticalTabs/ConditionsVerticalTab'),
-                    icon: () => import('@Categories/components/Icons/IconCategory'),
-                    props: {
-                        disabled: !this.isAllowedToUpdate,
-                        group: 'workflow',
-                    },
-                },
-            ];
-        },
         isDropZoneVisible() {
             return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;
         },
         graphiteLightColor() {
             return GRAPHITE_LIGHT;
         },
+    },
+    async mounted() {
+        const extendedVerticalTabs = await this.$getExtendMethod('@Transitions/components/Tabs/ConditionDesignerTab/verticalTabs', {
+            $this: this,
+            props: {
+                disabled: !this.isAllowedToUpdate,
+            },
+        });
+
+        extendedVerticalTabs.forEach((tabs) => {
+            this.verticalTabs.push(...tabs);
+        });
     },
     beforeDestroy() {
         this.__clearConditionStorage();
