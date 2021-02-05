@@ -94,11 +94,15 @@ export default {
     async beforeDestroy() {
         if (!this.changeValues.saved) {
             await this.getLanguageTree({});
+            this.setDisabledElements({});
         }
     },
     methods: {
         ...mapActions('core', [
             'getLanguageTree',
+        ]),
+        ...mapActions('list', [
+            'setDisabledElements',
         ]),
     },
 };
