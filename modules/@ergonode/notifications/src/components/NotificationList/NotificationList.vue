@@ -97,6 +97,7 @@ export default {
         return {
             isFetchingData: false,
             isFetchingMoreData: false,
+            timeout: null,
         };
     },
     computed: {
@@ -128,6 +129,14 @@ export default {
                 && this.count > DATA_LIMIT;
         },
     },
+    watch: {
+        processingSectionNotificationsCount: {
+            immediate: true,
+            handler() {
+                this.requestProcessingNotifications();
+            },
+        },
+    },
     beforeDestroy() {
         this.__setState({
             key: 'offset',
@@ -151,6 +160,20 @@ export default {
                 await this.getNotifications({});
 
                 this.isFetchingMoreData = false;
+            }
+        },
+        requestProcessingNotifications() {
+            if (this.processingSectionNotificationsCount > 0) {
+                this.timeout = setTimeout(async () => {
+                    clearTimeout(this.timeout);
+
+                    await this.getProcessingNotifications({});
+
+                    this.requestProcessingNotifications();
+                }, 1000);
+            } else {
+                clearTimeout(this.timeout);
+                this.timeout = null;
             }
         },
     },
