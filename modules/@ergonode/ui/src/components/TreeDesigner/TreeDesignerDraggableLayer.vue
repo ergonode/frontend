@@ -195,6 +195,10 @@ export default {
                     key: 'ghostIndex',
                     value: -1,
                 });
+                this.__setState({
+                    key: 'draggedElIndex',
+                    value: -1,
+                });
 
                 this.$emit('drop-item', item);
             }
@@ -213,7 +217,7 @@ export default {
 
             if (isDroppedToTrash) {
                 this.$emit('remove-items', this.draggedElement);
-            } else if (this.isOutOfBounds(event)) {
+            } else if (this.draggedElIndex !== -1 && this.ghostIndex === -1) {
                 this.$emit('shift-items', {
                     since: this.draggedElIndex - 1,
                     value: 1,
@@ -242,7 +246,15 @@ export default {
             });
         },
         onDragLeave(event) {
-            if (this.isOutOfBounds(event) && this.ghostIndex !== -1) {
+            const {
+                xPos,
+                yPos,
+            } = getFixedMousePosition(event);
+
+            if (this.isOutOfBounds({
+                xPos,
+                yPos,
+            }) && this.ghostIndex !== -1) {
                 this.$emit('shift-items', {
                     since: this.ghostIndex.row,
                     value: -1,
@@ -484,12 +496,10 @@ export default {
                 ? this.items[row + 1]
                 : this.items[0];
         },
-        isOutOfBounds(event) {
-            const {
-                xPos,
-                yPos,
-            } = getFixedMousePosition(event);
-
+        isOutOfBounds({
+            xPos,
+            yPos,
+        }) {
             return isMouseOutsideElement(this.$el, xPos, yPos);
         },
     },

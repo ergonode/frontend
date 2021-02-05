@@ -170,6 +170,7 @@ export default {
         flex-direction: column;
         height: 0;
         padding: 24px 24px 0;
+        box-sizing: border-box;
         overflow: auto;
     }
 </style>
