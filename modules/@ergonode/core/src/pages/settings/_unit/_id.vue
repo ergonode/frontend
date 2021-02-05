@@ -11,6 +11,13 @@
                 <NavigateBackFab :previous-route="previousRoute" />
             </template>
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <RemoveUnitButton />
             </template>
         </TitleBar>
@@ -76,6 +83,9 @@ export default {
         ...mapState('unit', [
             'name',
         ]),
+        extendedMainAction() {
+            return this.$getExtendSlot('@Core/pages/settings/_unit/mainAction');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.SETTINGS.namespace);
         },
@@ -87,6 +97,14 @@ export default {
         ...mapActions('unit', {
             clearUnitStorage: '__clearStorage',
         }),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.SETTINGS,
+                ...props,
+            };
+        },
     },
     head() {
         return {

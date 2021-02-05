@@ -6,10 +6,27 @@
     <Page>
         <TitleBar
             :title="$t('activityLogs.page.title')"
-            :is-read-only="isReadOnly" />
+            :is-read-only="isReadOnly">
+            <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
+            </template>
+        </TitleBar>
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
             :items="asyncTabs" />
+        <template
+            v-for="(modal, index) in extendedModals">
+            <Component
+                :is="modal.component"
+                :key="index"
+                v-bind="bindingProps(modal)" />
+        </template>
     </Page>
 </template>
 
@@ -33,8 +50,24 @@ export default {
         asyncTabsMixin,
     ],
     computed: {
+        extendedMainAction() {
+            return this.$getExtendSlot('@ActivityLogs/pages/activity-logs/mainAction');
+        },
+        extendedModals() {
+            return this.$getExtendSlot('@ActivityLogs/pages/activity-logs/injectModal');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.USER.namespace);
+        },
+    },
+    methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.USER,
+                ...props,
+            };
         },
     },
 };

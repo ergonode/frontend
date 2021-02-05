@@ -16,6 +16,13 @@
                                 <TableRowInfoCell :title="row.value" />
                             </TableRowCell>
                         </TableRow>
+                        <template
+                            v-for="(item, index) in extendedTable">
+                            <Component
+                                :is="item.component"
+                                :key="index"
+                                v-bind="bindingProps(item)" />
+                        </template>
                     </template>
                 </Table>
             </FormSection>
@@ -24,6 +31,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Media/config/privileges';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import Table from '@UI/components/Table/Table';
@@ -52,6 +60,11 @@ export default {
             isPrefetchingData: true,
         };
     },
+    computed: {
+        extendedTable() {
+            return this.$getExtendSlot('@Media/components/Forms/ResourceInformationForm/tableBody');
+        },
+    },
     async created() {
         await this.getResourceMetadata({
             onSuccess: (({
@@ -66,6 +79,14 @@ export default {
         ...mapActions('media', [
             'getResourceMetadata',
         ]),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.MULTIMEDIA,
+                ...props,
+            };
+        },
     },
 };
 </script>

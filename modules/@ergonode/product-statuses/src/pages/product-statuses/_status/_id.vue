@@ -11,6 +11,13 @@
                 <NavigateBackFab :previous-route="previousRoute" />
             </template>
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <RemoveProductStatusButton />
             </template>
         </TitleBar>
@@ -79,6 +86,9 @@ export default {
             'code',
             'isDefaultStatus',
         ]),
+        extendedMainAction() {
+            return this.$getExtendSlot('@Statuses/pages/product-statuses/_status/mainAction');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.WORKFLOW.namespace);
         },
@@ -98,6 +108,14 @@ export default {
         ...mapActions('tab', {
             __clearTranslationsStorage: '__clearStorage',
         }),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.WORKFLOW,
+                ...props,
+            };
+        },
     },
     head() {
         return {

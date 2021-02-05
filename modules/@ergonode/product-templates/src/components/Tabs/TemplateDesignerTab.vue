@@ -67,7 +67,7 @@ export default {
     ],
     data() {
         return {
-            isSubmitting: false,
+            verticalTabs: [],
         };
     },
     computed: {
@@ -80,32 +80,23 @@ export default {
         graphiteLightColor() {
             return GRAPHITE_LIGHT;
         },
-        verticalTabs() {
-            return [
-                {
-                    title: 'Product attributes',
-                    component: () => import('@Attributes/extends/attribute/components/VerticalTabs/AttributesVerticalTab'),
-                    props: {
-                        isSelectLanguage: false,
-                        disabled: !this.isAllowedToUpdate,
-                    },
-                    icon: () => import('@Attributes/components/Icons/IconAttributes'),
-                },
-                {
-                    title: 'Widgets',
-                    component: () => import('@Templates/components/VerticalTabs/WidgetsVerticalTab'),
-                    icon: () => import('@Core/components/Icons/Widgets/IconWidget'),
-                    props: {
-                        disabled: !this.isAllowedToUpdate,
-                    },
-                },
-            ];
-        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.TEMPLATE_DESIGNER.update,
             ]);
         },
+    },
+    async mounted() {
+        const extendedVerticalTabs = await this.$getExtendMethod('@Templates/components/Tabs/TemplateDesignerTab/verticalTabs', {
+            $this: this,
+            props: {
+                disabled: !this.isAllowedToUpdate,
+            },
+        });
+
+        extendedVerticalTabs.forEach((tabs) => {
+            this.verticalTabs.push(...tabs);
+        });
     },
 };
 </script>

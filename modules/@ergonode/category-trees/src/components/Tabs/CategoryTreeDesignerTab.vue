@@ -65,31 +65,38 @@ export default {
     mixins: [
         tabFeedbackMixin,
     ],
+    data() {
+        return {
+            verticalTabs: [],
+        };
+    },
     computed: {
         ...mapState('draggable', [
             'isElementDragging',
         ]),
-        verticalTabs() {
-            return [
-                {
-                    title: 'Categories',
-                    component: () => import('@Categories/extends/components/VerticalTabs/CategoriesVerticalTab'),
-                    icon: () => import('@Trees/components/Icons/IconTree'),
-                    props: {
-                        isSelectLanguage: true,
-                        disabled: !this.$hasAccess([
-                            PRIVILEGES.CATEGORY_TREE.update,
-                        ]),
-                    },
-                },
-            ];
-        },
         isDropZoneVisible() {
             return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;
         },
         graphiteLightColor() {
             return GRAPHITE_LIGHT;
         },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.CATEGORY_TREE.update,
+            ]);
+        },
+    },
+    async mounted() {
+        const extendedVerticalTabs = await this.$getExtendMethod('@Trees/components/Tabs/CategoryTreeDesignerTab/verticalTabs', {
+            $this: this,
+            props: {
+                disabled: !this.isAllowedToUpdate,
+            },
+        });
+
+        extendedVerticalTabs.forEach((tabs) => {
+            this.verticalTabs.push(...tabs);
+        });
     },
 };
 </script>

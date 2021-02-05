@@ -2,6 +2,11 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import {
+    Components,
+    Icons,
+} from './imports';
+
 export default {
     dictionaries: [
         {
@@ -32,4 +37,16 @@ export default {
             dataMapper: response => response,
         },
     ],
+    extendMethods: {
+        '@Core/components/Tabs/LanguagesSettingsTab/verticalTabs': ({
+            props,
+        }) => [
+            {
+                title: 'System languages',
+                component: Components.LanguagesVerticalTab,
+                icon: Icons.IconTranslate,
+                props,
+            },
+        ],
+    },
 };

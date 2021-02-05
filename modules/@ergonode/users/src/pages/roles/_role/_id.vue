@@ -11,6 +11,13 @@
                 <NavigateBackFab :previous-route="previousRoute" />
             </template>
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <RemoveRoleButton />
             </template>
         </TitleBar>
@@ -76,6 +83,9 @@ export default {
         ...mapState('role', [
             'name',
         ]),
+        extendedMainAction() {
+            return this.$getExtendSlot('@Users/pages/roles/_role/mainAction');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.USER_ROLE.namespace);
         },
@@ -91,6 +101,14 @@ export default {
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
         }),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.USER_ROLE,
+                ...props,
+            };
+        },
     },
     head() {
         return {

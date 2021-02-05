@@ -13,7 +13,7 @@
 
 <script>
 import CreateCategoryFab from '@Categories/components/Buttons/CreateCategoryFab';
-import CategoriesSideBar from '@Categories/extends/components/SideBars/CategoriesSideBar';
+import CategoriesSideBar from '@Categories/extends/categoryTree/components/SideBars/CategoriesSideBar';
 
 export default {
     name: 'CategoriesVerticalTab',

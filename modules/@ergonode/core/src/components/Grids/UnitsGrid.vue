@@ -25,6 +25,13 @@
         @remove-all-filters="onRemoveAllFilters">
         <template #actionsHeader>
             <CreateUnitButton @created="onUnitCreated" />
+            <template
+                v-for="(actionItem, index) in extendedActionHeader">
+                <Component
+                    :is="actionItem.component"
+                    :key="index"
+                    v-bind="bindingProps(actionItem)" />
+            </template>
         </template>
     </Grid>
 </template>
@@ -92,6 +99,9 @@ export default {
                 PRIVILEGES.SETTINGS.update,
             ]);
         },
+        extendedActionHeader() {
+            return this.$getExtendSlot('@Core/components/Grids/UnitGrid/actionsHeader');
+        },
     },
     watch: {
         async $route(from, to) {
@@ -118,6 +128,14 @@ export default {
         ...mapActions('dictionaries', [
             'getDictionary',
         ]),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.SETTINGS,
+                ...props,
+            };
+        },
         onUnitCreated() {
             this.onFetchData();
         },

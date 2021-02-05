@@ -4,10 +4,27 @@
  */
 <template>
     <Page>
-        <TitleBar title="Profile" />
+        <TitleBar title="Profile">
+            <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="actionItem.props" />
+                </template>
+            </template>
+        </TitleBar>
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
             :items="asyncTabs" />
+        <template
+            v-for="(modal, index) in extendedModals">
+            <Component
+                :is="modal.component"
+                :key="index"
+                v-bind="actionItem.props" />
+        </template>
     </Page>
 </template>
 
@@ -29,6 +46,14 @@ export default {
         beforeRouteLeaveMixin,
         asyncTabsMixin,
     ],
+    computed: {
+        extendedMainAction() {
+            return this.$getExtendSlot('@Users/pages/profile/mainAction');
+        },
+        extendedModals() {
+            return this.$getExtendSlot('@Users/pages/profile/injectModal');
+        },
+    },
     head() {
         return {
             title: 'Profile - Ergonode',

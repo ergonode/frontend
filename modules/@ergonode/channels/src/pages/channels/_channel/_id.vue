@@ -11,6 +11,13 @@
                 <NavigateBackFab :previous-route="previousRoute" />
             </template>
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <RemoveChannelButton />
                 <CreateExportButton />
             </template>
@@ -91,6 +98,9 @@ export default {
 
             return name;
         },
+        extendedMainAction() {
+            return this.$getExtendSlot('@Channels/pages/channels/_channel/mainAction');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.CHANNEL.namespace);
         },
@@ -106,6 +116,14 @@ export default {
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
         }),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.CHANNEL,
+                ...props,
+            };
+        },
     },
     head() {
         return {
