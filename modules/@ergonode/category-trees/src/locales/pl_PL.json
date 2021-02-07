@@ -1,36 +1,53 @@
 {
-  "categoryTree": {
-    "page": {
-      "title": "Drzewa kategorii",
-      "head": "Drzewa kategorii - Ergonode",
-      "addButton": "NOWE DRZEWO KATEGORII"
+  "@Trees": {
+    "_": {
+      "submit": "Zapisz zmiany",
+      "create": "Stwórz",
+      "proceed": "Stwórz & Edytuj",
+      "cancel": "Anuluj",
+      "deleteConfirm": "Tak, usuń",
+      "notAssigned": "Nie przypisane"
     },
-    "form": {
-      "noCategoryTreeButton": "IDŹ DO DRZEWA KATEGORII",
-      "noVisibleCategoriesInTreePlaceholderTitle": "Brak kategorii",
-      "noVisibleCategoriesInTreePlaceholderSubtitle": "Nie ma zaznaczonych kategorii dla wybranych kryteriów."
+    "tree": {
+      "_": {
+        "title": "Drzewa kategorii",
+        "headTitle": "Drzewa kategorii - Ergonode",
+        "noTrees": "Brak drzew kategorii",
+        "noCategories": "Brak kategorii",
+        "createFirst": "W systemie nie ma drzew kategorii, stwórz pierwsze.",
+        "addFirst": "W drzewie nie ma kategorii, dodaje pierwsze."
+      },
+      "components": {
+        "CreateCategoryTreeButton": {
+          "addButton": "Nowe drzewo"
+        }
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Drzewo kategorii nie zostało pobrane"
+        }
+      },
+      "store": {
+        "action": {
+          "createCancel": "Tworzenie drzewa kategorii zostało przerwane",
+          "updateCancel": "Aktualizowanie drzewa kategorii zostało przerwane",
+          "deleteCancel": "Usuwanie drzewa kategorii zostało przerwane"
+        }
+      }
     },
-    "sideBar": {
-      "searchHeader": "Kategorie",
-      "placeholderTitle": "Brak drzew kategorii",
-      "placeholderSubtitle": "W systemie nie ma drzew kategorii, które posiadają kategorie.",
-      "groupSubtitle": "Podkategorii"
-    },
-    "advancedFilter": {
-      "label": "Drzewo kategorii"
-    },
-    "grid": {
-      "placeholderTitle": "Brak drzew kategorii",
-      "placeholderSubtitle": "W systemie nie ma drzew kategorii, stwórz pierwsze."
-    },
-    "messages": {
-      "deleteTitle": "Czy jesteś pewien, że chcesz usunąć to drzewo kategorii?",
-      "deleteConfirm": "TAK, USUŃ",
-      "deleteSuccess": "Drzewo kategorie usunięte"
-    },
-    "errors": {
-      "getRequest": "Drzewo kategorii nie została pobrana",
-      "deleteRequest": "Drzewo kategorii nie została usunięte"
+    "product": {
+      "components": {
+        "CategorySelect": {
+          "goToButton": "Idź do drzewa kategorii",
+          "noCategoriesTitle": "Brak kategorii",
+          "noCategoriesSubtitle": "Nie ma wybranych kategorii dla wybranych kryteriów.",
+          "advancedFilterLabel": "Drzewo kategorii"
+        },
+        "CategoryTreesSideBar": {
+          "title": "Kategorie",
+          "groupSubtitle": "Podkategorie"
+        }
+      }
     }
   }
 }

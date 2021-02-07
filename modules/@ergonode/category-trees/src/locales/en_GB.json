@@ -1,36 +1,53 @@
 {
-  "categoryTree": {
-    "page": {
-      "title": "Category trees",
-      "head": "Category trees - Ergonode",
-      "addButton": "NEW CATEGORY TREE"
+  "@Trees": {
+    "_": {
+      "submit": "Save changes",
+      "create": "Create",
+      "proceed": "Create & Edit",
+      "cancel": "Cancel",
+      "deleteConfirm": "Yes, remove",
+      "notAssigned": "Not assigned"
     },
-    "form": {
-      "noCategoryTreeButton": "GO TO CATEGORY TREE",
-      "noVisibleCategoriesInTreePlaceholderTitle": "No categories",
-      "noVisibleCategoriesInTreePlaceholderSubtitle": "They are no selected categories for given criteria."
+    "tree": {
+      "_": {
+        "title": "Category trees",
+        "headTitle": "Category trees - Ergonode",
+        "noTrees": "No category trees",
+        "noCategories": "No categories",
+        "createFirst": "There are no category trees in the system, you can create the first one.",
+        "addFirst": "There are no categories in the tree, you can add the first one."
+      },
+      "components": {
+        "CreateCategoryTreeButton": {
+          "addButton": "New tree"
+        }
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Category tree hasn’t been fetched properly"
+        }
+      },
+      "store": {
+        "action": {
+          "createCancel": "Creating category tree has been canceled",
+          "updateCancel": "Updating category tree has been canceled",
+          "deleteCancel": "Removing category tree has been canceled"
+        }
+      }
     },
-    "sideBar": {
-      "searchHeader": "Categories",
-      "placeholderTitle": "No category trees",
-      "placeholderSubtitle": "There are no category trees in the system that contain categories.",
-      "groupSubtitle": "Categories"
-    },
-    "advancedFilter": {
-      "label": "Category tree"
-    },
-    "grid": {
-      "placeholderTitle": "No categories in tree",
-      "placeholderSubtitle": "There are no categories in the tree, so you can create the first one."
-    },
-    "messages": {
-      "deleteTitle": "Are you sure you want to delete this category tree?",
-      "deleteConfirm": "YES, REMOVE",
-      "deleteSuccess": "Category tree removed"
-    },
-    "errors": {
-      "getRequest": "Category tree hasn’t been fetched properly",
-      "deleteRequest": "Category tree hasn’t been deleted"
+    "product": {
+      "components": {
+        "CategorySelect": {
+          "goToButton": "GO TO CATEGORY TREE",
+          "noCategoriesTitle": "No categories",
+          "noCategoriesSubtitle": "They are no selected categories for given criteria.",
+          "advancedFilterLabel": "Category tree"
+        },
+        "CategoryTreesSideBar": {
+          "title": "Categories",
+          "groupSubtitle": "Subcategories"
+        }
+      }
     }
   }
 }

@@ -4,7 +4,7 @@
  */
 <template>
     <SideBar
-        :title="$t('categoryTree.sideBar.searchHeader')"
+        :title="$t('@Trees.product.components.CategoryTreesSideBar.title')"
         :items="filteredCategoryTrees"
         :expanded="isAnySearchPhrase || expendedCategoryTree"
         :searchable="true"
@@ -12,7 +12,7 @@
         @search="onSearch">
         <template #header>
             <ListSearchHeader
-                :title="$t('categoryTree.sideBar.searchHeader')"
+                :title="$t('@Trees.product.components.CategoryTreesSideBar.title')"
                 :search-value="searchValue"
                 :searchable="true"
                 @search="onSearch" />
@@ -22,8 +22,8 @@
         </template>
         <template #noDataPlaceholder>
             <SideBarNoDataPlaceholder
-                :title="$t('categoryTree.sideBar.placeholderTitle')"
-                :subtitle="$t('categoryTree.sideBar.placeholderSubtitle')" />
+                :title="$t('@Trees.tree._.noTrees')"
+                :subtitle="$t('@Trees.tree._.createFirst')" />
         </template>
         <template #item="{ item, onExpand }">
             <CategoryTreeSideBarGroupElement
@@ -32,7 +32,7 @@
                 @click.native="onExpandGroup({ item, onExpand })" />
             <TreeAccordionItem
                 v-else
-                :item="{...item, level: item.level - 1}"
+                :item="{...item, level: item.level - (item.notAssigned ? 2 : 1)}"
                 :multiselect="true"
                 :selected-nodes="selectedNodes[item.id]"
                 :selected="selectedCategories[item.id]"
@@ -61,8 +61,7 @@ import {
 } from '@Core/models/mappers/gridDataMapper';
 import CategoryTreeSideBarGroupElement from '@Trees/extends/product/components/SideBars/CategoryTreeSideBarGroupElement';
 import {
-    getCategoriesCount,
-    getMappedCategories,
+    getCategoryTrees,
 } from '@Trees/models/treeMapper';
 import {
     get as getCategoryTree,
@@ -113,17 +112,12 @@ export default {
             id: tree.id,
         })));
 
-        this.categoryTrees = treesData
-            .map(tree => ({
-                ...tree,
-                name: tree.name[this.defaultLanguageCode] || tree.code,
-                children: getMappedCategories({
-                    tree: tree.categories || [],
-                    categories,
-                }),
-                itemsCount: getCategoriesCount(tree.categories),
-            }))
-            .filter(tree => tree.itemsCount > 0);
+        this.categoryTrees = getCategoryTrees({
+            trees: treesData,
+            categories,
+            languageCode: this.defaultLanguageCode,
+            notAssignedTreeLabel: this.$t('@Trees._.notAssigned'),
+        });
 
         this.isPrefetchingData = false;
     },

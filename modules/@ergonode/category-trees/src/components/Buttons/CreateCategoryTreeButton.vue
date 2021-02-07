@@ -5,7 +5,7 @@
 <template>
     <Button
         data-cy="new-category-tree"
-        title="NEW TREE"
+        :title="$t('@Trees.tree.components.CreateCategoryTreeButton.addButton')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">

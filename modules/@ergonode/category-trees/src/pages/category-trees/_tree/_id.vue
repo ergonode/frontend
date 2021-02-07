@@ -74,7 +74,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'Category tree hasn`t been fetched properly',
+                    message: this.$t('@Trees.tree.pages.id.getRequest'),
                 });
             },
         });

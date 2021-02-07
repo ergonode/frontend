@@ -70,7 +70,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Creating category tree has been canceled',
+                    message: this.app.i18n.t('@Trees.tree.store.action.createCancel'),
                 });
 
                 return;
@@ -251,7 +251,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating category tree has been canceled',
+                    message: this.app.i18n.t('@Trees.tree.store.action.updateCancel'),
                 });
 
                 return;
@@ -295,7 +295,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Removing category tree has been canceled',
+                    message: this.app.i18n.t('@Trees.tree.store.action.deleteCancel'),
                 });
 
                 return;
