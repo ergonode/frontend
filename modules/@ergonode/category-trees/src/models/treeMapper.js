@@ -47,8 +47,6 @@ export function getTreeCategoryIds(tree) {
 export function getTreesCategoryIds(trees) {
     let categoryIds = new Set();
 
-    console.log(trees);
-
     trees.forEach((tree) => {
         categoryIds = new Set([
             ...categoryIds,
@@ -76,7 +74,7 @@ export function getUnassignedCategoriesTree({
 }) {
     const categoryIds = getTreesCategoryIds(trees);
     const children = categories.filter(
-        category => categoryIds.some(id => category.id === id),
+        category => !categoryIds.some(id => category.id === id),
     ).map(category => ({
         ...category,
         notAssigned: true,

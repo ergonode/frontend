@@ -96,7 +96,7 @@ export default {
                 onError: this.onCreateError,
             });
         },
-        onCreateSuccess() {
+        onCreateSuccess(id) {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Category created',
@@ -104,7 +104,7 @@ export default {
 
             this.isSubmitting = false;
 
-            this.$emit('created');
+            this.$emit('created', id);
             this.onClose();
         },
         onProceedSuccess(id) {

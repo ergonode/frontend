@@ -435,8 +435,6 @@ export default {
         },
     },
     mounted() {
-        console.log(this.$t('@Trees.product.components.CategorySelect.advancedFilterLabel'));
-
         document.documentElement.addEventListener(
             CATEGORY_CREATED_EVENT_NAME,
             this.onCategoryCreated,

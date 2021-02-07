@@ -59,10 +59,14 @@ export default {
         onCloseModal() {
             this.isModalVisible = false;
         },
-        onCreatedData() {
+        onCreatedData(id) {
             this.onCloseModal();
 
-            const event = new CustomEvent(CATEGORY_CREATED_EVENT_NAME);
+            const event = new CustomEvent(CATEGORY_CREATED_EVENT_NAME, {
+                detail: {
+                    id,
+                },
+            });
 
             document.documentElement.dispatchEvent(event);
         },

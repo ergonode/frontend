@@ -22,8 +22,12 @@
         </template>
         <template #noDataPlaceholder>
             <SideBarNoDataPlaceholder
-                :title="$t('@Trees.tree._.noTrees')"
-                :subtitle="$t('@Trees.tree._.createFirst')" />
+                :title="$t('@Trees.tree._.noCategories')"
+                :subtitle="$t('@Trees.tree._.createFirst')">
+                <template #action>
+                    <CreateCategoryButton />
+                </template>
+            </SideBarNoDataPlaceholder>
         </template>
         <template #item="{ item, onExpand }">
             <CategoryTreeSideBarGroupElement
@@ -43,6 +47,10 @@
 </template>
 
 <script>
+import CreateCategoryButton from '@Categories/components/Buttons/CreateCategoryButton';
+import {
+    CATEGORY_CREATED_EVENT_NAME,
+} from '@Categories/defaults/attributes';
 import {
     getAutocomplete as getCategoriesAutocomplete,
 } from '@Categories/services';
@@ -59,6 +67,9 @@ import {
     getMappedFilters,
     getParsedFilters,
 } from '@Core/models/mappers/gridDataMapper';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
 import CategoryTreeSideBarGroupElement from '@Trees/extends/product/components/SideBars/CategoryTreeSideBarGroupElement';
 import {
     getCategoryTrees,
@@ -87,6 +98,7 @@ export default {
     components: {
         SideBarNoDataPlaceholder,
         CategoryTreeSideBarGroupElement,
+        CreateCategoryButton,
         SideBar,
         ListSearchHeader,
         Preloader,
@@ -107,13 +119,13 @@ export default {
             }),
         ]);
 
-        const treesData = await Promise.all(trees.map(tree => getCategoryTree({
+        this.treesData = await Promise.all(trees.map(tree => getCategoryTree({
             $axios: this.$axios,
             id: tree.id,
         })));
 
         this.categoryTrees = getCategoryTrees({
-            trees: treesData,
+            trees: this.treesData,
             categories,
             languageCode: this.defaultLanguageCode,
             notAssignedTreeLabel: this.$t('@Trees._.notAssigned'),
@@ -124,6 +136,7 @@ export default {
     data() {
         return {
             isPrefetchingData: true,
+            treesData: [],
             categoryTrees: [],
             selectedCategories: {},
             expendedCategoryTree: {},
@@ -171,14 +184,57 @@ export default {
             this.selectedCategories = this.getSelectedCategories();
         },
     },
+    mounted() {
+        document.documentElement.addEventListener(
+            CATEGORY_CREATED_EVENT_NAME,
+            this.onCategoryCreated,
+        );
+    },
     created() {
         this.selectedCategories = this.getSelectedCategories();
         this.onDebounceSelectedCategories = debounce(this.setSelectedCategories, 500);
     },
     beforeDestroy() {
         delete this.onDebounceSelectedCategories;
+
+        document.documentElement.removeEventListener(
+            CATEGORY_CREATED_EVENT_NAME,
+            this.onCategoryCreated,
+        );
     },
     methods: {
+        async onCategoryCreated(event) {
+            const categories = await getCategoriesAutocomplete({
+                $axios: this.$axios,
+            });
+
+            const addedCategory = categories.find(category => category.id === event.detail.id);
+            const notAssignedTreeIndex = this.categoryTrees.findIndex(tree => tree.name === this.$t('@Trees._.notAssigned'));
+
+            if (notAssignedTreeIndex !== -1) {
+                this.categoryTrees[notAssignedTreeIndex].children.push({
+                    ...addedCategory,
+                    notAssigned: true,
+                });
+                this.categoryTrees[notAssignedTreeIndex].itemsCount += 1;
+            } else {
+                this.categoryTrees.push({
+                    id: getUUID(),
+                    name: this.$t('@Trees._.notAssigned'),
+                    children: [
+                        {
+                            ...addedCategory,
+                            notAssigned: true,
+                        },
+                    ],
+                    itemsCount: 1,
+                });
+            }
+
+            this.categoryTrees = [
+                ...this.categoryTrees,
+            ];
+        },
         onSearchConditionCallback(filterValues, searchValue) {
             return filterValues.some(value => searchValue.startsWith(value));
         },
