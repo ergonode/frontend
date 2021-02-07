@@ -75,10 +75,14 @@ export default {
                     key: 'notifications',
                     value: [
                         ...state.notifications,
-                        ...collection.map(notification => ({
-                            ...notification,
-                            readAt: notification.read_at,
-                            createdAt: notification.created_at,
+                        ...collection.map(({
+                            read_at,
+                            created_at,
+                            ...rest
+                        }) => ({
+                            ...rest,
+                            readAt: read_at,
+                            createdAt: created_at,
                         })),
                     ],
                 });
