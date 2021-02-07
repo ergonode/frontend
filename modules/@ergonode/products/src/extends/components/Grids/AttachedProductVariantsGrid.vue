@@ -45,7 +45,11 @@
                 <template #action>
                     <AddProductVariantsButton
                         title="CHOOSE VARIANTS"
-                        @added="onProductsAttachmentUpdated" />
+                        @added="onProductsAttachmentUpdated">
+                        <template #prepend="{ color }">
+                            <IconAdd :fill-color="color" />
+                        </template>
+                    </AddProductVariantsButton>
                 </template>
             </GridNoDataPlaceholder>
         </template>

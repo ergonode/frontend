@@ -18,6 +18,9 @@
 <script>
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import ProductVariantsToAttachGrid from '@Products/extends/components/Grids/ProductVariantsToAttachGrid';
+import {
+    PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
+} from '@Products/extends/defaults';
 import ModalGrid from '@UI/components/Modal/ModalGrid';
 
 export default {
@@ -29,7 +32,22 @@ export default {
     mixins: [
         modalFeedbackMixin,
     ],
+    mounted() {
+        document.documentElement.addEventListener(
+            PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
+            this.onProductsAttachmentUpdated,
+        );
+    },
+    beforeDestroy() {
+        document.documentElement.removeEventListener(
+            PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
+            this.onProductsAttachmentUpdated,
+        );
+    },
     methods: {
+        onProductsAttachmentUpdated() {
+            this.onClose();
+        },
         onClose() {
             this.removeScopeData(this.scope);
 

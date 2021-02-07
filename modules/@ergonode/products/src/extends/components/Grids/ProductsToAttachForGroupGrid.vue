@@ -30,6 +30,9 @@
         </template>
         <template #appendFooter>
             <UpdateProductsAttachmentButton
+                :scope="scope"
+                :errors="errors"
+                :change-values="changeValues"
                 :skus="skus"
                 @updated="onProductsAttachmentUpdated" />
         </template>
@@ -55,6 +58,9 @@ import {
 import UpdateProductsAttachmentButton from '@Products/extends/components/Buttons/UpdateProductsAttachmentButton';
 import Grid from '@UI/components/Grid/Grid';
 import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'ProductsToAttachForGroupGrid',
@@ -67,6 +73,20 @@ export default {
         gridDraftMixin,
         extendedGridComponentsMixin,
     ],
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     async fetch() {
         await this.onFetchData();
 
@@ -97,6 +117,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         onPaginationChange(pagination) {
             this.pagination = pagination;
             this.localParams.limit = pagination.itemsPerPage;
@@ -230,6 +253,12 @@ export default {
             this.setDrafts({
                 ...this.drafts,
                 ...drafts,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'productsToAttachForGroupGrid',
+                value: this.drafts,
             });
         },
     },
