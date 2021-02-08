@@ -12,6 +12,7 @@ export default {
         '@ergonode/ui',
         '@ergonode/attributes',
         '@ergonode/media',
+        '@ergonode/batch-actions',
     ],
     plugins: [
         {
