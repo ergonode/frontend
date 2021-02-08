@@ -5,21 +5,21 @@
 <template>
     <NotificationListItemTemplate :item="item">
         <template #prepend>
-            <NotificationListItemAvatar :item="item" />
+            <NotificationListItemSuccess :item="item" />
         </template>
     </NotificationListItemTemplate>
 </template>
 
 <script>
 
-import NotificationListItemAvatar from '@Notifications/components/NotificationList/Item/NotificationListItemAvatar';
+import NotificationListItemSuccess from '@Notifications/components/NotificationList/Item/NotificationListItemSuccess';
 import NotificationListItemTemplate from '@Notifications/components/NotificationList/Item/NotificationListItemTemplate';
 
 export default {
-    name: 'NotificationListItem',
+    name: 'NotificationListImportSuccessItem',
     components: {
-        NotificationListItemAvatar,
         NotificationListItemTemplate,
+        NotificationListItemSuccess,
     },
     props: {
         item: {

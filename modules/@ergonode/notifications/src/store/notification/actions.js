@@ -75,7 +75,15 @@ export default {
                     key: 'notifications',
                     value: [
                         ...state.notifications,
-                        ...collection,
+                        ...collection.map(({
+                            read_at,
+                            created_at,
+                            ...rest
+                        }) => ({
+                            ...rest,
+                            readAt: read_at,
+                            createdAt: created_at,
+                        })),
                     ],
                 });
                 commit('__SET_STATE', {
@@ -89,6 +97,34 @@ export default {
 
                 onSuccess();
             }
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
+    },
+    async getProcessingNotifications({
+        commit,
+    }, {
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const notifications = await this.$getExtendMethod('@Notifications/store/notification/action/getProcessingNotifications', {
+                $this: this,
+            });
+
+            commit('__SET_STATE', {
+                key: 'processingNotifications',
+                value: notifications.reduce((prev, curr) => [
+                    ...prev,
+                    ...curr,
+                ], []),
+            });
+
+            onSuccess();
         } catch (e) {
             if (this.app.$axios.isCancel(e)) {
                 return;

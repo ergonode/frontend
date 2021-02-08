@@ -3,16 +3,13 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="notification-list-item-avatar">
-        <div
-            v-if="!isRead"
-            class="notification-list-item-avatar__not-read-badge" />
+    <NotificationListItemPrependTemplate :item="item">
         <UserFabAvatar
             :avatar-id="avatarId"
             :user-id="item.user_id"
             :name="item.author"
             :size="regularSize" />
-    </div>
+    </NotificationListItemPrependTemplate>
 </template>
 
 <script>
@@ -20,11 +17,14 @@ import UserFabAvatar from '@Core/components/Multimedia/UserFabAvatar';
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import NotificationListItemPrependTemplate
+    from '@Notifications/components/NotificationList/Item/NotificationListItemPrependTemplate';
 
 export default {
     name: 'NotificationListItemAvatar',
     components: {
         UserFabAvatar,
+        NotificationListItemPrependTemplate,
     },
     props: {
         item: {
@@ -42,25 +42,8 @@ export default {
                 : null;
         },
         isRead() {
-            return this.item.read_at !== null;
+            return this.item.readAt !== null;
         },
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .notification-list-item-avatar {
-        position: relative;
-
-        &__not-read-badge {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 8px;
-            height: 8px;
-            border: $BORDER_2_WHITE;
-            border-radius: 8px;
-            background-color: $GRAPHITE_DARK;
-        }
-    }
-</style>

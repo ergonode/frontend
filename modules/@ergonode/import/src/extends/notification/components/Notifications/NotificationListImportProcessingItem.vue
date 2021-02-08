@@ -5,26 +5,39 @@
 <template>
     <NotificationListItemTemplate :item="item">
         <template #prepend>
-            <NotificationListItemAvatar :item="item" />
+            <CircleProgressBar
+                :radius="radius"
+                :progress="progress"
+                :stroke="stroke" />
         </template>
     </NotificationListItemTemplate>
 </template>
 
 <script>
-
-import NotificationListItemAvatar from '@Notifications/components/NotificationList/Item/NotificationListItemAvatar';
 import NotificationListItemTemplate from '@Notifications/components/NotificationList/Item/NotificationListItemTemplate';
+import CircleProgressBar from '@UI/components/ProgressBar/Circle/CircleProgressBar';
 
 export default {
-    name: 'NotificationListItem',
+    name: 'NotificationListImportProcessingItem',
     components: {
-        NotificationListItemAvatar,
         NotificationListItemTemplate,
+        CircleProgressBar,
     },
     props: {
         item: {
             type: Object,
             required: true,
+        },
+    },
+    computed: {
+        radius() {
+            return 20;
+        },
+        progress() {
+            return (this.item.processed / this.item.items) * 100;
+        },
+        stroke() {
+            return 2;
         },
     },
 };

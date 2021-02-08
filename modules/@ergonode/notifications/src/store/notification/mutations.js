@@ -12,15 +12,15 @@ export default {
         index,
         readTime,
     }) {
-        state.notifications[index].read_at = readTime;
+        state.notifications[index].readAt = readTime;
         state.notifications = [
             ...state.notifications,
         ];
     },
     [types.UPDATE_ALL_NOTIFICATIONS_READ_TIME](state, readTime) {
         for (let i = 0; i < state.notifications.length; i += 1) {
-            if (state.notifications[i].read_at === null) {
-                state.notifications[i].read_at = readTime;
+            if (state.notifications[i].readAt === null) {
+                state.notifications[i].readAt = readTime;
             }
         }
 

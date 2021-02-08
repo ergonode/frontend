@@ -18,7 +18,8 @@
           "markAsRead": "Mark as read"
         },
         "NotificationList": {
-          "title": "Notifications"
+          "processingSectionTitle": "Processing",
+          "notificationSectionTitle": "Notifications"
         }
       },
       "pages": {},
