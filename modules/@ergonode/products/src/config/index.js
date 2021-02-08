@@ -9,6 +9,7 @@ export default {
         '@ergonode/attributes',
         '@ergonode/product-templates',
         '@ergonode/segments',
+        '@ergonode/batch-actions',
     ],
     aliases: {
         '@Products': '/',
