@@ -7,13 +7,20 @@
         title="Add products from list"
         @close="onClose">
         <template #body>
-            <ProductsToAttachForGroupGrid />
+            <ProductsToAttachForGroupGrid
+                :scope="scope"
+                :change-values="changeValues"
+                :errors="errors" />
         </template>
     </ModalGrid>
 </template>
 
 <script>
+import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import ProductsToAttachForGroupGrid from '@Products/extends/components/Grids/ProductsToAttachForGroupGrid';
+import {
+    PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
+} from '@Products/extends/defaults';
 import ModalGrid from '@UI/components/Modal/ModalGrid';
 
 export default {
@@ -22,8 +29,28 @@ export default {
         ModalGrid,
         ProductsToAttachForGroupGrid,
     },
+    mixins: [
+        modalFeedbackMixin,
+    ],
+    mounted() {
+        document.documentElement.addEventListener(
+            PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
+            this.onProductsAttachmentUpdated,
+        );
+    },
+    beforeDestroy() {
+        document.documentElement.removeEventListener(
+            PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
+            this.onProductsAttachmentUpdated,
+        );
+    },
     methods: {
+        onProductsAttachmentUpdated() {
+            this.onClose();
+        },
         onClose() {
+            this.removeScopeData(this.scope);
+
             this.$emit('close');
         },
     },

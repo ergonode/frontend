@@ -33,6 +33,9 @@ import SegmentsAutocomplete from '@Segments/components/Autocompletes/SegmentsAut
 import PRIVILEGES from '@Segments/config/privileges';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'AddProductsFromSegmentForm',
@@ -62,7 +65,16 @@ export default {
         },
     },
     methods: {
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         onSegmentChange(value) {
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.segmentsFieldKey,
+                value,
+            });
+
             this.$emit('input', value);
         },
     },

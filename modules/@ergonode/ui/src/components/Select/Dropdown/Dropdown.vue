@@ -164,7 +164,7 @@ export default {
 <style lang="scss" scoped>
     .dropdown {
         position: absolute;
-        z-index: $Z_INDEX_MAX;
+        z-index: $Z_INDEX_DROPDOWN;
         display: flex;
         flex-direction: column;
         background-color: $WHITE;

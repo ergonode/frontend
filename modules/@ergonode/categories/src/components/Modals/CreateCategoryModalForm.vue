@@ -39,7 +39,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'CreateCategoryTreeModalForm',
+    name: 'CreateCategoryModalForm',
     components: {
         ModalForm,
         CategoryForm,

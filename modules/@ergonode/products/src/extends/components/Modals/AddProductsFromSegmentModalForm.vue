@@ -68,6 +68,7 @@ export default {
         },
         onClose() {
             this.removeScopeData(this.scope);
+
             this.$emit('close');
         },
         onSubmit() {
@@ -95,6 +96,8 @@ export default {
             const event = new CustomEvent(PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME);
 
             document.documentElement.dispatchEvent(event);
+
+            this.onClose();
         },
         onAddError(errors) {
             this.onError(errors);
