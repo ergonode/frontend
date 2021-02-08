@@ -24,8 +24,8 @@
         @remove-all-filters="onRemoveAllFilters">
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('categoryTree.grid.placeholderTitle')"
-                :subtitle="$t('categoryTree.grid.placeholderSubtitle')">
+                :title="$t('@Trees.tree._.noTrees')"
+                :subtitle="$t('@Trees.tree._.createFirst')">
                 <template #action>
                     <CreateCategoryTreeButton />
                 </template>

@@ -78,7 +78,7 @@
                                 :subtitle="categoryTreePlaceholder.subtitle">
                                 <template #action>
                                     <Button
-                                        :title="$t('categoryTree.form.noCategoryTreeButton')"
+                                        :title="$t('@Trees.product.components.CategorySelect.goToButton')"
                                         :size="smallSize"
                                         :disabled="!isAllowedToUpdateTree"
                                         @click.native="onNavigateToCategoryTree" />
@@ -307,14 +307,14 @@ export default {
         },
         categoryTreePlaceholder() {
             return {
-                title: this.$t('categoryTree.grid.placeholderTitle'),
-                subtitle: this.$t('categoryTree.grid.placeholderSubtitle'),
+                title: this.$t('@Trees.tree._.noCategories'),
+                subtitle: this.$t('@Trees.tree._.addFirst'),
             };
         },
         categoryTreeNonVisiblePlaceholder() {
             return {
-                title: this.$t('categoryTree.form.noVisibleCategoriesInTreePlaceholderTitle'),
-                subtitle: this.$t('categoryTree.form.noVisibleCategoriesInTreePlaceholderSubtitle'),
+                title: this.$t('@Trees.product.components.CategorySelect.noCategoriesTitle'),
+                subtitle: this.$t('@Trees.product.components.CategorySelect.noCategoriesSubtitle'),
             };
         },
         selectedOptions() {
@@ -337,7 +337,7 @@ export default {
                 {
                     id: 'categoryTree',
                     type: 'CATEGORY_TREE',
-                    label: this.$t('categoryTree.advancedFilter.label'),
+                    label: this.$t('@Trees.product.components.CategorySelect.advancedFilterLabel'),
                 },
             ];
         },

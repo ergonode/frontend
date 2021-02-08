@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar
-            title="Category trees"
+            :title="$t('@Trees._.tree.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <template
@@ -75,7 +75,7 @@ export default {
     },
     head() {
         return {
-            title: 'Category trees - Ergonode',
+            title: this.$t('@Trees._.headTitle'),
         };
     },
 };
