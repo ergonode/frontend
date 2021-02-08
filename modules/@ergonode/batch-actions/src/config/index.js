@@ -4,7 +4,7 @@
  */
 export default {
     name: '@ergonode/batch-actions',
-    order: 300,
+    order: 210,
     relations: [],
     aliases: {
         '@BatchActions': '/',
