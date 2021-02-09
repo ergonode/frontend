@@ -87,9 +87,10 @@ export default {
             return this.elements.filter(element => element.type !== SYSTEM_TYPES.SECTION);
         },
         modalTitle() {
-            return this.$t('@Products.product.components.RestoreForm.modalTitle')
-                .replace('[[from]]', this.language.name)
-                .replace('[[to]]', this.parentLanguage.name);
+            return this.$t('@Products.product.components.RestoreForm.modalTitle', {
+                from: this.language.name,
+                to: this.parentLanguage.name,
+            });
         },
     },
     methods: {

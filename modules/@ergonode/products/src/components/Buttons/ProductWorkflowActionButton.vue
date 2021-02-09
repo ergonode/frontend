@@ -111,7 +111,9 @@ export default {
 
             this.$confirm({
                 type: MODAL_TYPE.POSITIVE,
-                title: this.$t('@Products.product.components.ProductWorkflowActionButton.confirmTitle').replace('[[info]]', code),
+                title: this.$t('@Products.product.components.ProductWorkflowActionButton.confirmTitle', {
+                    info: code,
+                }),
                 action: () => this.updateProductStatus({
                     value: statusId,
                     languageCode: this.languageCode,

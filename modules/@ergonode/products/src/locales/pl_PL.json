@@ -17,10 +17,10 @@
     "product": {
       "components": {
         "RestoreForm": {
-          "modalTitle": "Wybierz atrybuty, których wartości chcesz przywrócić z [[from]] do wartości dziedziczonej w ([[to]])"
+          "modalTitle": "Wybierz atrybuty, których wartości chcesz przywrócić z {from} do wartości dziedziczonej w ({to})"
         },
         "ProductWorkflowActionButton": {
-          "confirmTitle": "Czy jesteś pewien zmiany statusu na [[info]]?",
+          "confirmTitle": "Czy jesteś pewien zmiany statusu na {info}?",
           "alertSuccess": "Status został zaktualizowany"
         },
         "ProductsWidget": {
@@ -42,12 +42,12 @@
         },
         "RestoreProductAttributesModalForm": {
           "formValidation": "Proszę oznacz atrybuty do przywrócenia",
-          "successAlert": "Atrybuty [[info]] zostały przywrócone"
+          "successAlert": "Atrybuty {info} zostały przywrócone"
         }
       },
       "pages": {
         "id": {
-          "getInheritedProductRequest": "Dziedziczony produkt nie został pobrany"
+          "getInheritedProductRequest": "Dziedziczony produkt nie został pobrany",
           "getProductRequest": "Produkt nie został pobrany"
         }
       }
@@ -84,9 +84,9 @@
     "batchAction": {
       "components": {
         "ProductsBatchActions": {
-          "confirmTitle": "Czy jesteś pewień usunięcia permamentnie [[info]] produktów?",
+          "confirmTitle": "Czy jesteś pewień usunięcia permamentnie {info} produktów?",
           "confirmSubtitle": "Produkty będą usunięte z systemu bez odwrotnie i nie będą mogłby być przywrócone.",
-          "confirmApplyTitle": "USUŃ [[info]] PRODUKTY",
+          "confirmApplyTitle": "USUŃ {info} PRODUKTY",
           "successAlert": "Produkty zostały usunięte"
         }
       }

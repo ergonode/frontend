@@ -17,10 +17,10 @@
     "product": {
       "components": {
         "RestoreForm": {
-          "modalTitle": "Select attributes which values you want to restore from [[from]] to parent translation ([[to]])"
+          "modalTitle": "Select attributes which values you want to restore from {from} to parent translation ({to})"
         },
         "ProductWorkflowActionButton": {
-          "confirmTitle": "Are you sure you want to change status to [[info]]?",
+          "confirmTitle": "Are you sure you want to change status to {info}?",
           "alertSuccess": "Status has been updated"
         },
         "ProductsWidget": {
@@ -42,7 +42,7 @@
         },
         "RestoreProductAttributesModalForm": {
           "formValidation": "Please mark attributes to restore",
-          "successAlert": "Attributes [[info]] have been restored"
+          "successAlert": "Attributes {info} have been restored"
         }
       },
       "pages": {
@@ -85,9 +85,9 @@
     "batchAction": {
       "components": {
         "ProductsBatchActions": {
-          "confirmTitle": "Are you sure you want to permanently delete [[info]] products?",
+          "confirmTitle": "Are you sure you want to permanently delete {info} products?",
           "confirmSubtitle": "The products will be deleted from the system forever and cannot be restored.",
-          "confirmApplyTitle": "DELETE [[info]] PRODUCTS",
+          "confirmApplyTitle": "DELETE {info} PRODUCTS",
           "successAlert": "Products have been removed"
         }
       }

@@ -49,9 +49,13 @@ export default {
 
                     this.$confirm({
                         type: MODAL_TYPE.DESTRUCTIVE,
-                        title: this.$t('@Products.batchAction.components.ProductsBatchActions.confirmTitle').replace('[[info]]', rowIds.length),
+                        title: this.$t('@Products.batchAction.components.ProductsBatchActions.confirmTitle', {
+                            info: rowIds.length,
+                        }),
                         subtitle: this.$t('@Products.batchAction.components.ProductsBatchActions.confirmSubtitle'),
-                        applyTitle: this.$t('@Products.batchAction.components.ProductsBatchActions.confirmApplyTitle').replace('[[info]]', rowIds.length),
+                        applyTitle: this.$t('@Products.batchAction.components.ProductsBatchActions.confirmApplyTitle', {
+                            info: rowIds.length,
+                        }),
                         action: () => {
                             const uuid = getUUID();
 
