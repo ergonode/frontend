@@ -4,7 +4,7 @@
  */
 <template>
     <LoginForm
-        :submit-title="$t('authentication.forms.help.redirectTo')"
+        :submit-title="$t('@Authentication.authentication.components.LoginHelpForm.redirectTo')"
         @submit="onRedirect">
         <template #header>
             <Fab @click.native="onRedirect">
@@ -12,10 +12,10 @@
                     <IconArrowPointer :fill-color="color" />
                 </template>
             </Fab>
-            <FormHeader :title="$t('authentication.forms.help.title')" />
+            <FormHeader :title="$t('@Authentication.authentication.components.LoginHelpForm.title')" />
         </template>
         <template #body>
-            <Paragraph :title="$t('authentication.forms.help.info')" />
+            <Paragraph :title="$t('@Authentication.authentication.components.LoginHelpForm.info')" />
         </template>
     </LoginForm>
 </template>
