@@ -40,14 +40,10 @@ export default {
             return {
                 label: 'Delete selected products',
                 action: ({
-                    payload,
-                    onSuccess,
-                    onError,
+                    ids,
+                    indexes,
+                    onApply,
                 }) => {
-                    const {
-                        ids,
-                    } = payload;
-
                     this.$confirm({
                         type: MODAL_TYPE.DESTRUCTIVE,
                         title: this.$t('@Products.batchAction.components.ProductsBatchActions.confirmTitle', {
@@ -58,41 +54,33 @@ export default {
                             info: ids.length,
                         }),
                         action: () => {
+                            onApply(indexes);
+
                             const uuid = getUUID();
 
-                            ids.forEach((rowId) => {
-                                this.disabledRows[rowId] = true;
-                            });
-
-                            this.disabledRows = {
-                                ...this.disabledRows,
-                            };
+                            this.setDisabledRows(ids);
 
                             this.addBatchAction({
                                 id: uuid,
-                                href: 'batch-action',
-                                payload: {
-                                    type: BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
-                                    filter: {
-                                        ids: {
-                                            list: ids,
-                                            included: true,
+                                request: {
+                                    type: '$post',
+                                    href: 'batch-action',
+                                    payload: {
+                                        type: BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
+                                        filter: {
+                                            ids: {
+                                                list: ids,
+                                                included: true,
+                                            },
                                         },
                                     },
                                 },
                             });
 
-                            document
-                                .documentElement
-                                .addEventListener(
-                                    uuid,
-                                    this.onRemoveProductsBatchAction.bind(
-                                        null,
-                                        payload,
-                                        onSuccess,
-                                        onError,
-                                    ),
-                                );
+                            document.documentElement.addEventListener(
+                                uuid,
+                                this.onRemoveProductsBatchAction,
+                            );
                         },
                     });
                 },
@@ -114,18 +102,20 @@ export default {
         this.removeProductsBatchActions.forEach(({
             id,
         }) => {
-            document
-                .documentElement
-                .addEventListener(id, this.onRemoveProductsBatchAction);
+            document.documentElement.addEventListener(
+                id,
+                this.onRemoveProductsBatchAction,
+            );
         });
     },
     beforeDestroy() {
         this.removeProductsBatchActions.forEach(({
             id,
         }) => {
-            document
-                .documentElement
-                .removeEventListener(id, this.onRemoveProductsBatchAction);
+            document.documentElement.removeEventListener(
+                id,
+                this.onRemoveProductsBatchAction,
+            );
         });
     },
     methods: {
@@ -133,17 +123,8 @@ export default {
             'addBatchAction',
             'removeBatchAction',
         ]),
-        async onRemoveProductsBatchAction(
-            payload,
-            onSuccess = () => {},
-            onError = () => {},
-            event,
-        ) {
-            const {
-                ids,
-            } = payload;
-
-            ids.forEach((rowId) => {
+        async onRemoveProductsBatchAction(event) {
+            event.detail.request.payload.filter.ids.list.forEach((rowId) => {
                 delete this.disabledRows[rowId];
             });
 
@@ -151,30 +132,33 @@ export default {
                 ...this.disabledRows,
             };
 
-            if (event.detail.error) {
-                await onError(payload);
-            } else {
-                const {
-                    id,
-                } = event.detail;
+            if (!event.detail.error) {
+                const batchActionIndex = this.batchActions.findIndex(
+                    batchAction => batchAction.id === event.detail.id,
+                );
 
-                await onSuccess(payload);
-
-                const batchActionIndex = this.batchActions
-                    .findIndex(batchAction => batchAction.id === id);
-
-                document
-                    .documentElement
-                    .removeEventListener(id, this.onRemoveProductsBatchAction);
+                document.documentElement.removeEventListener(
+                    event.detail.id,
+                    this.onRemoveProductsBatchAction,
+                );
                 this.removeBatchAction(batchActionIndex);
-
-                this.$emit('batch-action-completed');
 
                 this.$addAlert({
                     type: ALERT_TYPE.SUCCESS,
                     message: this.$t('@Products.batchAction.components.ProductsBatchActions.successAlert'),
                 });
+
+                this.$emit('batch-action-completed');
             }
+        },
+        setDisabledRows(ids) {
+            ids.forEach((rowId) => {
+                this.disabledRows[rowId] = true;
+            });
+
+            this.disabledRows = {
+                ...this.disabledRows,
+            };
         },
     },
     render() {

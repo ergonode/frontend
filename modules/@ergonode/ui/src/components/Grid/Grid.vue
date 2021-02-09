@@ -411,9 +411,9 @@ export default {
         onBatchActionSelect(option) {
             if (Object.keys(this.selectedRows[this.pagination.page]).length > 0) {
                 const payload = {
-                    indexes: [],
                     ids: [],
-                    page: this.pagination.page,
+                    indexes: [],
+                    onApply: this.onApplyBatchAction,
                 };
 
                 const rowsOffset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
@@ -426,30 +426,8 @@ export default {
                     }
                 });
 
-                option.action({
-                    payload,
-                    onSuccess: this.onBatchActionSuccess,
-                    onError: this.onBatchActionError,
-                });
+                option.action(payload);
             }
-        },
-        onBatchActionSuccess({
-            indexes,
-            page,
-        }) {
-            this.resetSelectedRows({
-                indexes,
-                page,
-            });
-        },
-        onBatchActionError({
-            indexes,
-            page,
-        }) {
-            this.resetSelectedRows({
-                indexes,
-                page,
-            });
         },
         onRowSelect(selectedRows) {
             this.selectedRows = {
@@ -511,13 +489,10 @@ export default {
                 });
             }
         },
-        resetSelectedRows({
-            indexes,
-            page,
-        }) {
-            if (typeof this.selectedRows[page] !== 'undefined') {
+        onApplyBatchAction(indexes) {
+            if (typeof this.selectedRows[this.pagination.page] !== 'undefined') {
                 indexes.forEach((index) => {
-                    delete this.selectedRows[page][index];
+                    delete this.selectedRows[this.pagination.page][index];
                 });
 
                 this.selectedRows = {
