@@ -62,8 +62,8 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this product?',
-                applyTitle: 'YES, REMOVE',
+                title: this.$t('@Products.product.components.RemoveProductButton.confirmTitle'),
+                applyTitle: this.$t('@Products.product.components.RemoveProductButton.confirmApplyTitle'),
                 action: () => this.removeProduct({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
@@ -73,7 +73,7 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product removed',
+                message: this.$t('@Products.product.components.RemoveProductButton.successAlert'),
             });
             this.$router.push({
                 name: ROUTE_NAME.PRODUCTS_CATALOG,
@@ -82,7 +82,7 @@ export default {
         onRemoveError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Product hasn’t been deleted',
+                message: this.$t('@Products.product.components.RemoveProductButton.errorAlert'),
             });
         },
     },

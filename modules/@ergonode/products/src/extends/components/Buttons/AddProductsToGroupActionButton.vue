@@ -4,7 +4,7 @@
  */
 <template>
     <ActionButton
-        title="ADD PRODUCTS"
+        :title="$t('@Products._.addProducts')"
         :theme="secondaryTheme"
         :disabled="!isAllowedToUpdate"
         :size="smallSize"

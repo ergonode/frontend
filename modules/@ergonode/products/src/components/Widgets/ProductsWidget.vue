@@ -99,7 +99,7 @@ export default {
 
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Product haven’t been fetched properly',
+                message: this.$t('@Products.product.components.ProductsWidget.getRequest'),
             });
 
             this.isPrefetchingData = false;

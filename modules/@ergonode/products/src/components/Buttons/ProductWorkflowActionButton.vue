@@ -111,7 +111,9 @@ export default {
 
             this.$confirm({
                 type: MODAL_TYPE.POSITIVE,
-                title: `Are you sure you want to change status to ${code}?`,
+                title: this.$t('@Products.product.components.ProductWorkflowActionButton.confirmTitle', {
+                    info: code,
+                }),
                 action: () => this.updateProductStatus({
                     value: statusId,
                     languageCode: this.languageCode,
@@ -129,7 +131,7 @@ export default {
                         });
                         this.$addAlert({
                             type: ALERT_TYPE.SUCCESS,
-                            message: 'Status has been updated',
+                            message: this.$t('@Products.product.components.ProductWorkflowActionButton.alertSuccess'),
                         });
                     },
                 }),

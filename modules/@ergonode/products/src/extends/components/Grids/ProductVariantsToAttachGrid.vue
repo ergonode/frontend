@@ -29,8 +29,8 @@
         </template>
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('product.grid.productVariantsToAttachPlaceholderTitle')"
-                :subtitle="$t('product.grid.productVariantsToAttachPlaceholderSubtitle')" />
+                :title="$t('@Products.productExtend.components.ProductVariantsToAttachGrid.noProducts')"
+                :subtitle="$t('@Products.productExtend.components.ProductVariantsToAttachGrid.changeBindingAttributes')" />
         </template>
         <template #appendFooter>
             <UpdateProductsAttachmentButton
@@ -250,7 +250,7 @@ export default {
         onFetchProductsVariantsError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Product variants haven’t been fetched properly',
+                message: this.$t('@Products.productExtend.components.ProductVariantsToAttachGrid.getRequest'),
             });
 
             this.isPrefetchingData = false;
@@ -278,7 +278,7 @@ export default {
         onFetchGridDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Product variants haven’t been fetched properly',
+                message: this.$t('@Products.productExtend.components.ProductVariantsToAttachGrid.getRequest'),
             });
 
             this.isPrefetchingData = false;
@@ -296,10 +296,10 @@ export default {
                             type: 'SELECT',
                             options: {
                                 false: {
-                                    label: 'Not attached',
+                                    label: this.$t('@Products.productExtend.components.ProductVariantsToAttachGrid.notAttachedLabel'),
                                 },
                                 true: {
-                                    label: 'Attached',
+                                    label: this.$t('@Products.productExtend.components.ProductVariantsToAttachGrid.attachedLabel'),
                                 },
                             },
                         },
