@@ -116,7 +116,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Users activity logs haven’t been fetched properly',
+                message: this.$t('@ActivityLogs.activityLog.components.UsersActivityLogsGrid.getRequest'),
             });
         },
         onRemoveAllFilters() {

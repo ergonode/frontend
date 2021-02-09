@@ -42,7 +42,7 @@
           "updateSuccess": "Tłumaczenia atrybutów zostały zaktualizowane"
         },
         "AttributesGrid": {
-          "getRequest": "Atrybuty nie został pobrane prawidłowo"
+          "getRequest": "Atrybuty nie zostały pobrane prawidłowo"
         },
         "CreateAttributeModalForm": {
           "create": "Stwórz atrybut",

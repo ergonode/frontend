@@ -2,11 +2,11 @@
   "@ActivityLogs": {
     "activityLog": {
       "_": {
-        "title": "Users activity logs"
+        "title": "Log aktywności uytkownika"
       },
       "components": {
         "UsersActivityLogsGrid": {
-          "getRequest": "Users activity logs haven’t been fetched properly"
+          "getRequest": "Logi aktywności uytkownika nie zostały pobrane prawidłowo"
         }
       }
     }
