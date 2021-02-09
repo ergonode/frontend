@@ -1,23 +1,96 @@
 {
-  "product": {
-    "buttons": {
+  "@Products": {
+    "_": {
+      "title": "Catalog",
+      "headTitle": "Catalog - Ergonode",
+      "addProducts": "Add products",
+      "addProductsFromList": "Add products from list",
+      "addProductsFromSegment": "Add products from segments",
       "create": "CREATE",
       "proceed": "CREATE & EDIT",
       "submit": "SAVE CHANGES",
       "restore": "RESTORE",
-      "cancel": "CANCEL"
+      "cancel": "CANCEL",
+      "noProduct": "No products",
+      "createFirst": "There are no product in the system, you can create the first one."
     },
-    "grid": {
-      "placeholderTitle": "No products",
-      "placeholderSubtitle": "There are no product in the system, you can create the first one.",
-      "groupPlaceholderTitle": "No products in group",
-      "groupPlaceholderSubtitle": "There are no product added to the group, you can add the first one.",
-      "variantPlaceholderTitle": "No product variants",
-      "variantPlaceholderSubtitle": "Choose products which together will create a product with variants. You can choose between products which contain selected binding attributes.",
-      "productsToAttachForGroupPlaceholderTitle": "No products",
-      "productsToAttachForGroupPlaceholderSubtitle": "There are either no product with variants nor simple products in the system, you can create the first one.",
-      "productVariantsToAttachPlaceholderTitle": "No products to attach",
-      "productVariantsToAttachPlaceholderSubtitle": "There are no simple products which matches selected binding attributes, consider to change bindings or fill products with binded attributes data."
+    "product": {
+      "components": {
+        "RestoreForm": {
+          "modalTitle": "Select attributes which values you want to restore from [[from]] to parent translation ([[to]])"
+        },
+        "ProductWorkflowActionButton": {
+          "confirmTitle": "Are you sure you want to change status to [[info]]?",
+          "alertSuccess": "Status has been updated"
+        },
+        "ProductsWidget": {
+          "getRequest": "Product information hasn't been fetched properly"
+        },
+        "CompletenessWidget": {
+          "title": "Completeness",
+          "getRequest": "Products completeness haven’t been fetched properly"
+        },
+        "CreateProductButton": {
+          "title": "NEW PRODUCT"
+        },
+        "RemoveProductButton": {
+          "title": "REMOVE PRODUCT",
+          "confirmTitle": "Are you sure you want to delete this product?",
+          "confirmApplyTitle": "YES, REMOVE",
+          "successAlert": "Product has been removed",
+          "errorAlert": "Product hasn't been deleted"
+        },
+        "RestoreProductAttributesModalForm": {
+          "formValidation": "Please mark attributes to restore",
+          "successAlert": "Attributes [[info]] have been restored"
+        }
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Inherited product hasn't been fetched properly"
+        }
+      }
+    },
+    "productExtend": {
+      "components": {
+        "AddBindingAttributesButton": {
+          "title": "Add binding attributes"
+        },
+        "AttachedProductVariantsGrid": {
+          "chooseVariants": "Choose variants",
+          "noProductVariants": "No product variants",
+          "addProductVariants": "Choose products which together will create a product with variants. You can choose between products which contain selected binding attributes.",
+          "getRequest": "Product variants haven’t been fetched properly"
+        },
+        "ProductVariantsToAttachGrid": {
+          "noProducts": "No products to attach",
+          "changeBindingAttributes": "There are no simple products which matches selected binding attributes, consider to change bindings or fill products with binded attributes data.",
+          "getRequest": "Product variants haven’t been fetched properly",
+          "attachedLabel": "Attached",
+          "notAttachedLabel": "Not attached"
+        },
+        "AttachedProductsToGroupGrid": {
+          "noProductsInGroup": "No products in group",
+          "addProductToGroup": "There are no product added to the group, you can add the first one."
+        },
+        "ProductsToAttachForGroupGrid": {
+          "noProducts": "No products",
+          "createFirst": "There are either no product with variants nor simple products in the system, you can create the first one.",
+          "attachedLabel": "Attached",
+          "notAttachedLabel": "Not attached",
+          "getRequest": "Products haven’t been fetched properly"
+        }
+      }
+    },
+    "batchAction": {
+      "components": {
+        "ProductsBatchActions": {
+          "confirmTitle": "Are you sure you want to permanently delete [[info]] products?",
+          "confirmSubtitle": "The products will be deleted from the system forever and cannot be restored.",
+          "confirmApplyTitle": "DELETE [[info]] PRODUCTS",
+          "successAlert": "Products have been removed"
+        }
+      }
     }
   }
 }

@@ -87,7 +87,9 @@ export default {
             return this.elements.filter(element => element.type !== SYSTEM_TYPES.SECTION);
         },
         modalTitle() {
-            return `Select attributes which values you want to restore from ${this.language.name} to parent translation (${this.parentLanguage.name})`;
+            return this.$t('@Products.product.components.RestoreForm.modalTitle')
+                .replace('[[from]]', this.language.name)
+                .replace('[[to]]', this.parentLanguage.name);
         },
     },
     methods: {

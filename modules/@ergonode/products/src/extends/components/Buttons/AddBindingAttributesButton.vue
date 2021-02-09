@@ -4,7 +4,7 @@
  */
 <template>
     <Button
-        title="ADD BINDING ATTRIBUTES"
+        :title="$t('@Products.productExtend.components.AddBindingAttributesButton.title')"
         :size="smallSize"
         :disabled="!isAllowedToUpdate"
         @click.native="onShowModal">

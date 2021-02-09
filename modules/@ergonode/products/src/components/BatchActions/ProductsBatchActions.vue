@@ -49,9 +49,9 @@ export default {
 
                     this.$confirm({
                         type: MODAL_TYPE.DESTRUCTIVE,
-                        title: `Are you sure you want to permanently delete ${rowIds.length} products?`,
-                        subtitle: 'The products will be deleted from the system forever and cannot be restored.',
-                        applyTitle: `DELETE ${rowIds.length} PRODUCTS`,
+                        title: this.$t('@Products.batchAction.components.ProductsBatchActions.confirmTitle').replace('[[info]]', rowIds.length),
+                        subtitle: this.$t('@Products.batchAction.components.ProductsBatchActions.confirmSubtitle'),
+                        applyTitle: this.$t('@Products.batchAction.components.ProductsBatchActions.confirmApplyTitle').replace('[[info]]', rowIds.length),
                         action: () => {
                             const uuid = getUUID();
 
@@ -123,7 +123,7 @@ export default {
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Products have been removed',
+                message: this.$t('@Products.batchAction.components.ProductsBatchActions.successAlert'),
             });
 
             const {
