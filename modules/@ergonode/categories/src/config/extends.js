@@ -23,6 +23,7 @@ export default {
                 {
                     component: Components.ProductFormCategory,
                     props: {},
+                    order: 20,
                 },
             ],
         },

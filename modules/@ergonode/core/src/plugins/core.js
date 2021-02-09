@@ -21,6 +21,11 @@ export default ({
         const forAllTypes = '__ALL';
         const components = [];
         const extendedComponents = app.$getExtendSlot(key);
+        const setOrder = data => ({
+            ...data,
+            order: data.order || 100,
+        });
+        const sortByOrder = (a, b) => a.order - b.order;
 
         if (extendedComponents && isObject(extendedComponents)) {
             if (extendedComponents[forAllTypes]) {
@@ -31,6 +36,8 @@ export default ({
             }
         }
 
-        return components;
+        return components
+            .map(setOrder)
+            .sort(sortByOrder);
     });
 };
