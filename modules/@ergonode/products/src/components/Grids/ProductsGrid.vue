@@ -72,8 +72,8 @@
                 <template #noDataPlaceholder>
                     <GridNoDataPlaceholder
                         v-if="!isAnyFilter && filtered === 0"
-                        :title="$t('product.grid.placeholderTitle')"
-                        :subtitle="$t('product.grid.placeholderSubtitle')">
+                        :title="$t('@Products._.noProduct')"
+                        :subtitle="$t('@Products._.createFirst')">
                         <template #action>
                             <CreateProductButton />
                         </template>

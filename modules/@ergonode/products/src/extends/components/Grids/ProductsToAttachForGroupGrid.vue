@@ -25,8 +25,8 @@
         @filter="onFilterChange">
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('product.grid.productsToAttachForGroupPlaceholderTitle')"
-                :subtitle="$t('product.grid.productsToAttachForGroupPlaceholderSubtitle')" />
+                :title="$t('@Products.productExtend.components.ProductsToAttachForGroupGrid.noProducts')"
+                :subtitle="$t('@Products.productExtend.components.ProductsToAttachForGroupGrid.createFirst')" />
         </template>
         <template #appendFooter>
             <UpdateProductsAttachmentButton
@@ -187,7 +187,7 @@ export default {
         onFetchGridDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Products haven’t been fetched properly',
+                message: this.$t('@Products.productExtend.components.ProductsToAttachForGroupGrid.getRequest'),
             });
 
             this.isPrefetchingData = false;
@@ -205,10 +205,10 @@ export default {
                             type: 'SELECT',
                             options: {
                                 false: {
-                                    label: 'Not attached',
+                                    label: this.$t('@Products.productExtend.components.ProductsToAttachForGroupGrid.notAttachedLabel'),
                                 },
                                 true: {
-                                    label: 'Attached',
+                                    label: this.$t('@Products.productExtend.components.ProductsToAttachForGroupGrid.attachedLabel'),
                                 },
                             },
                         },

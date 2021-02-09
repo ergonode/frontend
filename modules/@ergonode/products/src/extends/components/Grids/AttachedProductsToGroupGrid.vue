@@ -26,8 +26,8 @@
         @remove-all-filters="onRemoveAllFilters">
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('product.grid.groupPlaceholderTitle')"
-                :subtitle="$t('product.grid.groupPlaceholderSubtitle')">
+                :title="$t('@Products.productExtend.components.AttachedProductsToGroupGrid.noProductsInGroup')"
+                :subtitle="$t('@Products.productExtend.components.AttachedProductsToGroupGrid.addProductToGroup')">
                 <template #action>
                     <AddProductsToGroupButton />
                 </template>
