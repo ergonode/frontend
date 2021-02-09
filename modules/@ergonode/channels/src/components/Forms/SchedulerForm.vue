@@ -324,7 +324,7 @@ export default {
         setHourChange(value) {
             const tmpScheduler = {
                 ...this.schedulerConfiguration,
-                hour: value ? parseInt(value, 10) : 0,
+                hour: parseInt(value, 10),
             };
 
             this.__setState({
@@ -339,15 +339,9 @@ export default {
             });
         },
         setMinuteChange(value) {
-            let minute = 0;
-
-            if (value !== '') {
-                minute = value === 0 ? 0 : parseInt(value, 10);
-            }
-
             const tmpScheduler = {
                 ...this.schedulerConfiguration,
-                minute,
+                minute: parseInt(value, 10),
             };
 
             this.__setState({
