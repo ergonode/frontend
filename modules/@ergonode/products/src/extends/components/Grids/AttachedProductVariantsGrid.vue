@@ -31,7 +31,7 @@
                 :is-expanded="isBindingAttributesExpanded"
                 @click.native="onBindingAttributesExpand" />
             <AddProductVariantsButton
-                title="ADD PRODUCTS"
+                :title="$t('@Products._.addProducts')"
                 :theme="secondaryTheme">
                 <template #prepend="{ color }">
                     <IconAdd :fill-color="color" />
@@ -40,11 +40,11 @@
         </template>
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('product.grid.variantPlaceholderTitle')"
-                :subtitle="$t('product.grid.variantPlaceholderSubtitle')">
+                :title="$t('@Products.productExtend.components.AttachedProductVariantsGrid.noProductVariants')"
+                :subtitle="$t('@Products.productExtend.components.AttachedProductVariantsGrid.addProductsVariants')">
                 <template #action>
                     <AddProductVariantsButton
-                        title="CHOOSE VARIANTS"
+                        :title="$t('@Products.productExtend.components.AttachedProductVariantsGrid.chooseVariants')"
                         @added="onProductsAttachmentUpdated">
                         <template #prepend="{ color }">
                             <IconAdd :fill-color="color" />
@@ -289,7 +289,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Product variants haven’t been fetched properly',
+                message: this.$t('@Products.productExtend.components.AttachedProductVariantsGrid.getRequest'),
             });
         },
         onRemoveAllFilters() {

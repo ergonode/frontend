@@ -4,7 +4,7 @@
  */
 <template>
     <Button
-        title="NEW PRODUCT"
+        :title="$t('@Products.product.components.CreateProductButton.title')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">

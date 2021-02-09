@@ -6,7 +6,7 @@
     <Button
         :theme="secondaryTheme"
         :size="smallSize"
-        :title="$t('product.buttons.restore')"
+        :title="$t('@Products._.restore')"
         :disabled="!isAllowedToRestore"
         @click.native="onShowModal">
         <template #prepend="{ color }">

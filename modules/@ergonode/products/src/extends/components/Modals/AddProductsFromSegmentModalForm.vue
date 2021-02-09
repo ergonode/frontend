@@ -4,13 +4,13 @@
  */
 <template>
     <ModalForm
-        title="Add products from segment"
+        :title="$t('@Products._.addProductsFromSegment')"
         @close="onClose">
         <template #body>
             <AddProductsFromSegmentForm
                 :segments="segments"
                 submit-title="ADD TO PRODUCT"
-                :proceed-title="$t('product.buttons.cancel')"
+                :proceed-title="$t('@Products._.cancel')"
                 :is-submitting="isAdding"
                 :scope="scope"
                 :errors="scopeErrors"
