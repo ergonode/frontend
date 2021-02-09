@@ -24,51 +24,64 @@
                     @input="setIsActiveValue" />
                 <Divider />
             </FormSection>
-            <FormSection title="Recurence time">
-                <Paragraph
-                    class="scheduler-form-paragraph"
-                    :title="formParagraphTitle">
-                    <template #boldExample>
-                        <b>36 hours 30 minutes</b>
-                    </template>
-                </Paragraph>
-            </FormSection>
-            <FormSection :columns="2">
-                <TextField
-                    :value="hour"
-                    :disabled="!isAllowedToUpdate"
-                    :error-messages="errors[hourFieldKey]"
-                    required
-                    label="Hours"
-                    v-mask="'#########'"
-                    @input="setHourChange" />
-                <TextField
-                    :value="minute"
-                    :disabled="!isAllowedToUpdate"
-                    :error-messages="errors[minuteFieldKey]"
-                    required
-                    label="Minutes"
-                    v-mask="minuteMask"
-                    @input="setMinuteChange" />
-            </FormSection>
             <FormSection title="Start date and time">
-                <Divider />
                 <DatePicker
                     :value="date"
                     :placeholder="format"
                     :format="format"
-                    :disabled="!isAllowedToUpdate"
+                    :disabled="!isAllowedToUpdate || !isActive"
                     :error-messages="errors[startFieldKey]"
                     required
                     label="Start date"
                     @input="setDateChange" />
                 <TextField
                     :value="time"
-                    :disabled="!isAllowedToUpdate"
+                    :disabled="!isAllowedToUpdate || !isActive"
                     :input="timeInputType"
                     required
                     label="Start time"
                     @input="setTimeChange" />
+                <Divider />
+            </FormSection>
+            <FormSubsection title="Recurence time">
+                <Paragraph
+                    class="scheduler-form-paragraph"
+                    :title="formParagraphTitle" />
+            </FormSubsection>
+            <FormSection :columns="2">
+                <TextField
+                    :value="hour"
+                    :disabled="!isAllowedToUpdate || !isActive"
+                    :error-messages="errors[hourFieldKey]"
+                    label="Hours"
+                    v-mask="'#########'"
+                    @input="setHourChange" />
+                <TextField
+                    :value="minute"
+                    :disabled="!isAllowedToUpdate || !isActive"
+                    :error-messages="errors[minuteFieldKey]"
+                    label="Minutes"
+                    v-mask="minuteMask"
+                    @input="setMinuteChange" />
+            </FormSection>
+            <FormSection v-if="isInformation">
+                <Divider />
+                <Paragraph
+                    class="scheduler-form-paragraph"
+                    :title="formParagraphInformation">
+                    <template #prepend>
+                        <IconInfo
+                            :fill-color="blueColor"
+                            :width="20"
+                            :height="20" />
+                    </template>
+                    <template #recurence>
+                        <b>{{ recurenceInfo || 'one time' }}</b>
+                    </template>
+                    <template #dateTime>
+                        <b>{{ dataTime }}</b>.
+                    </template>
+                </Paragraph>
             </FormSection>
         </template>
     </Form>
@@ -78,10 +91,15 @@
 import PRIVILEGES from '@Channels/config/privileges';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import {
+    BLUE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
 import DatePicker from '@UI/components/DatePicker/DatePicker';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
+import FormSubsection from '@UI/components/Form/Subsection/FormSubsection';
+import IconInfo from '@UI/components/Icons/Feedback/IconInfo';
 import Paragraph from '@UI/components/Paragraph/Paragraph';
 import TextField from '@UI/components/TextField/TextField';
 import Toggler from '@UI/components/Toggler/Toggler';
@@ -106,10 +124,12 @@ export default {
     components: {
         Form,
         FormSection,
+        FormSubsection,
         DatePicker,
         TextField,
         Toggler,
         Divider,
+        IconInfo,
         Paragraph,
     },
     mixins: [
@@ -125,6 +145,9 @@ export default {
         ...mapState('channel', [
             'scheduler',
         ]),
+        blueColor() {
+            return BLUE;
+        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.CHANNEL.update,
@@ -156,20 +179,45 @@ export default {
                 hour,
             } = this.schedulerConfiguration;
 
-            return hour || null;
+            return hour;
         },
         minute() {
             const {
                 minute,
             } = this.schedulerConfiguration;
 
-            return minute || null;
+            return minute;
         },
         minuteMask() {
             return [
                 /[0-5]/,
                 /[0-9]/,
             ];
+        },
+        dataTime() {
+            const {
+                start,
+            } = this.schedulerConfiguration;
+
+            return start ? formatDate(parseISO(start), DEFAULT_DATE_TIME_FORMAT) : null;
+        },
+        recurenceInfo() {
+            const {
+                hour,
+                minute,
+            } = this.schedulerConfiguration;
+            const tmpHour = hour ? `${hour} h` : '';
+            const tmpMinute = minute ? `${minute} min` : '';
+
+            return !tmpHour && !tmpMinute ? null : `${tmpHour} ${tmpMinute}`;
+        },
+        isInformation() {
+            const {
+                active,
+                start,
+            } = this.schedulerConfiguration;
+
+            return active && start;
         },
         format() {
             return DEFAULT_FORMAT;
@@ -192,7 +240,14 @@ export default {
             return 'minute';
         },
         formParagraphTitle() {
-            return 'Time interval determining how often process would be executed: [[boldExample]]';
+            return 'Time interval that determines how often the process will be executed.';
+        },
+        formParagraphInformation() {
+            if (!this.recurenceInfo) {
+                return 'Export will run [[recurence]] on [[dateTime]]';
+            }
+
+            return 'Exports will start every [[recurence]] starting on [[dateTime]]';
         },
     },
     watch: {
@@ -269,7 +324,7 @@ export default {
         setHourChange(value) {
             const tmpScheduler = {
                 ...this.schedulerConfiguration,
-                hour: value ? parseInt(value, 10) : 0,
+                hour: parseInt(value, 10),
             };
 
             this.__setState({
@@ -286,7 +341,7 @@ export default {
         setMinuteChange(value) {
             const tmpScheduler = {
                 ...this.schedulerConfiguration,
-                minute: value ? parseInt(value, 10) : null,
+                minute: parseInt(value, 10),
             };
 
             this.__setState({
@@ -296,7 +351,7 @@ export default {
 
             this.onScopeValueChange({
                 scope: this.scope,
-                fieldKey: this.hourFieldKey,
+                fieldKey: this.minuteFieldKey,
                 value,
             });
         },

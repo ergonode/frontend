@@ -31,17 +31,30 @@ export default {
                 return ` ${word} `;
             });
         }
-
-        return createElement('p', {
+        return createElement('div', {
             class: 'paragraph',
-        }, paragraphContent);
+        }, [
+            this.$slots.prepend,
+            createElement('p', {
+                class: 'paragraph__content',
+            }, paragraphContent),
+            this.$slots.append,
+        ]);
     },
 };
 </script>
 
 <style lang="scss" scoped>
     .paragraph {
-        color: $GRAPHITE_DARK;
-        font: $FONT_MEDIUM_14_20;
+        display: grid;
+        grid-auto-flow: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        column-gap: 10px;
+
+        &__content {
+            color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_14_20;
+        }
     }
 </style>
