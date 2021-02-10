@@ -37,6 +37,9 @@
 </template>
 
 <script>
+import {
+    create,
+} from '@BatchActions/services';
 import ToolBarUserButton from '@Core/components/ToolBar/ToolBarUserButton';
 import {
     COMPONENTS,
@@ -92,34 +95,33 @@ export default {
             this.breadcrumbs = this.$route.meta.breadcrumbs || [];
         },
         batchActions() {
-            const request = [];
+            const requests = [];
 
             this.batchActions.forEach(({
                 id,
-                href,
-                type,
-                payload,
+                request,
             }) => {
                 if (!this.executingBatchActions[id]) {
                     let event = null;
 
                     this.executingBatchActions[id] = true;
 
-                    request.push(
-                        this.$axios.$post(href, {
-                            type,
-                            ...payload,
+                    requests.push(
+                        create({
+                            $axios: this.$axios,
+                            ...request,
                         }).then(() => {
                             event = new CustomEvent(id, {
                                 detail: {
                                     id,
-                                    payload,
+                                    request,
                                 },
                             });
                         }).catch((error) => {
                             event = new CustomEvent(id, {
                                 detail: {
                                     id,
+                                    request,
                                     error,
                                 },
                             });
@@ -132,7 +134,7 @@ export default {
                 }
             });
 
-            Promise.all(request);
+            Promise.all(requests);
         },
     },
     created() {

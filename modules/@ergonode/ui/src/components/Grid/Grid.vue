@@ -410,33 +410,23 @@ export default {
         },
         onBatchActionSelect(option) {
             if (Object.keys(this.selectedRows[this.pagination.page]).length > 0) {
-                let {
-                    rowIds,
-                } = this;
+                const payload = {
+                    ids: [],
+                    indexes: [],
+                    onApply: this.onApplyBatchAction,
+                };
 
                 const rowsOffset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
                 const fixedIndex = rowsOffset + (this.isBasicFilter ? 2 : 1);
 
-                rowIds = [];
-
                 Object.keys(this.selectedRows[this.pagination.page]).forEach((key) => {
-                    rowIds.push(this.rowIds[+key - fixedIndex]);
+                    if (this.selectedRows[this.pagination.page][key]) {
+                        payload.ids.push(this.rowIds[+key - fixedIndex]);
+                        payload.indexes.push(+key);
+                    }
                 });
 
-                option.action({
-                    payload: {
-                        rowIds,
-                    },
-                    onSuccess: () => {
-                        this.selectedRows = {
-                            ...this.selectedRows,
-                            [this.pagination.page]: {},
-                        };
-                    },
-                    onError: () => {
-                        throw new Error('Mass action is either without defined an action nor is not valid');
-                    },
-                });
+                option.action(payload);
             }
         },
         onRowSelect(selectedRows) {
@@ -497,6 +487,17 @@ export default {
                     page: DEFAULT_PAGE,
                     itemsPerPage: number,
                 });
+            }
+        },
+        onApplyBatchAction(indexes) {
+            if (typeof this.selectedRows[this.pagination.page] !== 'undefined') {
+                indexes.forEach((index) => {
+                    delete this.selectedRows[this.pagination.page][index];
+                });
+
+                this.selectedRows = {
+                    ...this.selectedRows,
+                };
             }
         },
     },

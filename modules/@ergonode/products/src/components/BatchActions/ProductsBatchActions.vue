@@ -33,55 +33,54 @@ export default {
         ...mapState('batchAction', {
             batchActions: state => state.batchActions,
             removeProductsBatchActions: state => state.batchActions.filter(
-                batchAction => batchAction.type === BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
+                batchAction => batchAction.payload.type === BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
             ),
         }),
         removeBatchActionItem() {
             return {
                 label: 'Delete selected products',
                 action: ({
-                    payload,
-                    onSuccess,
+                    ids,
+                    indexes,
+                    onApply,
                 }) => {
-                    const {
-                        rowIds,
-                    } = payload;
-
                     this.$confirm({
                         type: MODAL_TYPE.DESTRUCTIVE,
                         title: this.$t('@Products.batchAction.components.ProductsBatchActions.confirmTitle', {
-                            info: rowIds.length,
+                            info: ids.length,
                         }),
                         subtitle: this.$t('@Products.batchAction.components.ProductsBatchActions.confirmSubtitle'),
                         applyTitle: this.$t('@Products.batchAction.components.ProductsBatchActions.confirmApplyTitle', {
-                            info: rowIds.length,
+                            info: ids.length,
                         }),
                         action: () => {
+                            onApply(indexes);
+
                             const uuid = getUUID();
 
-                            rowIds.forEach((rowId) => {
-                                this.disabledRows[rowId] = true;
-                            });
-
-                            this.disabledRows = {
-                                ...this.disabledRows,
-                            };
+                            this.setDisabledRows(ids);
 
                             this.addBatchAction({
                                 id: uuid,
-                                type: BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
-                                href: 'batch-action',
-                                payload: {
-                                    ids: rowIds,
+                                request: {
+                                    type: '$post',
+                                    href: 'batch-action',
+                                    payload: {
+                                        type: BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
+                                        filter: {
+                                            ids: {
+                                                list: ids,
+                                                included: true,
+                                            },
+                                        },
+                                    },
                                 },
                             });
 
-                            document
-                                .documentElement
-                                .addEventListener(
-                                    uuid,
-                                    this.onRemoveProductsBatchAction.bind(null, onSuccess),
-                                );
+                            document.documentElement.addEventListener(
+                                uuid,
+                                this.onRemoveProductsBatchAction,
+                            );
                         },
                     });
                 },
@@ -103,18 +102,20 @@ export default {
         this.removeProductsBatchActions.forEach(({
             id,
         }) => {
-            document
-                .documentElement
-                .addEventListener(id, this.onRemoveProductsBatchAction);
+            document.documentElement.addEventListener(
+                id,
+                this.onRemoveProductsBatchAction,
+            );
         });
     },
     beforeDestroy() {
         this.removeProductsBatchActions.forEach(({
             id,
         }) => {
-            document
-                .documentElement
-                .removeEventListener(id, this.onRemoveProductsBatchAction);
+            document.documentElement.removeEventListener(
+                id,
+                this.onRemoveProductsBatchAction,
+            );
         });
     },
     methods: {
@@ -122,25 +123,8 @@ export default {
             'addBatchAction',
             'removeBatchAction',
         ]),
-        async onRemoveProductsBatchAction(onSuccess = () => {}, event) {
-            await onSuccess();
-
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: this.$t('@Products.batchAction.components.ProductsBatchActions.successAlert'),
-            });
-
-            const {
-                id,
-                payload: {
-                    ids,
-                },
-            } = event.detail;
-
-            const batchActionIndex = this.batchActions
-                .findIndex(batchAction => batchAction.id === id);
-
-            ids.forEach((rowId) => {
+        async onRemoveProductsBatchAction(event) {
+            event.detail.request.payload.filter.ids.list.forEach((rowId) => {
                 delete this.disabledRows[rowId];
             });
 
@@ -148,12 +132,33 @@ export default {
                 ...this.disabledRows,
             };
 
-            document
-                .documentElement
-                .removeEventListener(id, this.onRemoveProductsBatchAction);
-            this.removeBatchAction(batchActionIndex);
+            if (!event.detail.error) {
+                const batchActionIndex = this.batchActions.findIndex(
+                    batchAction => batchAction.id === event.detail.id,
+                );
 
-            this.$emit('batch-action-completed');
+                document.documentElement.removeEventListener(
+                    event.detail.id,
+                    this.onRemoveProductsBatchAction,
+                );
+                this.removeBatchAction(batchActionIndex);
+
+                this.$addAlert({
+                    type: ALERT_TYPE.SUCCESS,
+                    message: this.$t('@Products.batchAction.components.ProductsBatchActions.successAlert'),
+                });
+
+                this.$emit('batch-action-completed');
+            }
+        },
+        setDisabledRows(ids) {
+            ids.forEach((rowId) => {
+                this.disabledRows[rowId] = true;
+            });
+
+            this.disabledRows = {
+                ...this.disabledRows,
+            };
         },
     },
     render() {
