@@ -37,6 +37,9 @@
 </template>
 
 <script>
+import {
+    create,
+} from '@BatchActions/services';
 import ToolBarUserButton from '@Core/components/ToolBar/ToolBarUserButton';
 import {
     COMPONENTS,
@@ -104,7 +107,10 @@ export default {
                     this.executingBatchActions[id] = true;
 
                     requests.push(
-                        this.$axios[request.type](request.href, request.payload).then(() => {
+                        create({
+                            $axios: this.$axios,
+                            ...request,
+                        }).then(() => {
                             event = new CustomEvent(id, {
                                 detail: {
                                     id,
