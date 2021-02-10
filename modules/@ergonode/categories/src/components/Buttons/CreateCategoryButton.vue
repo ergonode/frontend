@@ -5,7 +5,7 @@
 <template>
     <Button
         data-cy="new-category"
-        :title="$t('category.page.addButton')"
+        :title="$t('@Categories.category.components.CreateCategoryButton.addButton')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">

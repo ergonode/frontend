@@ -6,7 +6,7 @@
     <CheckBox
         class="category-select-all-categories"
         :value="selectionState"
-        :label="$t('category.form.selectVisibleCheckBox')"
+        :label="$t('@Categories.category._.selectVisibleCheckBox')"
         :disabled="disabled"
         reversed
         @input="onSelectAllVisible" />

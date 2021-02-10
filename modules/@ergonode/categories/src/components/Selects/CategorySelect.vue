@@ -14,13 +14,13 @@
                 <div class="category-select__header">
                     <div class="horizontal-container">
                         <ExpandNumericButton
-                            :title="$t('category.form.expandFilterButton')"
+                            :title="$t('@Categories.category.components.CategorySelect.expandFilterButton')"
                             :number="isCategoryTreeSelected ? 1 : 0"
                             :is-expanded="isFiltersExpanded"
                             @click.native="onFiltersExpand" />
                         <Toggler
                             v-model="isSelectedOnlyVisibleCategories"
-                            :label="$t('category.form.toggleVisibleToggler')"
+                            :label="$t('@Categories.category.components.CategorySelect.toggleVisibleToggler')"
                             :disabled="isSelectedCategoriesTogglerDisabled"
                             reversed
                             @input="onToggleBetweenCategoriesVisibility" />
@@ -37,7 +37,7 @@
                             <template #removeAllButton>
                                 <AdvancedFiltersRemoveAllButton
                                     v-if="isCategoryTreeSelected"
-                                    :title="$t('core.buttons.clear')"
+                                    :title="$t('@Categories._.clear')"
                                     @click.native="onClearAdvancedFilters" />
                                 <div v-else />
                             </template>
@@ -53,7 +53,7 @@
                     <TreeAccordion
                         v-if="isCategoryTreeSelected"
                         class="category-select__list"
-                        :search-placeholder="$t('category.form.searchPlaceholder')"
+                        :search-placeholder="$t('@Categories.category.components.CategorySelect.searchPlaceholder')"
                         :value="selectedOptions"
                         :search-value="searchValue"
                         :items="categoryTreeItems"
@@ -78,7 +78,7 @@
                                 :subtitle="categoryTreePlaceholder.subtitle">
                                 <template #action>
                                     <Button
-                                        :title="$t('@Trees.product.components.CategorySelect.goToButton')"
+                                        :title="$t('@Categories.category.components.CategorySelect.goToButton')"
                                         :size="smallSize"
                                         :disabled="!isAllowedToUpdateTree"
                                         @click.native="onNavigateToCategoryTree" />
@@ -90,7 +90,7 @@
                                 :subtitle="categoryTreeNonVisiblePlaceholder.subtitle">
                                 <template #action>
                                     <PlaceholderClearSearchButton
-                                        :title="$t('category.form.clearSearchButtonLabel')"
+                                        :title="$t('@Categories.category.components.CategorySelect.clearSearchButtonLabel')"
                                         @click.native="onClearVisibilitySelection" />
                                 </template>
                             </SelectListNoDataPlaceholder>
@@ -103,7 +103,7 @@
                         :search-value="searchValue"
                         :items="visibleCategoryItems"
                         :size="smallSize"
-                        :search-placeholder="$t('category.form.searchPlaceholder')"
+                        :search-placeholder="$t('@Categories.category.components.CategorySelect.searchPlaceholder')"
                         :searchable="true"
                         :selectable="true"
                         :multiselect="true"
@@ -132,7 +132,7 @@
                                 :subtitle="categoriesNonVisiblePlaceholder.subtitle">
                                 <template #action>
                                     <PlaceholderClearSearchButton
-                                        :title="$t('category.form.clearSearchButtonLabel')"
+                                        :title="$t('@Categories.category.components.CategorySelect.clearSearchButtonLabel')"
                                         @click.native="onClearVisibilitySelection" />
                                 </template>
                             </SelectListNoDataPlaceholder>
@@ -154,7 +154,7 @@
                         v-show="isExpandButtonVisible"
                         class="category-select__expand-more">
                         <ExpandNumericButton
-                            :title="$t('category.form.showAllExpandNumericButton')"
+                            :title="$t('@Categories.category.components.CategorySelect.showAllExpandNumericButton')"
                             :size="tinySize"
                             :number="categoryItems.length"
                             :is-expanded="isCategoriesExpanded"
@@ -291,30 +291,30 @@ export default {
             ];
         },
         label() {
-            return this.$t('category.form.selectLabel');
+            return this.$t('@Categories.category._.label');
         },
         categoriesPlaceholder() {
             return {
-                title: this.$t('category.grid.placeholderTitle'),
-                subtitle: this.$t('category.grid.placeholderSubtitle'),
+                title: this.$t('@Categories.category._.noItems'),
+                subtitle: this.$t('@Categories.category._.createFirst'),
             };
         },
         categoriesNonVisiblePlaceholder() {
             return {
-                title: this.$t('category.form.noVisibleCategoriesPlaceholderTitle'),
-                subtitle: this.$t('category.form.noVisibleCategoriesPlaceholderSubtitle'),
+                title: this.$t('@Categories.category._.noItems'),
+                subtitle: this.$t('@Categories.category.components.CategorySelect.noCategoriesSubtitle'),
             };
         },
         categoryTreePlaceholder() {
             return {
-                title: this.$t('@Trees.tree._.noCategories'),
-                subtitle: this.$t('@Trees.tree._.addFirst'),
+                title: this.$t('@Categories.category._.noItems'),
+                subtitle: this.$t('@Categories.category.components.CategorySelect.noCategoryInTree'),
             };
         },
         categoryTreeNonVisiblePlaceholder() {
             return {
-                title: this.$t('@Trees.product.components.CategorySelect.noCategoriesTitle'),
-                subtitle: this.$t('@Trees.product.components.CategorySelect.noCategoriesSubtitle'),
+                title: this.$t('@Categories.category._.noItems'),
+                subtitle: this.$t('@Categories.category.components.CategorySelect.noCategoriesSubtitle'),
             };
         },
         selectedOptions() {
@@ -337,7 +337,7 @@ export default {
                 {
                     id: 'categoryTree',
                     type: 'CATEGORY_TREE',
-                    label: this.$t('@Trees.product.components.CategorySelect.advancedFilterLabel'),
+                    label: this.$t('@Categories.category.components.CategorySelect.advancedFilterLabel'),
                 },
             ];
         },

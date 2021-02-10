@@ -63,7 +63,7 @@ export default {
             return this.item.name || `#${this.item.code}`;
         },
         itemCount() {
-            return `${this.item.elements_count || 0} Product${this.item.elements_count === 1 ? '' : 's'}`;
+            return `${this.item.elements_count || 0} ${this.$t('@Categories.categoryTreeExtend.components.CategorySideBarElement.product')}${this.item.elements_count === 1 ? '' : this.$t('@Categories.categoryTreeExtend.components.CategorySideBarElement.productPlural')}`;
         },
         isDisabled() {
             return this.disabled

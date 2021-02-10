@@ -24,8 +24,8 @@
         @remove-all-filters="onRemoveAllFilters">
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('category.grid.placeholderTitle')"
-                :subtitle="$t('category.grid.placeholderSubtitle')">
+                :title="$t('@Categories.category._.noItems')"
+                :subtitle="$t('@Categories.category._.createFirst')">
                 <template #action>
                     <CreateCategoryButton />
                 </template>
@@ -176,7 +176,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Categories haven’t been fetched properly',
+                message: this.$t('@Categories.category.components.CategoriesGrid.getRequest'),
             });
         },
         onRemoveAllFilters() {

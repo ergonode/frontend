@@ -7,7 +7,7 @@
         data-cy="delete-category"
         :theme="secondaryTheme"
         :size="smallSize"
-        title="REMOVE CATEGORY"
+        :title="$t('@Categories.category.components.RemoveCategoryButton.removeButton')"
         :disabled="!isAllowedToDelete"
         @click.native="onRemove">
         <template #prepend="{ color }">
@@ -63,8 +63,9 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: this.$t('category.messages.deleteTitle'),
-                applyTitle: this.$t('category.messages.deleteConfirm'),
+                title: this.$t('@Categories.category.components.RemoveCategoryButton.deleteTitle'),
+                applyTitle: this.$t('@Categories._.deleteConfirm'),
+                cancelTitle: this.$t('@Categories._.cancel'),
                 action: () => {
                     this.removeCategory({
                         onSuccess: this.onRemoveSuccess,
@@ -76,7 +77,7 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('category.messages.deleteSuccess'),
+                message: this.$t('@Categories.category.components.RemoveCategoryButton.deleteSuccess'),
             });
             this.$router.push({
                 name: ROUTE_NAME.CATEGORIES_GRID,
@@ -85,7 +86,7 @@ export default {
         onRemoveError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: this.$t('category.errors.deleteRequest'),
+                message: this.$t('@Categories.category.components.RemoveCategoryButton.deleteRequest'),
             });
         },
     },

@@ -64,7 +64,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Creating category has been canceled',
+                    message: this.app.i18n.t('@Categories.category.store.action.createCancel'),
                 });
 
                 return;
@@ -193,7 +193,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating category has been canceled',
+                    message: this.app.i18n.t('@Categories.category.store.action.updateCancel'),
                 });
 
                 return;
@@ -238,7 +238,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Removing category has been canceled',
+                    message: this.app.i18n.t('@Categories.category.store.action.deleteCancel'),
                 });
 
                 return;

@@ -5,14 +5,13 @@
 <template>
     <CategorySelect
         :value="categories"
-        :disabled="!isAllowedToUpdate"
+        :disabled="disabled"
         @input="onCategoriesValueChange" />
 </template>
 
 <script>
 import CategorySelect from '@Categories/components/Selects/CategorySelect';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
-import PRIVILEGES from '@Products/config/privileges';
 import {
     mapActions,
     mapState,
@@ -34,21 +33,10 @@ export default {
     },
     computed: {
         ...mapState('product', [
-            'id',
             'categories',
         ]),
         categoryFieldKey() {
             return 'categories';
-        },
-        isDisabled() {
-            return Boolean(this.id);
-        },
-        isAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.PRODUCT.update,
-            ]) || (!this.isDisabled && this.$hasAccess([
-                PRIVILEGES.PRODUCT.create,
-            ]));
         },
     },
     methods: {
