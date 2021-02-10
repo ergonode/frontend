@@ -23,6 +23,7 @@
                     v-if="isBatchActionVisible"
                     :highlighted="isAnyRowSelected"
                     :options="batchActions"
+                    :selected-rows-count="selectedRowsCount"
                     @action="onBatchActionSelect" />
                 <slot name="actionsHeader" />
             </template>
@@ -54,12 +55,14 @@
                         :pagination="pagination"
                         :row-height="tableLayoutConfig.rowHeight"
                         :extended-components="extendedComponents[gridLayout.TABLE]"
-                        :selected-rows="selectedRows[pagination.page]"
+                        :selected-rows="selectedRows"
+                        :excluded-from-selection-rows="excludedFromSelectionRows"
                         :is-prefetching-data="isPrefetchingData"
                         :is-layout-resolved="isLayoutResolved[layout]"
                         :is-editable="isEditable"
                         :is-select-column="isSelectColumn"
                         :is-basic-filter="isBasicFilter"
+                        :is-selected-all="isSelectedAll"
                         @sort-column="onSortColumn"
                         @filter="onFilterChange"
                         @cell-value="onCellValueChange"
@@ -67,7 +70,9 @@
                         @row-action="onRowAction"
                         @remove-column="onRemoveColumn"
                         @swap-columns="onSwapColumns"
-                        @row-select="onRowSelect"
+                        @rows-select="onRowsSelect"
+                        @excluded-rows-select="onExcludedRowsSelect"
+                        @select-all="onSelectAllRows"
                         @resolved="onResolvedLayout" />
                     <GridCollectionLayout
                         v-else
@@ -321,6 +326,8 @@ export default {
                 rowHeight: ROW_HEIGHT.SMALL,
             },
             selectedRows: {},
+            excludedFromSelectionRows: {},
+            isSelectedAll: false,
             isLayoutResolved: {
                 [GRID_LAYOUT.TABLE]: false,
                 [GRID_LAYOUT.COLLECTION]: false,
@@ -357,13 +364,15 @@ export default {
                 return getUUID();
             });
         },
-        isAnyRowSelected() {
-            if (!this.selectedRows[this.pagination.page]) {
-                return false;
+        selectedRowsCount() {
+            if (this.isSelectedAll) {
+                return this.dataCount - Object.keys(this.excludedFromSelectionRows).length;
             }
 
-            return Object.values(this.selectedRows[this.pagination.page])
-                .some(isSelected => isSelected);
+            return Object.keys(this.selectedRows).filter(key => this.selectedRows[key]).length;
+        },
+        isAnyRowSelected() {
+            return this.selectedRowsCount > 0;
         },
         isAnyFilter() {
             return Object.keys(this.filters).length > 0;
@@ -412,28 +421,50 @@ export default {
             if (Object.keys(this.selectedRows[this.pagination.page]).length > 0) {
                 const payload = {
                     ids: [],
-                    indexes: [],
                     onApply: this.onApplyBatchAction,
                 };
 
-                const rowsOffset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
-                const fixedIndex = rowsOffset + (this.isBasicFilter ? 2 : 1);
-
-                Object.keys(this.selectedRows[this.pagination.page]).forEach((key) => {
-                    if (this.selectedRows[this.pagination.page][key]) {
-                        payload.ids.push(this.rowIds[+key - fixedIndex]);
-                        payload.indexes.push(+key);
+                Object.keys(this.selectedRows).forEach((key) => {
+                    if (this.selectedRows[key]) {
+                        payload.ids.push(key);
                     }
                 });
 
                 option.action(payload);
             }
         },
-        onRowSelect(selectedRows) {
+        onRowsSelect({
+            isSelected,
+            rowIds,
+        }) {
+            rowIds.forEach((rowId) => {
+                this.selectedRows[rowId] = isSelected;
+            });
+
             this.selectedRows = {
                 ...this.selectedRows,
-                [this.pagination.page]: selectedRows,
             };
+        },
+        onExcludedRowsSelect({
+            isExcluded,
+            rowIds,
+        }) {
+            rowIds.forEach((rowId) => {
+                this.excludedFromSelectionRows[rowId] = isExcluded;
+            });
+
+            this.excludedFromSelectionRows = {
+                ...this.excludedFromSelectionRows,
+            };
+        },
+        onSelectAllRows(isSelectedAll) {
+            this.isSelectedAll = isSelectedAll;
+
+            if (isSelectedAll) {
+                this.selectedRows = {};
+            } else {
+                this.excludedFromSelectionRows = {};
+            }
         },
         onApplySettings({
             tableConfig,
@@ -489,16 +520,13 @@ export default {
                 });
             }
         },
-        onApplyBatchAction(indexes) {
-            if (typeof this.selectedRows[this.pagination.page] !== 'undefined') {
-                indexes.forEach((index) => {
-                    delete this.selectedRows[this.pagination.page][index];
-                });
+        onApplyBatchAction(ids) {
+            ids.forEach((id) => {
+                delete this.selectedRows[id];
+            });
 
-                this.selectedRows = {
-                    ...this.selectedRows,
-                };
-            }
+            this.selectedRows = {};
+            this.excludedFromSelectionRows = {};
         },
     },
 };

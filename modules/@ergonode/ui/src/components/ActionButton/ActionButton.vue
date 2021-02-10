@@ -24,6 +24,7 @@
                       -->
                     <slot
                         name="prepend"
+                        :focused="isFocused"
                         :color="color" />
                 </template>
                 <template #append="{ color }">
@@ -33,6 +34,7 @@
                       -->
                     <slot
                         name="append"
+                        :focused="isFocused"
                         :color="color">
                         <IconArrowDropdown
                             :fill-color="color"

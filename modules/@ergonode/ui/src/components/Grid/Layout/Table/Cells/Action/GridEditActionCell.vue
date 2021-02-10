@@ -6,8 +6,8 @@
     <GridTableCell
         :column="column"
         :row="row"
-        :selected="isSelected"
-        :disabled="isDisabled"
+        :selected="selected"
+        :disabled="disabled"
         :edit-key-code="32"
         @mousedown.native="onEdit"
         @edit="onEdit">
@@ -29,14 +29,14 @@ export default {
         /**
          * Determines if component is selected
          */
-        isSelected: {
+        selected: {
             type: Boolean,
             default: false,
         },
         /**
          * Determinate if the component is disabled
          */
-        isDisabled: {
+        disabled: {
             type: Boolean,
             default: false,
         },

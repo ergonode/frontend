@@ -21,8 +21,8 @@
             :column="column"
             :action="row._links.value[column.id]"
             :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
-            :is-disabled="disabledRows[rowIds[rowIndex]]"
-            :is-selected="selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
+            :disabled="disabledRows[rowIds[rowIndex]]"
+            :selected="getSelectedRowState(rowIndex)"
             @action="onRowAction" />
     </GridActionColumn>
 </template>
@@ -69,6 +69,13 @@ export default {
             default: () => ({}),
         },
         /**
+         * The map of rows excluded from selection
+         */
+        excludedFromSelectionRows: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
          * Data of the column
          */
         column: {
@@ -110,6 +117,13 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if every row should be selected
+         */
+        isSelectedAll: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         basicFiltersOffset() {
@@ -119,6 +133,10 @@ export default {
     methods: {
         onRowAction(payload) {
             this.$emit('row-action', payload);
+        },
+        getSelectedRowState(index) {
+            return this.selectedRows[this.rowIds[index]]
+                || (this.isSelectedAll && !this.excludedFromSelectionRows[this.rowIds[index]]);
         },
     },
 };

@@ -6,9 +6,9 @@
     <GridTableCell
         :column="column"
         :row="row"
-        :selected="isSelected"
+        :selected="selected"
         :edit-key-code="32"
-        :disabled="isDisabled"
+        :disabled="disabled"
         @mousedown.native="onPreview"
         @edit="onPreview">
         <IconPreview v-once />
@@ -29,14 +29,14 @@ export default {
         /**
          * Determines if component is selected
          */
-        isSelected: {
+        selected: {
             type: Boolean,
             default: false,
         },
         /**
          * Determinate if the component is disabled
          */
-        isDisabled: {
+        disabled: {
             type: Boolean,
             default: false,
         },
@@ -68,7 +68,7 @@ export default {
                 return;
             }
 
-            if (!this.isDisabled) {
+            if (!this.disabled) {
                 const args = this.href.split('/');
 
                 this.$emit('action', {

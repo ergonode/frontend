@@ -6,8 +6,8 @@
     <GridTableCell
         :column="column"
         :row="row"
-        :selected="isSelected"
-        :disabled="isDisabled"
+        :selected="selected"
+        :disabled="disabled"
         :edit-key-code="32"
         @mousedown.native="onDelete"
         @edit="onDelete">
@@ -32,14 +32,14 @@ export default {
         /**
          * Determines if component is selected
          */
-        isSelected: {
+        selected: {
             type: Boolean,
             default: false,
         },
         /**
          * Determinate if the component is disabled
          */
-        isDisabled: {
+        disabled: {
             type: Boolean,
             default: false,
         },
@@ -67,7 +67,7 @@ export default {
     },
     methods: {
         onDelete() {
-            if (!this.isDisabled) {
+            if (!this.disabled) {
                 // TODO: Migrate it to Core and propagate action outside
                 this.$confirm({
                     type: MODAL_TYPE.DESTRUCTIVE,
