@@ -77,8 +77,9 @@
     "categoryTreeExtend": {
       "components": {
         "CategorySideBarElement": {
+          "noProduct": "Produktów",
           "product": "Produkt",
-          "productPlural": "y"
+          "productPlural": "Produkty"
         }
       }
     }

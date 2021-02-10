@@ -63,7 +63,16 @@ export default {
             return this.item.name || `#${this.item.code}`;
         },
         itemCount() {
-            return `${this.item.elements_count || 0} ${this.$t('@Categories.categoryTreeExtend.components.CategorySideBarElement.product')}${this.item.elements_count === 1 ? '' : this.$t('@Categories.categoryTreeExtend.components.CategorySideBarElement.productPlural')}`;
+            const elementsCount = this.item.elements_count || 0;
+
+            switch (elementsCount) {
+            case 0:
+                return `0 ${this.$t('@Categories.categoryTreeExtend.components.CategorySideBarElement.noProduct')}`;
+            case 1:
+                return `1 ${this.$t('@Categories.categoryTreeExtend.components.CategorySideBarElement.product')}`;
+            default:
+                return `${elementsCount} ${this.$t('@Categories.categoryTreeExtend.components.CategorySideBarElement.productPlural')}`;
+            }
         },
         isDisabled() {
             return this.disabled
