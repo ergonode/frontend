@@ -4,7 +4,7 @@
  */
 <template>
     <LoginForm
-        :submit-title="$t('authentication.forms.checkEmail.redirectTo')"
+        :submit-title="$t('@Authentication.authentication.components.PasswordRecoveryCheckEmail.redirectTo')"
         @submit="onRedirectToLogin">
         <template #header>
             <Fab @click.native="onBack">
@@ -12,15 +12,15 @@
                     <IconArrowPointer :fill-color="color" />
                 </template>
             </Fab>
-            <FormHeader :title="$t('authentication.forms.newPassword.title')" />
+            <FormHeader :title="$t('@Authentication.authentication.components.PasswordRecoveryCheckEmail.title')" />
         </template>
         <template #body>
-            <Paragraph :title="$t('authentication.forms.checkEmail.info')" />
-            <Paragraph :title="$t('authentication.forms.checkEmail.infoText')">
+            <Paragraph :title="$t('@Authentication.authentication.components.PasswordRecoveryCheckEmail.info')" />
+            <Paragraph :title="$t('@Authentication.authentication.components.PasswordRecoveryCheckEmail.infoText')">
                 <template #infoLink>
                     <a
                         class="paragraph__link"
-                        v-text="$t('authentication.forms.checkEmail.infoLink')"
+                        v-text="$t('@Authentication.authentication.components.PasswordRecoveryCheckEmail.infoLink')"
                         @click="onRedirectToHelp" />
                 </template>
             </Paragraph>

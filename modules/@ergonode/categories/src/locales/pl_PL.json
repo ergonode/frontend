@@ -1,38 +1,87 @@
 {
-  "category": {
-    "page": {
-      "title": "Kategorie",
-      "head": "Kategorie - Ergonode",
-      "addButton": "NOWA KATEGORIA"
+  "@Categories": {
+    "_": {
+      "submit": "Zapisz zmiany",
+      "create": "Stwórz",
+      "proceed": "Stwórz & Edytuj",
+      "cancel": "Anuluj",
+      "clear": "Wyczyść",
+      "deleteConfirm": "Tak, usuń",
+      "notAssigned": "Nie przypisane"
     },
-    "form": {
-      "selectLabel": "Kategoria",
-      "expandFilterButton": "FILTRY",
-      "toggleVisibleToggler": "Pokaż tylko zaznaczone",
-      "selectVisibleCheckBox": "Zaznacz widoczne",
-      "showAllExpandNumericButton": "Pokaż wszystkie",
-      "searchPlaceholder": "Szukaj kategorii...",
-      "clearSearchButtonLabel": "Wyczyść widoczność kategorii",
-      "noVisibleCategoriesPlaceholderTitle": "Brak kategorii",
-      "noVisibleCategoriesPlaceholderSubtitle": "Nie ma zaznaczonych kategorii dla wybranych kryteriów."
+    "category": {
+      "_": {
+        "title": "Kategorie",
+        "head": "Kategorie - Ergonode",
+        "label": "Kategoria",
+        "noItems": "Brak kategorii",
+        "createFirst": "W systemie nie ma kategorii, stwórz pierwszą.",
+        "selectVisibleCheckBox": "Zaznacz widoczne"
+      },
+      "components": {
+        "CreateCategoryButton": {
+          "addButton": "Nowa kategoria"
+        },
+        "RemoveCategoryButton": {
+          "removeButton": "Usuń kategorie",
+          "deleteTitle": "Czy jesteś pewien, że chcesz usunąć tą kategorię?",
+          "deleteSuccess": "Kategoria usunięta",
+          "deleteRequest": "Kategoria nie została usunięta"
+        },
+        "UpdateCategoryTranslationButton": {
+          "updateSuccess": "Tłumaczenia kategorii zostały uaktualnione"
+        },
+        "CategoryForm": {
+          "title": "Opcje",
+          "nameLabel": "Nazwa systemowa",
+          "nameHint": "Nazwa systemowa musi być unikalna"
+        },
+        "CategoryTranslationForm": {
+          "labelName": "Nazwa kategorii"
+        },
+        "CategoriesGrid": {
+          "getRequest": "Kategorie nie zostały pobrane prawidłowo"
+        },
+        "CreateCategoryModalForm": {
+          "create": "Stwórz kategorie",
+          "createSuccess": "Kategoria stworzona"
+        },
+        "CategorySelect": {
+          "expandFilterButton": "FILTRY",
+          "toggleVisibleToggler": "Pokaż tylko zaznaczone",
+          "searchPlaceholder": "Szukaj kategorii...",
+          "goToButton": "Idź do drzewa kategorii",
+          "clearSearchButtonLabel": "Wyczyść widoczność kategorii",
+          "showAllExpandNumericButton": "Pokaż wszystkie",
+          "noCategoriesSubtitle": "Nie ma zaznaczonych kategorii dla wybranych kryteriów.",
+          "advancedFilterLabel": "Drzewo kategorii",
+          "noCategoryInTree": "W drzewie nie ma kategorii, stwórz pierwszą."
+        },
+        "CategoryGeneralTab": {
+          "updateSuccess": "Kategoria została uaktualniona"
+        }
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Kategoria nie została pobrana prawidłowo"
+        }
+      },
+      "store": {
+        "action": {
+          "createCancel": "Tworzenie kategorii zostało przerwane",
+          "updateCancel": "Aktualizacja kategorii została przerwana",
+          "deleteCancel": "Usuwanie kategorii zostało przerwane"
+        }
+      }
     },
-    "sideBar": {
-      "searchHeader": "Kategorie",
-      "placeholderTitle": "Brak kategorii",
-      "placeholderSubtitle": "W systemie nie ma kategorii, stwórz pierwszy."
-    },
-    "grid": {
-      "placeholderTitle": "Brak kategorii",
-      "placeholderSubtitle": "Brak kategorii w systemie, stwórz pierwszą."
-    },
-    "messages": {
-      "deleteTitle": "Czy jesteś pewien, że chcesz usunąć tą kategorię?",
-      "deleteConfirm": "TAK, USUŃ",
-      "deleteSuccess": "Kategoria usunięta"
-    },
-    "errors": {
-      "getRequest": "Kategoria nie została pobrana",
-      "deleteRequest": "Kategoria nie została usunięta"
+    "categoryTreeExtend": {
+      "components": {
+        "CategorySideBarElement": {
+          "noProduct": "Produktów",
+          "product": "Produkt",
+          "productPlural": "Produkty"
+        }
+      }
     }
   }
 }

@@ -1,57 +1,63 @@
 {
-  "authentication": {
-    "layout": {
-      "help": "Help",
-      "userGuide": "User guide"
-    },
-    "forms": {
-      "login": {
-        "button": "LOG IN",
-        "email": "E-mail",
-        "password": "Password",
-        "toggle": "Show password",
-        "forgot": "Forgot password?"
-      },
-      "passwordRecovery": {
-        "title": "Password recovery",
-        "info": "Enter your e-mail address, we will send you the link to reset your password.",
-        "redirectTo": "BACK TO LOG IN PAGE",
-        "field": "E-mail",
-        "button": "Recover password"
-      },
-      "newPassword": {
-        "title": "Create new password",
-        "info": "Your password should contain:",
-        "field": "Password",
-        "toggle": "Show password",
-        "button": "Set Password",
-        "validation": {
-          "hasMinimumLength": "at least {length} characters,",
-          "hasUppercase": "at least 1 uppercase letter (A-Z),",
-          "hasLowercase": "at least 1 lowercase letter (a-z),",
-          "hasDigital": "at least 1 digit (0-9)."
+  "@Authentication": {
+    "authentication": {
+      "components": {
+        "LoginLayout": {
+          "help": "Help",
+          "userGuide": "User guide"
         },
-        "alertSuccess": "Password have been updated",
-        "alertError": "Errors occurred after data validation"
+        "LoginCredentialsForm": {
+          "button": "LOG IN",
+          "email": "E-mail",
+          "password": "Password",
+          "toggle": "Show password",
+          "forgot": "Forgot password?"
+        },
+        "LoginHelpForm": {
+          "title": "Help",
+          "info": "If you have any problems with your account, please contact the system administrator.",
+          "redirectTo": "BACK TO LOG IN PAGE"
+        },
+        "NewPasswordForm": {
+          "title": "Create new password",
+          "info": "Your password should contain:",
+          "field": "Password",
+          "toggle": "Show password",
+          "button": "Set Password",
+          "validationHasMinimumLength": "at least {length} characters,",
+          "validationHasUppercase": "at least 1 uppercase letter (A-Z),",
+          "validationHasLowercase": "at least 1 lowercase letter (a-z),",
+          "validationHasDigital": "at least 1 digit (0-9).",
+          "alertSuccess": "Password have been updated"
+        },
+        "PasswordRecoveryCheckEmail": {
+          "title": "Check your e-mail",
+          "info": "The link to reset your password will be sent to the provided e-mail address.",
+          "infoText": "If it does not arrive, please [[infoLink]]",
+          "infoLink": "contact the system administrator.",
+          "redirectTo": "BACK TO LOG IN PAGE"
+        },
+        "PasswordRecoveryForm": {
+          "title": "Password recovery",
+          "info": "Enter your e-mail address, we will send you the link to reset your password.",
+          "redirectTo": "BACK TO LOG IN PAGE",
+          "field": "E-mail",
+          "button": "Recover password"
+        }
       },
-      "help": {
-        "title": "Help",
-        "info": "If you have any problems with your account, please contact the system administrator.",
-        "redirectTo": "BACK TO LOG IN PAGE"
+      "pages": {
+        "passwordReset": {
+          "alertError": "Errors occurred after data validation"
+        }
       },
-      "checkEmail": {
-        "title": "Check your e-mail",
-        "info": "The link to reset your password will be sent to the provided e-mail address.",
-        "infoText": "If it does not arrive, please [[infoLink]]",
-        "infoLink": "contact the system administrator.",
-        "redirectTo": "BACK TO LOG IN PAGE"
+      "store": {
+        "action": {
+          "getUser": "User data hasn`t been fetched properly",
+          "emailRequired": "E-mail is required",
+          "passwordRequired": "Password is required",
+          "passwordValidation": "The entered password does not meet the security requirements"
+        }
       }
-    },
-    "errors": {
-      "getUser": "User data hasn`t been fetched properly",
-      "emailRequired": "E-mail is required",
-      "passwordRequired": "Password is required",
-      "passwordValidation": "The entered password does not meet the security requirements"
     }
   }
 }

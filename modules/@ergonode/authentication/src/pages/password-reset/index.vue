@@ -51,7 +51,7 @@ export default {
                         loginState: LOGIN_STATE.CREDENTIALS,
                         alert: {
                             type: ALERT_TYPE.ERROR,
-                            message: app.i18n.t('authentication.forms.newPassword.alertError'),
+                            message: app.i18n.t('@Authentication.authentication.pages.passwordReset.alertError'),
                         },
                     },
                 });

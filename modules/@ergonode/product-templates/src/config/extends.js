@@ -23,6 +23,7 @@ export default {
                 {
                     component: Components.ProductFormTemplate,
                     props: {},
+                    order: 10,
                 },
             ],
         },

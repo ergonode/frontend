@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar
-            :title="$t('activityLogs.page.title')"
+            :title="$t('@ActivityLogs.activityLog._.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <template

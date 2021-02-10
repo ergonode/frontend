@@ -74,7 +74,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: app.i18n.t('category.errors.getRequest'),
+                    message: app.i18n.t('@Categories.category.pages.id.getRequest'),
                 });
             },
         });
@@ -116,7 +116,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.code} - ${this.$t('category.page.title')}`,
+            title: `${this.code} - ${this.$t('@Categories.category._.title')}`,
         };
     },
 };

@@ -1,38 +1,87 @@
 {
-  "category": {
-    "page": {
-      "title": "Categories",
-      "head": "Categories - Ergonode",
-      "addButton": "NEW CATEGORY"
+  "@Categories": {
+    "_": {
+      "submit": "Save changes",
+      "create": "Create",
+      "proceed": "Create & Edit",
+      "cancel": "Cancel",
+      "clear": "Clear",
+      "deleteConfirm": "Yes, remove",
+      "notAssigned": "Not assigned"
     },
-    "form": {
-      "selectLabel": "Category",
-      "expandFilterButton": "FILTERS",
-      "toggleVisibleToggler": "Show only selected",
-      "selectVisibleCheckBox": "Select visible",
-      "showAllExpandNumericButton": "Show all",
-      "searchPlaceholder": "Search for category...",
-      "clearSearchButtonLabel": "Clear categories visibility",
-      "noVisibleCategoriesPlaceholderTitle": "No categories",
-      "noVisibleCategoriesPlaceholderSubtitle": "They are no selected categories for given criteria."
+    "category": {
+      "_": {
+        "title": "Categories",
+        "head": "Categories - Ergonode",
+        "label": "Category",
+        "noItems": "No categories",
+        "createFirst": "There are no categories in the system, so you can create the first one.",
+        "selectVisibleCheckBox": "Select visible"
+      },
+      "components": {
+        "CreateCategoryButton": {
+          "addButton": "New category"
+        },
+        "RemoveCategoryButton": {
+          "removeButton": "Remove category",
+          "deleteTitle": "Are you sure you want to delete this category?",
+          "deleteSuccess": "Category removed",
+          "deleteRequest": "Category hasn’t been deleted"
+        },
+        "UpdateCategoryTranslationButton": {
+          "updateSuccess": "Category translations have been updated"
+        },
+        "CategoryForm": {
+          "title": "Options",
+          "nameLabel": "System name",
+          "nameHint": "System name must be unique"
+        },
+        "CategoryTranslationForm": {
+          "labelName": "Category name"
+        },
+        "CategoriesGrid": {
+          "getRequest": "Categories haven’t been fetched properly"
+        },
+        "CreateCategoryModalForm": {
+          "create": "Create category",
+          "createSuccess": "Category created"
+        },
+        "CategorySelect": {
+          "expandFilterButton": "FILTERS",
+          "toggleVisibleToggler": "Show only selected",
+          "searchPlaceholder": "Search for category...",
+          "goToButton": "Go to category tree",
+          "clearSearchButtonLabel": "Clear categories visibility",
+          "showAllExpandNumericButton": "Show all",
+          "noCategoriesSubtitle": "They are no selected categories for given criteria.",
+          "advancedFilterLabel": "Category tree",
+          "noCategoryInTree": "There are no categories in the tree, you can add the first one."
+        },
+        "CategoryGeneralTab": {
+          "updateSuccess": "Category has been updated"
+        }
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Category hasn’t been fetched properly"
+        }
+      },
+      "store": {
+        "action": {
+          "updateCancel": "Updating category has been canceled",
+          "createCancel": "Creating category has been canceled",
+          "deleteCancel": "Removing category has been canceled"
+        }
+      }
     },
-    "sideBar": {
-      "searchHeader": "Categories",
-      "placeholderTitle": "No categories",
-      "placeholderSubtitle": "There are no categories in the system, you can create the first one."
-    },
-    "grid": {
-      "placeholderTitle": "No categories",
-      "placeholderSubtitle": "There are no categories in the system, so you can create the first one."
-    },
-    "messages": {
-      "deleteTitle": "Are you sure you want to delete this category?",
-      "deleteConfirm": "YES, REMOVE",
-      "deleteSuccess": "Category removed"
-    },
-    "errors": {
-      "getRequest": "Category hasn’t been fetched properly",
-      "deleteRequest": "Category hasn’t been deleted"
+    "categoryTreeExtend": {
+      "components": {
+        "CategorySideBarElement": {
+          "noProduct": "Products",
+          "product": "Product",
+          "productPlural": "Products"
+        }
+      }
     }
   }
 }

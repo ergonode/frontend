@@ -4,16 +4,16 @@
  */
 <template>
     <LoginForm
-        :submit-title="$t('authentication.forms.newPassword.button')"
+        :submit-title="$t('@Authentication.authentication.components.NewPasswordForm.button')"
         :is-submitting="isSubmitting"
         :errors="errors"
         @submit="onSubmit">
         <template #header>
-            <FormHeader :title="$t('authentication.forms.newPassword.title')" />
+            <FormHeader :title="$t('@Authentication.authentication.components.NewPasswordForm.title')" />
         </template>
         <template #body>
             <div>
-                <Paragraph :title="$t('authentication.forms.newPassword.info')" />
+                <Paragraph :title="$t('@Authentication.authentication.components.NewPasswordForm.info')" />
                 <List>
                     <ListElement
                         v-for="(value, key) in validationHelper"
@@ -26,10 +26,10 @@
                 required
                 :input="passwordInputType"
                 :error-messages="errors[passwordFieldKey]"
-                :label="$t('authentication.forms.newPassword.field')" />
+                :label="$t('@Authentication.authentication.components.NewPasswordForm.field')" />
             <Toggler
                 v-model="isPasswordVisible"
-                :label="$t('authentication.forms.newPassword.toggle')" />
+                :label="$t('@Authentication.authentication.components.NewPasswordForm.toggle')" />
         </template>
     </LoginForm>
 </template>
@@ -94,24 +94,24 @@ export default {
                 hasMinimumLength: {
                     value: false,
                     success: true,
-                    title: this.$t('authentication.forms.newPassword.validation.hasMinimumLength', {
+                    title: this.$t('@Authentication.authentication.components.NewPasswordForm.validationHasMinimumLength', {
                         length: this.maxLength,
                     }),
                 },
                 hasUppercase: {
                     value: false,
                     success: true,
-                    title: this.$t('authentication.forms.newPassword.validation.hasUppercase'),
+                    title: this.$t('@Authentication.authentication.components.NewPasswordForm.validationHasUppercase'),
                 },
                 hasLowercase: {
                     value: false,
                     success: true,
-                    title: this.$t('authentication.forms.newPassword.validation.hasLowercase'),
+                    title: this.$t('@Authentication.authentication.components.NewPasswordForm.validationHasLowercase'),
                 },
                 hasDigital: {
                     value: false,
                     success: true,
-                    title: this.$t('authentication.forms.newPassword.validation.hasDigital'),
+                    title: this.$t('@Authentication.authentication.components.NewPasswordForm.validationHasDigital'),
                 },
             };
         },
@@ -175,7 +175,7 @@ export default {
                     loginState: LOGIN_STATE.CREDENTIALS,
                     alert: {
                         type: ALERT_TYPE.SUCCESS,
-                        message: this.$t('authentication.forms.newPassword.alertSuccess'),
+                        message: this.$t('@Authentication.authentication.components.NewPasswordForm.alertSuccess'),
                     },
                 },
             });
