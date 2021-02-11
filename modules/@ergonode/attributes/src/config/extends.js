@@ -102,9 +102,10 @@ export default {
     extendMethods: {
         '@Templates/components/Tabs/TemplateDesignerTab/verticalTabs': ({
             props,
+            $this,
         }) => [
             {
-                title: 'Product attributes',
+                title: $this.$t('@Attributes.attributeExtend.components.AttributesVerticalTab.title'),
                 component: Components.AttributesVerticalTab,
                 icon: Icons.IconAttributes,
                 props: {
@@ -113,15 +114,17 @@ export default {
                 },
             },
         ],
-        '@Products/components/Tabs/ProductCatalogTab/verticalTabs': ({}) => [
+        '@Products/components/Tabs/ProductCatalogTab/verticalTabs': ({
+            $this,
+        }) => [
             {
-                title: 'Product attributes',
+                title: $this.$t('@Attributes.attributeExtend.components.AttributesVerticalTab.title'),
                 component: Components.AttributesVerticalTab,
                 icon: Icons.IconAttributes,
                 props: {},
             },
             {
-                title: 'System attributes',
+                title: $this.$t('@Attributes.attributeExtend.components.SystemAttributesVerticalTab.title'),
                 component: Components.SystemAttributesVerticalTab,
                 icon: Icons.IconSettings,
                 props: {},

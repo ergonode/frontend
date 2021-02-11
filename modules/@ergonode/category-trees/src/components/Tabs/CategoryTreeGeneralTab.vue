@@ -6,7 +6,7 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <CategoryTreeForm
-                :submit-title="$t('core.buttons.submit')"
+                :submit-title="$t('@Trees._.submit')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="errors"
@@ -61,7 +61,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Category tree has been updated',
+                message: this.$t('@Trees.tree.components.CategoryTreeGeneralTab.updateSuccess'),
             });
 
             this.isSubmitting = false;

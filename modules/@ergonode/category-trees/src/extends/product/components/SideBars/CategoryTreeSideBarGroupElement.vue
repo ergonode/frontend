@@ -31,7 +31,7 @@ export default {
     },
     computed: {
         itemsCountDescription() {
-            return `${this.group.itemsCount} ${this.$t('@Trees.product.components.CategoryTreesSideBar.groupSubtitle')}`;
+            return `${this.group.itemsCount} ${this.$t('@Trees.productExtend.components.CategoryTreeSideBarGroupElement.groupSubtitle')}`;
         },
     },
 };

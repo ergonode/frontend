@@ -10,7 +10,7 @@
                     <TextField
                         :data-cy="dataCyGenerator(nameFieldKey)"
                         :value="translations.name[languageCode]"
-                        label="Tree name"
+                        :label="$t('@Trees.tree.components.CategoryTreeTranslationForm.nameLabel')"
                         :disabled="!isAllowedToUpdate"
                         :error-messages="translationErrors[nameFieldKey]"
                         @input="(value) => setTranslationPropertyValue(value, nameFieldKey)" />

@@ -20,6 +20,43 @@
       "components": {
         "CreateCategoryTreeButton": {
           "addButton": "New tree"
+        },
+        "RemoveCategoryTreeButton": {
+          "removeButton": "Remove category tree",
+          "deleteTitle": "Are you sure you want to delete this tree?",
+          "deleteSuccess": "Category tree removed",
+          "deleteRequest": "Category tree hasn’t been deleted"
+        },
+        "UpdateCategoryTreeDesignerButton": {
+          "updateSuccess": "Category tree has been updated"
+        },
+        "UpdateCategoryTreeTranslationButton": {
+          "updateSuccess": "Category tree translations have been updated"
+        },
+        "CategoryTreeForm": {
+          "title": "Options",
+          "nameLabel": "System name",
+          "nameHint": "System name must be unique"
+        },
+        "CategoryTreeTranslationForm": {
+          "nameLabel": "Tree name"
+        },
+        "CategoryTreesGrid": {
+          "getRequest": "Category trees haven’t been fetched properly",
+          "deleteSuccess": "Category tree removed"
+        },
+        "CreateCategoryTreeModalForm": {
+          "create": "Create category tree",
+          "createSuccess": "Category tree created"
+        },
+        "CategoryTreeDesignerTab": {
+          "dropZoneTitle": "REMOVE CATEGORY"
+        },
+        "CategoryTreeGeneralTab": {
+          "updateSuccess": "Category tree has been updated"
+        },
+        "CategoryTreeDesigner": {
+          "itemSubtitle": "Subcategories"
         }
       },
       "pages": {
@@ -35,16 +72,12 @@
         }
       }
     },
-    "product": {
+    "productExtend": {
       "components": {
-        "CategorySelect": {
-          "goToButton": "GO TO CATEGORY TREE",
-          "noCategoriesTitle": "No categories",
-          "noCategoriesSubtitle": "They are no selected categories for given criteria.",
-          "advancedFilterLabel": "Category tree"
-        },
         "CategoryTreesSideBar": {
-          "title": "Categories",
+          "title": "Categories"
+        },
+        "CategoryTreeSideBarGroupElement": {
           "groupSubtitle": "Subcategories"
         }
       }

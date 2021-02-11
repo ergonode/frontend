@@ -138,6 +138,10 @@ export default {
             this.onFetchData();
         },
         onRemoveRow() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: this.$t('@Categories.category.components.CategoriesGrid.deleteSuccess'),
+            });
             this.onFetchData();
         },
         onEditRow(args) {

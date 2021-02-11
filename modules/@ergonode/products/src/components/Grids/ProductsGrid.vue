@@ -696,6 +696,10 @@ export default {
             await Promise.all(requests);
         },
         onRemoveRow() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product removed',
+            });
             this.onFetchData();
         },
         async onFetchData() {

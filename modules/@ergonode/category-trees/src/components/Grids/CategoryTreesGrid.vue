@@ -138,6 +138,10 @@ export default {
             this.onFetchData();
         },
         onRemoveRow() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: this.$t('@Trees.tree.components.CategoryTreesGrid.deleteSuccess'),
+            });
             this.onFetchData();
         },
         onEditRow(args) {
@@ -176,7 +180,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Category trees haven’t been fetched properly',
+                message: this.$t('@Trees.tree.components.CategoryTreesGrid.getRequest'),
             });
         },
         onRemoveAllFilters() {

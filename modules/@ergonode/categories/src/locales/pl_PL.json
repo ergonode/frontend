@@ -40,7 +40,8 @@
           "labelName": "Nazwa kategorii"
         },
         "CategoriesGrid": {
-          "getRequest": "Kategorie nie zostały pobrane prawidłowo"
+          "getRequest": "Kategorie nie zostały pobrane prawidłowo",
+          "deleteSuccess": "Kategoria usunięta"
         },
         "CreateCategoryModalForm": {
           "create": "Stwórz kategorie",

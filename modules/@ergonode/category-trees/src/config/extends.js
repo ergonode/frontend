@@ -15,9 +15,11 @@ export default {
         },
     },
     extendMethods: {
-        '@Products/components/Tabs/ProductCatalogTab/verticalTabs': ({}) => [
+        '@Products/components/Tabs/ProductCatalogTab/verticalTabs': ({
+            $this,
+        }) => [
             {
-                title: 'Categories',
+                title: $this.$t('@Categories.category._.title'),
                 component: Components.CategoryTreesVerticalTab,
                 icon: Icons.IconTree,
                 props: {},

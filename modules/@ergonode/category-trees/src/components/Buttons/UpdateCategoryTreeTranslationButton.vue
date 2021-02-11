@@ -9,7 +9,7 @@
         <template #default="{ hasValueToSave }">
             <Button
                 data-cy="submit"
-                :title="$t('core.buttons.submit')"
+                :title="$t('@Trees._.submit')"
                 :floating="{ bottom: '24px', right: '24px' }"
                 :disabled="!isAllowedToUpdate"
                 @click.native="onSubmit">
@@ -83,7 +83,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Category tree translations have been updated',
+                message: this.$t('@Trees.tree.components.UpdateCategoryTreeTranslationButton.updateSuccess'),
             });
 
             this.isSubmitting = false;

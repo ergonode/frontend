@@ -138,6 +138,10 @@ export default {
             this.onFetchData();
         },
         onRemoveRow() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Channel removed',
+            });
             this.onFetchData();
         },
         onEditRow(args) {
