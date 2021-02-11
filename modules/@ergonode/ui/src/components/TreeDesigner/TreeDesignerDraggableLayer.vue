@@ -84,6 +84,7 @@ export default {
             'draggedElement',
             'draggedElIndex',
             'ghostIndex',
+            'isOverDropZone',
         ]),
     },
     methods: {
@@ -208,14 +209,12 @@ export default {
         onDragEnd(event) {
             removeElementCopyFromDocumentBody(event);
 
-            const {
-                xPos,
-                yPos,
-            } = getFixedMousePosition(event);
-            const trashElement = document.documentElement.querySelector('.drop-zone');
-            const isDroppedToTrash = !isMouseOutsideElement(trashElement, xPos, yPos);
+            if (this.isOverDropZone) {
+                this.__setState({
+                    key: 'isOverDropZone',
+                    value: false,
+                });
 
-            if (isDroppedToTrash) {
                 this.$emit('remove-items', this.draggedElement);
             } else if (this.draggedElIndex !== -1 && this.ghostIndex === -1) {
                 this.$emit('shift-items', {

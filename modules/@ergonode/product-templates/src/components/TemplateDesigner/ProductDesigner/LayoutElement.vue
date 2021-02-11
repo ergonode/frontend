@@ -58,10 +58,6 @@ import {
     getBackgroundItem,
 } from '@UI/models/designer/intex';
 import {
-    getFixedMousePosition,
-    isMouseOutsideElement,
-} from '@UI/models/mouse';
-import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -121,6 +117,7 @@ export default {
         ]),
         ...mapState('draggable', [
             'draggedElement',
+            'isOverDropZone',
         ]),
         gap() {
             return GRID_GAP;
@@ -195,13 +192,6 @@ export default {
         onDragEnd(event) {
             removeElementCopyFromDocumentBody(event);
 
-            const {
-                xPos,
-                yPos,
-            } = getFixedMousePosition(event);
-            const trashElement = document.documentElement.querySelector('.drop-zone');
-            const isDroppedToTrash = !isMouseOutsideElement(trashElement, xPos, yPos);
-
             this.isDragged = false;
             this.highlightingPositions = [];
             this.__setState({
@@ -213,7 +203,12 @@ export default {
                 value: null,
             });
 
-            if (isDroppedToTrash) {
+            if (this.isOverDropZone) {
+                this.__setState({
+                    key: 'isOverDropZone',
+                    value: false,
+                });
+
                 this.$emit('remove', this.index);
             }
 
