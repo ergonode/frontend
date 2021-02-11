@@ -53,6 +53,7 @@
                     :value="hour"
                     :disabled="!isAllowedToUpdate || !isActive"
                     :error-messages="errors[hourFieldKey]"
+                    required
                     label="Hours"
                     v-mask="'#########'"
                     @input="setHourChange" />
@@ -60,6 +61,7 @@
                     :value="minute"
                     :disabled="!isAllowedToUpdate || !isActive"
                     :error-messages="errors[minuteFieldKey]"
+                    required
                     label="Minutes"
                     v-mask="minuteMask"
                     @input="setMinuteChange" />
@@ -215,9 +217,11 @@ export default {
             const {
                 active,
                 start,
+                hour,
+                minute,
             } = this.schedulerConfiguration;
 
-            return active && start;
+            return active && start && !(!hour && !minute);
         },
         format() {
             return DEFAULT_FORMAT;

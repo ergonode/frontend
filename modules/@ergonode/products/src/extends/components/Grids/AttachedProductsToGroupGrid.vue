@@ -165,6 +165,10 @@ export default {
             await this.onFetchData();
         },
         onRemoveRow() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product added to group removed',
+            });
             this.onFetchData();
         },
         async onFetchData() {

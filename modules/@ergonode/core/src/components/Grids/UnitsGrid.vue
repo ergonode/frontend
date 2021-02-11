@@ -140,6 +140,10 @@ export default {
             this.onFetchData();
         },
         onRemoveRow() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Unit removed',
+            });
             Promise.all([
                 this.onFetchData(),
                 this.getDictionary({

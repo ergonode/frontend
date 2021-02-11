@@ -40,7 +40,8 @@
           "labelName": "Category name"
         },
         "CategoriesGrid": {
-          "getRequest": "Categories haven’t been fetched properly"
+          "getRequest": "Categories haven’t been fetched properly",
+          "deleteSuccess": "Category removed"
         },
         "CreateCategoryModalForm": {
           "create": "Create category",

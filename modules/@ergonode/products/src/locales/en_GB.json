@@ -60,7 +60,8 @@
           "chooseVariants": "Choose variants",
           "noProductVariants": "No product variants",
           "addProductVariants": "Choose products which together will create a product with variants. You can choose between products which contain selected binding attributes.",
-          "getRequest": "Product variants haven’t been fetched properly"
+          "getRequest": "Product variants haven’t been fetched properly",
+          "deleteSuccess": "Product variant removed"
         },
         "ProductVariantsToAttachGrid": {
           "noProducts": "No products to attach",

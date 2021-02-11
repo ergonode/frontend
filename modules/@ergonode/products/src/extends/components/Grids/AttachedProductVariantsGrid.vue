@@ -246,6 +246,10 @@ export default {
             this.isBindingAttributesExpanded = !this.isBindingAttributesExpanded;
         },
         onRemoveRow() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: this.$t('@Products.productExtend.components.AttachedProductVariantsGrid.deleteSuccess'),
+            });
             this.onFetchData();
         },
         async onFetchData() {

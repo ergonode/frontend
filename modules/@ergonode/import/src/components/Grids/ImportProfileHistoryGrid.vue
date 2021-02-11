@@ -123,6 +123,10 @@ export default {
             this.onFetchData();
         },
         onRemoveRow() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Import profile history removed',
+            });
             this.onFetchData();
         },
         onPreviewRow(args) {

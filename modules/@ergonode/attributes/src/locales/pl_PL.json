@@ -42,7 +42,8 @@
           "updateSuccess": "Tłumaczenia atrybutów zostały zaktualizowane"
         },
         "AttributesGrid": {
-          "getRequest": "Atrybuty nie zostały pobrane prawidłowo"
+          "getRequest": "Atrybuty nie zostały pobrane prawidłowo",
+          "deleteSuccess": "Atrybut usuniety"
         },
         "CreateAttributeModalForm": {
           "create": "Stwórz atrybut",
@@ -93,14 +94,15 @@
         "RemoveAttributeGroupButton": {
           "deleteButton": "Usuń grupę atrybutów",
           "deleteTitle": "Czy na pewno chcesz usunąć tę grupę atrybutów?",
-          "deleteSuccess": "Usunięto grupę atrybutów",
+          "deleteSuccess": "Grupa atrybutów usunięta",
           "deleteRequest": "Grupa atrybutów nie została usunięta"
         },
         "UpdateAttributeGroupTranslationButton": {
           "updateSuccess": "Tłumaczenia grupy atrybutów zostały zaktualizowane"
         },
         "AttributeGroupsGrid": {
-          "getRequest": "Grupa atrybutów nie została pobrana prawidłowo"
+          "getRequest": "Grupa atrybutów nie została pobrana prawidłowo",
+          "deleteSuccess": "Grupa atrybutów usunięta"
         },
         "CreateAttributeGroupModalForm": {
           "create": "Stwórz grupę atrybutów",

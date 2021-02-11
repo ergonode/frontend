@@ -132,6 +132,10 @@ export default {
             this.onFetchData();
         },
         onRemoveRow() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Role removed',
+            });
             this.onFetchData();
         },
         onEditRow(args) {
