@@ -21,9 +21,13 @@
                     :disabled-rows="disabledRows"
                     :rows-offset="rowsOffset"
                     :row-ids="rowIds"
-                    :is-basic-filter="isBasicFilter"
                     :selected-rows="selectedRows"
-                    @row-select="onRowSelect" />
+                    :excluded-from-selection-rows="excludedFromSelectionRows"
+                    :is-basic-filter="isBasicFilter"
+                    :is-selected-all="isSelectedAll"
+                    @rows-select="onRowsSelect"
+                    @excluded-rows-select="onExcludedRowsSelect"
+                    @select-all="onSelectAllRows" />
             </GridTableLayoutPinnedSection>
             <GridTableLayoutColumnsSection
                 :style="templateColumns"
@@ -46,8 +50,10 @@
                         :filters="filters"
                         :disabled-rows="disabledRows"
                         :selected-rows="selectedRows"
+                        :excluded-from-selection-rows="excludedFromSelectionRows"
                         :rows-offset="rowsOffset"
                         :is-basic-filter="isBasicFilter"
+                        :is-selected-all="isSelectedAll"
                         @remove="onRemoveColumn"
                         @swap="onSwapColumns"
                         @resize="onResizeColumn"
@@ -74,8 +80,10 @@
                         :disabled-rows="disabledRows"
                         :drafts="drafts"
                         :selected-rows="selectedRows"
+                        :excluded-from-selection-rows="excludedFromSelectionRows"
                         :is-basic-filter="isBasicFilter"
                         :is-editable="isEditable"
+                        :is-selected-all="isSelectedAll"
                         @remove="onRemoveColumn"
                         @swap="onSwapColumns"
                         @resize="onResizeColumn"
@@ -106,9 +114,11 @@
                     :disabled-rows="disabledRows"
                     :row-ids="rowIds"
                     :rows-offset="rowsOffset"
-                    :is-basic-filter="isBasicFilter"
                     :columns-offset="orderedColumns.length + columnIndex + columnsOffset"
                     :selected-rows="selectedRows"
+                    :excluded-from-selection-rows="excludedFromSelectionRows"
+                    :is-basic-filter="isBasicFilter"
+                    :is-selected-all="isSelectedAll"
                     @row-action="onRowAction" />
             </GridTableLayoutPinnedSection>
         </template>
@@ -250,6 +260,13 @@ export default {
             default: () => ({}),
         },
         /**
+         * The map of rows excluded from selection
+         */
+        excludedFromSelectionRows: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
          * Determines if data is loaded asynchronously
          */
         isPrefetchingData: {
@@ -281,6 +298,13 @@ export default {
          * Determines if filters are visible
          */
         isBasicFilter: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * Determines if every row should be selected
+         */
+        isSelectedAll: {
             type: Boolean,
             default: false,
         },
@@ -512,8 +536,14 @@ export default {
                 [state]: isSticky,
             };
         },
-        onRowSelect(selectedRows) {
-            this.$emit('row-select', selectedRows);
+        onRowsSelect(payload) {
+            this.$emit('rows-select', payload);
+        },
+        onExcludedRowsSelect(excludedFromSelectionRows) {
+            this.$emit('excluded-rows-select', excludedFromSelectionRows);
+        },
+        onSelectAllRows(isSelected) {
+            this.$emit('select-all', isSelected);
         },
         onCellValueChange(value) {
             this.$emit('cell-value', value);

@@ -37,6 +37,16 @@ export default {
             required: true,
         },
         /**
+         * Unique row identifier
+         */
+        rowId: {
+            type: [
+                String,
+                Number,
+            ],
+            required: true,
+        },
+        /**
          * Determines if component is selected
          */
         selected: {
@@ -55,7 +65,7 @@ export default {
         onSelect() {
             if (!this.disabled) {
                 this.$emit('select', {
-                    row: this.row,
+                    row: this.rowId,
                     selected: !this.selected,
                 });
             }

@@ -41,7 +41,6 @@ export default {
                 label: 'Delete selected products',
                 action: ({
                     ids,
-                    indexes,
                     onApply,
                 }) => {
                     this.$confirm({
@@ -54,7 +53,7 @@ export default {
                             info: ids.length,
                         }),
                         action: () => {
-                            onApply(indexes);
+                            onApply(ids);
 
                             const uuid = getUUID();
 
