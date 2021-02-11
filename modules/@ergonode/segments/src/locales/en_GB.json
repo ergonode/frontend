@@ -3,11 +3,11 @@
     "form": {
       "segmentsLabel": "From segmentation rules",
       "noSegmentsTitle": "No segments",
-      "noSegmentsSubtitle": "There are no segments in the system, you can create the first one."
+      "noSegmentsSubtitle": "There are no segments in the system, you can add the first one."
     },
     "grid": {
       "placeholderTitle": "No segments",
-      "placeholderSubtitle": "There are no segments in the system, you can create the first one."
+      "placeholderSubtitle": "There are no segments in the system, you can add the first one."
     }
   }
 }
