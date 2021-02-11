@@ -4,6 +4,7 @@
  */
 export default () => ({
     isElementDragging: null,
+    isOverDropZone: false,
     draggedElement: null,
     ghostIndex: -1,
     draggedElIndex: -1,

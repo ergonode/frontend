@@ -80,22 +80,19 @@ export default {
             isPrefetchingData: true,
             categories: {},
             categoriesBeforeSearch: {},
-            languageCode: '',
             searchValue: '',
             onDebounceGetItems: null,
         };
     },
     computed: {
-        ...mapState('core', [
-            'defaultLanguageCode',
-        ]),
+        ...mapState('authentication', {
+            languageCode: state => state.user.language,
+        }),
         categoriesByLanguage() {
             return this.categories[this.languageCode] || [];
         },
     },
     created() {
-        this.languageCode = this.defaultLanguageCode;
-
         this.onDebounceGetItems = debounce(this.getItems, 500);
     },
     mounted() {
