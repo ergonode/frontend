@@ -24,7 +24,7 @@
                     :key="index"
                     :size="smallSize"
                     :disabled="option.disabled"
-                    @click.native.prevent="onSelectedValue(index)">
+                    @click.native.prevent="event => onSelectedValue(event, index)">
                     <slot
                         name="option"
                         :option="option">
@@ -143,9 +143,11 @@ export default {
                 this.isFocused = false;
             }
         },
-        onSelectedValue(index) {
+        onSelectedValue(event, index) {
             if (!this.options[index].disabled) {
                 this.$emit('input', this.options[index]);
+            } else {
+                event.stopPropagation();
             }
         },
     },
