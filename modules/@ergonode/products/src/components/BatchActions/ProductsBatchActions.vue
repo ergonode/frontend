@@ -41,6 +41,7 @@ export default {
                 label: 'Delete selected products',
                 action: ({
                     ids,
+                    excludedIds,
                     onApply,
                 }) => {
                     this.$confirm({
@@ -68,8 +69,8 @@ export default {
                                         type: BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
                                         filter: {
                                             ids: {
-                                                list: ids,
-                                                included: true,
+                                                list: ids.length > 0 ? ids : excludedIds,
+                                                included: ids.length > 0,
                                             },
                                         },
                                     },

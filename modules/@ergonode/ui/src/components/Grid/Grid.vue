@@ -418,20 +418,26 @@ export default {
             this.$emit('remove-all-filters');
         },
         onBatchActionSelect(option) {
-            if (Object.keys(this.selectedRows[this.pagination.page]).length > 0) {
-                const payload = {
-                    ids: [],
-                    onApply: this.onApplyBatchAction,
-                };
+            // TODO: Disable option when non is selected
+            const payload = {
+                ids: [],
+                excludedIds: [],
+                onApply: this.onApplyBatchAction,
+            };
 
-                Object.keys(this.selectedRows).forEach((key) => {
-                    if (this.selectedRows[key]) {
-                        payload.ids.push(key);
-                    }
-                });
+            Object.keys(this.selectedRows).forEach((key) => {
+                if (this.selectedRows[key]) {
+                    payload.ids.push(key);
+                }
+            });
 
-                option.action(payload);
-            }
+            Object.keys(this.excludedFromSelectionRows).forEach((key) => {
+                if (this.excludedFromSelectionRows[key]) {
+                    payload.excludedIds.push(key);
+                }
+            });
+
+            option.action(payload);
         },
         onRowsSelect({
             isSelected,

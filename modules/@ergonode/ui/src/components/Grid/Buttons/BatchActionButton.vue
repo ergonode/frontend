@@ -7,7 +7,7 @@
         :title="actionButtonTitle"
         :size="smallSize"
         :theme="theme"
-        :options="options"
+        :options="mappedOptions"
         @input="onSelectBatchAction">
         <template #append="{ color, focused }">
             <div
@@ -75,6 +75,12 @@ export default {
         },
         arrow() {
             return ARROW;
+        },
+        mappedOptions() {
+            return this.options.map(option => ({
+                ...option,
+                disabled: !this.selectedRowsCount,
+            }));
         },
     },
     methods: {
