@@ -10,7 +10,7 @@
                     <DropZone
                         v-show="isDropZoneVisible"
                         :hover-background-color="graphiteLightColor"
-                        title="REMOVE CATEGORY">
+                        :title="$t('@Trees.tree.components.CategoryTreeDesignerTab.dropZoneTitle')">
                         <template #icon="{ color }">
                             <IconRemoveFilter :fill-color="color" />
                         </template>

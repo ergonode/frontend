@@ -139,6 +139,12 @@
         },
         "AttributeTranslationFormPlaceholder": {
           "placeholderLabel": "Placeholder"
+        },
+        "AttributesVerticalTab": {
+          "title": "Atrubuty produktu"
+        },
+        "SystemAttributesVerticalTab": {
+          "title": "Atrybuty systemowe"
         }
       },
       "methods": {

@@ -139,6 +139,12 @@
         },
         "AttributeTranslationFormPlaceholder": {
           "placeholderLabel": "Placeholder"
+        },
+        "AttributesVerticalTab": {
+          "title": "Product attributes"
+        },
+        "SystemAttributesVerticalTab": {
+          "title": "System attributes"
         }
       },
       "methods": {

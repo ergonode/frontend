@@ -20,6 +20,43 @@
       "components": {
         "CreateCategoryTreeButton": {
           "addButton": "Nowe drzewo"
+        },
+        "RemoveCategoryTreeButton": {
+          "removeButton": "Usuń drzewo kategorii",
+          "deleteTitle": "Czy jesteś pewny że chcesz usunąć to drzewo?",
+          "deleteSuccess": "Drzewo kategorii usunięte",
+          "deleteRequest": "Drzewo kategorii nie zostało usunięte"
+        },
+        "UpdateCategoryTreeDesignerButton": {
+          "updateSuccess": "Drzewo kategorii zostało zaktualizowane"
+        },
+        "UpdateCategoryTreeTranslationButton": {
+          "updateSuccess": "Tłumaczenia drzewa kategorii zostały zaktualizowane"
+        },
+        "CategoryTreeForm": {
+          "title": "Opcje",
+          "nameLabel": "Nazwa systemowa",
+          "nameHint": "Nazwa systemowa musi być unikalna"
+        },
+        "CategoryTreeTranslationForm": {
+          "nameLabel": "Nazwa drzewa"
+        },
+        "CategoryTreesGrid": {
+          "getRequest": "Drzewo kategorii nie zostało pobrane prawidłowo",
+          "deleteSuccess": "Drzewo kategorii usunięte"
+        },
+        "CreateCategoryTreeModalForm": {
+          "create": "Stwórz drzewo kategorii",
+          "createSuccess": "Drzewo kategorii stworzone"
+        },
+        "CategoryTreeDesignerTab": {
+          "dropZoneTitle": "USUŃ KATERGORIE"
+        },
+        "CategoryTreeGeneralTab": {
+          "updateSuccess": "Drzewo kategorii zostało uaktualnione"
+        },
+        "CategoryTreeDesigner": {
+          "itemSubtitle": "Podkategorie"
         }
       },
       "pages": {
@@ -35,16 +72,12 @@
         }
       }
     },
-    "product": {
+    "productExtend": {
       "components": {
-        "CategorySelect": {
-          "goToButton": "Idź do drzewa kategorii",
-          "noCategoriesTitle": "Brak kategorii",
-          "noCategoriesSubtitle": "Nie ma wybranych kategorii dla wybranych kryteriów.",
-          "advancedFilterLabel": "Drzewo kategorii"
-        },
         "CategoryTreesSideBar": {
-          "title": "Kategorie",
+          "title": "Kategorie"
+        },
+        "CategoryTreeSideBarGroupElement": {
           "groupSubtitle": "Podkategorie"
         }
       }

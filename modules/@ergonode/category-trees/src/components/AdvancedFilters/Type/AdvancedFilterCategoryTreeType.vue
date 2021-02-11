@@ -117,8 +117,8 @@ export default {
         },
         placeholder() {
             return {
-                title: 'No category tree',
-                subtitle: 'There are no category trees in the system, so you can create the first one.',
+                title: this.$t('@Trees.tree._.noTrees'),
+                subtitle: this.$t('@Trees.tree._.createFirst'),
             };
         },
         smallSize() {
