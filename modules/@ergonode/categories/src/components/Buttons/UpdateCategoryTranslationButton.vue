@@ -9,7 +9,7 @@
         <template #default="{ hasValueToSave }">
             <Button
                 data-cy="submit"
-                :title="$t('core.buttons.submit')"
+                :title="$t('@Categories._.submit')"
                 :floating="{ bottom: '24px', right: '24px' }"
                 :disabled="!isAllowedToUpdate"
                 @click.native="onSubmit">
@@ -83,7 +83,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Category translations have been updated',
+                message: this.$t('@Categories.category.components.UpdateCategoryTranslationButton.updateSuccess'),
             });
 
             this.isSubmitting = false;

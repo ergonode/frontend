@@ -31,6 +31,9 @@ import {
     WHITE,
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'DropZone',
@@ -95,11 +98,24 @@ export default {
         },
     },
     methods: {
+        ...mapActions('draggable', [
+            '__setState',
+        ]),
         onDragEnter() {
             this.isHovered = true;
+
+            this.__setState({
+                key: 'isOverDropZone',
+                value: true,
+            });
         },
         onDragLeave() {
             this.isHovered = false;
+
+            this.__setState({
+                key: 'isOverDropZone',
+                value: false,
+            });
         },
         onDragOver(event) {
             event.preventDefault();

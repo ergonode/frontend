@@ -138,6 +138,10 @@ export default {
             this.onFetchData();
         },
         onRemoveRow() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Import profile removed',
+            });
             this.onFetchData();
         },
         onEditRow(args) {

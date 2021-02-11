@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="Options"
+        :title="$t('@Categories.category.components.CategoryForm.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
@@ -22,8 +22,8 @@
                     required
                     :error-messages="errors[codeFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    label="System name"
-                    hint="System name must be unique"
+                    :label="$t('@Categories.category.components.CategoryForm.nameLabel')"
+                    :hint="$t('@Categories.category.components.CategoryForm.nameHint')"
                     @input="setCodeValue" />
                 <Divider v-if="extendedForm.length" />
                 <template v-for="(field, index) in extendedForm">

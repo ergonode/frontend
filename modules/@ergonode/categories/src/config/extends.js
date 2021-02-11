@@ -23,6 +23,7 @@ export default {
                 {
                     component: Components.ProductFormCategory,
                     props: {},
+                    order: 20,
                 },
             ],
         },
@@ -30,13 +31,14 @@ export default {
     extendMethods: {
         '@Trees/components/Tabs/CategoryTreeDesignerTab/verticalTabs': ({
             props,
+            $this,
         }) => [
             {
-                title: 'Conditions',
+                title: $this.$t('@Categories.category._.title'),
                 component: Components.CategoriesVerticalTab,
                 icon: Icons.IconTree,
                 props: {
-                    isSelectLanguage: true,
+                    isSelectLanguage: false,
                     ...props,
                 },
             },

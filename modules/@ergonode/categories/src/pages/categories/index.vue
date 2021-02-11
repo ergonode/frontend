@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar
-            :title="$t('category.page.title')"
+            :title="$t('@Categories.category._.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <template
@@ -75,7 +75,7 @@ export default {
     },
     head() {
         return {
-            title: this.$t('category.page.head'),
+            title: this.$t('@Categories.category._.head'),
         };
     },
 };

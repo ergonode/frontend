@@ -53,6 +53,7 @@
                     :value="hour"
                     :disabled="!isAllowedToUpdate || !isActive"
                     :error-messages="errors[hourFieldKey]"
+                    required
                     label="Hours"
                     v-mask="'#########'"
                     @input="setHourChange" />
@@ -60,28 +61,29 @@
                     :value="minute"
                     :disabled="!isAllowedToUpdate || !isActive"
                     :error-messages="errors[minuteFieldKey]"
+                    required
                     label="Minutes"
                     v-mask="minuteMask"
                     @input="setMinuteChange" />
             </FormSection>
-            <FormSection v-if="isInformation">
+            <FormSection title="Start date and time">
                 <Divider />
-                <Paragraph
-                    class="scheduler-form-paragraph"
-                    :title="formParagraphInformation">
-                    <template #prepend>
-                        <IconInfo
-                            :fill-color="blueColor"
-                            :width="20"
-                            :height="20" />
-                    </template>
-                    <template #recurence>
-                        <b>{{ recurenceInfo || 'one time' }}</b>
-                    </template>
-                    <template #dateTime>
-                        <b>{{ dataTime }}</b>.
-                    </template>
-                </Paragraph>
+                <DatePicker
+                    :value="date"
+                    :placeholder="format"
+                    :format="format"
+                    :disabled="!isAllowedToUpdate"
+                    :error-messages="errors[startFieldKey]"
+                    required
+                    label="Start date"
+                    @input="setDateChange" />
+                <TextField
+                    :value="time"
+                    :disabled="!isAllowedToUpdate"
+                    :input="timeInputType"
+                    required
+                    label="Start time"
+                    @input="setTimeChange" />
             </FormSection>
         </template>
     </Form>
@@ -215,9 +217,11 @@ export default {
             const {
                 active,
                 start,
+                hour,
+                minute,
             } = this.schedulerConfiguration;
 
-            return active && start;
+            return active && start && !(!hour && !minute);
         },
         format() {
             return DEFAULT_FORMAT;

@@ -4,12 +4,12 @@
  */
 <template>
     <ModalForm
-        title="Create category"
+        :title="$t('@Categories.category.components.CreateCategoryModalForm.create')"
         @close="onClose">
         <template #body>
             <CategoryForm
-                :submit-title="$t('core.buttons.create')"
-                :proceed-title="$t('core.buttons.proceed')"
+                :submit-title="$t('@Categories._.create')"
+                :proceed-title="$t('@Categories._.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :scope="scope"
@@ -99,7 +99,7 @@ export default {
         onCreateSuccess(id) {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Category created',
+                message: this.$t('@Categories.category.components.CreateCategoryModalForm.createSuccess'),
             });
 
             this.isSubmitting = false;

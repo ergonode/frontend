@@ -188,6 +188,10 @@ export default {
             this.onFetchData();
         },
         onRemoveRow() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Collection products removed',
+            });
             this.onFetchData();
         },
         onEditRow(args) {

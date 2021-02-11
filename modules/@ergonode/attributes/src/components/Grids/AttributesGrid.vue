@@ -138,6 +138,10 @@ export default {
             this.onFetchData();
         },
         onRemoveRow() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: this.$t('@Attributes.attribute.components.AttributesGrid.deleteSuccess'),
+            });
             this.onFetchData();
         },
         onEditRow(args) {

@@ -7,7 +7,7 @@
         data-cy="delete-category-tree"
         :theme="secondaryTheme"
         :size="smallSize"
-        title="REMOVE CATEGORY TREE"
+        :title="$t('@Trees.tree.components.RemoveCategoryTreeButton.removeButton')"
         :disabled="!isAllowedToDelete"
         @click.native="onRemove">
         <template #prepend="{ color }">
@@ -63,8 +63,9 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this tree?',
-                applyTitle: 'YES, REMOVE',
+                title: this.$t('@Trees.tree.components.RemoveCategoryTreeButton.deleteTitle'),
+                applyTitle: this.$t('@Trees._.deleteConfirm'),
+                cancelTitle: this.$t('@Trees._.cancel'),
                 action: () => this.removeCategoryTree({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
@@ -74,7 +75,7 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Category tree removed',
+                message: this.$t('@Trees.tree.components.RemoveCategoryTreeButton.deleteSuccess'),
             });
             this.$router.push({
                 name: ROUTE_NAME.CATEGORY_TREES_GRID,
@@ -83,7 +84,7 @@ export default {
         onRemoveError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Catgory tree hasn`t been deleted',
+                message: this.$t('@Trees.tree.components.RemoveCategoryTreeButton.deleteRequest'),
             });
         },
     },

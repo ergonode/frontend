@@ -4,7 +4,7 @@
  */
 <template>
     <SideBar
-        :title="$t('@Trees.product.components.CategoryTreesSideBar.title')"
+        :title="$t('@Trees.productExtend.components.CategoryTreesSideBar.title')"
         :items="filteredCategoryTrees"
         :expanded="isAnySearchPhrase || expendedCategoryTree"
         :searchable="true"
@@ -12,7 +12,7 @@
         @search="onSearch">
         <template #header>
             <ListSearchHeader
-                :title="$t('@Trees.product.components.CategoryTreesSideBar.title')"
+                :title="$t('@Trees.productExtend.components.CategoryTreesSideBar.title')"
                 :search-value="searchValue"
                 :searchable="true"
                 @search="onSearch" />

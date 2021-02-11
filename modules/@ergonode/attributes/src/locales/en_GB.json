@@ -42,7 +42,8 @@
           "updateSuccess": "Attribute translations have been updated"
         },
         "AttributesGrid": {
-          "getRequest": "Attributes haven’t been fetched properly"
+          "getRequest": "Attributes haven’t been fetched properly",
+          "deleteSuccess": "Attribute removed"
         },
         "CreateAttributeModalForm": {
           "create": "Create attribute",
@@ -100,7 +101,8 @@
           "updateSuccess": "Attribute group translations have been updated"
         },
         "AttributeGroupsGrid": {
-          "getRequest": "Attribute groups haven’t been fetched properly"
+          "getRequest": "Attribute groups haven’t been fetched properly",
+          "deleteSuccess": "Attribute group removed"
         },
         "CreateAttributeGroupModalForm": {
           "create": "Create attribute group",
@@ -137,6 +139,12 @@
         },
         "AttributeTranslationFormPlaceholder": {
           "placeholderLabel": "Placeholder"
+        },
+        "AttributesVerticalTab": {
+          "title": "Product attributes"
+        },
+        "SystemAttributesVerticalTab": {
+          "title": "System attributes"
         }
       },
       "methods": {

@@ -120,7 +120,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.code} - Category trees - Ergonode`,
+            title: `${this.code} - ${this.$t('@Trees.tree._.headTitle')}`,
         };
     },
 };

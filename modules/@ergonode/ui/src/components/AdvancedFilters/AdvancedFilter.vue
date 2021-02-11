@@ -83,10 +83,6 @@ import {
     getDraggedColumnPositionState,
 } from '@UI/models/dragAndDrop/helpers';
 import {
-    getFixedMousePosition,
-    isMouseOutsideElement,
-} from '@UI/models/mouse';
-import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -183,6 +179,7 @@ export default {
         ...mapState('draggable', [
             'ghostIndex',
             'isElementDragging',
+            'isOverDropZone',
             'draggedElement',
         ]),
         classes() {
@@ -236,14 +233,12 @@ export default {
         onDragEnd(event) {
             removeElementCopyFromDocumentBody(event);
 
-            const {
-                xPos,
-                yPos,
-            } = getFixedMousePosition(event);
-            const trashElement = document.documentElement.querySelector('.drop-zone');
-            const isDroppedToTrash = !isMouseOutsideElement(trashElement, xPos, yPos);
+            if (this.isOverDropZone) {
+                this.__setState({
+                    key: 'isOverDropZone',
+                    value: false,
+                });
 
-            if (isDroppedToTrash) {
                 this.$emit('remove', this.index);
             }
 

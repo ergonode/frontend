@@ -61,7 +61,7 @@ export function getCategoriesCount(tree) {
     let categoriesCount = 0;
 
     tree.forEach((node) => {
-        categoriesCount += node.children.length + getCategoriesCount(node.children);
+        categoriesCount += 1 + getCategoriesCount(node.children);
     });
 
     return categoriesCount;

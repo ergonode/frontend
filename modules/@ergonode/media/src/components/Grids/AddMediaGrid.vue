@@ -289,6 +289,10 @@ export default {
             });
         },
         onRemoveRow() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Resource removed',
+            });
             this.onFetchData();
         },
         onCellValueChange(cellValues) {

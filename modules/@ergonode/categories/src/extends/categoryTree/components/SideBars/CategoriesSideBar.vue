@@ -4,7 +4,7 @@
  */
 <template>
     <SideBar
-        :title="$t('category.sideBar.searchHeader')"
+        :title="$t('@Categories.category._.title')"
         :items="categoriesByLanguage"
         :searchable="true"
         :search-value="searchValue"
@@ -14,8 +14,8 @@
         </template>
         <template #noDataPlaceholder>
             <SideBarNoDataPlaceholder
-                :title="$t('category.sideBar.placeholderTitle')"
-                :subtitle="$t('category.sideBar.placeholderSubtitle')">
+                :title="$t('@Categories.category._.noItems')"
+                :subtitle="$t('@Categories.category._.createFirst')">
                 <template #action>
                     <CreateCategoryButton />
                 </template>
@@ -80,22 +80,19 @@ export default {
             isPrefetchingData: true,
             categories: {},
             categoriesBeforeSearch: {},
-            languageCode: '',
             searchValue: '',
             onDebounceGetItems: null,
         };
     },
     computed: {
-        ...mapState('core', [
-            'defaultLanguageCode',
-        ]),
+        ...mapState('authentication', {
+            languageCode: state => state.user.language,
+        }),
         categoriesByLanguage() {
             return this.categories[this.languageCode] || [];
         },
     },
     created() {
-        this.languageCode = this.defaultLanguageCode;
-
         this.onDebounceGetItems = debounce(this.getItems, 500);
     },
     mounted() {

@@ -14,7 +14,7 @@
         <template #itemDescription="{ item, childrenLength }">
             <DesignerItemDescription
                 :title="item.name || `#${item.code}`"
-                :subtitle="childrenLength ? `Subcategories: ${childrenLength}` : ''" />
+                :subtitle="itemSubtitle(childrenLength)" />
         </template>
     </TreeDesigner>
 </template>
@@ -82,6 +82,11 @@ export default {
             'removeDisabledElement',
             'setDisabledElement',
         ]),
+        itemSubtitle(childrenLength) {
+            return childrenLength
+                ? `${this.$t('@Trees.tree.components.CategoryTreeDesigner.itemSubtitle')}: ${childrenLength}`
+                : '';
+        },
         onRemoveItems(ids) {
             ids.forEach((id) => {
                 this.removeDisabledElement({
