@@ -9,6 +9,7 @@
         <template #default="{ hasError, hasValueToSave }">
             <form
                 class="form"
+                :style="styles"
                 @submit.prevent="onSubmit">
                 <slot name="header">
                     <h2
@@ -113,6 +114,16 @@ export default {
             default: '',
         },
         /**
+         * Component width
+         */
+        width: {
+            type: [
+                Number,
+                String,
+            ],
+            default: 352,
+        },
+        /**
          * Determinate if the component is disabled
          */
         disabled: {
@@ -142,16 +153,10 @@ export default {
         },
     },
     computed: {
-        isFooterVisible() {
-            return !!(this.$slots.submit || this.$slots.proceed)
-                || this.isSubmitButtonVisible
-                || this.isProceedButtonVisible;
-        },
-        isSubmitButtonVisible() {
-            return this.submitTitle !== '';
-        },
-        isProceedButtonVisible() {
-            return this.proceedTitle !== '';
+        styles() {
+            return {
+                gridTemplateColumns: `${this.width}px`,
+            };
         },
         secondaryTheme() {
             return THEME.SECONDARY;
@@ -166,6 +171,17 @@ export default {
 
             return this.errorsPresentationMapper(this.errors);
         },
+        isFooterVisible() {
+            return !!(this.$slots.submit || this.$slots.proceed)
+                || this.isSubmitButtonVisible
+                || this.isProceedButtonVisible;
+        },
+        isSubmitButtonVisible() {
+            return this.submitTitle !== '';
+        },
+        isProceedButtonVisible() {
+            return this.proceedTitle !== '';
+        },
     },
 };
 </script>
@@ -173,7 +189,6 @@ export default {
 <style lang="scss" scoped>
     .form {
         display: grid;
-        grid-template-columns: 352px;
         grid-auto-flow: row;
         grid-row-gap: 24px;
 
