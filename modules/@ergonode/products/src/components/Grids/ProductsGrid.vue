@@ -5,7 +5,7 @@
 <template>
     <ProductsBatchActions @batch-action-completed="onBatchActionCompleted">
         <template
-            #default="{
+            #grid="{
                 disabledRows,
                 batchActions,
             }">
@@ -103,6 +103,7 @@
 </template>
 
 <script>
+import ProductsBatchActions from '@BatchActions/components/ProductsBatchActions/ProductsBatchActions';
 import ExpandNumericButton from '@Core/components/Buttons/ExpandNumericButton';
 import {
     ALERT_TYPE,
@@ -126,7 +127,6 @@ import {
     getAdvancedFiltersData,
     getGridData,
 } from '@Core/services/grid/getGridData.service';
-import ProductsBatchActions from '@Products/components/BatchActions/ProductsBatchActions';
 import CreateProductButton from '@Products/components/Buttons/CreateProductButton';
 import UpdateProductsButton from '@Products/components/Buttons/UpdateProductsButton';
 import PRIVILEGES from '@Products/config/privileges';

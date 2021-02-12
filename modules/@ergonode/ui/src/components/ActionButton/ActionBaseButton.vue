@@ -23,7 +23,8 @@
                     v-for="(option, index) in options"
                     :key="index"
                     :size="smallSize"
-                    @click.native.prevent="onSelectedValue(index)">
+                    :disabled="option.disabled"
+                    @click.native.prevent="event => onSelectedValue(event, index)">
                     <slot
                         name="option"
                         :option="option">
@@ -142,8 +143,12 @@ export default {
                 this.isFocused = false;
             }
         },
-        onSelectedValue(index) {
-            this.$emit('input', this.options[index]);
+        onSelectedValue(event, index) {
+            if (!this.options[index].disabled) {
+                this.$emit('input', this.options[index]);
+            } else {
+                event.stopPropagation();
+            }
         },
     },
 };

@@ -62,7 +62,7 @@ export default {
 <style lang="scss" scoped>
     .modal-tab-bar {
         display: flex;
-        width: 960px;
+        width: 1080px;
         height: 80%;
         box-sizing: border-box;
         background-color: $WHITE;

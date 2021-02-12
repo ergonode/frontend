@@ -366,7 +366,12 @@ export default {
         },
         selectedRowsCount() {
             if (this.isSelectedAll) {
-                return this.dataCount - Object.keys(this.excludedFromSelectionRows).length;
+                const {
+                    length: excludedRows,
+                } = Object.keys(this.excludedFromSelectionRows)
+                    .filter(key => this.excludedFromSelectionRows[key]);
+
+                return this.dataCount - excludedRows;
             }
 
             return Object.keys(this.selectedRows).filter(key => this.selectedRows[key]).length;
@@ -418,20 +423,26 @@ export default {
             this.$emit('remove-all-filters');
         },
         onBatchActionSelect(option) {
-            if (Object.keys(this.selectedRows[this.pagination.page]).length > 0) {
-                const payload = {
-                    ids: [],
-                    onApply: this.onApplyBatchAction,
-                };
+            const payload = {
+                ids: [],
+                excludedIds: [],
+                selectedRowsCount: this.selectedRowsCount,
+                onApply: this.onApplyBatchAction,
+            };
 
-                Object.keys(this.selectedRows).forEach((key) => {
-                    if (this.selectedRows[key]) {
-                        payload.ids.push(key);
-                    }
-                });
+            Object.keys(this.selectedRows).forEach((key) => {
+                if (this.selectedRows[key]) {
+                    payload.ids.push(key);
+                }
+            });
 
-                option.action(payload);
-            }
+            Object.keys(this.excludedFromSelectionRows).forEach((key) => {
+                if (this.excludedFromSelectionRows[key]) {
+                    payload.excludedIds.push(key);
+                }
+            });
+
+            option.action(payload);
         },
         onRowsSelect({
             isSelected,
@@ -460,11 +471,8 @@ export default {
         onSelectAllRows(isSelectedAll) {
             this.isSelectedAll = isSelectedAll;
 
-            if (isSelectedAll) {
-                this.selectedRows = {};
-            } else {
-                this.excludedFromSelectionRows = {};
-            }
+            this.selectedRows = {};
+            this.excludedFromSelectionRows = {};
         },
         onApplySettings({
             tableConfig,
