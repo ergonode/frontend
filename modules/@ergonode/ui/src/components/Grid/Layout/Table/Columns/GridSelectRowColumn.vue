@@ -160,19 +160,33 @@ export default {
             this.$emit('select-all', true);
         },
         onSelectAllOnThisPage() {
-            this.$emit('rows-select', {
-                isSelected: true,
-                rowIds: deepClone(this.rowIds),
-            });
+            if (this.isSelectedAll) {
+                this.$emit('excluded-rows-select', {
+                    isExcluded: false,
+                    rowIds: deepClone(this.rowIds),
+                });
+            } else {
+                this.$emit('rows-select', {
+                    isSelected: true,
+                    rowIds: deepClone(this.rowIds),
+                });
+            }
         },
         onDeselectAllGlobal() {
             this.$emit('select-all', false);
         },
         onDeselectAllOnThisPage() {
-            this.$emit('rows-select', {
-                isSelected: false,
-                rowIds: deepClone(this.rowIds),
-            });
+            if (this.isSelectedAll) {
+                this.$emit('excluded-rows-select', {
+                    isExcluded: true,
+                    rowIds: deepClone(this.rowIds),
+                });
+            } else {
+                this.$emit('rows-select', {
+                    isSelected: false,
+                    rowIds: deepClone(this.rowIds),
+                });
+            }
         },
         onSelectAll() {
             if (this.isSelectedAll) {

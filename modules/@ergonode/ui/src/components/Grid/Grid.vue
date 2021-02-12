@@ -366,7 +366,12 @@ export default {
         },
         selectedRowsCount() {
             if (this.isSelectedAll) {
-                return this.dataCount - Object.keys(this.excludedFromSelectionRows).length;
+                const {
+                    length: excludedRows,
+                } = Object.keys(this.excludedFromSelectionRows)
+                    .filter(key => this.excludedFromSelectionRows[key]);
+
+                return this.dataCount - excludedRows;
             }
 
             return Object.keys(this.selectedRows).filter(key => this.selectedRows[key]).length;
@@ -418,10 +423,10 @@ export default {
             this.$emit('remove-all-filters');
         },
         onBatchActionSelect(option) {
-            // TODO: Disable option when non is selected
             const payload = {
                 ids: [],
                 excludedIds: [],
+                selectedRowsCount: this.selectedRowsCount,
                 onApply: this.onApplyBatchAction,
             };
 
@@ -466,11 +471,8 @@ export default {
         onSelectAllRows(isSelectedAll) {
             this.isSelectedAll = isSelectedAll;
 
-            if (isSelectedAll) {
-                this.selectedRows = {};
-            } else {
-                this.excludedFromSelectionRows = {};
-            }
+            this.selectedRows = {};
+            this.excludedFromSelectionRows = {};
         },
         onApplySettings({
             tableConfig,

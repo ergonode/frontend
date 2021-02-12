@@ -3,49 +3,48 @@
  * See LICENSE for license details.
  */
 <template>
-    <ModalOverlay @close="onClose">
-        <div class="modal-grid">
+    <ModalOverlay>
+        <div class="update-products-modal">
             <ModalHeader
                 :title="title"
-                @close="onClose">
-                <template #prepend>
-                    <slot name="prependHeader" />
-                </template>
-            </ModalHeader>
-            <slot name="body" />
+                @close="onClose" />
         </div>
     </ModalOverlay>
 </template>
 
 <script>
-import {
-    SIZE,
-    THEME,
-} from '@Core/defaults/theme';
 import ModalHeader from '@UI/components/Modal/ModalHeader';
 import ModalOverlay from '@UI/components/Modal/ModalOverlay';
 
 export default {
-    name: 'ModalGrid',
+    name: 'UpdateProductsModal',
     components: {
         ModalOverlay,
         ModalHeader,
     },
     props: {
-        /**
-         * The title of the component
-         */
-        title: {
-            type: String,
-            default: '',
+        ids: {
+            type: Array,
+            default: () => [],
+        },
+        excludedIds: {
+            type: Array,
+            default: () => [],
+        },
+        selectedProductsCount: {
+            type: Number,
+            default: 0,
+        },
+        onApply: {
+            type: Function,
+            default: () => {},
         },
     },
     computed: {
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
+        title() {
+            return this.$t('@Products.batchAction.components.UpdateProductsModal.title', {
+                info: this.selectedProductsCount,
+            });
         },
     },
     methods: {
@@ -57,7 +56,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .modal-grid {
+    .update-products-modal {
         display: flex;
         flex-direction: column;
         width: 1080px;

@@ -3,6 +3,19 @@
  * See LICENSE for license details.
  */
 
+<template>
+    <div class="products-batch-actions">
+        <UpdateProductsModal
+            v-if="updatingProductsPayload"
+            v-bind="{ ...updatingProductsPayload }"
+            @close="onCloseUpdatingProductsModal" />
+        <slot
+            name="grid"
+            :disabled-rows="disabledRows"
+            :batch-actions="batchActions" />
+    </div>
+</template>
+
 <script>
 import {
     ALERT_TYPE,
@@ -24,9 +37,13 @@ import {
 
 export default {
     name: 'ProductsBatchActions',
+    components: {
+        UpdateProductsModal: () => import('@BatchActions/components/Modals/UpdateProductsModal'),
+    },
     data() {
         return {
             disabledRows: {},
+            updatingProductsPayload: null,
         };
     },
     computed: {
@@ -38,7 +55,7 @@ export default {
         }),
         removeBatchActionItem() {
             return {
-                label: 'Delete selected products',
+                label: this.$t('@Products.batchAction.components.ProductsBatchActions.deleteBatchActionLabel'),
                 action: ({
                     ids,
                     excludedIds,
@@ -86,16 +103,40 @@ export default {
                 },
             };
         },
+        editBatchActionItem() {
+            return {
+                label: this.$t('@Products.batchAction.components.ProductsBatchActions.editBatchActionLabel'),
+                action: ({
+                    ids,
+                    excludedIds,
+                    selectedRowsCount,
+                    onApply,
+                }) => {
+                    this.updatingProductsPayload = {
+                        ids,
+                        excludedIds,
+                        selectedProductsCount: selectedRowsCount,
+                        onApply,
+                    };
+                },
+            };
+        },
         batchActions() {
-            if (!this.$hasAccess([
+            const batchActions = [];
+
+            if (this.$hasAccess([
                 PRIVILEGES.PRODUCT.delete,
             ])) {
-                return [];
+                batchActions.push(this.removeBatchActionItem);
             }
 
-            return [
-                this.removeBatchActionItem,
-            ];
+            if (this.$hasAccess([
+                PRIVILEGES.PRODUCT.update,
+            ])) {
+                batchActions.push(this.editBatchActionItem);
+            }
+
+            return batchActions;
         },
     },
     mounted() {
@@ -151,6 +192,9 @@ export default {
                 this.$emit('batch-action-completed');
             }
         },
+        onCloseUpdatingProductsModal() {
+            this.updatingProductsPayload = null;
+        },
         setDisabledRows(ids) {
             ids.forEach((rowId) => {
                 this.disabledRows[rowId] = true;
@@ -161,11 +205,13 @@ export default {
             };
         },
     },
-    render() {
-        return this.$scopedSlots.default({
-            disabledRows: this.disabledRows,
-            batchActions: this.batchActions,
-        });
-    },
 };
 </script>
+
+<style lang="scss" scoped>
+    .products-batch-actions {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+    }
+</style>
