@@ -64,7 +64,7 @@ export default {
     },
     methods: {
         ...mapActions('product', [
-            'addBySku',
+            'addByList',
             'removeProductChildren',
         ]),
         async onSubmit() {
@@ -91,7 +91,7 @@ export default {
             });
 
             if (skus.length) {
-                requests.push(this.addBySku({
+                requests.push(this.addByList({
                     skus,
                 }));
             }

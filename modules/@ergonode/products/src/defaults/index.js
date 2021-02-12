@@ -10,6 +10,7 @@ import {
 
 export const ADD_PRODUCT = {
     FROM_LIST: 'Select from list',
+    FROM_SKU: 'Select from SKU',
     FROM_SEGMENT: 'Add from segment',
 };
 

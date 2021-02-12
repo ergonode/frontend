@@ -4,13 +4,13 @@
  */
 <template>
     <ModalForm
-        :title="$t('@Products._.addProductsFromSegment')"
+        title="Add products by SKU"
         @close="onClose">
         <template #body>
-            <AddProductsFromSegmentForm
-                :segments="segments"
-                submit-title="ADD TO PRODUCT"
-                :proceed-title="$t('@Products._.cancel')"
+            <AddProductsBySKUForm
+                :product-skus="productSkus"
+                submit-title="ADD TO PRODUCT GROUP"
+                :proceed-title="$t('core.buttons.cancel')"
                 :is-submitting="isAdding"
                 :scope="scope"
                 :errors="scopeErrors"
@@ -30,19 +30,19 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
+import AddProductsBySKUForm from '@Products/extends/components/Forms/AddProductsBySKUForm';
 import {
     PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
 } from '@Products/extends/defaults';
-import AddProductsFromSegmentForm from '@Segments/components/Forms/AddProductsFromSegmentForm';
 import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
-    name: 'AddProductsFromSegmentModalForm',
+    name: 'AddProductsBySKUModalForm',
     components: {
-        AddProductsFromSegmentForm,
+        AddProductsBySKUForm,
         ModalForm,
     },
     mixins: [
@@ -50,7 +50,7 @@ export default {
     ],
     data() {
         return {
-            segments: [],
+            productSkus: '',
             isAdding: false,
         };
     },
@@ -61,10 +61,10 @@ export default {
     },
     methods: {
         ...mapActions('product', [
-            'addBySegment',
+            'addBySku',
         ]),
         onFormValueChange(value) {
-            this.segments = value;
+            this.productSkus = value;
         },
         onClose() {
             this.removeScopeData(this.scope);
@@ -78,9 +78,9 @@ export default {
             this.isAdding = true;
 
             this.removeScopeErrors(this.scope);
-            this.addBySegment({
+            this.addBySku({
                 scope: this.scope,
-                segments: this.segments,
+                skus: this.productSkus,
                 onSuccess: this.onSubmitSuccess,
                 onError: this.onAddError,
             });
@@ -93,9 +93,11 @@ export default {
 
             this.isAdding = false;
 
-            const event = new CustomEvent(PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME);
+            if (this.productSkus.length) {
+                const event = new CustomEvent(PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME);
 
-            document.documentElement.dispatchEvent(event);
+                document.documentElement.dispatchEvent(event);
+            }
 
             this.$emit('submitted');
         },
