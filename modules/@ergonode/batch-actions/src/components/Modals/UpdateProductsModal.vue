@@ -8,11 +8,18 @@
             <ModalHeader
                 :title="title"
                 @close="onClose" />
+            <div class="update-products-modal__body">
+                <div class="update-products-modal__sidebar" />
+                <div class="update-products-modal__form">
+                    <DraggableForm :title="'Edited attributes'" />
+                </div>
+            </div>
         </div>
     </ModalOverlay>
 </template>
 
 <script>
+import DraggableForm from '@UI/components/DraggableForm/DraggableForm';
 import ModalHeader from '@UI/components/Modal/ModalHeader';
 import ModalOverlay from '@UI/components/Modal/ModalOverlay';
 
@@ -21,6 +28,7 @@ export default {
     components: {
         ModalOverlay,
         ModalHeader,
+        DraggableForm,
     },
     props: {
         ids: {
@@ -63,5 +71,25 @@ export default {
         height: 80%;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_6_DP;
+
+        &__body {
+            display: flex;
+            height: 100%;
+        }
+
+        &__sidebar {
+            width: 328px;
+            height: 100%;
+            background-color: #006600;
+        }
+
+        &__form {
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            height: 100%;
+            padding: 48px;
+            box-sizing: border-box;
+        }
     }
 </style>
