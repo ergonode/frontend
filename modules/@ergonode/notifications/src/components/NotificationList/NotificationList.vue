@@ -140,6 +140,7 @@ export default {
     beforeDestroy() {
         if (this.timeout) {
             clearTimeout(this.timeout);
+            this.timeout = null;
         }
 
         this.__setState({
