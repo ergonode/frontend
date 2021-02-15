@@ -138,6 +138,10 @@ export default {
         },
     },
     beforeDestroy() {
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+        }
+
         this.__setState({
             key: 'offset',
             value: 0,
