@@ -18,7 +18,7 @@
       "languageLabel": "Language",
       "roleLabel": "Role",
       "noRoleTitle": "No user roles",
-      "noRoleSubtitle": "There are no user roles in the system, so you can create the first one."
+      "noRoleSubtitle": "There are no user roles in the system, so you can add the first one."
     },
     "avatar": {
       "title": "User avatar",
@@ -27,7 +27,7 @@
     },
     "grid": {
       "placeholderTitle": "No users",
-      "placeholderSubtitle": "There are no users in the system, you can create the first one."
+      "placeholderSubtitle": "There are no users in the system, you can add the first one."
     },
     "messages": {
       "deleteTitle": "Are you sure you want to delete this user?",
@@ -64,7 +64,7 @@
     },
     "grid": {
       "placeholderTitle": "No user roles",
-      "placeholderSubtitle": "There are no user roles in the system, you can create the first one."
+      "placeholderSubtitle": "There are no user roles in the system, you can add the first one."
     },
     "messages": {
       "deleteTitle": "Are you sure you want to delete this role?",

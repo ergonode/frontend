@@ -110,10 +110,10 @@ export default [
             },
             {
                 name: ROUTE_NAME.SEGMENT_EDIT_DESIGNER,
-                path: 'designer',
+                path: 'condition-sets',
                 component: Tabs.ConditionDesignerTab,
                 meta: {
-                    title: 'Designer',
+                    title: 'Condition sets',
                     breadcrumbs: [
                         {
                             title: 'Products',

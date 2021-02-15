@@ -5,7 +5,7 @@
       "_": {},
       "components": {
         "NotificationListNoDataPlaceholder": {
-          "noActions": "Brak kacji",
+          "noActions": "Brak akcji",
           "info": "Aktualizacje produktu, procesowane operacje oraz inne aktywności pojawią się tutaj."
         },
         "NotificationListHeader": {

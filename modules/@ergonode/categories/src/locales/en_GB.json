@@ -15,7 +15,7 @@
         "head": "Categories - Ergonode",
         "label": "Category",
         "noItems": "No categories",
-        "createFirst": "There are no categories in the system, so you can create the first one.",
+        "createFirst": "There are no categories in the system, so you can add the first one.",
         "selectVisibleCheckBox": "Select visible"
       },
       "components": {

@@ -5,7 +5,7 @@
 <template>
     <Button
         data-cy="new-collection"
-        title="NEW PRODUCT COLLECTION"
+        title="NEW COLLECTION"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">

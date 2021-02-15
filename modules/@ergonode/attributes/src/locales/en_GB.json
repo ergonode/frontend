@@ -13,7 +13,7 @@
         "title": "Attributes",
         "headTitle": "Attributes - Ergonode",
         "noAttributes": "No attributes",
-        "createFirst": "There are no attributes in the system, you can create the first one."
+        "createFirst": "There are no attributes in the system, you can add the first one."
       },
       "components": {
         "AttributeForm": {
@@ -74,7 +74,7 @@
         "title": "Attribute Group",
         "headTitle": "Attribute groups - Ergonode",
         "noGroups": "No attribute groups",
-        "createFirst": "There are no attribute groups in the system, you can create the first one."
+        "createFirst": "There are no attribute groups in the system, you can add the first one."
       },
       "components": {
         "AttributeGroupForm": {
@@ -163,9 +163,9 @@
           "defaultLabel": "Default label attribute",
           "defaultImage": "Default image attribute",
           "noLabelTitle": "No text attributes",
-          "noLabelSubtitle": "There are no text attributes in the system, so you can create the first one.",
+          "noLabelSubtitle": "There are no text attributes in the system, so you can add the first one.",
           "noImageTitle": "No image attributes",
-          "noImageSubtitle": "There are no image attributes in the system, so you can create the first one."
+          "noImageSubtitle": "There are no image attributes in the system, so you can add the first one."
         }
       }
     }
