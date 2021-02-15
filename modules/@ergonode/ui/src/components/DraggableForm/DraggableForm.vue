@@ -4,14 +4,6 @@
  */
 <template>
     <div class="draggable-form">
-        <DropZone
-            v-show="false"
-            title="ADD ITEM"
-            @drop="onDropFormItem">
-            <template #icon="{ color }">
-                <IconAddFilter :fill-color="color" />
-            </template>
-        </DropZone>
         <Form
             :title="title"
             :disabled="disabled"
@@ -19,25 +11,39 @@
             :change-values="changeValues"
             :errors-presentation-mapper="errorsPresentationMapper">
             <template #body>
-                <DraggableFormPlaceholderItem v-if="!items.length" />
+                <DraggableFormPlaceholderItem v-if="!localItems.length" />
+                <DraggableFormItem
+                    v-for="(item, index) in localItems"
+                    :key="item.id"
+                    :index="index"
+                    :item="item"
+                    @add-ghost="onAddGhost"
+                    @add-item="onAddItem"
+                    @remove-item="onRemoveItem"
+                    @swap="onSwapItems">
+                    <template #item>
+                        <slot
+                            name="item"
+                            :item="item" />
+                    </template>
+                </DraggableFormItem>
             </template>
         </Form>
     </div>
 </template>
 
 <script>
+import {
+    swapItemPosition,
+} from '@Core/models/arrayWrapper';
 import DraggableFormItem from '@UI/components/DraggableForm/DraggableFormItem';
 import DraggableFormPlaceholderItem from '@UI/components/DraggableForm/DraggableFormPlaceholderItem';
-import DropZone from '@UI/components/DropZone/DropZone';
 import Form from '@UI/components/Form/Form';
-import IconAddFilter from '@UI/components/Icons/Actions/IconAddFilter';
 
 export default {
     name: 'DraggableForm',
     components: {
         Form,
-        DropZone,
-        IconAddFilter,
         DraggableFormPlaceholderItem,
         DraggableFormItem,
     },
@@ -85,9 +91,51 @@ export default {
             default: null,
         },
     },
+    data() {
+        return {
+            localItems: [],
+        };
+    },
+    watch: {
+        items: {
+            immediate: true,
+            handler() {
+                this.localItems = this.items;
+            },
+        },
+    },
     methods: {
-        onDropFormItem() {
-            console.log('dropped');
+        onAddGhost(index) {
+            this.localItems[index] = {
+                id: this.localItems[index].id,
+                isGhost: true,
+            };
+
+            this.localItems = [
+                ...this.localItems,
+            ];
+        },
+        onAddItem({
+            item,
+            index,
+        }) {
+            this.localItems[index] = item;
+
+            this.localItems = [
+                ...this.localItems,
+            ];
+        },
+        onRemoveItem(index) {
+            this.$emit('remove-item', index);
+        },
+        onSwapItems({
+            from,
+            to,
+        }) {
+            this.localItems = swapItemPosition(this.localItems, from, to);
+            this.localItems = [
+                ...this.localItems,
+            ];
         },
     },
 };
