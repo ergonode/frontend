@@ -26,10 +26,10 @@ import {
 import {
     getUUID,
 } from '@Core/models/stringWrapper';
+import PRIVILEGES from '@Products/config/privileges';
 import {
     BATCH_ACTION_TYPE,
-} from '@Products/../models/batchActions';
-import PRIVILEGES from '@Products/config/privileges';
+} from '@ProductsBatchActions/defaults';
 import {
     mapActions,
     mapState,

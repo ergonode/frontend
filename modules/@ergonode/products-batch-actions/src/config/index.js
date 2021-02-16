@@ -5,11 +5,11 @@
 export default {
     name: '@ergonode/products-batch-actions',
     order: 220,
-    aliases: {
-        '@ProductsBatchActions': '/',
-    },
     relations: [
         '@ergonode/products',
         '@ergonode/batch-actions',
     ],
+    aliases: {
+        '@ProductsBatchActions': '/',
+    },
 };
