@@ -96,7 +96,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: app.$t('@Products.product.pages.id.getProductRequest'),
+                    message: app.i18n.t('@Products.product.pages.id.getProductRequest'),
                 });
             },
         });
@@ -106,7 +106,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: app.$t('@Products.product.pages.id.getInheritedProductRequest'),
+                    message: app.i18n.t('@Products.product.pages.id.getInheritedProductRequest'),
                 });
             },
         });
