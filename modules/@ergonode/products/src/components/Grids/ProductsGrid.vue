@@ -3,103 +3,97 @@
  * See LICENSE for license details.
  */
 <template>
-    <ProductsBatchActions @completed="onBatchActionCompleted">
-        <template
-            #grid="{
-                disabledRows,
-                batchActions,
-            }">
-            <Grid
-                :columns="columns"
-                :rows="rows"
-                :drafts="drafts"
-                :filters="filterValues"
-                :errors="errors"
-                :data-count="filtered"
-                :pagination="pagination"
-                :collection-cell-binding="collectionCellBinding"
-                :actions="batchActions"
-                :disabled-rows="disabledRows"
-                :extended-components="extendedGridComponents"
-                :is-editable="isAllowedToUpdate"
-                :is-prefetching-data="isPrefetchingData"
-                :is-header-visible="true"
-                :is-basic-filter="true"
-                :is-collection-layout="true"
-                :is-select-column="batchActions.length > 0"
-                @edit-row="onEditRow"
-                @preview-row="onEditRow"
-                @cell-value="onCellValueChange"
-                @filter="onFilterChange"
-                @delete-row="onRemoveRow"
-                @drop-column="onDropColumn"
-                @remove-column="onRemoveColumn"
-                @swap-columns="onSwapColumns"
-                @pagination="onPaginationChange"
-                @sort-column="onColumnSortChange"
-                @remove-all-filters="onRemoveAllFilters">
-                <template #actionsHeader>
-                    <ExpandNumericButton
-                        title="FILTERS"
-                        :number="advancedFilters.length"
-                        :is-expanded="isFiltersExpanded"
-                        @click.native="onFiltersExpand" />
-                    <template v-for="(headerItem, index) in extendedActionHeader">
-                        <Component
-                            :is="headerItem.component"
-                            :key="index"
-                            v-bind="bindingProps(headerItem)" />
-                    </template>
-                </template>
-                <template #prependHeader>
-                    <AddFilterDropZone
-                        :filters="advancedFilters"
-                        @drop="onDropFilter" />
-                </template>
-                <template #appendHeader>
-                    <div
-                        v-show="isFiltersExpanded"
-                        class="products-advanced-filters">
-                        <AdvancedFilters
-                            :value="advancedFilterValues"
-                            :filters="advancedFilters"
-                            @swap="onAdvancedFilterPositionChange"
-                            @remove="onAdvancedFilterRemove"
-                            @remove-all="onAdvancedFilterRemoveAll"
-                            @input="onAdvancedFilterChange" />
-                    </div>
-                </template>
-                <template #noDataPlaceholder>
-                    <GridNoDataPlaceholder
-                        v-if="!isAnyFilter && filtered === 0"
-                        :title="$t('@Products._.noProduct')"
-                        :subtitle="$t('@Products._.createFirst')">
-                        <template #action>
-                            <CreateProductButton />
-                        </template>
-                    </GridNoDataPlaceholder>
-                    <GridNoResultsPlaceholder
-                        v-else
-                        @clear="onRemoveAllFilters" />
-                </template>
-                <template #appendFooter>
-                    <template v-for="(footerItem, index) in extendedFooter">
-                        <Component
-                            :is="footerItem.component"
-                            :key="index"
-                            v-bind="bindingProps(footerItem)" />
-                    </template>
-                    <UpdateProductsButton
-                        :scope="scope"
-                        :errors="errors"
-                        :change-values="changeValues"
-                        :drafts="drafts"
-                        :columns="columns"
-                        @updated="onProductsUpdated" />
-                </template>
-            </Grid>
+    <Grid
+        :columns="columns"
+        :rows="rows"
+        :drafts="drafts"
+        :filters="filterValues"
+        :errors="errors"
+        :data-count="filtered"
+        :pagination="pagination"
+        :collection-cell-binding="collectionCellBinding"
+        :extended-components="extendedGridComponents"
+        :is-editable="isAllowedToUpdate"
+        :is-prefetching-data="isPrefetchingData"
+        :is-header-visible="true"
+        :is-basic-filter="true"
+        :is-collection-layout="true"
+        :is-select-column="true"
+        @edit-row="onEditRow"
+        @preview-row="onEditRow"
+        @cell-value="onCellValueChange"
+        @filter="onFilterChange"
+        @delete-row="onRemoveRow"
+        @drop-column="onDropColumn"
+        @remove-column="onRemoveColumn"
+        @swap-columns="onSwapColumns"
+        @pagination="onPaginationChange"
+        @sort-column="onColumnSortChange"
+        @remove-all-filters="onRemoveAllFilters">
+        <template #actionsHeader="actionsHeaderProps">
+            <Component
+                v-for="(headerItem, index) in extendedActionHeader"
+                :is="headerItem.component"
+                :key="index"
+                v-bind="bindingProps({
+                    props: {
+                        ...actionsHeaderProps,
+                        ...headerItem.props,
+                        onFetchData,
+                    },
+                })" />
+            <ExpandNumericButton
+                title="FILTERS"
+                :number="advancedFilters.length"
+                :is-expanded="isFiltersExpanded"
+                @click.native="onFiltersExpand" />
         </template>
-    </ProductsBatchActions>
+        <template #prependHeader>
+            <AddFilterDropZone
+                :filters="advancedFilters"
+                @drop="onDropFilter" />
+        </template>
+        <template #appendHeader>
+            <div
+                v-show="isFiltersExpanded"
+                class="products-advanced-filters">
+                <AdvancedFilters
+                    :value="advancedFilterValues"
+                    :filters="advancedFilters"
+                    @swap="onAdvancedFilterPositionChange"
+                    @remove="onAdvancedFilterRemove"
+                    @remove-all="onAdvancedFilterRemoveAll"
+                    @input="onAdvancedFilterChange" />
+            </div>
+        </template>
+        <template #noDataPlaceholder>
+            <GridNoDataPlaceholder
+                v-if="!isAnyFilter && filtered === 0"
+                :title="$t('@Products._.noProduct')"
+                :subtitle="$t('@Products._.createFirst')">
+                <template #action>
+                    <CreateProductButton />
+                </template>
+            </GridNoDataPlaceholder>
+            <GridNoResultsPlaceholder
+                v-else
+                @clear="onRemoveAllFilters" />
+        </template>
+        <template #appendFooter>
+            <Component
+                v-for="(footerItem, index) in extendedFooter"
+                :is="footerItem.component"
+                :key="index"
+                v-bind="bindingProps(footerItem)" />
+            <UpdateProductsButton
+                :scope="scope"
+                :errors="errors"
+                :change-values="changeValues"
+                :drafts="drafts"
+                :columns="columns"
+                @updated="onProductsUpdated" />
+        </template>
+    </Grid>
 </template>
 
 <script>
@@ -135,7 +129,6 @@ import {
 import {
     PRODUCT_CREATED_EVENT_NAME,
 } from '@Products/defaults';
-import ProductsBatchActions from '@ProductsBatchActions/components/ProductsBatchActions/ProductsBatchActions';
 import AdvancedFilters from '@UI/components/AdvancedFilters/AdvancedFilters';
 import Button from '@UI/components/Button/Button';
 import AddFilterDropZone from '@UI/components/Grid/DropZone/AddFilterDropZone';
@@ -157,7 +150,6 @@ export default {
         Grid,
         GridNoDataPlaceholder,
         GridNoResultsPlaceholder,
-        ProductsBatchActions,
         AddFilterDropZone,
         RemoveFilterAndColumnDropZone,
         Button,
@@ -233,7 +225,12 @@ export default {
             'disabledElements',
         ]),
         extendedActionHeader() {
-            return this.$getExtendSlot('@Products/components/Grids/ProductsGrid/actionHeader');
+            const extendedActionHeader = this.$getExtendSlot('@Products/components/Grids/ProductsGrid/actionHeader');
+
+            if (!extendedActionHeader || !extendedActionHeader.__ALL) {
+                return null;
+            }
+            return extendedActionHeader.__ALL;
         },
         extendedFooter() {
             return this.$getExtendSlot('@Products/components/Grids/ProductsGrid/footer');
@@ -303,9 +300,6 @@ export default {
             'setDisabledElements',
         ]),
         onProductCreated() {
-            this.onFetchData();
-        },
-        onBatchActionCompleted() {
             this.onFetchData();
         },
         async onDropColumn(payload) {

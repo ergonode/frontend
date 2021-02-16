@@ -2,21 +2,21 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-
 <template>
-    <div class="products-batch-actions">
+    <BatchActionsButton
+        :highlighted="isAnyRowSelected"
+        :options="batchActions"
+        :selected-rows-count="selectedRowsCount"
+        @action="onActionSelect">
         <UpdateProductsModal
             v-if="updatingProductsPayload"
             v-bind="{ ...updatingProductsPayload }"
             @close="onCloseUpdatingProductsModal" />
-        <slot
-            name="grid"
-            :disabled-rows="disabledRows"
-            :batch-actions="batchActions" />
-    </div>
+    </BatchActionsButton>
 </template>
 
 <script>
+import BatchActionsButton from '@BatchActions/components/Buttons/BatchActionsButton';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -36,13 +36,35 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'ProductsBatchActions',
+    name: 'ProductsBatchActionsButton',
     components: {
+        BatchActionsButton,
         UpdateProductsModal: () => import('@ProductsBatchActions/components/Modals/UpdateProductsModal'),
+    },
+    props: {
+        selectedRows: {
+            type: Object,
+            default: () => ({}),
+        },
+        excludedFromSelectionRows: {
+            type: Object,
+            default: () => ({}),
+        },
+        selectedRowsCount: {
+            type: Number,
+            default: 0,
+        },
+        onClearSelectedRows: {
+            type: Function,
+            default: () => {},
+        },
+        onFetchData: {
+            type: Function,
+            default: () => {},
+        },
     },
     data() {
         return {
-            disabledRows: {},
             updatingProductsPayload: null,
         };
     },
@@ -74,8 +96,6 @@ export default {
                             onApply(ids);
 
                             const uuid = getUUID();
-
-                            this.setDisabledRows(ids);
 
                             this.addBatchAction({
                                 id: uuid,
@@ -138,6 +158,9 @@ export default {
 
             return batchActions;
         },
+        isAnyRowSelected() {
+            return this.selectedRowsCount > 0;
+        },
     },
     mounted() {
         this.removeProductsBatchActions.forEach(({
@@ -164,15 +187,29 @@ export default {
             'addBatchAction',
             'removeBatchAction',
         ]),
-        async onRemoveProductsBatchAction(event) {
-            event.detail.request.payload.filter.ids.list.forEach((rowId) => {
-                delete this.disabledRows[rowId];
-            });
-
-            this.disabledRows = {
-                ...this.disabledRows,
+        onActionSelect(option) {
+            const payload = {
+                ids: [],
+                excludedIds: [],
+                selectedRowsCount: this.selectedRowsCount,
+                onApply: this.onClearSelectedRows,
             };
 
+            Object.keys(this.selectedRows).forEach((key) => {
+                if (this.selectedRows[key]) {
+                    payload.ids.push(key);
+                }
+            });
+
+            Object.keys(this.excludedFromSelectionRows).forEach((key) => {
+                if (this.excludedFromSelectionRows[key]) {
+                    payload.excludedIds.push(key);
+                }
+            });
+
+            option.action(payload);
+        },
+        async onRemoveProductsBatchAction(event) {
             if (!event.detail.error) {
                 const batchActionIndex = this.batchActions.findIndex(
                     batchAction => batchAction.id === event.detail.id,
@@ -189,29 +226,12 @@ export default {
                     message: this.$t('@ProductsBatchActions.productBatchAction.components.ProductsBatchActions.successAlert'),
                 });
 
-                this.$emit('completed');
+                this.onFetchData();
             }
         },
         onCloseUpdatingProductsModal() {
             this.updatingProductsPayload = null;
         },
-        setDisabledRows(ids) {
-            ids.forEach((rowId) => {
-                this.disabledRows[rowId] = true;
-            });
-
-            this.disabledRows = {
-                ...this.disabledRows,
-            };
-        },
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .products-batch-actions {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-    }
-</style>
