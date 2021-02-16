@@ -42,7 +42,7 @@ import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
 
 export default {
-    name: 'BatchActionButton',
+    name: 'GridActionButton',
     components: {
         ListElementTitle,
         ListElementDescription,

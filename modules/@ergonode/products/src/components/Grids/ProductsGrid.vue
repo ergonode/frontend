@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ProductsBatchActions @batch-action-completed="onBatchActionCompleted">
+    <ProductsBatchActions @completed="onBatchActionCompleted">
         <template
             #grid="{
                 disabledRows,
@@ -18,7 +18,7 @@
                 :data-count="filtered"
                 :pagination="pagination"
                 :collection-cell-binding="collectionCellBinding"
-                :batch-actions="batchActions"
+                :actions="batchActions"
                 :disabled-rows="disabledRows"
                 :extended-components="extendedGridComponents"
                 :is-editable="isAllowedToUpdate"
@@ -103,7 +103,6 @@
 </template>
 
 <script>
-import ProductsBatchActions from '@BatchActions/components/ProductsBatchActions/ProductsBatchActions';
 import ExpandNumericButton from '@Core/components/Buttons/ExpandNumericButton';
 import {
     ALERT_TYPE,
@@ -136,6 +135,7 @@ import {
 import {
     PRODUCT_CREATED_EVENT_NAME,
 } from '@Products/defaults';
+import ProductsBatchActions from '@ProductsBatchActions/components/ProductsBatchActions/ProductsBatchActions';
 import AdvancedFilters from '@UI/components/AdvancedFilters/AdvancedFilters';
 import Button from '@UI/components/Button/Button';
 import AddFilterDropZone from '@UI/components/Grid/DropZone/AddFilterDropZone';

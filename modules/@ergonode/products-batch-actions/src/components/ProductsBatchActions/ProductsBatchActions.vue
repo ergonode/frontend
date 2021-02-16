@@ -26,10 +26,10 @@ import {
 import {
     getUUID,
 } from '@Core/models/stringWrapper';
-import PRIVILEGES from '@Products/config/privileges';
 import {
     BATCH_ACTION_TYPE,
-} from '@Products/models/batchActions';
+} from '@Products/../models/batchActions';
+import PRIVILEGES from '@Products/config/privileges';
 import {
     mapActions,
     mapState,
@@ -38,7 +38,7 @@ import {
 export default {
     name: 'ProductsBatchActions',
     components: {
-        UpdateProductsModal: () => import('@BatchActions/components/Modals/UpdateProductsModal'),
+        UpdateProductsModal: () => import('@ProductsBatchActions/components/Modals/UpdateProductsModal'),
     },
     data() {
         return {
@@ -55,7 +55,7 @@ export default {
         }),
         removeBatchActionItem() {
             return {
-                label: this.$t('@Products.batchAction.components.ProductsBatchActions.deleteBatchActionLabel'),
+                label: this.$t('@ProductsBatchActions.productBatchAction.components.ProductsBatchActions.deleteBatchActionLabel'),
                 action: ({
                     ids,
                     excludedIds,
@@ -63,11 +63,11 @@ export default {
                 }) => {
                     this.$confirm({
                         type: MODAL_TYPE.DESTRUCTIVE,
-                        title: this.$t('@Products.batchAction.components.ProductsBatchActions.confirmTitle', {
+                        title: this.$t('@ProductsBatchActions.productBatchAction.components.ProductsBatchActions.confirmTitle', {
                             info: ids.length,
                         }),
-                        subtitle: this.$t('@Products.batchAction.components.ProductsBatchActions.confirmSubtitle'),
-                        applyTitle: this.$t('@Products.batchAction.components.ProductsBatchActions.confirmApplyTitle', {
+                        subtitle: this.$t('@ProductsBatchActions.productBatchAction.components.ProductsBatchActions.confirmSubtitle'),
+                        applyTitle: this.$t('@ProductsBatchActions.productBatchAction.components.ProductsBatchActions.confirmApplyTitle', {
                             info: ids.length,
                         }),
                         action: () => {
@@ -105,7 +105,7 @@ export default {
         },
         editBatchActionItem() {
             return {
-                label: this.$t('@Products.batchAction.components.ProductsBatchActions.editBatchActionLabel'),
+                label: this.$t('@ProductsBatchActions.productBatchAction.components.ProductsBatchActions.editBatchActionLabel'),
                 action: ({
                     ids,
                     excludedIds,
@@ -186,10 +186,10 @@ export default {
 
                 this.$addAlert({
                     type: ALERT_TYPE.SUCCESS,
-                    message: this.$t('@Products.batchAction.components.ProductsBatchActions.successAlert'),
+                    message: this.$t('@ProductsBatchActions.productBatchAction.components.ProductsBatchActions.successAlert'),
                 });
 
-                this.$emit('batch-action-completed');
+                this.$emit('completed');
             }
         },
         onCloseUpdatingProductsModal() {

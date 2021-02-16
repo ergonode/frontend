@@ -19,12 +19,12 @@
                 <slot name="prependHeader" />
             </template>
             <template #actions>
-                <BatchActionButton
-                    v-if="isBatchActionVisible"
+                <GridActionButton
+                    v-if="isActionButtonVisible"
                     :highlighted="isAnyRowSelected"
-                    :options="batchActions"
+                    :options="actions"
                     :selected-rows-count="selectedRowsCount"
-                    @action="onBatchActionSelect" />
+                    @action="onActionSelect" />
                 <slot name="actionsHeader" />
             </template>
             <template #configuration>
@@ -132,7 +132,7 @@ import {
 import {
     getUUID,
 } from '@Core/models/stringWrapper';
-import BatchActionButton from '@UI/components/Grid/Buttons/BatchActionButton';
+import GridActionButton from '@UI/components/Grid/Buttons/GridActionButton';
 import AddGridColumnDropZone from '@UI/components/Grid/DropZone/AddGridColumnDropZone';
 import GridPageSelector from '@UI/components/Grid/Footer/GridPageSelector';
 import GridPagination from '@UI/components/Grid/Footer/GridPagination';
@@ -160,7 +160,7 @@ export default {
         GridTableLayout,
         GridCollectionLayout,
         GridPageSelector,
-        BatchActionButton,
+        GridActionButton,
     },
     props: {
         /**
@@ -220,9 +220,9 @@ export default {
             default: DEFAULT_GRID_PAGINATION,
         },
         /**
-         * The list of batch actions
+         * The list of actions
          */
-        batchActions: {
+        actions: {
             type: Array,
             default: () => [],
         },
@@ -382,8 +382,8 @@ export default {
         isAnyFilter() {
             return Object.keys(this.filters).length > 0;
         },
-        isBatchActionVisible() {
-            return this.batchActions.length > 0;
+        isActionButtonVisible() {
+            return this.actions.length > 0;
         },
         isListElementDragging() {
             return this.isElementDragging === DRAGGED_ELEMENT.LIST;
@@ -422,12 +422,12 @@ export default {
         onRemoveAllFilters() {
             this.$emit('remove-all-filters');
         },
-        onBatchActionSelect(option) {
+        onActionSelect(option) {
             const payload = {
                 ids: [],
                 excludedIds: [],
                 selectedRowsCount: this.selectedRowsCount,
-                onApply: this.onApplyBatchAction,
+                onApply: this.onApplyAction,
             };
 
             Object.keys(this.selectedRows).forEach((key) => {
@@ -528,11 +528,13 @@ export default {
                 });
             }
         },
-        onApplyBatchAction(ids) {
-            ids.forEach((id) => {
-                delete this.selectedRows[id];
-            });
-
+        onClearSelectedRows() {
+            this.isSelectedAll = false;
+            this.selectedRows = {};
+            this.excludedFromSelectionRows = {};
+        },
+        onApplyAction() {
+            this.isSelectedAll = false;
             this.selectedRows = {};
             this.excludedFromSelectionRows = {};
         },
