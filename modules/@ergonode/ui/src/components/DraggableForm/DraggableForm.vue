@@ -10,6 +10,12 @@
             :errors="errors"
             :change-values="changeValues"
             :errors-presentation-mapper="errorsPresentationMapper">
+            <template #header>
+                <h2
+                    v-if="title"
+                    class="draggable-form__title"
+                    v-text="title" />
+            </template>
             <template #body>
                 <DraggableFormPlaceholderItem v-if="!localItems.length" />
                 <DraggableFormItem
@@ -144,5 +150,11 @@ export default {
 <style lang="scss" scoped>
     .draggable-form {
         position: relative;
+
+        &__title {
+            margin-left: 32px;
+            color: $GRAPHITE_DARK;
+            font: $FONT_SEMI_BOLD_16_24;
+        }
     }
 </style>

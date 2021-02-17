@@ -28,10 +28,6 @@
 
 <script>
 import {
-    Components,
-    Icons,
-} from '@Attributes/config/imports';
-import {
     getUUID,
 } from '@Core/models/stringWrapper';
 import AttributesSideBar
@@ -71,6 +67,11 @@ export default {
             default: () => {},
         },
     },
+    data() {
+        return {
+            // formItems: [],
+        };
+    },
     computed: {
         title() {
             return this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsModal.title', {
@@ -80,7 +81,7 @@ export default {
         verticalTabs() {
             return [
                 {
-                    title: this.$t('@Attributes.attributeExtend.components.AttributesVerticalTab.title'),
+                    title: this.$t('@ProductsBatchActions.attribute._.title'),
                     component: () => import('@ProductsBatchActions/extends/attribute/components/VerticalTabs/AttributesVerticalTab'),
                     icon: () => import('@Attributes/components/Icons/IconAttributes'),
                     props: {},
