@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    isElementDragging: null,
     isOverDropZone: false,
+    isElementDragging: null,
     draggedElement: null,
     ghostIndex: -1,
     draggedElIndex: -1,

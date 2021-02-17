@@ -25,6 +25,9 @@ export default {
             type: String,
             default: '',
         },
+        /**
+         * Number of columns in section
+         */
         columns: {
             type: Number,
             default: 1,

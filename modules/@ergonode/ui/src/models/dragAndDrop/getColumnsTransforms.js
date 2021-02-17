@@ -101,8 +101,7 @@ function getUpperBoundsTransforms(
     };
 }
 
-export default function (targetGhostIndex, draggedElIndex, ghostIndex) {
-    const columnsSection = document.documentElement.querySelector('.grid-table-layout-columns-section');
+export default function (targetGhostIndex, draggedElIndex, ghostIndex, columnsSection) {
     const {
         width: ghostWidth,
     } = columnsSection.children[draggedElIndex]
@@ -129,9 +128,6 @@ export default function (targetGhostIndex, draggedElIndex, ghostIndex) {
             ghostIndex,
         );
     }
-    Object.keys(bounds.transforms).forEach((index) => {
-        columnsSection.children[index].style.transform = `translateX(${bounds.transforms[index]}px)`;
-    });
 
-    columnsSection.children[draggedElIndex].style.transform = `translateX(${bounds.updatedGhostTransform}px)`;
+    return bounds;
 }

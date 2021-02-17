@@ -18,10 +18,13 @@ import {
     mapState,
 } from 'vuex';
 
-const updateColumnsTransform = () => import('@UI/models/dragAndDrop/updateColumnsTransform');
+const getColumnsTransform = () => import('@UI/models/dragAndDrop/getColumnsTransforms');
 
 export default {
     name: 'GridDraggableColumn',
+    inject: [
+        'getGridTableLayoutReference',
+    ],
     props: {
         /**
          * Index of given component at the loop
@@ -218,13 +221,18 @@ export default {
             }
 
             const targetGhostIndex = this.getTargetGhostIndex(isBefore);
+            const contentGrid = this.getGridContentElement();
 
-            updateColumnsTransform().then((response) => {
-                response.default(
+            getColumnsTransform().then((response) => {
+                const transforms = response.default(
                     targetGhostIndex,
                     this.draggedElIndex,
                     this.ghostIndex,
+                    contentGrid,
                 );
+
+                this.updateColumnsTransform(transforms);
+
                 this.__setState({
                     key: 'ghostIndex',
                     value: targetGhostIndex,
@@ -232,6 +240,18 @@ export default {
             });
 
             return true;
+        },
+        updateColumnsTransform({
+            transforms,
+            updatedGhostTransform,
+        }) {
+            const contentGrid = this.getGridContentElement();
+
+            Object.keys(transforms).forEach((index) => {
+                contentGrid.children[index].style.transform = `translateX(${transforms[index]}px)`;
+            });
+
+            contentGrid.children[this.draggedElIndex].style.transform = `translateX(${updatedGhostTransform}px)`;
         },
         getColumnFixedIndex() {
             if (this.$el.style.transform) {
@@ -250,7 +270,7 @@ export default {
             return +this.$el.style.transform.replace(/[^0-9\-.,]/g, '');
         },
         getGridContentElement() {
-            return document.documentElement.querySelector('.grid-table-layout-columns-section');
+            return this.getGridTableLayoutReference().querySelector('.grid-table-layout-columns-section');
         },
         getTargetGhostIndex(isBefore) {
             if (this.index < this.draggedElIndex) {

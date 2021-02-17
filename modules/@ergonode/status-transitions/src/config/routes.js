@@ -90,10 +90,10 @@ export default [
             },
             {
                 name: ROUTE_NAME.STATUS_TRANSITION_EDIT_DESIGNER,
-                path: 'designer',
+                path: 'condition-sets',
                 component: Tabs.ConditionDesignerTab,
                 meta: {
-                    title: 'Designer',
+                    title: 'Condition sets',
                     breadcrumbs: [
                         {
                             title: 'Workflow',

@@ -23,7 +23,7 @@
                     <TabBarNoDataPlaceholder
                         v-else
                         title="Nothing to see here"
-                        subtitle="This product has not been added to any collection">
+                        subtitle="This product has not been added to any collection.">
                         <template #action>
                             <Button
                                 title="GO TO COLLECTIONS"
