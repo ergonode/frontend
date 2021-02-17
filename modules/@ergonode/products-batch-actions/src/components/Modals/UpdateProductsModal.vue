@@ -9,7 +9,7 @@
                 :title="title"
                 @close="onClose" />
             <div class="update-products-modal__body">
-                <div class="update-products-modal__sidebar" />
+                <VerticalTabBar :items="verticalTabs" />
                 <div class="update-products-modal__form">
                     <DraggableForm
                         :title="$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsModal.draggableFormTitle')"
@@ -28,19 +28,30 @@
 
 <script>
 import {
+    Components,
+    Icons,
+} from '@Attributes/config/imports';
+import {
     getUUID,
 } from '@Core/models/stringWrapper';
+import AttributesSideBar
+    from '@ProductsBatchActions/extends/attribute/components/SideBars/AttributesSideBar';
 import DraggableForm from '@UI/components/DraggableForm/DraggableForm';
+import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
 import ModalHeader from '@UI/components/Modal/ModalHeader';
 import ModalOverlay from '@UI/components/Modal/ModalOverlay';
+import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import TextField from '@UI/components/TextField/TextField';
 
 export default {
     name: 'UpdateProductsModal',
     components: {
+        VerticalFixedScroll,
+        AttributesSideBar,
         ModalOverlay,
         ModalHeader,
         DraggableForm,
+        VerticalTabBar,
     },
     props: {
         ids: {
@@ -65,6 +76,16 @@ export default {
             return this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsModal.title', {
                 info: this.selectedProductsCount,
             });
+        },
+        verticalTabs() {
+            return [
+                {
+                    title: this.$t('@Attributes.attributeExtend.components.AttributesVerticalTab.title'),
+                    component: () => import('@ProductsBatchActions/extends/attribute/components/VerticalTabs/AttributesVerticalTab'),
+                    icon: () => import('@Attributes/components/Icons/IconAttributes'),
+                    props: {},
+                },
+            ];
         },
         formItems() {
             return [
@@ -121,9 +142,9 @@ export default {
         }
 
         &__sidebar {
-            width: 328px;
+            display: flex;
+            flex-direction: column;
             height: 100%;
-            background-color: #006600;
         }
 
         &__form {

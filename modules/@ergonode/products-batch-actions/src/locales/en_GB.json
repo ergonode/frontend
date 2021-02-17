@@ -16,6 +16,18 @@
           "successAlert": "Products have been removed"
         }
       }
+    },
+    "attribute": {
+      "_": {
+        "title": "Product attributes"
+      },
+      "components": {
+        "AttributesSideBar": {
+          "noAttributesTitle": "No attributes",
+          "noAttributesSubtitle": "There are no common attributes for selected products.",
+          "notAssigned": "Not assigned"
+        }
+      }
     }
   }
 }

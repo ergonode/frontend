@@ -16,6 +16,18 @@
           "successAlert": "Produkty zostały usunięte"
         }
       }
+    },
+    "attribute": {
+      "_": {
+        "title": "Atrybuty produktów"
+      },
+      "components": {
+        "AttributesSideBar": {
+          "noAttributesTitle": "Brak atrybutów",
+          "noAttributesSubtitle": "Brak wspólnych atrybutów dla wybranych produktów.",
+          "notAssigned": "Nie przypisane"
+        }
+      }
     }
   }
 }

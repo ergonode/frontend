@@ -81,9 +81,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('draggable', [
-            '__setState',
-        ]),
         onDragStart(event) {
             addElementCopyToDocumentBody({
                 event,
@@ -93,22 +90,14 @@ export default {
 
             this.isDragged = true;
 
-            this.__setState({
-                key: 'isElementDragging',
-                value: DRAGGED_ELEMENT.LIST,
-            });
-            this.$emit('drag', true);
+            this.$emit('drag-start', true);
         },
         onDragEnd(event) {
             removeElementCopyFromDocumentBody(event);
 
             this.isDragged = false;
 
-            this.__setState({
-                key: 'isElementDragging',
-                value: null,
-            });
-            this.$emit('drag', false);
+            this.$emit('drag-end', false);
         },
     },
 };

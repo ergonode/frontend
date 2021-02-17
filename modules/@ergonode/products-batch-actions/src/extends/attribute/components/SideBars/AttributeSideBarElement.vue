@@ -32,9 +32,6 @@
 
 <script>
 import {
-    DRAGGED_ELEMENT,
-} from '@Core/defaults/grid';
-import {
     capitalizeAndConcatenationArray,
 } from '@Core/models/stringWrapper';
 import {
@@ -69,19 +66,14 @@ export default {
             type: String,
             required: true,
         },
-        disabled: {
-            type: Boolean,
-            default: false,
-        },
     },
     computed: {
         ...mapState('list', [
             'disabledElements',
         ]),
         isDisabled() {
-            return this.disabled
-                || (this.disabledElements[this.languageCode]
-                    && this.disabledElements[this.languageCode][this.item.id]);
+            return this.disabledElements[this.languageCode]
+                && this.disabledElements[this.languageCode][this.item.id];
         },
         iconFillColor() {
             return this.isDisabled ? GREY : GRAPHITE;
@@ -117,20 +109,20 @@ export default {
             '__setState',
         ]),
         onDragStart() {
-            this.__setState({
-                key: 'isElementDragging',
-                value: DRAGGED_ELEMENT.LIST,
-            });
+            // this.__setState({
+            //     key: 'isElementDragging',
+            //     value: DRAGGED_ELEMENT.LIST,
+            // });
             this.__setState({
                 key: 'draggedElement',
                 value: `${this.item.code}:${this.languageCode}`,
             });
         },
         onDragEnd() {
-            this.__setState({
-                key: 'isElementDragging',
-                value: null,
-            });
+            // this.__setState({
+            //     key: 'isElementDragging',
+            //     value: null,
+            // });
             this.__setState({
                 key: 'draggedElement',
                 value: null,

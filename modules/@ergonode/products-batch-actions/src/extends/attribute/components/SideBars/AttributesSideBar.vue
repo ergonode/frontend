@@ -1,0 +1,263 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+<template>
+    <SideBar
+        :title="$t('@ProductsBatchActions.attribute._.title')"
+        :items="groupedAttributesByLanguage"
+        :expanded="expandedGroup"
+        :searchable="true"
+        :search-value="searchValue"
+        @search="onSearch">
+        <template #header>
+            <ListSearchSelectHeader
+                :title="$t('@ProductsBatchActions.attribute._.title')"
+                :search-value="searchValue"
+                @search="onSearch">
+                <template #select>
+                    <LanguageTreeSelect
+                        :value="languageCode"
+                        @input="onSelectLanguage" />
+                </template>
+            </ListSearchSelectHeader>
+        </template>
+        <template #body>
+            <Preloader v-if="isPrefetchingData" />
+        </template>
+        <template #noDataPlaceholder>
+            <SideBarNoDataPlaceholder
+                :title="$t('@ProductsBatchActions.attribute.components.AttributesSideBar.noAttributesTitle')"
+                :subtitle="$t('@ProductsBatchActions.attribute.components.AttributesSideBar.noAttributesSubtitle')" />
+        </template>
+        <template #item="{ item, onExpand }">
+            <AttributeSideBarGroupElement
+                v-if="item.rootId === null"
+                :group="item"
+                @click.native="onExpandGroup({ item, onExpand })" />
+            <AttributeSideBarElement
+                v-else
+                :item="item"
+                :language-code="languageCode" />
+        </template>
+    </SideBar>
+</template>
+
+<script>
+import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
+import {
+    UNASSIGNED_GROUP_ID,
+} from '@Core/defaults/list';
+import {
+    deepClone,
+} from '@Core/models/objectWrapper';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
+import {
+    getGroups,
+    getItems,
+} from '@Core/services/sidebar';
+import AttributeSideBarElement from '@ProductsBatchActions/extends/attribute/components/SideBars/AttributeSideBarElement';
+import AttributeSideBarGroupElement from '@ProductsBatchActions/extends/attribute/components/SideBars/AttributeSideBarGroupElement';
+import ListSearchSelectHeader from '@UI/components/List/ListSearchSelectHeader';
+import Preloader from '@UI/components/Preloader/Preloader';
+import SideBar from '@UI/components/SideBar/SideBar';
+import SideBarNoDataPlaceholder from '@UI/components/SideBar/SideBarNoDataPlaceholder';
+import {
+    mapState,
+} from 'vuex';
+
+export default {
+    name: 'AttributesSideBar',
+    components: {
+        SideBarNoDataPlaceholder,
+        AttributeSideBarGroupElement,
+        SideBar,
+        ListSearchSelectHeader,
+        LanguageTreeSelect,
+        Preloader,
+        AttributeSideBarElement,
+    },
+    async fetch() {
+        await this.getAttributesForLanguage({
+            languageCode: this.defaultLanguageCode,
+        });
+    },
+    data() {
+        return {
+            isPrefetchingData: true,
+            groupedAttributes: {},
+            groupedAttributesBeforeSearch: {},
+            expandedGroup: {},
+            languageCode: '',
+            searchValue: '',
+        };
+    },
+    computed: {
+        ...mapState('core', [
+            'defaultLanguageCode',
+        ]),
+        groupedAttributesByLanguage() {
+            const groups = this.groupedAttributes[this.languageCode] || [];
+
+            return groups.filter(item => item.itemsCount > 0);
+        },
+    },
+    created() {
+        this.languageCode = this.defaultLanguageCode;
+    },
+    beforeDestroy() {
+        // TODO:
+        // clear disabled elements
+    },
+    methods: {
+        async onExpandGroup({
+            item,
+            onExpand,
+        }) {
+            onExpand(item);
+
+            this.expandedGroup = {
+                [item.id]: item.expanded,
+            };
+        },
+        async getAttributesForLanguage({
+            languageCode,
+            limit = 99999,
+        }) {
+            await getItems({
+                $axios: this.$axios,
+                path: `${languageCode}/attributes`,
+                languageCode,
+                params: {
+                    limit,
+                    offset: 0,
+                    view: 'list',
+                    filter: 'templates=fdf8d76f-d010-4a78-bd7c-8e4919fc6180,9904a4e3-9a94-4c12-91a4-93766e38ce4f',
+                    field: 'code',
+                    order: 'ASC',
+                },
+                onSuccess: this.onFetchItemsSuccess,
+            });
+        },
+        async onFetchItemsSuccess({
+            items,
+            languageCode,
+        }) {
+            await getGroups({
+                $axios: this.$axios,
+                path: `${languageCode}/attributes/groups`,
+                languageCode,
+                onSuccess: groups => this.onFetchGroupsSuccess({
+                    groups,
+                    items,
+                    languageCode,
+                }),
+            });
+        },
+        onFetchGroupsSuccess({
+            groups,
+            items,
+            languageCode,
+        }) {
+            const unassignedItems = items.filter(item => !item.groups.length);
+            const assignedItems = items.filter(item => item.groups.length);
+            const itemsGroups = Array.from(new Set(assignedItems.reduce((prev, curr) => [
+                ...prev,
+                ...curr.groups,
+            ], [])));
+
+            itemsGroups.forEach((groupId) => {
+                const group = groups.find(grp => grp.id === groupId);
+
+                if (group) {
+                    if (typeof this.groupedAttributes[languageCode] === 'undefined') {
+                        this.groupedAttributes[languageCode] = [];
+                    }
+
+                    const groupItems = items.filter(
+                        item => item.groups.some(
+                            itemGrpId => itemGrpId === groupId,
+                        ),
+                    );
+
+                    this.groupedAttributes[languageCode].push({
+                        ...group,
+                        itemsCount: groupItems.length,
+                        children: groupItems,
+                    });
+                }
+            });
+
+            if (unassignedItems.length) {
+                if (typeof this.groupedAttributes[languageCode] === 'undefined') {
+                    this.groupedAttributes[languageCode] = [];
+                }
+
+                this.groupedAttributes[languageCode].push({
+                    id: UNASSIGNED_GROUP_ID,
+                    key: getUUID(),
+                    value: this.$t('@ProductsBatchActions.attribute.components.AttributesSideBar.notAssigned'),
+                    hint: '',
+                    itemsCount: unassignedItems.length,
+                    children: unassignedItems,
+                });
+            }
+
+            this.groupedAttributes = {
+                ...this.groupedAttributes,
+            };
+
+            this.isPrefetchingData = false;
+        },
+        async onSearch(value) {
+            if (this.searchValue === '') {
+                this.groupedAttributesBeforeSearch = deepClone(this.groupedAttributes);
+            }
+
+            this.searchValue = value;
+
+            if (value !== '') {
+                const lowerCaseFilterValue = value.toLowerCase();
+
+                const groupedAttributes = [];
+
+                this.groupedAttributesBeforeSearch[this.languageCode].forEach((group) => {
+                    const children = [];
+
+                    group.children.forEach((child) => {
+                        if (child.code.toLowerCase().includes(lowerCaseFilterValue)) {
+                            children.push(child);
+                        }
+                    });
+
+                    if (children.length) {
+                        groupedAttributes.push({
+                            ...group,
+                            itemsCount: children.length,
+                            children,
+                        });
+                    }
+                });
+
+                this.groupedAttributes[this.languageCode] = groupedAttributes;
+            } else {
+                this.groupedAttributes = deepClone(this.groupedAttributesBeforeSearch);
+                this.groupedAttributesBeforeSearch = {};
+            }
+        },
+        async onSelectLanguage(value) {
+            if (typeof this.groupedAttributes[value] === 'undefined') {
+                this.isPrefetchingData = true;
+
+                await this.getAttributesForLanguage({
+                    languageCode: value,
+                });
+            }
+
+            this.languageCode = value;
+        },
+    },
+};
+</script>
