@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export const ADD_PRODUCT = {
-    FROM_LIST: 'Select from list',
+    FROM_SKU: 'Add from SKU',
     FROM_SEGMENT: 'Add from segment',
 };
 

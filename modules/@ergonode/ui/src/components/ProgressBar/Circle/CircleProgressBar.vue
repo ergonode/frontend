@@ -15,6 +15,7 @@
                 :cx="radius"
                 :cy="radius" />
             <circle
+                class="circle-stroke-dasharray"
                 :stroke="greenStrokeColor"
                 fill="transparent"
                 :stroke-dasharray="strokeDasharray"
@@ -27,7 +28,7 @@
         </svg>
         <span
             class="circle-progress-bar__title"
-            v-text="`${progress}%`" />
+            v-text="percentProgress" />
     </div>
 </template>
 
@@ -60,6 +61,9 @@ export default {
         greenStrokeColor() {
             return GREEN;
         },
+        percentProgress() {
+            return `${Math.floor(this.progress)}%`;
+        },
         size() {
             return this.radius * 2;
         },
@@ -86,6 +90,12 @@ export default {
         flex-direction: column;
         justify-content: center;
         align-items: center;
+
+        .circle-stroke-dasharray {
+            transition: 0.35s stroke-dashoffset;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
 
         &__title {
             position: absolute;
