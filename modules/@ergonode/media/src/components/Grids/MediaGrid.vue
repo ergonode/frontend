@@ -12,6 +12,7 @@
         :pagination="pagination"
         :collection-cell-binding="collectionCellBinding"
         :extended-components="extendedGridComponents"
+        :is-editable="isAllowedToUpdate"
         :is-prefetching-data="isPrefetchingData"
         :is-basic-filter="true"
         :is-header-visible="true"

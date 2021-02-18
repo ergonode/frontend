@@ -7,6 +7,7 @@
         :value="localValue"
         :size="schema.size"
         :label="schema.title"
+        :disabled="schema.disabled"
         :required="schema.isRequired"
         :options="schema.enum_titles || schema.enum"
         :error-messages="errorMessages"

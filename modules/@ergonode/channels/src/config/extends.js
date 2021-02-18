@@ -5,6 +5,7 @@
 import {
     Components,
 } from '@Channels/config/imports';
+import PRIVILEGES from '@Channels/config/privileges';
 import {
     getExportsStatuses,
 } from '@Channels/services';
@@ -28,9 +29,16 @@ export default {
         '@Notifications/store/notification/action/getProcessingNotifications': async ({
             $this,
         }) => {
-            const exportStatuses = await getExportsStatuses({
-                $axios: $this.app.$axios,
-            });
+            let exportStatuses = [];
+            const isAllowedToRead = $this.$hasAccess([
+                PRIVILEGES.CHANNEL.read,
+            ]);
+
+            if (isAllowedToRead) {
+                exportStatuses = await getExportsStatuses({
+                    $axios: $this.app.$axios,
+                });
+            }
 
             const successNotifications = {
                 component: Components.NotificationListExportSuccessItem,

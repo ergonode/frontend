@@ -11,6 +11,7 @@
                 v-for="title in schema.items.enum_titles"
                 :key="title"
                 :value="localValue"
+                :disabled="schema.disabled"
                 :label="title"
                 @input="onValueChange" />
         </FormFieldset>

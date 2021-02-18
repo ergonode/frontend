@@ -3,6 +3,14 @@
  * See LICENSE for license details.
  */
 import {
+    Components,
+    Icons,
+    Store,
+} from '@Attributes/config/imports';
+import {
+    ROUTE_NAME,
+} from '@Attributes/config/routes';
+import {
     TYPES,
 } from '@Attributes/defaults/attributes';
 import {
@@ -21,12 +29,6 @@ import {
     prepareTemplateData,
     setTemplateData,
 } from '@Attributes/extends/productTemplate/methods';
-
-import {
-    Components,
-    Icons,
-    Store,
-} from './imports';
 
 const getTypeConfiguration = ({
     $this, type,
@@ -100,6 +102,9 @@ export default {
         productTemplate: Store.Template,
     },
     extendMethods: {
+        '@Media/components/Buttons/LinkRelationButton/routeLinks': () => ({
+            attribute: ROUTE_NAME.ATTRIBUTE_EDIT_GENERAL,
+        }),
         '@Templates/components/Tabs/TemplateDesignerTab/verticalTabs': ({
             props,
             $this,
@@ -121,13 +126,11 @@ export default {
                 title: $this.$t('@Attributes.attributeExtend.components.AttributesVerticalTab.title'),
                 component: Components.AttributesVerticalTab,
                 icon: Icons.IconAttributes,
-                props: {},
             },
             {
                 title: $this.$t('@Attributes.attributeExtend.components.SystemAttributesVerticalTab.title'),
                 component: Components.SystemAttributesVerticalTab,
                 icon: Icons.IconSettings,
-                props: {},
             },
         ],
         '@Attributes/store/attribute/action/createAttribute/__before': ({

@@ -6,6 +6,7 @@
 import {
     Components,
 } from '@Import/config/imports';
+import PRIVILEGES from '@Import/config/privileges';
 import {
     getImportsStatuses,
 } from '@Import/services';
@@ -29,9 +30,16 @@ export default {
         '@Notifications/store/notification/action/getProcessingNotifications': async ({
             $this,
         }) => {
-            const importStatuses = await getImportsStatuses({
-                $axios: $this.app.$axios,
-            });
+            let importStatuses = [];
+            const isAllowedToRead = $this.$hasAccess([
+                PRIVILEGES.IMPORT.read,
+            ]);
+
+            if (isAllowedToRead) {
+                importStatuses = await getImportsStatuses({
+                    $axios: $this.app.$axios,
+                });
+            }
 
             const successNotifications = {
                 component: Components.NotificationListImportSuccessItem,

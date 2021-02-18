@@ -9,7 +9,8 @@
                 <div class="horizontal-container">
                     <div class="dashboard-stats">
                         <DoughnutProductsChart
-                            :style="{ height: '174px', width: '174px' }"
+                            v-if="isAllowedToReadProduct"
+                            class="dashboard-stats__product-count-chart"
                             :datasets="datasets"
                         />
                     </div>
@@ -150,6 +151,11 @@ export default {
                 PRODUCT_PRIVILEGES.PRODUCT.create,
             ]);
         },
+        isAllowedToReadProduct() {
+            return this.$hasAccess([
+                PRODUCT_PRIVILEGES.PRODUCT.read,
+            ]);
+        },
         isAllowedToCreateTemplate() {
             return this.$hasAccess([
                 TEMPLATE_PRIVILEGES.TEMPLATE_DESIGNER.create,
@@ -250,19 +256,22 @@ export default {
 
     .dashboard-stats {
         display: flex;
+        justify-content: flex-end;
         align-items: center;
-        width: 450px;
-        height: 300px;
-        margin: 40px 120px 40px 0;
+        width: 358px;
+        height: 358px;
+        margin: 40px 170px 40px 0;
         background:
-            url("~@Core/assets/images/login/login_password_recovery_face.png")
+            url("~@Dashboard/assets/images/dashboard_man.svg")
             no-repeat
             right
             bottom;
         background-size: contain;
 
-        &__image {
-            height: 280px;
+        &__product-count-chart {
+            width: 174px;
+            height: 174px;
+            margin-right: -130px;
         }
     }
 </style>

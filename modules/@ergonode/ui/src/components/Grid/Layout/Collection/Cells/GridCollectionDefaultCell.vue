@@ -90,6 +90,14 @@ export default {
                     value: args,
                 });
             }
+            if (this.data.actions.get) {
+                const args = this.data.actions.get.href.split('/');
+
+                this.$emit('row-action', {
+                    key: 'preview',
+                    value: args,
+                });
+            }
         },
     },
 };

@@ -5,19 +5,17 @@
 <template>
     <LinkButton
         :title="title"
-        @click.native="onClick" />
+        :class="[{ 'link-button--disabled': !hasLink }]"
+        @click.native="hasLink ? onClick(): null" />
 </template>
 
 <script>
 import {
-    ROUTE_NAME as ATTRIBUTES_ROUTE_NAME,
-} from '@Attributes/config/routes';
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
-    ROUTE_NAME as PRODUCTS_ROUTE_NAME,
-} from '@Products/config/routes';
-import {
-    ROUTE_NAME as PRODUCT_TEMPLATE_ROUTE_NAME,
-} from '@Templates/config/routes';
+    isEmpty,
+} from '@Core/models/objectWrapper';
 import LinkButton from '@UI/components/LinkButton/LinkButton';
 
 export default {
@@ -42,6 +40,11 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            routeLinks: {},
+        };
+    },
     computed: {
         namespaces() {
             return {
@@ -50,6 +53,21 @@ export default {
                 TEMPLATE: 'template',
             };
         },
+        hasLink() {
+            return !isEmpty(this.link);
+        },
+    },
+    async mounted() {
+        const extendedRouteLinks = await this.$getExtendMethod('@Media/components/Buttons/LinkRelationButton/routeLinks', {
+            $this: this,
+        });
+
+        extendedRouteLinks.forEach((links) => {
+            this.routeLinks = {
+                ...this.routeLinks,
+                ...links,
+            };
+        });
     },
     methods: {
         onClick() {
@@ -59,33 +77,27 @@ export default {
             const elements = href.split('/');
             const id = elements[elements.length - 1];
 
-            switch (this.namespace) {
-            case this.namespaces.PRODUCT:
+            if (!isEmpty(this.routeLinks) && this.routeLinks[this.namespace]) {
                 this.$router.push({
-                    name: PRODUCTS_ROUTE_NAME.PRODUCT_EDIT_GENERAL,
+                    name: this.routeLinks[this.namespace],
                     params: {
                         id,
                     },
                 });
-                break;
-            case this.namespaces.TEMPLATE:
-                this.$router.push({
-                    name: PRODUCT_TEMPLATE_ROUTE_NAME.PRODUCT_TEMPLATE_EDIT_GENERAL,
-                    params: {
-                        id,
-                    },
+            } else {
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'Unknown relation type',
                 });
-                break;
-            default:
-                this.$router.push({
-                    name: ATTRIBUTES_ROUTE_NAME.ATTRIBUTE_EDIT_GENERAL,
-                    params: {
-                        id,
-                    },
-                });
-                break;
             }
         },
     },
 };
 </script>
+<style lang="scss" scoped>
+    .link-button--disabled {
+        color: $GRAPHITE_LIGHT;
+        text-decoration-color: $GRAPHITE_LIGHT;
+        cursor: not-allowed;
+    }
+</style>

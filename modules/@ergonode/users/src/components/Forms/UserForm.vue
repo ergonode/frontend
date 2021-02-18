@@ -67,7 +67,7 @@
                     :error-messages="errors[languageFieldKey]"
                     @input="setLanguageValue" />
                 <RolesAutocomplete
-                    :role="role"
+                    :value="role"
                     :required="true"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[roleIdFieldKey]"
