@@ -23,7 +23,7 @@
                 <DraggableFormPlaceholderItem v-if="!localItems.length" />
                 <DraggableFormItem
                     v-for="(item, index) in localItems"
-                    :key="index"
+                    :key="item.id"
                     :index="index"
                     :item="item"
                     @remove-item="onRemoveItem"

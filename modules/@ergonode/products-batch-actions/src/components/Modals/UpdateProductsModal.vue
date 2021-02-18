@@ -20,9 +20,9 @@
                                 @add-item="onAddItem"
                                 @remove-item="onRemoveItem">
                                 <template #item="{ item }">
-                                    <Component
-                                        :is="item.component"
-                                        v-bind="item.props" />
+                                    <AttributeFormField
+                                        :item="item"
+                                        :is-prefetching-data="fetchingAttributes[item.id]" />
                                 </template>
                             </DraggableForm>
                         </div>
@@ -34,9 +34,12 @@
 </template>
 
 <script>
+import {
+    get as getAttribute,
+} from '@Attributes/services/attribute';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
-import AttributesSideBar
-    from '@ProductsBatchActions/extends/attribute/components/SideBars/AttributesSideBar';
+import AttributeFormField
+    from '@ProductsBatchActions/extends/attribute/components/Forms/Fields/AttributeFormField';
 import DraggableForm from '@UI/components/DraggableForm/DraggableForm';
 import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
 import ModalHeader from '@UI/components/Modal/ModalHeader';
@@ -49,8 +52,8 @@ import {
 export default {
     name: 'UpdateProductsModal',
     components: {
+        AttributeFormField,
         VerticalFixedScroll,
-        AttributesSideBar,
         ModalOverlay,
         ModalHeader,
         DraggableForm,
@@ -79,6 +82,8 @@ export default {
     },
     data() {
         return {
+            fetchingAttributes: {},
+            attributes: {},
             formItems: [],
         };
     },
@@ -102,12 +107,20 @@ export default {
             ];
         },
     },
+    beforeDestroy() {
+        this.formItems.forEach((item) => {
+            this.removeDisabledElement({
+                languageCode: item.languageCode,
+                elementId: `${item.id}|${item.code}`,
+            });
+        });
+    },
     methods: {
         ...mapActions('list', [
             'setDisabledElement',
             'removeDisabledElement',
         ]),
-        onAddItem({
+        async onAddItem({
             item,
         }) {
             this.formItems.push(item);
@@ -117,6 +130,22 @@ export default {
                 elementId: `${item.id}|${item.code}`,
                 disabled: true,
             });
+
+            this.fetchingAttributes = {
+                ...this.fetchingAttributes,
+                [item.id]: true,
+            };
+
+            this.attributes[item.id] = await getAttribute({
+                $axios: this.$axios,
+                id: item.id,
+            });
+
+            delete this.fetchingAttributes[item.id];
+
+            this.fetchingAttributes = {
+                ...this.fetchingAttributes,
+            };
         },
         onRemoveItem(index) {
             const item = this.formItems[index];
