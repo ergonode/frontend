@@ -163,8 +163,6 @@ export default {
                 ? formElement.getAttribute('index')
                 : 0;
 
-            console.log('enter', index);
-
             this.localItems = insertValueAtIndex(this.localItems, this.draggedElement, index);
 
             this.__setState({
