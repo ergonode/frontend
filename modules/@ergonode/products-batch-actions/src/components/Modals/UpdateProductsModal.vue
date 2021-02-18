@@ -37,6 +37,9 @@
 import {
     get as getAttribute,
 } from '@Attributes/services/attribute';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import AttributeFormField
     from '@ProductsBatchActions/extends/attribute/components/Forms/Fields/AttributeFormField';
@@ -131,21 +134,32 @@ export default {
                 disabled: true,
             });
 
-            this.fetchingAttributes = {
-                ...this.fetchingAttributes,
-                [item.id]: true,
-            };
+            if (typeof this.attributes[item.id] === 'undefined') {
+                try {
+                    this.fetchingAttributes = {
+                        ...this.fetchingAttributes,
+                        [item.id]: true,
+                    };
 
-            this.attributes[item.id] = await getAttribute({
-                $axios: this.$axios,
-                id: item.id,
-            });
+                    this.attributes[item.id] = await getAttribute({
+                        $axios: this.$axios,
+                        id: item.id,
+                    });
 
-            delete this.fetchingAttributes[item.id];
+                    delete this.fetchingAttributes[item.id];
 
-            this.fetchingAttributes = {
-                ...this.fetchingAttributes,
-            };
+                    this.fetchingAttributes = {
+                        ...this.fetchingAttributes,
+                    };
+                } catch (e) {
+                    if (!this.app.$axios.isCancel(e)) {
+                        this.$addAlert({
+                            type: ALERT_TYPE.ERROR,
+                            message: this.$t('@ProductsBatchActions.attribute._.getRequest'),
+                        });
+                    }
+                }
+            }
         },
         onRemoveItem(index) {
             const item = this.formItems[index];

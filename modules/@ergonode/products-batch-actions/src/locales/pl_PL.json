@@ -1,11 +1,10 @@
 {
   "@ProductsBatchActions": {
-    "_": {},
     "productBatchAction": {
       "components": {
         "UpdateProductsModal": {
           "title": "Edytowanie {info} produktów",
-          "draggableFormTitle": "Edytowane atrybuty"
+          "draggableFormTitle": "Edytowane atrybuty",
         },
         "ProductsBatchActions": {
           "deleteBatchActionLabel": "Usuń produkty",
@@ -19,7 +18,8 @@
     },
     "attribute": {
       "_": {
-        "title": "Atrybuty produktów"
+        "title": "Atrybuty produktów",
+        "getRequest": "Atrybut nie został pobrany prawidłowo"
       },
       "components": {
         "AttributesSideBar": {

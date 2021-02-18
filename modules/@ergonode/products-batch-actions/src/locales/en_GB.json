@@ -1,11 +1,10 @@
 {
   "@ProductsBatchActions": {
-    "_": {},
     "productBatchAction": {
       "components": {
         "UpdateProductsModal": {
           "title": "Editing {info} products",
-          "draggableFormTitle": "Edited attributes"
+          "draggableFormTitle": "Edited attributes",
         },
         "ProductsBatchActions": {
           "deleteBatchActionLabel": "Delete products",
@@ -19,7 +18,8 @@
     },
     "attribute": {
       "_": {
-        "title": "Product attributes"
+        "title": "Product attributes",
+        "getRequest": "Attribute hasn’t been fetched properly"
       },
       "components": {
         "AttributesSideBar": {
