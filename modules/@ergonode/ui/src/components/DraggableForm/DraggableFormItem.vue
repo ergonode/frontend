@@ -105,7 +105,7 @@ export default {
             '__setState',
         ]),
         onRemove() {
-            this.$emit('remove', this.index);
+            this.$emit('remove-item', this.index);
         },
         onDragStart(event) {
             if (isMouseOutsideElement(this.$refs.dragIcon.$el, event.x, event.y)) {
@@ -143,7 +143,7 @@ export default {
                     value: false,
                 });
 
-                this.$emit('remove', this.index);
+                this.$emit('remove-item', this.index);
             }
 
             this.__setState({
@@ -160,19 +160,21 @@ export default {
             });
         },
         onDrop() {
-            this.$emit('add-item', {
-                index: this.index,
-                item: this.draggedElement,
-            });
+            if (this.draggedElIndex === -1) {
+                this.$emit('add-item', {
+                    index: this.index,
+                    item: this.draggedElement,
+                });
 
-            this.__setState({
-                key: 'draggedElement',
-                value: null,
-            });
-            this.__setState({
-                key: 'ghostIndex',
-                value: -1,
-            });
+                this.__setState({
+                    key: 'draggedElement',
+                    value: null,
+                });
+                this.__setState({
+                    key: 'ghostIndex',
+                    value: -1,
+                });
+            }
         },
         onDragOver(event) {
             event.preventDefault();

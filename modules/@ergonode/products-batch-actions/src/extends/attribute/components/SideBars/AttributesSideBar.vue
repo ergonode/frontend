@@ -68,6 +68,7 @@ import Preloader from '@UI/components/Preloader/Preloader';
 import SideBar from '@UI/components/SideBar/SideBar';
 import SideBarNoDataPlaceholder from '@UI/components/SideBar/SideBarNoDataPlaceholder';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -132,10 +133,12 @@ export default {
         this.languageCode = this.defaultLanguageCode;
     },
     beforeDestroy() {
-        // TODO:
-        // clear disabled elements
+        // DISABLE
     },
     methods: {
+        ...mapActions('list', [
+            'setDisabledElements',
+        ]),
         async onExpandGroup({
             item,
             onExpand,

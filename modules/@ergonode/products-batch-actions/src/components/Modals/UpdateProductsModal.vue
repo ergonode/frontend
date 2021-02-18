@@ -17,7 +17,8 @@
                                 :title="$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsModal.draggableFormTitle')"
                                 :width="424"
                                 :items="formItems"
-                                @add-item="onAddItem">
+                                @add-item="onAddItem"
+                                @remove-item="onRemoveItem">
                                 <template #item="{ item }">
                                     <Component
                                         :is="item.component"
@@ -33,6 +34,7 @@
 </template>
 
 <script>
+import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import AttributesSideBar
     from '@ProductsBatchActions/extends/attribute/components/SideBars/AttributesSideBar';
 import DraggableForm from '@UI/components/DraggableForm/DraggableForm';
@@ -40,6 +42,9 @@ import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScrol
 import ModalHeader from '@UI/components/Modal/ModalHeader';
 import ModalOverlay from '@UI/components/Modal/ModalOverlay';
 import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'UpdateProductsModal',
@@ -51,6 +56,9 @@ export default {
         DraggableForm,
         VerticalTabBar,
     },
+    mixins: [
+        modalFeedbackMixin,
+    ],
     props: {
         ids: {
             type: Array,
@@ -95,17 +103,34 @@ export default {
         },
     },
     methods: {
+        ...mapActions('list', [
+            'setDisabledElement',
+            'removeDisabledElement',
+        ]),
         onAddItem({
             item,
         }) {
-            this.formItems.push({
-                id: item.id,
-                component: () => import('@UI/components/TextField/TextField'),
-                label: item.label || `#${item.code}`,
-                props: item,
+            this.formItems.push(item);
+
+            this.setDisabledElement({
+                languageCode: item.languageCode,
+                elementId: `${item.id}|${item.code}`,
+                disabled: true,
             });
         },
+        onRemoveItem(index) {
+            const item = this.formItems[index];
+
+            this.removeDisabledElement({
+                languageCode: item.languageCode,
+                elementId: `${item.id}|${item.code}`,
+            });
+
+            this.formItems.splice(index, 1);
+        },
         onClose() {
+            this.removeScopeData(this.scope);
+
             this.$emit('close');
         },
     },

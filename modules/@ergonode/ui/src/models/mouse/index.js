@@ -13,10 +13,10 @@ export function isMouseOutsideElement(element, xPos, yPos) {
         width,
         height,
     } = element.getBoundingClientRect();
-    const leftAtTheLeft = xPos <= right - width;
-    const leftAtTheRight = xPos >= right;
-    const leftAtTheTop = yPos <= top;
-    const leftAtTheBottom = yPos >= (top + height);
+    const leftAtTheLeft = xPos < right - width;
+    const leftAtTheRight = xPos > right;
+    const leftAtTheTop = yPos < top;
+    const leftAtTheBottom = yPos > (top + height);
 
     return leftAtTheTop
         || leftAtTheBottom

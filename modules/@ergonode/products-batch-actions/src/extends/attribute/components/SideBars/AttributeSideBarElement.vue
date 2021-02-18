@@ -73,7 +73,7 @@ export default {
         ]),
         isDisabled() {
             return this.disabledElements[this.languageCode]
-                && this.disabledElements[this.languageCode][this.item.id];
+                && this.disabledElements[this.languageCode][`${this.item.id}|${this.item.code}`];
         },
         iconFillColor() {
             return this.isDisabled ? GREY : GRAPHITE;
@@ -116,6 +116,7 @@ export default {
                     label: this.item.label,
                     code: this.item.code,
                     type: this.item.type,
+                    languageCode: this.languageCode,
                 },
             });
         },

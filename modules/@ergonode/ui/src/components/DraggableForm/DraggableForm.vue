@@ -160,10 +160,12 @@ export default {
             const formElement = document.elementsFromPoint(xPos, yPos).find(element => element.hasAttribute('index'));
 
             const index = formElement
-                ? formElement.getAttribute('index')
+                ? +formElement.getAttribute('index')
                 : 0;
 
-            this.localItems = insertValueAtIndex(this.localItems, this.draggedElement, index);
+            if (this.draggedElIndex === -1) {
+                this.localItems = insertValueAtIndex(this.localItems, this.draggedElement, index);
+            }
 
             this.__setState({
                 key: 'ghostIndex',
