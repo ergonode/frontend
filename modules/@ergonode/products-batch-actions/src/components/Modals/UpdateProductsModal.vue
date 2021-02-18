@@ -86,7 +86,10 @@ export default {
                     title: this.$t('@ProductsBatchActions.attribute._.title'),
                     component: () => import('@ProductsBatchActions/extends/attribute/components/VerticalTabs/AttributesVerticalTab'),
                     icon: () => import('@Attributes/components/Icons/IconAttributes'),
-                    props: {},
+                    props: {
+                        ids: this.ids,
+                        excludedIds: this.excludedIds,
+                    },
                 },
             ];
         },

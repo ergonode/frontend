@@ -60,6 +60,9 @@ import {
 } from '@Core/services/sidebar';
 import AttributeSideBarElement from '@ProductsBatchActions/extends/attribute/components/SideBars/AttributeSideBarElement';
 import AttributeSideBarGroupElement from '@ProductsBatchActions/extends/attribute/components/SideBars/AttributeSideBarGroupElement';
+import {
+    getTemplates,
+} from '@ProductsBatchActions/services';
 import ListSearchSelectHeader from '@UI/components/List/ListSearchSelectHeader';
 import Preloader from '@UI/components/Preloader/Preloader';
 import SideBar from '@UI/components/SideBar/SideBar';
@@ -79,7 +82,27 @@ export default {
         Preloader,
         AttributeSideBarElement,
     },
+    props: {
+        ids: {
+            type: Array,
+            default: () => [],
+        },
+        excludedIds: {
+            type: Array,
+            default: () => [],
+        },
+    },
     async fetch() {
+        this.templateIds = await getTemplates({
+            $axios: this.$axios,
+            params: {
+                ids: {
+                    list: this.ids.length > 0 ? this.ids : this.excludedIds,
+                    included: this.ids.length > 0,
+                },
+            },
+        });
+
         await this.getAttributesForLanguage({
             languageCode: this.defaultLanguageCode,
         });
@@ -90,6 +113,7 @@ export default {
             groupedAttributes: {},
             groupedAttributesBeforeSearch: {},
             expandedGroup: {},
+            templateIds: [],
             languageCode: '',
             searchValue: '',
         };
@@ -134,7 +158,7 @@ export default {
                     limit,
                     offset: 0,
                     view: 'list',
-                    filter: 'templates=fdf8d76f-d010-4a78-bd7c-8e4919fc6180,9904a4e3-9a94-4c12-91a4-93766e38ce4f',
+                    filter: `templates=${this.templateIds.join(',')}`,
                     field: 'code',
                     order: 'ASC',
                 },

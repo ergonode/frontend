@@ -4,7 +4,9 @@
  */
 <template>
     <div class="attributes-vertical-tab">
-        <AttributesSideBar />
+        <AttributesSideBar
+            :ids="ids"
+            :excluded-ids="excludedIds" />
     </div>
 </template>
 
@@ -15,6 +17,16 @@ export default {
     name: 'AttributesVerticalTab',
     components: {
         AttributesSideBar,
+    },
+    props: {
+        ids: {
+            type: Array,
+            default: () => [],
+        },
+        excludedIds: {
+            type: Array,
+            default: () => [],
+        },
     },
 };
 </script>
