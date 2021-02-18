@@ -5,6 +5,7 @@
 <template>
     <div
         :class="classes"
+        :index="index"
         :draggable="true"
         @dragover="onDragOver"
         @dragstart="onDragStart"
@@ -40,7 +41,6 @@ import {
 } from '@Core/models/layout/ElementCopy';
 import {
     deepClone,
-    isObject,
 } from '@Core/models/objectWrapper';
 import DraggableFormGhostItem from '@UI/components/DraggableForm/DraggableFormGhostItem';
 import IconButton from '@UI/components/IconButton/IconButton';
@@ -160,7 +160,10 @@ export default {
             });
         },
         onDrop() {
-            this.$emit('add-item');
+            this.$emit('add-item', {
+                index: this.index,
+                item: this.draggedElement,
+            });
 
             this.__setState({
                 key: 'draggedElement',
@@ -187,22 +190,16 @@ export default {
             );
 
             if (this.index === this.ghostIndex
+                || this.ghostIndex === -1
                 || (isBefore && this.ghostIndex === this.index - 1)
                 || (!isBefore && this.ghostIndex === this.index + 1)) {
                 return;
             }
 
-            if (this.ghostIndex !== -1) {
-                this.$emit('swap', {
-                    from: this.ghostIndex,
-                    to: this.index,
-                });
-            } else if (this.draggedElIndex === -1) {
-                this.$emit('add-ghost', {
-                    index: this.index,
-                    item: this.draggedElement,
-                });
-            }
+            this.$emit('swap', {
+                from: this.ghostIndex,
+                to: this.index,
+            });
 
             this.__setState({
                 key: 'ghostIndex',

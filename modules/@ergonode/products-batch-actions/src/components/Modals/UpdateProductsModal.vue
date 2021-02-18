@@ -10,18 +10,22 @@
                 @close="onClose" />
             <div class="update-products-modal__body">
                 <VerticalTabBar :items="verticalTabs" />
-                <div class="update-products-modal__form">
-                    <DraggableForm
-                        :title="$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsModal.draggableFormTitle')"
-                        :width="424"
-                        :items="formItems"
-                        @add-item="onAddItem">
-                        <template #item="{ item }">
-                            <Component
-                                :is="item.component"
-                                v-bind="item.props" />
-                        </template>
-                    </DraggableForm>
+                <div class="update-products-modal__form-section">
+                    <VerticalFixedScroll>
+                        <div class="update-products-modal__form">
+                            <DraggableForm
+                                :title="$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsModal.draggableFormTitle')"
+                                :width="424"
+                                :items="formItems"
+                                @add-item="onAddItem">
+                                <template #item="{ item }">
+                                    <Component
+                                        :is="item.component"
+                                        v-bind="item.props" />
+                                </template>
+                            </DraggableForm>
+                        </div>
+                    </VerticalFixedScroll>
                 </div>
             </div>
         </div>
@@ -91,8 +95,6 @@ export default {
         onAddItem({
             item,
         }) {
-            // const { type } = item;
-
             this.formItems.push({
                 id: item.id,
                 component: () => import('@UI/components/TextField/TextField'),
@@ -127,13 +129,17 @@ export default {
             height: 100%;
         }
 
-        &__form {
+        &__form-section {
             display: flex;
             flex: 1;
-            justify-content: center;
-            height: 100%;
-            padding: 48px;
+            flex-direction: column;
             box-sizing: border-box;
+        }
+
+        &__form {
+            display: flex;
+            justify-content: center;
+            padding: 48px;
         }
     }
 </style>

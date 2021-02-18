@@ -29,12 +29,13 @@ export default {
     grid-column-gap: 8px;
     align-items: center;
     height: 48px;
+    margin: 0 40px 0 32px;
+    padding-left: 12px;
     box-sizing: border-box;
     background-color: $GREY_LIGHT;
     box-shadow: $ELEVATOR_HOLE;
     color: $GRAPHITE;
     font: $FONT_BOLD_12_16;
     text-transform: uppercase;
-    padding-left: 12px;
 }
 </style>

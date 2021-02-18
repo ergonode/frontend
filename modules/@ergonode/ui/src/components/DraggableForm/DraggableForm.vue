@@ -5,6 +5,7 @@
 <template>
     <div
         class="draggable-form"
+        @dragenter="onDragEnter"
         @dragleave="onDragLeave">
         <Form
             :title="title"
@@ -22,12 +23,11 @@
                 <DraggableFormPlaceholderItem v-if="!localItems.length" />
                 <DraggableFormItem
                     v-for="(item, index) in localItems"
-                    :key="item.id"
+                    :key="index"
                     :index="index"
                     :item="item"
                     @remove-item="onRemoveItem"
                     @add-item="onAddItem"
-                    @add-ghost="onAddGhost"
                     @swap="onSwapItems">
                     <template #item>
                         <slot
@@ -45,9 +45,6 @@ import {
     insertValueAtIndex,
     swapItemPosition,
 } from '@Core/models/arrayWrapper';
-import {
-    deepClone,
-} from '@Core/models/objectWrapper';
 import DraggableFormItem from '@UI/components/DraggableForm/DraggableFormItem';
 import DraggableFormPlaceholderItem from '@UI/components/DraggableForm/DraggableFormPlaceholderItem';
 import Form from '@UI/components/Form/Form';
@@ -140,8 +137,9 @@ export default {
         items: {
             immediate: true,
             handler() {
-                console.log(this.itemsOrder);
-                this.localItems = deepClone(this.items).sort(
+                this.localItems = [
+                    ...this.items,
+                ].sort(
                     (a, b) => this.itemsOrder.indexOf(a.id) - this.itemsOrder.indexOf(b.id),
                 );
             },
@@ -151,6 +149,29 @@ export default {
         ...mapActions('draggable', [
             '__setState',
         ]),
+        onDragEnter(event) {
+            if (this.ghostIndex !== -1) {
+                return;
+            }
+
+            const {
+                xPos, yPos,
+            } = getFixedMousePosition(event);
+            const formElement = document.elementsFromPoint(xPos, yPos).find(element => element.hasAttribute('index'));
+
+            const index = formElement
+                ? formElement.getAttribute('index')
+                : 0;
+
+            console.log('enter', index);
+
+            this.localItems = insertValueAtIndex(this.localItems, this.draggedElement, index);
+
+            this.__setState({
+                key: 'ghostIndex',
+                value: index,
+            });
+        },
         onDragLeave(event) {
             const {
                 xPos,
@@ -173,12 +194,6 @@ export default {
         },
         onAddItem(payload) {
             this.$emit('add-item', payload);
-        },
-        onAddGhost({
-            index,
-            item,
-        }) {
-            this.localItems = insertValueAtIndex(this.localItems, item, index);
         },
         onSwapItems({
             from,

@@ -1,6 +1,5 @@
 {
   "@BatchActions": {
-    "_": {},
     "batchAction": {
       "components": {
         "BatchActionsButton": {

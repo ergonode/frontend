@@ -9,13 +9,11 @@ import {
 
 export default {
     extendComponents: {
-        '@Products/components/Grids/ProductsGrid/actionHeader': {
-            __ALL: [
-                {
-                    component: Components.ProductsBatchActionsButton,
-                    props: {},
-                },
-            ],
-        },
+        '@Products/components/Grids/ProductsGrid/actionHeader': [
+            {
+                component: Components.ProductsBatchActionsButton,
+                props: {},
+            },
+        ],
     },
 };
