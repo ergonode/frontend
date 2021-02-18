@@ -9,6 +9,9 @@ import {
     Store,
 } from '@Templates/config/imports';
 import {
+    ROUTE_NAME,
+} from '@Templates/config/routes';
+import {
     getTemplate,
     setTemplate,
 } from '@Templates/extends/methods';
@@ -29,6 +32,9 @@ export default {
         },
     },
     extendMethods: {
+        '@Media/components/Buttons/LinkRelationButton/routeLinks': () => ({
+            template: ROUTE_NAME.PRODUCT_TEMPLATE_EDIT_GENERAL,
+        }),
         '@Templates/components/Tabs/TemplateDesignerTab/verticalTabs': ({
             props,
         }) => [

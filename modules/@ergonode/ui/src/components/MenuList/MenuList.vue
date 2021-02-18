@@ -9,7 +9,7 @@
             :title="title" />
         <ul class="menu-section__list">
             <MenuListElement
-                v-for="(item, index) in menu"
+                v-for="(item, index) in visibleMenu"
                 :key="index"
                 :item="item" />
         </ul>
@@ -40,6 +40,17 @@ export default {
         menu: {
             type: Array,
             required: true,
+        },
+    },
+    computed: {
+        visibleMenu() {
+            return this.menu.filter(({
+                privileges = null,
+            }) => {
+                if (!privileges) return true;
+
+                return this.$hasAccess(privileges);
+            });
         },
     },
 };

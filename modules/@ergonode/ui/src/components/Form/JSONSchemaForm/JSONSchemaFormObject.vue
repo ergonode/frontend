@@ -80,6 +80,7 @@ export default {
                     key,
                     props: {
                         isRequired: this.schema.required.indexOf(key) !== -1,
+                        disabled: this.schema.disabled,
                         ...rest,
                     },
                     component: () => import(`@UI/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(type)}`),

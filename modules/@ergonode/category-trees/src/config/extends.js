@@ -22,7 +22,6 @@ export default {
                 title: $this.$t('@Categories.category._.title'),
                 component: Components.CategoryTreesVerticalTab,
                 icon: Icons.IconTree,
-                props: {},
             },
         ],
     },

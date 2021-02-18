@@ -18,6 +18,7 @@ import EmptyDashboardPage from '@Dashboard/components/Pages/EmptyDashboardPage';
 import {
     getProductsCount,
 } from '@Dashboard/services';
+import PRODUCT_PRIVILEGES from '@Products/config/privileges';
 
 export default {
     name: 'Dashboard',
@@ -25,37 +26,37 @@ export default {
         DashboardPage,
         EmptyDashboardPage,
     },
-    async asyncData({
-        app,
-    }) {
-        let productsCount = 0;
-
-        try {
-            productsCount = await getProductsCount({
-                $axios: app.$axios,
-            });
-        } catch (e) {
-            if (app.$axios.isCancel(e)) {
-                return {
-                    productsCount,
-                };
-            }
-        }
-
+    async fetch() {
+        await this.onProductCreated();
+    },
+    data() {
         return {
-            productsCount,
+            productsCount: [],
         };
     },
     computed: {
         hasAnyProductInSystem() {
             return this.productsCount.some(product => product.count > 0);
         },
+        isAllowedToReadProduct() {
+            return this.$hasAccess([
+                PRODUCT_PRIVILEGES.PRODUCT.read,
+            ]);
+        },
     },
     methods: {
         async onProductCreated() {
-            this.productsCount = await getProductsCount({
-                $axios: this.$axios,
-            });
+            if (this.isAllowedToReadProduct) {
+                try {
+                    this.productsCount = await getProductsCount({
+                        $axios: this.$axios,
+                    });
+                } catch (e) {
+                    if (this.$axios.isCancel(e)) {
+                        this.productsCount = [];
+                    }
+                }
+            }
         },
     },
     head() {

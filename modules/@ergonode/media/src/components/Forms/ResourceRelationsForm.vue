@@ -19,7 +19,7 @@
                                     v-for="relation in row.relations"
                                     :key="relation.name"
                                     :title="relation.name"
-                                    :link="relation._link"
+                                    :link="relation._link || {}"
                                     :namespace="row.type" />
                             </TableRowCell>
                         </TableRow>

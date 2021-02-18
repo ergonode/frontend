@@ -38,6 +38,7 @@
                         :value="configuration"
                         :schema="schema"
                         :errors="errors"
+                        :disabled="!isAllowedToUpdate"
                         @input="setConfigurationValue" />
                 </FadeTransition>
                 <Divider v-if="extendedForm.length" />

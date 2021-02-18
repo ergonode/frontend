@@ -56,6 +56,13 @@ export default {
             type: String,
             default: '',
         },
+        /**
+         * Is fields disabled
+         */
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
@@ -94,6 +101,7 @@ export default {
                     props: {
                         isRequired: this.schema.required
                             && this.schema.required.indexOf(key) !== -1,
+                        disabled: this.disabled,
                         ...rest,
                     },
                     component: () => import(`@UI/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(type)}`),
