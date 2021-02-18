@@ -258,20 +258,20 @@ export default {
         display: flex;
         justify-content: flex-end;
         align-items: center;
-        width: 358px;
+        width: 550px;
         height: 358px;
-        margin: 40px 170px 40px 0;
+        margin: 40px 0;
         background:
             url("~@Dashboard/assets/images/dashboard_man.svg")
             no-repeat
-            right
+            left
             bottom;
         background-size: contain;
 
         &__product-count-chart {
             width: 174px;
             height: 174px;
-            margin-right: -130px;
+            margin-right: 60px;
         }
     }
 </style>

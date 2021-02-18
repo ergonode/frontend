@@ -45,18 +45,11 @@ export default {
     computed: {
         visibleMenu() {
             return this.menu.filter(({
-                visible,
+                privileges = null,
             }) => {
-                if (typeof visible === 'string') {
-                    return this.$hasAccess([
-                        visible,
-                    ]);
-                }
-                if (Array.isArray(visible)) {
-                    return this.$hasAccess(visible);
-                }
+                if (!privileges) return true;
 
-                return visible;
+                return this.$hasAccess(privileges);
             });
         },
     },

@@ -81,22 +81,24 @@ export default {
         },
     },
     methods: {
-        onClick() {
-            if (this.data.actions.edit) {
+        onClick(event) {
+            if (this.data.actions.edit && this.data.actions.get) {
                 const args = this.data.actions.edit.href.split('/');
 
                 this.$emit('row-action', {
                     key: 'edit',
                     value: args,
                 });
-            }
-            if (this.data.actions.get) {
+            } else if (this.data.actions.get) {
                 const args = this.data.actions.get.href.split('/');
 
                 this.$emit('row-action', {
                     key: 'preview',
                     value: args,
                 });
+            } else {
+                event.preventDefault();
+                event.stopPropagation();
             }
         },
     },

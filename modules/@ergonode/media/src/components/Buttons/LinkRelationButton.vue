@@ -5,8 +5,8 @@
 <template>
     <LinkButton
         :title="title"
-        :class="[{ 'link-button--disabled': !hasLink }]"
-        @click.native="hasLink ? onClick(): null" />
+        :disabled="!hasLink"
+        @click.native="onClick" />
 </template>
 
 <script>
@@ -46,13 +46,6 @@ export default {
         };
     },
     computed: {
-        namespaces() {
-            return {
-                PRODUCT: 'product',
-                ATTRIBUTE: 'attribute',
-                TEMPLATE: 'template',
-            };
-        },
         hasLink() {
             return !isEmpty(this.link);
         },
@@ -70,34 +63,32 @@ export default {
         });
     },
     methods: {
-        onClick() {
-            const {
-                href,
-            } = this.link;
-            const elements = href.split('/');
-            const id = elements[elements.length - 1];
-
-            if (!isEmpty(this.routeLinks) && this.routeLinks[this.namespace]) {
-                this.$router.push({
-                    name: this.routeLinks[this.namespace],
-                    params: {
-                        id,
-                    },
-                });
+        onClick(event) {
+            if (!this.hasLink) {
+                event.preventDefault();
+                event.stopPropagation();
             } else {
-                this.$addAlert({
-                    type: ALERT_TYPE.ERROR,
-                    message: 'Unknown relation type',
-                });
+                const {
+                    href,
+                } = this.link;
+                const elements = href.split('/');
+                const id = elements[elements.length - 1];
+
+                if (!isEmpty(this.routeLinks) && this.routeLinks[this.namespace]) {
+                    this.$router.push({
+                        name: this.routeLinks[this.namespace],
+                        params: {
+                            id,
+                        },
+                    });
+                } else {
+                    this.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Unknown relation type',
+                    });
+                }
             }
         },
     },
 };
 </script>
-<style lang="scss" scoped>
-    .link-button--disabled {
-        color: $GRAPHITE_LIGHT;
-        text-decoration-color: $GRAPHITE_LIGHT;
-        cursor: not-allowed;
-    }
-</style>

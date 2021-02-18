@@ -12,13 +12,14 @@ export default [
                 title: 'My profile',
                 routing: '/profile/activity-log-grid',
                 icon: () => import('@Core/components/Icons/Menu/IconUser'),
-                visible: true,
             },
             {
                 title: 'Settings',
                 routing: '/settings',
                 icon: () => import('@Core/components/Icons/Menu/IconSettings'),
-                visible: PRIVILEGES.SETTINGS.read,
+                privileges: [
+                    PRIVILEGES.SETTINGS.read,
+                ],
             },
         ],
     },
