@@ -12,7 +12,7 @@
                 <div class="update-products-modal__sidebar" />
                 <div class="update-products-modal__form">
                     <DraggableForm
-                        :title="'Edited attributes'"
+                        :title="$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsModal.draggableFormTitle')"
                         :items="formItems">
                         <template #item="{ item }">
                             <Component
@@ -62,7 +62,7 @@ export default {
     },
     computed: {
         title() {
-            return this.$t('@Products.batchAction.components.UpdateProductsModal.title', {
+            return this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsModal.title', {
                 info: this.selectedProductsCount,
             });
         },

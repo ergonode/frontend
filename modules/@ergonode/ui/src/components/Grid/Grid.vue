@@ -19,13 +19,12 @@
                 <slot name="prependHeader" />
             </template>
             <template #actions>
-                <BatchActionButton
-                    v-if="isBatchActionVisible"
-                    :highlighted="isAnyRowSelected"
-                    :options="batchActions"
+                <slot
+                    name="actionsHeader"
+                    :selected-rows="selectedRows"
+                    :excluded-from-selection-rows="excludedFromSelectionRows"
                     :selected-rows-count="selectedRowsCount"
-                    @action="onBatchActionSelect" />
-                <slot name="actionsHeader" />
+                    :on-clear-selected-rows="onClearSelectedRows" />
             </template>
             <template #configuration>
                 <slot name="headerConfiguration" />
@@ -132,7 +131,6 @@ import {
 import {
     getUUID,
 } from '@Core/models/stringWrapper';
-import BatchActionButton from '@UI/components/Grid/Buttons/BatchActionButton';
 import AddGridColumnDropZone from '@UI/components/Grid/DropZone/AddGridColumnDropZone';
 import GridPageSelector from '@UI/components/Grid/Footer/GridPageSelector';
 import GridPagination from '@UI/components/Grid/Footer/GridPagination';
@@ -160,7 +158,6 @@ export default {
         GridTableLayout,
         GridCollectionLayout,
         GridPageSelector,
-        BatchActionButton,
     },
     props: {
         /**
@@ -218,13 +215,6 @@ export default {
         pagination: {
             type: Object,
             default: DEFAULT_GRID_PAGINATION,
-        },
-        /**
-         * The list of batch actions
-         */
-        batchActions: {
-            type: Array,
-            default: () => [],
         },
         /**
          * Determines default layout of Grid
@@ -376,14 +366,8 @@ export default {
 
             return Object.keys(this.selectedRows).filter(key => this.selectedRows[key]).length;
         },
-        isAnyRowSelected() {
-            return this.selectedRowsCount > 0;
-        },
         isAnyFilter() {
             return Object.keys(this.filters).length > 0;
-        },
-        isBatchActionVisible() {
-            return this.batchActions.length > 0;
         },
         isListElementDragging() {
             return this.isElementDragging === DRAGGED_ELEMENT.LIST;
@@ -421,28 +405,6 @@ export default {
         },
         onRemoveAllFilters() {
             this.$emit('remove-all-filters');
-        },
-        onBatchActionSelect(option) {
-            const payload = {
-                ids: [],
-                excludedIds: [],
-                selectedRowsCount: this.selectedRowsCount,
-                onApply: this.onApplyBatchAction,
-            };
-
-            Object.keys(this.selectedRows).forEach((key) => {
-                if (this.selectedRows[key]) {
-                    payload.ids.push(key);
-                }
-            });
-
-            Object.keys(this.excludedFromSelectionRows).forEach((key) => {
-                if (this.excludedFromSelectionRows[key]) {
-                    payload.excludedIds.push(key);
-                }
-            });
-
-            option.action(payload);
         },
         onRowsSelect({
             isSelected,
@@ -528,11 +490,8 @@ export default {
                 });
             }
         },
-        onApplyBatchAction(ids) {
-            ids.forEach((id) => {
-                delete this.selectedRows[id];
-            });
-
+        onClearSelectedRows() {
+            this.isSelectedAll = false;
             this.selectedRows = {};
             this.excludedFromSelectionRows = {};
         },

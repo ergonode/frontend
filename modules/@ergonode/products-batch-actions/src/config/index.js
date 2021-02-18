@@ -3,14 +3,13 @@
  * See LICENSE for license details.
  */
 export default {
-    name: '@ergonode/products',
-    order: 70,
+    name: '@ergonode/products-batch-actions',
+    order: 220,
     relations: [
-        '@ergonode/attributes',
-        '@ergonode/product-templates',
-        '@ergonode/segments',
+        '@ergonode/products',
+        '@ergonode/batch-actions',
     ],
     aliases: {
-        '@Products': '/',
+        '@ProductsBatchActions': '/',
     },
 };

@@ -4,7 +4,7 @@
  */
 <template>
     <ActionButton
-        :title="actionButtonTitle"
+        :title="title"
         :size="smallSize"
         :theme="theme"
         :options="mappedOptions"
@@ -25,6 +25,9 @@
                     :size="smallSize" />
             </ListElementDescription>
         </template>
+        <template #default>
+            <slot />
+        </template>
     </ActionButton>
 </template>
 
@@ -42,7 +45,7 @@ import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
 
 export default {
-    name: 'BatchActionButton',
+    name: 'BatchActionsButton',
     components: {
         ListElementTitle,
         ListElementDescription,
@@ -64,8 +67,8 @@ export default {
         },
     },
     computed: {
-        actionButtonTitle() {
-            return 'Actions';
+        title() {
+            return this.$t('@BatchActions.batchAction.components.BatchActionsButton.title');
         },
         smallSize() {
             return SIZE.SMALL;
