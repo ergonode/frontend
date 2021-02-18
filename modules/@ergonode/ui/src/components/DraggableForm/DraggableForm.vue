@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="draggable-form">
+    <div
+        class="draggable-form"
+        @dragleave="onDragLeave">
         <Form
             :title="title"
             :disabled="disabled"
@@ -23,9 +25,9 @@
                     :key="item.id"
                     :index="index"
                     :item="item"
-                    @add-ghost="onAddGhost"
-                    @add-item="onAddItem"
                     @remove-item="onRemoveItem"
+                    @add-item="onAddItem"
+                    @add-ghost="onAddGhost"
                     @swap="onSwapItems">
                     <template #item>
                         <slot
@@ -40,11 +42,23 @@
 
 <script>
 import {
+    insertValueAtIndex,
     swapItemPosition,
 } from '@Core/models/arrayWrapper';
+import {
+    deepClone,
+} from '@Core/models/objectWrapper';
 import DraggableFormItem from '@UI/components/DraggableForm/DraggableFormItem';
 import DraggableFormPlaceholderItem from '@UI/components/DraggableForm/DraggableFormPlaceholderItem';
 import Form from '@UI/components/Form/Form';
+import {
+    getFixedMousePosition,
+    isMouseOutsideElement,
+} from '@UI/models/mouse';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'DraggableForm',
@@ -67,6 +81,16 @@ export default {
         title: {
             type: String,
             default: '',
+        },
+        /**
+         * Component width
+         */
+        width: {
+            type: [
+                Number,
+                String,
+            ],
+            default: 352,
         },
         /**
          * Determinate if the component is disabled
@@ -102,37 +126,59 @@ export default {
             localItems: [],
         };
     },
+    computed: {
+        ...mapState('draggable', [
+            'ghostIndex',
+            'draggedElement',
+            'draggedElIndex',
+        ]),
+        itemsOrder() {
+            return this.localItems.map(item => item.id);
+        },
+    },
     watch: {
         items: {
             immediate: true,
             handler() {
-                this.localItems = this.items;
+                console.log(this.itemsOrder);
+                this.localItems = deepClone(this.items).sort(
+                    (a, b) => this.itemsOrder.indexOf(a.id) - this.itemsOrder.indexOf(b.id),
+                );
             },
         },
     },
     methods: {
-        onAddGhost(index) {
-            this.localItems[index] = {
-                id: this.localItems[index].id,
-                isGhost: true,
-            };
+        ...mapActions('draggable', [
+            '__setState',
+        ]),
+        onDragLeave(event) {
+            const {
+                xPos,
+                yPos,
+            } = getFixedMousePosition(event);
 
-            this.localItems = [
-                ...this.localItems,
-            ];
-        },
-        onAddItem({
-            item,
-            index,
-        }) {
-            this.localItems[index] = item;
+            if (isMouseOutsideElement(this.$el, xPos, yPos) && this.ghostIndex !== -1) {
+                if (this.draggedElIndex === -1) {
+                    this.localItems.splice(this.ghostIndex, 1);
+                }
 
-            this.localItems = [
-                ...this.localItems,
-            ];
+                this.__setState({
+                    key: 'ghostIndex',
+                    value: -1,
+                });
+            }
         },
         onRemoveItem(index) {
             this.$emit('remove-item', index);
+        },
+        onAddItem(payload) {
+            this.$emit('add-item', payload);
+        },
+        onAddGhost({
+            index,
+            item,
+        }) {
+            this.localItems = insertValueAtIndex(this.localItems, item, index);
         },
         onSwapItems({
             from,

@@ -13,7 +13,9 @@
                 <div class="update-products-modal__form">
                     <DraggableForm
                         :title="$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsModal.draggableFormTitle')"
-                        :items="formItems">
+                        :width="424"
+                        :items="formItems"
+                        @add-item="onAddItem">
                         <template #item="{ item }">
                             <Component
                                 :is="item.component"
@@ -27,9 +29,6 @@
 </template>
 
 <script>
-import {
-    getUUID,
-} from '@Core/models/stringWrapper';
 import AttributesSideBar
     from '@ProductsBatchActions/extends/attribute/components/SideBars/AttributesSideBar';
 import DraggableForm from '@UI/components/DraggableForm/DraggableForm';
@@ -37,7 +36,6 @@ import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScrol
 import ModalHeader from '@UI/components/Modal/ModalHeader';
 import ModalOverlay from '@UI/components/Modal/ModalOverlay';
 import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
-import TextField from '@UI/components/TextField/TextField';
 
 export default {
     name: 'UpdateProductsModal',
@@ -69,7 +67,7 @@ export default {
     },
     data() {
         return {
-            // formItems: [],
+            formItems: [],
         };
     },
     computed: {
@@ -88,39 +86,20 @@ export default {
                 },
             ];
         },
-        formItems() {
-            return [
-                {
-                    id: getUUID(),
-                    component: TextField,
-                    label: 'First',
-                    props: {
-                        label: 'First',
-                        placeholder: 'Am I first?',
-                    },
-                },
-                {
-                    id: getUUID(),
-                    component: TextField,
-                    label: 'Second',
-                    props: {
-                        label: 'Second',
-                        placeholder: 'Am I second?',
-                    },
-                },
-                {
-                    id: getUUID(),
-                    component: TextField,
-                    label: 'Third',
-                    props: {
-                        label: 'Third',
-                        placeholder: 'Am I third?',
-                    },
-                },
-            ];
-        },
     },
     methods: {
+        onAddItem({
+            item,
+        }) {
+            // const { type } = item;
+
+            this.formItems.push({
+                id: item.id,
+                component: () => import('@UI/components/TextField/TextField'),
+                label: item.label || `#${item.code}`,
+                props: item,
+            });
+        },
         onClose() {
             this.$emit('close');
         },

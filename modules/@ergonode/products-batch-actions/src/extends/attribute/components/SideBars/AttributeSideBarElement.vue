@@ -109,20 +109,17 @@ export default {
             '__setState',
         ]),
         onDragStart() {
-            // this.__setState({
-            //     key: 'isElementDragging',
-            //     value: DRAGGED_ELEMENT.LIST,
-            // });
             this.__setState({
                 key: 'draggedElement',
-                value: `${this.item.code}:${this.languageCode}`,
+                value: {
+                    id: this.item.id,
+                    label: this.item.label,
+                    code: this.item.code,
+                    type: this.item.type,
+                },
             });
         },
         onDragEnd() {
-            // this.__setState({
-            //     key: 'isElementDragging',
-            //     value: null,
-            // });
             this.__setState({
                 key: 'draggedElement',
                 value: null,

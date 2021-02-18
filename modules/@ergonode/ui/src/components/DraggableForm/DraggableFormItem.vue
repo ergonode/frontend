@@ -8,12 +8,13 @@
         :draggable="true"
         @dragover="onDragOver"
         @dragstart="onDragStart"
-        @dragend="onDragEnd">
+        @dragend="onDragEnd"
+        @drop="onDrop">
         <IconDragDrop
             ref="dragIcon"
             class="draggable-form-item__drag-icon" />
         <slot
-            v-if="!isDragged"
+            v-if="!isGhostVisible"
             name="item" />
         <DraggableFormGhostItem v-else />
         <IconButton
@@ -39,6 +40,7 @@ import {
 } from '@Core/models/layout/ElementCopy';
 import {
     deepClone,
+    isObject,
 } from '@Core/models/objectWrapper';
 import DraggableFormGhostItem from '@UI/components/DraggableForm/DraggableFormGhostItem';
 import IconButton from '@UI/components/IconButton/IconButton';
@@ -73,21 +75,18 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            isDragged: false,
-        };
-    },
     computed: {
         ...mapState('draggable', [
             'draggedElement',
             'ghostIndex',
+            'draggedElIndex',
         ]),
         classes() {
             return [
                 'draggable-form-item',
                 {
-                    'draggable-form-item--disabled': this.ghostIndex !== -1,
+                    'draggable-form-item--disabled': this.draggedElement !== null,
+                    'draggable-form-item--hidden': this.draggedElIndex === this.index && this.ghostIndex === -1,
                 },
             ];
         },
@@ -96,6 +95,9 @@ export default {
         },
         secondaryPlainTheme() {
             return THEME.SECONDARY_PLAIN;
+        },
+        isGhostVisible() {
+            return this.ghostIndex === this.index;
         },
     },
     methods: {
@@ -113,8 +115,6 @@ export default {
                 return;
             }
 
-            this.isDragged = true;
-
             addElementCopyToDocumentBody({
                 event,
                 id: this.item.id,
@@ -124,6 +124,10 @@ export default {
             this.__setState({
                 key: 'draggedElement',
                 value: deepClone(this.item),
+            });
+            this.__setState({
+                key: 'draggedElIndex',
+                value: this.index,
             });
             this.__setState({
                 key: 'ghostIndex',
@@ -142,7 +146,21 @@ export default {
                 this.$emit('remove', this.index);
             }
 
-            this.isDragged = false;
+            this.__setState({
+                key: 'draggedElement',
+                value: null,
+            });
+            this.__setState({
+                key: 'draggedElIndex',
+                value: -1,
+            });
+            this.__setState({
+                key: 'ghostIndex',
+                value: -1,
+            });
+        },
+        onDrop() {
+            this.$emit('add-item');
 
             this.__setState({
                 key: 'draggedElement',
@@ -174,10 +192,17 @@ export default {
                 return;
             }
 
-            this.$emit('swap', {
-                from: this.ghostIndex,
-                to: this.index,
-            });
+            if (this.ghostIndex !== -1) {
+                this.$emit('swap', {
+                    from: this.ghostIndex,
+                    to: this.index,
+                });
+            } else if (this.draggedElIndex === -1) {
+                this.$emit('add-ghost', {
+                    index: this.index,
+                    item: this.draggedElement,
+                });
+            }
 
             this.__setState({
                 key: 'ghostIndex',
@@ -193,22 +218,21 @@ export default {
         $item: &;
 
         position: relative;
-        display: flex;
+        display: grid;
+        grid-auto-flow: column;
+        grid-template-columns: max-content 1fr max-content;
         align-items: center;
+        grid-column-gap: 8px;
+
+        &--hidden {
+            display: none;
+        }
 
         &__drag-icon {
-            top: 8px;
-            left: -40px;
             cursor: grab;
         }
 
-        &__remove-button {
-            top: 4px;
-            right: -40px;
-        }
-
         &__drag-icon, &__remove-button {
-            position: absolute;
             opacity: 0;
         }
 

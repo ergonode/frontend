@@ -35,7 +35,6 @@ export default {
     grid-template-columns: max-content;
     grid-column-gap: 8px;
     align-items: center;
-    width: 100%;
     height: 48px;
     box-sizing: border-box;
     background-color: $GREEN;
