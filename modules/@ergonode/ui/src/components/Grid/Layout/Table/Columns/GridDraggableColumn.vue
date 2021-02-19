@@ -41,11 +41,6 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            isDragged: false,
-        };
-    },
     computed: {
         ...mapState('draggable', [
             'isElementDragging',
@@ -120,7 +115,6 @@ export default {
         ]),
         onDragStart(event) {
             if (this.isResizing) return false;
-            this.isDragged = true;
 
             const [
                 header,
@@ -196,7 +190,6 @@ export default {
                 key: 'isElementDragging',
                 value: null,
             });
-            this.isDragged = false;
         },
         onDragOver(event) {
             if (this.draggedElIndex === -1) {
@@ -312,9 +305,7 @@ export default {
         },
     },
     render() {
-        return this.$scopedSlots.default({
-            isDragged: this.isDragged,
-        });
+        return this.$scopedSlots.default();
     },
 };
 </script>
