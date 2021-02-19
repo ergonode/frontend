@@ -37,7 +37,8 @@
                 @swap-columns="onSwapColumns"
                 @pagination="onPaginationChange"
                 @sort-column="onColumnSortChange"
-                @remove-all-filters="onRemoveAllFilters">
+                @remove-all-filters="onRemoveAllFilters"
+                v-bind="extendedPropsByKey('grid')">
                 <template #actionsHeader>
                     <ExpandNumericButton
                         title="FILTERS"
@@ -112,6 +113,9 @@ import {
 } from '@Core/defaults/grid';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
+import {
+    asyncForEach,
+} from '@Core/models/arrayWrapper';
 import {
     changeCookiePosition,
     insertCookieAtIndex,
@@ -223,6 +227,9 @@ export default {
             advancedFilters: [],
             isFiltersExpanded: false,
             isPrefetchingData: true,
+            extendedProps: {
+                grid: {},
+            },
         };
     },
     computed: {
@@ -278,11 +285,18 @@ export default {
             this.isPrefetchingData = false;
         },
     },
-    mounted() {
+    async mounted() {
         document.documentElement.addEventListener(
             PRODUCT_CREATED_EVENT_NAME,
             this.onProductCreated,
         );
+
+        asyncForEach(Object.keys(this.extendedProps), async (key) => {
+            this.extendedProps[key] = await this.$extendedProps({
+                key: '@Products/components/Grids/ProductsGrid/props',
+                name: key,
+            });
+        });
     },
     beforeDestroy() {
         document.documentElement.removeEventListener(
@@ -307,6 +321,13 @@ export default {
         },
         onBatchActionCompleted() {
             this.onFetchData();
+        },
+        extendedPropsByKey(key) {
+            if (this.extendedProps[key]) {
+                return this.extendedProps[key];
+            }
+
+            return {};
         },
         async onDropColumn(payload) {
             try {

@@ -102,6 +102,21 @@ export default {
         productTemplate: Store.Template,
     },
     extendMethods: {
+        // FIXME: remove
+        // '@Products/components/Grids/ProductsGrid/props': () => ({
+        //     grid: [
+        //         {
+        //             key: 'isHeaderVisible',
+        //             value: true,
+        //             priority: 40,
+        //         },
+        //         {
+        //             key: 'isBasicFilter',
+        //             value: true,
+        //             priority: 10,
+        //         },
+        //     ],
+        // }),
         '@Media/components/Buttons/LinkRelationButton/routeLinks': () => ({
             attribute: ROUTE_NAME.ATTRIBUTE_EDIT_GENERAL,
         }),
