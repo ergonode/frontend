@@ -4,7 +4,7 @@
       "components": {
         "UpdateProductsModal": {
           "title": "Edytowanie {info} produktów",
-          "draggableFormTitle": "Edytowane atrybuty",
+          "draggableFormTitle": "Edytowane atrybuty"
         },
         "ProductsBatchActions": {
           "deleteBatchActionLabel": "Usuń produkty",
@@ -13,6 +13,9 @@
           "confirmSubtitle": "Produkty będą usunięte z systemu bez odwrotnie i nie będą mogłby być przywrócone.",
           "confirmApplyTitle": "USUŃ {info} PRODUKTY",
           "successAlert": "Produkty zostały usunięte"
+        },
+        "RemoveFormFieldDropZone": {
+          "title": "Usuń element"
         }
       }
     },

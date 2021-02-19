@@ -4,7 +4,7 @@
       "components": {
         "UpdateProductsModal": {
           "title": "Editing {info} products",
-          "draggableFormTitle": "Edited attributes",
+          "draggableFormTitle": "Edited attributes"
         },
         "ProductsBatchActions": {
           "deleteBatchActionLabel": "Delete products",
@@ -13,6 +13,9 @@
           "confirmSubtitle": "The products will be deleted from the system forever and cannot be restored.",
           "confirmApplyTitle": "DELETE {info} PRODUCTS",
           "successAlert": "Products have been removed"
+        },
+        "RemoveFormFieldDropZone": {
+          "title": "Remove item"
         }
       }
     },

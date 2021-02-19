@@ -32,6 +32,9 @@
 
 <script>
 import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
+import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
@@ -80,6 +83,7 @@ export default {
             'draggedElement',
             'ghostIndex',
             'draggedElIndex',
+            'isOverDropZone',
         ]),
         classes() {
             return [
@@ -133,6 +137,10 @@ export default {
                 key: 'ghostIndex',
                 value: this.index,
             });
+            this.__setState({
+                key: 'isElementDragging',
+                value: DRAGGED_ELEMENT.FORM_FIELD,
+            });
         },
         onDragEnd(event) {
             removeElementCopyFromDocumentBody(event);
@@ -157,6 +165,10 @@ export default {
             this.__setState({
                 key: 'ghostIndex',
                 value: -1,
+            });
+            this.__setState({
+                key: 'isElementDragging',
+                value: null,
             });
         },
         onDrop() {

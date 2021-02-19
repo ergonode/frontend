@@ -9,7 +9,9 @@
                 :title="title"
                 @close="onClose" />
             <div class="update-products-modal__body">
-                <VerticalTabBar :items="verticalTabs" />
+                <VerticalTabBar :items="verticalTabs">
+                    <RemoveFormFieldDropZone />
+                </VerticalTabBar>
                 <div class="update-products-modal__form-section">
                     <VerticalFixedScroll>
                         <div class="update-products-modal__form">
@@ -41,6 +43,8 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
+import RemoveFormFieldDropZone
+    from '@Modules/@ergonode/products-batch-actions/src/components/DropZones/RemoveFormFieldDropZone';
 import AttributeFormField
     from '@ProductsBatchActions/extends/attribute/components/Forms/Fields/AttributeFormField';
 import DraggableForm from '@UI/components/DraggableForm/DraggableForm';
@@ -55,6 +59,7 @@ import {
 export default {
     name: 'UpdateProductsModal',
     components: {
+        RemoveFormFieldDropZone,
         AttributeFormField,
         VerticalFixedScroll,
         ModalOverlay,

@@ -80,6 +80,7 @@ export const DRAGGED_ELEMENT = {
     FILTER: 'FILTER',
     TEMPLATE: 'TEMPLATE',
     LIST: 'LIST',
+    FORM_FIELD: 'FORM_FIELD',
 };
 
 export const DATA_LIMIT = 25;
