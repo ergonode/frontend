@@ -3,22 +3,24 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="classes">
-        <div
-            :style="containerStyles"
-            class="container"
-            @dragenter="onDragEnter"
-            @dragleave="onDragLeave"
-            @dragover="onDragOver"
-            @drop="onDrop">
-            <div class="drop-zone__body">
-                <slot
-                    name="icon"
-                    :color="addIconFillColor" />
-                <span v-text="title" />
+    <IntersectionObserver @intersect="onIntersect">
+        <div :class="classes">
+            <div
+                :style="containerStyles"
+                class="container"
+                @dragenter="onDragEnter"
+                @dragleave="onDragLeave"
+                @dragover="onDragOver"
+                @drop="onDrop">
+                <div class="drop-zone__body">
+                    <slot
+                        name="icon"
+                        :color="addIconFillColor" />
+                    <span v-text="title" />
+                </div>
             </div>
         </div>
-    </div>
+    </IntersectionObserver>
 </template>
 
 <script>
@@ -31,12 +33,16 @@ import {
     WHITE,
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
+import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
     name: 'DropZone',
+    components: {
+        IntersectionObserver,
+    },
     props: {
         /**
          * The title of the component
@@ -101,6 +107,14 @@ export default {
         ...mapActions('draggable', [
             '__setState',
         ]),
+        onIntersect(isIntersecting) {
+            if (!isIntersecting) {
+                this.__setState({
+                    key: 'isOverDropZone',
+                    value: false,
+                });
+            }
+        },
         onDragEnter() {
             this.isHovered = true;
 
