@@ -121,15 +121,6 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
-        onFetchingType({
-            type,
-            fetching,
-        }) {
-            this.fetchingTypes = {
-                ...this.fetchingTypes,
-                [type]: fetching,
-            };
-        },
         onAddItem({
             type,
         }) {

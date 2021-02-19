@@ -1,6 +1,5 @@
 {
   "@ProductsBatchActions": {
-    "_": {},
     "productBatchAction": {
       "components": {
         "UpdateProductsModal": {
@@ -14,6 +13,22 @@
           "confirmSubtitle": "Produkty będą usunięte z systemu bez odwrotnie i nie będą mogłby być przywrócone.",
           "confirmApplyTitle": "USUŃ {info} PRODUKTY",
           "successAlert": "Produkty zostały usunięte"
+        },
+        "RemoveFormFieldDropZone": {
+          "title": "Usuń element"
+        }
+      }
+    },
+    "attribute": {
+      "_": {
+        "title": "Atrybuty produktów",
+        "getRequest": "Atrybut nie został pobrany prawidłowo"
+      },
+      "components": {
+        "AttributesSideBar": {
+          "noAttributesTitle": "Brak atrybutów",
+          "noAttributesSubtitle": "Brak wspólnych atrybutów dla wybranych produktów.",
+          "notAssigned": "Nie przypisane"
         }
       }
     }

@@ -3,13 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="draggable-form">
+    <div
+        class="draggable-form"
+        @dragenter="onDragEnter"
+        @dragleave="onDragLeave">
         <Form
             :title="title"
             :disabled="disabled"
             :errors="errors"
             :change-values="changeValues"
             :errors-presentation-mapper="errorsPresentationMapper">
+            <template #header>
+                <h2
+                    v-if="title"
+                    class="draggable-form__title"
+                    v-text="title" />
+            </template>
             <template #body>
                 <DraggableFormPlaceholderItem v-if="!localItems.length" />
                 <DraggableFormItem
@@ -17,9 +26,8 @@
                     :key="item.id"
                     :index="index"
                     :item="item"
-                    @add-ghost="onAddGhost"
-                    @add-item="onAddItem"
                     @remove-item="onRemoveItem"
+                    @add-item="onAddItem"
                     @swap="onSwapItems">
                     <template #item>
                         <slot
@@ -34,11 +42,20 @@
 
 <script>
 import {
+    insertValueAtIndex,
     swapItemPosition,
 } from '@Core/models/arrayWrapper';
 import DraggableFormItem from '@UI/components/DraggableForm/DraggableFormItem';
 import DraggableFormPlaceholderItem from '@UI/components/DraggableForm/DraggableFormPlaceholderItem';
 import Form from '@UI/components/Form/Form';
+import {
+    getFixedMousePosition,
+    isMouseOutsideElement,
+} from '@UI/models/mouse';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'DraggableForm',
@@ -61,6 +78,16 @@ export default {
         title: {
             type: String,
             default: '',
+        },
+        /**
+         * Component width
+         */
+        width: {
+            type: [
+                Number,
+                String,
+            ],
+            default: 352,
         },
         /**
          * Determinate if the component is disabled
@@ -96,37 +123,77 @@ export default {
             localItems: [],
         };
     },
+    computed: {
+        ...mapState('draggable', [
+            'ghostIndex',
+            'draggedElement',
+            'draggedElIndex',
+        ]),
+        itemsOrder() {
+            return this.localItems.map(item => item.id);
+        },
+    },
     watch: {
         items: {
             immediate: true,
             handler() {
-                this.localItems = this.items;
+                this.localItems = [
+                    ...this.items,
+                ].sort(
+                    (a, b) => this.itemsOrder.indexOf(a.id) - this.itemsOrder.indexOf(b.id),
+                );
             },
         },
     },
     methods: {
-        onAddGhost(index) {
-            this.localItems[index] = {
-                id: this.localItems[index].id,
-                isGhost: true,
-            };
+        ...mapActions('draggable', [
+            '__setState',
+        ]),
+        onDragEnter(event) {
+            if (this.ghostIndex !== -1) {
+                return;
+            }
 
-            this.localItems = [
-                ...this.localItems,
-            ];
+            const {
+                xPos, yPos,
+            } = getFixedMousePosition(event);
+            const formElement = document.elementsFromPoint(xPos, yPos).find(element => element.hasAttribute('index'));
+
+            const index = formElement
+                ? +formElement.getAttribute('index')
+                : 0;
+
+            if (this.draggedElIndex === -1) {
+                this.localItems = insertValueAtIndex(this.localItems, this.draggedElement, index);
+            }
+
+            this.__setState({
+                key: 'ghostIndex',
+                value: index,
+            });
         },
-        onAddItem({
-            item,
-            index,
-        }) {
-            this.localItems[index] = item;
+        onDragLeave(event) {
+            const {
+                xPos,
+                yPos,
+            } = getFixedMousePosition(event);
 
-            this.localItems = [
-                ...this.localItems,
-            ];
+            if (isMouseOutsideElement(this.$el, xPos, yPos) && this.ghostIndex !== -1) {
+                if (this.draggedElIndex === -1) {
+                    this.localItems.splice(this.ghostIndex, 1);
+                }
+
+                this.__setState({
+                    key: 'ghostIndex',
+                    value: -1,
+                });
+            }
         },
         onRemoveItem(index) {
             this.$emit('remove-item', index);
+        },
+        onAddItem(payload) {
+            this.$emit('add-item', payload);
         },
         onSwapItems({
             from,
@@ -144,5 +211,11 @@ export default {
 <style lang="scss" scoped>
     .draggable-form {
         position: relative;
+
+        &__title {
+            margin-left: 32px;
+            color: $GRAPHITE_DARK;
+            font: $FONT_SEMI_BOLD_16_24;
+        }
     }
 </style>

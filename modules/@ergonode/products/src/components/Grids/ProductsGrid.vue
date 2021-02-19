@@ -225,12 +225,7 @@ export default {
             'disabledElements',
         ]),
         extendedActionHeader() {
-            const extendedActionHeader = this.$getExtendSlot('@Products/components/Grids/ProductsGrid/actionHeader');
-
-            if (!extendedActionHeader || !extendedActionHeader.__ALL) {
-                return null;
-            }
-            return extendedActionHeader.__ALL;
+            return this.$getExtendSlot('@Products/components/Grids/ProductsGrid/actionHeader');
         },
         extendedFooter() {
             return this.$getExtendSlot('@Products/components/Grids/ProductsGrid/footer');

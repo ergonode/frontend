@@ -7,7 +7,8 @@
         :disabled="disabled"
         :draggable-id="item.type"
         :label="item.label"
-        @drag="onDrag">
+        @drag-start="onDragStart"
+        @drag-end="onDragEnd">
         <ListElementIcon>
             <IconFontSize />
         </ListElementIcon>
@@ -28,6 +29,7 @@ import ListElementTitle from '@UI/components/List/ListElementTitle';
 import {
     mapActions,
 } from 'vuex';
+import {DRAGGED_ELEMENT} from "@Core/defaults/grid";
 
 export default {
     name: 'WidgetSideBarElement',
@@ -53,12 +55,24 @@ export default {
         ...mapActions('draggable', [
             '__setState',
         ]),
-        onDrag(isDragged) {
+        onDragStart() {
+            this.__setState({
+                key: 'isElementDragging',
+                value: DRAGGED_ELEMENT.LIST,
+            });
             this.__setState({
                 key: 'draggedElement',
-                value: isDragged
-                    ? this.item.type
-                    : null,
+                value: this.item.type,
+            });
+        },
+        onDragEnd() {
+            this.__setState({
+                key: 'isElementDragging',
+                value: null,
+            });
+            this.__setState({
+                key: 'draggedElement',
+                value: null,
             });
         },
     },

@@ -1,6 +1,5 @@
 {
   "@ProductsBatchActions": {
-    "_": {},
     "productBatchAction": {
       "components": {
         "UpdateProductsModal": {
@@ -14,6 +13,22 @@
           "confirmSubtitle": "The products will be deleted from the system forever and cannot be restored.",
           "confirmApplyTitle": "DELETE {info} PRODUCTS",
           "successAlert": "Products have been removed"
+        },
+        "RemoveFormFieldDropZone": {
+          "title": "Remove item"
+        }
+      }
+    },
+    "attribute": {
+      "_": {
+        "title": "Product attributes",
+        "getRequest": "Attribute hasn’t been fetched properly"
+      },
+      "components": {
+        "AttributesSideBar": {
+          "noAttributesTitle": "No attributes",
+          "noAttributesSubtitle": "There are no common attributes for selected products.",
+          "notAssigned": "Not assigned"
         }
       }
     }

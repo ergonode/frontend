@@ -7,6 +7,7 @@ export default {
     order: 220,
     relations: [
         '@ergonode/products',
+        '@ergonode/attributes',
         '@ergonode/batch-actions',
     ],
     aliases: {
