@@ -29,13 +29,12 @@
             <AttributeSideBarElement
                 :item="item"
                 :language-code="languageCode"
-                :disabled="!isAllowedToUpdate" />
+                :disabled="disabled" />
         </template>
     </SideBar>
 </template>
 
 <script>
-import PRIVILEGES from '@Attributes/config/privileges';
 import AttributeSideBarElement from '@Attributes/extends/attribute/components/SideBars/AttributeSideBarElement';
 import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
 import {
@@ -66,6 +65,10 @@ export default {
             type: Boolean,
             default: true,
         },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
     async fetch() {
         await this.getItems();
@@ -91,15 +94,6 @@ export default {
         ]),
         attributesByLanguage() {
             return this.attributes[this.languageCode] || [];
-        },
-        isAllowedToUpdate() {
-            if (this.languageCode === '') {
-                return false;
-            }
-
-            return this.$hasAccess([
-                PRIVILEGES.ATTRIBUTE.update,
-            ]) && this.languagePrivileges[this.languageCode].read;
         },
     },
     created() {

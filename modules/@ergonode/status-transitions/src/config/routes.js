@@ -14,7 +14,7 @@ export const ROUTE_NAME = {
     STATUS_TRANSITIONS_GRID: 'status-transitions-grid',
     STATUS_TRANSITION_EDIT: 'status-transition-id',
     STATUS_TRANSITION_EDIT_GENERAL: 'status-transition-id-general',
-    STATUS_TRANSITION_EDIT_DESIGNER: 'status-transition-id-designer',
+    STATUS_TRANSITION_EDIT_CONDITIONS: 'status-transition-id-conditions',
 };
 
 export default [
@@ -89,11 +89,11 @@ export default [
                 },
             },
             {
-                name: ROUTE_NAME.STATUS_TRANSITION_EDIT_DESIGNER,
-                path: 'condition-sets',
+                name: ROUTE_NAME.STATUS_TRANSITION_EDIT_CONDITIONS,
+                path: 'conditions',
                 component: Tabs.ConditionDesignerTab,
                 meta: {
-                    title: 'Condition sets',
+                    title: 'Conditions',
                     breadcrumbs: [
                         {
                             title: 'Workflow',

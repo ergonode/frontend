@@ -8,6 +8,7 @@
         :rows="rows"
         :drafts="drafts"
         :filters="filterValues"
+        :sort-order="sortOrder"
         :errors="errors"
         :data-count="filtered"
         :pagination="pagination"
@@ -376,12 +377,22 @@ export default {
                 index,
             });
 
+            const query = {
+                ...this.$route.query,
+                filter: getParsedFilters(this.filterValues),
+            };
+
+            if (query.field === id) {
+                delete query.field;
+                delete query.order;
+            }
+
+            if (query.filter === '' || query.filter === null) {
+                delete query.filter;
+            }
+
             this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    filter: getParsedFilters(this.filterValues),
-                    page: DEFAULT_PAGE,
-                },
+                query,
             });
 
             this.onFetchData();
@@ -398,12 +409,18 @@ export default {
             });
         },
         onAdvancedFilterChange(filters) {
+            const query = {
+                ...this.$route.query,
+                advancedFilter: getParsedFilters(filters),
+                page: DEFAULT_PAGE,
+            };
+
+            if (query.advancedFilter === '' || query.advancedFilter === null) {
+                delete query.advancedFilter;
+            }
+
             this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    advancedFilter: getParsedFilters(filters),
-                    page: DEFAULT_PAGE,
-                },
+                query,
             });
         },
         onAdvancedFilterRemove({
@@ -450,12 +467,15 @@ export default {
 
             this.advancedFilters = [];
 
+            const query = {
+                ...this.$route.query,
+                page: DEFAULT_PAGE,
+            };
+
+            delete query.advancedFilter;
+
             this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    advancedFilter: '',
-                    page: DEFAULT_PAGE,
-                },
+                query,
             });
         },
         onEditRow(args) {
@@ -722,24 +742,33 @@ export default {
             });
         },
         onRemoveAllFilters() {
+            const query = {
+                ...this.$route.query,
+                page: DEFAULT_PAGE,
+            };
+
+            delete query.filter;
+            delete query.advancedFilter;
+
             this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    filter: '',
-                    advancedFilter: '',
-                    page: DEFAULT_PAGE,
-                },
+                query,
             });
 
             this.isPrefetchingData = true;
         },
         onFilterChange(filters) {
+            const query = {
+                ...this.$route.query,
+                page: DEFAULT_PAGE,
+                filter: getParsedFilters(filters),
+            };
+
+            if (query.filter === '' || query.filter === null) {
+                delete query.filter;
+            }
+
             this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    ...this.pagination,
-                    filter: getParsedFilters(filters),
-                },
+                query,
             });
         },
         onColumnSortChange(sortOrder) {

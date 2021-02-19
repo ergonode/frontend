@@ -74,7 +74,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: this.$t('@Trees.tree.pages.id.getRequest'),
+                    message: app.i18n.t('@Trees.tree.pages.id.getRequest'),
                 });
             },
         });

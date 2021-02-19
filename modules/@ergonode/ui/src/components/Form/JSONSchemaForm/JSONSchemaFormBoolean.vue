@@ -6,6 +6,7 @@
     <CheckBox
         :value="localValue"
         :label="label"
+        :disabled="schema.disabled"
         @input="onValueChange" />
 </template>
 
@@ -18,6 +19,13 @@ export default {
         CheckBox,
     },
     props: {
+        /**
+         * JSON schema
+         */
+        schema: {
+            type: Object,
+            required: true,
+        },
         /**
          * The label is a text caption or description for the component
          */
