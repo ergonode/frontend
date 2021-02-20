@@ -11,7 +11,8 @@
         :hint="hint"
         :placeholder="placeholder"
         :label="label"
-        @input="onValueChange" />
+        @input="onValueChange"
+        @blur="onBlur" />
 </template>
 
 <script>
@@ -36,11 +37,7 @@ export default {
     },
     computed: {
         component() {
-            const {
-                parameters = {},
-            } = this.attribute;
-
-            return parameters.rich_edit ? RichTextEditor : TextArea;
+            return this.isRichEdit ? RichTextEditor : TextArea;
         },
         label() {
             return this.attribute.label[this.languageCode] || `#${this.attribute.code}`;
@@ -51,6 +48,13 @@ export default {
         hint() {
             return this.attribute.hint[this.languageCode];
         },
+        isRichEdit() {
+            const {
+                parameters = {},
+            } = this.attribute;
+
+            return parameters.rich_edit;
+        },
     },
     methods: {
         onValueChange(value) {
@@ -59,6 +63,15 @@ export default {
                 value,
                 languageCode: this.languageCode,
             });
+        },
+        onBlur(value) {
+            if (this.isRichEdit) {
+                this.$emit('input', {
+                    key: this.attribute.id,
+                    value,
+                    languageCode: this.languageCode,
+                });
+            }
         },
     },
 };

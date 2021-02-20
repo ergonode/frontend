@@ -6,7 +6,7 @@
     <Component
         :is="styleComponent"
         ref="activator"
-        :style="{height, flexBasis: height }"
+        :style="{ height, flexBasis: height }"
         :height="height"
         :focused="isFocused"
         :error="isError"
@@ -25,18 +25,21 @@
                 @active="onMenuBubbleActive" />
             <slot name="prepend" />
             <InputController :size="size">
-                <div class="rich-text-editor">
-                    <VerticalFixedScroll>
-                        <EditorContent
-                            class="rich-text-editor__content"
-                            ref="editorContent"
-                            :editor="editor" />
-                    </VerticalFixedScroll>
-                    <RichTextEditorMenu
-                        v-if="isSolidType && isFocused"
-                        :type="type"
-                        :editor="editor" />
-                </div>
+                <ResizeObserver @resize="onResize">
+                    <div class="rich-text-editor">
+                        <VerticalFixedScroll>
+                            <EditorContent
+                                class="rich-text-editor__content"
+                                ref="editorContent"
+                                :editor="editor" />
+                        </VerticalFixedScroll>
+                        <RichTextEditorMenu
+                            v-if="isSolidType && isFocused"
+                            :type="type"
+                            :editor="editor"
+                            :editor-width="editorWidth" />
+                    </div>
+                </ResizeObserver>
                 <InputLabel
                     v-if="label"
                     :style="{ top: 0 }"
@@ -60,7 +63,8 @@
             v-if="!isSolidType"
             ref="menu"
             :type="type"
-            :editor="editor" />
+            :editor="editor"
+            :editor-width="editorWidth" />
         <template #details>
             <slot name="details" />
         </template>
@@ -78,6 +82,7 @@ import InputLabel from '@UI/components/Input/InputLabel';
 import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
 import InputUnderlineStyle from '@UI/components/Input/InputUnderlineStyle';
 import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
+import ResizeObserver from '@UI/components/Observers/ResizeObserver';
 import RichTextEditorMenu from '@UI/components/RichTextEditor/Menu/RichTextEditorMenu';
 import RichTextEditorMenuBubble from '@UI/components/RichTextEditor/MenuBubble/RichTextEditorMenuBubble';
 import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
@@ -110,6 +115,7 @@ export default {
         RichTextEditorMenuBubble,
         EditorContent,
         VerticalFixedScroll,
+        ResizeObserver,
         ErrorHint: () => import('@UI/components/Hints/ErrorHint'),
     },
     mixins: [
@@ -218,6 +224,7 @@ export default {
         return {
             isFocused: false,
             editor: null,
+            editorWidth: 0,
         };
     },
     computed: {
@@ -288,6 +295,13 @@ export default {
         this.editor.destroy();
     },
     methods: {
+        onResize(entry) {
+            const {
+                width,
+            } = entry.contentRect;
+
+            this.editorWidth = width;
+        },
         onMenuBubbleActive(isActive) {
             if (!this.isFocused) {
                 this.isFocused = isActive;

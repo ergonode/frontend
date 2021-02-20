@@ -23,14 +23,14 @@
                                 @remove-item="onRemoveItem">
                                 <template #item="{ item }">
                                     <AttributeFormField
-                                        :test="item"
-                                        :is-prefetching-data="fetchingAttributes[item.id]">
+                                        :is-prefetching-data="fetching[item.id]">
                                         <template #attribute>
                                             <Component
-                                                :is="attributeComponents[item.type]"
-                                                :value="attributeValues[item.id]"
+                                                :is="components[item.type]"
+                                                :value="values[`${item.id}|${item.languageCode}`]"
                                                 :attribute="attributes[item.id]"
-                                                :language-code="item.languageCode" />
+                                                :language-code="item.languageCode"
+                                                @input="onValueChange" />
                                         </template>
                                     </AttributeFormField>
                                 </template>
@@ -101,10 +101,10 @@ export default {
     },
     data() {
         return {
-            fetchingAttributes: {},
+            fetching: {},
             attributes: {},
-            attributeComponents: {},
-            attributeValues: {},
+            components: {},
+            values: {},
             formItems: [],
         };
     },
@@ -141,6 +141,16 @@ export default {
             'setDisabledElement',
             'removeDisabledElement',
         ]),
+        onValueChange({
+            key,
+            value,
+            languageCode,
+        }) {
+            this.values = {
+                ...this.values,
+                [`${key}|${languageCode}`]: value,
+            };
+        },
         async onAddItem({
             item,
         }) {
@@ -154,8 +164,8 @@ export default {
 
             if (typeof this.attributes[item.id] === 'undefined') {
                 try {
-                    this.fetchingAttributes = {
-                        ...this.fetchingAttributes,
+                    this.fetching = {
+                        ...this.fetching,
                         [item.id]: true,
                     };
 
@@ -166,7 +176,7 @@ export default {
                         }),
                     ];
 
-                    if (typeof this.attributeComponents[item.type] === 'undefined') {
+                    if (typeof this.components[item.type] === 'undefined') {
                         requests.push(this.getAttributeComponent(item.type));
                     }
 
@@ -178,13 +188,13 @@ export default {
                     this.attributes[item.id] = attributeData;
 
                     if (attributeComponent) {
-                        this.attributeComponents[item.type] = attributeComponent;
+                        this.components[item.type] = attributeComponent;
                     }
 
-                    delete this.fetchingAttributes[item.id];
+                    delete this.fetching[item.id];
 
-                    this.fetchingAttributes = {
-                        ...this.fetchingAttributes,
+                    this.fetching = {
+                        ...this.fetching,
                     };
                 } catch (e) {
                     if (!this.app.$axios.isCancel(e)) {
@@ -225,7 +235,7 @@ export default {
                     component = await import(`@ProductsBatchActions/components/Forms/Fields/Attribute${mappedType}FormField`);
                 }
 
-                this.attributeComponents[type] = component.default;
+                this.components[type] = component.default;
             } catch (e) {
                 this.$addAlert({
                     type: ALERT_TYPE.ERROR,
