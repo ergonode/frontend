@@ -54,6 +54,9 @@ export default {
             return this.attribute.parameters.format;
         },
     },
+    mounted() {
+        this.onValueChange(null);
+    },
     methods: {
         onValueChange(value) {
             this.$emit('input', {

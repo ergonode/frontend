@@ -101,6 +101,9 @@ export default {
             return `${unit.name} (${unit.symbol})`;
         },
     },
+    mounted() {
+        this.onValueChange('');
+    },
     methods: {
         ...mapActions('dictionaries', [
             'getInitialDictionaries',

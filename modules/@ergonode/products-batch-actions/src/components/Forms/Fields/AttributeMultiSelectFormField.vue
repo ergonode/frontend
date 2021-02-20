@@ -4,7 +4,7 @@
  */
 <template>
     <TranslationSelect
-        :value="value"
+        :value="parsedValue"
         :hint="hint"
         :placeholder="placeholder"
         :label="label"
@@ -93,6 +93,12 @@ export default {
         hint() {
             return this.attribute.hint[this.languageCode];
         },
+        parsedValue() {
+            return this.options.filter(option => this.value.some(id => option.id === id));
+        },
+    },
+    mounted() {
+        this.onValueChange('');
     },
     methods: {
         onValueChange(value) {

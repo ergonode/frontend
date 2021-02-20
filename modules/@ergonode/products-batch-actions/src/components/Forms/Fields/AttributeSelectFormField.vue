@@ -4,7 +4,7 @@
  */
 <template>
     <TranslationSelect
-        :value="value"
+        :value="parsedValue"
         :hint="hint"
         :placeholder="placeholder"
         :label="label"
@@ -92,12 +92,22 @@ export default {
         hint() {
             return this.attribute.hint[this.languageCode];
         },
+        parsedValue() {
+            if (!this.value) {
+                return '';
+            }
+
+            return this.options.find(option => option.id === this.value);
+        },
+    },
+    mounted() {
+        this.onValueChange('');
     },
     methods: {
         onValueChange(value) {
             this.$emit('input', {
                 key: this.attribute.id,
-                value,
+                value: value ? value.id : '',
                 languageCode: this.languageCode,
             });
         },

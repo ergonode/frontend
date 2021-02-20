@@ -57,6 +57,9 @@ export default {
             return this.attribute.parameters.currency;
         },
     },
+    mounted() {
+        this.onValueChange('');
+    },
     methods: {
         onValueChange(value) {
             this.$emit('input', {

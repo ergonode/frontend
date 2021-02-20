@@ -37,6 +37,9 @@
                             </DraggableForm>
                         </div>
                     </VerticalFixedScroll>
+                    <UpdateProductsButton
+                        :drafts="values"
+                        :change-values="changeValues" />
                 </div>
             </div>
         </div>
@@ -54,6 +57,8 @@ import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import {
     capitalizeAndConcatenationArray,
 } from '@Core/models/stringWrapper';
+import UpdateProductsButton
+    from '@ProductsBatchActions/components/Buttons/UpdateProductsButton';
 import RemoveFormFieldDropZone
     from '@ProductsBatchActions/components/DropZones/RemoveFormFieldDropZone';
 import AttributeFormField
@@ -70,6 +75,7 @@ import {
 export default {
     name: 'UpdateProductsModal',
     components: {
+        UpdateProductsButton,
         RemoveFormFieldDropZone,
         AttributeFormField,
         VerticalFixedScroll,
@@ -135,11 +141,16 @@ export default {
                 elementId: `${item.id}|${item.code}`,
             });
         });
+
+        this.removeScopeData(this.scope);
     },
     methods: {
         ...mapActions('list', [
             'setDisabledElement',
             'removeDisabledElement',
+        ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
         ]),
         onValueChange({
             key,
@@ -150,6 +161,14 @@ export default {
                 ...this.values,
                 [`${key}|${languageCode}`]: value,
             };
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: [
+                    `${key}|${languageCode}`,
+                ],
+                value,
+            });
         },
         async onAddItem({
             item,
@@ -270,6 +289,7 @@ export default {
         }
 
         &__form-section {
+            position: relative;
             display: flex;
             flex: 1;
             flex-direction: column;

@@ -56,6 +56,9 @@ export default {
             return parameters.rich_edit;
         },
     },
+    mounted() {
+        this.onValueChange('');
+    },
     methods: {
         onValueChange(value) {
             this.$emit('input', {

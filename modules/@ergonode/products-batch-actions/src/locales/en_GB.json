@@ -3,9 +3,18 @@
     "productBatchAction": {
       "_": {
         "title": "Product attributes",
-        "getRequest": "Attribute hasn’t been fetched properly"
+        "getRequest": "Attribute hasn’t been fetched properly",
+        "submit": "SAVE CHANGES"
       },
       "components": {
+        "UpdateProductsButton": {
+          "confirmTitleSingular": "Are you sure you want to clear the value of 1 attribute?",
+          "confirmTitlePlural": "Are you sure you want to clear the values of {info} attributes?",
+          "confirmSubtitle": "Saving an empty attribute will clear its value in all edited products.",
+          "confirmApplySingular": "Clear 1 attribute",
+          "confirmApplyPlural": "Clear {info} attributes",
+          "confirmCancel": "Cancel"
+        },
         "UpdateProductsModal": {
           "title": "Editing {info} products",
           "getComponent": "There is not defined attribute component for {info} type.",

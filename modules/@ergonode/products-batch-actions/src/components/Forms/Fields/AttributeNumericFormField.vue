@@ -48,6 +48,9 @@ export default {
             return this.attribute.hint[this.languageCode];
         },
     },
+    mounted() {
+        this.onValueChange('');
+    },
     methods: {
         onValueChange(value) {
             this.$emit('input', {

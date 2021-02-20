@@ -9,15 +9,13 @@
         <template #default="{ hasValueToSave }">
             <Button
                 data-cy="submit"
-                :title="$t('@Products._.submit')"
+                :title="$t('@ProductsBatchActions.productBatchAction._.submit')"
+                :floating="{ bottom: '24px', right: '24px' }"
                 :disabled="!isAllowedToUpdate"
                 @click.native="onSubmit">
                 <template #prepend="{ color }">
-                    <IconSpinner
-                        v-if="isSubmitting"
-                        :fill-color="color" />
                     <IconSync
-                        v-else-if="hasValueToSave"
+                        v-if="hasValueToSave"
                         :fill-color="color" />
                 </template>
             </Button>
@@ -29,22 +27,20 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
 import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
 import PRIVILEGES from '@Products/config/privileges';
 import Button from '@UI/components/Button/Button';
 import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import IconSync from '@UI/components/Icons/Feedback/IconSync';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'UpdateProductsButton',
     components: {
         FeedbackProvider,
         Button,
-        IconSpinner,
         IconSync,
     },
     mixins: [
@@ -54,10 +50,6 @@ export default {
         drafts: {
             type: Object,
             default: () => ({}),
-        },
-        columns: {
-            type: Array,
-            default: () => [],
         },
     },
     data() {
@@ -73,28 +65,46 @@ export default {
         },
     },
     methods: {
-        ...mapActions('product', [
-            'updateProductsValues',
-        ]),
         async onSubmit() {
-            if (this.isSubmitting) {
-                return;
-            }
+            let emptyValues = 0;
 
-            this.isSubmitting = true;
-
-            this.updateProductsValues({
-                scope: this.scope,
-                drafts: this.drafts,
-                columns: this.columns,
-                onSuccess: this.onUpdateSuccess,
-                onError: this.onUpdateError,
+            Object.keys(this.drafts).forEach((key) => {
+                if (this.drafts[key] === ''
+                    || this.drafts[key] === null
+                    || (Array.isArray(this.drafts[key]) && !this.drafts[key].length)) {
+                    emptyValues += 1;
+                }
             });
+
+            if (emptyValues > 0) {
+                let title = this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.confirmTitleSingular');
+                let applyTitle = this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.confirmApplySingular');
+
+                if (emptyValues === 1) {
+                    title = this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.confirmTitlePlural', {
+                        info: emptyValues,
+                    });
+                    applyTitle = this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.confirmApplyPlural', {
+                        info: emptyValues,
+                    });
+                }
+
+                this.$confirm({
+                    type: MODAL_TYPE.DESTRUCTIVE,
+                    title,
+                    subtitle: this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.confirmSubtitle'),
+                    applyTitle,
+                    cancelTitle: this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.confirmCancel'),
+                    action: () => {
+                        console.log('Applied');
+                    },
+                });
+            }
         },
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('@Products.product.components.UpdateProductsButton.alertSuccess'),
+                message: 'Products have been updated',
             });
 
             this.isSubmitting = false;
