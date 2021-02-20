@@ -26,7 +26,7 @@ export default {
     },
     computed: {
         itemsCountDescription() {
-            return `${this.group.itemsCount} ${this.$t('@ProductsBatchActions.attribute._.title')}`;
+            return `${this.group.itemsCount} ${this.$t('@ProductsBatchActions.productBatchAction._.title')}`;
         },
     },
 };

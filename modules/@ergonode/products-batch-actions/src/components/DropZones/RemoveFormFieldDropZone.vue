@@ -5,7 +5,7 @@
 <template>
     <FadeTransition>
         <DropZone
-            v-show="true"
+            v-show="isDropZoneVisible"
             :hover-background-color="graphiteLightColor"
             :title="$t('@ProductsBatchActions.productBatchAction.components.RemoveFormFieldDropZone.title')">
             <template #icon="{ color }">

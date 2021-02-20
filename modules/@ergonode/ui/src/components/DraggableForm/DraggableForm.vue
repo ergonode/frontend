@@ -20,7 +20,7 @@
                     v-text="title" />
             </template>
             <template #body>
-                <DraggableFormPlaceholderItem v-if="!localItems.length" />
+                <DraggableFormPlaceholderItem v-if="isPlaceholderItemVisible" />
                 <DraggableFormItem
                     v-for="(item, index) in localItems"
                     :key="item.id"
@@ -131,6 +131,10 @@ export default {
         ]),
         itemsOrder() {
             return this.localItems.map(item => item.id);
+        },
+        isPlaceholderItemVisible() {
+            return !this.localItems.length
+                || (this.localItems.length === 1 && this.draggedElement && this.ghostIndex === -1);
         },
     },
     watch: {

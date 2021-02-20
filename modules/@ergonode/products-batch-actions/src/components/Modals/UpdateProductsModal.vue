@@ -23,8 +23,16 @@
                                 @remove-item="onRemoveItem">
                                 <template #item="{ item }">
                                     <AttributeFormField
-                                        :item="item"
-                                        :is-prefetching-data="fetchingAttributes[item.id]" />
+                                        :test="item"
+                                        :is-prefetching-data="fetchingAttributes[item.id]">
+                                        <template #attribute>
+                                            <Component
+                                                :is="attributeComponents[item.type]"
+                                                :value="attributeValues[item.id]"
+                                                :attribute="attributes[item.id]"
+                                                :language-code="item.languageCode" />
+                                        </template>
+                                    </AttributeFormField>
                                 </template>
                             </DraggableForm>
                         </div>
@@ -43,10 +51,13 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
+import {
+    capitalizeAndConcatenationArray,
+} from '@Core/models/stringWrapper';
 import RemoveFormFieldDropZone
-    from '@Modules/@ergonode/products-batch-actions/src/components/DropZones/RemoveFormFieldDropZone';
+    from '@ProductsBatchActions/components/DropZones/RemoveFormFieldDropZone';
 import AttributeFormField
-    from '@ProductsBatchActions/extends/attribute/components/Forms/Fields/AttributeFormField';
+    from '@ProductsBatchActions/components/Forms/Fields/AttributeFormField';
 import DraggableForm from '@UI/components/DraggableForm/DraggableForm';
 import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
 import ModalHeader from '@UI/components/Modal/ModalHeader';
@@ -92,6 +103,8 @@ export default {
         return {
             fetchingAttributes: {},
             attributes: {},
+            attributeComponents: {},
+            attributeValues: {},
             formItems: [],
         };
     },
@@ -104,8 +117,8 @@ export default {
         verticalTabs() {
             return [
                 {
-                    title: this.$t('@ProductsBatchActions.attribute._.title'),
-                    component: () => import('@ProductsBatchActions/extends/attribute/components/VerticalTabs/AttributesVerticalTab'),
+                    title: this.$t('@ProductsBatchActions.productBatchAction._.title'),
+                    component: () => import('@ProductsBatchActions/components/VerticalTabs/AttributesVerticalTab'),
                     icon: () => import('@Attributes/components/Icons/IconAttributes'),
                     props: {
                         ids: this.ids,
@@ -146,10 +159,27 @@ export default {
                         [item.id]: true,
                     };
 
-                    this.attributes[item.id] = await getAttribute({
-                        $axios: this.$axios,
-                        id: item.id,
-                    });
+                    const requests = [
+                        getAttribute({
+                            $axios: this.$axios,
+                            id: item.id,
+                        }),
+                    ];
+
+                    if (typeof this.attributeComponents[item.type] === 'undefined') {
+                        requests.push(this.getAttributeComponent(item.type));
+                    }
+
+                    const [
+                        attributeData,
+                        attributeComponent,
+                    ] = await Promise.all(requests);
+
+                    this.attributes[item.id] = attributeData;
+
+                    if (attributeComponent) {
+                        this.attributeComponents[item.type] = attributeComponent;
+                    }
 
                     delete this.fetchingAttributes[item.id];
 
@@ -160,7 +190,7 @@ export default {
                     if (!this.app.$axios.isCancel(e)) {
                         this.$addAlert({
                             type: ALERT_TYPE.ERROR,
-                            message: this.$t('@ProductsBatchActions.attribute._.getRequest'),
+                            message: this.$t('@ProductsBatchActions.productBatchAction._.getRequest'),
                         });
                     }
                 }
@@ -180,6 +210,30 @@ export default {
             this.removeScopeData(this.scope);
 
             this.$emit('close');
+        },
+        async getAttributeComponent(type) {
+            try {
+                const extendedSlots = this.$getExtendSlot('@ProductsBatchActions/components/Forms/Fields');
+
+                let component = null;
+
+                if (extendedSlots && typeof extendedSlots[type] === 'function') {
+                    component = await extendedSlots[type]();
+                } else {
+                    const mappedType = capitalizeAndConcatenationArray(type.split('_'));
+
+                    component = await import(`@ProductsBatchActions/components/Forms/Fields/Attribute${mappedType}FormField`);
+                }
+
+                this.attributeComponents[type] = component.default;
+            } catch (e) {
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsModal.getComponent', {
+                        info: type,
+                    }),
+                });
+            }
         },
     },
 };

@@ -4,7 +4,7 @@
  */
 <template>
     <SideBar
-        :title="$t('@ProductsBatchActions.attribute._.title')"
+        :title="$t('@ProductsBatchActions.productBatchAction._.title')"
         :items="groupedAttributesByLanguage"
         :expanded="expandedGroup"
         :searchable="true"
@@ -12,7 +12,7 @@
         @search="onSearch">
         <template #header>
             <ListSearchSelectHeader
-                :title="$t('@ProductsBatchActions.attribute._.title')"
+                :title="$t('@ProductsBatchActions.productBatchAction._.title')"
                 :search-value="searchValue"
                 @search="onSearch">
                 <template #select>
@@ -27,8 +27,8 @@
         </template>
         <template #noDataPlaceholder>
             <SideBarNoDataPlaceholder
-                :title="$t('@ProductsBatchActions.attribute.components.AttributesSideBar.noAttributesTitle')"
-                :subtitle="$t('@ProductsBatchActions.attribute.components.AttributesSideBar.noAttributesSubtitle')" />
+                :title="$t('@ProductsBatchActions.productBatchAction.components.AttributesSideBar.noAttributesTitle')"
+                :subtitle="$t('@ProductsBatchActions.productBatchAction.components.AttributesSideBar.noAttributesSubtitle')" />
         </template>
         <template #item="{ item, onExpand }">
             <AttributeSideBarGroupElement
@@ -58,8 +58,8 @@ import {
     getGroups,
     getItems,
 } from '@Core/services/sidebar';
-import AttributeSideBarElement from '@ProductsBatchActions/extends/attribute/components/SideBars/AttributeSideBarElement';
-import AttributeSideBarGroupElement from '@ProductsBatchActions/extends/attribute/components/SideBars/AttributeSideBarGroupElement';
+import AttributeSideBarElement from '@ProductsBatchActions/components/SideBars/AttributeSideBarElement';
+import AttributeSideBarGroupElement from '@ProductsBatchActions/components/SideBars/AttributeSideBarGroupElement';
 import {
     getTemplates,
 } from '@ProductsBatchActions/services';
@@ -225,7 +225,7 @@ export default {
                 this.groupedAttributes[languageCode].push({
                     id: UNASSIGNED_GROUP_ID,
                     key: getUUID(),
-                    value: this.$t('@ProductsBatchActions.attribute.components.AttributesSideBar.notAssigned'),
+                    value: this.$t('@ProductsBatchActions.productBatchAction.components.AttributesSideBar.notAssigned'),
                     hint: '',
                     itemsCount: unassignedItems.length,
                     children: unassignedItems,

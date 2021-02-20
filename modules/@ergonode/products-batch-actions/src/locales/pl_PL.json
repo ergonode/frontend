@@ -1,9 +1,14 @@
 {
   "@ProductsBatchActions": {
     "productBatchAction": {
+      "_": {
+        "title": "Atrybuty produktów",
+        "getRequest": "Atrybut nie został pobrany prawidłowo"
+      },
       "components": {
         "UpdateProductsModal": {
           "title": "Edytowanie {info} produktów",
+          "getComponent": "Nie ma zdefiniowanego komponentu atrybutu dla typu {info}.",
           "draggableFormTitle": "Edytowane atrybuty"
         },
         "ProductsBatchActions": {
@@ -16,15 +21,7 @@
         },
         "RemoveFormFieldDropZone": {
           "title": "Usuń element"
-        }
-      }
-    },
-    "attribute": {
-      "_": {
-        "title": "Atrybuty produktów",
-        "getRequest": "Atrybut nie został pobrany prawidłowo"
-      },
-      "components": {
+        },
         "AttributesSideBar": {
           "noAttributesTitle": "Brak atrybutów",
           "noAttributesSubtitle": "Brak wspólnych atrybutów dla wybranych produktów.",

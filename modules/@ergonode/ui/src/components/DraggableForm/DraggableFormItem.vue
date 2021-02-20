@@ -14,10 +14,12 @@
         <IconDragDrop
             ref="dragIcon"
             class="draggable-form-item__drag-icon" />
-        <slot
-            v-if="!isGhostVisible"
-            name="item" />
-        <DraggableFormGhostItem v-else />
+        <div
+            v-show="!isGhostVisible"
+            class="draggable-form-item__body">
+            <slot name="item" />
+        </div>
+        <DraggableFormGhostItem v-show="isGhostVisible" />
         <IconButton
             class="draggable-form-item__remove-button"
             :size="smallSize"
@@ -232,7 +234,7 @@ export default {
         display: grid;
         grid-auto-flow: column;
         grid-template-columns: max-content 1fr max-content;
-        align-items: center;
+        align-items: flex-start;
         grid-column-gap: 8px;
 
         &--hidden {
@@ -240,7 +242,12 @@ export default {
         }
 
         &__drag-icon {
+            margin-top: 8px;
             cursor: grab;
+        }
+
+        &__remove-button {
+            margin-top: 4px;
         }
 
         &__drag-icon, &__remove-button {

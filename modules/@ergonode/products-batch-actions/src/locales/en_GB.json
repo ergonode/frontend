@@ -1,9 +1,14 @@
 {
   "@ProductsBatchActions": {
     "productBatchAction": {
+      "_": {
+        "title": "Product attributes",
+        "getRequest": "Attribute hasn’t been fetched properly"
+      },
       "components": {
         "UpdateProductsModal": {
           "title": "Editing {info} products",
+          "getComponent": "There is not defined attribute component for {info} type.",
           "draggableFormTitle": "Edited attributes"
         },
         "ProductsBatchActions": {
@@ -16,15 +21,7 @@
         },
         "RemoveFormFieldDropZone": {
           "title": "Remove item"
-        }
-      }
-    },
-    "attribute": {
-      "_": {
-        "title": "Product attributes",
-        "getRequest": "Attribute hasn’t been fetched properly"
-      },
-      "components": {
+        },
         "AttributesSideBar": {
           "noAttributesTitle": "No attributes",
           "noAttributesSubtitle": "There are no common attributes for selected products.",

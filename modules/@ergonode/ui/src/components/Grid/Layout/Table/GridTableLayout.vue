@@ -565,24 +565,40 @@ export default {
                 const column = this.visibleColumns[i];
 
                 if (typeof this.columnTypes[column.type] === 'undefined') {
-                    this.columnTypes[column.type] = this.getColumnTypeName(column);
+                    const {
+                        type,
+                    } = column;
 
-                    if (this.extendedComponents.dataCells
-                        && this.extendedComponents.dataCells[column.type]) {
-                        this.setExtendedDataCell(column);
-                    } else {
-                        requests.push(this.setDataCell(column.type));
+                    this.columnTypes[type] = this.getColumnTypeName(column);
+
+                    try {
+                        if (this.extendedComponents.dataCells
+                            && this.extendedComponents.dataCells[type]) {
+                            requests.push(this.setExtendedDataCell(type));
+                        } else {
+                            requests.push(this.setDataCell(type));
+                        }
+                    } catch (e) {
+                        requests.push(this.setDefaultDataCell(type));
                     }
                 }
 
                 if (column.filter && typeof this.filterTypes[column.filter.type] === 'undefined') {
-                    this.filterTypes[column.filter.type] = this.getColumnFilterTypeName(column);
+                    const {
+                        type,
+                    } = column.filter;
 
-                    if (this.extendedComponents.dataFilterCells
-                        && this.extendedComponents.dataFilterCells[column.filter.type]) {
-                        this.setExtendedFilterDataCell(column);
-                    } else {
-                        requests.push(this.setDataFilterCell(column.filter.type));
+                    this.filterTypes[type] = this.getColumnFilterTypeName(column);
+
+                    try {
+                        if (this.extendedComponents.dataFilterCells
+                            && this.extendedComponents.dataFilterCells[type]) {
+                            requests.push(this.setExtendedFilterDataCell(type));
+                        } else {
+                            requests.push(this.setDataFilterCell(type));
+                        }
+                    } catch (e) {
+                        requests.push(this.setDefaultDataFilterCell(type));
                     }
                 }
 
@@ -596,7 +612,11 @@ export default {
                 } = actionColumns[i];
 
                 if (typeof this.actionCellComponents[id] === 'undefined') {
-                    requests.push(this.setActionCell(id));
+                    try {
+                        requests.push(this.setActionCell(id));
+                    } catch (e) {
+                        requests.push(this.setDefaultActionCell(id));
+                    }
                 }
             }
 
@@ -698,34 +718,39 @@ export default {
         getColumnTypeName(column) {
             return capitalizeAndConcatenationArray(column.type.split('_'));
         },
-        setExtendedFilterDataCell(column) {
-            this.dataFilterCellComponents[
-                column.filter.type
-            ] = this.extendedComponents.dataFilterCells[column.filter.type];
-        },
-        setExtendedDataCell(column) {
-            this.dataCellComponents[
-                column.type
-            ] = this.extendedComponents.dataCells[column.type];
-        },
-        setDataCell(type) {
-            return import(`@UI/components/Grid/Layout/Table/Cells/Data/Grid${this.columnTypes[type]}DataCell`)
-                .then((response) => {
-                    this.dataCellComponents[type] = response.default;
-                })
-                .catch(() => import('@UI/components/Grid/Layout/Table/Cells/Data/GridTextDataCell')
-                    .then((response) => {
-                        this.dataCellComponents[type] = response.default;
-                    }));
+        setExtendedFilterDataCell(type) {
+            return this.extendedComponents.dataFilterCells[type]().then((response) => {
+                this.dataFilterCellComponents[type] = response;
+            });
         },
         setDataFilterCell(type) {
             return import(`@UI/components/Grid/Layout/Table/Cells/Data/Filter/Grid${this.filterTypes[type]}FilterDataCell`)
                 .then((response) => {
                     this.dataFilterCellComponents[type] = response.default;
-                }).catch(() => import('@UI/components/Grid/Layout/Table/Cells/Data/Filter/GridDefaultFilterDataCell')
-                    .then((response) => {
-                        this.dataFilterCellComponents[type] = response.default;
-                    }));
+                });
+        },
+        setDefaultDataFilterCell(type) {
+            return import('@UI/components/Grid/Layout/Table/Cells/Data/Filter/GridDefaultFilterDataCell')
+                .then((response) => {
+                    this.dataFilterCellComponents[type] = response.default;
+                });
+        },
+        setExtendedDataCell(type) {
+            return this.extendedComponents.dataCells[type]().then((response) => {
+                this.dataCellComponents[type] = response;
+            });
+        },
+        setDataCell(type) {
+            return import(`@UI/components/Grid/Layout/Table/Cells/Data/Grid${this.columnTypes[type]}DataCell`)
+                .then((response) => {
+                    this.dataCellComponents[type] = response.default;
+                });
+        },
+        setDefaultDataCell(type) {
+            return import('@UI/components/Grid/Layout/Table/Cells/Data/GridTextDataCell')
+                .then((response) => {
+                    this.dataCellComponents[type] = response.default;
+                });
         },
         setActionCell(id) {
             const type = capitalizeAndConcatenationArray(id.split('_'));
@@ -733,11 +758,13 @@ export default {
             return import(`@UI/components/Grid/Layout/Table/Cells/Action/Grid${type}ActionCell`)
                 .then((response) => {
                     this.actionCellComponents[id] = response.default;
-                })
-                .catch(() => import('@UI/components/Grid/Layout/Table/Cells/GridTableCell')
-                    .then((response) => {
-                        this.actionCellComponents[id] = response.default;
-                    }));
+                });
+        },
+        setDefaultActionCell(id) {
+            return import('@UI/components/Grid/Layout/Table/Cells/GridTableCell')
+                .then((response) => {
+                    this.actionCellComponents[id] = response.default;
+                });
         },
         getGridTableLayoutReference() {
             return this.$refs.gridTableLayout;
