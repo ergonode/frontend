@@ -77,16 +77,16 @@ export default {
             });
 
             if (emptyValues > 0) {
-                let title = this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.confirmTitleSingular');
-                let applyTitle = this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.confirmApplySingular');
+                let title = this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.confirmTitlePlural', {
+                    info: emptyValues,
+                });
+                let applyTitle = this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.confirmApplyPlural', {
+                    info: emptyValues,
+                });
 
                 if (emptyValues === 1) {
-                    title = this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.confirmTitlePlural', {
-                        info: emptyValues,
-                    });
-                    applyTitle = this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.confirmApplyPlural', {
-                        info: emptyValues,
-                    });
+                    title = this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.confirmTitleSingular');
+                    applyTitle = this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.confirmApplySingular');
                 }
 
                 this.$confirm({
@@ -107,16 +107,12 @@ export default {
                 message: 'Products have been updated',
             });
 
-            this.isSubmitting = false;
-
             this.markChangeValuesAsSaved(this.scope);
 
             this.$emit('updated');
         },
         onUpdateError(errors) {
             this.onError(errors);
-
-            this.isSubmitting = false;
         },
     },
 };

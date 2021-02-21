@@ -7,28 +7,23 @@
         :value="value"
         :input="{ type: 'number' }"
         :hint="hint"
+        :format="format"
         :placeholder="placeholder"
         :label="label"
-        @input="onValueChange">
-        <template #append>
-            <TextFieldSuffix :suffix="format" />
-        </template>
-    </DatePicker>
+        @input="onValueChange" />
 </template>
 
 <script>
 import DatePicker from '@UI/components/DatePicker/DatePicker';
-import TextFieldSuffix from '@UI/components/TextField/TextFieldSuffix';
 
 export default {
     name: 'AttributePriceFormField',
     components: {
         DatePicker,
-        TextFieldSuffix,
     },
     props: {
         value: {
-            type: Object,
+            type: Date,
             default: null,
         },
         attribute: {
