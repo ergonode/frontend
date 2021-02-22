@@ -30,6 +30,9 @@
                                                 :value="values[`${item.id}|${item.languageCode}`]"
                                                 :attribute="attributes[item.id]"
                                                 :language-code="item.languageCode"
+                                                :error-messages="scopeErrors[
+                                                    `${item.id}|${item.languageCode}`
+                                                ]"
                                                 @input="onValueChange" />
                                         </template>
                                     </AttributeFormField>
