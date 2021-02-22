@@ -11,6 +11,7 @@
         :multiselect="true"
         :options="options"
         :error-messages="errorMessages"
+        @focus="onFocus"
         @input="onValueChange">
         <template #append>
             <IconSpinner
@@ -112,6 +113,15 @@ export default {
                 value,
                 languageCode: this.languageCode,
             });
+        },
+        onFocus(isFocused) {
+            if (!isFocused) {
+                this.$emit('blur', {
+                    key: this.attribute.id,
+                    value: this.value,
+                    languageCode: this.languageCode,
+                });
+            }
         },
     },
 };

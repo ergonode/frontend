@@ -10,6 +10,7 @@
         :label="label"
         :options="options"
         :error-messages="errorMessages"
+        @focus="onFocus"
         @input="onValueChange">
         <template #append>
             <IconSpinner
@@ -115,6 +116,15 @@ export default {
                 value: value ? value.id : '',
                 languageCode: this.languageCode,
             });
+        },
+        onFocus(isFocused) {
+            if (!isFocused) {
+                this.$emit('blur', {
+                    key: this.attribute.id,
+                    value: this.value,
+                    languageCode: this.languageCode,
+                });
+            }
         },
     },
 };

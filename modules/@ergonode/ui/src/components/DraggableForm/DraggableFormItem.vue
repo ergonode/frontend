@@ -13,10 +13,12 @@
         <IconDragDrop
             ref="dragIcon"
             class="draggable-form-item__drag-icon" />
-        <slot
-            v-if="!isGhostVisible"
-            name="item" />
-        <DraggableFormGhostItem v-else />
+        <div
+            v-show="!isGhostVisible"
+            class="draggable-form-item__body">
+            <slot name="item" />
+        </div>
+        <DraggableFormGhostItem v-show="isGhostVisible" />
         <IconButton
             class="draggable-form-item__remove-button"
             :size="smallSize"

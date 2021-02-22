@@ -689,7 +689,6 @@ export default {
                 await this.validateProduct({
                     fieldKey: `${rowId}/${columnId}`,
                     languageCode: columnId.split(':')[1],
-                    productId: rowId,
                     elementId: cachedElementIds[columnId],
                     value,
                     scope: this.scope,

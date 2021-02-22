@@ -198,7 +198,6 @@ export default {
             event.preventDefault();
         },
         onDrop() {
-            console.log(this.ghostIndex, this.draggedElIndex);
             if (this.draggedElIndex === -1 && this.ghostIndex !== -1) {
                 this.$emit('add-item', {
                     index: this.ghostIndex,

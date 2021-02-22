@@ -94,14 +94,17 @@ export default {
         },
     },
     async fetch() {
+        const params = {};
+
+        if (this.ids.length || this.excludedIds.length) {
+            params.ids = {
+                list: this.ids.length > 0 ? this.ids : this.excludedIds,
+                included: this.ids.length > 0,
+            };
+        }
         this.templateIds = await getTemplates({
             $axios: this.$axios,
-            params: {
-                ids: {
-                    list: this.ids.length > 0 ? this.ids : this.excludedIds,
-                    included: this.ids.length > 0,
-                },
-            },
+            params,
         });
 
         await this.getAttributesForLanguage({
@@ -132,13 +135,7 @@ export default {
     created() {
         this.languageCode = this.defaultLanguageCode;
     },
-    beforeDestroy() {
-        // DISABLE
-    },
     methods: {
-        ...mapActions('list', [
-            'setDisabledElements',
-        ]),
         async onExpandGroup({
             item,
             onExpand,

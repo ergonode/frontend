@@ -143,22 +143,27 @@ export default {
                 });
             });
 
+            const request = {
+                type: '$post',
+                href: 'batch-action',
+                payload: {
+                    type: BATCH_ACTION_TYPE.UPDATE_PRODUCTS,
+                    payload,
+                },
+            };
+
+            if (this.ids.length || this.excludedIds.length) {
+                request.filter = {
+                    ids: {
+                        list: this.ids.length > 0 ? this.ids : this.excludedIds,
+                        included: this.ids.length > 0,
+                    },
+                };
+            }
+
             this.addBatchAction({
                 id: uuid,
-                request: {
-                    type: '$post',
-                    href: 'batch-action',
-                    filter: {
-                        ids: {
-                            list: this.ids.length > 0 ? this.ids : this.excludedIds,
-                            included: this.ids.length > 0,
-                        },
-                    },
-                    payload: {
-                        type: BATCH_ACTION_TYPE.UPDATE_PRODUCTS,
-                        payload,
-                    },
-                },
+                request,
             });
 
             this.$emit('apply');

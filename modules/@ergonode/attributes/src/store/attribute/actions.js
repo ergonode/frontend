@@ -8,6 +8,7 @@ import {
     getAll,
     remove,
     update,
+    validateValue,
 } from '@Attributes/services/attribute';
 import {
     ALERT_TYPE,
@@ -336,6 +337,39 @@ export default {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
                     message: this.app.i18n.t('@Attributes.attribute.store.action.deleteCancel'),
+                });
+
+                return;
+            }
+
+            onError(e);
+        }
+    },
+    async validateAttributeValue({
+        commit,
+    }, {
+        id,
+        languageCode,
+        value,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            await validateValue({
+                $axios: this.app.$axios,
+                id,
+                languageCode,
+                data: {
+                    value,
+                },
+            });
+
+            onSuccess(id);
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: this.app.i18n.t('@Attributes.attribute.store.action.validateCancel'),
                 });
 
                 return;

@@ -12,8 +12,9 @@
         :placeholder="placeholder"
         :label="label"
         :error-messages="errorMessages"
-        @input="onValueChange"
-        @blur="onBlur" />
+        @blur="onBlur"
+        @focus="onFocus"
+        @input="onValueChange" />
 </template>
 
 <script>
@@ -77,6 +78,20 @@ export default {
                 this.$emit('input', {
                     key: this.attribute.id,
                     value,
+                    languageCode: this.languageCode,
+                });
+                this.$emit('blur', {
+                    key: this.attribute.id,
+                    value,
+                    languageCode: this.languageCode,
+                });
+            }
+        },
+        onFocus(isFocused) {
+            if (!isFocused) {
+                this.$emit('blur', {
+                    key: this.attribute.id,
+                    value: this.value,
                     languageCode: this.languageCode,
                 });
             }

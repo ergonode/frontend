@@ -96,22 +96,26 @@ export default {
                             onApply();
 
                             const uuid = getUUID();
+                            const request = {
+                                type: '$post',
+                                href: 'batch-action',
+                                payload: {
+                                    type: BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
+                                },
+                            };
+
+                            if (ids.length || excludedIds.length) {
+                                request.filter = {
+                                    ids: {
+                                        list: ids.length > 0 ? ids : excludedIds,
+                                        included: ids.length > 0,
+                                    },
+                                };
+                            }
 
                             this.addBatchAction({
                                 id: uuid,
-                                request: {
-                                    type: '$post',
-                                    href: 'batch-action',
-                                    payload: {
-                                        type: BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
-                                        filter: {
-                                            ids: {
-                                                list: ids.length > 0 ? ids : excludedIds,
-                                                included: ids.length > 0,
-                                            },
-                                        },
-                                    },
-                                },
+                                request,
                             });
 
                             document.documentElement.addEventListener(

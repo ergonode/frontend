@@ -33,6 +33,7 @@
                                                 :error-messages="scopeErrors[
                                                     `${item.id}|${item.languageCode}`
                                                 ]"
+                                                @blur="onBlur"
                                                 @input="onValueChange" />
                                         </template>
                                     </AttributeFormField>
@@ -43,7 +44,7 @@
                     <UpdateProductsButton
                         :drafts="values"
                         :change-values="changeValues"
-                        @apply="onApply" />
+                        @apply="onApplyProductsUpdateBatchAction" />
                 </div>
             </div>
         </div>
@@ -153,6 +154,9 @@ export default {
             'setDisabledElement',
             'removeDisabledElement',
         ]),
+        ...mapActions('attribute', [
+            'validateAttributeValue',
+        ]),
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
@@ -172,6 +176,33 @@ export default {
                     `${key}|${languageCode}`,
                 ],
                 value,
+            });
+        },
+        async onBlur({
+            key,
+            value,
+            languageCode,
+        }) {
+            await this.validateAttributeValue({
+                id: key,
+                languageCode,
+                value,
+                onError: e => this.onValidateAttributeValueError({
+                    errors: e.data.errors,
+                    fieldKeys: {
+                        value: `${key}|${languageCode}`,
+                    },
+                }),
+            });
+        },
+        onValidateAttributeValueError({
+            errors,
+            fieldKeys,
+        }) {
+            this.onError({
+                errors,
+                fieldKeys,
+                scope: this.scope,
             });
         },
         async onAddItem({
@@ -239,9 +270,11 @@ export default {
 
             this.formItems.splice(index, 1);
         },
+        onApplyProductsUpdateBatchAction() {
+            this.onApply();
+            this.onClose();
+        },
         onClose() {
-            this.removeScopeData(this.scope);
-
             this.$emit('close');
         },
         async getAttributeComponent(type) {
