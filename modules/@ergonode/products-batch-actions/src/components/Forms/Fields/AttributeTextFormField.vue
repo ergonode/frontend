@@ -8,6 +8,7 @@
         :hint="hint"
         :placeholder="placeholder"
         :label="label"
+        :error-messages="errorMessages"
         @input="onValueChange" />
 </template>
 
@@ -31,6 +32,10 @@ export default {
         languageCode: {
             type: String,
             required: true,
+        },
+        errorMessages: {
+            type: String,
+            default: '',
         },
     },
     computed: {

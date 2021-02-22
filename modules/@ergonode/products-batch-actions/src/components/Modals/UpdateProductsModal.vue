@@ -39,7 +39,8 @@
                     </VerticalFixedScroll>
                     <UpdateProductsButton
                         :drafts="values"
-                        :change-values="changeValues" />
+                        :change-values="changeValues"
+                        @apply="onApply" />
                 </div>
             </div>
         </div>

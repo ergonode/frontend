@@ -6,7 +6,6 @@
     <Component
         :is="styleComponent"
         ref="activator"
-        :style="{ height, flexBasis: height }"
         :height="height"
         :focused="isFocused"
         :error="isError"

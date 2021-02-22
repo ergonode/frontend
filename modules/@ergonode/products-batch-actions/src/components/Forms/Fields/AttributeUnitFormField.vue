@@ -9,6 +9,7 @@
         :hint="hint"
         :placeholder="placeholder"
         :label="label"
+        :error-messages="errorMessages"
         @input="onValueChange">
         <template #append>
             <IconSpinner
@@ -55,6 +56,10 @@ export default {
         languageCode: {
             type: String,
             required: true,
+        },
+        errorMessages: {
+            type: String,
+            default: '',
         },
     },
     async fetch() {

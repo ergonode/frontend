@@ -25,16 +25,22 @@
 
 <script>
 import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
-import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
 import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
 import PRIVILEGES from '@Products/config/privileges';
+import {
+    BATCH_ACTION_TYPE,
+} from '@ProductsBatchActions/defaults';
 import Button from '@UI/components/Button/Button';
 import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
 import IconSync from '@UI/components/Icons/Feedback/IconSync';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'UpdateProductsButton',
@@ -51,11 +57,14 @@ export default {
             type: Object,
             default: () => ({}),
         },
-    },
-    data() {
-        return {
-            isSubmitting: false,
-        };
+        ids: {
+            type: Array,
+            default: () => [],
+        },
+        excludedIds: {
+            type: Array,
+            default: () => [],
+        },
     },
     computed: {
         isAllowedToUpdate() {
@@ -65,10 +74,16 @@ export default {
         },
     },
     methods: {
+        ...mapActions('batchAction', [
+            'addBatchAction',
+            'removeBatchAction',
+        ]),
         async onSubmit() {
             let emptyValues = 0;
 
-            Object.keys(this.drafts).forEach((key) => {
+            const keys = Object.keys(this.drafts);
+
+            keys.forEach((key) => {
                 if (this.drafts[key] === ''
                     || this.drafts[key] === null
                     || (Array.isArray(this.drafts[key]) && !this.drafts[key].length)) {
@@ -95,24 +110,58 @@ export default {
                     subtitle: this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.confirmSubtitle'),
                     applyTitle,
                     cancelTitle: this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.confirmCancel'),
-                    action: () => {
-                        console.log('Applied');
-                    },
+                    action: this.onUpdateProducts,
                 });
+            } else {
+                this.onUpdateProducts();
             }
         },
-        onUpdateSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Products have been updated',
+        onUpdateProducts() {
+            const keys = Object.keys(this.drafts);
+            const uuid = getUUID();
+
+            const tmp = {};
+            const payload = [];
+
+            keys.forEach((key) => {
+                const [
+                    id,
+                    languageCode,
+                ] = key.split('|');
+
+                if (typeof tmp[id] === 'undefined') {
+                    tmp[id] = payload.length;
+                    payload[tmp[id]] = {
+                        id,
+                        values: [],
+                    };
+                }
+
+                payload[tmp[id]].values.push({
+                    language: languageCode,
+                    value: this.drafts[key],
+                });
             });
 
-            this.markChangeValuesAsSaved(this.scope);
+            this.addBatchAction({
+                id: uuid,
+                request: {
+                    type: '$post',
+                    href: 'batch-action',
+                    filter: {
+                        ids: {
+                            list: this.ids.length > 0 ? this.ids : this.excludedIds,
+                            included: this.ids.length > 0,
+                        },
+                    },
+                    payload: {
+                        type: BATCH_ACTION_TYPE.UPDATE_PRODUCTS,
+                        payload,
+                    },
+                },
+            });
 
-            this.$emit('updated');
-        },
-        onUpdateError(errors) {
-            this.onError(errors);
+            this.$emit('apply');
         },
     },
 };

@@ -6,7 +6,9 @@
     <div
         class="draggable-form"
         @dragenter="onDragEnter"
-        @dragleave="onDragLeave">
+        @dragleave="onDragLeave"
+        @drop="onDrop"
+        @dragover="onDragOver">
         <Form
             :title="title"
             :disabled="disabled"
@@ -27,7 +29,6 @@
                     :index="index"
                     :item="item"
                     @remove-item="onRemoveItem"
-                    @add-item="onAddItem"
                     @swap="onSwapItems">
                     <template #item>
                         <slot
@@ -193,11 +194,29 @@ export default {
                 });
             }
         },
+        onDragOver(event) {
+            event.preventDefault();
+        },
+        onDrop() {
+            console.log(this.ghostIndex, this.draggedElIndex);
+            if (this.draggedElIndex === -1 && this.ghostIndex !== -1) {
+                this.$emit('add-item', {
+                    index: this.ghostIndex,
+                    item: this.draggedElement,
+                });
+
+                this.__setState({
+                    key: 'draggedElement',
+                    value: null,
+                });
+                this.__setState({
+                    key: 'ghostIndex',
+                    value: -1,
+                });
+            }
+        },
         onRemoveItem(index) {
             this.$emit('remove-item', index);
-        },
-        onAddItem(payload) {
-            this.$emit('add-item', payload);
         },
         onSwapItems({
             from,

@@ -5,7 +5,7 @@
 <template>
     <BatchActionsButton
         :highlighted="isAnyRowSelected"
-        :options="batchActions"
+        :options="actionsOptions"
         :selected-rows-count="selectedRowsCount"
         @action="onActionSelect">
         <UpdateProductsModal
@@ -70,8 +70,8 @@ export default {
     },
     computed: {
         ...mapState('batchAction', {
-            batchActions: state => state.batchActions,
-            removeProductsBatchActions: state => state.batchActions.filter(
+            actions: state => state.actions,
+            removeProductsBatchActions: state => state.actions.filter(
                 batchAction => batchAction.payload.type === BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
             ),
         }),
@@ -93,7 +93,7 @@ export default {
                             info: ids.length,
                         }),
                         action: () => {
-                            onApply(ids);
+                            onApply();
 
                             const uuid = getUUID();
 
@@ -141,22 +141,22 @@ export default {
                 },
             };
         },
-        batchActions() {
-            const batchActions = [];
+        actionsOptions() {
+            const actionsOptions = [];
 
             if (this.$hasAccess([
                 PRIVILEGES.PRODUCT.delete,
             ])) {
-                batchActions.push(this.removeBatchActionItem);
+                actionsOptions.push(this.removeBatchActionItem);
             }
 
             if (this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ])) {
-                batchActions.push(this.editBatchActionItem);
+                actionsOptions.push(this.editBatchActionItem);
             }
 
-            return batchActions;
+            return actionsOptions;
         },
         isAnyRowSelected() {
             return this.selectedRowsCount > 0;
@@ -185,7 +185,6 @@ export default {
     methods: {
         ...mapActions('batchAction', [
             'addBatchAction',
-            'removeBatchAction',
         ]),
         onActionSelect(option) {
             const payload = {
@@ -211,16 +210,6 @@ export default {
         },
         async onRemoveProductsBatchAction(event) {
             if (!event.detail.error) {
-                const batchActionIndex = this.batchActions.findIndex(
-                    batchAction => batchAction.id === event.detail.id,
-                );
-
-                document.documentElement.removeEventListener(
-                    event.detail.id,
-                    this.onRemoveProductsBatchAction,
-                );
-                this.removeBatchAction(batchActionIndex);
-
                 this.$addAlert({
                     type: ALERT_TYPE.SUCCESS,
                     message: this.$t('@ProductsBatchActions.productBatchAction.components.ProductsBatchActions.successAlert'),
@@ -228,6 +217,11 @@ export default {
 
                 this.onFetchData();
             }
+
+            document.documentElement.removeEventListener(
+                event.detail.id,
+                this.onRemoveProductsBatchAction,
+            );
         },
         onCloseUpdatingProductsModal() {
             this.updatingProductsPayload = null;

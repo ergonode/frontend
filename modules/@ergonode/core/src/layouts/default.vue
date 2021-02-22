@@ -13,12 +13,11 @@
             </template>
             <template #actions>
                 <ToolBarUserButton />
-                <template v-for="(component, index) in extendedComponents">
-                    <Component
-                        :is="component.component"
-                        :key="index"
-                        v-bind="component.props" />
-                </template>
+                <Component
+                    v-for="(component, index) in extendedNavigationBarComponents"
+                    :is="component.component"
+                    :key="index"
+                    v-bind="component.props" />
             </template>
         </ToolBar>
         <NavigationSideBar @expand="onExpandNavigationSideBar" />
@@ -37,9 +36,6 @@
 </template>
 
 <script>
-import {
-    create,
-} from '@BatchActions/services';
 import ToolBarUserButton from '@Core/components/ToolBar/ToolBarUserButton';
 import {
     COMPONENTS,
@@ -67,7 +63,6 @@ export default {
     },
     data() {
         return {
-            executingBatchActions: {},
             breadcrumbs: [],
             isExpandedNavigationSideBar: true,
         };
@@ -76,9 +71,6 @@ export default {
         ...mapState('core', [
             'modals',
         ]),
-        ...mapState('batchAction', [
-            'batchActions',
-        ]),
         navigationBarPosition() {
             return {
                 top: 0,
@@ -86,55 +78,13 @@ export default {
                 right: 0,
             };
         },
-        extendedComponents() {
+        extendedNavigationBarComponents() {
             return this.$getExtendSlot(COMPONENTS.NAVIGATION_BAR);
         },
     },
     watch: {
         $route() {
             this.breadcrumbs = this.$route.meta.breadcrumbs || [];
-        },
-        batchActions() {
-            const requests = [];
-
-            this.batchActions.forEach(({
-                id,
-                request,
-            }) => {
-                if (!this.executingBatchActions[id]) {
-                    let event = null;
-
-                    this.executingBatchActions[id] = true;
-
-                    requests.push(
-                        create({
-                            $axios: this.$axios,
-                            ...request,
-                        }).then(() => {
-                            event = new CustomEvent(id, {
-                                detail: {
-                                    id,
-                                    request,
-                                },
-                            });
-                        }).catch((error) => {
-                            event = new CustomEvent(id, {
-                                detail: {
-                                    id,
-                                    request,
-                                    error,
-                                },
-                            });
-                        }).finally(() => {
-                            delete this.executingBatchActions[id];
-
-                            document.documentElement.dispatchEvent(event);
-                        }),
-                    );
-                }
-            });
-
-            Promise.all(requests);
         },
     },
     created() {

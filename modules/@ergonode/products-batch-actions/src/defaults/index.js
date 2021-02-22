@@ -5,4 +5,5 @@
 
 export const BATCH_ACTION_TYPE = {
     REMOVE_PRODUCTS: 'product_delete',
+    UPDATE_PRODUCTS: 'product_edit',
 };

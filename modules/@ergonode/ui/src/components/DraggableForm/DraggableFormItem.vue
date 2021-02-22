@@ -9,17 +9,14 @@
         :draggable="true"
         @dragover="onDragOver"
         @dragstart="onDragStart"
-        @dragend="onDragEnd"
-        @drop="onDrop">
+        @dragend="onDragEnd">
         <IconDragDrop
             ref="dragIcon"
             class="draggable-form-item__drag-icon" />
-        <div
-            v-show="!isGhostVisible"
-            class="draggable-form-item__body">
-            <slot name="item" />
-        </div>
-        <DraggableFormGhostItem v-show="isGhostVisible" />
+        <slot
+            v-if="!isGhostVisible"
+            name="item" />
+        <DraggableFormGhostItem v-else />
         <IconButton
             class="draggable-form-item__remove-button"
             :size="smallSize"
@@ -172,23 +169,6 @@ export default {
                 key: 'isElementDragging',
                 value: null,
             });
-        },
-        onDrop() {
-            if (this.draggedElIndex === -1) {
-                this.$emit('add-item', {
-                    index: this.index,
-                    item: this.draggedElement,
-                });
-
-                this.__setState({
-                    key: 'draggedElement',
-                    value: null,
-                });
-                this.__setState({
-                    key: 'ghostIndex',
-                    value: -1,
-                });
-            }
         },
         onDragOver(event) {
             event.preventDefault();
