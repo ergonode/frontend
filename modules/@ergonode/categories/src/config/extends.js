@@ -29,20 +29,6 @@ export default {
         },
     },
     extendMethods: {
-        // FIXME: remove
-        // '@Products/components/Grids/ProductsGrid/props': () => ({
-        //     grid: [
-        //         {
-        //             key: 'disabled',
-        //             value: true,
-        //             priority: 15,
-        //         },
-        //         {
-        //             key: 'label',
-        //             value: 'yyyyyy',
-        //         },
-        //     ],
-        // }),
         '@Trees/components/Tabs/CategoryTreeDesignerTab/verticalTabs': ({
             props,
             $this,

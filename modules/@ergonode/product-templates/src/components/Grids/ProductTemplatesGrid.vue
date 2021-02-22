@@ -25,7 +25,8 @@
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
-        @remove-all-filters="onRemoveAllFilters">
+        @remove-all-filters="onRemoveAllFilters"
+        v-bind="extendedProps['grid']">
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
                 :title="$t('productTemplate.grid.placeholderTitle')"
@@ -55,6 +56,7 @@ import {
     DEFAULT_PAGE,
     GRID_LAYOUT,
 } from '@Core/defaults/grid';
+import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
@@ -83,6 +85,12 @@ export default {
         GridNoDataPlaceholder,
     },
     mixins: [
+        extendPropsMixin({
+            extendedKey: '@Templates/components/Grids/ProductTemplatesGrid/props',
+            extendedNames: [
+                'grid',
+            ],
+        }),
         extendedGridComponentsMixin,
     ],
     async fetch() {

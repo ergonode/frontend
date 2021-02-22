@@ -17,7 +17,8 @@
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
-        @remove-all-filters="onRemoveAllFilters" />
+        @remove-all-filters="onRemoveAllFilters"
+        v-bind="extendedProps['grid']" />
 </template>
 
 <script>
@@ -27,6 +28,7 @@ import {
 import {
     DEFAULT_PAGE,
 } from '@Core/defaults/grid';
+import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
@@ -44,6 +46,12 @@ export default {
         Grid,
     },
     mixins: [
+        extendPropsMixin({
+            extendedKey: '@Users/components/Grids/UserActivityLogsGrid/props',
+            extendedNames: [
+                'grid',
+            ],
+        }),
         extendedGridComponentsMixin,
     ],
     async fetch() {

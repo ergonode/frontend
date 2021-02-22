@@ -42,7 +42,6 @@ export default ({
             .map(setOrder)
             .sort(sortByOrder);
     });
-    // TODO: create directive related with this method
     inject('extendedProps', async ({
         key, name = null,
     }) => {

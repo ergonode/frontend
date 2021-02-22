@@ -10,10 +10,12 @@
         :extended-components="extendedGridComponents"
         :is-prefetching-data="isPrefetchingData"
         :is-editable="false"
-        :is-border="true" />
+        :is-border="true"
+        v-bind="extendedProps['grid']" />
 </template>
 
 <script>
+import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
@@ -35,6 +37,12 @@ export default {
         Grid,
     },
     mixins: [
+        extendPropsMixin({
+            extendedKey: '@Users/components/Grids/UserPrivilegesGrid/props',
+            extendedNames: [
+                'grid',
+            ],
+        }),
         extendedGridComponentsMixin,
     ],
     async fetch() {

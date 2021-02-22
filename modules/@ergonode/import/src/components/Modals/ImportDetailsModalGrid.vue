@@ -20,7 +20,8 @@
                 @pagination="onPaginationChange"
                 @sort-column="onColumnSortChange"
                 @filter="onFilterChange"
-                @remove-all-filters="onRemoveAllFilters">
+                @remove-all-filters="onRemoveAllFilters"
+                v-bind="extendedProps['grid']">
                 <template #actionsHeader>
                     <div class="import-details-tiles">
                         <Tile
@@ -43,6 +44,7 @@ import {
     DEFAULT_GRID_FETCH_PARAMS,
     DEFAULT_GRID_PAGINATION,
 } from '@Core/defaults/grid';
+import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getParsedFilters,
@@ -65,6 +67,12 @@ export default {
         Grid,
     },
     mixins: [
+        extendPropsMixin({
+            extendedKey: '@Import/components/Grids/ImportDetailsModalGrid/props',
+            extendedNames: [
+                'grid',
+            ],
+        }),
         extendedGridComponentsMixin,
     ],
     props: {

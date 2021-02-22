@@ -12,7 +12,8 @@
         :extended-components="extendedGridComponents"
         :is-editable="isAllowedToUpdate"
         :is-border="true"
-        @cell-value="onCellValueChange">
+        @cell-value="onCellValueChange"
+        v-bind="extendedProps['grid']">
         <template #footer>
             <div class="language-privileges-footer">
                 <UpdateLanguageRestrictionsButton
@@ -25,6 +26,7 @@
 </template>
 
 <script>
+import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getSortedColumnsByIDs,
@@ -50,6 +52,12 @@ export default {
         UpdateLanguageRestrictionsButton,
     },
     mixins: [
+        extendPropsMixin({
+            extendedKey: '@Users/components/Grids/UserLanguageRestrictionsGrid/props',
+            extendedNames: [
+                'grid',
+            ],
+        }),
         extendedGridComponentsMixin,
     ],
     props: {
