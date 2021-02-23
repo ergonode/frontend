@@ -89,7 +89,6 @@ export default {
                 filled: 0,
                 required: 0,
             },
-            prevTemplateId: null,
             isFetchingData: false,
             languageCode: '',
         };
@@ -104,6 +103,7 @@ export default {
         ...mapState('product', [
             'id',
             'template',
+            'prevTemplate',
             'status',
             'drafts',
         ]),
@@ -125,6 +125,7 @@ export default {
     },
     methods: {
         ...mapActions('product', [
+            '__setState',
             'validateProduct',
             'setDraftValue',
             'getInheritedProduct',
@@ -145,19 +146,15 @@ export default {
         },
         async onIntersect(isIntersecting) {
             if (isIntersecting) {
-                if (this.template !== this.prevTemplateId) {
+                if (this.template !== this.prevTemplate) {
+                    this.templates = {};
+
                     this.isFetchingData = true;
 
-                    const languageCode = this.prevTemplateId === null
-                        ? this.defaultLanguageCode
-                        : this.languageCode;
-
-                    await this.getProductTemplateData(languageCode);
+                    await this.getProductTemplateData(this.languageCode);
 
                     this.isFetchingData = false;
                 }
-            } else {
-                this.prevTemplateId = this.template;
             }
         },
         async getProductTemplateData(languageCode) {
