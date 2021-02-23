@@ -12,7 +12,8 @@
         :extended-components="extendedGridComponents"
         :is-editable="isAllowedToUpdate"
         :is-border="true"
-        @cell-value="onCellValueChange">
+        @cell-value="onCellValueChange"
+        v-bind="extendedProps['grid']">
         <template #footer>
             <div class="role-privileges-footer">
                 <UpdateRolePrivilegesButton
@@ -25,6 +26,7 @@
 </template>
 
 <script>
+import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
@@ -49,6 +51,12 @@ export default {
         UpdateRolePrivilegesButton,
     },
     mixins: [
+        extendPropsMixin({
+            extendedKey: '@Users/components/Grids/RolePrivilegesGrid/props',
+            extendedNames: [
+                'grid',
+            ],
+        }),
         gridDraftMixin,
         extendedGridComponentsMixin,
     ],

@@ -21,7 +21,8 @@
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
-        @remove-all-filters="onRemoveAllFilters">
+        @remove-all-filters="onRemoveAllFilters"
+        v-bind="extendedProps['grid']">
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
                 :title="$t('@Trees.tree._.noTrees')"
@@ -41,6 +42,7 @@ import {
 import {
     DEFAULT_PAGE,
 } from '@Core/defaults/grid';
+import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
@@ -69,6 +71,12 @@ export default {
         GridNoDataPlaceholder,
     },
     mixins: [
+        extendPropsMixin({
+            extendedKey: '@Trees/components/Grids/CategoryTreesGrid/props',
+            extendedNames: [
+                'grid',
+            ],
+        }),
         extendedGridComponentsMixin,
     ],
     async fetch() {
