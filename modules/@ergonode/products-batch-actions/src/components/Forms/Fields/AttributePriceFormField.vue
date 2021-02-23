@@ -1,0 +1,88 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+<template>
+    <TextField
+        :value="value"
+        :input="{ type: 'number' }"
+        :hint="hint"
+        :placeholder="placeholder"
+        :label="label"
+        :error-messages="errorMessages"
+        @focus="onFocus"
+        @input="onValueChange">
+        <template #append>
+            <TextFieldSuffix :suffix="currency" />
+        </template>
+    </TextField>
+</template>
+
+<script>
+import TextField from '@UI/components/TextField/TextField';
+import TextFieldSuffix from '@UI/components/TextField/TextFieldSuffix';
+
+export default {
+    name: 'AttributePriceFormField',
+    components: {
+        TextField,
+        TextFieldSuffix,
+    },
+    props: {
+        value: {
+            type: [
+                String,
+                Number,
+            ],
+            default: '',
+        },
+        attribute: {
+            type: Object,
+            default: () => ({}),
+        },
+        languageCode: {
+            type: String,
+            required: true,
+        },
+        errorMessages: {
+            type: String,
+            default: '',
+        },
+    },
+    computed: {
+        label() {
+            return this.attribute.label[this.languageCode] || `#${this.attribute.code}`;
+        },
+        placeholder() {
+            return this.attribute.placeholder[this.languageCode];
+        },
+        hint() {
+            return this.attribute.hint[this.languageCode];
+        },
+        currency() {
+            return this.attribute.parameters.currency;
+        },
+    },
+    mounted() {
+        this.onValueChange('');
+    },
+    methods: {
+        onValueChange(value) {
+            this.$emit('input', {
+                key: this.attribute.id,
+                value,
+                languageCode: this.languageCode,
+            });
+        },
+        onFocus(isFocused) {
+            if (!isFocused) {
+                this.$emit('blur', {
+                    key: this.attribute.id,
+                    value: this.value,
+                    languageCode: this.languageCode,
+                });
+            }
+        },
+    },
+};
+</script>

@@ -23,12 +23,28 @@
                                 @remove-item="onRemoveItem">
                                 <template #item="{ item }">
                                     <AttributeFormField
-                                        :item="item"
-                                        :is-prefetching-data="fetchingAttributes[item.id]" />
+                                        :is-prefetching-data="fetching[item.id]">
+                                        <template #attribute>
+                                            <Component
+                                                :is="components[item.type]"
+                                                :value="values[`${item.id}|${item.languageCode}`]"
+                                                :attribute="attributes[item.id]"
+                                                :language-code="item.languageCode"
+                                                :error-messages="scopeErrors[
+                                                    `${item.id}|${item.languageCode}`
+                                                ]"
+                                                @blur="onBlur"
+                                                @input="onValueChange" />
+                                        </template>
+                                    </AttributeFormField>
                                 </template>
                             </DraggableForm>
                         </div>
                     </VerticalFixedScroll>
+                    <UpdateProductsButton
+                        :drafts="values"
+                        :change-values="changeValues"
+                        @apply="onApplyProductsUpdateBatchAction" />
                 </div>
             </div>
         </div>
@@ -43,10 +59,15 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
+import {
+    capitalizeAndConcatenationArray,
+} from '@Core/models/stringWrapper';
+import UpdateProductsButton
+    from '@ProductsBatchActions/components/Buttons/UpdateProductsButton';
 import RemoveFormFieldDropZone
-    from '@Modules/@ergonode/products-batch-actions/src/components/DropZones/RemoveFormFieldDropZone';
+    from '@ProductsBatchActions/components/DropZones/RemoveFormFieldDropZone';
 import AttributeFormField
-    from '@ProductsBatchActions/extends/attribute/components/Forms/Fields/AttributeFormField';
+    from '@ProductsBatchActions/components/Forms/Fields/AttributeFormField';
 import DraggableForm from '@UI/components/DraggableForm/DraggableForm';
 import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
 import ModalHeader from '@UI/components/Modal/ModalHeader';
@@ -59,6 +80,7 @@ import {
 export default {
     name: 'UpdateProductsModal',
     components: {
+        UpdateProductsButton,
         RemoveFormFieldDropZone,
         AttributeFormField,
         VerticalFixedScroll,
@@ -90,9 +112,12 @@ export default {
     },
     data() {
         return {
-            fetchingAttributes: {},
+            fetching: {},
             attributes: {},
+            components: {},
+            values: {},
             formItems: [],
+            verticalTabs: [],
         };
     },
     computed: {
@@ -101,19 +126,19 @@ export default {
                 info: this.selectedProductsCount,
             });
         },
-        verticalTabs() {
-            return [
-                {
-                    title: this.$t('@ProductsBatchActions.attribute._.title'),
-                    component: () => import('@ProductsBatchActions/extends/attribute/components/VerticalTabs/AttributesVerticalTab'),
-                    icon: () => import('@Attributes/components/Icons/IconAttributes'),
-                    props: {
-                        ids: this.ids,
-                        excludedIds: this.excludedIds,
-                    },
-                },
-            ];
-        },
+    },
+    async mounted() {
+        const extendedVerticalTabs = await this.$getExtendMethod('@ProductsBatchActions/components/Modals/UpdateProductsModal/verticalTabs', {
+            $this: this,
+            props: {
+                ids: this.ids,
+                excludedIds: this.excludedIds,
+            },
+        });
+
+        extendedVerticalTabs.forEach((tabs) => {
+            this.verticalTabs.push(...tabs);
+        });
     },
     beforeDestroy() {
         this.formItems.forEach((item) => {
@@ -122,12 +147,65 @@ export default {
                 elementId: `${item.id}|${item.code}`,
             });
         });
+
+        this.removeScopeData(this.scope);
     },
     methods: {
         ...mapActions('list', [
             'setDisabledElement',
             'removeDisabledElement',
         ]),
+        ...mapActions('attribute', [
+            'validateAttributeValue',
+        ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
+        onValueChange({
+            key,
+            value,
+            languageCode,
+        }) {
+            this.values = {
+                ...this.values,
+                [`${key}|${languageCode}`]: value,
+            };
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: [
+                    `${key}|${languageCode}`,
+                ],
+                value,
+            });
+        },
+        async onBlur({
+            key,
+            value,
+            languageCode,
+        }) {
+            await this.validateAttributeValue({
+                id: key,
+                languageCode,
+                value,
+                onError: e => this.onValidateAttributeValueError({
+                    errors: e.data.errors,
+                    fieldKeys: {
+                        value: `${key}|${languageCode}`,
+                    },
+                }),
+            });
+        },
+        onValidateAttributeValueError({
+            errors,
+            fieldKeys,
+        }) {
+            this.onError({
+                errors,
+                fieldKeys,
+                scope: this.scope,
+            });
+        },
         async onAddItem({
             item,
         }) {
@@ -141,26 +219,43 @@ export default {
 
             if (typeof this.attributes[item.id] === 'undefined') {
                 try {
-                    this.fetchingAttributes = {
-                        ...this.fetchingAttributes,
+                    this.fetching = {
+                        ...this.fetching,
                         [item.id]: true,
                     };
 
-                    this.attributes[item.id] = await getAttribute({
-                        $axios: this.$axios,
-                        id: item.id,
-                    });
+                    const requests = [
+                        getAttribute({
+                            $axios: this.$axios,
+                            id: item.id,
+                        }),
+                    ];
 
-                    delete this.fetchingAttributes[item.id];
+                    if (typeof this.components[item.type] === 'undefined') {
+                        requests.push(this.getAttributeComponent(item.type));
+                    }
 
-                    this.fetchingAttributes = {
-                        ...this.fetchingAttributes,
+                    const [
+                        attributeData,
+                        attributeComponent,
+                    ] = await Promise.all(requests);
+
+                    this.attributes[item.id] = attributeData;
+
+                    if (attributeComponent) {
+                        this.components[item.type] = attributeComponent;
+                    }
+
+                    delete this.fetching[item.id];
+
+                    this.fetching = {
+                        ...this.fetching,
                     };
                 } catch (e) {
                     if (!this.app.$axios.isCancel(e)) {
                         this.$addAlert({
                             type: ALERT_TYPE.ERROR,
-                            message: this.$t('@ProductsBatchActions.attribute._.getRequest'),
+                            message: this.$t('@ProductsBatchActions.productBatchAction._.getRequest'),
                         });
                     }
                 }
@@ -176,10 +271,36 @@ export default {
 
             this.formItems.splice(index, 1);
         },
+        onApplyProductsUpdateBatchAction() {
+            this.onApply();
+            this.onClose();
+        },
         onClose() {
-            this.removeScopeData(this.scope);
-
             this.$emit('close');
+        },
+        async getAttributeComponent(type) {
+            try {
+                const extendedSlots = this.$getExtendSlot('@ProductsBatchActions/components/Forms/Fields');
+
+                let component = null;
+
+                if (extendedSlots && typeof extendedSlots[type] === 'function') {
+                    component = await extendedSlots[type]();
+                } else {
+                    const mappedType = capitalizeAndConcatenationArray(type.split('_'));
+
+                    component = await import(`@ProductsBatchActions/components/Forms/Fields/Attribute${mappedType}FormField`);
+                }
+
+                this.components[type] = component.default;
+            } catch (e) {
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsModal.getComponent', {
+                        info: type,
+                    }),
+                });
+            }
         },
     },
 };
@@ -206,6 +327,7 @@ export default {
         }
 
         &__form-section {
+            position: relative;
             display: flex;
             flex: 1;
             flex-direction: column;

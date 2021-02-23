@@ -1,9 +1,23 @@
 {
   "@ProductsBatchActions": {
     "productBatchAction": {
+      "_": {
+        "title": "Atrybuty produktów",
+        "getRequest": "Atrybut nie został pobrany prawidłowo",
+        "submit": "ZAPISZ ZMIANY"
+      },
       "components": {
+        "UpdateProductsButton": {
+          "confirmTitleSingular": "Czy jesteś pewien, że chcesz wyczyścić wartość dla 1 atrybutu?",
+          "confirmTitlePlural": "Czy jesteś pewien, że chcesz wyczyścić wartości dla {info} atrybutów?",
+          "confirmSubtitle": "Zapisywanie pustego atrybutu spowoduje wyczyszczenie jego wartości dla wszystkich edytowanych produktów.",
+          "confirmApplySingular": "Wyczyść 1 atrybut",
+          "confirmApplyPlural": "Wyczyść {info} atrybuty",
+          "confirmCancel": "Anuluj"
+        },
         "UpdateProductsModal": {
           "title": "Edytowanie {info} produktów",
+          "getComponent": "Nie ma zdefiniowanego komponentu atrybutu dla typu {info}.",
           "draggableFormTitle": "Edytowane atrybuty"
         },
         "ProductsBatchActions": {
@@ -16,15 +30,7 @@
         },
         "RemoveFormFieldDropZone": {
           "title": "Usuń element"
-        }
-      }
-    },
-    "attribute": {
-      "_": {
-        "title": "Atrybuty produktów",
-        "getRequest": "Atrybut nie został pobrany prawidłowo"
-      },
-      "components": {
+        },
         "AttributesSideBar": {
           "noAttributesTitle": "Brak atrybutów",
           "noAttributesSubtitle": "Brak wspólnych atrybutów dla wybranych produktów.",

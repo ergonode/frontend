@@ -47,6 +47,15 @@ export const getOption = ({
     params,
 });
 
+export const validateValue = ({
+    $axios,
+    id,
+    languageCode,
+    data,
+}) => $axios.$post(`${languageCode}/attribute/${id}/validate`, data, {
+    withLanguage: false,
+});
+
 export const remove = ({
     $axios,
     id,

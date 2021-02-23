@@ -16,6 +16,9 @@
     },
     "product": {
       "components": {
+        "UpdateProductsButton": {
+          "alertSuccess": "Products have been updated"
+        },
         "RestoreForm": {
           "modalTitle": "Select attributes which values you want to restore from {from} to parent translation ({to})"
         },

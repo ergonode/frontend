@@ -5,6 +5,9 @@
 <template>
     <div class="attribute-form-field">
         <Preloader v-if="isPrefetchingData" />
+        <slot
+            v-else
+            name="attribute" />
     </div>
 </template>
 
@@ -17,13 +20,14 @@ export default {
         Preloader,
     },
     props: {
-        item: {
-            type: Object,
-            required: true,
-        },
         isPrefetchingData: {
             type: Boolean,
             default: false,
+        },
+    },
+    methods: {
+        onValueChange(payload) {
+            this.$emit('input', payload);
         },
     },
 };
@@ -32,10 +36,6 @@ export default {
 <style lang="scss" scoped>
     .attribute-form-field {
         display: flex;
-        justify-content: center;
         align-items: center;
-        border: $BORDER_1_GREY;
-        padding: 8px;
-        background-color: $WHITESMOKE;
     }
 </style>

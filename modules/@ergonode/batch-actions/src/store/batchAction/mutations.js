@@ -9,9 +9,9 @@ export const types = {
 
 export default {
     [types.ADD_BATCH_ACTION](state, batchAction) {
-        state.batchActions.push(batchAction);
+        state.actions.push(batchAction);
     },
     [types.REMOVE_BATCH_ACTION](state, index) {
-        state.batchActions.splice(index, 1);
+        state.actions.splice(index, 1);
     },
 };

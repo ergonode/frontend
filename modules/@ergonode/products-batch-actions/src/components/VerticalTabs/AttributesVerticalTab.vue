@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import AttributesSideBar from '@ProductsBatchActions/extends/attribute/components/SideBars/AttributesSideBar';
+import AttributesSideBar from '@ProductsBatchActions/components/SideBars/AttributesSideBar';
 
 export default {
     name: 'AttributesVerticalTab',
