@@ -23,7 +23,8 @@
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @remove-all-filters="onRemoveAllFilters"
-        @filter="onFilterChange">
+        @filter="onFilterChange"
+        v-bind="extendedProps['grid']">
         <template #actionsHeader>
             <slot name="actionsHeader" />
         </template>
@@ -54,6 +55,7 @@ import {
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
+import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
@@ -78,6 +80,12 @@ export default {
         GridNoDataPlaceholder,
     },
     mixins: [
+        extendPropsMixin({
+            extendedKey: '@Products/extends/components/Grids/ProductVariantsToAttachGrid/props',
+            extendedNames: [
+                'grid',
+            ],
+        }),
         gridDraftMixin,
         extendedGridComponentsMixin,
     ],

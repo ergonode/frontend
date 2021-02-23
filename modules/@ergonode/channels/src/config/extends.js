@@ -58,10 +58,10 @@ export default {
 
             exportStatuses.forEach((notification) => {
                 const {
-                    processed, items,
+                    status,
                 } = notification;
 
-                if (processed < items) {
+                if (status === 'PRECESSED') {
                     processingNotifications.notifications.push({
                         ...notification,
                         createdAt: notification.started_at,

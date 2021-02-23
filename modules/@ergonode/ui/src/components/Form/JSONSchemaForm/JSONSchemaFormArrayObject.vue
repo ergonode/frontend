@@ -12,12 +12,14 @@
             :index="index"
             :value="row"
             :schema="schema.items"
+            :disabled="schema.disabled"
             :errors="errors[`element-${index}`]"
             @remove="onRemoveRowAtIndex"
             @input="onValueChangeAtIndex" />
         <Button
             ref="addSectionButton"
             title="ADD NEXT"
+            :disabled="schema.disabled"
             :size="smallSize"
             :theme="secondaryTheme"
             @click.native="onAddRow">

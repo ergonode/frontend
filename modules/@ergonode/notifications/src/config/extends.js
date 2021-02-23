@@ -8,10 +8,9 @@ import {
 
 export default {
     extendComponents: {
-        NAVIGATION_BAR: [
+        '@Core/layouts/default/navigationBar': [
             {
                 component: Components.ToolBarNotificationButton,
-                props: {},
             },
         ],
     },

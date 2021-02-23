@@ -3,8 +3,10 @@
  * See LICENSE for license details.
  */
 import {
+    isEmpty,
     isObject,
 } from '@Core/models/objectWrapper';
+import deepmerge from 'deepmerge';
 
 export default ({
     app,
@@ -39,5 +41,51 @@ export default ({
         return components
             .map(setOrder)
             .sort(sortByOrder);
+    });
+    inject('extendedProps', async ({
+        key, name = null,
+    }) => {
+        let componentProps = {};
+        const extendedProps = await app.$getExtendMethod(key, {
+            $this: app,
+        });
+
+        if (Array.isArray(extendedProps) && extendedProps.length) {
+            extendedProps.forEach((props) => {
+                if (isObject(props)) {
+                    componentProps = deepmerge(componentProps, props);
+                }
+            });
+
+            if (name && !isEmpty(componentProps) && componentProps[name]) {
+                const properties = componentProps[name];
+                const setPriority = data => ({
+                    ...data,
+                    priority: data.priority || 0,
+                });
+                const removeDuplication = (acc, current) => {
+                    const tmp = acc;
+
+                    if (!tmp[current.key]) {
+                        tmp[current.key] = current;
+                    } else if (tmp[current.key] && tmp[current.key].priority <= current.priority) {
+                        tmp[current.key] = current;
+                    }
+
+                    return tmp;
+                };
+                const prepareProps = properties
+                    .map(setPriority)
+                    .reduce(removeDuplication, {});
+                const reduceToProps = (prev, curr) => ({
+                    ...prev,
+                    [curr[0]]: curr[1].value,
+                });
+
+                return Object.entries(prepareProps).reduce(reduceToProps, {});
+            }
+        }
+
+        return {};
     });
 };

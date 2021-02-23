@@ -13,7 +13,7 @@
             </template>
             <template #actions>
                 <ToolBarUserButton />
-                <template v-for="(component, index) in extendedComponents">
+                <template v-for="(component, index) in extendedNavigationBar">
                     <Component
                         :is="component.component"
                         :key="index"
@@ -41,9 +41,6 @@ import {
     create,
 } from '@BatchActions/services';
 import ToolBarUserButton from '@Core/components/ToolBar/ToolBarUserButton';
-import {
-    COMPONENTS,
-} from '@Core/defaults/extends';
 import App from '@UI/components/Layout/App';
 import AppMain from '@UI/components/Layout/AppMain';
 import NavigationSideBar from '@UI/components/NavigationSideBar/NavigationSideBar';
@@ -86,8 +83,8 @@ export default {
                 right: 0,
             };
         },
-        extendedComponents() {
-            return this.$getExtendSlot(COMPONENTS.NAVIGATION_BAR);
+        extendedNavigationBar() {
+            return this.$getExtendSlot('@Core/layouts/default/navigationBar');
         },
     },
     watch: {
