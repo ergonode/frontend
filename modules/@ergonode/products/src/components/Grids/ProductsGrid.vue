@@ -287,7 +287,7 @@ export default {
             this.isPrefetchingData = false;
         },
     },
-    async mounted() {
+    mounted() {
         document.documentElement.addEventListener(
             PRODUCT_CREATED_EVENT_NAME,
             this.onProductCreated,

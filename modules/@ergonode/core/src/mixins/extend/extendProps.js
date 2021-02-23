@@ -11,11 +11,7 @@ export default ({
         };
     },
     async created() {
-        extendedNames.forEach((key) => {
-            this.extendedProps[key] = {};
-        });
-
-        await Promise.all(Object.keys(this.extendedProps).map(async (key) => {
+        await Promise.all(extendedNames.map(async (key) => {
             this.extendedProps[key] = await this.$extendedProps({
                 key: extendedKey,
                 name: key,

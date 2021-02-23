@@ -360,16 +360,3 @@ export function firstElementInList(array) {
     const arrayLength = array.length;
     return arrayLength > 0 ? array[0] : null;
 }
-
-/**
- * Async forEach method
- * @function
- * @param {Array} array
- * @param {Function} callback
- */
-export async function asyncForEach(array, callback) {
-    for (let index = 0; index < array.length; index += 1) {
-        // eslint-disable-next-line no-await-in-loop
-        await callback(array[index], index, array);
-    }
-}

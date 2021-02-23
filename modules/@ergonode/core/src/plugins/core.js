@@ -50,37 +50,40 @@ export default ({
             $this: app,
         });
 
-        if (extendedProps.length) {
+        if (Array.isArray(extendedProps) && extendedProps.length) {
             extendedProps.forEach((props) => {
-                componentProps = deepmerge(componentProps, props);
-            });
-        }
-        if (name && !isEmpty(componentProps)) {
-            const properties = componentProps[name];
-            const setPriority = data => ({
-                ...data,
-                priority: data.priority || 0,
-            });
-            const reduceDuplication = (acc, current) => {
-                const tmp = acc;
-
-                if (!tmp[current.key]) {
-                    tmp[current.key] = current;
-                } else if (tmp[current.key] && tmp[current.key].priority <= current.priority) {
-                    tmp[current.key] = current;
+                if (isObject(props)) {
+                    componentProps = deepmerge(componentProps, props);
                 }
-
-                return tmp;
-            };
-            const prepareProps = properties
-                .map(setPriority)
-                .reduce(reduceDuplication, {});
-            const reduceToProps = (prev, curr) => ({
-                ...prev,
-                [curr[0]]: curr[1].value,
             });
 
-            return Object.entries(prepareProps).reduce(reduceToProps, {});
+            if (name && !isEmpty(componentProps) && componentProps[name]) {
+                const properties = componentProps[name];
+                const setPriority = data => ({
+                    ...data,
+                    priority: data.priority || 0,
+                });
+                const removeDuplication = (acc, current) => {
+                    const tmp = acc;
+
+                    if (!tmp[current.key]) {
+                        tmp[current.key] = current;
+                    } else if (tmp[current.key] && tmp[current.key].priority <= current.priority) {
+                        tmp[current.key] = current;
+                    }
+
+                    return tmp;
+                };
+                const prepareProps = properties
+                    .map(setPriority)
+                    .reduce(removeDuplication, {});
+                const reduceToProps = (prev, curr) => ({
+                    ...prev,
+                    [curr[0]]: curr[1].value,
+                });
+
+                return Object.entries(prepareProps).reduce(reduceToProps, {});
+            }
         }
 
         return {};
