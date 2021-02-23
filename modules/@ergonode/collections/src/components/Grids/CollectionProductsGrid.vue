@@ -25,7 +25,8 @@
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
-        @remove-all-filters="onRemoveAllFilters">
+        @remove-all-filters="onRemoveAllFilters"
+        v-bind="extendedProps['grid']">
         <template #actionsHeader>
             <AddProductsToCollectionButton @added="onAddedProducts" />
         </template>
@@ -51,6 +52,7 @@ import {
 import {
     DEFAULT_PAGE,
 } from '@Core/defaults/grid';
+import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
@@ -78,6 +80,12 @@ export default {
         UpdateCollectionProductsVisibilityButton,
     },
     mixins: [
+        extendPropsMixin({
+            extendedKey: '@Collections/components/Grids/CollectionProductsGrid/props',
+            extendedNames: [
+                'grid',
+            ],
+        }),
         gridDraftMixin,
         extendedGridComponentsMixin,
     ],

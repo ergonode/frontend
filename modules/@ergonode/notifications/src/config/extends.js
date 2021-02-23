@@ -8,9 +8,14 @@ import {
 
 export default {
     extendComponents: {
-        NAVIGATION_BAR: [
+        '@Core/layouts/default/toolBar': [
             {
                 component: Components.ToolBarNotificationButton,
+            },
+        ],
+        '@Core/layouts/default/appMain': [
+            {
+                component: Components.NotificationsListener,
                 props: {},
             },
         ],

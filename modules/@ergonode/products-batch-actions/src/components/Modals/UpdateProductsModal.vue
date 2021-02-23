@@ -117,6 +117,7 @@ export default {
             components: {},
             values: {},
             formItems: [],
+            verticalTabs: [],
         };
     },
     computed: {
@@ -125,19 +126,19 @@ export default {
                 info: this.selectedProductsCount,
             });
         },
-        verticalTabs() {
-            return [
-                {
-                    title: this.$t('@ProductsBatchActions.productBatchAction._.title'),
-                    component: () => import('@ProductsBatchActions/components/VerticalTabs/AttributesVerticalTab'),
-                    icon: () => import('@Attributes/components/Icons/IconAttributes'),
-                    props: {
-                        ids: this.ids,
-                        excludedIds: this.excludedIds,
-                    },
-                },
-            ];
-        },
+    },
+    async mounted() {
+        const extendedVerticalTabs = await this.$getExtendMethod('@ProductsBatchActions/components/Modals/UpdateProductsModal/verticalTabs', {
+            $this: this,
+            props: {
+                ids: this.ids,
+                excludedIds: this.excludedIds,
+            },
+        });
+
+        extendedVerticalTabs.forEach((tabs) => {
+            this.verticalTabs.push(...tabs);
+        });
     },
     beforeDestroy() {
         this.formItems.forEach((item) => {

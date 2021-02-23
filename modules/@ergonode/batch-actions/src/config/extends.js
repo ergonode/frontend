@@ -8,7 +8,7 @@ import {
 
 export default {
     extendComponents: {
-        NAVIGATION_BAR: [
+        '@Core/layouts/default/appMain': [
             {
                 component: Components.BatchActionsListener,
                 props: {},

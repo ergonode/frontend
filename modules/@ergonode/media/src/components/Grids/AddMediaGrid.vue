@@ -25,7 +25,8 @@
             @pagination="onPaginationChange"
             @sort-column="onColumnSortChange"
             @remove-all-filters="onRemoveAllFilters"
-            @filter="onFilterChange">
+            @filter="onFilterChange"
+            v-bind="extendedProps['grid']">
             <template #noDataPlaceholder>
                 <GridNoDataPlaceholder
                     :title="$t('media.grid.placeholderTitle')"
@@ -55,6 +56,7 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
@@ -91,6 +93,12 @@ export default {
         IntersectionObserver,
     },
     mixins: [
+        extendPropsMixin({
+            extendedKey: '@Media/components/Grids/AddMediaGrid/props',
+            extendedNames: [
+                'grid',
+            ],
+        }),
         gridDraftMixin,
         extendedGridComponentsMixin,
     ],

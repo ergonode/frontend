@@ -9,6 +9,7 @@
         :clearable="true"
         :size="smallSize"
         :label="parameter.name"
+        :disabled="disabled"
         :options="options"
         :value="conditionValue"
         :multiselect="isConditionTypeMultiSelect"
@@ -49,6 +50,10 @@ export default {
         errorMessages: {
             type: String,
             default: '',
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {

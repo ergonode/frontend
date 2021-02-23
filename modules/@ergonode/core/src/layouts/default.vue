@@ -13,16 +13,23 @@
             </template>
             <template #actions>
                 <ToolBarUserButton />
-                <Component
-                    v-for="(component, index) in extendedNavigationBarComponents"
-                    :is="component.component"
-                    :key="index"
-                    v-bind="component.props" />
+                <template v-for="(component, index) in extendedToolBar">
+                    <Component
+                        :is="component.component"
+                        :key="index"
+                        v-bind="component.props" />
+                </template>
             </template>
         </ToolBar>
         <NavigationSideBar @expand="onExpandNavigationSideBar" />
         <AppMain>
             <slot />
+            <template v-for="(component, index) in extendedAppMain">
+                <Component
+                    :is="component.component"
+                    :key="index"
+                    v-bind="component.props" />
+            </template>
             <FlashMessages />
         </AppMain>
         <Component
@@ -37,9 +44,6 @@
 
 <script>
 import ToolBarUserButton from '@Core/components/ToolBar/ToolBarUserButton';
-import {
-    COMPONENTS,
-} from '@Core/defaults/extends';
 import App from '@UI/components/Layout/App';
 import AppMain from '@UI/components/Layout/AppMain';
 import NavigationSideBar from '@UI/components/NavigationSideBar/NavigationSideBar';
@@ -78,8 +82,11 @@ export default {
                 right: 0,
             };
         },
-        extendedNavigationBarComponents() {
-            return this.$getExtendSlot(COMPONENTS.NAVIGATION_BAR);
+        extendedToolBar() {
+            return this.$getExtendSlot('@Core/layouts/default/toolBar');
+        },
+        extendedAppMain() {
+            return this.$getExtendSlot('@Core/layouts/default/appMain');
         },
     },
     watch: {
@@ -90,19 +97,9 @@ export default {
     created() {
         this.breadcrumbs = this.$route.meta.breadcrumbs || [];
     },
-    mounted() {
-        this.setRequestTimeout();
-    },
-    beforeDestroy() {
-        this.invalidateRequestTimeout();
-    },
     methods: {
         ...mapActions('core', [
             'removeModal',
-        ]),
-        ...mapActions('notification', [
-            'setRequestTimeout',
-            'invalidateRequestTimeout',
         ]),
         onCloseModal(index) {
             this.removeModal(index);

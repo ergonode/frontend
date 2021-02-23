@@ -19,7 +19,6 @@
         :is-header-visible="true"
         :is-basic-filter="true"
         :is-collection-layout="true"
-        :is-select-column="true"
         @edit-row="onEditRow"
         @preview-row="onEditRow"
         @cell-value="onCellValueChange"
@@ -30,7 +29,8 @@
         @swap-columns="onSwapColumns"
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
-        @remove-all-filters="onRemoveAllFilters">
+        @remove-all-filters="onRemoveAllFilters"
+        v-bind="extendedProps['grid']">
         <template #actionsHeader="actionsHeaderProps">
             <Component
                 v-for="(headerItem, index) in extendedActionHeader"
@@ -105,6 +105,7 @@ import {
 import {
     DEFAULT_PAGE,
 } from '@Core/defaults/grid';
+import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
@@ -161,6 +162,12 @@ export default {
         AdvancedFilters,
     },
     mixins: [
+        extendPropsMixin({
+            extendedKey: '@Products/components/Grids/ProductsGrid/props',
+            extendedNames: [
+                'grid',
+            ],
+        }),
         gridDraftMixin,
         extendedGridComponentsMixin,
     ],

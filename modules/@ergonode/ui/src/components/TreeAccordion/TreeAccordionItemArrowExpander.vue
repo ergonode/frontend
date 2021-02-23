@@ -4,10 +4,9 @@
  */
 <template>
     <div class="tree-accordion-item-arrow-expander">
-        <IconArrowSingle
-            class="tree-accordion-item-arrow-expander__icon"
-            :width="19"
-            :height="19"
+        <IconArrowRoundedDropdown
+            :width="20"
+            :height="20"
             :state="iconState" />
     </div>
 </template>
@@ -16,12 +15,12 @@
 import {
     ARROW,
 } from '@Core/defaults/icons';
-import IconArrowSingle from '@UI/components/Icons/Arrows/IconArrowSingle';
+import IconArrowRoundedDropdown from '@UI/components/Icons/Arrows/IconArrowRoundedDropdown';
 
 export default {
     name: 'TreeAccordionItemArrowExpander',
     components: {
-        IconArrowSingle,
+        IconArrowRoundedDropdown,
     },
     props: {
         isExpanded: {
@@ -45,11 +44,5 @@ export default {
         top: 50%;
         display: flex;
         transform: translate(-50%, -50%);
-
-        &__icon {
-            border: $BORDER_1_GREY;
-            background-color: $WHITE;
-            border-radius: 50%;
-        }
     }
 </style>

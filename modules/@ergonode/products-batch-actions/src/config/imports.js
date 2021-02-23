@@ -5,4 +5,9 @@
 
 export const Components = {
     ProductsBatchActionsButton: () => import('@ProductsBatchActions/components/Buttons/ProductsBatchActionsButton').then(m => m.default || m),
+    AttributesVerticalTab: () => import('@ProductsBatchActions/components/VerticalTabs/AttributesVerticalTab'),
+};
+
+export const Icons = {
+    IconAttributes: () => import('@Attributes/components/Icons/IconAttributes'),
 };

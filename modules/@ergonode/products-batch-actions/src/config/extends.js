@@ -5,6 +5,7 @@
 
 import {
     Components,
+    Icons,
 } from './imports';
 
 export default {
@@ -15,5 +16,27 @@ export default {
                 props: {},
             },
         ],
+    },
+    extendMethods: {
+        '@ProductsBatchActions/components/Modals/UpdateProductsModal/verticalTabs': ({
+            props,
+            $this,
+        }) => [
+            {
+                title: $this.$t('@ProductsBatchActions.productBatchAction._.title'),
+                component: Components.AttributesVerticalTab,
+                icon: Icons.IconAttributes,
+                props,
+            },
+        ],
+        '@Products/components/Grids/ProductsGrid/props': () => ({
+            grid: [
+                {
+                    key: 'is-select-column',
+                    value: true,
+                    priority: 10,
+                },
+            ],
+        }),
     },
 };
