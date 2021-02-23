@@ -4,4 +4,5 @@
  */
 export default () => ({
     template: null,
+    prevTemplate: null,
 });
