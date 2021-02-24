@@ -5,6 +5,9 @@
 export default {
     name: '@ergonode/users',
     order: 30,
+    relations: [
+        '@ergonode/core',
+    ],
     aliases: {
         '@Users': '/',
     },

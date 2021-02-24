@@ -4,7 +4,7 @@
  */
 import {
     Components,
-} from './imports';
+} from '@Users/config/imports';
 
 export default {
     dictionaries: [

@@ -41,7 +41,7 @@
 
 <script>
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
-import PRIVILEGES from '@Transitions/config/privileges';
+import PRIVILEGES from '@Statuses/config/privileges';
 import Card from '@UI/components/Card/Card';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';

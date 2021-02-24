@@ -2,6 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import extendRoutesChildren from '@Products/config/extendRoutesChildren';
 import {
     Components,
     Store,
@@ -12,8 +13,6 @@ import {
 import {
     PRODUCT_TYPE,
 } from '@Products/defaults';
-
-import extendRoutesChildren from './extendRoutesChildren';
 
 export default {
     dictionaries: [
@@ -53,13 +52,6 @@ export default {
                 return tabs.filter(tab => tab.visible);
             }
         },
-        '@Products/components/Tabs/ProductGroupTab/filteredProductTypes': () => [
-            PRODUCT_TYPE.SIMPLE_PRODUCT,
-            PRODUCT_TYPE.WITH_VARIANTS,
-        ],
-        '@Products/components/Tabs/ProductVariantsTab/filteredProductTypes': () => [
-            PRODUCT_TYPE.SIMPLE_PRODUCT,
-        ],
     },
     extendComponents: {
         '@UI/components/Grid/Layout/Collection/Cells': {

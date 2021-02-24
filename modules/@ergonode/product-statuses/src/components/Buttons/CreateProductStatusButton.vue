@@ -23,10 +23,10 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import PRIVILEGES from '@Statuses/config/privileges';
 import {
     PRODUCT_STATUS_CREATED_EVENT_NAME,
 } from '@Statuses/defaults';
-import PRIVILEGES from '@Transitions/config/privileges';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 

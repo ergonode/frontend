@@ -5,6 +5,10 @@
 export default {
     name: '@ergonode/channels',
     order: 190,
+    relations: [
+        '@ergonode/core',
+        '@ergonode/notifications',
+    ],
     aliases: {
         '@Channels': '/',
     },

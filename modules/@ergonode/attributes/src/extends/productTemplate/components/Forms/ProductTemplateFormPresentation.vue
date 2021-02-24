@@ -58,6 +58,11 @@ export default {
         },
     },
     computed: {
+        /*
+        IMPORTANT: SAFE RELATIONSHIP
+        Values in store are extended from this module - no hard relationship.
+        No problems when module @Template does not exist.
+        */
         ...mapState('productTemplate', [
             'defaultTextAttribute',
             'defaultImageAttribute',

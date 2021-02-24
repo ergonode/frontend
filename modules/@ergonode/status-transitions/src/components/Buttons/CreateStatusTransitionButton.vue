@@ -22,7 +22,7 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import PRIVILEGES from '@Statuses/config/privileges';
+import PRIVILEGES from '@Transitions/config/privileges';
 import {
     TRANSITION_CREATED_EVENT_NAME,
 } from '@Transitions/defaults';

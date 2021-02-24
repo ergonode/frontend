@@ -28,10 +28,10 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import PRIVILEGES from '@Statuses/config/privileges';
 import {
     ROUTE_NAME,
 } from '@Statuses/config/routes';
-import PRIVILEGES from '@Transitions/config/privileges';
 import Button from '@UI/components/Button/Button';
 import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 import {
@@ -58,7 +58,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('media', [
+        ...mapActions('productStatus', [
             'removeProductStatus',
         ]),
         onRemove() {

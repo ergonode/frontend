@@ -4,13 +4,12 @@
  */
 
 import {
-    ROUTE_NAME as PRODUCT_ROUTE_NAME,
-} from '@Products/config/routes';
-
-import {
     Icons,
     Tabs,
-} from './imports';
+} from '@Comments/config/imports';
+import {
+    ROUTE_NAME as PRODUCT_ROUTE_NAME,
+} from '@Products/config/routes';
 
 export const ROUTE_NAME = {
     PRODUCT_EDIT_COMMENTS: 'product-id-comments',

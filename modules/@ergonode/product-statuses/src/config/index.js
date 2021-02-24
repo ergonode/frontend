@@ -5,10 +5,12 @@
 export default {
     name: '@ergonode/product-statuses',
     order: 90,
+    relations: [
+        '@ergonode/core',
+        '@ergonode/status-transitions',
+        '@ergonode/products',
+    ],
     aliases: {
         '@Statuses': '/',
     },
-    relations: [
-        '@ergonode/products',
-    ],
 };

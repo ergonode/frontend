@@ -6,8 +6,8 @@ import {
     Icons,
     Pages,
     Tabs,
-} from './imports';
-import Privileges from './privileges';
+} from '@Segments/config/imports';
+import Privileges from '@Segments/config/privileges';
 
 export const ROUTE_NAME = {
     SEGMENTS: 'segments',
