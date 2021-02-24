@@ -79,6 +79,7 @@
                         :columns-number="collectionLayoutConfig.columnsNumber"
                         :object-fit="collectionLayoutConfig.scaling"
                         :extended-components="extendedComponents[gridLayout.COLLECTION]"
+                        :is-editable="isEditable"
                         :is-prefetching-data="isPrefetchingData"
                         :is-layout-resolved="isLayoutResolved[layout]"
                         @row-action="onRowAction"

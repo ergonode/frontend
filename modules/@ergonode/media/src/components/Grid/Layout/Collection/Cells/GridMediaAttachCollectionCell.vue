@@ -25,6 +25,7 @@
                 v-text="data.description" />
             <Toggler
                 :value="cellValue"
+                :disabled="locked"
                 @input="onCellValueChange" />
         </div>
     </div>
@@ -58,6 +59,10 @@ export default {
         objectFit: {
             type: String,
             default: '',
+        },
+        locked: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {
