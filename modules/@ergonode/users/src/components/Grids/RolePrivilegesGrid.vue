@@ -130,6 +130,10 @@ export default {
                     drafts[`${rowId}/delete`] = false;
                 }
 
+                if (columnId === 'create' && value) {
+                    drafts[`${rowId}/update`] = true;
+                }
+
                 drafts[`${rowId}/${columnId}`] = value;
             });
 

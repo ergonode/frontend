@@ -14,8 +14,8 @@ export default {
         };
     },
     computed: {
-        basicFiltersOffset() {
-            return this.isBasicFilter ? 1 : 0;
+        headerOffset() {
+            return this.isBasicFilter ? 2 : 1;
         },
     },
     methods: {
@@ -28,13 +28,9 @@ export default {
             const values = [];
 
             for (let i = startIndex; i <= endIndex; i += 1) {
-                const row = this.rows[i];
                 const rowId = this.rowIds[i];
 
-                if (row
-            && row[columnId]
-            && row[columnId].value !== value
-            && !this.disabledRows[rowId]) {
+                if (!this.disabledRows[rowId]) {
                     values.push({
                         rowId: this.rowIds[i],
                         columnId,
@@ -52,7 +48,7 @@ export default {
                 const {
                     row, column,
                 } = this.cellResizer.position;
-                const fixedRow = row + this.basicFiltersOffset + this.rowsOffset - 1;
+                const fixedRow = row + this.headerOffset + this.rowsOffset;
 
                 const tableCellElement = this.$el.querySelector(`.coordinates-${column}-${fixedRow}`);
 
@@ -65,26 +61,26 @@ export default {
                 column,
             } = this.cellResizer.position;
 
-            const fixedRow = row - this.basicFiltersOffset - 1;
             const fixedColumn = column - this.columnsOffset;
-            const rowId = this.rowIds[fixedRow];
+            const rowId = this.rowIds[row];
             const {
                 id: columnId,
             } = this.orderedColumns[fixedColumn];
+
             const value = typeof this.drafts[`${rowId}/${columnId}`] === 'undefined'
-                ? this.rows[fixedRow][columnId].value
+                ? this.rows[row][columnId].value
                 : this.drafts[`${rowId}/${columnId}`];
 
-            const values = this.getMappedValues(fixedRow < fixedRow + factor
+            const values = this.getMappedValues(row < row + factor
                 ? {
-                    startIndex: fixedRow,
-                    endIndex: fixedRow + factor,
+                    startIndex: row,
+                    endIndex: row + factor,
                     columnId,
                     value,
                 }
                 : {
-                    startIndex: fixedRow + factor,
-                    endIndex: fixedRow,
+                    startIndex: row + factor,
+                    endIndex: row,
                     columnId,
                     value,
                 });
@@ -93,7 +89,9 @@ export default {
         },
         onFocusInside(event) {
             const {
-                x, width, height,
+                x,
+                width,
+                height,
             } = event.target.getBoundingClientRect();
 
             if (event.target.getAttribute('copyable')) {
@@ -103,10 +101,10 @@ export default {
                         width,
                     },
                     position: {
-                        row: +event.target.getAttribute('row') - this.rowsOffset - this.basicFiltersOffset + 1,
+                        row: +event.target.getAttribute('row') - this.rowsOffset - this.headerOffset,
                         column: +event.target.getAttribute('column'),
-                        minRow: 1 + this.basicFiltersOffset,
-                        maxRow: this.basicFiltersOffset + this.dataCount,
+                        minRow: 0,
+                        maxRow: this.dataCount - 1,
                         top: `${event.target.offsetTop + height}px`,
                         left: `${x - this.$el.getBoundingClientRect().x + this.$el.scrollLeft}px`,
                     },

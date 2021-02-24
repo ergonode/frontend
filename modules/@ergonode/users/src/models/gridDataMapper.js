@@ -70,7 +70,7 @@ export function getMappedGridData({
                 tmpPrivilegeColumns[type] = true;
                 columns.push(defaults.getCheckColumn(type, isEditable));
             }
-            const value = isObject(selectedData) ? selectedData[types[type]] : false;
+            const value = isObject(selectedData) ? Boolean(selectedData[types[type]]) : false;
 
             row[type] = {
                 value,
