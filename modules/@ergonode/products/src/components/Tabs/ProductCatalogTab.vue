@@ -46,9 +46,7 @@ export default {
             $this: this,
         });
 
-        extendedVerticalTabs.forEach((tabs) => {
-            this.verticalTabs.push(...tabs);
-        });
+        this.verticalTabs = [].concat(...extendedVerticalTabs);
     },
 };
 </script>

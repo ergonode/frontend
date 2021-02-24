@@ -11,12 +11,12 @@
         :label="paramsLabel"
         :options="attributeParametersOptions"
         :error-messages="errorMessage"
-        :disabled="!isAllowedToUpdate"
+        :disabled="disabled"
         @input="setParameterValue" />
 </template>
 
 <script>
-import PRIVILEGES from '@Attributes/config/privileges';
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
@@ -30,11 +30,10 @@ export default {
     components: {
         Select,
     },
+    mixins: [
+        formFeedbackMixin,
+    ],
     props: {
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
         typeKey: {
             type: String,
             default: '',
@@ -43,18 +42,12 @@ export default {
             type: Function,
             default: () => ({}),
         },
-    },
-    data() {
-        return {
-            parameterData: {},
-        };
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
-        isAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.ATTRIBUTE.update,
-            ]);
-        },
         value() {
             return this.$store.state.attribute[this.parameterData.fieldName];
         },
@@ -74,6 +67,9 @@ export default {
         paramsFieldKey() {
             return 'parameters';
         },
+        parameterData() {
+            return this.getParams(this).params;
+        },
         errorMessage() {
             const error = this.errors[this.paramsFieldKey];
 
@@ -82,13 +78,11 @@ export default {
     },
     watch: {
         typeKey: {
+            immediate: true,
             handler() {
                 this.setParameterValue();
             },
         },
-    },
-    created() {
-        this.parameterData = this.getParams(this).params;
     },
     beforeDestroy() {
         this.setParameterValue();
@@ -100,6 +94,12 @@ export default {
         setParameterValue(value = null) {
             this.__setState({
                 key: this.parameterData.fieldName,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.paramsFieldKey,
                 value,
             });
         },

@@ -46,7 +46,7 @@ export default {
     computed: {
         isAllowedToDelete() {
             return this.$hasAccess([
-                PRIVILEGES.ATTRIBUTE_GROUP.delete,
+                PRIVILEGES.ATTRIBUTE.delete,
             ]);
         },
         smallSize() {
