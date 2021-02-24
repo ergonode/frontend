@@ -5,6 +5,9 @@
 export default {
     name: '@ergonode/conditions',
     order: 120,
+    relations: [
+        '@ergonode/core',
+    ],
     aliases: {
         '@Conditions': '/',
     },

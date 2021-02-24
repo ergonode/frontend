@@ -46,7 +46,6 @@
 </template>
 
 <script>
-import PRIVILEGES from '@Attributes/config/privileges';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -110,11 +109,6 @@ export default {
         };
     },
     computed: {
-        isAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.ATTRIBUTE.update,
-            ]);
-        },
         placeholder() {
             return {
                 title: this.$t('@Trees.tree._.noTrees'),

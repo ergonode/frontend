@@ -6,8 +6,8 @@ import {
     Icons,
     Pages,
     Tabs,
-} from './imports';
-import Privileges from './privileges';
+} from '@Trees/config/imports';
+import Privileges from '@Trees/config/privileges';
 
 export const ROUTE_NAME = {
     CATEGORY_TREES: 'category-trees',

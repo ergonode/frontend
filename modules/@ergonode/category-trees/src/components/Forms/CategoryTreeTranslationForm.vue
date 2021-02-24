@@ -56,7 +56,7 @@ export default {
         },
         extendedForm() {
             return this.$extendedForm({
-                key: '@Attributes/components/Forms/CategoryTreeTranslationForm',
+                key: '@Trees/components/Forms/CategoryTreeTranslationForm',
             });
         },
         nameFieldKey() {

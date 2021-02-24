@@ -10,7 +10,7 @@ export default {
     },
     relations: [
         '@ergonode/ui',
-        '@ergonode/attributes',
+        '@ergonode/authentication',
         '@ergonode/media',
         '@ergonode/batch-actions',
     ],

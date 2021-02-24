@@ -11,6 +11,7 @@ export default {
     relations: [
         '@ergonode/categories',
         '@ergonode/products',
+        '@ergonode/product-statuses',
         '@ergonode/product-templates',
     ],
 };

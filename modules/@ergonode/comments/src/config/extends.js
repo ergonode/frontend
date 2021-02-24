@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 
-import extendRoutesChildren from './extendRoutesChildren';
+import extendRoutesChildren from '@Comments/config/extendRoutesChildren';
 
 export default {
     extendRoutesChildren,

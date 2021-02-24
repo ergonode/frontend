@@ -87,7 +87,7 @@ export default {
         },
         typeIconComponent() {
             const icon = this.$extendedForm({
-                key: '@Attributes/components/Lists/AttributeListElement/Icon',
+                key: '@Attributes/extends/components/SideBars/AttributeSideBarElement/icons',
                 type: this.item.type,
             });
 

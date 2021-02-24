@@ -6,8 +6,8 @@ import {
     Icons,
     Pages,
     Tabs,
-} from './imports';
-import Privileges from './privileges';
+} from '@Media/config/imports';
+import Privileges from '@Media/config/privileges';
 
 export const ROUTE_NAME = {
     MEDIA: 'media',

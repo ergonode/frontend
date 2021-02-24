@@ -4,7 +4,7 @@
  */
 import {
     Components,
-} from './imports';
+} from '@Notifications/config/imports';
 
 export default {
     extendComponents: {

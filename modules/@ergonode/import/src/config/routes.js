@@ -6,8 +6,8 @@ import {
     Icons,
     Pages,
     Tabs,
-} from './imports';
-import Privileges from './privileges';
+} from '@Import/config/imports';
+import Privileges from '@Import/config/privileges';
 
 export const ROUTE_NAME = {
     IMPORTS: 'imports',

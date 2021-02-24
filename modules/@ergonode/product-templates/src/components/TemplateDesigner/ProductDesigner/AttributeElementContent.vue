@@ -138,7 +138,7 @@ export default {
         },
         typeIconComponent() {
             const icon = this.$extendedForm({
-                key: '@Attributes/components/Lists/AttributeListElement/Icon',
+                key: '@Templates/components/TemplateDesigner/ProductDesigner/AttributeElementContent/icons',
                 type: this.element.type,
             });
 

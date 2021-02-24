@@ -5,7 +5,7 @@
 
 import {
     Components,
-} from './imports';
+} from '@Media/config/imports';
 
 export default {
     extendComponents: {

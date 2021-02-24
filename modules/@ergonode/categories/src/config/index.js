@@ -5,6 +5,9 @@
 export default {
     name: '@ergonode/categories',
     order: 60,
+    relations: [
+        '@ergonode/core',
+    ],
     aliases: {
         '@Categories': '/',
     },

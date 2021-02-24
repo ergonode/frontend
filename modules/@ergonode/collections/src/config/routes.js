@@ -6,8 +6,8 @@ import {
     Icons,
     Pages,
     Tabs,
-} from './imports';
-import PRIVILEGES from './privileges';
+} from '@Collections/config/imports';
+import PRIVILEGES from '@Collections/config/privileges';
 
 export const ROUTE_NAME = {
     COLLECTIONS: 'collections',

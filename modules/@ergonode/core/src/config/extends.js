@@ -5,7 +5,7 @@
 import {
     Components,
     Icons,
-} from './imports';
+} from '@Core/config/imports';
 
 export default {
     dictionaries: [
