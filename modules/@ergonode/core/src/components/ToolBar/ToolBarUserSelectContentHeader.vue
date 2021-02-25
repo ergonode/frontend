@@ -81,6 +81,7 @@ export default {
         grid-column-gap: 24px;
         align-items: center;
         margin: 24px;
+        word-break: break-word;
 
         &__initials, &__email {
             grid-column: 2;

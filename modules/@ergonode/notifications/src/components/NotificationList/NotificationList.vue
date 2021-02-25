@@ -160,12 +160,12 @@ export default {
                 this.isFetchingMoreData = false;
             }
         },
-        requestProcessingNotifications() {
+        async requestProcessingNotifications() {
             clearTimeout(this.timeout);
 
-            this.timeout = setTimeout(async () => {
-                await this.getProcessingNotifications({});
+            await this.getProcessingNotifications({});
 
+            this.timeout = setTimeout(() => {
                 this.requestProcessingNotifications();
             }, 1000);
         },

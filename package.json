@@ -66,7 +66,7 @@
     "tiptap-extensions": "^1.35.0",
     "v-mask": "^2.2.4",
     "vue-chartjs": "^3.5.1",
-    "vue-windowing": "^0.12.1",
+    "vue-windowing": "^0.13.0",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
@@ -75,9 +75,9 @@
     "@babel/preset-env": "^7.12.11",
     "@babel/runtime": "^7.12.5",
     "@storybook/addon-actions": "^6.1.14",
-    "@storybook/addon-essentials": "^6.1.14",
+    "@storybook/addon-essentials": "^6.1.20",
     "@storybook/addon-links": "^6.1.14",
-    "@storybook/vue": "^6.1.14",
+    "@storybook/vue": "^6.1.20",
     "@vue/test-utils": "^1.1.2",
     "babel-eslint": "^8.2.6",
     "babel-jest": "^26.6.3",

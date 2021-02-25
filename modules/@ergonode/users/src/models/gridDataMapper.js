@@ -96,6 +96,12 @@ export function getMappedGridData({
         rows.push(row);
     }
 
+    rows.sort((a, b) => {
+        if (a.name.value < b.name.value) return -1;
+
+        return a.name.value > b.name.value ? 1 : 0;
+    });
+
     return {
         rows,
         columns,
