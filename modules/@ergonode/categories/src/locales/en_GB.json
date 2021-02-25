@@ -56,7 +56,8 @@
           "showAllExpandNumericButton": "Show all",
           "noCategoriesSubtitle": "They are no selected categories for given criteria.",
           "advancedFilterLabel": "Category tree",
-          "noCategoryInTree": "There are no categories in the tree, you can add the first one."
+          "noCategoryInTreeTitle": "No categories in tree",
+          "noCategoryInTreeSubtitle": "There are no categories in the tree, so you can add the first one."
         },
         "CategoryGeneralTab": {
           "updateSuccess": "Category has been updated"

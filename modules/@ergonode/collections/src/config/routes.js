@@ -126,7 +126,7 @@ export default [
                         },
                     ],
                     privileges: [
-                        PRODUCT_PRIVILEGES.PRODUCT.READ,
+                        PRODUCT_PRIVILEGES.PRODUCT.read,
                     ],
                 },
             },

@@ -56,7 +56,8 @@
           "showAllExpandNumericButton": "Pokaż wszystkie",
           "noCategoriesSubtitle": "Nie ma zaznaczonych kategorii dla wybranych kryteriów.",
           "advancedFilterLabel": "Drzewo kategorii",
-          "noCategoryInTree": "W drzewie nie ma kategorii, stwórz pierwszą."
+          "noCategoryInTreeTitle": "Brak kategorii w drzewie",
+          "noCategoryInTreeSubtitle": "W drzewie nie ma kategorii, stwórz pierwszą."
         },
         "CategoryGeneralTab": {
           "updateSuccess": "Kategoria została uaktualniona"

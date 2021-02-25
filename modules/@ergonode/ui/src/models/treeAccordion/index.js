@@ -18,6 +18,7 @@ export const getSelectedNodes = ({
         const selectedValue = value.find(({
             id,
         }) => id === tree.id);
+
         const sum = {
             all: 0,
             selected: 0,

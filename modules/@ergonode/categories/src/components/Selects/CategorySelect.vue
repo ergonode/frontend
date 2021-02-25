@@ -307,8 +307,8 @@ export default {
         },
         categoryTreePlaceholder() {
             return {
-                title: this.$t('@Categories.category._.noItems'),
-                subtitle: this.$t('@Categories.category.components.CategorySelect.noCategoryInTree'),
+                title: this.$t('@Categories.category.components.CategorySelect.noCategoryInTreeTitle'),
+                subtitle: this.$t('@Categories.category.components.CategorySelect.noCategoryInTreeSubtitle'),
             };
         },
         categoryTreeNonVisiblePlaceholder() {
