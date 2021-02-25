@@ -124,18 +124,19 @@ export default {
                     drafts[`${rowId}/read`] = true;
                 }
 
-                if (columnId === 'read') {
+                switch (columnId) {
+                case 'read':
                     drafts[`${rowId}/create`] = false;
                     drafts[`${rowId}/update`] = false;
                     drafts[`${rowId}/delete`] = false;
-                }
-
-                if (columnId === 'create') {
+                    break;
+                case 'create':
                     drafts[`${rowId}/update`] = value;
-                }
-
-                if (columnId === 'update') {
+                    break;
+                case 'update':
                     drafts[`${rowId}/create`] = value;
+                    break;
+                default: break;
                 }
 
                 drafts[`${rowId}/${columnId}`] = value;
