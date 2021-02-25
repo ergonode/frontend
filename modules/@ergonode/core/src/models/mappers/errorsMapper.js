@@ -7,6 +7,7 @@ export const getMappedErrors = ({
     errors,
     fieldKeys = {},
 }) => {
+    console.log(fieldKeys);
     const keys = Object.keys(errors);
 
     let mappedErrors = {};
