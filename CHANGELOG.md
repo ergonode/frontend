@@ -3,6 +3,39 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+
+## CHANGELOG FOR v1.0.0-beta.9
+- feature [#669](https://github.com/ergonode/frontend/pull/669) Categories sidebar (derpdead)
+- feature [#676](https://github.com/ergonode/frontend/pull/676) Designers unification (derpdead)
+- feature [#678](https://github.com/ergonode/frontend/pull/678) Privileges validation (derpdead)
+- feature [#680](https://github.com/ergonode/frontend/pull/680) Scheduler new validation (bleto)
+- feature [#682](https://github.com/ergonode/frontend/pull/682) Action center placeholder (derpdead)
+- feature [#683](https://github.com/ergonode/frontend/pull/683) Notification list visual update (derpdead)
+- feature [#686](https://github.com/ergonode/frontend/pull/686) New extension slots (bleto)
+- feature [#687](https://github.com/ergonode/frontend/pull/687) Progressive notifications (derpdead)
+- feature [#689](https://github.com/ergonode/frontend/pull/689) Filter by not assigned categories (derpdead)
+- feature [#692](https://github.com/ergonode/frontend/pull/692) Isolate batch action (derpdead)
+- feature [#695](https://github.com/ergonode/frontend/pull/695) Product translations (derpdead)
+- feature [#698](https://github.com/ergonode/frontend/pull/698) Order extended form fields (bleto)
+- feature [#715](https://github.com/ergonode/frontend/pull/715) Extend property method (bleto)
+- bugfix [#677](https://github.com/ergonode/frontend/pull/677) Allow scrolling for Categories in Sidebar (derpdead)
+- bugfix [#684](https://github.com/ergonode/frontend/pull/684) Tree designer bugs (derpdead)
+- bugfix [#685](https://github.com/ergonode/frontend/pull/685) Designers stabilisation - FF (derpdead)
+- bugfix [#690](https://github.com/ergonode/frontend/pull/690) Dismissing product modals, better feedback support (derpdead)
+- bugfix [#694](https://github.com/ergonode/frontend/pull/694) Change scheduler form (bleto)
+- bugfix [#700](https://github.com/ergonode/frontend/pull/700) Add alert to remove action (bleto)
+- bugfix [#701](https://github.com/ergonode/frontend/pull/701) Drag and drop - FF (derpdead)
+- bugfix [#710](https://github.com/ergonode/frontend/pull/710) Privileges error (bleto)
+- bugfix [#712](https://github.com/ergonode/frontend/pull/712) Sorting products, complex filter fix (derpdead)
+- bugfix [#713](https://github.com/ergonode/frontend/pull/713) privileges bug fix (bleto)
+- bugfix [#719](https://github.com/ergonode/frontend/pull/719) Mapping filter operators (derpdead)
+- refactor [#670](https://github.com/ergonode/frontend/pull/670) i18n translations - attributes (bleto)
+- refactor [#675](https://github.com/ergonode/frontend/pull/675) Change extends structure (bleto)
+- performance [#699](https://github.com/ergonode/frontend/pull/699) Improve select row algorithm (derpdead)
+- performance [#724](https://github.com/ergonode/frontend/pull/724) Privileges improvement (derpdead)
+- performance [#726](https://github.com/ergonode/frontend/pull/726) Stabilisation (derpdead)
+
+
 ## CHANGELOG FOR v1.0.0-beta.8
 
 - feature [#650](https://github.com/ergonode/frontend/pull/650) Missing logic for changed values by user (derpdead)
