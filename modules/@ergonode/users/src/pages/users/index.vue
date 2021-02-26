@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar
-            :title="$t('user.page.title')"
+            :title="$t('@Users.user._.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <template
@@ -41,7 +41,7 @@ import CreateUserButton from '@Users/components/Buttons/CreateUserButton';
 import PRIVILEGES from '@Users/config/privileges';
 
 export default {
-    name: 'UsersTabs',
+    name: 'Users',
     components: {
         CreateUserButton,
         TitleBar,
@@ -75,7 +75,7 @@ export default {
     },
     head() {
         return {
-            title: this.$t('user.page.head'),
+            title: this.$t('@Users.user._.headTitle'),
         };
     },
 };

@@ -4,7 +4,7 @@
  */
 <template>
     <Button
-        :title="$t('user.page.addButton')"
+        :title="$t('@Users.user.components.CreateUserButton.addButton')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">

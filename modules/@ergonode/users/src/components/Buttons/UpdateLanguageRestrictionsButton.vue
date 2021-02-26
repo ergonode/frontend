@@ -9,7 +9,7 @@
         <template #default="{ hasValueToSave }">
             <Button
                 data-cy="submit"
-                :title="$t('core.buttons.submit')"
+                :title="$t('@Users._.submit')"
                 :disabled="!isAllowedToUpdate"
                 @click.native="onSubmit">
                 <template #prepend="{ color }">
@@ -83,7 +83,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('user.messages.updateLanguageSuccess'),
+                message: this.$t('@Users.user.components.UpdateLanguageRestrictionsButton.updateLanguageSuccess'),
             });
 
             this.__setState({

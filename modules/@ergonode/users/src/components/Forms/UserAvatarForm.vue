@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        :title="$t('user.avatar.title')"
+        :title="$t('@Users.profile.components.UserAvatarForm.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
@@ -19,7 +19,7 @@
                 <UploadFile
                     :value="Boolean(avatarId) || Boolean(avatarFile)"
                     accept-files="image/*"
-                    :label="$t('user.avatar.uploadLabel')"
+                    :label="$t('@Users.profile.components.UserAvatarForm.uploadLabel')"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors.upload"
                     height="152px"
@@ -29,7 +29,7 @@
                         <StaticImage
                             v-if="avatarFile"
                             :src="avatarFileSource"
-                            :alt="$t('user.avatar.uploadAlt')" />
+                            :alt="$t('@Users.profile.components.UserAvatarForm.uploadAlt')" />
                         <LazyImage
                             v-else
                             :use-cache="false"

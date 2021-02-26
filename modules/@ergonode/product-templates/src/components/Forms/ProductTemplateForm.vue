@@ -32,7 +32,6 @@
                     :disabled="!isAllowedToUpdate"
                     @input="setImageValue" />
             </FormSection>
-            <Divider v-if="extendedForm.length" />
             <template v-for="(field, index) in extendedForm">
                 <Component
                     :is="field.component"

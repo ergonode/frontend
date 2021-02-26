@@ -47,7 +47,6 @@
                     hint="Badge color is needed for presentation purpose"
                     :disabled="!isAllowedToUpdate"
                     @input="setColorValue" />
-                <Divider v-if="extendedForm.length" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
                         :is="field.component"
