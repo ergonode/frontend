@@ -8,8 +8,8 @@
         @close="onClose">
         <template #body>
             <ProductForm
-                :submit-title="$t('product.buttons.create')"
-                :proceed-title="$t('product.buttons.proceed')"
+                :submit-title="$t('@Products._.create')"
+                :proceed-title="$t('@Products._.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :scope="scope"
@@ -120,6 +120,7 @@ export default {
         onProceedSuccess(id) {
             this.isProceeding = false;
 
+            this.onClose();
             this.$router.push({
                 name: ROUTE_NAME.PRODUCT_EDIT_GENERAL,
                 params: {

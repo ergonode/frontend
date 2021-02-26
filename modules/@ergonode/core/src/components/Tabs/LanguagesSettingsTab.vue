@@ -10,7 +10,7 @@
                     <DropZone
                         v-show="isDropZoneVisible"
                         :hover-background-color="graphiteLightColor"
-                        title="REMOVE CATEGORY">
+                        title="REMOVE LANGUAGE">
                         <template #icon="{ color }">
                             <IconRemoveFilter :fill-color="color" />
                         </template>
@@ -19,7 +19,10 @@
             </VerticalTabBar>
         </template>
         <template #grid>
-            <LanguagesTreeWrapper />
+            <LanguageInheritanceTreeDesigner
+                :scope="scope"
+                :errors="errors"
+                :change-values="changeValues" />
             <UpdateLanguagesInheritanceButton
                 :scope="scope"
                 :change-values="changeValues"
@@ -30,7 +33,7 @@
 
 <script>
 import UpdateLanguagesInheritanceButton from '@Core/components/Buttons/UpdateLanguagesInheritanceButton';
-import LanguagesTreeWrapper from '@Core/components/LanguagesTreeDesigner/LanguagesTreeWrapper';
+import LanguageInheritanceTreeDesigner from '@Core/components/LanguageInheritanceTreeDesigner/LanguageInheritanceTreeDesigner';
 import PRIVILEGES from '@Core/config/privileges';
 import {
     DRAGGED_ELEMENT,
@@ -57,71 +60,56 @@ export default {
         IconRemoveFilter,
         DropZone,
         FadeTransition,
-        LanguagesTreeWrapper,
+        LanguageInheritanceTreeDesigner,
         VerticalTabBar,
     },
     mixins: [
         tabFeedbackMixin,
     ],
-    asyncData({
-        store,
-    }) {
-        const {
-            language: languageCode,
-        } = store.state.authentication.user;
-        const {
-            languagesTree,
-        } = store.state.core;
-        const treeToSet = languagesTree.map((item, i) => {
-            store.dispatch('list/setDisabledElement', {
-                languageCode,
-                elementId: item.id,
-                disabled: true,
-            });
-
-            return {
-                ...item,
-                row: i,
-                column: item.level,
-                expanded: false,
-            };
-        });
-
-        store.dispatch('gridDesigner/setGridData', treeToSet);
-        store.dispatch('gridDesigner/setFullGridData', treeToSet);
+    data() {
+        return {
+            verticalTabs: [],
+        };
     },
     computed: {
         ...mapState('draggable', [
             'isElementDragging',
         ]),
-        verticalTabs() {
-            return [
-                {
-                    title: 'System languages',
-                    component: () => import('@Core/components/VerticalTabs/LanguagesVerticalTab'),
-                    icon: () => import('@UI/components/Icons/Others/IconTranslate'),
-                    props: {
-                        disabled: !this.$hasAccess([
-                            PRIVILEGES.SETTINGS.update,
-                        ]),
-                    },
-                },
-            ];
-        },
         isDropZoneVisible() {
             return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;
         },
         graphiteLightColor() {
             return GRAPHITE_LIGHT;
         },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.SETTINGS.update,
+            ]);
+        },
     },
-    beforeDestroy() {
-        this.__clearGridDesignerStorage();
+    async mounted() {
+        const extendedVerticalTabs = await this.$getExtendMethod('@Core/components/Tabs/LanguagesSettingsTab/verticalTabs', {
+            $this: this,
+            props: {
+                disabled: !this.isAllowedToUpdate,
+            },
+        });
+
+        this.verticalTabs = [].concat(...extendedVerticalTabs);
+    },
+    async beforeDestroy() {
+        if (!this.changeValues.saved) {
+            await this.getLanguageTree({});
+            this.setDisabledElements({});
+        }
     },
     methods: {
-        ...mapActions('gridDesigner', {
-            __clearGridDesignerStorage: '__clearStorage',
-        }),
+        ...mapActions('core', [
+            'getLanguageTree',
+        ]),
+        ...mapActions('list', [
+            'setDisabledElements',
+        ]),
     },
 };
 </script>

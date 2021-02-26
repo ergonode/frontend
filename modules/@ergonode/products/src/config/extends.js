@@ -4,18 +4,16 @@
  */
 import {
     Components,
+    Store,
 } from '@Products/config/imports';
+import {
+    ROUTE_NAME,
+} from '@Products/config/routes';
 import {
     PRODUCT_TYPE,
 } from '@Products/defaults';
 
 import extendRoutesChildren from './extendRoutesChildren';
-import {
-    Store,
-} from './imports';
-import {
-    ROUTE_NAME,
-} from './routes';
 
 export default {
     dictionaries: [
@@ -34,6 +32,9 @@ export default {
     },
     extendRoutesChildren,
     extendMethods: {
+        '@Media/components/Buttons/LinkRelationButton/routeLinks': () => ({
+            product: ROUTE_NAME.PRODUCT_EDIT_GENERAL,
+        }),
         '@Core/pages/tabs': ({
             $this, type = null, tabs,
         }) => {

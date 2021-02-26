@@ -15,9 +15,9 @@ import {
     DROPDOWN_MAX_HEIGHT,
 } from '@UI/assets/scss/_js-variables/sizes.scss';
 import {
-    getPositionForBrowser,
-    isMouseInsideElement,
-} from '@UI/models/dragAndDrop/helpers';
+    getFixedMousePosition,
+    isMouseOutsideElement,
+} from '@UI/models/mouse';
 
 export default {
     name: 'Dropdown',
@@ -57,20 +57,18 @@ export default {
     },
     watch: {
         fixed() {
-            if (this.fixed) {
-                requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                if (this.fixed) {
                     const maxHeight = parseInt(DROPDOWN_MAX_HEIGHT, 10);
                     const parentOffset = this.parentElement.getBoundingClientRect();
 
                     this.$refs.dropdown.style.maxHeight = `${maxHeight}px`;
                     this.$refs.dropdown.style.width = `${parentOffset.width}px`;
-                });
-            } else {
-                requestAnimationFrame(() => {
+                } else {
                     this.$refs.dropdown.style.width = null;
                     this.$refs.dropdown.style.maxHeight = null;
-                });
-            }
+                }
+            });
         },
         visible: {
             immediate: true,
@@ -151,8 +149,8 @@ export default {
             const {
                 xPos,
                 yPos,
-            } = getPositionForBrowser(event);
-            const isClickedOutside = !isMouseInsideElement(this.$refs.dropdown, xPos, yPos);
+            } = getFixedMousePosition(event);
+            const isClickedOutside = isMouseOutsideElement(this.$refs.dropdown, xPos, yPos);
 
             this.$emit('click-outside', {
                 event,
@@ -166,7 +164,7 @@ export default {
 <style lang="scss" scoped>
     .dropdown {
         position: absolute;
-        z-index: $Z_INDEX_MAX;
+        z-index: $Z_INDEX_DROPDOWN;
         display: flex;
         flex-direction: column;
         background-color: $WHITE;
@@ -174,6 +172,7 @@ export default {
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         opacity: 0;
         visibility: hidden;
+        overflow: hidden;
         will-change:
             visibility,
             opacity,

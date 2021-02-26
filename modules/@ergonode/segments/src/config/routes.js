@@ -15,7 +15,7 @@ export const ROUTE_NAME = {
     SEGMENT_EDIT: 'segment-id',
     SEGMENT_EDIT_GENERAL: 'segment-id-general',
     SEGMENT_EDIT_TRANSLATIONS: 'segment-id-translations',
-    SEGMENT_EDIT_DESIGNER: 'segment-id-designer',
+    SEGMENT_EDIT_CONDITIONS: 'segment-id-conditions',
 };
 
 export default [
@@ -109,11 +109,11 @@ export default [
                 },
             },
             {
-                name: ROUTE_NAME.SEGMENT_EDIT_DESIGNER,
-                path: 'designer',
+                name: ROUTE_NAME.SEGMENT_EDIT_CONDITIONS,
+                path: 'conditions',
                 component: Tabs.ConditionDesignerTab,
                 meta: {
-                    title: 'Designer',
+                    title: 'Conditions',
                     breadcrumbs: [
                         {
                             title: 'Products',

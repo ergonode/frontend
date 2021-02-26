@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <InputSolidStyle class="category-select">
+    <InputSolidStyle :class="classes">
         <template #activator>
             <InputController>
                 <InputLabel
@@ -14,13 +14,13 @@
                 <div class="category-select__header">
                     <div class="horizontal-container">
                         <ExpandNumericButton
-                            :title="$t('category.form.expandFilterButton')"
+                            :title="$t('@Categories.category.components.CategorySelect.expandFilterButton')"
                             :number="isCategoryTreeSelected ? 1 : 0"
                             :is-expanded="isFiltersExpanded"
                             @click.native="onFiltersExpand" />
                         <Toggler
                             v-model="isSelectedOnlyVisibleCategories"
-                            :label="$t('category.form.toggleVisibleToggler')"
+                            :label="$t('@Categories.category.components.CategorySelect.toggleVisibleToggler')"
                             :disabled="isSelectedCategoriesTogglerDisabled"
                             reversed
                             @input="onToggleBetweenCategoriesVisibility" />
@@ -37,7 +37,7 @@
                             <template #removeAllButton>
                                 <AdvancedFiltersRemoveAllButton
                                     v-if="isCategoryTreeSelected"
-                                    :title="$t('core.buttons.clear')"
+                                    :title="$t('@Categories._.clear')"
                                     @click.native="onClearAdvancedFilters" />
                                 <div v-else />
                             </template>
@@ -53,7 +53,7 @@
                     <TreeAccordion
                         v-if="isCategoryTreeSelected"
                         class="category-select__list"
-                        :search-placeholder="$t('category.form.searchPlaceholder')"
+                        :search-placeholder="$t('@Categories.category.components.CategorySelect.searchPlaceholder')"
                         :value="selectedOptions"
                         :search-value="searchValue"
                         :items="categoryTreeItems"
@@ -68,32 +68,32 @@
                             <CategorySelectAllTreeCheckBox
                                 :value="value"
                                 :categories="categoryTreeItems"
-                                :disabled="!isAnyCategoryInTreeAfterFiltering"
+                                :disabled="disabled || !isAnyCategoryInTreeAfterFiltering"
                                 @input="onSelectAllVisible" />
                         </template>
                         <template #body>
-                            <DropdownPlaceholder
+                            <SelectListNoDataPlaceholder
                                 v-if="!isAnyCategoryInTree"
                                 :title="categoryTreePlaceholder.title"
                                 :subtitle="categoryTreePlaceholder.subtitle">
                                 <template #action>
                                     <Button
-                                        :title="$t('categoryTree.form.noCategoryTreeButton')"
+                                        :title="$t('@Categories.category.components.CategorySelect.goToButton')"
                                         :size="smallSize"
                                         :disabled="!isAllowedToUpdateTree"
                                         @click.native="onNavigateToCategoryTree" />
                                 </template>
-                            </DropdownPlaceholder>
-                            <DropdownPlaceholder
+                            </SelectListNoDataPlaceholder>
+                            <SelectListNoDataPlaceholder
                                 v-else-if="isVisibleSelectedAnyCategoryInTree"
                                 :title="categoryTreeNonVisiblePlaceholder.title"
                                 :subtitle="categoryTreeNonVisiblePlaceholder.subtitle">
                                 <template #action>
-                                    <ClearSearchButton
-                                        :title="$t('category.form.clearSearchButtonLabel')"
+                                    <PlaceholderClearSearchButton
+                                        :title="$t('@Categories.category.components.CategorySelect.clearSearchButtonLabel')"
                                         @click.native="onClearVisibilitySelection" />
                                 </template>
-                            </DropdownPlaceholder>
+                            </SelectListNoDataPlaceholder>
                         </template>
                     </TreeAccordion>
                     <SelectList
@@ -103,7 +103,7 @@
                         :search-value="searchValue"
                         :items="visibleCategoryItems"
                         :size="smallSize"
-                        :search-placeholder="$t('category.form.searchPlaceholder')"
+                        :search-placeholder="$t('@Categories.category.components.CategorySelect.searchPlaceholder')"
                         :searchable="true"
                         :selectable="true"
                         :multiselect="true"
@@ -113,33 +113,35 @@
                             <CategorySelectAllCheckBox
                                 :value="value"
                                 :categories="categoryItems"
-                                :disabled="!isAnyCategoryAfterFiltering"
+                                :disabled="disabled || !isAnyCategoryAfterFiltering"
                                 @input="onSelectAllVisible"
                             />
                         </template>
-                        <template #body>
-                            <DropdownPlaceholder
+                        <template #noDataPlaceholder>
+                            <SelectListNoDataPlaceholder
                                 v-if="!isAnyCategory"
                                 :title="categoriesPlaceholder.title"
                                 :subtitle="categoriesPlaceholder.subtitle">
                                 <template #action>
                                     <CreateCategoryButton />
                                 </template>
-                            </DropdownPlaceholder>
-                            <DropdownPlaceholder
+                            </SelectListNoDataPlaceholder>
+                            <SelectListNoDataPlaceholder
                                 v-else-if="isVisibleSelectedAnyCategory"
                                 :title="categoriesNonVisiblePlaceholder.title"
                                 :subtitle="categoriesNonVisiblePlaceholder.subtitle">
                                 <template #action>
-                                    <ClearSearchButton
-                                        :title="$t('category.form.clearSearchButtonLabel')"
+                                    <PlaceholderClearSearchButton
+                                        :title="$t('@Categories.category.components.CategorySelect.clearSearchButtonLabel')"
                                         @click.native="onClearVisibilitySelection" />
                                 </template>
-                            </DropdownPlaceholder>
+                            </SelectListNoDataPlaceholder>
                         </template>
                         <template #item="{ item, isSelected }">
                             <ListElementAction :size="smallSize">
-                                <CheckBox :value="isSelected" />
+                                <CheckBox
+                                    :value="isSelected"
+                                    :disabled="item.disabled" />
                             </ListElementAction>
                             <ListElementDescription>
                                 <ListElementTitle
@@ -152,7 +154,7 @@
                         v-show="isExpandButtonVisible"
                         class="category-select__expand-more">
                         <ExpandNumericButton
-                            :title="$t('category.form.showAllExpandNumericButton')"
+                            :title="$t('@Categories.category.components.CategorySelect.showAllExpandNumericButton')"
                             :size="tinySize"
                             :number="categoryItems.length"
                             :is-expanded="isCategoriesExpanded"
@@ -188,6 +190,9 @@ import {
     ROUTE_NAME as CATEGORY_TREES_ROUTE_NAME,
 } from '@Trees/config/routes';
 import {
+    getMappedCategories,
+} from '@Trees/models/treeMapper';
+import {
     get,
 } from '@Trees/services';
 import AdvancedFilters from '@UI/components/AdvancedFilters/AdvancedFilters';
@@ -200,21 +205,22 @@ import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
 import ListElementAction from '@UI/components/List/ListElementAction';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
+import PlaceholderClearSearchButton from '@UI/components/Placeholder/PlaceholderClearSearchButton';
 import Preloader from '@UI/components/Preloader/Preloader';
-import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import SelectList from '@UI/components/SelectList/SelectList';
+import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
 import Toggler from '@UI/components/Toggler/Toggler';
 import TreeAccordion from '@UI/components/TreeAccordion/TreeAccordion';
 
 export default {
     name: 'CategorySelect',
     components: {
+        PlaceholderClearSearchButton,
         Button,
         CreateCategoryButton,
         CategorySelectAllTreeCheckBox,
         CategorySelectAllCheckBox,
-        ClearSearchButton,
+        SelectListNoDataPlaceholder,
         TreeAccordion,
         InputSolidStyle,
         InputController,
@@ -222,7 +228,6 @@ export default {
         ListElementTitle,
         ListElementAction,
         ListElementDescription,
-        DropdownPlaceholder,
         Toggler,
         CheckBox,
         ExpandNumericButton,
@@ -239,11 +244,20 @@ export default {
             type: Array,
             default: () => [],
         },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
     async fetch() {
-        this.allCategories = await getAutocomplete({
+        const categories = await getAutocomplete({
             $axios: this.$axios,
         });
+
+        this.allCategories = categories.map(category => ({
+            ...category,
+            disabled: this.disabled,
+        }));
 
         this.isFetchingData = false;
     },
@@ -260,40 +274,47 @@ export default {
         };
     },
     computed: {
+        classes() {
+            return [
+                'category-select',
+                {
+                    'category-select--no-data': !((this.isCategoryTreeSelected && this.isAnyCategoryInTreeAfterFiltering) || (!this.isCategoryTreeSelected && this.isAnyCategoryAfterFiltering)),
+                },
+            ];
+        },
         categorySelectItemsClasses() {
             return [
                 'category-select__items',
                 {
-                    'category-select__items--has-any-items': (this.isCategoryTreeSelected && this.isAnyCategoryInTreeAfterFiltering) || (!this.isCategoryTreeSelected && this.isAnyCategoryAfterFiltering),
                     'category-select__items--visible-expander': this.isExpandButtonVisible,
                 },
             ];
         },
         label() {
-            return this.$t('category.form.selectLabel');
+            return this.$t('@Categories.category._.label');
         },
         categoriesPlaceholder() {
             return {
-                title: this.$t('category.grid.placeholderTitle'),
-                subtitle: this.$t('category.grid.placeholderSubtitle'),
+                title: this.$t('@Categories.category._.noItems'),
+                subtitle: this.$t('@Categories.category._.createFirst'),
             };
         },
         categoriesNonVisiblePlaceholder() {
             return {
-                title: this.$t('category.form.noVisibleCategoriesPlaceholderTitle'),
-                subtitle: this.$t('category.form.noVisibleCategoriesPlaceholderSubtitle'),
+                title: this.$t('@Categories.category._.noItems'),
+                subtitle: this.$t('@Categories.category.components.CategorySelect.noCategoriesSubtitle'),
             };
         },
         categoryTreePlaceholder() {
             return {
-                title: this.$t('categoryTree.grid.placeholderTitle'),
-                subtitle: this.$t('categoryTree.grid.placeholderSubtitle'),
+                title: this.$t('@Categories.category.components.CategorySelect.noCategoryInTreeTitle'),
+                subtitle: this.$t('@Categories.category.components.CategorySelect.noCategoryInTreeSubtitle'),
             };
         },
         categoryTreeNonVisiblePlaceholder() {
             return {
-                title: this.$t('categoryTree.form.noVisibleCategoriesInTreePlaceholderTitle'),
-                subtitle: this.$t('categoryTree.form.noVisibleCategoriesInTreePlaceholderSubtitle'),
+                title: this.$t('@Categories.category._.noItems'),
+                subtitle: this.$t('@Categories.category.components.CategorySelect.noCategoriesSubtitle'),
             };
         },
         selectedOptions() {
@@ -316,7 +337,7 @@ export default {
                 {
                     id: 'categoryTree',
                     type: 'CATEGORY_TREE',
-                    label: this.$t('categoryTree.advancedFilter.label'),
+                    label: this.$t('@Categories.category.components.CategorySelect.advancedFilterLabel'),
                 },
             ];
         },
@@ -456,26 +477,12 @@ export default {
                     id: filters.categoryTree,
                 });
 
-                const getMappedCategories = (treeCategories = []) => {
-                    const children = [];
-
-                    treeCategories.forEach((treeCategory) => {
-                        const category = this.allCategories.find(({
-                            id,
-                        }) => id === treeCategory.category_id);
-
-                        children.push({
-                            ...category,
-                            children: getMappedCategories(treeCategory.children),
-                        });
-                    });
-
-                    return children;
-                };
-
                 this.allCategoryTrees = {
                     ...this.allCategoryTrees,
-                    [filters.categoryTree]: getMappedCategories(categoryTree.categories),
+                    [filters.categoryTree]: getMappedCategories({
+                        tree: categoryTree.categories,
+                        categories: this.allCategories,
+                    }),
                 };
 
                 this.isFetchingData = false;
@@ -538,6 +545,10 @@ export default {
             }
         }
 
+        &__list {
+            padding: 0 8px;
+        }
+
         &__header {
             display: flex;
             flex-direction: column;
@@ -546,24 +557,16 @@ export default {
             box-sizing: border-box;
         }
 
-        &__list {
-            padding: 0 8px;
-        }
-
         &__items {
             position: relative;
             display: flex;
             flex-direction: column;
             border: $BORDER_1_GREY;
+            padding: 12px 0;
             border-top: unset;
-            padding-top: 12px;
             box-sizing: border-box;
             transition: border-color 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
             will-change: border-color;
-
-            &--has-any-items {
-                padding-bottom: 12px;
-            }
 
             &--visible-expander {
                 padding-bottom: 48px;

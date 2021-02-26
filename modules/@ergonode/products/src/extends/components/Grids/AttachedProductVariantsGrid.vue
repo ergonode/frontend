@@ -23,7 +23,8 @@
         @delete-row="onRemoveRow"
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
-        @remove-all-filters="onRemoveAllFilters">
+        @remove-all-filters="onRemoveAllFilters"
+        v-bind="extendedProps['grid']">
         <template #actionsHeader>
             <ExpandNumericButton
                 title="BINDING ATTRIBUTES"
@@ -31,7 +32,7 @@
                 :is-expanded="isBindingAttributesExpanded"
                 @click.native="onBindingAttributesExpand" />
             <AddProductVariantsButton
-                title="ADD PRODUCTS"
+                :title="$t('@Products._.addProducts')"
                 :theme="secondaryTheme">
                 <template #prepend="{ color }">
                     <IconAdd :fill-color="color" />
@@ -40,12 +41,16 @@
         </template>
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('product.grid.variantPlaceholderTitle')"
-                :subtitle="$t('product.grid.variantPlaceholderSubtitle')">
+                :title="$t('@Products.productExtend.components.AttachedProductVariantsGrid.noProductVariants')"
+                :subtitle="$t('@Products.productExtend.components.AttachedProductVariantsGrid.addProductsVariants')">
                 <template #action>
                     <AddProductVariantsButton
-                        title="CHOOSE VARIANTS"
-                        @added="onProductsAttachmentUpdated" />
+                        :title="$t('@Products.productExtend.components.AttachedProductVariantsGrid.chooseVariants')"
+                        @added="onProductsAttachmentUpdated">
+                        <template #prepend="{ color }">
+                            <IconAdd :fill-color="color" />
+                        </template>
+                    </AddProductVariantsButton>
                 </template>
             </GridNoDataPlaceholder>
         </template>
@@ -73,6 +78,7 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
+import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
@@ -109,6 +115,12 @@ export default {
         AddProductVariantsButton,
     },
     mixins: [
+        extendPropsMixin({
+            extendedKey: '@Products/extends/components/Grids/AttachedProductVariantsGrid/props',
+            extendedNames: [
+                'grid',
+            ],
+        }),
         gridDraftMixin,
         extendedGridComponentsMixin,
     ],
@@ -242,6 +254,10 @@ export default {
             this.isBindingAttributesExpanded = !this.isBindingAttributesExpanded;
         },
         onRemoveRow() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: this.$t('@Products.productExtend.components.AttachedProductVariantsGrid.deleteSuccess'),
+            });
             this.onFetchData();
         },
         async onFetchData() {
@@ -285,27 +301,36 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Product variants haven’t been fetched properly',
+                message: this.$t('@Products.productExtend.components.AttachedProductVariantsGrid.getRequest'),
             });
         },
         onRemoveAllFilters() {
+            const query = {
+                ...this.$route.query,
+                page: DEFAULT_PAGE,
+            };
+
+            delete query.filter;
+
             this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    filter: '',
-                    page: DEFAULT_PAGE,
-                },
+                query,
             });
 
             this.isPrefetchingData = true;
         },
         onFilterChange(filters) {
+            const query = {
+                ...this.$route.query,
+                page: DEFAULT_PAGE,
+                filter: getParsedFilters(filters),
+            };
+
+            if (query.filter === '' || query.filter === null) {
+                delete query.filter;
+            }
+
             this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    page: DEFAULT_PAGE,
-                    filter: getParsedFilters(filters),
-                },
+                query,
             });
         },
         onColumnSortChange(sortOrder) {

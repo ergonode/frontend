@@ -23,14 +23,15 @@
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @remove-all-filters="onRemoveAllFilters"
-        @filter="onFilterChange">
+        @filter="onFilterChange"
+        v-bind="extendedProps['grid']">
         <template #actionsHeader>
             <slot name="actionsHeader" />
         </template>
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('product.grid.productVariantsToAttachPlaceholderTitle')"
-                :subtitle="$t('product.grid.productVariantsToAttachPlaceholderSubtitle')" />
+                :title="$t('@Products.productExtend.components.ProductVariantsToAttachGrid.noProducts')"
+                :subtitle="$t('@Products.productExtend.components.ProductVariantsToAttachGrid.changeBindingAttributes')" />
         </template>
         <template #appendFooter>
             <UpdateProductsAttachmentButton
@@ -54,6 +55,7 @@ import {
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
+import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
@@ -78,6 +80,12 @@ export default {
         GridNoDataPlaceholder,
     },
     mixins: [
+        extendPropsMixin({
+            extendedKey: '@Products/extends/components/Grids/ProductVariantsToAttachGrid/props',
+            extendedNames: [
+                'grid',
+            ],
+        }),
         gridDraftMixin,
         extendedGridComponentsMixin,
     ],
@@ -250,7 +258,7 @@ export default {
         onFetchProductsVariantsError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Product variants haven’t been fetched properly',
+                message: this.$t('@Products.productExtend.components.ProductVariantsToAttachGrid.getRequest'),
             });
 
             this.isPrefetchingData = false;
@@ -278,7 +286,7 @@ export default {
         onFetchGridDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Product variants haven’t been fetched properly',
+                message: this.$t('@Products.productExtend.components.ProductVariantsToAttachGrid.getRequest'),
             });
 
             this.isPrefetchingData = false;
@@ -296,10 +304,10 @@ export default {
                             type: 'SELECT',
                             options: {
                                 false: {
-                                    label: 'Not attached',
+                                    label: this.$t('@Products.productExtend.components.ProductVariantsToAttachGrid.notAttachedLabel'),
                                 },
                                 true: {
-                                    label: 'Attached',
+                                    label: this.$t('@Products.productExtend.components.ProductVariantsToAttachGrid.attachedLabel'),
                                 },
                             },
                         },

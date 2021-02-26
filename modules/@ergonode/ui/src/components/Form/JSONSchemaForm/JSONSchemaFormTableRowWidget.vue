@@ -6,6 +6,7 @@
     <div class="row-widget">
         <Fab
             :theme="secondaryTheme"
+            :disabled="disabled"
             @click.native="onRemoveRow">
             <template #icon="{ color }">
                 <IconDelete :fill-color="color" />
@@ -74,6 +75,13 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Is fields disabled
+         */
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
@@ -115,6 +123,7 @@ export default {
                     key,
                     props: {
                         isRequired: this.schema.required.indexOf(key) !== -1,
+                        disabled: this.disabled,
                         ...rest,
                         size: SIZE.SMALL,
                     },

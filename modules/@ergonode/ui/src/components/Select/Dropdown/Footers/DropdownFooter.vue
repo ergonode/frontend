@@ -53,6 +53,7 @@ export default {
 
 <style lang="scss" scoped>
     .drop-down-footer {
+        z-index: $Z_INDEX_LVL_1;
         display: flex;
         flex-shrink: 0;
         justify-content: flex-end;

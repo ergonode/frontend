@@ -5,10 +5,11 @@
 import {
     getCategory,
     setCategory,
-} from '@Categories/extends/methods';
+} from '@Categories/extends/product/methods';
 
 import {
     Components,
+    Icons,
     Store,
 } from './imports';
 
@@ -22,11 +23,26 @@ export default {
                 {
                     component: Components.ProductFormCategory,
                     props: {},
+                    order: 20,
                 },
             ],
         },
     },
     extendMethods: {
+        '@Trees/components/Tabs/CategoryTreeDesignerTab/verticalTabs': ({
+            props,
+            $this,
+        }) => [
+            {
+                title: $this.$t('@Categories.category._.title'),
+                component: Components.CategoriesVerticalTab,
+                icon: Icons.IconTree,
+                props: {
+                    isSelectLanguage: false,
+                    ...props,
+                },
+            },
+        ],
         '@Products/store/product/action/getProduct/__after': ({
             $this, data,
         }) => {

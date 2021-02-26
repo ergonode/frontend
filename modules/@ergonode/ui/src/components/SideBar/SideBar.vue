@@ -39,10 +39,11 @@
                 <SideBarFooter />
             </slot>
         </template>
-        <template #item="{ item, onExpand }">
+        <template #item="{ item, index, onExpand }">
             <slot
                 name="item"
                 :item="item"
+                :index="index"
                 :on-expand="onExpand" />
         </template>
     </ExpandingList>
@@ -109,11 +110,6 @@ export default {
             default: false,
         },
     },
-    data() {
-        return {
-            selectedItems: {},
-        };
-    },
     computed: {
         isAnyItem() {
             return this.items.length > 0;
@@ -126,9 +122,6 @@ export default {
         },
         isSearchPlaceholderVisible() {
             return !this.isAnyItem && this.isAnySearchPhrase;
-        },
-        isSelectContentVisible() {
-            return this.isAnyItem || this.isAnySearchPhrase;
         },
     },
     methods: {

@@ -4,12 +4,12 @@
  */
 <template>
     <ModalForm
-        title="Create category"
+        :title="$t('@Categories.category.components.CreateCategoryModalForm.create')"
         @close="onClose">
         <template #body>
             <CategoryForm
-                :submit-title="$t('core.buttons.create')"
-                :proceed-title="$t('core.buttons.proceed')"
+                :submit-title="$t('@Categories._.create')"
+                :proceed-title="$t('@Categories._.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :scope="scope"
@@ -39,7 +39,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'CreateCategoryTreeModalForm',
+    name: 'CreateCategoryModalForm',
     components: {
         ModalForm,
         CategoryForm,
@@ -96,20 +96,21 @@ export default {
                 onError: this.onCreateError,
             });
         },
-        onCreateSuccess() {
+        onCreateSuccess(id) {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Category created',
+                message: this.$t('@Categories.category.components.CreateCategoryModalForm.createSuccess'),
             });
 
             this.isSubmitting = false;
 
-            this.$emit('created');
+            this.$emit('created', id);
             this.onClose();
         },
         onProceedSuccess(id) {
             this.isProceeding = false;
 
+            this.onClose();
             this.$router.push({
                 name: ROUTE_NAME.CATEGORY_EDIT_GENERAL,
                 params: {

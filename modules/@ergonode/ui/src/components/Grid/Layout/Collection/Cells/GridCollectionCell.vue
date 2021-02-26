@@ -8,6 +8,7 @@
         :data="data"
         :drafts="drafts"
         :object-fit="objectFit"
+        :locked="locked"
         @row-action="onRowAction"
         @cell-value="onCellValueChange" />
 </template>
@@ -44,6 +45,13 @@ export default {
         extendedDataCell: {
             type: Function,
             default: null,
+        },
+        /**
+         * Determinate if the component is not being able to edit
+         */
+        locked: {
+            type: Boolean,
+            default: false,
         },
     },
     computed: {

@@ -4,7 +4,7 @@
  */
 <template>
     <button
-        class="link-button"
+        :class="['link-button', { 'link-button--disabled': disabled }]"
         type="button">
         <slot name="prepend" />
         <span v-text="title" />
@@ -22,6 +22,13 @@ export default {
         title: {
             type: String,
             required: true,
+        },
+        /**
+         * The title of the component
+         */
+        disabled: {
+            type: Boolean,
+            required: false,
         },
     },
 };
@@ -47,5 +54,11 @@ export default {
         cursor: pointer;
         word-break: break-word;
         user-select: all;
+
+        &--disabled {
+            color: $GRAPHITE_LIGHT;
+            text-decoration-color: $GRAPHITE_LIGHT;
+            cursor: not-allowed;
+        }
     }
 </style>

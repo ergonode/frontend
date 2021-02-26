@@ -23,11 +23,12 @@
         @delete-row="onRemoveRow"
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
-        @remove-all-filters="onRemoveAllFilters">
+        @remove-all-filters="onRemoveAllFilters"
+        v-bind="extendedProps['grid']">
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('product.grid.groupPlaceholderTitle')"
-                :subtitle="$t('product.grid.groupPlaceholderSubtitle')">
+                :title="$t('@Products.productExtend.components.AttachedProductsToGroupGrid.noProductsInGroup')"
+                :subtitle="$t('@Products.productExtend.components.AttachedProductsToGroupGrid.addProductToGroup')">
                 <template #action>
                     <AddProductsToGroupButton />
                 </template>
@@ -52,6 +53,7 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
+import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
@@ -83,6 +85,12 @@ export default {
         AddProductsToGroupActionButton,
     },
     mixins: [
+        extendPropsMixin({
+            extendedKey: '@Products/extends/components/Grids/AttachedProductsToGroupGrid/props',
+            extendedNames: [
+                'grid',
+            ],
+        }),
         gridDraftMixin,
         extendedGridComponentsMixin,
     ],
@@ -165,6 +173,10 @@ export default {
             await this.onFetchData();
         },
         onRemoveRow() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product added to group removed',
+            });
             this.onFetchData();
         },
         async onFetchData() {
@@ -212,23 +224,32 @@ export default {
             });
         },
         onRemoveAllFilters() {
+            const query = {
+                ...this.$route.query,
+                page: DEFAULT_PAGE,
+            };
+
+            delete query.filter;
+
             this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    filter: '',
-                    page: DEFAULT_PAGE,
-                },
+                query,
             });
 
             this.isPrefetchingData = true;
         },
         onFilterChange(filters) {
+            const query = {
+                ...this.$route.query,
+                page: DEFAULT_PAGE,
+                filter: getParsedFilters(filters),
+            };
+
+            if (query.filter === '' || query.filter === null) {
+                delete query.filter;
+            }
+
             this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    page: DEFAULT_PAGE,
-                    filter: getParsedFilters(filters),
-                },
+                query,
             });
         },
         onColumnSortChange(sortOrder) {

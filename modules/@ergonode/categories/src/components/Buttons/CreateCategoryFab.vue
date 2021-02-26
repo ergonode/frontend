@@ -26,7 +26,7 @@ import Fab from '@UI/components/Fab/Fab';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
 export default {
-    name: 'CreateAttributeFab',
+    name: 'CreateCategoryFab',
     components: {
         Fab,
         IconAdd,
@@ -61,10 +61,14 @@ export default {
         onCloseModal() {
             this.isModalVisible = false;
         },
-        onCreatedData() {
+        onCreatedData(id) {
             this.onCloseModal();
 
-            const event = new CustomEvent(CATEGORY_CREATED_EVENT_NAME);
+            const event = new CustomEvent(CATEGORY_CREATED_EVENT_NAME, {
+                detail: {
+                    id,
+                },
+            });
 
             document.documentElement.dispatchEvent(event);
         },

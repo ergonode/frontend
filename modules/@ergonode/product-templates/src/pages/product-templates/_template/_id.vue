@@ -11,6 +11,13 @@
                 <NavigateBackFab :previous-route="previousRoute" />
             </template>
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <RemoveProductTemplateButton />
             </template>
         </TitleBar>
@@ -63,6 +70,9 @@ export default {
         ...mapState('productTemplate', [
             'title',
         ]),
+        extendedMainAction() {
+            return this.$getExtendSlot('@Templates/pages/product-templates/_template/mainAction');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.TEMPLATE_DESIGNER.namespace);
         },
@@ -82,6 +92,14 @@ export default {
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
         }),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.TEMPLATE_DESIGNER,
+                ...props,
+            };
+        },
     },
     head() {
         return {

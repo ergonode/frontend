@@ -11,6 +11,13 @@
                 <NavigateBackFab :previous-route="previousRoute" />
             </template>
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <RemoveCollectionButton />
             </template>
         </TitleBar>
@@ -76,6 +83,9 @@ export default {
         ...mapState('collection', [
             'code',
         ]),
+        extendedMainAction() {
+            return this.$getExtendSlot('@Collections/pages/collections/_collection/mainAction');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.PRODUCT_COLLECTION.namespace);
         },
@@ -95,6 +105,14 @@ export default {
         ...mapActions('tab', {
             __clearTranslationsStorage: '__clearStorage',
         }),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.PRODUCT_COLLECTION,
+                ...props,
+            };
+        },
     },
     head() {
         return {

@@ -8,8 +8,8 @@
         @close="onClose">
         <template #body>
             <RestoreForm
-                :submit-title="$t('product.buttons.restore')"
-                :proceed-title="$t('product.buttons.proceed')"
+                :submit-title="$t('@Products._.restore')"
+                :proceed-title="$t('@Products._.proceed')"
                 :scope="scope"
                 :errors="scopeErrors"
                 :change-values="scopeChangeValues"
@@ -86,7 +86,7 @@ export default {
                     scope: this.scope,
                     errors: {
                         __form: [
-                            'Please mark attributes to restore',
+                            this.$t('@Products.product.components.RestoreProductAttributesModalForm.formValidation'),
                         ],
                     },
                 });
@@ -110,7 +110,7 @@ export default {
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: `Attributes ${attributesDescription} have been restored`,
+                message: this.$t('@Products.product.components.RestoreProductAttributesModalForm.successAlert').replace('[[info]]', attributesDescription),
             });
 
             this.isSubmitting = false;

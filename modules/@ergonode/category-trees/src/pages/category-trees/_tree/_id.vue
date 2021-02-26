@@ -11,6 +11,13 @@
                 <NavigateBackFab :previous-route="previousRoute" />
             </template>
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <RemoveCategoryTreeButton />
             </template>
         </TitleBar>
@@ -67,7 +74,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'Category tree hasn`t been fetched properly',
+                    message: app.i18n.t('@Trees.tree.pages.id.getRequest'),
                 });
             },
         });
@@ -76,17 +83,23 @@ export default {
         ...mapState('categoryTree', [
             'code',
         ]),
+        extendedMainAction() {
+            return this.$getExtendSlot('@Trees/pages/category-trees/_tree/mainAction');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.CATEGORY_TREE.namespace);
         },
     },
     beforeDestroy() {
-        this.__clearGridDesignerStorage();
+        this.__clearListStorage();
         this.__clearStorage();
         this.__clearTranslationsStorage();
         this.__clearFeedbackStorage();
     },
     methods: {
+        ...mapActions('list', {
+            __clearListStorage: '__clearStorage',
+        }),
         ...mapActions('categoryTree', [
             '__clearStorage',
         ]),
@@ -96,13 +109,18 @@ export default {
         ...mapActions('tab', {
             __clearTranslationsStorage: '__clearStorage',
         }),
-        ...mapActions('gridDesigner', {
-            __clearGridDesignerStorage: '__clearStorage',
-        }),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.CATEGORY_TREE,
+                ...props,
+            };
+        },
     },
     head() {
         return {
-            title: `${this.code} - Category trees - Ergonode`,
+            title: `${this.code} - ${this.$t('@Trees.tree._.headTitle')}`,
         };
     },
 };

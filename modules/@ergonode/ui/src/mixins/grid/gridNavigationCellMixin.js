@@ -4,8 +4,8 @@
  */
 
 import {
-    getPositionForBrowser,
-} from '@UI/models/dragAndDrop/helpers';
+    getFixedMousePosition,
+} from '@UI/models/mouse';
 
 export default {
     data() {
@@ -108,7 +108,7 @@ export default {
         onFocusCell(event) {
             const {
                 xPos, yPos,
-            } = getPositionForBrowser(event);
+            } = getFixedMousePosition(event);
             const tableCellElement = document.elementsFromPoint(xPos, yPos).find(element => element.hasAttribute('row'));
 
             if (tableCellElement) {

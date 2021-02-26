@@ -12,6 +12,7 @@ export default {
         '@ergonode/ui',
         '@ergonode/attributes',
         '@ergonode/media',
+        '@ergonode/batch-actions',
     ],
     plugins: [
         {
@@ -29,6 +30,10 @@ export default {
         {
             ssr: true,
             src: './plugins/alerts',
+        },
+        {
+            ssr: true,
+            src: './plugins/mask',
         },
     ],
 };

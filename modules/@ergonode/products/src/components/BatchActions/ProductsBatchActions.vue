@@ -13,6 +13,7 @@ import {
 import {
     getUUID,
 } from '@Core/models/stringWrapper';
+import PRIVILEGES from '@Products/config/privileges';
 import {
     BATCH_ACTION_TYPE,
 } from '@Products/models/batchActions';
@@ -35,53 +36,66 @@ export default {
                 batchAction => batchAction.type === BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
             ),
         }),
-        batchActions() {
-            return [
-                {
-                    label: 'Delete selected products',
-                    action: ({
-                        payload,
-                        onSuccess,
-                    }) => {
-                        const {
-                            rowIds,
-                        } = payload;
+        removeBatchActionItem() {
+            return {
+                label: 'Delete selected products',
+                action: ({
+                    payload,
+                    onSuccess,
+                }) => {
+                    const {
+                        rowIds,
+                    } = payload;
 
-                        this.$confirm({
-                            type: MODAL_TYPE.DESTRUCTIVE,
-                            title: `Are you sure you want to permanently delete ${rowIds.length} products?`,
-                            subtitle: 'The products will be deleted from the system forever and cannot be restored.',
-                            applyTitle: `DELETE ${rowIds.length} PRODUCTS`,
-                            action: () => {
-                                const uuid = getUUID();
+                    this.$confirm({
+                        type: MODAL_TYPE.DESTRUCTIVE,
+                        title: this.$t('@Products.batchAction.components.ProductsBatchActions.confirmTitle', {
+                            info: rowIds.length,
+                        }),
+                        subtitle: this.$t('@Products.batchAction.components.ProductsBatchActions.confirmSubtitle'),
+                        applyTitle: this.$t('@Products.batchAction.components.ProductsBatchActions.confirmApplyTitle', {
+                            info: rowIds.length,
+                        }),
+                        action: () => {
+                            const uuid = getUUID();
 
-                                rowIds.forEach((rowId) => {
-                                    this.disabledRows[rowId] = true;
-                                });
+                            rowIds.forEach((rowId) => {
+                                this.disabledRows[rowId] = true;
+                            });
 
-                                this.disabledRows = {
-                                    ...this.disabledRows,
-                                };
+                            this.disabledRows = {
+                                ...this.disabledRows,
+                            };
 
-                                this.addBatchAction({
-                                    id: uuid,
-                                    type: BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
-                                    href: 'batch-action',
-                                    payload: {
-                                        ids: rowIds,
-                                    },
-                                });
+                            this.addBatchAction({
+                                id: uuid,
+                                type: BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
+                                href: 'batch-action',
+                                payload: {
+                                    ids: rowIds,
+                                },
+                            });
 
-                                document
-                                    .documentElement
-                                    .addEventListener(
-                                        uuid,
-                                        this.onRemoveProductsBatchAction.bind(null, onSuccess),
-                                    );
-                            },
-                        });
-                    },
+                            document
+                                .documentElement
+                                .addEventListener(
+                                    uuid,
+                                    this.onRemoveProductsBatchAction.bind(null, onSuccess),
+                                );
+                        },
+                    });
                 },
+            };
+        },
+        batchActions() {
+            if (!this.$hasAccess([
+                PRIVILEGES.PRODUCT.delete,
+            ])) {
+                return [];
+            }
+
+            return [
+                this.removeBatchActionItem,
             ];
         },
     },
@@ -113,7 +127,7 @@ export default {
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Products have been removed',
+                message: this.$t('@Products.batchAction.components.ProductsBatchActions.successAlert'),
             });
 
             const {

@@ -64,15 +64,26 @@ describe('Notifications', () => {
         });
 
         it('Requesting for notifications', async () => {
+            const createdAt = new Date();
+
             const mockedNotification = {
                 id: '1',
                 author: 'Jan kowalski',
                 message: 'Super!!',
+                created_at: createdAt,
                 avatar_id: 'abcde1234',
                 read_at: null,
             };
+            const mockedResultNotification = {
+                id: '1',
+                author: 'Jan kowalski',
+                message: 'Super!!',
+                createdAt,
+                avatar_id: 'abcde1234',
+                readAt: null,
+            };
 
-            action = 'requestForNotifications';
+            action = 'getNotifications';
             mockAxiosGetResult = {
                 collection: [
                     mockedNotification,
@@ -88,7 +99,7 @@ describe('Notifications', () => {
                 state: store.state,
             });
             expect(store.state.notifications.length).toBe(1);
-            expect(store.state.notifications[0]).toStrictEqual(mockedNotification);
+            expect(store.state.notifications[0]).toStrictEqual(mockedResultNotification);
         });
 
         it('Setting up notifications limit', () => {

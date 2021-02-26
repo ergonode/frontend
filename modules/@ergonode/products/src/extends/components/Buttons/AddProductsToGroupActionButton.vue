@@ -4,7 +4,7 @@
  */
 <template>
     <ActionButton
-        title="ADD PRODUCTS"
+        :title="$t('@Products._.addProducts')"
         :theme="secondaryTheme"
         :disabled="!isAllowedToUpdate"
         :size="smallSize"
@@ -17,7 +17,8 @@
         <Component
             v-if="selectedModal"
             :is="modalComponent"
-            @close="onCloseModal" />
+            @close="onCloseModal"
+            @submitted="onCreatedData" />
     </ActionButton>
 </template>
 
@@ -73,12 +74,16 @@ export default {
             }
             const modals = [
                 {
-                    component: () => import('@Products/extends/components/Modals/AddProductsToGroupModalGrid'),
-                    name: ADD_PRODUCT.FROM_LIST,
+                    component: () => import('@Products/extends/components/Modals/AddProductsBySKUModalForm'),
+                    name: ADD_PRODUCT.FROM_SKU,
                 },
                 {
                     component: () => import('@Products/extends/components/Modals/AddProductsFromSegmentModalForm'),
                     name: ADD_PRODUCT.FROM_SEGMENT,
+                },
+                {
+                    component: () => import('@Products/extends/components/Modals/AddProductsToGroupModalGrid'),
+                    name: ADD_PRODUCT.FROM_LIST,
                 },
                 ...extendedOptions,
             ];
@@ -97,6 +102,11 @@ export default {
         },
         onCloseModal() {
             this.selectedModal = null;
+        },
+        onCreatedData() {
+            this.selectedModal = null;
+
+            this.$emit('added');
         },
     },
 };

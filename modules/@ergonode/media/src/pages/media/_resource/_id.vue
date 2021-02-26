@@ -11,6 +11,13 @@
                 <NavigateBackFab :previous-route="previousRoute" />
             </template>
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <RemoveResourceButton />
             </template>
         </TitleBar>
@@ -75,6 +82,9 @@ export default {
         title() {
             return `${this.name}.${this.extension}`;
         },
+        extendedMainAction() {
+            return this.$getExtendSlot('@Media/pages/media/_resource/mainAction');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.MULTIMEDIA.namespace);
         },
@@ -94,6 +104,14 @@ export default {
         ...mapActions('tab', {
             __clearTranslationsStorage: '__clearStorage',
         }),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.MULTIMEDIA,
+                ...props,
+            };
+        },
     },
     head() {
         return {

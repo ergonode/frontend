@@ -53,7 +53,7 @@ export default {
 
         if (!data.email) {
             errors.email = [
-                this.app.i18n.t('authentication.errors.emailRequired'),
+                this.app.i18n.t('@Authentication.authentication.store.action.emailRequired'),
             ];
             isError = true;
         }
@@ -93,13 +93,13 @@ export default {
 
         if (!dataToSend.password) {
             errors.password = [
-                this.app.i18n.t('authentication.errors.passwordRequired'),
+                this.app.i18n.t('@Authentication.authentication.store.action.passwordRequired'),
             ];
             isError = true;
         }
         if (!validation) {
             errors.validation = [
-                this.app.i18n.t('authentication.errors.passwordValidation'),
+                this.app.i18n.t('@Authentication.authentication.store.action.passwordValidation'),
             ];
             isError = true;
         }
@@ -138,14 +138,14 @@ export default {
 
         if (!data.username) {
             errors.username = [
-                this.app.i18n.t('authentication.errors.emailRequired'),
+                this.app.i18n.t('@Authentication.authentication.store.action.emailRequired'),
             ];
             isError = true;
         }
 
         if (!data.password) {
             errors.password = [
-                this.app.i18n.t('authentication.errors.passwordRequired'),
+                this.app.i18n.t('@Authentication.authentication.store.action.passwordRequired'),
             ];
             isError = true;
         }
@@ -237,7 +237,7 @@ export default {
         } catch (e) {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: this.app.i18n.t('authentication.errors.getUser'),
+                message: this.app.i18n.t('@Authentication.authentication.store.action.getUser'),
             });
         }
     },

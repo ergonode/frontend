@@ -1,8 +1,13 @@
 {
-    "collection": {
-        "grid": {
-            "placeholderTitle": "No collections",
-            "placeholderSubtitle": "There are no collections in the system, you can create the first one."
-        }
+  "collection": {
+    "form": {
+      "typeLabel": "Type",
+      "noCollectionTypeTitle": "No collection types",
+      "noCollectionTypeSubtitle": "There are no collections in the system, contact with system administrator."
+    },
+    "grid": {
+      "placeholderTitle": "No collections",
+      "placeholderSubtitle": "There are no collections in the system, so you can add the first one."
     }
+  }
 }

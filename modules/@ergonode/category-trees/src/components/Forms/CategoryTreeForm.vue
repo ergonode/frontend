@@ -4,11 +4,12 @@
  */
 <template>
     <Form
-        title="Options"
+        :title="$t('@Trees.tree.components.CategoryTreeForm.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :disabled="!isAllowedToUpdate"
         :errors="errors"
         :change-values="changeValues"
         @proceed="onProceed"
@@ -21,8 +22,8 @@
                     required
                     :error-messages="errors[codeFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    label="System name"
-                    hint="System name must be unique"
+                    :label="$t('@Trees.tree.components.CategoryTreeForm.nameLabel')"
+                    :hint="$t('@Trees.tree.components.CategoryTreeForm.nameHint')"
                     @input="setCodeValue" />
                 <Divider v-if="extendedForm.length" />
                 <template v-for="(field, index) in extendedForm">
@@ -77,7 +78,9 @@ export default {
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.CATEGORY_TREE.update,
-            ]);
+            ]) || (!this.isDisabled && this.$hasAccess([
+                PRIVILEGES.CATEGORY_TREE.create,
+            ]));
         },
         codeFieldKey() {
             return 'code';

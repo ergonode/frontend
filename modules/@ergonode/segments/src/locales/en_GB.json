@@ -1,8 +1,13 @@
 {
-    "segment": {
-        "grid": {
-            "placeholderTitle": "No segments",
-            "placeholderSubtitle": "There are no segments in the system, you can create the first one."
-        }
+  "segment": {
+    "form": {
+      "segmentsLabel": "From segmentation rules",
+      "noSegmentsTitle": "No segments",
+      "noSegmentsSubtitle": "There are no segments in the system, so you can add the first one."
+    },
+    "grid": {
+      "placeholderTitle": "No segments",
+      "placeholderSubtitle": "There are no segments in the system, so you can add the first one."
     }
+  }
 }

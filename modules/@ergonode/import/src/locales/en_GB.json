@@ -1,8 +1,8 @@
 {
-    "import": {
-        "grid": {
-            "placeholderTitle": "No import profiles",
-            "placeholderSubtitle": "There are no import profiles in the system, you can create the first one."
-        }
+  "import": {
+    "grid": {
+      "placeholderTitle": "No import profiles",
+      "placeholderSubtitle": "There are no import profiles in the system, so you can add the first one."
     }
+  }
 }

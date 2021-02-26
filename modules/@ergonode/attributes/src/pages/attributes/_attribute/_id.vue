@@ -89,7 +89,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: app.i18n.t('attribute.errors.getRequest'),
+                    message: app.i18n.t('@Attributes.attribute.pages.id.getRequest'),
                 });
             },
         });
@@ -155,7 +155,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.code} - ${this.$t('attribute.page.title')}`,
+            title: `${this.code} - ${this.$t('@Attributes.attribute._.title')}`,
         };
     },
 };

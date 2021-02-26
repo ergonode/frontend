@@ -1,0 +1,29 @@
+{
+  "@Notifications": {
+    "_": {},
+    "notification": {
+      "_": {},
+      "components": {
+        "NotificationListNoDataPlaceholder": {
+          "noActions": "No actions",
+          "info": "Product updates, processing operations and other activities will appear here."
+        },
+        "NotificationListHeader": {
+          "title": "Action center"
+        },
+        "NotificationListMenu": {
+          "markAllAsRead": "Mark all as read"
+        },
+        "NotificationListItem": {
+          "markAsRead": "Mark as read"
+        },
+        "NotificationList": {
+          "processingSectionTitle": "Processing",
+          "notificationSectionTitle": "Notifications"
+        }
+      },
+      "pages": {},
+      "store": {}
+    }
+  }
+}

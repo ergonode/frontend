@@ -129,7 +129,7 @@ export default {
             align-items: center;
             width: 18px;
             height: 18px;
-            border: 1px solid $GREY;
+            border: $BORDER_1_GREY;
             box-sizing: border-box;
             cursor: pointer;
         }

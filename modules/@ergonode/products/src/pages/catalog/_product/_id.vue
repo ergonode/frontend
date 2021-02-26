@@ -96,7 +96,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'Product hasn’t been fetched properly',
+                    message: app.i18n.t('@Products.product.pages.id.getProductRequest'),
                 });
             },
         });
@@ -106,7 +106,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'Inherited product hasn’t been fetched properly',
+                    message: app.i18n.t('@Products.product.pages.id.getInheritedProductRequest'),
                 });
             },
         });
@@ -180,7 +180,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.sku} - Products - Ergonode`,
+            title: `${this.sku} - ${this.$t('@Products._.headTitle')}`,
         };
     },
 };

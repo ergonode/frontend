@@ -22,14 +22,18 @@
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @remove-all-filters="onRemoveAllFilters"
-        @filter="onFilterChange">
+        @filter="onFilterChange"
+        v-bind="extendedProps['grid']">
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('product.grid.productsToAttachForGroupPlaceholderTitle')"
-                :subtitle="$t('product.grid.productsToAttachForGroupPlaceholderSubtitle')" />
+                :title="$t('@Products.productExtend.components.ProductsToAttachForGroupGrid.noProducts')"
+                :subtitle="$t('@Products.productExtend.components.ProductsToAttachForGroupGrid.createFirst')" />
         </template>
         <template #appendFooter>
             <UpdateProductsAttachmentButton
+                :scope="scope"
+                :errors="errors"
+                :change-values="changeValues"
                 :skus="skus"
                 @updated="onProductsAttachmentUpdated" />
         </template>
@@ -44,6 +48,7 @@ import {
     DEFAULT_GRID_FETCH_PARAMS,
     DEFAULT_GRID_PAGINATION,
 } from '@Core/defaults/grid';
+import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
@@ -55,6 +60,9 @@ import {
 import UpdateProductsAttachmentButton from '@Products/extends/components/Buttons/UpdateProductsAttachmentButton';
 import Grid from '@UI/components/Grid/Grid';
 import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'ProductsToAttachForGroupGrid',
@@ -64,9 +72,29 @@ export default {
         GridNoDataPlaceholder,
     },
     mixins: [
+        extendPropsMixin({
+            extendedKey: '@Products/extends/components/Grids/ProductsToAttachForGroupGrid/props',
+            extendedNames: [
+                'grid',
+            ],
+        }),
         gridDraftMixin,
         extendedGridComponentsMixin,
     ],
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     async fetch() {
         await this.onFetchData();
 
@@ -97,6 +125,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         onPaginationChange(pagination) {
             this.pagination = pagination;
             this.localParams.limit = pagination.itemsPerPage;
@@ -164,7 +195,7 @@ export default {
         onFetchGridDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Products haven’t been fetched properly',
+                message: this.$t('@Products.productExtend.components.ProductsToAttachForGroupGrid.getRequest'),
             });
 
             this.isPrefetchingData = false;
@@ -182,10 +213,10 @@ export default {
                             type: 'SELECT',
                             options: {
                                 false: {
-                                    label: 'Not attached',
+                                    label: this.$t('@Products.productExtend.components.ProductsToAttachForGroupGrid.notAttachedLabel'),
                                 },
                                 true: {
-                                    label: 'Attached',
+                                    label: this.$t('@Products.productExtend.components.ProductsToAttachForGroupGrid.attachedLabel'),
                                 },
                             },
                         },
@@ -230,6 +261,12 @@ export default {
             this.setDrafts({
                 ...this.drafts,
                 ...drafts,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'productsToAttachForGroupGrid',
+                value: this.drafts,
             });
         },
     },

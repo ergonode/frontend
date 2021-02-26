@@ -5,7 +5,7 @@
 <template>
     <Button
         data-cy="new-category"
-        :title="$t('category.page.addButton')"
+        :title="$t('@Categories.category.components.CreateCategoryButton.addButton')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">
@@ -59,10 +59,14 @@ export default {
         onCloseModal() {
             this.isModalVisible = false;
         },
-        onCreatedData() {
+        onCreatedData(id) {
             this.onCloseModal();
 
-            const event = new CustomEvent(CATEGORY_CREATED_EVENT_NAME);
+            const event = new CustomEvent(CATEGORY_CREATED_EVENT_NAME, {
+                detail: {
+                    id,
+                },
+            });
 
             document.documentElement.dispatchEvent(event);
         },

@@ -11,6 +11,13 @@
                 <NavigateBackFab :previous-route="previousRoute" />
             </template>
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <RemoveStatusTransitionButton />
             </template>
         </TitleBar>
@@ -82,6 +89,9 @@ export default {
         title() {
             return `${this.source.value} -> ${this.destination.value}`;
         },
+        extendedMainAction() {
+            return this.$getExtendSlot('@Transitions/pages/status-transitions/_transition/mainAction');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.WORKFLOW.namespace);
         },
@@ -101,6 +111,14 @@ export default {
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
         }),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.WORKFLOW,
+                ...props,
+            };
+        },
     },
     head() {
         return {

@@ -13,6 +13,10 @@ export const getConfiguration = ({
     id,
 }) => $axios.$get(`channels/${id}/configuration`);
 
+export const getExportsStatuses = ({
+    $axios,
+}) => $axios.$get('profile/exports');
+
 export const getSchedulerConfiguration = ({
     $axios,
     id,

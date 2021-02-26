@@ -19,7 +19,7 @@
             </VerticalTabBar>
         </template>
         <template #grid>
-            <ConditionSetWrapper
+            <ConditionSetTreeDesigner
                 :scope="scope"
                 :change-values="changeValues"
                 :errors="errors"
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import ConditionSetWrapper from '@Conditions/components/ConditionSetDesigner/ConditionSetWrapper';
+import ConditionSetTreeDesigner from '@Conditions/components/TreeDesigners/ConditionSetTreeDesigner';
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
@@ -63,21 +63,14 @@ export default {
         DropZone,
         FadeTransition,
         VerticalTabBar,
-        ConditionSetWrapper,
+        ConditionSetTreeDesigner,
     },
     mixins: [
         tabFeedbackMixin,
     ],
-    async fetch({
-        store,
-    }) {
-        await store.dispatch('condition/getConditions', {
-            group: 'workflow',
-        });
-    },
     data() {
         return {
-            isSubmitting: false,
+            verticalTabs: [],
         };
     },
     computed: {
@@ -89,18 +82,6 @@ export default {
                 PRIVILEGES.WORKFLOW.update,
             ]);
         },
-        verticalTabs() {
-            return [
-                {
-                    title: 'Conditions',
-                    component: () => import('@Conditions/components/VerticalTabs/ConditionsVerticalTab'),
-                    icon: () => import('@Categories/components/Icons/IconCategory'),
-                    props: {
-                        disabled: !this.isAllowedToUpdate,
-                    },
-                },
-            ];
-        },
         isDropZoneVisible() {
             return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;
         },
@@ -108,14 +89,20 @@ export default {
             return GRAPHITE_LIGHT;
         },
     },
+    async mounted() {
+        const extendedVerticalTabs = await this.$getExtendMethod('@Transitions/components/Tabs/ConditionDesignerTab/verticalTabs', {
+            $this: this,
+            props: {
+                disabled: !this.isAllowedToUpdate,
+            },
+        });
+
+        this.verticalTabs = [].concat(...extendedVerticalTabs);
+    },
     beforeDestroy() {
-        this.__clearGridDesignerStorage();
         this.__clearConditionStorage();
     },
     methods: {
-        ...mapActions('gridDesigner', {
-            __clearGridDesignerStorage: '__clearStorage',
-        }),
         ...mapActions('condition', {
             __clearConditionStorage: '__clearStorage',
         }),

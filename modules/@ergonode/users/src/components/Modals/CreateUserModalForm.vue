@@ -110,6 +110,7 @@ export default {
         onProceedSuccess(id) {
             this.isProceeding = false;
 
+            this.onClose();
             this.$router.push({
                 name: ROUTE_NAME.USER_EDIT_GENERAL,
                 params: {

@@ -9,7 +9,7 @@
         <template #body>
             <ProductAttributesBindingForm
                 submit-title="ADD ATTRIBUTES"
-                :proceed-title="$t('product.buttons.cancel')"
+                :proceed-title="$t('@Products._.cancel')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="scopeErrors"

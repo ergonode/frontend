@@ -22,9 +22,17 @@
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
-        @remove-all-filters="onRemoveAllFilters">
+        @remove-all-filters="onRemoveAllFilters"
+        v-bind="extendedProps['grid']">
         <template #actionsHeader>
             <CreateUnitButton @created="onUnitCreated" />
+            <template
+                v-for="(actionItem, index) in extendedActionHeader">
+                <Component
+                    :is="actionItem.component"
+                    :key="index"
+                    v-bind="bindingProps(actionItem)" />
+            </template>
         </template>
     </Grid>
 </template>
@@ -41,6 +49,7 @@ import {
 import {
     DEFAULT_PAGE,
 } from '@Core/defaults/grid';
+import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
@@ -62,6 +71,12 @@ export default {
         CreateUnitButton,
     },
     mixins: [
+        extendPropsMixin({
+            extendedKey: '@Core/components/Grids/UnitsGrid/props',
+            extendedNames: [
+                'grid',
+            ],
+        }),
         extendedGridComponentsMixin,
     ],
     async fetch() {
@@ -92,6 +107,9 @@ export default {
                 PRIVILEGES.SETTINGS.update,
             ]);
         },
+        extendedActionHeader() {
+            return this.$getExtendSlot('@Core/components/Grids/UnitGrid/actionsHeader');
+        },
     },
     watch: {
         async $route(from, to) {
@@ -118,10 +136,22 @@ export default {
         ...mapActions('dictionaries', [
             'getDictionary',
         ]),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.SETTINGS,
+                ...props,
+            };
+        },
         onUnitCreated() {
             this.onFetchData();
         },
         onRemoveRow() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Unit removed',
+            });
             Promise.all([
                 this.onFetchData(),
                 this.getDictionary({
@@ -169,23 +199,32 @@ export default {
             });
         },
         onRemoveAllFilters() {
+            const query = {
+                ...this.$route.query,
+                page: DEFAULT_PAGE,
+            };
+
+            delete query.filter;
+
             this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    filter: '',
-                    page: DEFAULT_PAGE,
-                },
+                query,
             });
 
             this.isPrefetchingData = true;
         },
         onFilterChange(filters) {
+            const query = {
+                ...this.$route.query,
+                page: DEFAULT_PAGE,
+                filter: getParsedFilters(filters),
+            };
+
+            if (query.filter === '' || query.filter === null) {
+                delete query.filter;
+            }
+
             this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    page: DEFAULT_PAGE,
-                    filter: getParsedFilters(filters),
-                },
+                query,
             });
         },
         onColumnSortChange(sortOrder) {

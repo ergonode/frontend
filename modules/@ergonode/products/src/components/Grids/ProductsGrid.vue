@@ -14,6 +14,7 @@
                 :rows="rows"
                 :drafts="drafts"
                 :filters="filterValues"
+                :sort-order="sortOrder"
                 :errors="errors"
                 :data-count="filtered"
                 :pagination="pagination"
@@ -26,7 +27,7 @@
                 :is-header-visible="true"
                 :is-basic-filter="true"
                 :is-collection-layout="true"
-                :is-select-column="true"
+                :is-select-column="batchActions.length > 0"
                 @edit-row="onEditRow"
                 @preview-row="onEditRow"
                 @cell-value="onCellValueChange"
@@ -37,7 +38,8 @@
                 @swap-columns="onSwapColumns"
                 @pagination="onPaginationChange"
                 @sort-column="onColumnSortChange"
-                @remove-all-filters="onRemoveAllFilters">
+                @remove-all-filters="onRemoveAllFilters"
+                v-bind="extendedProps['grid']">
                 <template #actionsHeader>
                     <ExpandNumericButton
                         title="FILTERS"
@@ -72,8 +74,8 @@
                 <template #noDataPlaceholder>
                     <GridNoDataPlaceholder
                         v-if="!isAnyFilter && filtered === 0"
-                        :title="$t('product.grid.placeholderTitle')"
-                        :subtitle="$t('product.grid.placeholderSubtitle')">
+                        :title="$t('@Products._.noProduct')"
+                        :subtitle="$t('@Products._.createFirst')">
                         <template #action>
                             <CreateProductButton />
                         </template>
@@ -110,6 +112,7 @@ import {
 import {
     DEFAULT_PAGE,
 } from '@Core/defaults/grid';
+import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
@@ -168,6 +171,12 @@ export default {
         AdvancedFilters,
     },
     mixins: [
+        extendPropsMixin({
+            extendedKey: '@Products/components/Grids/ProductsGrid/props',
+            extendedNames: [
+                'grid',
+            ],
+        }),
         gridDraftMixin,
         extendedGridComponentsMixin,
     ],
@@ -387,12 +396,22 @@ export default {
                 index,
             });
 
+            const query = {
+                ...this.$route.query,
+                filter: getParsedFilters(this.filterValues),
+            };
+
+            if (query.field === id) {
+                delete query.field;
+                delete query.order;
+            }
+
+            if (query.filter === '' || query.filter === null) {
+                delete query.filter;
+            }
+
             this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    filter: getParsedFilters(this.filterValues),
-                    page: DEFAULT_PAGE,
-                },
+                query,
             });
 
             this.onFetchData();
@@ -409,12 +428,18 @@ export default {
             });
         },
         onAdvancedFilterChange(filters) {
+            const query = {
+                ...this.$route.query,
+                advancedFilter: getParsedFilters(filters),
+                page: DEFAULT_PAGE,
+            };
+
+            if (query.advancedFilter === '' || query.advancedFilter === null) {
+                delete query.advancedFilter;
+            }
+
             this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    advancedFilter: getParsedFilters(filters),
-                    page: DEFAULT_PAGE,
-                },
+                query,
             });
         },
         onAdvancedFilterRemove({
@@ -461,12 +486,15 @@ export default {
 
             this.advancedFilters = [];
 
+            const query = {
+                ...this.$route.query,
+                page: DEFAULT_PAGE,
+            };
+
+            delete query.advancedFilter;
+
             this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    advancedFilter: '',
-                    page: DEFAULT_PAGE,
-                },
+                query,
             });
         },
         onEditRow(args) {
@@ -696,6 +724,10 @@ export default {
             await Promise.all(requests);
         },
         onRemoveRow() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product removed',
+            });
             this.onFetchData();
         },
         async onFetchData() {
@@ -729,24 +761,33 @@ export default {
             });
         },
         onRemoveAllFilters() {
+            const query = {
+                ...this.$route.query,
+                page: DEFAULT_PAGE,
+            };
+
+            delete query.filter;
+            delete query.advancedFilter;
+
             this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    filter: '',
-                    advancedFilter: '',
-                    page: DEFAULT_PAGE,
-                },
+                query,
             });
 
             this.isPrefetchingData = true;
         },
         onFilterChange(filters) {
+            const query = {
+                ...this.$route.query,
+                page: DEFAULT_PAGE,
+                filter: getParsedFilters(filters),
+            };
+
+            if (query.filter === '' || query.filter === null) {
+                delete query.filter;
+            }
+
             this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    ...this.pagination,
-                    filter: getParsedFilters(filters),
-                },
+                query,
             });
         },
         onColumnSortChange(sortOrder) {

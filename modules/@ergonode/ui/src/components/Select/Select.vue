@@ -81,16 +81,19 @@
             @search="onSearch"
             @input="onSelectValue"
             @click-outside="onClickOutside">
-            <template #placeholder="{ isVisible }">
-                <slot
-                    name="placeholder"
-                    :is-visible="isVisible" />
+            <template #body>
+                <slot name="dropdownBody" />
             </template>
-            <template #dropdown="{ isVisible }">
+            <template #noDataPlaceholder>
+                <slot name="noDataPlaceholder" />
+            </template>
+            <template #noResultsPlaceholder>
+                <slot name="noResultsPlaceholder" />
+            </template>
+            <template #dropdown>
                 <slot
                     name="dropdown"
-                    :is-visible="isVisible"
-                    :on-select-value-callback="onSelectValue" />
+                    :on-select-value="onSelectValue" />
             </template>
             <template #item="{ index, item, isSelected, isSmallSize }">
                 <slot
@@ -326,13 +329,13 @@ export default {
         informationLabel() {
             return this.errorMessages || this.hint;
         },
-        isError() {
-            return Boolean(this.errorMessages);
-        },
         placeholderValue() {
             if (!this.hasAnyValueSelected || (this.label && !this.isFocused)) return null;
 
             return this.placeholder;
+        },
+        isError() {
+            return Boolean(this.errorMessages);
         },
     },
     watch: {

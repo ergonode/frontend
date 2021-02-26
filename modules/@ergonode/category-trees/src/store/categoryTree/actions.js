@@ -9,9 +9,9 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
-    getMappedTreeData,
-    getParsedTreeData,
-} from '@Trees/models/treeMapper';
+    getMappedTree,
+    getParsedTree,
+} from '@Core/models/mappers/treeDesignerMapper';
 import {
     create,
     get,
@@ -70,7 +70,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Creating category tree has been canceled',
+                    message: this.app.i18n.t('@Trees.tree.store.action.createCancel'),
                 });
 
                 return;
@@ -126,23 +126,36 @@ export default {
                 categories,
             } = categoryTreeData;
 
-            if (categories.length) {
-                const treeToSet = getParsedTreeData(categories, categoriesData);
+            const reducer = (categoryId) => {
+                const {
+                    code: categoryCode,
+                    label: categoryLabel,
+                } = categoriesData.find(e => e.id === categoryId);
 
-                treeToSet.forEach(e => dispatch('list/setDisabledElement', {
-                    languageCode: userLanguageCode,
-                    elementId: e.id,
-                    disabled: true,
-                }, {
-                    root: true,
-                }));
-                dispatch('gridDesigner/setGridData', treeToSet, {
-                    root: true,
-                });
-                dispatch('gridDesigner/setFullGridData', treeToSet, {
-                    root: true,
-                });
-            }
+                return {
+                    code: categoryCode,
+                    name: categoryLabel,
+                };
+            };
+
+            const tree = getMappedTree({
+                data: categories,
+                childrenId: 'category_id',
+                reducer,
+            });
+
+            tree.forEach(element => dispatch('list/setDisabledElement', {
+                languageCode: userLanguageCode,
+                elementId: element.id,
+                disabled: true,
+            }, {
+                root: true,
+            }));
+
+            commit('__SET_STATE', {
+                key: 'tree',
+                value: tree,
+            });
 
             const translations = {
                 name,
@@ -188,18 +201,19 @@ export default {
         try {
             const {
                 id,
+                tree,
             } = state;
             const {
                 translations: {
                     name,
                 },
             } = rootState.tab;
-            const {
-                fullGridData,
-            } = rootState.gridDesigner;
             let data = {
                 name,
-                categories: getMappedTreeData(fullGridData),
+                categories: getParsedTree({
+                    data: tree,
+                    childrenId: 'category_id',
+                }),
             };
 
             // EXTENDED BEFORE METHOD
@@ -237,7 +251,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating category tree has been canceled',
+                    message: this.app.i18n.t('@Trees.tree.store.action.updateCancel'),
                 });
 
                 return;
@@ -281,7 +295,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Removing category tree has been canceled',
+                    message: this.app.i18n.t('@Trees.tree.store.action.deleteCancel'),
                 });
 
                 return;

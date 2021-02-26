@@ -11,6 +11,13 @@
                 <NavigateBackFab :previous-route="previousRoute" />
             </template>
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <RemoveSegmentButton />
             </template>
         </TitleBar>
@@ -76,6 +83,9 @@ export default {
         ...mapState('segment', [
             'code',
         ]),
+        extendedMainAction() {
+            return this.$getExtendSlot('@Segments/pages/segments/_segment/mainAction');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.SEGMENT.namespace);
         },
@@ -83,7 +93,6 @@ export default {
     beforeDestroy() {
         this.__clearSegmentStorage();
         this.__clearConditionStorage();
-        this.__clearGridDesignerStorage();
         this.__clearFeedbackStorage();
     },
     methods: {
@@ -96,9 +105,14 @@ export default {
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
         }),
-        ...mapActions('gridDesigner', {
-            __clearGridDesignerStorage: '__clearStorage',
-        }),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.SEGMENT,
+                ...props,
+            };
+        },
     },
     head() {
         return {

@@ -107,6 +107,10 @@ export function getParams({
 }
 
 export function getMappedFilters(parsedFilters) {
+    if (!parsedFilters) {
+        return {};
+    }
+
     const operators = Object.values(FILTER_OPERATOR);
     const arrayConditions = [
         '[',
@@ -117,7 +121,7 @@ export function getMappedFilters(parsedFilters) {
 
     filters.forEach((filter) => {
         operators.forEach((operator) => {
-            if (filter.includes(operator)) {
+            if (((operator === '=' && !filter.includes('>=') && !filter.includes('<=')) || operator !== '=') && filter.includes(operator)) {
                 const [
                     code,
                     value,

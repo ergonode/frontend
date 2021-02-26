@@ -21,26 +21,40 @@ export default {
         if (!isEmpty(this.$slots)) {
             paragraphContent = this.title.split(' ').map((word) => {
                 // pattern to search `[[slot_name]]`
-                const regex = /\[\[([a-zA-Z1-9_]+)\]\]/g;
-                const key = word.replace(regex, '$1');
+                const regex = /\[\[([0-9a-zA-Z]+)\]\]/g;
 
-                if (regex.test(word) && this.$slots[key]) {
+                if (regex.test(word)) {
+                    const key = word.replace(/\[|\]/g, '');
+
                     return this.$slots[key];
                 }
                 return ` ${word} `;
             });
         }
-
-        return createElement('p', {
+        return createElement('div', {
             class: 'paragraph',
-        }, paragraphContent);
+        }, [
+            this.$slots.prepend,
+            createElement('p', {
+                class: 'paragraph__content',
+            }, paragraphContent),
+            this.$slots.append,
+        ]);
     },
 };
 </script>
 
 <style lang="scss" scoped>
     .paragraph {
-        color: $GRAPHITE_DARK;
-        font: $FONT_MEDIUM_14_20;
+        display: grid;
+        grid-auto-flow: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        column-gap: 10px;
+
+        &__content {
+            color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_14_20;
+        }
     }
 </style>

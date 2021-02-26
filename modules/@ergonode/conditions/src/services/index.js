@@ -3,6 +3,11 @@
  * See LICENSE for license details.
  */
 
+export const get = ({
+    $axios,
+    id,
+}) => $axios.$get(`conditions/${id}`);
+
 export const getDictionary = ({
     $axios,
     params,
@@ -14,11 +19,6 @@ export const getSets = ({
     $axios,
     id,
 }) => $axios.$get(`conditionsets/${id}`);
-
-export const getConfiguration = ({
-    $axios,
-    id,
-}) => $axios.$get(`conditions/${id}`);
 
 export const createSet = ({
     $axios,

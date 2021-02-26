@@ -5,7 +5,7 @@
 <template>
     <li
         :class="classes"
-        :draggable="!isDragged && draggable"
+        :draggable="!isDragged && !disabled"
         :title="hint"
         @dragstart="onDragStart"
         @dragend="onDragEnd">
@@ -41,13 +41,6 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
-        },
-        /**
-         * Determines state of draggable attribute
-         */
-        draggable: {
-            type: Boolean,
-            default: true,
         },
         /**
          * Unique draggable identifier
@@ -110,6 +103,7 @@ export default {
             removeElementCopyFromDocumentBody(event);
 
             this.isDragged = false;
+
             this.__setState({
                 key: 'isElementDragging',
                 value: null,
@@ -130,7 +124,6 @@ export default {
         min-height: 48px;
         padding: 0 16px 0 12px;
         box-sizing: border-box;
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         user-select: none;
         cursor: grab;
 
@@ -146,7 +139,6 @@ export default {
 
         &--disabled {
             position: relative;
-            pointer-events: none;
             cursor: not-allowed;
 
             &:before {

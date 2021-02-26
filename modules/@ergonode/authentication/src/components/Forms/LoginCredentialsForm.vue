@@ -4,7 +4,7 @@
  */
 <template>
     <LoginForm
-        :submit-title="$t('authentication.forms.login.button')"
+        :submit-title="$t('@Authentication.authentication.components.LoginCredentialsForm.button')"
         :is-submitting="isSubmitting"
         :errors="scopeErrors"
         @submit="onSubmit">
@@ -16,19 +16,19 @@
                 data-cy="login-email"
                 v-model="email"
                 :error-messages="scopeErrors.username"
-                :label="$t('authentication.forms.login.email')" />
+                :label="$t('@Authentication.authentication.components.LoginCredentialsForm.email')" />
             <TextField
                 data-cy="login-pass"
                 v-model="password"
                 :input="passwordInputType"
                 :error-messages="scopeErrors.password"
-                :label="$t('authentication.forms.login.password')" />
+                :label="$t('@Authentication.authentication.components.LoginCredentialsForm.password')" />
             <div class="login-help-area">
                 <Toggler
                     v-model="isPasswordVisible"
-                    :label="$t('authentication.forms.login.toggle')" />
+                    :label="$t('@Authentication.authentication.components.LoginCredentialsForm.toggle')" />
                 <LinkButton
-                    :title="$t('authentication.forms.login.forgot')"
+                    :title="$t('@Authentication.authentication.components.LoginCredentialsForm.forgot')"
                     @click.native="redirectToRecovery" />
             </div>
         </template>

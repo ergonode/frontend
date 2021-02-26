@@ -25,7 +25,8 @@
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
-        @remove-all-filters="onRemoveAllFilters">
+        @remove-all-filters="onRemoveAllFilters"
+        v-bind="extendedProps['grid']">
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
                 :title="$t('productTemplate.grid.placeholderTitle')"
@@ -34,6 +35,15 @@
                     <CreateProductTemplateButton />
                 </template>
             </GridNoDataPlaceholder>
+        </template>
+        <template #actionsHeader>
+            <template
+                v-for="(actionItem, index) in extendedActionHeader">
+                <Component
+                    :is="actionItem.component"
+                    :key="index"
+                    v-bind="bindingProps(actionItem)" />
+            </template>
         </template>
     </Grid>
 </template>
@@ -46,6 +56,7 @@ import {
     DEFAULT_PAGE,
     GRID_LAYOUT,
 } from '@Core/defaults/grid';
+import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
@@ -74,6 +85,12 @@ export default {
         GridNoDataPlaceholder,
     },
     mixins: [
+        extendPropsMixin({
+            extendedKey: '@Templates/components/Grids/ProductTemplatesGrid/props',
+            extendedNames: [
+                'grid',
+            ],
+        }),
         extendedGridComponentsMixin,
     ],
     async fetch() {
@@ -99,6 +116,9 @@ export default {
         };
     },
     computed: {
+        extendedActionHeader() {
+            return this.$getExtendSlot('@Templates/components/Grids/ProductTemplatesGrid/actionsHeader');
+        },
         collectionCellBinding() {
             return {
                 imageColumn: 'image_id',
@@ -148,10 +168,22 @@ export default {
         );
     },
     methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.TEMPLATE_DESIGNER,
+                ...props,
+            };
+        },
         onProductTemplateCreated() {
             this.onFetchData();
         },
         onRemoveRow() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product template removed',
+            });
             this.onFetchData();
         },
         onEditRow(args) {
@@ -194,23 +226,32 @@ export default {
             });
         },
         onRemoveAllFilters() {
+            const query = {
+                ...this.$route.query,
+                page: DEFAULT_PAGE,
+            };
+
+            delete query.filter;
+
             this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    filter: '',
-                    page: DEFAULT_PAGE,
-                },
+                query,
             });
 
             this.isPrefetchingData = true;
         },
         onFilterChange(filters) {
+            const query = {
+                ...this.$route.query,
+                page: DEFAULT_PAGE,
+                filter: getParsedFilters(filters),
+            };
+
+            if (query.filter === '' || query.filter === null) {
+                delete query.filter;
+            }
+
             this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    page: DEFAULT_PAGE,
-                    filter: getParsedFilters(filters),
-                },
+                query,
             });
         },
         onColumnSortChange(sortOrder) {

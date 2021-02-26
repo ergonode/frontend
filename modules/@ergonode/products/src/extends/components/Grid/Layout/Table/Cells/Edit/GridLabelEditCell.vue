@@ -14,9 +14,8 @@
                 :options="options"
                 :error-messages="errorMessages"
                 @focus="onFocus">
-                <template #placeholder="{ isVisible }">
-                    <div v-if="isFetchingData" />
-                    <DropdownPlaceholder v-else-if="isVisible" />
+                <template #dropdownBody>
+                    <Preloader v-if="isFetchingData" />
                 </template>
                 <template #prepend>
                     <div
@@ -63,7 +62,7 @@ import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import ListElementAction from '@UI/components/List/ListElementAction';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
+import Preloader from '@UI/components/Preloader/Preloader';
 import TranslationSelect from '@UI/components/Select/TranslationSelect';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import gridEditCellMixin from '@UI/mixins/grid/gridEditCellMixin';
@@ -74,9 +73,9 @@ import {
 export default {
     name: 'GridLabelEditCell',
     components: {
+        Preloader,
         FadeTransition,
         IconSpinner,
-        DropdownPlaceholder,
         GridSelectEditContentCell,
         TranslationSelect,
         ListElementDescription,
@@ -100,17 +99,19 @@ export default {
          */
         languageCode: {
             type: String,
-            required: true,
+            default: '',
         },
     },
     async fetch() {
-        this.isFetchingData = true;
+        if (!this.disabled) {
+            this.isFetchingData = true;
 
-        await this.getProductWorkflowOptions({
-            id: this.rowId,
-            languageCode: this.languageCode,
-            onSuccess: this.onGetProductWorkflowOptionsSuccess,
-        });
+            await this.getProductWorkflowOptions({
+                id: this.rowId,
+                languageCode: this.languageCode,
+                onSuccess: this.onGetProductWorkflowOptionsSuccess,
+            });
+        }
     },
     data() {
         return {

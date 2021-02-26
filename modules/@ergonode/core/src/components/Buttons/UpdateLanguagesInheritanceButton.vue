@@ -10,7 +10,7 @@
             <Button
                 data-cy="submit"
                 :title="$t('core.buttons.submit')"
-                :floating="{ bottom: '24px', right: '24px' }"
+                :floating="floating"
                 :disabled="!isAllowedToUpdate"
                 @click.native="onSubmit">
                 <template #prepend="{ color }">
@@ -33,11 +33,11 @@ import {
 } from '@Core/defaults/alerts';
 import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
 import {
-    getMappedTreeData,
-} from '@Core/models/mappers/languageTreeMapper';
+    getParsedTree,
+} from '@Core/models/mappers/treeDesignerMapper';
 import {
-    isEmpty,
-} from '@Core/models/objectWrapper';
+    Z_INDEX_LVL_2,
+} from '@UI/assets/scss/_js-variables/indexes.scss';
 import Button from '@UI/components/Button/Button';
 import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
@@ -64,9 +64,16 @@ export default {
         };
     },
     computed: {
-        ...mapState('gridDesigner', [
-            'fullGridData',
+        ...mapState('core', [
+            'inheritedLanguagesTree',
         ]),
+        floating() {
+            return {
+                bottom: '24px',
+                right: '24px',
+                zIndex: Z_INDEX_LVL_2,
+            };
+        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.SETTINGS.update,
@@ -87,12 +94,15 @@ export default {
                 return;
             }
 
-            if (!isEmpty(this.fullGridData)) {
+            if (this.inheritedLanguagesTree.length) {
                 this.isSubmitting = true;
 
                 const [
                     languages,
-                ] = getMappedTreeData(this.fullGridData);
+                ] = getParsedTree({
+                    data: this.inheritedLanguagesTree,
+                    childrenId: 'language_id',
+                });
 
                 this.removeScopeErrors(this.scope);
 
@@ -100,6 +110,11 @@ export default {
                     languages,
                     onSuccess: () => this.onUpdateSuccess(languages),
                     onError: this.onUpdateError,
+                });
+            } else {
+                this.$addAlert({
+                    type: ALERT_TYPE.INFO,
+                    message: 'Language inheritance tree cannot be saved without any language',
                 });
             }
         },

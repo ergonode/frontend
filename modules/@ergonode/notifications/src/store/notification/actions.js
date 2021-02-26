@@ -7,10 +7,15 @@ import {
     check,
     getAll,
     update,
+    updateAll,
 } from '@Notifications/services/index';
 
+import {
+    types,
+} from './mutations';
+
 export default {
-    async checkNotificationCount({
+    async checkUnreadNotifications({
         commit,
         dispatch,
     }, {
@@ -28,7 +33,7 @@ export default {
             dispatch('setRequestTimeout');
 
             commit('__SET_STATE', {
-                key: 'count',
+                key: 'unread',
                 value: unread,
             });
 
@@ -41,7 +46,7 @@ export default {
             onError(e);
         }
     },
-    async requestForNotifications({
+    async getNotifications({
         commit,
         state,
     }, {
@@ -49,23 +54,74 @@ export default {
         onError = () => {},
     }) {
         try {
-            const params = {
-                limit: state.limit,
-                offset: 0,
-                order: 'DESC',
-                field: 'created_at',
-            };
+            if (state.notifications.length < state.count || !state.notifications.length) {
+                const params = {
+                    limit: state.limit,
+                    offset: state.offset,
+                    view: 'list',
+                    order: 'DESC',
+                    field: 'created_at',
+                };
 
-            const {
-                collection,
-            } = await getAll({
-                $axios: this.app.$axios,
-                params,
+                const {
+                    collection,
+                    info,
+                } = await getAll({
+                    $axios: this.app.$axios,
+                    params,
+                });
+
+                commit('__SET_STATE', {
+                    key: 'notifications',
+                    value: [
+                        ...state.notifications,
+                        ...collection.map(({
+                            read_at,
+                            created_at,
+                            ...rest
+                        }) => ({
+                            ...rest,
+                            readAt: read_at,
+                            createdAt: created_at,
+                        })),
+                    ],
+                });
+                commit('__SET_STATE', {
+                    key: 'offset',
+                    value: state.offset + state.limit,
+                });
+                commit('__SET_STATE', {
+                    key: 'count',
+                    value: info.count,
+                });
+
+                onSuccess();
+            }
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
+    },
+    async getProcessingNotifications({
+        commit,
+    }, {
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const notifications = await this.$getExtendMethod('@Notifications/store/notification/action/getProcessingNotifications', {
+                $this: this,
             });
 
             commit('__SET_STATE', {
-                key: 'notifications',
-                value: collection,
+                key: 'processingNotifications',
+                value: notifications.reduce((prev, curr) => [
+                    ...prev,
+                    ...curr,
+                ], []),
             });
 
             onSuccess();
@@ -87,8 +143,32 @@ export default {
             id,
         });
 
-        dispatch('checkNotificationCount', {});
-        dispatch('requestForNotifications', {});
+        dispatch('updateNotificationReadTime', id);
+    },
+    async markAllNotificationsAsRead({
+        dispatch,
+    }) {
+        await updateAll({
+            $axios: this.app.$axios,
+        });
+
+        dispatch('updateAllNotificationsReadTime');
+    },
+    updateNotificationReadTime({
+        state,
+        commit,
+    }, id) {
+        const index = state.notifications.findIndex(notification => notification.id === id);
+
+        commit(types.UPDATE_NOTIFICATION_READ_TIME, {
+            index,
+            readTime: new Date().toISOString(),
+        });
+    },
+    updateAllNotificationsReadTime({
+        commit,
+    }) {
+        commit(types.UPDATE_ALL_NOTIFICATIONS_READ_TIME, new Date().toISOString());
     },
     increaseRequestTimeInterval({
         commit, state,
@@ -114,7 +194,7 @@ export default {
         dispatch('invalidateRequestTimeout');
 
         const timeout = setTimeout(() => {
-            dispatch('checkNotificationCount', {});
+            dispatch('checkUnreadNotifications', {});
         }, state.requestTimeInterval);
 
         commit('__SET_STATE', {

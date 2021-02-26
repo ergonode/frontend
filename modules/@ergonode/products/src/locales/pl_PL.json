@@ -1,23 +1,95 @@
 {
+  "@Products": {
+    "_": {
+      "title": "Katalog",
+      "headTitle": "Katalog - Ergonode",
+      "addProducts": "Dodaj produkty",
+      "addProductsFromList": "Dodaj produkty z listy",
+      "addProductsFromSegment": "Dodaj produkty z warunków segmentujących",
+      "create": "STWÓRZ",
+      "proceed": "STWÓRZ & EDYTUJ",
+      "submit": "ZAPISZ ZMIANY",
+      "restore": "PRZYWRÓC",
+      "cancel": "ANULUJ",
+      "noProduct": "Brak produktów",
+      "createFirst": "W systemie nie ma produktów, stwórz pierwszy."
+    },
     "product": {
-        "buttons": {
-            "create": "STWÓRZ",
-            "proceed": "STWÓRZ & EDYTUJ",
-            "submit": "ZAPISZ ZMIANY",
-            "restore": "PRZYWRÓC",
-            "cancel": "ANULUJ"
+      "components": {
+        "RestoreForm": {
+          "modalTitle": "Wybierz atrybuty, których wartości chcesz przywrócić z {from} do wartości dziedziczonej w ({to})"
         },
-        "grid": {
-            "placeholderTitle": "Brak produktów",
-            "placeholderSubtitle": "W systemie nie ma produktów, stwórz pierwszy.",
-            "groupPlaceholderTitle": "Brak produktów w grupie",
-            "groupPlaceholderSubtitle": "Brak produktów w grupie, dodaj pierwszy.",
-            "variantPlaceholderTitle": "Brak wariantów produktowych",
-            "variantPlaceholderSubtitle": "Wybierz produkty, które wspólnie stworzą produkt z wariantami. Możesz wybrać między produktami, które posiadają wartości z dowiązanych atrybutów.",
-            "productsToAttachForGroupPlaceholderTitle": "Brak produktów",
-            "productsToAttachForGroupPlaceholderSubtitle": "Brak produktów z wariantami albo produktów prostych w systemie, stwórz pierwszy.",
-            "productVariantsToAttachPlaceholderTitle": "Brak produktów do dowiązania",
-            "productVariantsToAttachPlaceholderSubtitle": "Brak produktów prostych, które pasują do kreteriów dowiązujących jako wariant, rozwiaż ponowne wybranie atrybudów, po których będą dowiązane produktu, albo uzupełnij brakujące wartości w produktach."
+        "ProductWorkflowActionButton": {
+          "confirmTitle": "Czy jesteś pewien zmiany statusu na {info}?",
+          "alertSuccess": "Status został zaktualizowany"
+        },
+        "ProductsWidget": {
+          "getRequest": "Informacje produktowe nie zostały pobrane"
+        },
+        "CompletenessWidget": {
+          "title": "Kompletność",
+          "getRequest": "Kompletność prduktów nie została pobrana"
+        },
+        "CreateProductButton": {
+          "title": "Stwórz produkt"
+        },
+        "RemoveProductButton": {
+          "title": "Usuń produkt",
+          "confirmTitle": "Czy jesteś pewien, że chcesz usunąć ten produkt?",
+          "confirmApplyTitle": "Tak, usuń",
+          "successAlert": "Produkt został usunięty",
+          "errorAlert": "Produkt nie został usunięty"
+        },
+        "RestoreProductAttributesModalForm": {
+          "formValidation": "Proszę oznacz atrybuty do przywrócenia",
+          "successAlert": "Atrybuty {info} zostały przywrócone"
         }
+      },
+      "pages": {
+        "id": {
+          "getInheritedProductRequest": "Dziedziczony produkt nie został pobrany",
+          "getProductRequest": "Produkt nie został pobrany"
+        }
+      }
+    },
+    "productExtend": {
+      "components": {
+        "AddBindingAttributesButton": {
+          "title": "Dodaj atrybuty dowiązujące"
+        },
+        "AttachedProductVariantsGrid": {
+          "chooseVariants": "Wybierz warianty",
+          "noProductVariants": "Brak wariantów produktowych",
+          "addProductVariants": "Wybierz produkty, które wspólnie stworzą produkt z wariantami. Możesz wybrać między produktami, które posiadają wartości z dowiązanych atrybutów.",
+          "getRequest": "Warianty produktowe nie zostały pobrane"
+        },
+        "ProductVariantsToAttachGrid": {
+          "noProducts": "Brak produktów do dowiązania",
+          "changeBindingAttributes": "Brak produktów prostych, które pasują do kreteriów dowiązujących jako wariant, rozwiaż ponowne wybranie atrybudów, po których będą dowiązane produktu, albo uzupełnij brakujące wartości w produktach.",
+          "getRequest": "Warianty produktowe nie zostały pobrane",
+          "attachedLabel": "Przypięte",
+          "notAttachedLabel": "Odpięte"
+        },
+        "AttachedProductsToGroupGrid": {
+          "noProductsInGroup": "Brak produktów w grupie",
+          "addProductToGroup": "Brak produktów w grupie, dodaj pierwszy."
+        },
+        "ProductsToAttachForGroupGrid": {
+          "noProducts": "Brak produktów",
+          "createFirst": "Brak produktów z wariantami albo produktów prostych w systemie, stwórz pierwszy.",
+          "getRequest": "Produkty nie zostały pobrane"
+        }
+      }
+    },
+    "batchAction": {
+      "components": {
+        "ProductsBatchActions": {
+          "confirmTitle": "Czy jesteś pewień usunięcia permamentnie {info} produktów?",
+          "confirmSubtitle": "Produkty będą usunięte z systemu bez odwrotnie i nie będą mogłby być przywrócone.",
+          "confirmApplyTitle": "USUŃ {info} PRODUKTY",
+          "successAlert": "Produkty zostały usunięte"
+        }
+      }
     }
+  }
 }

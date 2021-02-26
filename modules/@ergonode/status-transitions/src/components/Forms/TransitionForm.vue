@@ -9,6 +9,7 @@
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :disabled="!isAllowedToUpdate"
         :errors="errors"
         :change-values="changeValues"
         @proceed="onProceed"
@@ -19,7 +20,6 @@
                     :value="source"
                     :required="true"
                     label="From"
-                    :clearable="true"
                     :options="sourceOptions"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errors[sourceFieldKey]"
@@ -28,7 +28,6 @@
                     :value="destination"
                     :required="true"
                     label="To"
-                    :clearable="true"
                     :options="destinationOptions"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errors[destinationFieldKey]"
@@ -36,28 +35,13 @@
             </FormSection>
             <Divider />
             <FormSection title="Send notification to">
-                <Autocomplete
+                <RolesAutocomplete
                     :value="roles"
                     :clearable="true"
                     :multiselect="true"
-                    :searchable="true"
-                    label="Role"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[roleFieldKey]"
-                    href="roles/autocomplete"
-                    @input="setRolesValue">
-                    <DropdownPlaceholder
-                        :title="placeholder.title"
-                        :subtitle="placeholder.subtitle">
-                        <template #action>
-                            <Button
-                                title="GO TO USER ROLES"
-                                :size="smallSize"
-                                :disabled="!isAllowedToUpdate"
-                                @click.native="onNavigateToUserRoles" />
-                        </template>
-                    </DropdownPlaceholder>
-                </Autocomplete>
+                    @input="setRolesValue" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
                         :is="field.component"
@@ -70,25 +54,18 @@
 </template>
 
 <script>
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     isEmpty,
 } from '@Core/models/objectWrapper';
 import PRIVILEGES from '@Transitions/config/privileges';
-import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import Button from '@UI/components/Button/Button';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import TranslationSelect from '@UI/components/Select/TranslationSelect';
-import {
-    ROUTE_NAME,
-} from '@Users/config/routes';
+import RolesAutocomplete from '@Users/components/Autocompletes/RolesAutocomplete';
 import {
     mapActions,
     mapState,
@@ -101,9 +78,8 @@ export default {
         Form,
         FormSection,
         Divider,
-        Autocomplete,
+        RolesAutocomplete,
         TranslationSelect,
-        DropdownPlaceholder,
     },
     mixins: [
         formActionsMixin,
@@ -118,15 +94,6 @@ export default {
         ...mapState('productStatus', [
             'statuses',
         ]),
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        placeholder() {
-            return {
-                title: 'No user roles',
-                subtitle: 'There are no user roles in the system, so you can create the first one.',
-            };
-        },
         extendedForm() {
             return this.$extendedForm({
                 key: '@Transitions/components/Forms/TransitionForm',
@@ -157,7 +124,9 @@ export default {
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.WORKFLOW.update,
-            ]);
+            ]) || (!this.isDisabled && this.$hasAccess([
+                PRIVILEGES.WORKFLOW.create,
+            ]));
         },
         roleFieldKey() {
             return 'roleId';
@@ -183,11 +152,6 @@ export default {
                 disabled: !this.isAllowedToUpdate,
                 ...props,
             };
-        },
-        onNavigateToUserRoles() {
-            this.$router.push({
-                name: ROUTE_NAME.USER_ROLES_GRID,
-            });
         },
         setSourceValue(value) {
             this.__setState({

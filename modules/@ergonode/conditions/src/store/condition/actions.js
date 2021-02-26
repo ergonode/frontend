@@ -3,12 +3,14 @@
  * See LICENSE for license details.
  */
 import {
-    getMappedConditionSetData,
-    getParsedConditionSetData,
+    getMappedInitialConditionsValues,
+    getMappedInitialTypeConditionsValues,
+    getMappedTree,
+    getParsedConditions,
 } from '@Conditions/models/conditionSetMapper';
 import {
     createSet,
-    getConfiguration,
+    get,
     getDictionary,
     getSets,
     updateSet,
@@ -24,79 +26,116 @@ import {
 export default {
     async getConditions({
         commit,
-    }, params = {}) {
-        const dictionary = await getDictionary({
-            $axios: this.app.$axios,
-            params,
-        });
+    }, {
+        group,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const dictionary = await getDictionary({
+                $axios: this.app.$axios,
+                params: {
+                    group,
+                },
+            });
 
-        commit(types.SET_CONDITIONS_DICTIONARY, objectToArrayWithPropsName(dictionary));
-    },
-    async getConditionConfiguration(
-        {
-            commit,
-        },
-        {
-            id,
-        },
-    ) {
-        const configuration = await getConfiguration({
-            $axios: this.app.$axios,
-            id,
-        });
+            onSuccess(objectToArrayWithPropsName(dictionary));
+        } catch (e) {
+            if (this.$axios.isCancel(e)) {
+                return;
+            }
 
-        commit(types.SET_CONDITIONS, {
-            key: id,
-            value: configuration,
-        });
+            onError(e);
+        }
     },
-    async getConditionSet(
+    async getCondition(
         {
             state,
             commit,
-            dispatch,
         },
         {
             id,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        const {
-            conditions = [],
-        } = await getSets({
-            $axios: this.app.$axios,
-            id,
-        });
+        try {
+            const configuration = await get({
+                $axios: this.app.$axios,
+                id,
+            });
 
-        await Promise.all(conditions.map(async (condition) => {
-            const {
-                type,
-            } = condition;
-            if (!state.conditions[type]) {
-                await dispatch('getConditionConfiguration', {
-                    id: type,
-                });
+            commit(types.SET_CONDITIONS_VALUES, getMappedInitialTypeConditionsValues({
+                tree: state.tree,
+                type: id,
+                parameters: configuration.parameters,
+                values: state.conditionsValues,
+            }));
+            commit(types.SET_CONDITIONS, {
+                key: id,
+                value: configuration,
+            });
+
+            onSuccess(id);
+        } catch (e) {
+            if (this.$axios.isCancel(e)) {
+                return;
             }
-        }));
 
-        const {
-            conditionsData,
-            conditionsTree,
-        } = getParsedConditionSetData(conditions, state.conditions);
+            onError(e);
+        }
+    },
+    async getConditionSet(
+        {
+            commit,
+        },
+        {
+            id,
+            scope,
+            onSuccess = () => {},
+            onError = () => {},
+        },
+    ) {
+        try {
+            const {
+                conditions = [],
+            } = await getSets({
+                $axios: this.app.$axios,
+                id,
+            });
 
-        commit('__SET_STATE', {
-            key: 'id',
-            value: id,
-        });
-        commit('__SET_STATE', {
-            key: 'conditionsValues',
-            value: conditionsData,
-        });
-        dispatch('gridDesigner/setGridData', conditionsTree, {
-            root: true,
-        });
-        dispatch('gridDesigner/setFullGridData', conditionsTree, {
-            root: true,
-        });
+            const tree = getMappedTree({
+                conditions,
+            });
+            const conditionsValues = getMappedInitialConditionsValues({
+                tree,
+                conditions,
+            });
+
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'conditionsValues',
+                value: conditionsValues,
+            });
+            commit('__SET_STATE', {
+                key: 'tree',
+                value: tree,
+            });
+
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
     },
     async createConditionSet(
         {
@@ -113,10 +152,16 @@ export default {
             const {
                 conditions,
                 conditionsValues,
+                tree,
             } = state;
             let data = {
-                conditions: getMappedConditionSetData(conditionsValues, conditions),
+                conditions: getParsedConditions({
+                    values: conditionsValues,
+                    conditions,
+                    tree,
+                }),
             };
+
             // EXTENDED BEFORE METHOD
             const extendedData = await this.$getExtendMethod('@Conditions/store/condition/action/createConditionSet/__before', {
                 $this: this,
@@ -154,6 +199,10 @@ export default {
 
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -174,10 +223,15 @@ export default {
             const {
                 id,
                 conditions,
+                tree,
                 conditionsValues,
             } = state;
             let data = {
-                conditions: getMappedConditionSetData(conditionsValues, conditions),
+                conditions: getParsedConditions({
+                    values: conditionsValues,
+                    conditions,
+                    tree,
+                }),
             };
 
             // EXTENDED BEFORE METHOD
@@ -211,6 +265,10 @@ export default {
 
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -218,10 +276,13 @@ export default {
         }
     },
     setConditionValue({
-        commit, state,
+        commit,
+        state,
     },
     {
-        conditionId, parameterName, parameterValue,
+        conditionId,
+        parameterName,
+        parameterValue,
     }) {
         if (!state.conditionsValues[conditionId]) {
             commit(types.ADD_CONDITION_VALUE, {
@@ -238,7 +299,8 @@ export default {
         }
     },
     removeConditionValue({
-        commit, state,
+        commit,
+        state,
     }, conditionId) {
         if (state.conditionsValues[conditionId]) {
             commit(types.REMOVE_CONDITION_VALUE_FROM_SET, conditionId);

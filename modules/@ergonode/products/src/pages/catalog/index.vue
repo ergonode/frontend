@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar
-            title="Catalog"
+            :title="$t('@Products._.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <template
@@ -95,7 +95,7 @@ export default {
     },
     head() {
         return {
-            title: 'Products - Ergonode',
+            title: this.$t('@Products._.headTitle'),
         };
     },
 };

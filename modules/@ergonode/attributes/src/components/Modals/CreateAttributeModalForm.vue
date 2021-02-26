@@ -4,12 +4,12 @@
  */
 <template>
     <ModalForm
-        :title="$t('attribute.form.createTitle')"
+        :title="$t('@Attributes.attribute.components.CreateAttributeModalForm.create')"
         @close="onClose">
         <template #body>
             <AttributeForm
-                :submit-title="$t('core.buttons.create')"
-                :proceed-title="$t('core.buttons.proceed')"
+                :submit-title="$t('@Attributes._.create')"
+                :proceed-title="$t('@Attributes._.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :scope="scope"
@@ -111,7 +111,7 @@ export default {
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('attribute.messages.createSuccess'),
+                message: this.$t('@Attributes.attribute.components.CreateAttributeModalForm.createSuccess'),
             });
 
             this.isSubmitting = false;
@@ -122,6 +122,7 @@ export default {
         onProceedSuccess(id) {
             this.isProceeding = false;
 
+            this.onClose();
             this.$router.push({
                 name: ROUTE_NAME.ATTRIBUTE_EDIT_GENERAL,
                 params: {

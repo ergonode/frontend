@@ -70,7 +70,7 @@ export default {
             const modals = [
                 {
                     component: () => import('@Collections/components/Modals/AddProductsBySKUModalForm'),
-                    name: ADD_PRODUCT.FROM_LIST,
+                    name: ADD_PRODUCT.FROM_SKU,
                 },
                 {
                     component: () => import('@Collections/components/Modals/AddProductsFromSegmentModalForm'),

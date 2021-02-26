@@ -19,10 +19,17 @@
                                     v-for="relation in row.relations"
                                     :key="relation.name"
                                     :title="relation.name"
-                                    :link="relation._link"
+                                    :link="relation._link || {}"
                                     :namespace="row.type" />
                             </TableRowCell>
                         </TableRow>
+                        <template
+                            v-for="(item, index) in extendedTable">
+                            <Component
+                                :is="item.component"
+                                :key="index"
+                                v-bind="bindingProps(item)" />
+                        </template>
                     </template>
                 </Table>
             </FormSection>
@@ -36,6 +43,7 @@
 
 <script>
 import LinkRelationButton from '@Media/components/Buttons/LinkRelationButton';
+import PRIVILEGES from '@Media/config/privileges';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import TabBarNoDataPlaceholder from '@UI/components/TabBar/TabBarNoDataPlaceholder';
@@ -65,6 +73,11 @@ export default {
             isPrefetchingData: true,
         };
     },
+    computed: {
+        extendedTable() {
+            return this.$getExtendSlot('@Media/components/Forms/ResourceRelationsForm/tableBody');
+        },
+    },
     async created() {
         await this.getResourceRelation({
             onSuccess: (({
@@ -79,6 +92,14 @@ export default {
         ...mapActions('media', [
             'getResourceRelation',
         ]),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.MULTIMEDIA,
+                ...props,
+            };
+        },
     },
 };
 </script>

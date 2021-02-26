@@ -146,7 +146,7 @@ export default {
             display: flex;
             width: 16px;
             height: 16px;
-            border: 1px solid $GREY;
+            border: $BORDER_1_GREY;
             box-sizing: border-box;
         }
 

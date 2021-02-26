@@ -204,6 +204,8 @@ export default {
         }
 
         &--disabled {
+            cursor: not-allowed;
+
             #{$underline}__details-label {
                 color: $GRAPHITE_LIGHT;
             }

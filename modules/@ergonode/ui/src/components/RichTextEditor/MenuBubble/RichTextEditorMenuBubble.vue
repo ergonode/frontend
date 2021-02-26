@@ -122,7 +122,7 @@ export default {
 <style lang="scss" scoped>
     .menububble {
         position: absolute;
-        z-index: $Z_INDEX_MODAL;
+        z-index: $Z_INDEX_MAX;
         display: flex;
         padding: 4px;
         transition:

@@ -5,10 +5,10 @@
 
 import {
     getSelectedItems,
-    getSelectedNodesCount,
+    getSelectedNodes,
 } from '@UI/models/treeAccordion';
 import {
-    selectedNodesCount,
+    selectedNodes,
     selectedValue,
     tree,
     value,
@@ -22,13 +22,13 @@ describe('treeAccordion/getSelectedItems', () => {
     });
 });
 
-describe('treeAccordion/getSelectedNodesCount', () => {
+describe('treeAccordion/getSelectedNodes', () => {
     it('Based on value getting sum of selected children nodes', () => {
-        const result = getSelectedNodesCount({
+        const result = getSelectedNodes({
             value,
             treeStructure: tree,
         });
 
-        expect(result).toStrictEqual(selectedNodesCount);
+        expect(result).toStrictEqual(selectedNodes);
     });
 });

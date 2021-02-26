@@ -7,9 +7,11 @@
         :items="items"
         :expanded="expanded">
         <template #header>
-            <div class="select-list-header">
+            <div
+                v-if="!isPlaceholderVisible"
+                class="tree-accordion-header">
                 <slot name="prependHeader" />
-                <div class="select-list-header__search">
+                <div class="tree-accordion-header__search">
                     <SelectListSearch
                         v-if="searchable"
                         :placeholder="searchPlaceholder"
@@ -23,14 +25,16 @@
         </template>
         <template #body>
             <slot name="body">
-                <DropdownPlaceholder
-                    v-if="isSearchPlaceholderVisible"
-                    :title="placeholder.title"
-                    :subtitle="placeholder.subtitle">
-                    <template #action>
-                        <ClearSearchButton @click.native.stop="onClearSearch" />
-                    </template>
-                </DropdownPlaceholder>
+                <slot
+                    v-if="isPlaceholderVisible"
+                    name="noDataPlaceholder">
+                    <SelectListNoDataPlaceholder />
+                </slot>
+                <slot
+                    v-else-if="isSearchPlaceholderVisible"
+                    name="noResultsPlaceholder">
+                    <SelectListNoResultsPlaceholder @clear="onClearSearch" />
+                </slot>
             </slot>
         </template>
         <template #footer>
@@ -41,7 +45,7 @@
                 :item="item"
                 :size="size"
                 :multiselect="multiselect"
-                :selected-nodes-count="selectedNodesCount[item.id]"
+                :selected-nodes="selectedNodes[item.id]"
                 :selected="selectedItems[item.id]"
                 @expand="onExpand"
                 @input="onValueChange" />
@@ -54,13 +58,13 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
+import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
+import SelectListNoResultsPlaceholder from '@UI/components/SelectList/SelectListNoResultsPlaceholder';
 import SelectListSearch from '@UI/components/SelectList/SelectListSearch';
 import TreeAccordionItem from '@UI/components/TreeAccordion/TreeAccordionItem';
 import {
     getSelectedItems,
-    getSelectedNodesCount,
+    getSelectedNodes,
 } from '@UI/models/treeAccordion';
 import {
     ExpandingList,
@@ -69,10 +73,10 @@ import {
 export default {
     name: 'TreeAccordion',
     components: {
+        SelectListNoResultsPlaceholder,
+        SelectListNoDataPlaceholder,
         ExpandingList,
         TreeAccordionItem,
-        DropdownPlaceholder,
-        ClearSearchButton,
         SelectListSearch,
     },
     props: {
@@ -111,6 +115,9 @@ export default {
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
         },
+        /**
+         * List of items
+         */
         items: {
             type: Array,
             default: () => [],
@@ -146,14 +153,8 @@ export default {
         };
     },
     computed: {
-        placeholder() {
-            return {
-                title: 'No results',
-                subtitle: 'Clear the search and try with another phrase.',
-            };
-        },
-        selectedNodesCount() {
-            return getSelectedNodesCount({
+        selectedNodes() {
+            return getSelectedNodes({
                 value: this.value,
                 treeStructure: this.items,
             });
@@ -169,9 +170,6 @@ export default {
         },
         isSearchPlaceholderVisible() {
             return !this.isAnyItem && this.isAnySearchPhrase;
-        },
-        isSelectContentVisible() {
-            return this.isAnyItem || this.isAnySearchPhrase;
         },
     },
     watch: {
@@ -214,7 +212,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .select-list-header {
+    .tree-accordion-header {
         position: sticky;
         top: 0;
         z-index: $Z_INDEX_LVL_1;
@@ -226,10 +224,6 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        &__select-all {
-            margin-right: 12px;
         }
     }
 </style>

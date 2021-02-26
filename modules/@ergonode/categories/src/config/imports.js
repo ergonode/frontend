@@ -15,12 +15,16 @@ export const Tabs = {
 
 export const Icons = {
     Templates: () => import('@Core/components/Icons/Menu/IconTemplates'),
+    IconTree: () => import('@Categories/components/Icons/IconTree'),
 };
 
+// Extends
+
 export const Components = {
-    ProductFormCategory: () => import('@Categories/extends/components/Forms/ProductFormCategory'),
+    ProductFormCategory: () => import('@Categories/extends/product/components/Forms/ProductFormCategory'),
+    CategoriesVerticalTab: () => import('@Categories/extends/categoryTree/components/VerticalTabs/CategoriesVerticalTab'),
 };
 
 export const Store = {
-    Product: () => import('@Categories/extends/store/product').then(m => m.default || m),
+    Product: () => import('@Categories/extends/product/store').then(m => m.default || m),
 };

@@ -1,0 +1,29 @@
+{
+  "@Notifications": {
+    "_": {},
+    "notification": {
+      "_": {},
+      "components": {
+        "NotificationListNoDataPlaceholder": {
+          "noActions": "Brak akcji",
+          "info": "Aktualizacje produktu, procesowane operacje oraz inne aktywności pojawią się tutaj."
+        },
+        "NotificationListHeader": {
+          "title": "Centrum akcji"
+        },
+        "NotificationListMenu": {
+          "markAllAsRead": "Oznacz wszystkie jako przeczytane"
+        },
+        "NotificationListItem": {
+          "markAsRead": "Oznacz jako przeczytany"
+        },
+        "NotificationList": {
+          "processingSectionTitle": "Procesowanie",
+          "notificationSectionTitle": "Powiadomienia"
+        }
+      },
+      "pages": {},
+      "store": {}
+    }
+  }
+}

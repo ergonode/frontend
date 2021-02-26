@@ -9,7 +9,7 @@
         <template #default="{ hasValueToSave }">
             <Button
                 data-cy="submit"
-                :title="$t('core.buttons.submit')"
+                :title="$t('@Attributes._.submit')"
                 :floating="{ bottom: '24px', right: '24px' }"
                 :disabled="!isAllowedToUpdate"
                 @click.native="onSubmit">
@@ -83,7 +83,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('attributeGroup.messages.updateTranslationSuccess'),
+                message: this.$t('@Attributes.attributeGroup.components.UpdateAttributeGroupTranslationButton.updateSuccess'),
             });
 
             this.isSubmitting = false;

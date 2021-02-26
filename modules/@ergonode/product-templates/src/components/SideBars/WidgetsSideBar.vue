@@ -4,12 +4,12 @@
  */
 <template>
     <SideBar
-        :title="$t('attribute.sideBar.searchHeader2')"
+        title="Widgets"
         :items="widgets">
         <template #item="{ item }">
             <WidgetSideBarElement
                 :item="item"
-                :is-draggable="!disabled" />
+                :disabled="disabled" />
         </template>
     </SideBar>
 </template>

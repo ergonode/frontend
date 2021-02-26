@@ -6,7 +6,7 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <CategoryForm
-                :submit-title="$t('core.buttons.submit')"
+                :submit-title="$t('@Categories._.submit')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :change-values="changeValues"
@@ -61,7 +61,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Category has been updated',
+                message: this.$t('@Categories.category.components.CategoryGeneralTab.updateSuccess'),
             });
 
             this.isSubmitting = false;

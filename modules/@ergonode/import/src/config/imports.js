@@ -17,3 +17,9 @@ export const Tabs = {
 export const Icons = {
     Channels: () => import('@Channels/components/Icons/IconChannels'),
 };
+
+export const Components = {
+    NotificationListImportSuccessItem: () => import('@Import/extends/notification/components/Notifications/NotificationListImportSuccessItem').then(m => m.default || m),
+    NotificationListImportWarningItem: () => import('@Import/extends/notification/components/Notifications/NotificationListImportWarningItem').then(m => m.default || m),
+    NotificationListImportProcessingItem: () => import('@Import/extends/notification/components/Notifications/NotificationListImportProcessingItem').then(m => m.default || m),
+};

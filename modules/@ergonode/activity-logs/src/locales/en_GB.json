@@ -1,7 +1,14 @@
 {
-    "activityLogs": {
-        "page": {
-            "title": "Users activity logs"
+  "@ActivityLogs": {
+    "activityLog": {
+      "_": {
+        "title": "Users activity logs"
+      },
+      "components": {
+        "UsersActivityLogsGrid": {
+          "getRequest": "Users activity logs haven’t been fetched properly"
         }
+      }
     }
+  }
 }

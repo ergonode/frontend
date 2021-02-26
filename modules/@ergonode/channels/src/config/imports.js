@@ -15,5 +15,11 @@ export const Tabs = {
 };
 
 export const Icons = {
-    Channels: () => import('@Channels/components/Icons/IconChannels'),
+    Channels: () => import('@Channels/components/Icons/IconChannels').then(m => m.default || m),
+};
+
+export const Components = {
+    NotificationListExportSuccessItem: () => import('@Channels/extends/notification/components/Notifications/NotificationListExportSuccessItem').then(m => m.default || m),
+    NotificationListExportWarningItem: () => import('@Channels/extends/notification/components/Notifications/NotificationListExportWarningItem').then(m => m.default || m),
+    NotificationListExportProcessingItem: () => import('@Channels/extends/notification/components/Notifications/NotificationListExportProcessingItem').then(m => m.default || m),
 };

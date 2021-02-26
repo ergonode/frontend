@@ -1,0 +1,14 @@
+{
+  "@ActivityLogs": {
+    "activityLog": {
+      "_": {
+        "title": "Log aktywności użytkownika"
+      },
+      "components": {
+        "UsersActivityLogsGrid": {
+          "getRequest": "Logi aktywności użytkownika nie zostały pobrane prawidłowo"
+        }
+      }
+    }
+  }
+}

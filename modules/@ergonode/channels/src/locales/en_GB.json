@@ -1,8 +1,8 @@
 {
-    "channel": {
-        "grid": {
-            "placeholderTitle": "No channels",
-            "placeholderSubtitle": "There are no channels in the system, you can create the first one."
-        }
+  "channel": {
+    "grid": {
+      "placeholderTitle": "No channels",
+      "placeholderSubtitle": "There are no channels in the system, so you can add the first one."
     }
+  }
 }

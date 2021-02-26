@@ -13,6 +13,10 @@ export const getConfiguration = ({
     id,
 }) => $axios.$get(`sources/${id}/configuration`);
 
+export const getImportsStatuses = ({
+    $axios,
+}) => $axios.$get('profile/imports');
+
 export const getDetails = ({
     $axios,
     sourceId,

@@ -35,7 +35,7 @@ export default {
 <style lang="scss" scoped>
     .infographic {
         z-index: $Z_INDEX_LVL_1;
-        animation: fade-in 1.6s;
+        animation: fade-in 1s;
     }
 
     @keyframes fade-in {

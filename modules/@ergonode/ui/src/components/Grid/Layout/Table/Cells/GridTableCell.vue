@@ -170,7 +170,7 @@ export default {
         align-items: center;
         outline: none;
         box-sizing: border-box;
-        border-bottom: 1px solid $GREY;
+        border-bottom: $BORDER_1_GREY;
         cursor: pointer;
 
         &:not(&--error):not(&--locked):not(&--disabled) {

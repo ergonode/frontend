@@ -4,7 +4,7 @@
  */
 <template>
     <LoginForm
-        :submit-title="$t('authentication.forms.passwordRecovery.button')"
+        :submit-title="$t('@Authentication.authentication.components.PasswordRecoveryForm.button')"
         :is-submitting="isSubmitting"
         :errors="errors"
         @submit="onSubmit">
@@ -14,15 +14,15 @@
                     <IconArrowPointer :fill-color="color" />
                 </template>
             </Fab>
-            <FormHeader :title="$t('authentication.forms.passwordRecovery.title')" />
+            <FormHeader :title="$t('@Authentication.authentication.components.PasswordRecoveryForm.title')" />
         </template>
         <template #body>
-            <Paragraph :title="$t('authentication.forms.passwordRecovery.info')" />
+            <Paragraph :title="$t('@Authentication.authentication.components.PasswordRecoveryForm.info')" />
             <TextField
                 v-model="email"
                 required
                 :error-messages="errors[emialFieldKey]"
-                :label="$t('authentication.forms.passwordRecovery.field')" />
+                :label="$t('@Authentication.authentication.components.PasswordRecoveryForm.field')" />
         </template>
     </LoginForm>
 </template>

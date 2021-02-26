@@ -4,11 +4,12 @@
  */
 <template>
     <Form
-        :title="$t('attributeGroup.form.title')"
+        :title="$t('@Attributes.attributeGroup.components.AttributeGroupForm.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :disabled="!isAllowedToUpdate"
         :errors="errors"
         :change-values="changeValues"
         @proceed="onProceed"
@@ -21,8 +22,8 @@
                     required
                     :error-messages="errors[codeFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :label="$t('attributeGroup.form.nameLabel')"
-                    :hint="$t('attributeGroup.form.nameHint')"
+                    :label="$t('@Attributes.attributeGroup.components.AttributeGroupForm.nameLabel')"
+                    :hint="$t('@Attributes.attributeGroup.components.AttributeGroupForm.nameHint')"
                     @input="setCodeValue" />
                 <Divider v-if="extendedForm.length" />
                 <template v-for="(field, index) in extendedForm">
@@ -77,7 +78,9 @@ export default {
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE_GROUP.update,
-            ]);
+            ]) || (!this.isDisabled && this.$hasAccess([
+                PRIVILEGES.ATTRIBUTE_GROUP.create,
+            ]));
         },
         codeFieldKey() {
             return 'code';

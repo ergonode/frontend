@@ -3,23 +3,19 @@
  * See LICENSE for license details.
  */
 <template>
-    <TemplateGridDesigner
-        :row-height="templateRowHeight"
-        :max-row="maxRows">
-        <div
-            class="product-template-grid"
-            :style="gridTemplateRows">
-            <Component
-                v-for="(element, index) in elements"
-                :is="formComponents[element.type]"
-                :key="index"
-                :disabled="!isAllowedToUpdate(element.properties.scope)"
-                :language-code="languageCode"
-                :errors="errors"
-                v-bind="elements[index]"
-                @input="onValueChange" />
-        </div>
-    </TemplateGridDesigner>
+    <div
+        class="product-template-form"
+        :style="gridTemplateRows">
+        <Component
+            v-for="(element, index) in elements"
+            :is="formComponents[element.type]"
+            :key="index"
+            :disabled="!isAllowedToUpdate(element.properties.scope)"
+            :language-code="languageCode"
+            :errors="errors"
+            v-bind="elements[index]"
+            @input="onValueChange" />
+    </div>
 </template>
 
 <script>
@@ -31,7 +27,6 @@ import {
     capitalizeAndConcatenationArray,
 } from '@Core/models/stringWrapper';
 import PRIVILEGES from '@Products/config/privileges';
-import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
 import {
     mapGetters,
     mapState,
@@ -39,9 +34,6 @@ import {
 
 export default {
     name: 'ProductTemplateForm',
-    components: {
-        TemplateGridDesigner,
-    },
     mixins: [
         formFeedbackMixin,
     ],
@@ -125,7 +117,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .product-template-grid {
+    .product-template-form {
         display: grid;
         grid-gap: 24px;
         grid-template-columns: repeat(4, 1fr);

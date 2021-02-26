@@ -10,7 +10,7 @@
                     <DropZone
                         v-show="isDropZoneVisible"
                         :hover-background-color="graphiteLightColor"
-                        title="REMOVE CATEGORY">
+                        :title="$t('@Trees.tree.components.CategoryTreeDesignerTab.dropZoneTitle')">
                         <template #icon="{ color }">
                             <IconRemoveFilter :fill-color="color" />
                         </template>
@@ -19,7 +19,7 @@
             </VerticalTabBar>
         </template>
         <template #grid>
-            <CategoryTreeWrapper
+            <CategoryTreeDesigner
                 :scope="scope"
                 :change-values="changeValues"
                 :errors="errors" />
@@ -37,7 +37,7 @@ import {
 } from '@Core/defaults/grid';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import UpdateCategoryTreeDesignerButton from '@Trees/components/Buttons/UpdateCategoryTreeDesignerButton';
-import CategoryTreeWrapper from '@Trees/components/CategoryTreeDesigner/CategoryTreeWrapper';
+import CategoryTreeDesigner from '@Trees/components/TreeDesigners/CategoryTreeDesigner';
 import PRIVILEGES from '@Trees/config/privileges';
 import {
     GRAPHITE_LIGHT,
@@ -56,7 +56,7 @@ export default {
     components: {
         UpdateCategoryTreeDesignerButton,
         VerticalTabBar,
-        CategoryTreeWrapper,
+        CategoryTreeDesigner,
         GridViewTemplate,
         IconRemoveFilter,
         DropZone,
@@ -65,31 +65,36 @@ export default {
     mixins: [
         tabFeedbackMixin,
     ],
+    data() {
+        return {
+            verticalTabs: [],
+        };
+    },
     computed: {
         ...mapState('draggable', [
             'isElementDragging',
         ]),
-        verticalTabs() {
-            return [
-                {
-                    title: 'Categories',
-                    component: () => import('@Categories/components/VerticalTabs/CategoriesVerticalTab'),
-                    icon: () => import('@Trees/components/Icons/IconTree'),
-                    props: {
-                        isSelectLanguage: true,
-                        disabled: !this.$hasAccess([
-                            PRIVILEGES.CATEGORY_TREE.update,
-                        ]),
-                    },
-                },
-            ];
-        },
         isDropZoneVisible() {
             return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;
         },
         graphiteLightColor() {
             return GRAPHITE_LIGHT;
         },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.CATEGORY_TREE.update,
+            ]);
+        },
+    },
+    async mounted() {
+        const extendedVerticalTabs = await this.$getExtendMethod('@Trees/components/Tabs/CategoryTreeDesignerTab/verticalTabs', {
+            $this: this,
+            props: {
+                disabled: !this.isAllowedToUpdate,
+            },
+        });
+
+        this.verticalTabs = [].concat(...extendedVerticalTabs);
     },
 };
 </script>

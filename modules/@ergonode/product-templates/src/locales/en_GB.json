@@ -1,8 +1,13 @@
 {
-    "productTemplate": {
-        "grid": {
-            "placeholderTitle": "No product templates",
-            "placeholderSubtitle": "There are no product templates in the system, you can create the first one."
-        }
+  "productTemplate": {
+    "grid": {
+      "placeholderTitle": "No product templates",
+      "placeholderSubtitle": "There are no product templates in the system, so you can add the first one."
+    },
+    "autocomplete": {
+      "productTemplate": "Product template",
+      "productTemplateNoDataPlaceholderTitle": "No product templates",
+      "productTemplateNoDataPlaceholderSubtitle": "There are no product templates in the system, so you can add the first one."
     }
+  }
 }

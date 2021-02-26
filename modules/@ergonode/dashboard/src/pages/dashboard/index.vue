@@ -4,7 +4,8 @@
  */
 <template>
     <div class="dashboard">
-        <DashboardPage v-if="hasAnyProductInSystem" />
+        <Preloader v-if="isFetchingData" />
+        <DashboardPage v-else-if="hasAnyProductInSystem" />
         <EmptyDashboardPage
             v-else
             @product-created="onProductCreated" />
@@ -18,44 +19,50 @@ import EmptyDashboardPage from '@Dashboard/components/Pages/EmptyDashboardPage';
 import {
     getProductsCount,
 } from '@Dashboard/services';
+import PRODUCT_PRIVILEGES from '@Products/config/privileges';
+import Preloader from '@UI/components/Preloader/Preloader';
 
 export default {
     name: 'Dashboard',
     components: {
+        Preloader,
         DashboardPage,
         EmptyDashboardPage,
     },
-    async asyncData({
-        app,
-    }) {
-        let productsCount = 0;
+    async fetch() {
+        await this.onProductCreated();
 
-        try {
-            productsCount = await getProductsCount({
-                $axios: app.$axios,
-            });
-        } catch (e) {
-            if (app.$axios.isCancel(e)) {
-                return {
-                    productsCount,
-                };
-            }
-        }
-
+        this.isFetchingData = false;
+    },
+    data() {
         return {
-            productsCount,
+            isFetchingData: true,
+            productsCount: [],
         };
     },
     computed: {
         hasAnyProductInSystem() {
             return this.productsCount.some(product => product.count > 0);
         },
+        isAllowedToReadProduct() {
+            return this.$hasAccess([
+                PRODUCT_PRIVILEGES.PRODUCT.read,
+            ]);
+        },
     },
     methods: {
         async onProductCreated() {
-            this.productsCount = await getProductsCount({
-                $axios: this.$axios,
-            });
+            if (this.isAllowedToReadProduct) {
+                try {
+                    this.productsCount = await getProductsCount({
+                        $axios: this.$axios,
+                    });
+                } catch (e) {
+                    if (this.$axios.isCancel(e)) {
+                        this.productsCount = [];
+                    }
+                }
+            }
         },
     },
     head() {

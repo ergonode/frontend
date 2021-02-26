@@ -29,6 +29,7 @@ module.exports = {
         'simple-import-sort',
         'import',
         'modules-newline',
+        'json-format',
     ],
     rules: {
         'no-empty-pattern': 'off',
@@ -138,6 +139,7 @@ module.exports = {
                 ignoreUrls: true,
                 ignoreStrings: true,
                 ignoreTemplateLiterals: true,
+                ignorePattern: '="\\$t\\(',
             },
         ],
         'vue/component-name-in-template-casing': [

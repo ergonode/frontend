@@ -4,7 +4,9 @@
  */
 <template>
     <div class="conditions-vertical-tab">
-        <ConditionsSideBar :disabled="disabled" />
+        <ConditionsSideBar
+            :disabled="disabled"
+            :group="group" />
     </div>
 </template>
 
@@ -20,6 +22,10 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        group: {
+            type: String,
+            required: true,
         },
     },
 };

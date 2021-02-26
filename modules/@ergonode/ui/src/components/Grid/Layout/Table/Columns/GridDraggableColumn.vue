@@ -12,18 +12,19 @@ import {
 } from '@Core/models/layout/ElementCopy';
 import {
     getDraggedColumnPositionState,
-    getPositionForBrowser,
-    isMouseInsideElement,
 } from '@UI/models/dragAndDrop/helpers';
 import {
     mapActions,
     mapState,
 } from 'vuex';
 
-const updateColumnsTransform = () => import('@UI/models/dragAndDrop/updateColumnsTransform');
+const getColumnsTransform = () => import('@UI/models/dragAndDrop/getColumnsTransforms');
 
 export default {
     name: 'GridDraggableColumn',
+    inject: [
+        'getGridTableLayoutReference',
+    ],
     props: {
         /**
          * Index of given component at the loop
@@ -40,14 +41,10 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            isDragged: false,
-        };
-    },
     computed: {
         ...mapState('draggable', [
             'isElementDragging',
+            'isOverDropZone',
             'draggedElement',
             'ghostIndex',
             'draggedElIndex',
@@ -118,7 +115,6 @@ export default {
         ]),
         onDragStart(event) {
             if (this.isResizing) return false;
-            this.isDragged = true;
 
             const [
                 header,
@@ -172,14 +168,12 @@ export default {
         onDragEnd(event) {
             removeElementCopyFromDocumentBody(event);
 
-            const {
-                xPos,
-                yPos,
-            } = getPositionForBrowser(event);
-            const trashElement = document.documentElement.querySelector('.drop-zone');
-            const isDroppedToTrash = isMouseInsideElement(trashElement, xPos, yPos);
+            if (this.isOverDropZone && this.column.deletable) {
+                this.__setState({
+                    key: 'isOverDropZone',
+                    value: false,
+                });
 
-            if (isDroppedToTrash && this.column.deletable) {
                 this.$emit('remove', this.index);
             } else if (this.ghostIndex !== this.draggedElIndex) {
                 this.$emit('swap', {
@@ -196,7 +190,6 @@ export default {
                 key: 'isElementDragging',
                 value: null,
             });
-            this.isDragged = false;
         },
         onDragOver(event) {
             if (this.draggedElIndex === -1) {
@@ -228,13 +221,18 @@ export default {
             }
 
             const targetGhostIndex = this.getTargetGhostIndex(isBefore);
+            const contentGrid = this.getGridContentElement();
 
-            updateColumnsTransform().then((response) => {
-                response.default(
+            getColumnsTransform().then((response) => {
+                const transforms = response.default(
                     targetGhostIndex,
                     this.draggedElIndex,
                     this.ghostIndex,
+                    contentGrid,
                 );
+
+                this.updateColumnsTransform(transforms);
+
                 this.__setState({
                     key: 'ghostIndex',
                     value: targetGhostIndex,
@@ -242,6 +240,18 @@ export default {
             });
 
             return true;
+        },
+        updateColumnsTransform({
+            transforms,
+            updatedGhostTransform,
+        }) {
+            const contentGrid = this.getGridContentElement();
+
+            Object.keys(transforms).forEach((index) => {
+                contentGrid.children[index].style.transform = `translateX(${transforms[index]}px)`;
+            });
+
+            contentGrid.children[this.draggedElIndex].style.transform = `translateX(${updatedGhostTransform}px)`;
         },
         getColumnFixedIndex() {
             if (this.$el.style.transform) {
@@ -260,7 +270,7 @@ export default {
             return +this.$el.style.transform.replace(/[^0-9\-.,]/g, '');
         },
         getGridContentElement() {
-            return document.documentElement.querySelector('.grid-table-layout-columns-section');
+            return this.getGridTableLayoutReference().querySelector('.grid-table-layout-columns-section');
         },
         getTargetGhostIndex(isBefore) {
             if (this.index < this.draggedElIndex) {
@@ -295,9 +305,7 @@ export default {
         },
     },
     render() {
-        return this.$scopedSlots.default({
-            isDragged: this.isDragged,
-        });
+        return this.$scopedSlots.default();
     },
 };
 </script>

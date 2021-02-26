@@ -8,12 +8,26 @@
             title="Collections"
             :is-read-only="isReadOnly">
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <CreateCollectionButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
             :items="asyncTabs" />
+        <template
+            v-for="(modal, index) in extendedModals">
+            <Component
+                :is="modal.component"
+                :key="index"
+                v-bind="bindingProps(modal)" />
+        </template>
     </Page>
 </template>
 
@@ -39,8 +53,24 @@ export default {
         asyncTabsMixin,
     ],
     computed: {
+        extendedMainAction() {
+            return this.$getExtendSlot('@Collections/pages/collections/mainAction');
+        },
+        extendedModals() {
+            return this.$getExtendSlot('@Collections/pages/collections/injectModal');
+        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.PRODUCT_COLLECTION.namespace);
+        },
+    },
+    methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.PRODUCT_COLLECTION,
+                ...props,
+            };
         },
     },
     head() {

@@ -9,6 +9,7 @@
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :disabled="!isAllowedToUpdate"
         :errors="errors"
         :change-values="changeValues"
         @proceed="onProceed"
@@ -72,6 +73,7 @@ export default {
     ],
     computed: {
         ...mapState('role', [
+            'id',
             'name',
             'description',
         ]),
@@ -80,10 +82,15 @@ export default {
                 key: '@Users/components/Forms/UserRoleForm',
             });
         },
+        isDisabled() {
+            return Boolean(this.id);
+        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.USER_ROLE.update,
-            ]);
+            ]) || (!this.isDisabled && this.$hasAccess([
+                PRIVILEGES.USER_ROLE.create,
+            ]));
         },
         descriptionFieldKey() {
             return 'description';

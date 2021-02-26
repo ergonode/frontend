@@ -42,6 +42,7 @@ import Form from '@UI/components/Form/Form';
 import FormListSection from '@UI/components/Form/Section/FormListSection';
 import FormListSubsection from '@UI/components/Form/Subsection/FormListSubsection';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -72,6 +73,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         onAddRecord() {
             const tmp = [
                 ...this.bindings,
@@ -90,6 +94,12 @@ export default {
 
             tmp[index] = value;
 
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'bidingAttributes',
+                value: tmp,
+            });
+
             this.$emit('input', tmp);
         },
         onRemove(index) {
@@ -98,6 +108,12 @@ export default {
             ];
 
             tmp.splice(index, 1);
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'bidingAttributes',
+                value: tmp,
+            });
 
             this.$emit('input', tmp);
         },

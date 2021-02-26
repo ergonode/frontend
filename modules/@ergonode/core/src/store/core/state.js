@@ -4,7 +4,7 @@
  */
 export default () => ({
     modals: [],
-    languagesTree: [],
+    inheritedLanguagesTree: [],
     languages: [],
     defaultLanguageCode: null,
 });

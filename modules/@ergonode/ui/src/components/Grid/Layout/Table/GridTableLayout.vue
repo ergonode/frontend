@@ -159,9 +159,9 @@ import GridTableLayoutPinnedSection from '@UI/components/Grid/Layout/Table/Secti
 import Preloader from '@UI/components/Preloader/Preloader';
 import gridResizerCellMixin from '@UI/mixins/grid/gridResizerCellMixin';
 import {
-    getPositionForBrowser,
-    isMouseInsideElement,
-} from '@UI/models/dragAndDrop/helpers';
+    getFixedMousePosition,
+    isMouseOutsideElement,
+} from '@UI/models/mouse';
 
 export default {
     name: 'GridTableLayout',
@@ -236,7 +236,7 @@ export default {
             default: DEFAULT_GRID_PAGINATION,
         },
         /**
-         * Determines the size of row height
+         * Determines the row height
          */
         rowHeight: {
             type: Number,
@@ -400,8 +400,8 @@ export default {
             if (this.$refs.editCell) {
                 const {
                     xPos, yPos,
-                } = getPositionForBrowser(event);
-                if (!isMouseInsideElement(this.$refs.editCell.$el, xPos, yPos)) {
+                } = getFixedMousePosition(event);
+                if (isMouseOutsideElement(this.$refs.editCell.$el, xPos, yPos)) {
                     if (this.editCell) {
                         this.onDismissEditCell();
                     } else {

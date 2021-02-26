@@ -4,12 +4,12 @@
  */
 <template>
     <ModalForm
-        title="Create category tree"
+        :title="$t('@Trees.tree.components.CreateCategoryTreeModalForm.create')"
         @close="onClose">
         <template #body>
             <CategoryTreeForm
-                :submit-title="$t('core.buttons.create')"
-                :proceed-title="$t('core.buttons.proceed')"
+                :submit-title="$t('@Trees._.create')"
+                :proceed-title="$t('@Trees._.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :scope="scope"
@@ -99,7 +99,7 @@ export default {
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Category tree created',
+                message: this.$t('@Trees.tree.components.CreateCategoryTreeModalForm.createSuccess'),
             });
 
             this.isSubmitting = false;
@@ -110,6 +110,7 @@ export default {
         onProceedSuccess(id) {
             this.isProceeding = false;
 
+            this.onClose();
             this.$router.push({
                 name: ROUTE_NAME.CATEGORY_TREE_EDIT_GENERAL,
                 params: {

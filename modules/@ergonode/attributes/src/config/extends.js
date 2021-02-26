@@ -3,6 +3,14 @@
  * See LICENSE for license details.
  */
 import {
+    Components,
+    Icons,
+    Store,
+} from '@Attributes/config/imports';
+import {
+    ROUTE_NAME,
+} from '@Attributes/config/routes';
+import {
     TYPES,
 } from '@Attributes/defaults/attributes';
 import {
@@ -16,17 +24,11 @@ import {
     setTextAreaData,
     setTranslation,
     updateOptionsData,
-} from '@Attributes/extends/methods/attribute';
+} from '@Attributes/extends/attribute/methods';
 import {
     prepareTemplateData,
     setTemplateData,
-} from '@Attributes/extends/methods/template';
-
-import {
-    Components,
-    Icons,
-    Store,
-} from './imports';
+} from '@Attributes/extends/productTemplate/methods';
 
 const getTypeConfiguration = ({
     $this, type,
@@ -36,6 +38,7 @@ const getTypeConfiguration = ({
         return {
             params: {
                 key: 'format',
+                translation: $this.app.i18n.t('@Attributes.attributeExtend.methods.configFormat'),
                 value: $this.state.dictionaries.dateFormats,
                 fieldName: 'parameters',
             },
@@ -44,6 +47,7 @@ const getTypeConfiguration = ({
         return {
             params: {
                 key: 'unit',
+                translation: $this.app.i18n.t('@Attributes.attributeExtend.methods.configUnit'),
                 value: $this.state.dictionaries.units,
                 fieldName: 'parameters',
             },
@@ -52,6 +56,7 @@ const getTypeConfiguration = ({
         return {
             params: {
                 key: 'currency',
+                translation: $this.app.i18n.t('@Attributes.attributeExtend.methods.configCurrency'),
                 value: $this.state.dictionaries.currencies,
                 fieldName: 'parameters',
             },
@@ -97,6 +102,37 @@ export default {
         productTemplate: Store.Template,
     },
     extendMethods: {
+        '@Media/components/Buttons/LinkRelationButton/routeLinks': () => ({
+            attribute: ROUTE_NAME.ATTRIBUTE_EDIT_GENERAL,
+        }),
+        '@Templates/components/Tabs/TemplateDesignerTab/verticalTabs': ({
+            props,
+            $this,
+        }) => [
+            {
+                title: $this.$t('@Attributes.attributeExtend.components.AttributesVerticalTab.title'),
+                component: Components.AttributesVerticalTab,
+                icon: Icons.IconAttributes,
+                props: {
+                    isSelectLanguage: false,
+                    ...props,
+                },
+            },
+        ],
+        '@Products/components/Tabs/ProductCatalogTab/verticalTabs': ({
+            $this,
+        }) => [
+            {
+                title: $this.$t('@Attributes.attributeExtend.components.AttributesVerticalTab.title'),
+                component: Components.AttributesVerticalTab,
+                icon: Icons.IconAttributes,
+            },
+            {
+                title: $this.$t('@Attributes.attributeExtend.components.SystemAttributesVerticalTab.title'),
+                component: Components.SystemAttributesVerticalTab,
+                icon: Icons.IconSettings,
+            },
+        ],
         '@Attributes/store/attribute/action/createAttribute/__before': ({
             $this, type,
         }) => {

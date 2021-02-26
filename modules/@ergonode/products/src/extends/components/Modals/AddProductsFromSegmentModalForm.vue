@@ -4,13 +4,13 @@
  */
 <template>
     <ModalForm
-        title="Add products from segment"
+        :title="$t('@Products._.addProductsFromSegment')"
         @close="onClose">
         <template #body>
             <AddProductsFromSegmentForm
                 :segments="segments"
                 submit-title="ADD TO PRODUCT"
-                :proceed-title="$t('product.buttons.cancel')"
+                :proceed-title="$t('@Products._.cancel')"
                 :is-submitting="isAdding"
                 :scope="scope"
                 :errors="scopeErrors"
@@ -68,6 +68,7 @@ export default {
         },
         onClose() {
             this.removeScopeData(this.scope);
+
             this.$emit('close');
         },
         onSubmit() {
@@ -95,6 +96,8 @@ export default {
             const event = new CustomEvent(PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME);
 
             document.documentElement.dispatchEvent(event);
+
+            this.$emit('submitted');
         },
         onAddError(errors) {
             this.onError(errors);

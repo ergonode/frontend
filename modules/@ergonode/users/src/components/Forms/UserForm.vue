@@ -9,6 +9,7 @@
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :disabled="!isAllowedToUpdate"
         :errors="errors"
         :change-values="changeValues"
         @proceed="onProceed"
@@ -65,28 +66,12 @@
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[languageFieldKey]"
                     @input="setLanguageValue" />
-                <Autocomplete
+                <RolesAutocomplete
                     :value="role"
                     :required="true"
-                    :searchable="true"
-                    :clearable="true"
-                    :label="$t('user.form.roleLabel')"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[roleIdFieldKey]"
-                    href="roles/autocomplete"
-                    @input="setRoleValue">
-                    <DropdownPlaceholder
-                        :title="placeholder.title"
-                        :subtitle="placeholder.subtitle">
-                        <template #action>
-                            <Button
-                                :title="$t('user.form.noRoleButton')"
-                                :size="smallSize"
-                                :disabled="!isAllowedToUpdate"
-                                @click.native="onNavigateToUserRoles" />
-                        </template>
-                    </DropdownPlaceholder>
-                </Autocomplete>
+                    @input="setRoleValue" />
                 <Divider v-if="extendedForm.length" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
@@ -100,24 +85,19 @@
 </template>
 
 <script>
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import Button from '@UI/components/Button/Button';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import Select from '@UI/components/Select/Select';
+import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
 import TextField from '@UI/components/TextField/TextField';
 import Toggler from '@UI/components/Toggler/Toggler';
+import RolesAutocomplete from '@Users/components/Autocompletes/RolesAutocomplete';
+import CreateUserButton from '@Users/components/Buttons/CreateUserButton';
 import PRIVILEGES from '@Users/config/privileges';
-import {
-    ROUTE_NAME,
-} from '@Users/config/routes';
 import {
     mapActions,
     mapGetters,
@@ -127,34 +107,21 @@ import {
 export default {
     name: 'UserForm',
     components: {
+        RolesAutocomplete,
+        CreateUserButton,
+        SelectListNoDataPlaceholder,
         Button,
-        DropdownPlaceholder,
         Divider,
         Form,
         FormSection,
         TextField,
         Toggler,
         Select,
-        Autocomplete,
     },
     mixins: [
         formActionsMixin,
         formFeedbackMixin,
     ],
-    data() {
-        return {
-            activityStatuses: [
-                {
-                    id: true,
-                    name: 'Active',
-                },
-                {
-                    id: false,
-                    name: 'Inactive',
-                },
-            ],
-        };
-    },
     computed: {
         ...mapGetters('core', [
             'activeLanguages',
@@ -170,15 +137,6 @@ export default {
             'isActive',
             'role',
         ]),
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        placeholder() {
-            return {
-                title: this.$t('user.form.noRoleTitle'),
-                subtitle: this.$t('user.form.noRoleSubtitle'),
-            };
-        },
         extendedForm() {
             return this.$extendedForm({
                 key: '@Users/components/Forms/UserForm',
@@ -190,7 +148,9 @@ export default {
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.USER.update,
-            ]);
+            ]) || (!this.isDisabled && this.$hasAccess([
+                PRIVILEGES.USER.create,
+            ]));
         },
         languageOptions() {
             return this.activeLanguages.map(({
@@ -239,11 +199,6 @@ export default {
                 disabled: !this.isAllowedToUpdate,
                 ...props,
             };
-        },
-        onNavigateToUserRoles() {
-            this.$router.push({
-                name: ROUTE_NAME.USER_ROLES_GRID,
-            });
         },
         setEmailValue(value) {
             this.__setState({

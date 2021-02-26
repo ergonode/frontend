@@ -5,6 +5,7 @@
 
 import {
     Components,
+    Icons,
 } from './imports';
 
 export default {
@@ -12,5 +13,16 @@ export default {
         '@UI/components/AdvancedFilters/Type': {
             CATEGORY_TREE: Components.AdvancedFilterCategoryTreeType,
         },
+    },
+    extendMethods: {
+        '@Products/components/Tabs/ProductCatalogTab/verticalTabs': ({
+            $this,
+        }) => [
+            {
+                title: $this.$t('@Categories.category._.title'),
+                component: Components.CategoryTreesVerticalTab,
+                icon: Icons.IconTree,
+            },
+        ],
     },
 };

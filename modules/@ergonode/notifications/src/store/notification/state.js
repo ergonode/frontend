@@ -8,8 +8,11 @@ import {
 
 export default () => ({
     limit: DATA_LIMIT,
+    offset: 0,
     count: 0,
+    unread: 0,
     notifications: [],
+    processingNotifications: [],
     requestTimeInterval: 1000,
     requestTimeout: null,
 });

@@ -14,60 +14,35 @@
         @submit="onSubmit">
         <template #body>
             <FormSection>
-                <Autocomplete
+                <SegmentsAutocomplete
                     :value="segments"
                     :multiselect="true"
-                    :searchable="true"
                     :clearable="true"
-                    label="From segmentation rules"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[segmentsFieldKey]"
-                    href="segments/autocomplete"
-                    @input="onSegmentChange">
-                    <template #placeholder="{ isVisible }">
-                        <DropdownPlaceholder
-                            v-if="isVisible"
-                            :title="placeholder.title"
-                            :subtitle="placeholder.subtitle">
-                            <template #action>
-                                <Button
-                                    title="GO TO SEGMENTS"
-                                    :size="smallSize"
-                                    :disabled="!isAllowedToUpdate"
-                                    @click.native="onNavigateToSegments" />
-                            </template>
-                        </DropdownPlaceholder>
-                    </template>
-                </Autocomplete>
+                    @input="onSegmentChange" />
             </FormSection>
         </template>
     </Form>
 </template>
 
 <script>
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import SegmentsAutocomplete from '@Segments/components/Autocompletes/SegmentsAutocomplete';
 import PRIVILEGES from '@Segments/config/privileges';
-import {
-    ROUTE_NAME,
-} from '@Segments/config/routes';
-import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
-import Button from '@UI/components/Button/Button';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'AddProductsFromSegmentForm',
     components: {
-        Button,
+        SegmentsAutocomplete,
         Form,
         FormSection,
-        Autocomplete,
-        DropdownPlaceholder,
     },
     mixins: [
         formActionsMixin,
@@ -80,15 +55,6 @@ export default {
         },
     },
     computed: {
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        placeholder() {
-            return {
-                title: 'No segments',
-                subtitle: 'There are no segments in the system, so you can create the first one.',
-            };
-        },
         segmentsFieldKey() {
             return 'segments';
         },
@@ -99,12 +65,16 @@ export default {
         },
     },
     methods: {
-        onNavigateToSegments() {
-            this.$router.push({
-                name: ROUTE_NAME.SEGMENTS_GRID,
-            });
-        },
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         onSegmentChange(value) {
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.segmentsFieldKey,
+                value,
+            });
+
             this.$emit('input', value);
         },
     },
