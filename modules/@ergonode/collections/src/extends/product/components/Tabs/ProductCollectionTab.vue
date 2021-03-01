@@ -28,7 +28,6 @@
                             <Button
                                 title="GO TO COLLECTIONS"
                                 :size="smallSize"
-                                :disabled="!isAllowedToRead"
                                 @click.native="onNavigateToCollections" />
                         </template>
                     </TabBarNoDataPlaceholder>
@@ -39,7 +38,6 @@
 </template>
 
 <script>
-import PRIVILEGES from '@Collections/config/privileges';
 import {
     ROUTE_NAME,
 } from '@Collections/config/routes';
@@ -77,11 +75,6 @@ export default {
     computed: {
         smallSize() {
             return SIZE.SMALL;
-        },
-        isAllowedToRead() {
-            return this.$hasAccess([
-                PRIVILEGES.PRODUCT_COLLECTION.read,
-            ]);
         },
     },
     async created() {

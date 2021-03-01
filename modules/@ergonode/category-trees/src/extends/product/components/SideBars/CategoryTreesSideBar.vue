@@ -38,7 +38,7 @@
                 v-else
                 :item="{...item, level: item.level - (item.notAssigned ? 2 : 1)}"
                 :multiselect="true"
-                :selected-nodes="selectedNodes[item.id]"
+                :selected-nodes="selectedNodes[item.groupId][item.id]"
                 :selected="selectedCategories[item.id]"
                 @expand="onExpand"
                 @input="onSelectCategory" />
@@ -149,12 +149,15 @@ export default {
             'defaultLanguageCode',
         ]),
         selectedNodes() {
-            return getSelectedNodes({
-                value: Object.keys(this.selectedCategories).map(key => ({
-                    id: key,
-                })),
-                treeStructure: this.categoryTrees,
-            });
+            return this.categoryTrees.reduce((prev, curr) => ({
+                ...prev,
+                [curr.id]: getSelectedNodes({
+                    value: Object.keys(this.selectedCategories).map(key => ({
+                        id: key,
+                    })),
+                    treeStructure: curr.children,
+                }),
+            }), {});
         },
         filteredCategoryTrees() {
             if (!this.isAnySearchPhrase) {

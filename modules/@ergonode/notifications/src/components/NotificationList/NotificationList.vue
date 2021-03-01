@@ -129,19 +129,12 @@ export default {
                 && this.count > DATA_LIMIT;
         },
     },
-    watch: {
-        processingSectionNotificationsCount: {
-            immediate: true,
-            handler() {
-                this.requestProcessingNotifications();
-            },
-        },
+    created() {
+        this.requestProcessingNotifications();
     },
     beforeDestroy() {
-        if (this.timeout) {
-            clearTimeout(this.timeout);
-            this.timeout = null;
-        }
+        clearTimeout(this.timeout);
+        this.timeout = null;
 
         this.__setState({
             key: 'offset',
@@ -167,19 +160,14 @@ export default {
                 this.isFetchingMoreData = false;
             }
         },
-        requestProcessingNotifications() {
-            if (this.processingSectionNotificationsCount > 0) {
-                this.timeout = setTimeout(async () => {
-                    clearTimeout(this.timeout);
+        async requestProcessingNotifications() {
+            clearTimeout(this.timeout);
 
-                    await this.getProcessingNotifications({});
+            await this.getProcessingNotifications({});
 
-                    this.requestProcessingNotifications();
-                }, 1000);
-            } else {
-                clearTimeout(this.timeout);
-                this.timeout = null;
-            }
+            this.timeout = setTimeout(() => {
+                this.requestProcessingNotifications();
+            }, 1000);
         },
     },
 };

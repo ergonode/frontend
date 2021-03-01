@@ -34,7 +34,9 @@
                     </section>
                     <Divider />
                 </template>
-                <slot name="body" />
+                <slot
+                    name="body"
+                    :presentation-errors="presentationErrors" />
                 <div
                     class="form__footer"
                     v-if="isFooterVisible">

@@ -97,9 +97,7 @@ export default {
             },
         });
 
-        extendedVerticalTabs.forEach((tabs) => {
-            this.verticalTabs.push(...tabs);
-        });
+        this.verticalTabs = [].concat(...extendedVerticalTabs);
     },
     beforeDestroy() {
         this.__clearConditionStorage();
