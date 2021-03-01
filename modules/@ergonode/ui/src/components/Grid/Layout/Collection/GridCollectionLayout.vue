@@ -15,6 +15,7 @@
                 :data="element"
                 :drafts="drafts"
                 :object-fit="objectFit"
+                :locked="!isEditable"
                 :extended-data-cell="extendedComponents.dataCells
                     && extendedComponents.dataCells[element.type]"
                 @row-action="onRowAction"
@@ -97,6 +98,13 @@ export default {
          * Determines if layout is resolved
          */
         isLayoutResolved: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * Determinate if the component is being able to edit
+         */
+        isEditable: {
             type: Boolean,
             default: false,
         },

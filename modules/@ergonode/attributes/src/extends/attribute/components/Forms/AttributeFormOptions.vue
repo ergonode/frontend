@@ -5,13 +5,15 @@
 <template>
     <AttributeOptionKeyValues
         key="attrHasOptions"
+        :scope="scope"
         :errors="errors"
-        :disabled="!isAllowedToUpdate" />
+        :change-values="changeValues"
+        :disabled="disabled" />
 </template>
 
 <script>
-import PRIVILEGES from '@Attributes/config/privileges';
 import AttributeOptionKeyValues from '@Attributes/extends/attribute/components/Forms/Sections/AttributeOptionKeyValues';
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import {
     mapActions,
     mapState,
@@ -22,14 +24,17 @@ export default {
     components: {
         AttributeOptionKeyValues,
     },
+    mixins: [
+        formFeedbackMixin,
+    ],
     props: {
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
         typeKey: {
             type: String,
             default: '',
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
         },
     },
     computed: {
@@ -39,14 +44,10 @@ export default {
         optionsFieldKeys() {
             return 'options';
         },
-        isAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.ATTRIBUTE.update,
-            ]);
-        },
     },
     watch: {
         typeKey: {
+            immediate: true,
             handler() {
                 this.removeAttributeOptions();
             },

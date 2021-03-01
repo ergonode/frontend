@@ -51,9 +51,8 @@ export default {
 
 <style lang="scss" scoped>
     .badge--secondary {
-        border: $BORDER_1_GREY;
-        background-color: $WHITE;
-        color: $GRAPHITE_DARK;
+        background-color: $WHITESMOKE;
+        color: $GRAPHITE;
     }
 
     .badge--primary {

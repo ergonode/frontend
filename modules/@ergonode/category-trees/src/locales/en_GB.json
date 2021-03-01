@@ -14,8 +14,8 @@
         "headTitle": "Category trees - Ergonode",
         "noTrees": "No category trees",
         "noCategories": "No categories",
-        "createFirst": "There are no category trees in the system, you can add the first one.",
-        "addFirst": "There are no categories in the tree, you can add the first one."
+        "createFirst": "There are no category trees in the system, so you can add the first one.",
+        "addFirst": "There are no categories in the tree, so you can add the first one."
       },
       "components": {
         "CreateCategoryTreeButton": {

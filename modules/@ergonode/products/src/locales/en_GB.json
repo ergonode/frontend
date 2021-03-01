@@ -12,7 +12,7 @@
       "restore": "RESTORE",
       "cancel": "CANCEL",
       "noProduct": "No products",
-      "createFirst": "There are no product in the system, you can add the first one."
+      "createFirst": "There are no product in the system, so you can add the first one."
     },
     "product": {
       "components": {
@@ -72,11 +72,11 @@
         },
         "AttachedProductsToGroupGrid": {
           "noProductsInGroup": "No products in group",
-          "addProductToGroup": "There are no product added to the group, you can add the first one."
+          "addProductToGroup": "There are no product added to the group, so you can add the first one."
         },
         "ProductsToAttachForGroupGrid": {
           "noProducts": "No products",
-          "createFirst": "There are either no product with variants nor simple products in the system, you can add the first one.",
+          "createFirst": "There are either no product with variants nor simple products in the system, so you can add the first one.",
           "attachedLabel": "Attached",
           "notAttachedLabel": "Not attached",
           "getRequest": "Products haven’t been fetched properly"

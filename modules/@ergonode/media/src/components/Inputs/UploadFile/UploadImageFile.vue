@@ -83,6 +83,7 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import PRIVILEGES from '@Media/config/privileges';
 import {
     MEDIA_TYPE,
 } from '@Media/defaults';
@@ -172,7 +173,7 @@ export default {
             return `Add Image${this.multiple ? 's' : ''}`;
         },
         tabs() {
-            return [
+            const tabs = [
                 {
                     title: 'Media',
                     content: {
@@ -189,14 +190,19 @@ export default {
                         },
                     },
                 },
-                {
+            ];
+
+            if (this.isAllowedToCreate) {
+                tabs.push({
                     title: 'Upload files',
                     content: {
                         component: () => import('@Media/components/Tabs/UploadFileTab'),
                         listeners: {},
                     },
-                },
-            ];
+                });
+            }
+
+            return tabs;
         },
         isValue() {
             if (this.multiple) {
@@ -237,6 +243,11 @@ export default {
                     action: this.onRemoveImage,
                 },
             ];
+        },
+        isAllowedToCreate() {
+            return this.$hasAccess([
+                PRIVILEGES.MULTIMEDIA.create,
+            ]);
         },
     },
     methods: {

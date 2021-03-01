@@ -4,12 +4,13 @@
  */
 <template>
     <Grid
-        :columns="gridData.columns"
-        :rows="gridData.rows"
+        :columns="columns"
+        :rows="rows"
         :drafts="drafts"
         :errors="errors"
-        :data-count="gridData.filtered"
+        :data-count="filtered"
         :extended-components="extendedGridComponents"
+        :is-prefetching-data="isFetchingData"
         :is-editable="isAllowedToUpdate"
         :is-border="true"
         @cell-value="onCellValueChange"
@@ -74,6 +75,38 @@ export default {
             default: () => ({}),
         },
     },
+    async fetch() {
+        await this.getInitialDictionaries({
+            keys: [
+                'privileges',
+            ],
+        });
+
+        const {
+            rows,
+            columns,
+        } = getMappedGridData({
+            fullDataList: this.privilegesDictionary,
+            selectedData: this.privileges,
+            defaults: privilegesDefaults,
+            isEditable: this.isAllowedToUpdate,
+        });
+        const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`) || '';
+
+        this.columns = getSortedColumnsByIDs(columns, config.split(','));
+        this.filtered = this.privilegesDictionary.length;
+        this.rows = rows;
+
+        this.isFetchingData = false;
+    },
+    data() {
+        return {
+            columns: [],
+            rows: [],
+            filtered: 0,
+            isFetchingData: true,
+        };
+    },
     computed: {
         ...mapState('dictionaries', {
             privilegesDictionary: state => state.privileges,
@@ -81,24 +114,6 @@ export default {
         ...mapState('role', [
             'privileges',
         ]),
-        gridData() {
-            const {
-                rows,
-                columns,
-            } = getMappedGridData({
-                fullDataList: this.privilegesDictionary,
-                selectedData: this.privileges,
-                defaults: privilegesDefaults,
-                isEditable: this.isAllowedToUpdate,
-            });
-            const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`) || '';
-
-            return {
-                columns: getSortedColumnsByIDs(columns, config.split(',')),
-                filtered: this.privilegesDictionary.length,
-                rows,
-            };
-        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.USER_ROLE.update,
@@ -112,6 +127,9 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
+        ...mapActions('dictionaries', [
+            'getInitialDictionaries',
+        ]),
         onCellValueChange(cellValues) {
             const drafts = {};
 
@@ -124,14 +142,19 @@ export default {
                     drafts[`${rowId}/read`] = true;
                 }
 
-                if (columnId === 'read') {
+                switch (columnId) {
+                case 'read':
                     drafts[`${rowId}/create`] = false;
                     drafts[`${rowId}/update`] = false;
                     drafts[`${rowId}/delete`] = false;
-                }
-
-                if (columnId === 'create' && value) {
-                    drafts[`${rowId}/update`] = true;
+                    break;
+                case 'create':
+                    drafts[`${rowId}/update`] = value;
+                    break;
+                case 'update':
+                    drafts[`${rowId}/create`] = value;
+                    break;
+                default: break;
                 }
 
                 drafts[`${rowId}/${columnId}`] = value;

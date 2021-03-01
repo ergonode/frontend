@@ -13,7 +13,7 @@
         "title": "Users",
         "headTitle": "Users - Ergonode",
         "noUsers": "No users",
-        "createFirst": "There are no users in the system, you can add the first one."
+        "createFirst": "There are no users in the system, so you can add the first one."
       },
       "components": {
         "CreateUserButton": {

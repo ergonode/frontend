@@ -99,17 +99,19 @@ export default {
          */
         languageCode: {
             type: String,
-            required: true,
+            default: '',
         },
     },
     async fetch() {
-        this.isFetchingData = true;
+        if (!this.disabled) {
+            this.isFetchingData = true;
 
-        await this.getProductWorkflowOptions({
-            id: this.rowId,
-            languageCode: this.languageCode,
-            onSuccess: this.onGetProductWorkflowOptionsSuccess,
-        });
+            await this.getProductWorkflowOptions({
+                id: this.rowId,
+                languageCode: this.languageCode,
+                onSuccess: this.onGetProductWorkflowOptionsSuccess,
+            });
+        }
     },
     data() {
         return {

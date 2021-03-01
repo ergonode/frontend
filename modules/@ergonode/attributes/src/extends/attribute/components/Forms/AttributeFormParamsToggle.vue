@@ -6,10 +6,12 @@
     <Toggler
         :value="value"
         :label="$t('@Attributes.attributeExtend.components.AttributeFormParamsToggle.richTextLabel')"
+        :disabled="disabled"
         @input="setParameterValue" />
 </template>
 
 <script>
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import Toggler from '@UI/components/Toggler/Toggler';
 import {
     mapActions,
@@ -20,6 +22,9 @@ export default {
     components: {
         Toggler,
     },
+    mixins: [
+        formFeedbackMixin,
+    ],
     props: {
         typeKey: {
             type: String,
@@ -28,6 +33,10 @@ export default {
         getParams: {
             type: Function,
             default: () => ({}),
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {
@@ -42,6 +51,7 @@ export default {
     },
     watch: {
         typeKey: {
+            immediate: true,
             handler() {
                 this.setParameterValue();
             },
@@ -60,6 +70,12 @@ export default {
         setParameterValue(value = null) {
             this.__setState({
                 key: this.parameterData.fieldName,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.parameterData.fieldName,
                 value,
             });
         },

@@ -37,14 +37,5 @@ export default {
             default: () => ({}),
         },
     },
-    async fetch({
-        store,
-    }) {
-        await store.dispatch('dictionaries/getInitialDictionaries', {
-            keys: [
-                'privileges',
-            ],
-        });
-    },
 };
 </script>
