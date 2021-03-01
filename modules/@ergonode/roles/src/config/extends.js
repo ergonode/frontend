@@ -39,7 +39,6 @@ export default {
                 {
                     component: Components.UserFormRole,
                     order: 10,
-
                 },
             ],
         },
@@ -48,7 +47,6 @@ export default {
                 {
                     component: Components.TransitionFormRole,
                     order: 10,
-
                 },
             ],
         },
