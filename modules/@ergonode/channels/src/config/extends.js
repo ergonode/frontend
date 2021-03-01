@@ -11,6 +11,7 @@ import {
 } from '@Channels/services';
 import {
     ACTION_CENTER_SECTIONS,
+    AXIOS_CANCEL_TOKEN_PROCESSING_NOTIFICATION_KEY,
 } from '@Notifications/defaults';
 
 export default {
@@ -29,16 +30,29 @@ export default {
         '@Notifications/store/notification/action/getProcessingNotifications': async ({
             $this,
         }) => {
-            let exportStatuses = [];
             const isAllowedToRead = $this.$hasAccess([
                 PRIVILEGES.CHANNEL.read,
             ]);
 
-            if (isAllowedToRead) {
-                exportStatuses = await getExportsStatuses({
-                    $axios: $this.app.$axios,
-                });
+            if (!isAllowedToRead) {
+                return [];
             }
+
+            const source = $this.app.$axios.CancelToken.source();
+
+            $this.app.$addCancelTokens(
+                [
+                    AXIOS_CANCEL_TOKEN_PROCESSING_NOTIFICATION_KEY,
+                ],
+                [
+                    source,
+                ],
+            );
+
+            const exportStatuses = await getExportsStatuses({
+                $axios: $this.app.$axios,
+                cancelToken: source.token,
+            });
 
             const successNotifications = {
                 component: Components.NotificationListExportSuccessItem,

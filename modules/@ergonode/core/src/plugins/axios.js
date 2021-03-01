@@ -7,10 +7,15 @@ import {
     refresh,
 } from '@Authentication/services';
 import {
+    AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
+} from '@Core/defaults/axios';
+import {
     cacheAdapterEnhancer,
 } from 'axios-extensions';
 
-let cancelTokens = [];
+const cancelTokens = {
+    [AXIOS_CANCEL_TOKEN_DEFAULT_KEY]: [],
+};
 let isRefreshing = false;
 let failedQueue = [];
 
@@ -26,14 +31,53 @@ const processQueue = (error) => {
     failedQueue = [];
 };
 
-const clearCancelTokens = () => {
-    cancelTokens.forEach((request) => {
-        if (request.cancel) {
-            request.cancel();
+const clearCancelTokens = (keys = []) => {
+    keys.forEach((key) => {
+        if (typeof cancelTokens[key] !== 'undefined') {
+            cancelTokens[key].forEach((request) => {
+                if (request.cancel) {
+                    request.cancel();
+                }
+            });
         }
-    });
 
-    cancelTokens = [];
+        cancelTokens[key] = [];
+    });
+};
+
+const addCancelTokens = (
+    keys = [],
+    tokens = [],
+) => {
+    keys.forEach((key) => {
+        if (typeof cancelTokens[key] === 'undefined') {
+            cancelTokens[key] = [];
+        }
+
+        tokens.forEach((token) => {
+            cancelTokens[key].push(token);
+        });
+    });
+};
+
+const removeCancelToken = (token) => {
+    let tokenIndex = -1;
+
+    const keys = Object.keys(cancelTokens);
+
+    let i = 0;
+
+    while (tokenIndex === -1 && i < keys.length) {
+        const key = keys[i];
+
+        tokenIndex = cancelTokens[key].findIndex(response => response.token === token);
+
+        if (tokenIndex !== -1) {
+            cancelTokens[key].splice(tokenIndex, 1);
+        }
+
+        i += 1;
+    }
 };
 
 export default function ({
@@ -65,7 +109,13 @@ export default function ({
 
             configLocal.cancelToken = source.token;
 
-            cancelTokens.push(source);
+            addCancelTokens(
+                [
+                    AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
+                ], [
+                    source,
+                ],
+            );
         }
 
         if (configLocal.withLanguage) {
@@ -83,6 +133,12 @@ export default function ({
         return configLocal;
     });
 
+    axios.onResponse((response) => {
+        removeCancelToken(response.config.cancelToken);
+
+        return Promise.resolve(response);
+    });
+
     axios.onError(async (errorResponse) => {
         let msg = '';
         const dev = process.env.NODE_ENV === 'development';
@@ -94,6 +150,8 @@ export default function ({
         };
 
         if ($axios.isCancel(errorResponse)) {
+            removeCancelToken(errorResponse.config.cancelToken);
+
             return Promise.reject(errorResponse);
         }
 
@@ -104,6 +162,7 @@ export default function ({
                 },
             };
         }
+
         const {
             response: {
                 data: {
@@ -117,6 +176,9 @@ export default function ({
         switch (true) {
         case regExp.errors.test(status):
             msg = app.i18n.t('core.errors.internal');
+
+            removeCancelToken(errorResponse.config.cancelToken);
+
             break;
         case regExp.auth.test(status): {
             if (config.url.includes('login')) {
@@ -164,6 +226,8 @@ export default function ({
                         processQueue(err);
                         reject(err);
 
+                        removeCancelToken(errorResponse.config.cancelToken);
+
                         store.dispatch('authentication/__setState', {
                             key: 'isLogged',
                             value: false,
@@ -181,8 +245,14 @@ export default function ({
                 statusCode: 403,
                 message: msg,
             });
+
+            removeCancelToken(errorResponse.config.cancelToken);
+
             break;
         case regExp.notFound.test(status):
+
+            removeCancelToken(errorResponse.config.cancelToken);
+
             if (config.url.includes('multimedia')) {
                 msg = app.i18n.t('core.errors.mediaNotFound');
                 break;
@@ -194,6 +264,8 @@ export default function ({
             });
             break;
         default:
+            removeCancelToken(errorResponse.config.cancelToken);
+
             msg = message || app.i18n.t('core.errors.unsupportedMessage');
         }
 
@@ -209,4 +281,5 @@ export default function ({
 
     inject('axios', axios);
     inject('clearCancelTokens', clearCancelTokens);
+    inject('addCancelTokens', addCancelTokens);
 }
