@@ -16,14 +16,8 @@ export const ROUTE_NAME = {
     USER_EDIT_GENERAL: 'user-id-general',
     USER_EDIT_AVATAR: 'user-id-avatar',
     USER_EDIT_LANGUAGE_RESTRICTIONS: 'user-id-language-restrictions',
-    USER_ROLES: 'user-roles',
-    USER_ROLES_GRID: 'user-roles-grid',
-    USER_ROLE_EDIT: 'user-role-id',
-    USER_ROLE_EDIT_GENERAL: 'user-role-id-general',
-    USER_ROLE_EDIT_PRIVILEGES: 'user-role-id-privileges',
     USER_PROFILE: 'user-profile',
     USER_PROFILE_ACTIVITY_LOGS_GRID: 'user-profile-activity-logs-grid',
-    USER_PROFILE_PRIVILEGES_GRID: 'user-profile-privileges-grid',
 };
 
 export default [
@@ -138,97 +132,6 @@ export default [
         ],
     },
     {
-        name: ROUTE_NAME.USER_ROLES,
-        path: '/user-roles',
-        component: Pages.Roles,
-        redirect: {
-            name: ROUTE_NAME.USER_ROLES_GRID,
-        },
-        meta: {
-            access: true,
-            title: 'User roles',
-            group: {
-                title: 'System',
-                menuPosition: 1000,
-                icon: Icons.Settings,
-            },
-            isMenu: true,
-            menuPosition: 2,
-            privileges: {
-                namespace: Privileges.USER_ROLE.namespace,
-                read: Privileges.USER_ROLE.read,
-            },
-        },
-        children: [
-            {
-                name: ROUTE_NAME.USER_ROLES_GRID,
-                path: 'grid',
-                component: Tabs.RolesTab,
-                meta: {
-                    title: '',
-                    breadcrumbs: [
-                        {
-                            title: 'System',
-                            icon: Icons.Settings,
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
-        ],
-    },
-    {
-        name: ROUTE_NAME.USER_ROLE_EDIT,
-        path: '/user-roles/role/:id',
-        component: Pages.RoleEdit,
-        redirect: {
-            name: ROUTE_NAME.USER_ROLE_EDIT_GENERAL,
-        },
-        meta: {
-            isMenu: false,
-        },
-        children: [
-            {
-                name: ROUTE_NAME.USER_ROLE_EDIT_GENERAL,
-                path: 'general',
-                component: Tabs.RoleGeneralTab,
-                meta: {
-                    title: 'Options',
-                    breadcrumbs: [
-                        {
-                            title: 'System',
-                            icon: Icons.Settings,
-                        },
-                        {
-                            title: 'User roles',
-                            routeName: ROUTE_NAME.USER_ROLES_GRID,
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
-            {
-                name: ROUTE_NAME.USER_ROLE_EDIT_PRIVILEGES,
-                path: 'privileges',
-                component: Tabs.RolePrivilegesTab,
-                meta: {
-                    title: 'Privileges',
-                    breadcrumbs: [
-                        {
-                            title: 'System',
-                            icon: Icons.Settings,
-                        },
-                        {
-                            title: 'User roles',
-                            routeName: ROUTE_NAME.USER_ROLES_GRID,
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
-        ],
-    },
-    {
         name: ROUTE_NAME.USER_PROFILE,
         path: '/profile',
         component: Pages.Profile,
@@ -245,15 +148,6 @@ export default [
                 component: Tabs.UserActivityLogsTab,
                 meta: {
                     title: 'Activity log',
-                    privileges: [],
-                },
-            },
-            {
-                name: ROUTE_NAME.USER_PROFILE_PRIVILEGES_GRID,
-                path: 'privileges-grid',
-                component: Tabs.UserPrivilegesTab,
-                meta: {
-                    title: 'Privileges',
                     privileges: [],
                 },
             },

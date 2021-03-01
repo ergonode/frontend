@@ -11,10 +11,4 @@ export default {
     aliases: {
         '@Users': '/',
     },
-    plugins: [
-        {
-            ssr: true,
-            src: './plugins/privilege',
-        },
-    ],
 };

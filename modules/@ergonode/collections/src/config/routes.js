@@ -2,14 +2,13 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import PRODUCT_PRIVILEGES from '@Products/config/privileges';
-
 import {
     Icons,
     Pages,
     Tabs,
 } from '@Collections/config/imports';
 import PRIVILEGES from '@Collections/config/privileges';
+import PRODUCT_PRIVILEGES from '@Products/config/privileges';
 
 export const ROUTE_NAME = {
     COLLECTIONS: 'collections',

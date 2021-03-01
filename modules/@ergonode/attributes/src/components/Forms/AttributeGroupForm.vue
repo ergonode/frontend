@@ -25,7 +25,6 @@
                     :label="$t('@Attributes.attributeGroup.components.AttributeGroupForm.nameLabel')"
                     :hint="$t('@Attributes.attributeGroup.components.AttributeGroupForm.nameHint')"
                     @input="setCodeValue" />
-                <Divider v-if="extendedForm.length" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
                         :is="field.component"

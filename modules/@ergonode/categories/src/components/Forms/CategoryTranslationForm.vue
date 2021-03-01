@@ -14,7 +14,6 @@
                         :disabled="!isAllowedToUpdate"
                         :error-messages="translationErrors[nameFieldKey]"
                         @input="(value) => setTranslationPropertyValue(value, nameFieldKey)" />
-                    <Divider v-if="extendedForm.length" />
                     <template v-for="(field, index) in extendedForm">
                         <Component
                             :is="field.component"

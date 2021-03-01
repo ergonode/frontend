@@ -1,0 +1,73 @@
+{
+  "@Roles": {
+    "_": {
+      "submit": "Save changes",
+      "create": "Create",
+      "proceed": "Create & Edit",
+      "cancel": "Cancel",
+      "deleteConfirm": "Yes, remove",
+      "notAssigned": "Not assigned"
+    },
+    "role": {
+      "_": {
+        "title": "User roles",
+        "headTitle": "User roles - Ergonode",
+        "noRoles": "No user roles",
+        "createFirst": "There are no user roles in the system, you can add the first one."
+      },
+      "components": {
+        "RolesGrid": {
+          "getRequest": "User roles haven’t been fetched properly",
+          "deleteSuccess": "User role removed"
+        },
+        "RolesAutocomplete": {
+          "roleLabel": "Role"
+        },
+        "CreateRoleButton": {
+          "addButton": "New role"
+        },
+        "RemoveRoleButton": {
+          "removeButton": "Remove role",
+          "deleteTitle": "Are you sure you want to delete this role?",
+          "deleteSuccess": "Role removed",
+          "deleteRequest": "Role hasn't been deleted"
+        },
+        "UpdateRolePrivilegesButton": {
+          "updatePrivilegesSuccess": "Role privileges have been updated"
+        },
+        "UserRoleForm": {
+          "title": "Options",
+          "nameLabel": "Role name",
+          "nameHint": "Role name must be unique",
+          "descLabel": "Role description"
+        },
+        "CreateRoleModalForm": {
+          "createTitle": "Create role",
+          "createSuccess": "Role created"
+        },
+        "RoleGeneralTab": {
+          "updateSuccess": "Role has been updated"
+        }
+      },
+      "pages": {
+        "id": {
+          "getRequest": "User role hasn't been fetched properly"
+        }
+      },
+      "store": {
+        "action": {
+          "createCancel": "Creating role has been canceled",
+          "updateCancel": "Updating role has been canceled",
+          "deleteCancel": "Removing role has been canceled"
+        }
+      }
+    },
+    "transition": {
+      "components": {
+        "TransitionFormRole": {
+          "sectionTitle": "Send notification to"
+        }
+      }
+    }
+  }
+}

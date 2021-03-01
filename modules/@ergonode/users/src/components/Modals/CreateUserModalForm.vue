@@ -4,12 +4,12 @@
  */
 <template>
     <ModalForm
-        :title="$t('user.form.createTitle')"
+        :title="$t('@Users.user.components.CreateUserModalForm.createTitle')"
         @close="onClose">
         <template #body>
             <UserForm
-                :submit-title="$t('core.buttons.create')"
-                :proceed-title="$t('core.buttons.proceed')"
+                :submit-title="$t('@Users._.create')"
+                :proceed-title="$t('@Users._.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :scope="scope"
@@ -99,7 +99,7 @@ export default {
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('user.messages.createSuccess'),
+                message: this.$t('@Users.user.components.CreateUserModalForm.createSuccess'),
             });
 
             this.isSubmitting = false;

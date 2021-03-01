@@ -32,16 +32,6 @@
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errors[destinationFieldKey]"
                     @input="setDestinationValue" />
-            </FormSection>
-            <Divider />
-            <FormSection title="Send notification to">
-                <RolesAutocomplete
-                    :value="roles"
-                    :clearable="true"
-                    :multiselect="true"
-                    :disabled="!isAllowedToUpdate"
-                    :error-messages="errors[roleFieldKey]"
-                    @input="setRolesValue" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
                         :is="field.component"
@@ -61,11 +51,9 @@ import {
 } from '@Core/models/objectWrapper';
 import PRIVILEGES from '@Transitions/config/privileges';
 import Button from '@UI/components/Button/Button';
-import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import TranslationSelect from '@UI/components/Select/TranslationSelect';
-import RolesAutocomplete from '@Users/components/Autocompletes/RolesAutocomplete';
 import {
     mapActions,
     mapState,
@@ -77,8 +65,6 @@ export default {
         Button,
         Form,
         FormSection,
-        Divider,
-        RolesAutocomplete,
         TranslationSelect,
     },
     mixins: [
@@ -89,7 +75,6 @@ export default {
         ...mapState('statusTransition', [
             'source',
             'destination',
-            'roles',
         ]),
         ...mapState('productStatus', [
             'statuses',
@@ -127,9 +112,6 @@ export default {
             ]) || (!this.isDisabled && this.$hasAccess([
                 PRIVILEGES.WORKFLOW.create,
             ]));
-        },
-        roleFieldKey() {
-            return 'roleId';
         },
         destinationFieldKey() {
             return 'destination';
@@ -172,17 +154,6 @@ export default {
             this.onScopeValueChange({
                 scope: this.scope,
                 fieldKey: this.destinationFieldKey,
-                value,
-            });
-        },
-        setRolesValue(value) {
-            this.__setState({
-                key: 'roles',
-                value,
-            });
-            this.onScopeValueChange({
-                scope: this.scope,
-                fieldKey: 'roles',
                 value,
             });
         },

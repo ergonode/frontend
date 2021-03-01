@@ -26,7 +26,6 @@
                             value,
                             descriptionKeyField,
                         )" />
-                    <Divider v-if="extendedForm.length" />
                     <template v-for="(field, index) in extendedForm">
                         <Component
                             :is="field.component"

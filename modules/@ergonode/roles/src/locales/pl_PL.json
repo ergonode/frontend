@@ -1,0 +1,73 @@
+{
+  "@Roles": {
+    "_": {
+      "submit": "Zapisz zmiany",
+      "create": "Stwórz",
+      "proceed": "Stwórz & Edytuj",
+      "cancel": "Anuluj",
+      "deleteConfirm": "Tak, usuń",
+      "notAssigned": "Nie przypisane"
+    },
+    "role": {
+      "_": {
+        "title": "Role użytkownika",
+        "headTitle": "Role użytkownika - Ergonode",
+        "noRoles": "Brak roli użytkownika",
+        "createFirst": "W systemie nie ma roli, stwórz pierwszą."
+      },
+      "components": {
+        "RolesGrid": {
+          "getRequest": "Role nie zostały pobrane poprawnie",
+          "deleteSuccess": "Rola usunięta"
+        },
+        "RolesAutocomplete": {
+          "roleLabel": "Rola"
+        },
+        "CreateRoleButton": {
+          "addButton": "Nowa rola"
+        },
+        "RemoveRoleButton": {
+          "removeButton": "Usuń role",
+          "deleteTitle": "Czy jesteś pewien by usunąć role?",
+          "deleteSuccess": "Rola usunięta",
+          "deleteRequest": "Rola nie została usunięta"
+        },
+        "UpdateRolePrivilegesButton": {
+          "updatePrivilegesSuccess": "Uprawnienia roli zostały zaktualizowane"
+        },
+        "UserRoleForm": {
+          "title": "Opcje",
+          "nameLabel": "Nazwa roli",
+          "nameHint": "Nazwa roli musi być unikatowa",
+          "descLabel": "Opis roli"
+        },
+        "CreateRoleModalForm": {
+          "createTitle": "Utwórz role",
+          "createSuccess": "Rola stworzona"
+        },
+        "RoleGeneralTab": {
+          "updateSuccess": "Rola została zaktualizowana"
+        }
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Rola nie została pobrana poprawnie"
+        }
+      },
+      "store": {
+        "action": {
+          "createCancel": "Tworzenie roli zostało przerwane",
+          "updateCancel": "Aktualizacja roli została przerwana",
+          "deleteCancel": "Usuwanie roli zostało przerwane"
+        }
+      }
+    },
+    "transition": {
+      "components": {
+        "TransitionFormRole": {
+          "sectionTitle": "Wyślij powiadomienie do"
+        }
+      }
+    }
+  }
+}

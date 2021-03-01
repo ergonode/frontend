@@ -23,7 +23,6 @@
                         :error-messages="translationErrors[hintFieldKey]"
                         :disabled="!isAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, hintFieldKey)" />
-                    <Divider v-if="extendedForm.length" />
                     <template v-for="(formComponent, index) in extendedForm">
                         <Component
                             :is="formComponent.component"

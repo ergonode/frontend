@@ -53,7 +53,6 @@ export default {
                 password = '',
                 password_repeat = '',
                 is_active = false,
-                role_id,
                 language_privileges_collection = null,
             } = data;
 
@@ -105,10 +104,6 @@ export default {
                     }
                     : language_privileges_collection,
             });
-            commit('__SET_STATE', {
-                key: 'role',
-                value: role_id,
-            });
 
             // EXTENDED AFTER METHOD
             await this.$getExtendMethod('@Users/store/user/action/getUser/__after', {
@@ -147,7 +142,6 @@ export default {
                 password,
                 passwordRepeat,
                 isActive,
-                role,
                 drafts,
                 languagePrivilegesCollection,
             } = state;
@@ -184,7 +178,6 @@ export default {
                 language: getActiveLanguageByName(language).code,
                 password,
                 passwordRepeat,
-                roleId: role,
                 isActive,
                 languagePrivilegesCollection: deepmerge(
                     activeLanguages,
@@ -236,7 +229,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: this.app.i18n.t('user.messages.updateCancel'),
+                    message: this.app.i18n.t('@Users.user.store.action.updateCancel'),
                 });
 
                 return;
@@ -295,7 +288,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: this.app.i18n.t('user.messages.updateAvatarCancel'),
+                    message: this.app.i18n.t('@Users.profile.store.action.updateAvatarCancel'),
                 });
             }
 
@@ -323,7 +316,6 @@ export default {
                 lastName,
                 password,
                 passwordRepeat,
-                role,
                 isActive,
                 language,
             } = state;
@@ -335,7 +327,6 @@ export default {
                 password,
                 passwordRepeat,
                 language: getActiveLanguageByName(language).code,
-                roleId: role,
                 isActive,
             };
 
@@ -374,7 +365,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: this.app.i18n.t('user.messages.createCancel'),
+                    message: this.app.i18n.t('@Users.user.store.action.createCancel'),
                 });
 
                 return;
@@ -425,7 +416,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: this.app.i18n.t('user.messages.deleteCancel'),
+                    message: this.app.i18n.t('@Users.user.store.action.deleteCancel'),
                 });
 
                 return;
