@@ -36,8 +36,8 @@ describe('Inputs/RadioButton', () => {
             ]);
         });
 
-        it('Is deselected', () => {
-            wrapper.setProps({
+        it('Is deselected', async() => {
+            await wrapper.setProps({
                 disabled: false,
                 label: 'test',
                 value: 'x',
@@ -55,8 +55,8 @@ describe('Inputs/RadioButton', () => {
     });
 
     describe('Disabled state', () => {
-        it('Is selected', () => {
-            wrapper.setProps({
+        it('Is selected', async () => {
+            await wrapper.setProps({
                 disabled: true,
                 value: 'test',
                 label: 'test',
@@ -72,8 +72,8 @@ describe('Inputs/RadioButton', () => {
             ]);
         });
 
-        it('Is deselected', () => {
-            wrapper.setProps({
+        it('Is deselected', async () => {
+            await wrapper.setProps({
                 disabled: true,
                 value: 'test',
                 label: 'x',
