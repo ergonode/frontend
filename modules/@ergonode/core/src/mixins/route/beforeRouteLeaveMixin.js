@@ -4,6 +4,9 @@
  */
 
 import {
+    AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
+} from '@Core/defaults/axios';
+import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
 import {
@@ -24,13 +27,17 @@ export default {
                 applyTitle: 'YES, I\'M SURE',
                 title: 'Are you sure you want to leave page without saving the data?',
                 action: () => {
-                    this.$clearCancelTokens();
+                    this.$clearCancelTokens([
+                        AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
+                    ]);
 
                     next();
                 },
             });
         } else {
-            this.$clearCancelTokens();
+            this.$clearCancelTokens([
+                AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
+            ]);
 
             next();
         }

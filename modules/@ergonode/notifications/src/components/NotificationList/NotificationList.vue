@@ -60,6 +60,7 @@ import NotificationListExpandingSection
 import NotificationListSection from '@Notifications/components/NotificationList/Section/NotificationListSection';
 import {
     ACTION_CENTER_SECTIONS,
+    AXIOS_CANCEL_TOKEN_PROCESSING_NOTIFICATION_KEY,
 } from '@Notifications/defaults';
 import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import Preloader from '@UI/components/Preloader/Preloader';
@@ -133,6 +134,9 @@ export default {
         this.requestProcessingNotifications();
     },
     beforeDestroy() {
+        this.$clearCancelTokens([
+            AXIOS_CANCEL_TOKEN_PROCESSING_NOTIFICATION_KEY,
+        ]);
         clearTimeout(this.timeout);
         this.timeout = null;
 
@@ -161,13 +165,19 @@ export default {
             }
         },
         async requestProcessingNotifications() {
+            this.$clearCancelTokens([
+                AXIOS_CANCEL_TOKEN_PROCESSING_NOTIFICATION_KEY,
+            ]);
+
             clearTimeout(this.timeout);
 
-            await this.getProcessingNotifications({});
-
-            this.timeout = setTimeout(() => {
-                this.requestProcessingNotifications();
-            }, 1000);
+            this.getProcessingNotifications({
+                onSuccess: () => {
+                    this.timeout = setTimeout(() => {
+                        this.requestProcessingNotifications();
+                    }, 1000);
+                },
+            });
         },
     },
 };

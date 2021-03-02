@@ -15,7 +15,10 @@ export const getConfiguration = ({
 
 export const getImportsStatuses = ({
     $axios,
-}) => $axios.$get('profile/imports');
+    cancelToken,
+}) => $axios.$get('profile/imports', {
+    cancelToken,
+});
 
 export const getDetails = ({
     $axios,

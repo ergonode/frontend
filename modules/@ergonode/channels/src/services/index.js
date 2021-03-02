@@ -15,7 +15,10 @@ export const getConfiguration = ({
 
 export const getExportsStatuses = ({
     $axios,
-}) => $axios.$get('profile/exports');
+    cancelToken,
+}) => $axios.$get('profile/exports', {
+    cancelToken,
+});
 
 export const getSchedulerConfiguration = ({
     $axios,
