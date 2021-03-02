@@ -59,7 +59,7 @@ export default {
         },
     },
     beforeDestroy() {
-        if (this.localValue !== this.value[FILTER_OPERATOR.EQUAL]) {
+        if (!this.disabled && this.localValue !== this.value[FILTER_OPERATOR.EQUAL]) {
             this.$emit('filter-value', {
                 value: {
                     [FILTER_OPERATOR.EQUAL]: this.localValue,

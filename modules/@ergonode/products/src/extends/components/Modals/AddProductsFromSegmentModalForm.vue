@@ -98,6 +98,7 @@ export default {
             document.documentElement.dispatchEvent(event);
 
             this.$emit('submitted');
+            this.onClose();
         },
         onAddError(errors) {
             this.onError(errors);

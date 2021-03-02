@@ -59,7 +59,7 @@ export default {
         },
     },
     beforeDestroy() {
-        if (!arraysAreEqual(this.localValue, this.value)) {
+        if (!this.disabled && !arraysAreEqual(this.localValue, this.value)) {
             this.$emit('cell-value', [
                 {
                     value: this.localValue,

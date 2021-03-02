@@ -26,15 +26,18 @@
         <template #append>
             <slot name="append" />
         </template>
-        <template #dropdown="{ onSelectValue }">
+        <template
+            #dropdown="{
+                onSelectValue,
+                onClear,
+                onApply,
+            }">
             <DatePickerContent
                 :value="value"
                 @input="onSelectValue" />
-        </template>
-        <template #footer="{ clear, apply }">
             <SelectDropdownApplyFooter
-                @clear="clear"
-                @apply="apply" />
+                @clear="onClear"
+                @apply="onApply" />
         </template>
     </Select>
 </template>

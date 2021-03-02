@@ -20,7 +20,8 @@
                 <UpdateRolePrivilegesButton
                     :scope="scope"
                     :errors="errors"
-                    :change-values="changeValues" />
+                    :change-values="changeValues"
+                    @updated="onUpdatedRolePrivileges" />
             </div>
         </template>
     </Grid>
@@ -130,6 +131,9 @@ export default {
         ...mapActions('dictionaries', [
             'getInitialDictionaries',
         ]),
+        onUpdatedRolePrivileges() {
+            this.setDrafts({});
+        },
         onCellValueChange(cellValues) {
             const drafts = {};
 
@@ -151,9 +155,6 @@ export default {
                 case 'create':
                     drafts[`${rowId}/update`] = value;
                     break;
-                case 'update':
-                    drafts[`${rowId}/create`] = value;
-                    break;
                 default: break;
                 }
 
@@ -163,10 +164,6 @@ export default {
             this.setDrafts({
                 ...this.drafts,
                 ...drafts,
-            });
-            this.__setState({
-                key: 'drafts',
-                value: this.drafts,
             });
             this.onScopeValueChange({
                 scope: this.scope,

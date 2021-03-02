@@ -150,8 +150,6 @@ export default function ({
         };
 
         if ($axios.isCancel(errorResponse)) {
-            removeCancelToken(errorResponse.config.cancelToken);
-
             return Promise.reject(errorResponse);
         }
 

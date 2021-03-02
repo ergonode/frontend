@@ -30,6 +30,9 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
+import {
+    arraysAreEqual,
+} from '@Core/models/arrayWrapper';
 import ProductAttributesBindingForm
     from '@Products/extends/components/Forms/ProductAttributesBindingForm';
 import ModalForm from '@UI/components/Modal/ModalForm';
@@ -76,6 +79,7 @@ export default {
     methods: {
         ...mapActions('product', [
             'addProductBindings',
+            '__setState',
         ]),
         onFormValueChange(value) {
             this.localBindings = value;
@@ -92,15 +96,20 @@ export default {
             if (this.isSubmitting) {
                 return;
             }
-            this.isSubmitting = true;
 
-            this.removeScopeErrors(this.scope);
-            this.addProductBindings({
-                scope: this.scope,
-                bindings: this.localBindings,
-                onSuccess: this.onCreateSuccess,
-                onError: this.onCreateError,
-            });
+            if (!arraysAreEqual(this.localBindings, this.bindings)) {
+                this.isSubmitting = true;
+
+                this.removeScopeErrors(this.scope);
+                this.addProductBindings({
+                    scope: this.scope,
+                    bindings: this.localBindings,
+                    onSuccess: this.onCreateSuccess,
+                    onError: this.onCreateError,
+                });
+            } else {
+                this.onClose();
+            }
         },
         onCreateSuccess() {
             this.$addAlert({
@@ -110,7 +119,12 @@ export default {
 
             this.isSubmitting = false;
 
-            this.$emit('created');
+            this.__setState({
+                key: 'bindings',
+                value: this.localBindings,
+            });
+
+            this.$emit('added');
             this.onClose();
         },
         onCreateError(errors) {
