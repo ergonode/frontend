@@ -33,22 +33,18 @@
                         <slot name="noResultsPlaceholder" />
                     </template>
                 </SelectList>
-            </slot>
-            <slot
-                v-if="isFooterVisible"
-                name="footer"
-                :clear="onClear"
-                :apply="onDismiss">
-                <MultiselectDropdownFooter
-                    v-if="multiselect"
-                    :size="size"
-                    @clear="onClear"
-                    @apply="onDismiss" />
-                <SelectDropdownApplyFooter
-                    v-else
-                    :size="size"
-                    @clear="onClear"
-                    @apply="onDismiss" />
+                <template v-if="isFooterVisible">
+                    <MultiselectDropdownFooter
+                        v-if="multiselect"
+                        :size="size"
+                        @clear="onClear"
+                        @apply="onDismiss" />
+                    <SelectDropdownApplyFooter
+                        v-else
+                        :size="size"
+                        @clear="onClear"
+                        @apply="onDismiss" />
+                </template>
             </slot>
         </slot>
     </Dropdown>

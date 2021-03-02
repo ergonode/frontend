@@ -12,25 +12,28 @@
                 :style="{ color: $attrs.value }"
                 v-text="$attrs.value" />
         </template>
-        <template #dropdown="{ onSelectValue }">
+        <template
+            #dropdown="{
+                onSelectValue,
+                onClear,
+                onApply
+            }">
             <ColorPickerContent
                 :value="$attrs.value"
                 :options="$attrs.options"
                 @input="onSelectValue" />
-        </template>
-        <template #footer="{ clear, apply }">
             <DropdownFooter
                 :size="$attrs.size"
                 :space-between="true">
                 <Button
                     :size="tinySize"
                     title="OK"
-                    @click.native="apply" />
+                    @click.native="onApply" />
                 <Button
                     :size="tinySize"
                     :title="$t('core.buttons.clear')"
                     :theme="secondaryTheme"
-                    @click.native="clear" />
+                    @click.native="onClear" />
             </DropdownFooter>
         </template>
     </Select>

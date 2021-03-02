@@ -68,18 +68,20 @@ export default {
         },
     },
     beforeDestroy() {
-        const localValue = this.localValue ? formatDate(this.localValue, DEFAULT_FORMAT) : '';
+        if (!this.disabled) {
+            const localValue = this.localValue ? formatDate(this.localValue, DEFAULT_FORMAT) : '';
 
-        if (localValue !== this.value) {
-            this.$emit('cell-value', [
-                {
-                    value: localValue,
-                    rowId: this.rowId,
-                    columnId: this.columnId,
-                    row: this.row,
-                    column: this.column,
-                },
-            ]);
+            if (localValue !== this.value) {
+                this.$emit('cell-value', [
+                    {
+                        value: localValue,
+                        rowId: this.rowId,
+                        columnId: this.columnId,
+                        row: this.row,
+                        column: this.column,
+                    },
+                ]);
+            }
         }
     },
     methods: {

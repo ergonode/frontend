@@ -76,7 +76,7 @@ export default {
         },
     },
     beforeDestroy() {
-        if (String(this.localValue) !== String(this.value)) {
+        if (!this.disabled && String(this.localValue) !== String(this.value)) {
             this.$emit('cell-value', [
                 {
                     value: this.localValue !== '' ? +this.localValue : '',

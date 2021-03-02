@@ -53,7 +53,10 @@ export default {
         typeKey: {
             immediate: true,
             handler() {
-                this.setParameterValue();
+                this.__setState({
+                    key: this.parameterData.fieldName,
+                    value: null,
+                });
             },
         },
     },
@@ -61,7 +64,10 @@ export default {
         this.parameterData = this.getParams(this).params;
     },
     beforeDestroy() {
-        this.setParameterValue();
+        this.__setState({
+            key: this.parameterData.fieldName,
+            value: null,
+        });
     },
     methods: {
         ...mapActions('attribute', [
