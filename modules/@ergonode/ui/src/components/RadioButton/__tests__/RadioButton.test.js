@@ -36,7 +36,7 @@ describe('Inputs/RadioButton', () => {
             ]);
         });
 
-        it('Is deselected', async() => {
+        it('Is deselected', async () => {
             await wrapper.setProps({
                 disabled: false,
                 label: 'test',
