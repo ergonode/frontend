@@ -85,7 +85,7 @@ module.exports = {
         '@nuxtjs/router',
     ],
     modules: [
-        '@nuxtjs/axios',
+        'nuxt-i18n',
         '@nuxtjs/style-resources',
         [
             '@nuxtjs/component-cache',
@@ -94,7 +94,7 @@ module.exports = {
             },
         ],
         'cookie-universal-nuxt',
-        'nuxt-i18n',
+        '@nuxtjs/axios',
     ],
     vuems: {
         required: _requiredModules,

@@ -33,10 +33,11 @@ describe('Buttons/Button', () => {
         expect(label.exists()).toBe(false);
     });
 
-    it('Check if button has children', () => {
-        wrapper.setProps({
+    it('Check if button has children', async () => {
+        await wrapper.setProps({
             title: 'paper',
         });
+
         expect(wrapper.vm.title).toBe('paper');
     });
 
@@ -48,11 +49,12 @@ describe('Buttons/Button', () => {
         ]);
     });
 
-    it('Check button classes', () => {
-        wrapper.setProps({
+    it('Check button classes', async () => {
+        await wrapper.setProps({
             theme: 'secondary',
             size: 'small',
         });
+
         expect(wrapper.vm.classes).toStrictEqual([
             'button',
             'button--secondary',
