@@ -4,6 +4,9 @@
  */
 <template>
     <div class="grid-image-presentation-cell">
+        <!-- TODO: Change relation to `multimedia` href.
+             INFO: Secure relationship does not break the application.
+        -->
         <LazyImage
             v-if="value"
             :href="`multimedia/${value}/download/default`"

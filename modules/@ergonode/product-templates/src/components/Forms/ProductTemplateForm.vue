@@ -24,13 +24,6 @@
                     label="Template name"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setTitleValue" />
-                <UploadImageFile
-                    :data-cy="dataCyGenerator('image')"
-                    :value="image"
-                    height="132px"
-                    label="Template cover image"
-                    :disabled="!isAllowedToUpdate"
-                    @input="setImageValue" />
             </FormSection>
             <template v-for="(field, index) in extendedForm">
                 <Component
@@ -45,7 +38,6 @@
 <script>
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 import PRIVILEGES from '@Templates/config/privileges';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
@@ -63,7 +55,6 @@ export default {
         Form,
         FormSection,
         TextField,
-        UploadImageFile,
     },
     mixins: [
         formActionsMixin,
@@ -73,7 +64,6 @@ export default {
         ...mapState('productTemplate', [
             'id',
             'title',
-            'image',
         ]),
         extendedForm() {
             return this.$extendedForm({
@@ -110,18 +100,6 @@ export default {
             this.onScopeValueChange({
                 scope: this.scope,
                 fieldKey: 'title',
-                value,
-            });
-        },
-        setImageValue(value) {
-            this.__setState({
-                key: 'image',
-                value,
-            });
-
-            this.onScopeValueChange({
-                scope: this.scope,
-                fieldKey: 'image',
                 value,
             });
         },

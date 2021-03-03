@@ -20,10 +20,7 @@
 
 <script>
 import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
-import ProductTemplateFormField from '@Products/components/Forms/Field/ProductTemplateFormField';
-import {
-    mapState,
-} from 'vuex';
+import ProductTemplateFormField from '@Media/extends/product/components/Forms/Field/ProductTemplateFormField';
 
 export default {
     name: 'ProductTemplateFormGalleryField',
@@ -44,6 +41,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        drafts: {
+            type: Object,
+            default: () => ({}),
+        },
         disabled: {
             type: Boolean,
             default: false,
@@ -58,9 +59,6 @@ export default {
         },
     },
     computed: {
-        ...mapState('product', [
-            'drafts',
-        ]),
         fieldData() {
             const {
                 attribute_code,

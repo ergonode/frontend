@@ -19,10 +19,7 @@
 
 <script>
 import UploadFiles from '@Media/components/Inputs/UploadFile/UploadFiles';
-import ProductTemplateFormField from '@Products/components/Forms/Field/ProductTemplateFormField';
-import {
-    mapState,
-} from 'vuex';
+import ProductTemplateFormField from '@Media/extends/product/components/Forms/Field/ProductTemplateFormField';
 
 export default {
     name: 'ProductTemplateFormFileField',
@@ -43,6 +40,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        drafts: {
+            type: Object,
+            default: () => ({}),
+        },
         disabled: {
             type: Boolean,
             default: false,
@@ -57,9 +58,6 @@ export default {
         },
     },
     computed: {
-        ...mapState('product', [
-            'drafts',
-        ]),
         fieldData() {
             const {
                 attribute_code,

@@ -448,6 +448,7 @@ export default {
             __ALL: [
                 {
                     component: Components.ProductTemplateFormPresentation,
+                    order: 20,
                 },
             ],
         },

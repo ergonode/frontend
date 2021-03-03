@@ -338,6 +338,7 @@ export default {
                 return this.extendedComponents.dataEditCells[this.editCell.type];
             }
 
+            // TODO: Change deafult component to placeholder if the type is not recognized.
             return () => import(`@UI/components/Grid/Layout/Table/Cells/Edit/Grid${type}EditCell`)
                 .catch(() => import('@UI/components/Grid/Layout/Table/Cells/Edit/GridTextEditCell'));
         },

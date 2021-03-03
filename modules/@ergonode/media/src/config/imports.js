@@ -17,8 +17,19 @@ export const Tabs = {
 
 export const Components = {
     GridMediaAttachCollectionCell: () => import('@Media/components/Grid/Layout/Collection/Cells/GridMediaAttachCollectionCell').then(m => m.default || m),
+    ProductTemplateFormUploadImage: () => import('@Media/extends/productTemplate/components/Forms/ProductTemplateFormUploadImage').then(m => m.default || m),
+    ProductTemplateFormFileField: () => import('@Media/extends/product/components/Forms/Field/ProductTemplateFormFileField').then(m => m.default || m),
+    ProductTemplateFormGalleryField: () => import('@Media/extends/product/components/Forms/Field/ProductTemplateFormGalleryField').then(m => m.default || m),
+    ProductTemplateFormImageField: () => import('@Media/extends/product/components/Forms/Field/ProductTemplateFormImageField').then(m => m.default || m),
+    GridImageEditCell: () => import('@Media/extends/ui/components/Grid/Layout/Table/Cells/Edit/GridImageEditCell').then(m => m.default || m),
+    GridGalleryEditCell: () => import('@Media/extends/ui/components/Grid/Layout/Table/Cells/Edit/GridGalleryEditCell').then(m => m.default || m),
+    GridFileEditCell: () => import('@Media/extends/ui/components/Grid/Layout/Table/Cells/Edit/GridFileEditCell').then(m => m.default || m),
 };
 
 export const Icons = {
     Media: () => import('@Media/components/Icons/IconMedia'),
+};
+
+export const Store = {
+    Template: () => import('@Media/extends/productTemplate/store').then(m => m.default || m),
 };

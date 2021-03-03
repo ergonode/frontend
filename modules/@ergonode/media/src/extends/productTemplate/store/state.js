@@ -3,8 +3,5 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    layoutElements: [],
-    title: '',
-    id: '',
-    types: [],
+    image: null,
 });
