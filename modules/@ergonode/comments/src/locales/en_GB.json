@@ -1,0 +1,41 @@
+{
+  "@Comments": {
+    "_": {
+      "cancel": "Cancel",
+      "deleteConfirm": "Yes, remove"
+    },
+    "comment": {
+      "components": {
+        "CommentsForm": {
+          "addButton": "New comment",
+          "noDataTitle": "No results",
+          "noDataPlaceholder": "Here you can share information with other people.",
+          "showMore": "LOAD MORE COMMENTS ({nr})",
+          "getRequest": "Comments haven`t been fetched properly"
+        },
+        "CommentPresentation": {
+          "deleteTitle": "Are you sure you want to delete this comment?",
+          "deleteSuccess": "Comment removed",
+          "createdInfo": "Created {date}",
+          "editedInfo": "Edited {date}"
+        },
+        "CommentEdit": {
+          "headerEdit": "Edit comment",
+          "headerAdd": "Add comment",
+          "label": "Comment",
+          "buttonEdit": "Save comment",
+          "buttonAdd": "Add comment",
+          "messageEdit": "Comment edited",
+          "messageAdd": "Comment created"
+        }
+      },
+      "store": {
+        "action": {
+          "createCancel": "Creating comment has been canceled",
+          "updateCancel": "Updating comment has been canceled",
+          "deleteCancel": "Removing comment has been canceled"
+        }
+      }
+    }
+  }
+}

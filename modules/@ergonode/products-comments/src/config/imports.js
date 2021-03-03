@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export const Tabs = {
-    ProductCommentsTab: () => import('@Comments/components/Tabs/Product/ProductCommentsTab').then(m => m.default || m),
+    ProductCommentsTab: () => import('@ProductsComments/components/Tabs/ProductCommentsTab').then(m => m.default || m),
 };
 
 export const Icons = {

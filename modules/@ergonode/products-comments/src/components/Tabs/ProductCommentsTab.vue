@@ -5,27 +5,30 @@
 <template>
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
-            <ProductCommentsForm
+            <CommentsForm
                 :scope="scope"
-                :errors="errors" />
+                :disabled="!isAllowedToUpdate"
+                :errors="errors"
+                :no-data-placeholder="noDataPlaceholder" />
         </template>
     </CenterViewTemplate>
 </template>
 
 <script>
-import ProductCommentsForm from '@Comments/components/Forms/ProductCommentsForm';
+import CommentsForm from '@Comments/components/Forms/CommentsForm';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
+import PRIVILEGES from '@Products/config/privileges';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'ProductCommentsTab',
     components: {
-        ProductCommentsForm,
+        CommentsForm,
         CenterViewTemplate,
     },
     props: {
@@ -62,10 +65,20 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'Comments hasn`t been fetched properly',
+                    message: app.i18n.t('@ProductsComments.product.components.ProductCommentsTab.getRequest'),
                 });
             },
         });
+    },
+    computed: {
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT.update,
+            ]);
+        },
+        noDataPlaceholder() {
+            return this.$t('@ProductsComments.product.components.ProductCommentsTab.noData');
+        },
     },
 };
 </script>

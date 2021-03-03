@@ -7,8 +7,8 @@
         <template #header>
             <Button
                 v-if="!showForm"
-                title="NEW COMMENT"
-                :disabled="!isAllowedToUpdate"
+                :title="$t('@Comments.comment.components.CommentsForm.addButton')"
+                :disabled="disabled"
                 :size="smallSize"
                 @click.native="openForm">
                 <template #prepend="{ color }">
@@ -34,8 +34,8 @@
         </template>
         <template #placeholder>
             <TabBarNoDataPlaceholder
-                title="No results"
-                subtitle="Here you can share information about the product with other people." />
+                :title="noDataTitleDefautl"
+                :subtitle="noDataPlaceholder" />
         </template>
         <template
             v-if="isMoreButtonVisible"
@@ -66,7 +66,6 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import PRIVILEGES from '@Products/config/privileges';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
@@ -77,7 +76,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'ProductCommentsForm',
+    name: 'CommentsForm',
     components: {
         IconSpinner,
         Button,
@@ -92,9 +91,21 @@ export default {
             type: String,
             default: '',
         },
+        noDataTitle: {
+            type: String,
+            default: '',
+        },
+        noDataPlaceholder: {
+            type: String,
+            default: '',
+        },
         errors: {
             type: Object,
             default: () => ({}),
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {
@@ -113,12 +124,24 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
+        noDataTitleDefautl() {
+            return this.noDataTitle !== ''
+                ? this.noDataTitle
+                : this.$t('@Comments.comment.components.CommentsForm.noDataTitle');
+        },
+        noDataPlaceholderDefault() {
+            return this.noDataPlaceholder !== ''
+                ? this.noDataPlaceholder
+                : this.$t('@Comments.comment.components.CommentsForm.noDataPlaceholder');
+        },
         showMoreText() {
             const {
                 length: listLength,
             } = this.commentList;
 
-            return `LOAD MORE COMMENTS (${this.fullListCount - listLength})`;
+            return this.$t('@Comments.comment.components.CommentsForm.showMore', {
+                nr: (this.fullListCount - listLength),
+            });
         },
         isMoreButtonVisible() {
             const {
@@ -128,11 +151,6 @@ export default {
             return listLength
                 && listLength < this.fullListCount
                 && this.fullListCount > DATA_LIMIT;
-        },
-        isAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.PRODUCT.update,
-            ]);
         },
     },
     methods: {
@@ -160,7 +178,7 @@ export default {
                 onError: () => {
                     this.$addAlert({
                         type: ALERT_TYPE.ERROR,
-                        message: 'Comments hasn`t been fetched properly',
+                        message: this.$t('@Comments.comment.components.CommentsForm.getRequest'),
                     });
                 },
             });

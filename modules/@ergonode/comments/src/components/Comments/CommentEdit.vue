@@ -7,12 +7,12 @@
         <template #header>
             <span
                 class="comment-header"
-                v-text="isEdit ? 'Edit comment' : 'Add new comment'" />
+                v-text="headerName" />
         </template>
         <template #body>
             <TextArea
                 :value="content"
-                label="Comment"
+                :label="$t('@Comments.comment.components.CommentEdit.label')"
                 resize="none"
                 :required="true"
                 height="128px"
@@ -22,7 +22,7 @@
         <template #footer>
             <Button
                 :size="smallSize"
-                :title="`${isEdit ? 'SAVE' : 'ADD'} COMMENT`"
+                :title="buttonTitle"
                 @click.native="saveComment">
                 <template
                     v-if="isSubmitting"
@@ -33,7 +33,7 @@
             <Button
                 :theme="secondaryTheme"
                 :size="smallSize"
-                :title="$t('core.buttons.cancel')"
+                :title="$t('@Comments._.cancel')"
                 @click.native="closeComment" />
         </template>
     </Comment>
@@ -91,6 +91,16 @@ export default {
         };
     },
     computed: {
+        headerName() {
+            return this.isEdit
+                ? this.$t('@Comments.comment.components.CommentEdit.headerEdit')
+                : this.$t('@Comments.comment.components.CommentEdit.headerAdd');
+        },
+        buttonTitle() {
+            return this.isEdit
+                ? this.$t('@Comments.comment.components.CommentEdit.buttonEdit')
+                : this.$t('@Comments.comment.components.CommentEdit.buttonAdd');
+        },
         secondaryTheme() {
             return THEME.SECONDARY;
         },
@@ -134,10 +144,13 @@ export default {
         },
         onUpdateSuccess() {
             this.isSubmitting = false;
+            const message = this.isEdit
+                ? this.$t('@Comments.comment.components.CommentEdit.messageEdit')
+                : this.$t('@Comments.comment.components.CommentEdit.messageAdd');
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: `Comment ${this.isEdit ? 'edited' : 'created'}`,
+                message,
             });
             this.$emit('close');
         },

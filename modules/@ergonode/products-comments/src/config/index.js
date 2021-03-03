@@ -3,12 +3,14 @@
  * See LICENSE for license details.
  */
 export default {
-    name: '@ergonode/comments',
-    order: 170,
+    name: '@ergonode/products-comments',
+    order: 220,
     relations: [
         '@ergonode/core',
+        '@ergonode/products',
+        '@ergonode/comments',
     ],
     aliases: {
-        '@Comments': '/',
+        '@ProductsComments': '/',
     },
 };
