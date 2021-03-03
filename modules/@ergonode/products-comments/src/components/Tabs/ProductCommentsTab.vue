@@ -7,7 +7,7 @@
         <template #centeredContent>
             <CommentsForm
                 :scope="scope"
-                :privileges="productPrivileges"
+                :disabled="!isAllowedToUpdate"
                 :errors="errors"
                 :no-data-placeholder="noDataPlaceholder" />
         </template>
@@ -65,17 +65,19 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'Comments hasn`t been fetched properly',
+                    message: app.i18n.t('@ProductsComments.product.components.ProductCommentsTab.getRequest'),
                 });
             },
         });
     },
     computed: {
-        productPrivileges() {
-            return PRIVILEGES.PRODUCT;
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT.update,
+            ]);
         },
         noDataPlaceholder() {
-            return 'Here you can share information about the product with other people.';
+            return this.$t('@ProductsComments.product.components.ProductCommentsTab.noData');
         },
     },
 };

@@ -7,8 +7,8 @@
         <template #header>
             <Button
                 v-if="!showForm"
-                title="NEW COMMENT"
-                :disabled="!isAllowedToUpdate"
+                :title="$t('@Comments.comment.components.CommentsForm.addButton')"
+                :disabled="disabled"
                 :size="smallSize"
                 @click.native="openForm">
                 <template #prepend="{ color }">
@@ -34,7 +34,7 @@
         </template>
         <template #placeholder>
             <TabBarNoDataPlaceholder
-                title="No results"
+                :title="noDataTitleDefautl"
                 :subtitle="noDataPlaceholder" />
         </template>
         <template
@@ -91,17 +91,21 @@ export default {
             type: String,
             default: '',
         },
+        noDataTitle: {
+            type: String,
+            default: '',
+        },
         noDataPlaceholder: {
             type: String,
-            default: 'Here you can share information with other people.',
+            default: '',
         },
         errors: {
             type: Object,
             default: () => ({}),
         },
-        privileges: {
-            type: Object,
-            default: () => ({}),
+        disabled: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {
@@ -120,12 +124,24 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
+        noDataTitleDefautl() {
+            return this.noDataTitle !== ''
+                ? this.noDataTitle
+                : this.$t('@Comments.comment.components.CommentsForm.noDataTitle');
+        },
+        noDataPlaceholderDefault() {
+            return this.noDataPlaceholder !== ''
+                ? this.noDataPlaceholder
+                : this.$t('@Comments.comment.components.CommentsForm.noDataPlaceholder');
+        },
         showMoreText() {
             const {
                 length: listLength,
             } = this.commentList;
 
-            return `LOAD MORE COMMENTS (${this.fullListCount - listLength})`;
+            return this.$t('@Comments.comment.components.CommentsForm.showMore', {
+                nr: (this.fullListCount - listLength),
+            });
         },
         isMoreButtonVisible() {
             const {
@@ -135,11 +151,6 @@ export default {
             return listLength
                 && listLength < this.fullListCount
                 && this.fullListCount > DATA_LIMIT;
-        },
-        isAllowedToUpdate() {
-            return this.$hasAccess([
-                this.privileges.update,
-            ]);
         },
     },
     methods: {
@@ -167,7 +178,7 @@ export default {
                 onError: () => {
                     this.$addAlert({
                         type: ALERT_TYPE.ERROR,
-                        message: 'Comments hasn`t been fetched properly',
+                        message: this.$t('@Comments.comment.components.CommentsForm.getRequest'),
                     });
                 },
             });
