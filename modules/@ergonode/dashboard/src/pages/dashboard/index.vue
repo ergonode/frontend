@@ -4,7 +4,8 @@
  */
 <template>
     <div class="dashboard">
-        <DashboardPage v-if="hasAnyProductInSystem" />
+        <Preloader v-if="isFetchingData" />
+        <DashboardPage v-else-if="hasAnyProductInSystem" />
         <EmptyDashboardPage
             v-else
             @product-created="onProductCreated" />
@@ -19,18 +20,23 @@ import {
     getProductsCount,
 } from '@Dashboard/services';
 import PRODUCT_PRIVILEGES from '@Products/config/privileges';
+import Preloader from '@UI/components/Preloader/Preloader';
 
 export default {
     name: 'Dashboard',
     components: {
+        Preloader,
         DashboardPage,
         EmptyDashboardPage,
     },
     async fetch() {
         await this.onProductCreated();
+
+        this.isFetchingData = false;
     },
     data() {
         return {
+            isFetchingData: true,
             productsCount: [],
         };
     },

@@ -34,7 +34,7 @@ describe('mouse/isMouseOutsideElement', () => {
             100,
         ), 0, 0);
 
-        expect(isOutside).toBeTruthy();
+        expect(isOutside).toBeFalsy();
     });
 
     it('Arguments are not set', () => {

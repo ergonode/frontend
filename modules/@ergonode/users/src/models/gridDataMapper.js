@@ -70,7 +70,7 @@ export function getMappedGridData({
                 tmpPrivilegeColumns[type] = true;
                 columns.push(defaults.getCheckColumn(type, isEditable));
             }
-            const value = isObject(selectedData) ? selectedData[types[type]] : false;
+            const value = isObject(selectedData) ? Boolean(selectedData[types[type]]) : false;
 
             row[type] = {
                 value,
@@ -95,6 +95,12 @@ export function getMappedGridData({
 
         rows.push(row);
     }
+
+    rows.sort((a, b) => {
+        if (a.name.value < b.name.value) return -1;
+
+        return a.name.value > b.name.value ? 1 : 0;
+    });
 
     return {
         rows,

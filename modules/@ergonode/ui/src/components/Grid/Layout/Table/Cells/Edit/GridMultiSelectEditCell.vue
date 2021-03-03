@@ -94,18 +94,20 @@ export default {
         },
     },
     beforeDestroy() {
-        const optionIds = this.localValue.map(option => option.id);
+        if (!this.disabled) {
+            const optionIds = this.localValue.map(option => option.id);
 
-        if (!arraysAreEqual(optionIds, this.value.map(option => option.id))) {
-            this.$emit('cell-value', [
-                {
-                    value: optionIds,
-                    rowId: this.rowId,
-                    columnId: this.columnId,
-                    row: this.row,
-                    column: this.column,
-                },
-            ]);
+            if (!arraysAreEqual(optionIds, this.value.map(option => option.id))) {
+                this.$emit('cell-value', [
+                    {
+                        value: optionIds,
+                        rowId: this.rowId,
+                        columnId: this.columnId,
+                        row: this.row,
+                        column: this.column,
+                    },
+                ]);
+            }
         }
     },
     methods: {

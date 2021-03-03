@@ -101,7 +101,6 @@ import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import FormSubsection from '@UI/components/Form/Subsection/FormSubsection';
-import IconInfo from '@UI/components/Icons/Feedback/IconInfo';
 import Paragraph from '@UI/components/Paragraph/Paragraph';
 import TextField from '@UI/components/TextField/TextField';
 import Toggler from '@UI/components/Toggler/Toggler';
@@ -131,7 +130,6 @@ export default {
         TextField,
         Toggler,
         Divider,
-        IconInfo,
         Paragraph,
     },
     mixins: [

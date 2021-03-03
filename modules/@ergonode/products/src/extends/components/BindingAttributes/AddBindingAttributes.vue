@@ -11,7 +11,7 @@
         <AddBindingAttributesModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
-            @submitted="onAddedData" />
+            @added="onAddedData" />
     </button>
 </template>
 
@@ -49,8 +49,8 @@ export default {
             this.isModalVisible = false;
         },
         onAddedData() {
-            this.onCloseModal();
             this.$emit('added');
+            this.onCloseModal();
         },
     },
 };

@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 
+import PRIVILEGES from '@Collections/config/privileges';
 import {
     ROUTE_NAME as PRODUCT_ROUTE_NAME,
 } from '@Products/config/routes';
@@ -36,7 +37,9 @@ export default [
                             routeName: PRODUCT_ROUTE_NAME.PRODUCTS_CATALOG,
                         },
                     ],
-                    privileges: [],
+                    privileges: [
+                        PRIVILEGES.PRODUCT_COLLECTION.read,
+                    ],
                 },
             },
         ],

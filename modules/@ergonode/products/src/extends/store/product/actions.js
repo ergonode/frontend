@@ -34,6 +34,11 @@ export default {
             productId: id,
             bindingId: bindings[index],
         });
+
+        commit('__SET_STATE', {
+            key: 'bindings',
+            value: bindings.filter(binding => binding !== bindings[index]),
+        });
     },
     async getProductBindings({
         commit,

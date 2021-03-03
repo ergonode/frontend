@@ -20,6 +20,9 @@
 </template>
 
 <script>
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 import IconFontSize from '@UI/components/Icons/Editor/IconFontSize';
 import ListDraggableElement from '@UI/components/List/ListDraggableElement';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
@@ -29,7 +32,6 @@ import ListElementTitle from '@UI/components/List/ListElementTitle';
 import {
     mapActions,
 } from 'vuex';
-import {DRAGGED_ELEMENT} from "@Core/defaults/grid";
 
 export default {
     name: 'WidgetSideBarElement',

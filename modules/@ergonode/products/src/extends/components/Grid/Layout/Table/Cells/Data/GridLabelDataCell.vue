@@ -17,8 +17,7 @@
             <GridLabelPresentationCell
                 :value="cellData.value"
                 :options="options"
-                :suffix="data.suffix"
-                :is-locked="isLocked" />
+                :suffix="data.suffix" />
             <GridSuffixPresentationCell
                 v-if="data.suffix"
                 :suffix="data.suffix" />

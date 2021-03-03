@@ -99,17 +99,19 @@ export default {
          */
         languageCode: {
             type: String,
-            required: true,
+            default: '',
         },
     },
     async fetch() {
-        this.isFetchingData = true;
+        if (!this.disabled) {
+            this.isFetchingData = true;
 
-        await this.getProductWorkflowOptions({
-            id: this.rowId,
-            languageCode: this.languageCode,
-            onSuccess: this.onGetProductWorkflowOptionsSuccess,
-        });
+            await this.getProductWorkflowOptions({
+                id: this.rowId,
+                languageCode: this.languageCode,
+                onSuccess: this.onGetProductWorkflowOptionsSuccess,
+            });
+        }
     },
     data() {
         return {
@@ -127,7 +129,7 @@ export default {
         },
     },
     beforeDestroy() {
-        if (this.localValue && this.localValue.id !== this.value) {
+        if (!this.disabled && this.localValue && this.localValue.id !== this.value) {
             this.$emit('cell-value', [
                 {
                     value: this.localValue.id || this.localValue,

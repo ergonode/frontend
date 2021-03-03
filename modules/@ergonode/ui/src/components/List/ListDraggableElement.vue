@@ -18,16 +18,10 @@
 
 <script>
 import {
-    DRAGGED_ELEMENT,
-} from '@Core/defaults/grid';
-import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '@Core/models/layout/ElementCopy';
 import IconDragDrop from '@UI/components/Icons/Actions/IconDragDrop';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'ListDraggableElement',

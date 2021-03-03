@@ -92,8 +92,8 @@ export default {
         },
     },
     beforeDestroy() {
-        if ((this.localValue && this.localValue.id !== this.value)
-            || (!this.localValue && this.value)) {
+        if (!this.disabled && ((this.localValue && this.localValue.id !== this.value)
+            || (!this.localValue && this.value))) {
             this.$emit('cell-value', [
                 {
                     value: this.localValue.id || this.localValue,

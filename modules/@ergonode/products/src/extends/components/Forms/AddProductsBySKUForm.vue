@@ -10,9 +10,10 @@
         :is-proceeding="isProceeding"
         :errors="errors"
         :change-values="changeValues"
+        :errors-presentation-mapper="errorMapper"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body>
+        <template #body="{ presentationErrors }">
             <FormSection>
                 <TextArea
                     :value="productSkus"
@@ -20,7 +21,7 @@
                     hint="Separate multiple SKU’s by using enter or comma, e.g. “SKU1, SKU2, SKU3”"
                     resize="none"
                     height="150px"
-                    :error-messages="errors[skusFieldKey]"
+                    :error-messages="presentationErrors.join(' ')"
                     :disabled="!isAllowedToUpdate"
                     @input="onSKUChange" />
             </FormSection>
@@ -29,6 +30,7 @@
 </template>
 
 <script>
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import PRIVILEGES from '@Products/config/privileges';
 import Form from '@UI/components/Form/Form';
@@ -44,16 +46,9 @@ export default {
     },
     mixins: [
         formActionsMixin,
+        formFeedbackMixin,
     ],
     props: {
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
         productSkus: {
             type: String,
             default: '',
@@ -70,7 +65,19 @@ export default {
         },
     },
     methods: {
+        errorMapper(errors) {
+            return Object.keys(errors).reduce((prev, curr) => [
+                ...prev,
+                ...Object.keys(errors[curr]).map(key => `${key} - ${errors[curr][key]}`),
+            ], []);
+        },
         onSKUChange(value) {
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.skusFieldKey,
+                value,
+            });
+
             this.$emit('input', value);
         },
     },

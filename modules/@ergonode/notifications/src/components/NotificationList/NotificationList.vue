@@ -60,6 +60,7 @@ import NotificationListExpandingSection
 import NotificationListSection from '@Notifications/components/NotificationList/Section/NotificationListSection';
 import {
     ACTION_CENTER_SECTIONS,
+    AXIOS_CANCEL_TOKEN_PROCESSING_NOTIFICATION_KEY,
 } from '@Notifications/defaults';
 import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import Preloader from '@UI/components/Preloader/Preloader';
@@ -129,19 +130,15 @@ export default {
                 && this.count > DATA_LIMIT;
         },
     },
-    watch: {
-        processingSectionNotificationsCount: {
-            immediate: true,
-            handler() {
-                this.requestProcessingNotifications();
-            },
-        },
+    created() {
+        this.requestProcessingNotifications();
     },
     beforeDestroy() {
-        if (this.timeout) {
-            clearTimeout(this.timeout);
-            this.timeout = null;
-        }
+        this.$clearCancelTokens([
+            AXIOS_CANCEL_TOKEN_PROCESSING_NOTIFICATION_KEY,
+        ]);
+        clearTimeout(this.timeout);
+        this.timeout = null;
 
         this.__setState({
             key: 'offset',
@@ -167,19 +164,20 @@ export default {
                 this.isFetchingMoreData = false;
             }
         },
-        requestProcessingNotifications() {
-            if (this.processingSectionNotificationsCount > 0) {
-                this.timeout = setTimeout(async () => {
-                    clearTimeout(this.timeout);
+        async requestProcessingNotifications() {
+            this.$clearCancelTokens([
+                AXIOS_CANCEL_TOKEN_PROCESSING_NOTIFICATION_KEY,
+            ]);
 
-                    await this.getProcessingNotifications({});
+            clearTimeout(this.timeout);
 
-                    this.requestProcessingNotifications();
-                }, 1000);
-            } else {
-                clearTimeout(this.timeout);
-                this.timeout = null;
-            }
+            this.getProcessingNotifications({
+                onSuccess: () => {
+                    this.timeout = setTimeout(() => {
+                        this.requestProcessingNotifications();
+                    }, 1000);
+                },
+            });
         },
     },
 };

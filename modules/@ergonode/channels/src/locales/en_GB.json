@@ -2,7 +2,7 @@
   "channel": {
     "grid": {
       "placeholderTitle": "No channels",
-      "placeholderSubtitle": "There are no channels in the system, you can add the first one."
+      "placeholderSubtitle": "There are no channels in the system, so you can add the first one."
     }
   }
 }

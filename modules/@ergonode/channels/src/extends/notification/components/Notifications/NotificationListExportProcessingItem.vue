@@ -34,6 +34,10 @@ export default {
             return 20;
         },
         progress() {
+            if (this.item.processed === 0 || this.item.items === 0) {
+                return 0;
+            }
+
             return (this.item.processed / this.item.items) * 100;
         },
         stroke() {

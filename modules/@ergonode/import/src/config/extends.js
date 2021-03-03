@@ -12,6 +12,7 @@ import {
 } from '@Import/services';
 import {
     ACTION_CENTER_SECTIONS,
+    AXIOS_CANCEL_TOKEN_PROCESSING_NOTIFICATION_KEY,
 } from '@Notifications/defaults';
 
 export default {
@@ -30,16 +31,29 @@ export default {
         '@Notifications/store/notification/action/getProcessingNotifications': async ({
             $this,
         }) => {
-            let importStatuses = [];
             const isAllowedToRead = $this.$hasAccess([
                 PRIVILEGES.IMPORT.read,
             ]);
 
-            if (isAllowedToRead) {
-                importStatuses = await getImportsStatuses({
-                    $axios: $this.app.$axios,
-                });
+            if (!isAllowedToRead) {
+                return [];
             }
+
+            const source = $this.app.$axios.CancelToken.source();
+
+            $this.app.$addCancelTokens(
+                [
+                    AXIOS_CANCEL_TOKEN_PROCESSING_NOTIFICATION_KEY,
+                ],
+                [
+                    source,
+                ],
+            );
+
+            const importStatuses = await getImportsStatuses({
+                $axios: $this.app.$axios,
+                cancelToken: source.token,
+            });
 
             const successNotifications = {
                 component: Components.NotificationListImportSuccessItem,

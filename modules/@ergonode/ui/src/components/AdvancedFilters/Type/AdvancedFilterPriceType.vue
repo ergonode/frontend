@@ -98,7 +98,7 @@ export default {
             return [
                 this.localValue[FILTER_OPERATOR.GREATER_OR_EQUAL],
                 this.localValue[FILTER_OPERATOR.SMALLER_OR_EQUAL],
-            ].filter(value => value !== '')
+            ].filter(value => value !== '' && value !== null && typeof value !== 'undefined')
                 .join(' - ');
         },
     },

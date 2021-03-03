@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="date-picker">
+    <div class="date-picker-content">
         <slot name="header">
             <DatePickerHeader :title="title" />
         </slot>
@@ -198,7 +198,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .date-picker {
+    .date-picker-content {
         width: 224px;
         padding: 16px;
     }

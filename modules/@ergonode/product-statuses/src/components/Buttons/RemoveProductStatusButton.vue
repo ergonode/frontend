@@ -58,7 +58,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('media', [
+        ...mapActions('productStatus', [
             'removeProductStatus',
         ]),
         onRemove() {

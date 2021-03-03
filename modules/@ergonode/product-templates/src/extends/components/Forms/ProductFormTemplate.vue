@@ -48,6 +48,10 @@ export default {
         ]),
         onTemplateValueChange(value) {
             this.__setState({
+                key: 'prevTemplate',
+                value: this.template,
+            });
+            this.__setState({
                 key: 'template',
                 value,
             });
