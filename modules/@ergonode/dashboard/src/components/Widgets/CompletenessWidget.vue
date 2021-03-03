@@ -4,7 +4,7 @@
  */
 <template>
     <Widget
-        :title="$t('@Products.product.components.CompletenessWidget.title')"
+        :title="$t('@Dashboard.dashboard.components.CompletenessWidget.title')"
         :is-placeholder-visible="!isPrefetchingData && progressListDatasets.length === 0">
         <template #body>
             <Preloader v-if="isPrefetchingData" />
@@ -79,7 +79,7 @@ export default {
 
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: this.$t('@Products.product.components.CompletenessWidget.getRequest'),
+                message: this.$t('@Dashboard.dashboard.components.CompletenessWidget.getRequest'),
             });
 
             this.isPrefetchingData = false;

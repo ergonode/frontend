@@ -4,7 +4,7 @@
  */
 <template>
     <Widget
-        title="Statuses"
+        :title="$t('@Dashboard.dashboard.components.StatusesWidget.title')"
         :is-placeholder-visible="!isPrefetchingData && statuses.length === 0">
         <template #appendHeader>
             <ActionButton
@@ -139,7 +139,7 @@ export default {
 
                 this.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'Product statuses haven’t been fetched properly',
+                    message: this.$t('@Dashboard.dashboard.components.StatusesWidget.getRequest'),
                 });
 
                 this.isPrefetchingData = false;
