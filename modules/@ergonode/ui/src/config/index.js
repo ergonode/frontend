@@ -7,7 +7,6 @@ export default {
     order: 5,
     relations: [
         '@ergonode/core',
-        '@ergonode/media',
     ],
     aliases: {
         '@UI': '/',
