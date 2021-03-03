@@ -54,7 +54,7 @@ export default {
 <style lang="scss" scoped>
     .pinned-section {
         position: sticky;
-        z-index: $Z_INDEX_LVL_3;
+        z-index: $Z_INDEX_LVL_6;
         display: flex;
         width: max-content;
         height: fit-content;

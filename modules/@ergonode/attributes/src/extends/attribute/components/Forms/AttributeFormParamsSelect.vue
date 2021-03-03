@@ -80,12 +80,18 @@ export default {
         typeKey: {
             immediate: true,
             handler() {
-                this.setParameterValue();
+                this.__setState({
+                    key: this.parameterData.fieldName,
+                    value: null,
+                });
             },
         },
     },
     beforeDestroy() {
-        this.setParameterValue();
+        this.__setState({
+            key: this.parameterData.fieldName,
+            value: null,
+        });
     },
     methods: {
         ...mapActions('attribute', [

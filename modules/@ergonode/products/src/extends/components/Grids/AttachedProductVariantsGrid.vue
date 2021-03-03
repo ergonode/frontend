@@ -42,11 +42,9 @@
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
                 :title="$t('@Products.productExtend.components.AttachedProductVariantsGrid.noProductVariants')"
-                :subtitle="$t('@Products.productExtend.components.AttachedProductVariantsGrid.addProductsVariants')">
+                :subtitle="$t('@Products.productExtend.components.AttachedProductVariantsGrid.addProductVariants')">
                 <template #action>
-                    <AddProductVariantsButton
-                        :title="$t('@Products.productExtend.components.AttachedProductVariantsGrid.chooseVariants')"
-                        @added="onProductsAttachmentUpdated">
+                    <AddProductVariantsButton :title="$t('@Products.productExtend.components.AttachedProductVariantsGrid.chooseVariants')">
                         <template #prepend="{ color }">
                             <IconAdd :fill-color="color" />
                         </template>
@@ -231,10 +229,7 @@ export default {
         async onAttributeBindingAdded() {
             this.isPrefetchingData = true;
 
-            await Promise.all([
-                this.getProductBindings(this.$route.params.id),
-                this.onFetchData(),
-            ]);
+            await this.onFetchData();
 
             this.isPrefetchingData = false;
         },
@@ -242,11 +237,7 @@ export default {
             this.isPrefetchingData = true;
 
             await this.removeBinding(index);
-
-            await Promise.all([
-                this.getProductBindings(this.$route.params.id),
-                this.onFetchData(),
-            ]);
+            await this.onFetchData();
 
             this.isPrefetchingData = false;
         },
@@ -273,6 +264,8 @@ export default {
             if (!params.filter.includes('attached')) {
                 params.filter += `;attached${FILTER_OPERATOR.EQUAL}true`;
             }
+
+            params.columns = this.bindingAttributes.map(attribute => attribute.key).join(',');
 
             await getGridData({
                 $route: this.$route,

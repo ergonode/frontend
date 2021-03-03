@@ -50,6 +50,12 @@ export default {
     mixins: [
         updateButtonFeedbackMixin,
     ],
+    props: {
+        drafts: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     data() {
         return {
             isSubmitting: false,
@@ -65,7 +71,6 @@ export default {
     methods: {
         ...mapActions('role', [
             'updateRole',
-            '__setState',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -76,6 +81,7 @@ export default {
             this.removeScopeErrors(this.scope);
             this.updateRole({
                 scope: this.scope,
+                drafts: this.drafts,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });
@@ -86,14 +92,11 @@ export default {
                 message: this.$t('@Roles.role.components.UpdateRolePrivilegesButton.updatePrivilegesSuccess'),
             });
 
-            this.__setState({
-                key: 'drafts',
-                value: {},
-            });
-
             this.isSubmitting = false;
 
             this.markChangeValuesAsSaved(this.scope);
+
+            this.$emit('updated');
         },
         onUpdateError(errors) {
             this.onError(errors);

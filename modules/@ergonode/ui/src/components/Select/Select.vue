@@ -93,7 +93,9 @@
             <template #dropdown>
                 <slot
                     name="dropdown"
-                    :on-select-value="onSelectValue" />
+                    :on-select-value="onSelectValue"
+                    :on-apply="onDismiss"
+                    :on-clear="onClear" />
             </template>
             <template #item="{ index, item, isSelected, isSmallSize }">
                 <slot
@@ -102,12 +104,6 @@
                     :is-selected="isSelected"
                     :is-small-size="isSmallSize"
                     :index="index" />
-            </template>
-            <template #footer>
-                <slot
-                    name="footer"
-                    :clear="onClear"
-                    :apply="onDismiss" />
             </template>
         </SelectDropdown>
         <template #details>

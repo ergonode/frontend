@@ -86,6 +86,7 @@ export default {
         },
         {
             scope,
+            drafts,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -96,7 +97,6 @@ export default {
                 name,
                 privileges,
                 description,
-                drafts,
             } = state;
 
             const tmpPrivileges = {
@@ -151,10 +151,6 @@ export default {
                         ...tmpPrivileges,
                     }
                     : tmpPrivileges,
-            });
-            commit('__SET_STATE', {
-                key: 'drafts',
-                value: {},
             });
 
             // EXTENDED AFTER METHOD
