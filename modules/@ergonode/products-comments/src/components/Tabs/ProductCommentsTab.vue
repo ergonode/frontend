@@ -5,27 +5,30 @@
 <template>
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
-            <ProductCommentsForm
+            <CommentsForm
                 :scope="scope"
-                :errors="errors" />
+                :privileges="productPrivileges"
+                :errors="errors"
+                :no-data-placeholder="noDataPlaceholder" />
         </template>
     </CenterViewTemplate>
 </template>
 
 <script>
-import ProductCommentsForm from '@Comments/components/Forms/ProductCommentsForm';
+import CommentsForm from '@Comments/components/Forms/CommentsForm';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
+import PRIVILEGES from '@Products/config/privileges';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'ProductCommentsTab',
     components: {
-        ProductCommentsForm,
+        CommentsForm,
         CenterViewTemplate,
     },
     props: {
@@ -66,6 +69,14 @@ export default {
                 });
             },
         });
+    },
+    computed: {
+        productPrivileges() {
+            return PRIVILEGES.PRODUCT;
+        },
+        noDataPlaceholder() {
+            return 'Here you can share information about the product with other people.';
+        },
     },
 };
 </script>

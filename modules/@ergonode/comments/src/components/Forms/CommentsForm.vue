@@ -35,7 +35,7 @@
         <template #placeholder>
             <TabBarNoDataPlaceholder
                 title="No results"
-                subtitle="Here you can share information about the product with other people." />
+                :subtitle="noDataPlaceholder" />
         </template>
         <template
             v-if="isMoreButtonVisible"
@@ -66,7 +66,6 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import PRIVILEGES from '@Products/config/privileges';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
@@ -77,7 +76,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'ProductCommentsForm',
+    name: 'CommentsForm',
     components: {
         IconSpinner,
         Button,
@@ -92,7 +91,15 @@ export default {
             type: String,
             default: '',
         },
+        noDataPlaceholder: {
+            type: String,
+            default: 'Here you can share information with other people.',
+        },
         errors: {
+            type: Object,
+            default: () => ({}),
+        },
+        privileges: {
             type: Object,
             default: () => ({}),
         },
@@ -131,7 +138,7 @@ export default {
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
-                PRIVILEGES.PRODUCT.update,
+                this.privileges.update,
             ]);
         },
     },
