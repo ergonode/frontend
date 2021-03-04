@@ -46,11 +46,8 @@ export default {
         },
     },
     watch: {
-        typeKey: {
-            immediate: true,
-            handler() {
-                this.removeAttributeOptions();
-            },
+        typeKey() {
+            this.removeAttributeOptions();
         },
     },
     methods: {
