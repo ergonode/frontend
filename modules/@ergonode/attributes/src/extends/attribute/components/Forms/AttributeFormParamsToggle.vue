@@ -50,14 +50,11 @@ export default {
         },
     },
     watch: {
-        typeKey: {
-            immediate: true,
-            handler() {
-                this.__setState({
-                    key: this.parameterData.fieldName,
-                    value: null,
-                });
-            },
+        typeKey() {
+            this.__setState({
+                key: this.parameterData.fieldName,
+                value: null,
+            });
         },
     },
     created() {
