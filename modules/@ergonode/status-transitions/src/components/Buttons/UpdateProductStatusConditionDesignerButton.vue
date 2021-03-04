@@ -31,7 +31,7 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
-import PRIVILEGES from '@Statuses/config/privileges';
+import PRIVILEGES from '@Transitions/config/privileges';
 import {
     Z_INDEX_LVL_2,
 } from '@UI/assets/scss/_js-variables/indexes.scss';
