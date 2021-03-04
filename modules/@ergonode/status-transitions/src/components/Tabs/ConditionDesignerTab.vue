@@ -38,9 +38,9 @@ import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
-import UpdateProductStatusConditionDesignerButton
-    from '@Statuses/components/Buttons/UpdateProductStatusConditionDesignerButton';
 import PRIVILEGES from '@Statuses/config/privileges';
+import UpdateProductStatusConditionDesignerButton
+    from '@Transitions/components/Buttons/UpdateProductStatusConditionDesignerButton';
 import {
     GRAPHITE_LIGHT,
 } from '@UI/assets/scss/_js-variables/colors.scss';
