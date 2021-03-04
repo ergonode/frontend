@@ -105,7 +105,7 @@ export default {
                             };
 
                             if (ids.length || excludedIds.length) {
-                                request.filter = {
+                                request.payload.filter = {
                                     ids: {
                                         list: ids.length > 0 ? ids : excludedIds,
                                         included: ids.length > 0,

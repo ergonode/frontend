@@ -197,7 +197,7 @@ export default {
         onDragOver(event) {
             event.preventDefault();
         },
-        onDrop() {
+        onDrop(event) {
             if (this.draggedElIndex === -1 && this.ghostIndex !== -1) {
                 this.$emit('add-item', {
                     index: this.ghostIndex,
@@ -213,6 +213,8 @@ export default {
                     value: -1,
                 });
             }
+
+            event.preventDefault();
         },
         onRemoveItem(index) {
             this.$emit('remove-item', index);

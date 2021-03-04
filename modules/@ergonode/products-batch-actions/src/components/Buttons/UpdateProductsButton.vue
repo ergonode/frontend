@@ -153,7 +153,7 @@ export default {
             };
 
             if (this.ids.length || this.excludedIds.length) {
-                request.filter = {
+                request.payload.filter = {
                     ids: {
                         list: this.ids.length > 0 ? this.ids : this.excludedIds,
                         included: this.ids.length > 0,

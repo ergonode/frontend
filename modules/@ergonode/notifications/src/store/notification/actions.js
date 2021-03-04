@@ -2,13 +2,18 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-
+import {
+    Components,
+} from '@Notifications/config/imports';
+import {
+    ACTION_CENTER_SECTIONS,
+} from '@Notifications/defaults';
 import {
     check,
     getAll,
     update,
     updateAll,
-} from '@Notifications/services/index';
+} from '@Notifications/services';
 
 import {
     types,
@@ -71,6 +76,8 @@ export default {
                     params,
                 });
 
+                // TODO: Handle types;
+
                 commit('__SET_STATE', {
                     key: 'notifications',
                     value: [
@@ -83,6 +90,8 @@ export default {
                             ...rest,
                             readAt: read_at,
                             createdAt: created_at,
+                            component: Components.NotificationListItem,
+                            section: ACTION_CENTER_SECTIONS.NOTIFICATIONS,
                         })),
                     ],
                 });
@@ -112,16 +121,17 @@ export default {
         onError = () => {},
     }) {
         try {
-            const notifications = await this.$getExtendMethod('@Notifications/store/notification/action/getProcessingNotifications', {
+            const notifications = await this.$getExtendMethod('@Notifications/store/notification/action/getProcessingNotifications/__before', {
                 $this: this,
             });
 
             commit('__SET_STATE', {
                 key: 'processingNotifications',
-                value: notifications.reduce((prev, curr) => [
-                    ...prev,
-                    ...curr,
-                ], []),
+                value: notifications,
+            });
+
+            await this.$getExtendMethod('@Notifications/store/notification/action/getProcessingNotifications/__after', {
+                $this: this,
             });
 
             onSuccess();
