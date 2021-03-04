@@ -4,7 +4,7 @@
  */
 <template>
     <Widget
-        title="Products"
+        :title="$t('@Dashboard.dashboard.components.ProductsWidget.title')"
         :is-placeholder-visible="!isPrefetchingData && progressListLabels.length === 0">
         <template #body>
             <Preloader v-if="isPrefetchingData" />
@@ -99,7 +99,7 @@ export default {
 
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: this.$t('@Products.product.components.ProductsWidget.getRequest'),
+                message: this.$t('@Dashboard.dashboard.components.ProductsWidget.getRequest'),
             });
 
             this.isPrefetchingData = false;

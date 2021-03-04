@@ -32,7 +32,7 @@
                         :description="firstStep.description">
                         <template #action>
                             <Button
-                                title="NEW ATTRIBUTE"
+                                :title="$t('@Dashboard.dashboard.components.EmptyDashboardPage.attributeTitle')"
                                 :size="smallSize"
                                 :disabled="!isAllowedToCreateAttribute"
                                 @click.native="onShowNewAttributeModal">
@@ -48,7 +48,7 @@
                         :description="secondStep.description">
                         <template #action>
                             <Button
-                                title="NEW TEMPLATE"
+                                :title="$t('@Dashboard.dashboard.components.EmptyDashboardPage.templateTitle')"
                                 :size="smallSize"
                                 :disabled="!isAllowedToCreateTemplate"
                                 @click.native="onShowNewTemplateModal">
@@ -64,7 +64,7 @@
                         :description="thirdStep.description">
                         <template #action>
                             <Button
-                                title="NEW PRODUCT"
+                                :title="$t('@Dashboard.dashboard.components.EmptyDashboardPage.productTitle')"
                                 :size="smallSize"
                                 :disabled="!isAllowedToCreateProduct"
                                 @click.native="onShowNewProductModal">
@@ -165,30 +165,30 @@ export default {
             return SIZE.SMALL;
         },
         title() {
-            return 'Create your products in 3 simple steps';
+            return this.$t('@Dashboard.dashboard.components.EmptyDashboardPage.title');
         },
         subtitle() {
-            return 'Prepare your products’ experience in Ergonode! First start with the attributes, then configure the product template, and finally start to enrich your product data!';
+            return this.$t('@Dashboard.dashboard.components.EmptyDashboardPage.subtitle');
         },
         firstStep() {
             return {
                 title: '1.',
-                subtitle: 'Start with attributes',
-                description: 'Attributes are the smallest elements that describe your product. For example, it could be a color, description, photo or dimensions.',
+                subtitle: this.$t('@Dashboard.dashboard.components.EmptyDashboardPage.first.subtitle'),
+                description: this.$t('@Dashboard.dashboard.components.EmptyDashboardPage.first.description'),
             };
         },
         secondStep() {
             return {
                 title: '2.',
-                subtitle: 'Configure product template',
-                description: 'Product template is a set of attributes, whose position and size can be freely configured, thanks to that it can reflect your products look.',
+                subtitle: this.$t('@Dashboard.dashboard.components.EmptyDashboardPage.second.subtitle'),
+                description: this.$t('@Dashboard.dashboard.components.EmptyDashboardPage.second.description'),
             };
         },
         thirdStep() {
             return {
                 title: '3.',
-                subtitle: 'Create your products',
-                description: 'Here you can start to enrich your products with data, descriptions, photos and start preparing translations for other languages.',
+                subtitle: this.$t('@Dashboard.dashboard.components.EmptyDashboardPage.third.subtitle'),
+                description: this.$t('@Dashboard.dashboard.components.EmptyDashboardPage.third.description'),
             };
         },
     },
