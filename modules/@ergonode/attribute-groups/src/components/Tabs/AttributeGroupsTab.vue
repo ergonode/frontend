@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import AttributeGroupsGrid from '@Attributes/components/Grids/AttributeGroupsGrid';
+import AttributeGroupsGrid from '@AttributeGroups/components/Grids/AttributeGroupsGrid';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {

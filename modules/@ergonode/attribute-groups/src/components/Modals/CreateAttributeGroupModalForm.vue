@@ -4,12 +4,12 @@
  */
 <template>
     <ModalForm
-        :title="$t('@Attributes.attributeGroup.components.CreateAttributeGroupModalForm.create')"
+        :title="$t('@AttributeGroups.attributeGroup.components.CreateAttributeGroupModalForm.create')"
         @close="onClose">
         <template #body>
             <AttributeGroupForm
-                :submit-title="$t('@Attributes._.create')"
-                :proceed-title="$t('@Attributes._.proceed')"
+                :submit-title="$t('@AttributeGroups._.create')"
+                :proceed-title="$t('@AttributeGroups._.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :scope="scope"
@@ -22,10 +22,10 @@
 </template>
 
 <script>
-import AttributeGroupForm from '@Attributes/components/Forms/AttributeGroupForm';
+import AttributeGroupForm from '@AttributeGroups/components/Forms/AttributeGroupForm';
 import {
     ROUTE_NAME,
-} from '@Attributes/config/routes';
+} from '@AttributeGroups/config/routes';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -99,7 +99,7 @@ export default {
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('@Attributes.attributeGroup.components.CreateAttributeGroupModalForm.createSuccess'),
+                message: this.$t('@AttributeGroups.attributeGroup.components.CreateAttributeGroupModalForm.createSuccess'),
             });
 
             this.isSubmitting = false;

@@ -10,7 +10,7 @@
         :searchable="true"
         :multiselect="multiselect"
         :clearable="clearable"
-        :label="$t('@Attributes.attributeGroup.components.AttributeGroupsAutocomplete.groupLabel')"
+        :label="$t('@AttributeGroups.attributeGroup.components.AttributeGroupsAutocomplete.groupLabel')"
         :custom-fetch-event="attributeGroupCreatedEventName"
         :error-messages="errorMessages"
         :disabled="disabled"
@@ -29,10 +29,10 @@
 </template>
 
 <script>
-import CreateAttributeGroupButton from '@Attributes/components/Buttons/CreateAttributeGroupButton';
+import CreateAttributeGroupButton from '@AttributeGroups/components/Buttons/CreateAttributeGroupButton';
 import {
     ATTRIBUTE_GROUP_CREATED_EVENT_NAME,
-} from '@Attributes/defaults/attributes';
+} from '@AttributeGroups/defaults';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
 
@@ -82,8 +82,8 @@ export default {
         },
         noDataPlaceholder() {
             return {
-                title: this.$t('@Attributes.attributeGroup._.noGroups'),
-                subtitle: this.$t('@Attributes.attributeGroup._.createFirst'),
+                title: this.$t('@AttributeGroups.attributeGroup._.noGroups'),
+                subtitle: this.$t('@AttributeGroups.attributeGroup._.createFirst'),
             };
         },
     },

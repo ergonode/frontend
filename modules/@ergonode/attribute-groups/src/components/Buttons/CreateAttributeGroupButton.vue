@@ -5,7 +5,7 @@
 <template>
     <Button
         data-cy="new-attribute-group"
-        :title="$t('@Attributes.attributeGroup.components.CreateAttributeGroupButton.addButton')"
+        :title="$t('@AttributeGroups.attributeGroup.components.CreateAttributeGroupButton.addButton')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">
@@ -20,10 +20,10 @@
 </template>
 
 <script>
-import PRIVILEGES from '@Attributes/config/privileges';
+import PRIVILEGES from '@AttributeGroups/config/privileges';
 import {
     ATTRIBUTE_GROUP_CREATED_EVENT_NAME,
-} from '@Attributes/defaults/attributes';
+} from '@AttributeGroups/defaults';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -35,7 +35,7 @@ export default {
     components: {
         Button,
         IconAdd,
-        CreateAttributeGroupModalForm: () => import('@Attributes/components/Modals/CreateAttributeGroupModalForm'),
+        CreateAttributeGroupModalForm: () => import('@AttributeGroups/components/Modals/CreateAttributeGroupModalForm'),
     },
     data() {
         return {

@@ -25,8 +25,8 @@
         v-bind="extendedProps['grid']">
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('@Attributes.attributeGroup._.noGroups')"
-                :subtitle="$t('@Attributes.attributeGroup._.createFirst')">
+                :title="$t('@AttributeGroups.attributeGroup._.noGroups')"
+                :subtitle="$t('@AttributeGroups.attributeGroup._.createFirst')">
                 <template #action>
                     <CreateAttributeGroupButton />
                 </template>
@@ -36,14 +36,14 @@
 </template>
 
 <script>
-import CreateAttributeGroupButton from '@Attributes/components/Buttons/CreateAttributeGroupButton';
-import PRIVILEGES from '@Attributes/config/privileges';
+import CreateAttributeGroupButton from '@AttributeGroups/components/Buttons/CreateAttributeGroupButton';
+import PRIVILEGES from '@AttributeGroups/config/privileges';
 import {
     ROUTE_NAME,
-} from '@Attributes/config/routes';
+} from '@AttributeGroups/config/routes';
 import {
     ATTRIBUTE_GROUP_CREATED_EVENT_NAME,
-} from '@Attributes/defaults/attributes';
+} from '@AttributeGroups/defaults';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -72,7 +72,7 @@ export default {
     },
     mixins: [
         extendPropsMixin({
-            extendedKey: '@Attributes/components/Grids/AttributeGroupsGrid/props',
+            extendedKey: '@AttributeGroups/components/Grids/AttributeGroupsGrid/props',
             extendedNames: [
                 'grid',
             ],
@@ -148,7 +148,7 @@ export default {
         onRemoveRow() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('@Attributes.attributeGroup.components.AttributeGroupsGrid.deleteSuccess'),
+                message: this.$t('@AttributeGroups.attributeGroup.components.AttributeGroupsGrid.deleteSuccess'),
             });
             this.onFetchData();
         },
@@ -188,7 +188,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: this.$t('@Attributes.attributeGroup.components.AttributeGroupsGrid.getRequest'),
+                message: this.$t('@AttributeGroups.attributeGroup.components.AttributeGroupsGrid.getRequest'),
             });
         },
         onRemoveAllFilters() {

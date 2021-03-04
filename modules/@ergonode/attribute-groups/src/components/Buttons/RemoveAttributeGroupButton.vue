@@ -7,7 +7,7 @@
         data-cy="delete-attribute-group"
         :theme="secondaryTheme"
         :size="smallSize"
-        :title="$t('@Attributes.attributeGroup.components.RemoveAttributeGroupButton.deleteButton')"
+        :title="$t('@AttributeGroups.attributeGroup.components.RemoveAttributeGroupButton.deleteButton')"
         :disabled="!isAllowedToDelete"
         @click.native="onRemove">
         <template #prepend="{ color }">
@@ -17,10 +17,10 @@
 </template>
 
 <script>
-import PRIVILEGES from '@Attributes/config/privileges';
+import PRIVILEGES from '@AttributeGroups/config/privileges';
 import {
     ROUTE_NAME,
-} from '@Attributes/config/routes';
+} from '@AttributeGroups/config/routes';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -63,9 +63,9 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: this.$t('@Attributes.attributeGroup.components.RemoveAttributeGroupButton.deleteTitle'),
-                applyTitle: this.$t('@Attributes._.deleteConfirm'),
-                cancelTitle: this.$t('@Attributes._.cancel'),
+                title: this.$t('@AttributeGroups.attributeGroup.components.RemoveAttributeGroupButton.deleteTitle'),
+                applyTitle: this.$t('@AttributeGroups._.deleteConfirm'),
+                cancelTitle: this.$t('@AttributeGroups._.cancel'),
                 action: () => this.removeAttributeGroup({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
@@ -75,7 +75,7 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('@Attributes.attributeGroup.components.RemoveAttributeGroupButton.deleteSuccess'),
+                message: this.$t('@AttributeGroups.attributeGroup.components.RemoveAttributeGroupButton.deleteSuccess'),
             });
             this.$router.push({
                 name: ROUTE_NAME.ATTRIBUTE_GROUPS_GRID,
@@ -84,7 +84,7 @@ export default {
         onRemoveError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: this.$t('@Attributes.attributeGroup.components.RemoveAttributeGroupButton.deleteRequest'),
+                message: this.$t('@AttributeGroups.attributeGroup.components.RemoveAttributeGroupButton.deleteRequest'),
             });
         },
     },

@@ -7,7 +7,7 @@ import {
     get,
     remove,
     update,
-} from '@Attributes/services/attributeGroup';
+} from '@Attributes/services';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';

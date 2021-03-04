@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar
-            :title="$t('@Attributes.attributeGroup._.title')"
+            :title="$t('@AttributeGroups.attributeGroup._.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <template
@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import CreateAttributeGroupButton from '@Attributes/components/Buttons/CreateAttributeGroupButton';
-import PRIVILEGES from '@Attributes/config/privileges';
+import CreateAttributeGroupButton from '@AttributeGroups/components/Buttons/CreateAttributeGroupButton';
+import PRIVILEGES from '@AttributeGroups/config/privileges';
 import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import Page from '@UI/components/Layout/Page';
@@ -54,10 +54,10 @@ export default {
     ],
     computed: {
         extendedMainAction() {
-            return this.$getExtendSlot('@Attributes/pages/attribute-groups/mainAction');
+            return this.$getExtendSlot('@AttributeGroups/pages/attribute-groups/mainAction');
         },
         extendedModals() {
-            return this.$getExtendSlot('@Attributes/pages/attribute-groups/injectModal');
+            return this.$getExtendSlot('@AttributeGroups/pages/attribute-groups/injectModal');
         },
         isReadOnly() {
             return this.$isReadOnly(
@@ -77,7 +77,7 @@ export default {
     },
     head() {
         return {
-            title: this.$t('@Attributes.attributeGroup._.headTitle'),
+            title: this.$t('@AttributeGroups.attributeGroup._.headTitle'),
         };
     },
 };

@@ -10,7 +10,7 @@
                     <TextField
                         :data-cy="dataCyGenerator(nameKeyField)"
                         :value="translations.name[languageCode]"
-                        :label="$t('@Attributes.attributeGroup.components.AttributeGroupTranslationForm.nameLabel')"
+                        :label="$t('@AttributeGroups.attributeGroup.components.AttributeGroupTranslationForm.nameLabel')"
                         :disabled="!isAllowedToUpdate"
                         :error-messages="translationErrors[nameKeyField]"
                         @input="(value) => setTranslationPropertyValue(value, nameKeyField)" />
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import PRIVILEGES from '@Attributes/config/privileges';
+import PRIVILEGES from '@AttributeGroups/config/privileges';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 import Card from '@UI/components/Card/Card';
 import Divider from '@UI/components/Dividers/Divider';
@@ -58,7 +58,7 @@ export default {
         },
         extendedForm() {
             return this.$extendedForm({
-                key: '@Attributes/components/Forms/AttributeGroupTranslationForm',
+                key: '@AttributeGroups/components/Forms/AttributeGroupTranslationForm',
             });
         },
     },

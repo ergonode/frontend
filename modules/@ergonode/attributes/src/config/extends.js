@@ -12,7 +12,7 @@ import {
 } from '@Attributes/config/routes';
 import {
     TYPES,
-} from '@Attributes/defaults/attributes';
+} from '@Attributes/defaults';
 import {
     createOptionsData,
     getAttributeOptions,

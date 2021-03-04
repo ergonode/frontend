@@ -29,8 +29,8 @@
 </template>
 
 <script>
-import RemoveAttributeGroupButton from '@Attributes/components/Buttons/RemoveAttributeGroupButton';
-import PRIVILEGES from '@Attributes/config/privileges';
+import RemoveAttributeGroupButton from '@AttributeGroups/components/Buttons/RemoveAttributeGroupButton';
+import PRIVILEGES from '@AttributeGroups/config/privileges';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -73,7 +73,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: app.i18n.t('@Attributes.attributeGroup.pages.id.getRequest'),
+                    message: app.i18n.t('@AttributeGroups.attributeGroup.pages.id.getRequest'),
                 });
             },
         });
@@ -83,7 +83,7 @@ export default {
             'code',
         ]),
         extendedMainAction() {
-            return this.$getExtendSlot('@Attributes/pages/attribute-groups/_group/mainAction');
+            return this.$getExtendSlot('@AttributeGroups/pages/attribute-groups/_group/mainAction');
         },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.ATTRIBUTE_GROUP.namespace);
@@ -115,7 +115,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.code} - ${this.$t('@Attributes.attributeGroup._.headTitle')}`,
+            title: `${this.code} - ${this.$t('@AttributeGroups.attributeGroup._.headTitle')}`,
         };
     },
 };

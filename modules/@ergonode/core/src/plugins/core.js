@@ -29,7 +29,7 @@ export default ({
         });
         const sortByOrder = (a, b) => a.order - b.order;
 
-        if (extendedComponents && isObject(extendedComponents)) {
+        if (isObject(extendedComponents)) {
             if (extendedComponents[forAllTypes]) {
                 components.push(...extendedComponents[forAllTypes]);
             }

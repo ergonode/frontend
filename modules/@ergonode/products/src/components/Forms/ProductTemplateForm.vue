@@ -18,7 +18,7 @@
 <script>
 import {
     SCOPE,
-} from '@Attributes/defaults/attributes';
+} from '@Attributes/defaults';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import {
     capitalizeAndConcatenationArray,

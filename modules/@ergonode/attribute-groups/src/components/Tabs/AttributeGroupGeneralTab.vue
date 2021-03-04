@@ -6,7 +6,7 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <AttributeGroupForm
-                :submit-title="$t('@Attributes._.submit')"
+                :submit-title="$t('@AttributeGroups._.submit')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="errors"
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import AttributeGroupForm from '@Attributes/components/Forms/AttributeGroupForm';
+import AttributeGroupForm from '@AttributeGroups/components/Forms/AttributeGroupForm';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -61,7 +61,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('@Attributes.attributeGroup.components.AttributeGroupGeneralTab.updateSuccess'),
+                message: this.$t('@AttributeGroups.attributeGroup.components.AttributeGroupGeneralTab.updateSuccess'),
             });
 
             this.isSubmitting = false;

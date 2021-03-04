@@ -8,7 +8,7 @@ import {
     getAll,
     remove,
     update,
-} from '@Attributes/services/attribute';
+} from '@Attributes/services';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -32,7 +32,6 @@ export default {
         try {
             const {
                 code,
-                groups,
                 type,
                 scope: attributeScope,
             } = state;
@@ -44,7 +43,6 @@ export default {
                 code,
                 scope: attributeScope,
                 type: typeKey,
-                groups,
             };
 
             // EXTENDED BEFORE METHOD
@@ -164,7 +162,6 @@ export default {
                 type,
                 hint = '',
                 label = '',
-                groups: groupIds,
                 scope,
             } = data;
             const translations = {
@@ -183,10 +180,6 @@ export default {
             commit('__SET_STATE', {
                 key: 'scope',
                 value: scope,
-            });
-            commit('__SET_STATE', {
-                key: 'groups',
-                value: groupIds,
             });
             commit('__SET_STATE', {
                 key: 'type',
@@ -227,7 +220,6 @@ export default {
             const {
                 id,
                 type,
-                groups,
                 scope: attributeScope,
             } = state;
             const {
@@ -240,7 +232,6 @@ export default {
             } = rootState.tab;
             const typeKey = getKeyByValue(attrTypes, type);
             let data = {
-                groups,
                 scope: attributeScope,
                 label,
                 hint,

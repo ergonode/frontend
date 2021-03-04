@@ -54,7 +54,7 @@
 import CreateAttributeButton from '@Attributes/components/Buttons/CreateAttributeButton';
 import {
     ATTRIBUTE_CREATED_EVENT_NAME,
-} from '@Attributes/defaults/attributes';
+} from '@Attributes/defaults';
 import AttributeSideBarElement from '@Attributes/extends/attribute/components/SideBars/AttributeSideBarElement';
 import AttributeSideBarGroupElement from '@Attributes/extends/attribute/components/SideBars/AttributeSideBarGroupElement';
 import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';

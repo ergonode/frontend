@@ -1,0 +1,173 @@
+{
+  "@Attributes": {
+    "_": {
+      "submit": "Zapisz zmiany",
+      "create": "Stwórz",
+      "proceed": "Stwórz & Edytuj",
+      "cancel": "Anuluj",
+      "deleteConfirm": "Tak, usuń",
+      "notAssigned": "Nie przypisane"
+    },
+    "attribute": {
+      "_": {
+        "title": "Atrybuty",
+        "headTitle": "Atrybuty - Ergonode",
+        "noAttributes": "Brak atrybutów",
+        "createFirst": "W systemie nie ma atrybutów, stwórz pierwszy."
+      },
+      "components": {
+        "AttributeForm": {
+          "title": "Opcje",
+          "sectionTitle": "Konfiguracja",
+          "typeLabel": "Typ",
+          "nameLabel": "Nazwa systemowa",
+          "nameHint": "Nazwa systemowa musi być unikalna",
+          "scopeLabel": "Zakres",
+          "scopeHint": "Global oznacza że ta sama wartość atrybutu dla każdego języja, będzie odziedziczona po jezyku głownym. Wartości opcji mogą być tłumaczone, ale nie mogą być zmienione w szablonie produktu. "
+        },
+        "AttributeTranslationForm": {
+          "nameLabel": "Nazwa atrybutu",
+          "hintLabel": "Podpowiedź dla pisarzy"
+        },
+        "CreateAttributeButton": {
+          "addButton": "Nowy atrybut"
+        },
+        "RemoveAttributeButton": {
+          "removeButton": "Usuń atrybut",
+          "deleteTitle": "Czy jesteś pewny że chcesz usunąć ten atrybut?",
+          "deleteSuccess": "Atrybut usuniety",
+          "deleteRequest": "Atrybut nie został usunięty"
+        },
+        "UpdateAttributeTranslationButton": {
+          "updateSuccess": "Tłumaczenia atrybutów zostały zaktualizowane"
+        },
+        "AttributesGrid": {
+          "getRequest": "Atrybuty nie zostały pobrane prawidłowo",
+          "deleteSuccess": "Atrybut usuniety"
+        },
+        "CreateAttributeModalForm": {
+          "create": "Stwórz atrybut",
+          "createSuccess": "Atrybut stworzony"
+        },
+        "SystemAttributesSideBar": {
+          "title": "Atrybuty systemowe"
+        },
+        "AttributeGeneralTab": {
+          "updateSuccess": "Atrybut został uaktualniony"
+        }
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Atrybut nie został pobrany prawidłowo"
+        }
+      },
+      "store": {
+        "action": {
+          "createCancel": "Tworzenie atrybutu zostało przerwane",
+          "updateCancel": "Aktualizacja atrybutu została przerwana",
+          "deleteCancel": "Usuwanie atrybutu zostało przerwane"
+        }
+      }
+    },
+    "attributeGroup": {
+      "_": {
+        "title": "Grupy atrybutów",
+        "headTitle": "Grupy atrybutów - Ergonode",
+        "noGroups": "Brak grup atrybutów",
+        "createFirst": "W systemie nie ma grup atrybutów, stwórz pierwszą."
+      },
+      "components": {
+        "AttributeGroupForm": {
+          "title": "Opcje",
+          "nameLabel": "Nazwa systemowa",
+          "nameHint": "Nazwa systemowa musi być unikalna"
+        },
+        "AttributeGroupTranslationForm": {
+          "nameLabel": "Nazwa grupy"
+        },
+        "AttributeGroupsAutocomplete": {
+          "groupLabel": "Grupy"
+        },
+        "CreateAttributeGroupButton": {
+          "addButton": "Nowa grupa atrybutów"
+        },
+        "RemoveAttributeGroupButton": {
+          "deleteButton": "Usuń grupę atrybutów",
+          "deleteTitle": "Czy na pewno chcesz usunąć tę grupę atrybutów?",
+          "deleteSuccess": "Grupa atrybutów usunięta",
+          "deleteRequest": "Grupa atrybutów nie została usunięta"
+        },
+        "UpdateAttributeGroupTranslationButton": {
+          "updateSuccess": "Tłumaczenia grupy atrybutów zostały zaktualizowane"
+        },
+        "AttributeGroupsGrid": {
+          "getRequest": "Grupa atrybutów nie została pobrana prawidłowo",
+          "deleteSuccess": "Grupa atrybutów usunięta"
+        },
+        "CreateAttributeGroupModalForm": {
+          "create": "Stwórz grupę atrybutów",
+          "createSuccess": "Grupa atrybutów została stworzona"
+        },
+        "AttributeGroupGeneralTab": {
+          "updateSuccess": "Grupa atrybutów została zaktualizowana"
+        }
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Grupa atrybutów nie została pobrana prawidłowo"
+        }
+      },
+      "store": {
+        "action": {
+          "updateCancel": "Aktualizacja grupy atrybutów została anulowana",
+          "createCancel": "Tworzenie grupy atrybutów zostało anulowane",
+          "deleteCancel": "Usuwanie grupy atrybutów zostało anulowane"
+        }
+      }
+    },
+    "attributeExtend": {
+      "components": {
+        "AttributeOptionKeyValues": {
+          "addOption": "Dodaj opcję",
+          "optionLabel": "Kod opcji"
+        },
+        "AttributeOptionValues": {
+          "optionTitle": "Wartość opcji"
+        },
+        "AttributeFormParamsToggle": {
+          "richTextLabel": "Wzbogacona zawartość tekstowa włączona"
+        },
+        "AttributeTranslationFormPlaceholder": {
+          "placeholderLabel": "Placeholder"
+        },
+        "AttributesVerticalTab": {
+          "title": "Atrubuty produktu"
+        },
+        "SystemAttributesVerticalTab": {
+          "title": "Atrybuty systemowe"
+        }
+      },
+      "methods": {
+        "optionUniq": "Kod opcji musi być unikalny",
+        "optionEmpty": "Opcja nie może być pusta",
+        "getOptionRequest": "Opcje atrybutu nie zostały pobrane prawidłowo",
+        "configFormat": "Format",
+        "configUnit": "Jednostka",
+        "configCurrency": "Waluta"
+      }
+    },
+    "productTemplate": {
+      "components": {
+        "ProductTemplateFormPresentation": {
+          "title": "Produkt prezentacyjny",
+          "defaultLabel": "Domyślna atrybut etykiety",
+          "defaultImage": "Domyślny atrybut obrazu",
+          "noLabelTitle": "Brak atrybutu takstowego",
+          "noLabelSubtitle": "W systemie nie ma żadnych atrybutów tekstowych, więc można utworzyć pierwszy.",
+          "noImageTitle": "Brak atrybutu obrazu ",
+          "noImageSubtitle": "W systemie nie ma żadnych atrybutów obrazu, więc można utworzyć pierwszy."
+        }
+      }
+    }
+  }
+}

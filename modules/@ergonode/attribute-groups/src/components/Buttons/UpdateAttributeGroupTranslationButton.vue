@@ -9,7 +9,7 @@
         <template #default="{ hasValueToSave }">
             <Button
                 data-cy="submit"
-                :title="$t('@Attributes._.submit')"
+                :title="$t('@AttributeGroups._.submit')"
                 :floating="{ bottom: '24px', right: '24px' }"
                 :disabled="!isAllowedToUpdate"
                 @click.native="onSubmit">
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import PRIVILEGES from '@Attributes/config/privileges';
+import PRIVILEGES from '@AttributeGroups/config/privileges';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -83,7 +83,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('@Attributes.attributeGroup.components.UpdateAttributeGroupTranslationButton.updateSuccess'),
+                message: this.$t('@AttributeGroups.attributeGroup.components.UpdateAttributeGroupTranslationButton.updateSuccess'),
             });
 
             this.isSubmitting = false;

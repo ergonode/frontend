@@ -24,8 +24,8 @@
 
 <script>
 import UpdateAttributeGroupTranslationButton
-    from '@Attributes/components/Buttons/UpdateAttributeGroupTranslationButton';
-import AttributeGroupTranslationForm from '@Attributes/components/Forms/AttributeGroupTranslationForm';
+    from '@AttributeGroups/components/Buttons/UpdateAttributeGroupTranslationButton';
+import AttributeGroupTranslationForm from '@AttributeGroups/components/Forms/AttributeGroupTranslationForm';
 import TranslationsTab from '@Core/components/Tabs/TranslationsTab';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 

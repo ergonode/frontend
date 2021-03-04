@@ -33,7 +33,7 @@
 import {
     SCOPE,
     SYSTEM_TYPES,
-} from '@Attributes/defaults/attributes';
+} from '@Attributes/defaults';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import CheckBox from '@UI/components/CheckBox/CheckBox';

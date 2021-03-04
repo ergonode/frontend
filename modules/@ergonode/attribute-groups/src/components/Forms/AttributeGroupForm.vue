@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        :title="$t('@Attributes.attributeGroup.components.AttributeGroupForm.title')"
+        :title="$t('@AttributeGroups.attributeGroup.components.AttributeGroupForm.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
@@ -22,8 +22,8 @@
                     required
                     :error-messages="errors[codeFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :label="$t('@Attributes.attributeGroup.components.AttributeGroupForm.nameLabel')"
-                    :hint="$t('@Attributes.attributeGroup.components.AttributeGroupForm.nameHint')"
+                    :label="$t('@AttributeGroups.attributeGroup.components.AttributeGroupForm.nameLabel')"
+                    :hint="$t('@AttributeGroups.attributeGroup.components.AttributeGroupForm.nameHint')"
                     @input="setCodeValue" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import PRIVILEGES from '@Attributes/config/privileges';
+import PRIVILEGES from '@AttributeGroups/config/privileges';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import Divider from '@UI/components/Dividers/Divider';
@@ -68,7 +68,7 @@ export default {
         ]),
         extendedForm() {
             return this.$extendedForm({
-                key: '@Attributes/components/Forms/AttributeGroupForm',
+                key: '@AttributeGroups/components/Forms/AttributeGroupForm',
             });
         },
         isDisabled() {
