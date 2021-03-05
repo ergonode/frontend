@@ -111,6 +111,8 @@ export default {
                                         included: ids.length > 0,
                                     },
                                 };
+                            } else {
+                                request.payload.filter = 'all';
                             }
 
                             this.addBatchAction({
