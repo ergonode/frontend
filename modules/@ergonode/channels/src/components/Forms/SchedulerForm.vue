@@ -31,6 +31,7 @@
                     :format="format"
                     :disabled="!isAllowedToUpdate || !isActive"
                     :error-messages="errors[startFieldKey]"
+                    disabled-past
                     required
                     label="Start date"
                     @input="setDateChange" />

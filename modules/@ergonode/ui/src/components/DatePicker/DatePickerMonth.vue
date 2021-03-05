@@ -10,7 +10,7 @@
                 v-for="node in nodes"
                 :key="`${node.year}|${node.month}|${node.day}`"
                 :selected="isSelectedDate(node)"
-                :disabled="node.disabled"
+                :disabled="isDisabled(node)"
                 :within-range="isWithinRange(node)"
                 :current="isCurrentDate(node)"
                 :title="node.day"
@@ -25,6 +25,7 @@ import DatePickerNode from '@UI/components/DatePicker/Node/DatePickerNode';
 import calendar, {
     getParsedDate,
     isEqual,
+    isPastDate,
     WEEK_DAYS,
 } from '@UI/models/calendar';
 import {
@@ -66,6 +67,13 @@ export default {
             type: Number,
             required: true,
         },
+        /**
+         * Determines whether to exclude past dates
+         */
+        disabledPast: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         nodes() {
@@ -95,6 +103,11 @@ export default {
 
             return isEqual(this.parsedValue, date)
                 || (this.parsedRangeValue && isEqual(this.parsedRangeValue, date));
+        },
+        isDisabled(date) {
+            if (this.disabledPast && isPastDate(this.today, date)) return true;
+
+            return date.disabled;
         },
         isCurrentDate(date) {
             return isEqual(this.today, date);
