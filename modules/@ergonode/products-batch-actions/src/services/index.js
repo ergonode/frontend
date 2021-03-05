@@ -10,7 +10,7 @@ export const getTemplates = ({
     params,
     paramsSerializer(paramsToSerialise) {
         if (!paramsToSerialise.ids) {
-            return '';
+            return 'filter=all';
         }
 
         const {
