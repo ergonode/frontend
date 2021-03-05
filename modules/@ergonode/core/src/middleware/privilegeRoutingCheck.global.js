@@ -6,17 +6,19 @@ export default ({
     route, app, error, store,
 }) => {
     const {
-        meta: {
-            privileges = [],
-        },
+        meta = [],
     } = route;
 
-    if (store.state.authentication.token && store.state.authentication.user) {
-        if (privileges.length
-            && !app.$hasAccess(privileges)) {
-            error({
-                statusCode: 403,
-            });
+    if (meta.length) {
+        if (store.state.authentication.token && store.state.authentication.user) {
+            if (meta[0].privileges && meta[0].privileges.read
+                && !app.$hasAccess([
+                    meta[0].privileges.read,
+                ])) {
+                error({
+                    statusCode: 403,
+                });
+            }
         }
     }
 };

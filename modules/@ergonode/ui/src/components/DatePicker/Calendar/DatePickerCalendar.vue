@@ -72,6 +72,13 @@ export default {
             required: true,
             validator: value => Object.values(CALENDAR_TYPE).indexOf(value) !== -1,
         },
+        /**
+         * Determines whether to exclude past dates
+         */
+        disabledPast: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         nodesComponent() {
@@ -84,6 +91,7 @@ export default {
                         rangeValue: this.rangeValue,
                         month: this.month,
                         year: this.year,
+                        disabledPast: this.disabledPast,
                     },
                     listeners: {
                         select: this.onDaySelect,

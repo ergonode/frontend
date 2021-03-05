@@ -19,6 +19,7 @@
             :year="year"
             :years="years"
             :calendar-type="selectedCalendarType"
+            :disabled-past="disabledPast"
             @input="onDateChange"
             @month="onMonthChange"
             @year="onYearChange"
@@ -67,6 +68,13 @@ export default {
         rangeValue: {
             type: Date,
             default: null,
+        },
+        /**
+         * Determines whether to exclude past dates
+         */
+        disabledPast: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {

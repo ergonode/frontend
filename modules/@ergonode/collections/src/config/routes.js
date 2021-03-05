@@ -2,8 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import PRODUCT_PRIVILEGES from '@Products/config/privileges';
-
 import {
     Icons,
     Pages,
@@ -125,9 +123,7 @@ export default [
                             routeName: ROUTE_NAME.COLLECTIONS_GRID,
                         },
                     ],
-                    privileges: [
-                        PRODUCT_PRIVILEGES.PRODUCT.read,
-                    ],
+                    privileges: [],
                 },
             },
         ],

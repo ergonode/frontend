@@ -81,7 +81,7 @@ export default {
             const {
                 name,
                 image_id: imageID,
-                elements,
+                elements = [],
             } = template;
 
             commit('__SET_STATE', {

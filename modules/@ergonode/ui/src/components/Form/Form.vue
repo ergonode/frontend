@@ -62,6 +62,7 @@
                             v-if="isProceedButtonVisible"
                             data-cy="proceed"
                             :title="proceedTitle"
+                            :disabled="disabled"
                             :theme="secondaryTheme"
                             @click.native="onProceed">
                             <template
