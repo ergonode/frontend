@@ -10,9 +10,9 @@
                 v-if="unread > 0"
                 :number="unread" />
         </template>
-        <template #dropdown>
+        <template #dropdown="{ visible }">
             <div class="notifications-dropdown">
-                <NotificationList />
+                <NotificationList :visible="visible" />
             </div>
         </template>
     </ToolBarSelectButton>

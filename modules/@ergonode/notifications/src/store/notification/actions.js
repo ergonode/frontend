@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 import {
+    capitalizeAndConcatenationArray,
+} from '@Core/models/stringWrapper';
+import {
     Components,
 } from '@Notifications/config/imports';
 import {
@@ -76,6 +79,8 @@ export default {
                     params,
                 });
 
+                const extendedSlots = this.$getExtendSlot('@Notifications/components/NotificationList/Item');
+
                 // TODO: Handle types;
 
                 commit('__SET_STATE', {
@@ -83,16 +88,28 @@ export default {
                     value: [
                         ...state.notifications,
                         ...collection.map(({
+                            type,
                             read_at,
                             created_at,
+                            object_id,
                             ...rest
-                        }) => ({
-                            ...rest,
-                            readAt: read_at,
-                            createdAt: created_at,
-                            component: Components.NotificationListItem,
-                            section: ACTION_CENTER_SECTIONS.NOTIFICATIONS,
-                        })),
+                        }) => {
+                            const mappedType = capitalizeAndConcatenationArray(type.split('-'));
+                            let component = Components.NotificationListItem;
+
+                            if (typeof extendedSlots[mappedType] !== 'undefined') {
+                                component = extendedSlots[mappedType];
+                            }
+
+                            return {
+                                ...rest,
+                                readAt: read_at,
+                                createdAt: created_at,
+                                objectId: object_id,
+                                component,
+                                section: ACTION_CENTER_SECTIONS.NOTIFICATIONS,
+                            };
+                        }),
                     ],
                 });
                 commit('__SET_STATE', {
@@ -127,7 +144,7 @@ export default {
 
             commit('__SET_STATE', {
                 key: 'processingNotifications',
-                value: notifications,
+                value: [].concat(...notifications),
             });
 
             await this.$getExtendMethod('@Notifications/store/notification/action/getProcessingNotifications/__after', {

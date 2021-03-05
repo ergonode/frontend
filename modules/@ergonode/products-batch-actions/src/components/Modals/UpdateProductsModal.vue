@@ -207,18 +207,13 @@ export default {
             });
         },
         async onAddItem({
+            index,
             item,
         }) {
-            this.formItems.push(item);
+            try {
+                this.formItems.push(item);
 
-            this.setDisabledElement({
-                languageCode: item.languageCode,
-                elementId: `${item.id}|${item.code}`,
-                disabled: true,
-            });
-
-            if (typeof this.attributes[item.id] === 'undefined') {
-                try {
+                if (typeof this.attributes[item.id] === 'undefined') {
                     this.fetching = {
                         ...this.fetching,
                         [item.id]: true,
@@ -251,14 +246,22 @@ export default {
                     this.fetching = {
                         ...this.fetching,
                     };
-                } catch (e) {
-                    if (!this.app.$axios.isCancel(e)) {
-                        this.$addAlert({
-                            type: ALERT_TYPE.ERROR,
-                            message: this.$t('@ProductsBatchActions.productBatchAction._.getRequest'),
-                        });
-                    }
                 }
+
+                this.setDisabledElement({
+                    languageCode: item.languageCode,
+                    elementId: `${item.id}|${item.code}`,
+                    disabled: true,
+                });
+            } catch (e) {
+                if (!this.app.$axios.isCancel(e)) {
+                    this.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: this.$t('@ProductsBatchActions.productBatchAction._.getRequest'),
+                    });
+                }
+
+                this.formItems.splice(index, 1);
             }
         },
         onRemoveItem(index) {
@@ -279,10 +282,10 @@ export default {
             this.$emit('close');
         },
         async getAttributeComponent(type) {
+            let component = null;
+
             try {
                 const extendedSlots = this.$getExtendSlot('@ProductsBatchActions/components/Forms/Fields');
-
-                let component = null;
 
                 if (extendedSlots && typeof extendedSlots[type] === 'function') {
                     component = await extendedSlots[type]();
@@ -291,15 +294,17 @@ export default {
 
                     component = await import(`@ProductsBatchActions/components/Forms/Fields/Attribute${mappedType}FormField`);
                 }
-
-                this.components[type] = component.default;
             } catch (e) {
+                component = await import('@ProductsBatchActions/components/Forms/Fields/AttributeNotDefinedField');
+
                 this.$addAlert({
                     type: ALERT_TYPE.ERROR,
                     message: this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsModal.getComponent', {
                         info: type,
                     }),
                 });
+            } finally {
+                this.components[type] = component.default;
             }
         },
     },

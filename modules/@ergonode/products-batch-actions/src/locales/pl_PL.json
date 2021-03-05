@@ -35,6 +35,16 @@
           "noAttributesTitle": "Brak atrybutów",
           "noAttributesSubtitle": "Brak wspólnych atrybutów dla wybranych produktów.",
           "notAssigned": "Nie przypisane"
+        },
+        "AttributeNotDefinedField": {
+          "title": "Atrybut dla {info} typu jest nie zdefiniowany."
+        },
+        "ProductBatchActionDetailsGrid": {
+          "detailsLabel": "Data startu",
+          "getRequest": "Szczegóły akcji masowej produktów nie zostały pobrane poprawnie"
+        },
+        "ProductBatchActionDetailsModalGrid": {
+          "title": "Szczegóły"
         }
       }
     }
