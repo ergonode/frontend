@@ -15,7 +15,8 @@
           "markAllAsRead": "Mark all as read"
         },
         "NotificationListItem": {
-          "markAsRead": "Mark as read"
+          "markAsRead": "Mark as read",
+          "seeDetails": "See details"
         },
         "NotificationList": {
           "processingSectionTitle": "Processing",

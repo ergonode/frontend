@@ -462,7 +462,7 @@ export default {
                 id,
             } = state;
 
-            await dispatch(dispatch(
+            await dispatch(
                 'attribute/validateAttributeValue',
                 {
                     id: attributeId,
@@ -472,7 +472,7 @@ export default {
                 {
                     root: true,
                 },
-            ));
+            );
 
             const productStatusData = [
                 {
@@ -681,7 +681,7 @@ export default {
         scope,
     }) {
         try {
-            await dispatch(dispatch(
+            await dispatch(
                 'attribute/validateAttributeValue',
                 {
                     id: elementId,
@@ -691,7 +691,7 @@ export default {
                 {
                     root: true,
                 },
-            ));
+            );
 
             if (rootState.feedback.errors[scope]) {
                 dispatch(

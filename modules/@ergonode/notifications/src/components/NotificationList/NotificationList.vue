@@ -75,6 +75,12 @@ export default {
         Preloader,
         NotificationListNoDataPlaceholder,
     },
+    props: {
+        visible: {
+            type: Boolean,
+            default: false,
+        },
+    },
     async fetch() {
         if (!this.notifications.length) {
             this.isFetchingData = true;
@@ -118,16 +124,23 @@ export default {
                 && this.count > DATA_LIMIT;
         },
     },
-    created() {
-        this.requestProcessingNotifications();
+    watch: {
+        visible: {
+            immediate: true,
+            handler() {
+                if (this.visible) {
+                    this.requestProcessingNotifications();
+                } else {
+                    this.$clearCancelTokens([
+                        AXIOS_CANCEL_TOKEN_PROCESSING_NOTIFICATION_KEY,
+                    ]);
+                    clearTimeout(this.timeout);
+                    this.timeout = null;
+                }
+            },
+        },
     },
     beforeDestroy() {
-        this.$clearCancelTokens([
-            AXIOS_CANCEL_TOKEN_PROCESSING_NOTIFICATION_KEY,
-        ]);
-        clearTimeout(this.timeout);
-        this.timeout = null;
-
         this.__setState({
             key: 'offset',
             value: 0,

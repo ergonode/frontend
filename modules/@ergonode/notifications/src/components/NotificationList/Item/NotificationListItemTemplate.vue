@@ -104,6 +104,9 @@ export default {
         markAsRead() {
             return this.$t('@Notifications.notification.components.NotificationListItem.markAsRead');
         },
+        seeDetails() {
+            return this.$t('@Notifications.notification.components.NotificationListItem.seeDetails');
+        },
         menuItems() {
             const items = [];
 
@@ -111,6 +114,13 @@ export default {
                 items.push({
                     text: this.markAsRead,
                     action: this.onMarkAsRead,
+                });
+            }
+
+            if (this.item.objectId) {
+                items.push({
+                    text: this.seeDetails,
+                    action: this.onSeeDetails,
                 });
             }
 
@@ -123,6 +133,9 @@ export default {
         ]),
         onSelectMenuItem(value) {
             value.action();
+        },
+        onSeeDetails() {
+            this.$emit('details', this.item.objectId);
         },
         onMarkAsRead() {
             this.markNotificationAsRead({

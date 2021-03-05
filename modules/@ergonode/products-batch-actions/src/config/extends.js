@@ -16,6 +16,9 @@ export default {
                 props: {},
             },
         ],
+        '@Notifications/components/NotificationList/Item': {
+            BatchActionEnded: Components.NotificationListBatchActionEndedItem,
+        },
     },
     extendMethods: {
         '@ProductsBatchActions/components/Modals/UpdateProductsModal/verticalTabs': ({

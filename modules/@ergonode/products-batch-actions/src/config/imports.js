@@ -5,6 +5,7 @@
 
 export const Components = {
     ProductsBatchActionsButton: () => import('@ProductsBatchActions/components/Buttons/ProductsBatchActionsButton').then(m => m.default || m),
+    NotificationListBatchActionEndedItem: () => import('@ProductsBatchActions/components/NotificationLists/Items/NotificationListBatchActionEndedItem').then(m => m.default || m),
     AttributesVerticalTab: () => import('@ProductsBatchActions/components/VerticalTabs/AttributesVerticalTab'),
 };
 
