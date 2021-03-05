@@ -7,5 +7,5 @@ export const Pages = {
 };
 
 export const Icons = {
-    Dashboard: () => import('@Core/components/Icons/Menu/IconDashboard'),
+    Dashboard: () => import('@Core/components/Icons/Menu/IconDashboard').then(m => m.default || m),
 };

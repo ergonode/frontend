@@ -47,7 +47,8 @@
       },
       "pages": {
         "id": {
-          "getRequest": "Inherited product hasn't been fetched properly"
+          "getInheritedProductRequest": "Inherited product hasn't been fetched properly",
+          "getProductRequest": "Product hasn't been fetched properly"
         }
       }
     },

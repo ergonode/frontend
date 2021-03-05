@@ -14,5 +14,5 @@ export const Tabs = {
 };
 
 export const Icons = {
-    Flow: () => import('@Core/components/Icons/Menu/IconFlow'),
+    Flow: () => import('@Core/components/Icons/Menu/IconFlow').then(m => m.default || m),
 };
