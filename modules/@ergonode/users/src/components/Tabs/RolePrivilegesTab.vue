@@ -7,13 +7,14 @@
         <template #content>
             <RolePrivilegesGrid
                 :scope="scope"
-                :change-values="changeValues"
-                :errors="errors" />
+                :errors="errors"
+                :change-values="changeValues" />
         </template>
     </CenterViewTemplate>
 </template>
 
 <script>
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import RolePrivilegesGrid from '@Users/components/Grids/RolePrivilegesGrid';
 
@@ -23,19 +24,8 @@ export default {
         RolePrivilegesGrid,
         CenterViewTemplate,
     },
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+    mixins: [
+        tabFeedbackMixin,
+    ],
 };
 </script>
