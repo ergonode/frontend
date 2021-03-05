@@ -23,11 +23,11 @@ export const Tabs = {
 };
 
 export const Icons = {
-    Settings: () => import('@Core/components/Icons/Menu/IconSettings'),
+    Settings: () => import('@Core/components/Icons/Menu/IconSettings').then(m => m.default || m),
 };
 
 export const Components = {
-    GridPrivilegeNameHintDataCell: () => import('@Users/components/Grid/Layout/Table/Cells/Data/GridPrivilegeNameHintDataCell'),
-    GridPrivilegeRowCheckColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeRowCheckColumn'),
-    GridLanguageRowCheckColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridLanguageRowCheckColumn'),
+    GridPrivilegeNameHintDataCell: () => import('@Users/components/Grid/Layout/Table/Cells/Data/GridPrivilegeNameHintDataCell').then(m => m.default || m),
+    GridPrivilegeRowCheckColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeRowCheckColumn').then(m => m.default || m),
+    GridLanguageRowCheckColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridLanguageRowCheckColumn').then(m => m.default || m),
 };

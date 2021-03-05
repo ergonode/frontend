@@ -38,8 +38,8 @@
                     @sticky="onStickyChange" />
                 <template v-for="(column, columnIndex) in orderedColumns">
                     <Component
-                        v-if="extendedComponents.columns[column.type]"
-                        :is="extendedComponents.columns[column.type]"
+                        v-if="columnComponents[column.type]"
+                        :is="columnComponents[column.type]"
                         :style="templateRows"
                         :key="column.id"
                         :index="columnIndex"
@@ -329,6 +329,7 @@ export default {
             orderedColumns: [],
             actionColumns: [],
             columnWidths: [],
+            columnComponents: {},
             dataCellComponents: {},
             actionCellComponents: {},
             dataFilterCellComponents: {},
@@ -563,42 +564,45 @@ export default {
 
             for (let i = 0; i < length; i += 1) {
                 const column = this.visibleColumns[i];
+                const {
+                    type,
+                } = column;
 
-                if (typeof this.columnTypes[column.type] === 'undefined') {
-                    const {
-                        type,
-                    } = column;
+                if (typeof this.extendedComponents.columns[type] !== 'undefined') {
+                    requests.push(this.setExtendedColumn(type));
+                } else {
+                    if (typeof this.columnTypes[type] === 'undefined') {
+                        this.columnTypes[type] = this.getColumnTypeName(column);
 
-                    this.columnTypes[type] = this.getColumnTypeName(column);
-
-                    try {
-                        if (this.extendedComponents.dataCells
-                            && this.extendedComponents.dataCells[type]) {
-                            requests.push(this.setExtendedDataCell(type));
-                        } else {
-                            requests.push(this.setDataCell(type));
+                        try {
+                            if (this.extendedComponents.dataCells
+                                && this.extendedComponents.dataCells[type]) {
+                                requests.push(this.setExtendedDataCell(type));
+                            } else {
+                                requests.push(this.setDataCell(type));
+                            }
+                        } catch (e) {
+                            requests.push(this.setDefaultDataCell(type));
                         }
-                    } catch (e) {
-                        requests.push(this.setDefaultDataCell(type));
                     }
-                }
 
-                if (column.filter && typeof this.filterTypes[column.filter.type] === 'undefined') {
-                    const {
-                        type,
-                    } = column.filter;
+                    if (column.filter && typeof this.filterTypes[column.filter.type] === 'undefined') {
+                        const {
+                            type: filterType,
+                        } = column.filter;
 
-                    this.filterTypes[type] = this.getColumnFilterTypeName(column);
+                        this.filterTypes[filterType] = this.getColumnFilterTypeName(column);
 
-                    try {
-                        if (this.extendedComponents.dataFilterCells
-                            && this.extendedComponents.dataFilterCells[type]) {
-                            requests.push(this.setExtendedFilterDataCell(type));
-                        } else {
-                            requests.push(this.setDataFilterCell(type));
+                        try {
+                            if (this.extendedComponents.dataFilterCells
+                                && this.extendedComponents.dataFilterCells[filterType]) {
+                                requests.push(this.setExtendedFilterDataCell(filterType));
+                            } else {
+                                requests.push(this.setDataFilterCell(filterType));
+                            }
+                        } catch (e) {
+                            requests.push(this.setDefaultDataFilterCell(filterType));
                         }
-                    } catch (e) {
-                        requests.push(this.setDefaultDataFilterCell(type));
                     }
                 }
 
@@ -738,6 +742,11 @@ export default {
         setExtendedDataCell(type) {
             return this.extendedComponents.dataCells[type]().then((response) => {
                 this.dataCellComponents[type] = response;
+            });
+        },
+        setExtendedColumn(type) {
+            return this.extendedComponents.columns[type]().then((response) => {
+                this.columnComponents[type] = response;
             });
         },
         setDataCell(type) {
