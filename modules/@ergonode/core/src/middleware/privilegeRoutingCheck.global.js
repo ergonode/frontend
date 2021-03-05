@@ -10,10 +10,14 @@ export default ({
     } = route;
 
     if (meta.length) {
+        const [
+            item,
+        ] = meta;
+
         if (store.state.authentication.token && store.state.authentication.user) {
-            if (meta[0].privileges && meta[0].privileges.read
+            if (item.privileges && item.privileges.read
                 && !app.$hasAccess([
-                    meta[0].privileges.read,
+                    item.privileges.read,
                 ])) {
                 error({
                     statusCode: 403,
