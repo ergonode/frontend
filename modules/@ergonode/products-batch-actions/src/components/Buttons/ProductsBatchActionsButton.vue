@@ -70,8 +70,7 @@ export default {
     },
     computed: {
         ...mapState('batchAction', {
-            actions: state => state.actions,
-            removeProductsBatchActions: state => state.actions.filter(
+            removeProductsBatchActions: state => state.actionsQueue.filter(
                 batchAction => batchAction.payload.type === BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
             ),
         }),

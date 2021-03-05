@@ -21,8 +21,6 @@ export default {
         } = payload;
 
         try {
-            commit(types.ADD_ACTION_TO_QUEUE, payload);
-
             const {
                 id: actionId,
             } = await create({
@@ -44,6 +42,57 @@ export default {
             });
 
             document.documentElement.dispatchEvent(event);
+        }
+    },
+    async getActionStatus({
+        state,
+        commit,
+    }, action) {
+        const {
+            id,
+            actionId,
+            request,
+        } = action;
+
+        try {
+            const {
+                all_entries,
+                processed_entries,
+            } = await getStatus({
+                $axios: this.app.$axios,
+                id: actionId,
+            });
+
+            if (all_entries === processed_entries) {
+                const event = new CustomEvent(id, {
+                    detail: {
+                        id,
+                        request,
+                    },
+                });
+
+                document.documentElement.dispatchEvent(event);
+
+                commit(
+                    types.REMOVE_ACTION_FROM_QUEUE,
+                    state.actionsQueue.findIndex(actionQueue => actionQueue.id === id),
+                );
+            }
+        } catch (error) {
+            const event = new CustomEvent(id, {
+                detail: {
+                    id,
+                    request,
+                    error,
+                },
+            });
+
+            document.documentElement.dispatchEvent(event);
+
+            commit(
+                types.REMOVE_ACTION_FROM_QUEUE,
+                state.actionsQueue.findIndex(actionQueue => actionQueue.id === id),
+            );
         }
     },
 };

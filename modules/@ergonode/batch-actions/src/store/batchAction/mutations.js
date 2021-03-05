@@ -4,18 +4,14 @@
  */
 export const types = {
     ADD_ACTION_TO_QUEUE: 'ADD_ACTION_TO_QUEUE',
-    REMOVE_BATCH_ACTION: 'REMOVE_BATCH_ACTION',
+    REMOVE_ACTION_FROM_QUEUE: 'REMOVE_ACTION_FROM_QUEUE',
 };
 
 export default {
     [types.ADD_ACTION_TO_QUEUE](state, status) {
         state.actionsQueue.push(status);
     },
-    [types.REMOVE_BATCH_ACTION](state, id) {
-        const index = state.actions.findIndex(
-            action => action.id === id,
-        );
-
-        state.actions.splice(index, 1);
+    [types.REMOVE_ACTION_FROM_QUEUE](state, index) {
+        state.actionsQueue.splice(index, 1);
     },
 };
