@@ -8,17 +8,18 @@ export default ({
     const {
         meta = [],
     } = route;
+    const [
+        item,
+    ] = meta;
 
-    if (meta.length) {
-        if (store.state.authentication.token && store.state.authentication.user) {
-            if (meta[0].privileges && meta[0].privileges.read
+    if (store.state.authentication.token && store.state.authentication.user) {
+        if (item && item.privileges && item.privileges.read
                 && !app.$hasAccess([
-                    meta[0].privileges.read,
+                    item.privileges.read,
                 ])) {
-                error({
-                    statusCode: 403,
-                });
-            }
+            error({
+                statusCode: 403,
+            });
         }
     }
 };
