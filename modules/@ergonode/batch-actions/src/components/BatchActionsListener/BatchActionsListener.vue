@@ -5,6 +5,7 @@
 <script>
 import {
     create,
+    getStatus,
 } from '@BatchActions/services';
 import {
     mapActions,
@@ -16,67 +17,71 @@ export default {
     data() {
         return {
             executingBatchActions: {},
+            statusesBatchActions: {},
         };
     },
-    computed: {
-        ...mapState('batchAction', [
-            'actions',
-        ]),
-    },
-    watch: {
-        actions() {
-            const requests = [];
-
-            this.actions.forEach(({
-                id,
-                request,
-            }) => {
-                if (!this.executingBatchActions[id]) {
-                    let event = null;
-
-                    this.executingBatchActions[id] = true;
-
-                    requests.push(
-                        create({
-                            $axios: this.$axios,
-                            ...request,
-                        }).then(() => {
-                            event = new CustomEvent(id, {
-                                detail: {
-                                    id,
-                                    request,
-                                },
-                            });
-                        }).catch((error) => {
-                            event = new CustomEvent(id, {
-                                detail: {
-                                    id,
-                                    request,
-                                    error,
-                                },
-                            });
-                        }).finally(() => {
-                            const batchActionIndex = this.actions.findIndex(
-                                batchAction => batchAction.id === id,
-                            );
-
-                            this.removeBatchAction(batchActionIndex);
-
-                            delete this.executingBatchActions[id];
-
-                            document.documentElement.dispatchEvent(event);
-                        }),
-                    );
-                }
-            });
-
-            Promise.all(requests);
-        },
-    },
+    // watch: {
+    //     actions() {
+    //         const requests = [];
+    //
+    //         this.actions.forEach(({
+    //             id,
+    //             request,
+    //         }) => {
+    //             if (!this.executingBatchActions[id]) {
+    //                 let event = null;
+    //
+    //                 this.executingBatchActions[id] = true;
+    //
+    //                 requests.push(
+    //                     create({
+    //                         $axios: this.$axios,
+    //                         ...request,
+    //                     }).then(({
+    //                         id: actionId,
+    //                     }) => {
+    //                         // return getStatus({
+    //                         //     $axios: this.$axios,
+    //                         //     id: actionId,
+    //                         // }).then(() => {
+    //                         //     event = new CustomEvent(id, {
+    //                         //         detail: {
+    //                         //             id,
+    //                         //             request,
+    //                         //         },
+    //                         //     });
+    //                         // })
+    //                         // this.statusesBatchActions[actionId] = {};
+    //                     }).catch((error) => {
+    //                         event = new CustomEvent(id, {
+    //                             detail: {
+    //                                 id,
+    //                                 request,
+    //                                 error,
+    //                             },
+    //                         });
+    //                     }).finally(() => {
+    //                         this.removeBatchAction(id);
+    //
+    //                         delete this.executingBatchActions[id];
+    //
+    //                         document.documentElement.dispatchEvent(event);
+    //                     }),
+    //                 );
+    //             }
+    //         });
+    //
+    //         Promise.all(requests);
+    //     },
+    // },
     methods: {
         ...mapActions('batchAction', [
             'removeBatchAction',
+            'updateBatchAction',
         ]),
+        addBatchActionStatusToQueue() {
+
+        },
     },
     render() {
         return this.$slots;

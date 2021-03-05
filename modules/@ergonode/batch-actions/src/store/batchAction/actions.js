@@ -3,18 +3,47 @@
  * See LICENSE for license details.
  */
 import {
+    create,
+    getStatus,
+} from '@BatchActions/services';
+
+import {
     types,
 } from './mutations';
 
 export default {
-    addBatchAction({
+    async addBatchAction({
         commit,
     }, payload) {
-        commit(types.ADD_BATCH_ACTION, payload);
-    },
-    removeBatchAction({
-        commit,
-    }, index) {
-        commit(types.REMOVE_BATCH_ACTION, index);
+        const {
+            id,
+            request,
+        } = payload;
+
+        try {
+            commit(types.ADD_ACTION_TO_QUEUE, payload);
+
+            const {
+                id: actionId,
+            } = await create({
+                $axios: this.app.$axios,
+                ...request,
+            });
+
+            commit(types.ADD_ACTION_TO_QUEUE, {
+                actionId,
+                ...payload,
+            });
+        } catch (error) {
+            const event = new CustomEvent(id, {
+                detail: {
+                    id,
+                    request,
+                    error,
+                },
+            });
+
+            document.documentElement.dispatchEvent(event);
+        }
     },
 };
