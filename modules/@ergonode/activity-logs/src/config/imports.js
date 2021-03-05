@@ -11,5 +11,5 @@ export const Tabs = {
 };
 
 export const Icons = {
-    Settings: () => import('@Core/components/Icons/Menu/IconSettings'),
+    Settings: () => import('@Core/components/Icons/Menu/IconSettings').then(m => m.default || m),
 };

@@ -20,6 +20,6 @@ export const Components = {
 };
 
 export const Icons = {
-    Settings: () => import('@Core/components/Icons/Menu/IconSettings'),
-    IconTranslate: () => import('@UI/components/Icons/Others/IconTranslate'),
+    Settings: () => import('@Core/components/Icons/Menu/IconSettings').then(m => m.default || m),
+    IconTranslate: () => import('@UI/components/Icons/Others/IconTranslate').then(m => m.default || m),
 };

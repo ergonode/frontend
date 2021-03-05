@@ -20,5 +20,5 @@ export const Components = {
 };
 
 export const Icons = {
-    Media: () => import('@Media/components/Icons/IconMedia'),
+    Media: () => import('@Media/components/Icons/IconMedia').then(m => m.default || m),
 };
