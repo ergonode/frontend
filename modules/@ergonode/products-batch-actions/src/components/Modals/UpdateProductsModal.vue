@@ -42,6 +42,8 @@
                         </div>
                     </VerticalFixedScroll>
                     <UpdateProductsButton
+                        :ids="ids"
+                        :excluded-ids="excludedIds"
                         :drafts="values"
                         :change-values="changeValues"
                         @apply="onApplyProductsUpdateBatchAction" />
