@@ -25,11 +25,6 @@ export default {
             default: false,
         },
     },
-    methods: {
-        onValueChange(payload) {
-            this.$emit('input', payload);
-        },
-    },
 };
 </script>
 

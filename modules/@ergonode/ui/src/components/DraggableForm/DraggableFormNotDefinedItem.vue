@@ -23,6 +23,7 @@ export default {
 <style lang="scss" scoped>
     .draggable-form-not-defined-item {
         display: flex;
+        flex: 1;
         justify-content: center;
         align-items: center;
         border: $BORDER_1_GREY;

@@ -104,13 +104,13 @@ export default {
         },
     },
     mounted() {
-        this.onValueChange('');
+        this.onValueChange([]);
     },
     methods: {
         onValueChange(value) {
             this.$emit('input', {
                 key: this.attribute.id,
-                value,
+                value: value.map(option => option.id),
                 languageCode: this.languageCode,
             });
         },

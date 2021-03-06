@@ -110,7 +110,7 @@ export default {
             '__setState',
         ]),
         onRemove() {
-            this.$emit('remove-item', this.index);
+            this.$emit('remove-item', this.item);
         },
         onDragStart(event) {
             if (isMouseOutsideElement(this.$refs.dragIcon.$el, event.x, event.y)) {
