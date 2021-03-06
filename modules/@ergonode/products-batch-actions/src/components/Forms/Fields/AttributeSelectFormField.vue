@@ -4,7 +4,7 @@
  */
 <template>
     <TranslationSelect
-        :value="parsedValue"
+        :value="value"
         :hint="hint"
         :placeholder="placeholder"
         :label="label"

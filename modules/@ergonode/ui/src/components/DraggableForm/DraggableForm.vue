@@ -216,8 +216,8 @@ export default {
 
             event.preventDefault();
         },
-        onRemoveItem(index) {
-            this.$emit('remove-item', index);
+        onRemoveItem(item) {
+            this.$emit('remove-item', item);
         },
         onSwapItems({
             from,

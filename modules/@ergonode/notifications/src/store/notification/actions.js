@@ -81,8 +81,6 @@ export default {
 
                 const extendedSlots = this.$getExtendSlot('@Notifications/components/NotificationList/Item');
 
-                // TODO: Handle types;
-
                 commit('__SET_STATE', {
                     key: 'notifications',
                     value: [

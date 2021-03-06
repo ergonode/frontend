@@ -26,6 +26,7 @@
                                         :is-prefetching-data="fetching[item.id]">
                                         <template #attribute>
                                             <Component
+                                                v-if="attributes[item.id]"
                                                 :is="components[item.type]"
                                                 :value="values[`${item.id}|${item.languageCode}`]"
                                                 :attribute="attributes[item.id]"
@@ -266,15 +267,13 @@ export default {
                 this.formItems.splice(index, 1);
             }
         },
-        onRemoveItem(index) {
-            const item = this.formItems[index];
-
+        onRemoveItem(item) {
             this.removeDisabledElement({
                 languageCode: item.languageCode,
                 elementId: `${item.id}|${item.code}`,
             });
 
-            this.formItems.splice(index, 1);
+            this.formItems = this.formItems.filter(formItem => formItem.id !== item.id);
         },
         onApplyProductsUpdateBatchAction() {
             this.onApply();
