@@ -27,11 +27,10 @@ import GridPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Present
 import GridSuffixPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
 import gridDataCellMixin from '@UI/mixins/grid/gridDataCellMixin';
 import {
-    DEFAULT_DATE_TIME_FORMAT,
+    DEFAULT_FORMAT,
 } from '@UI/models/calendar';
 import {
     format as formatDate,
-    parseISO,
 } from 'date-fns';
 
 export default {
@@ -44,32 +43,35 @@ export default {
         gridDataCellMixin,
     ],
     computed: {
+        format() {
+            if (!(this.column.parameters && this.column.parameters.format)) {
+                return DEFAULT_FORMAT;
+            }
+
+            return this.column.parameters.format;
+        },
         presentationValue() {
             if (!this.cellData.value) {
                 return '';
             }
 
-            let format = DEFAULT_DATE_TIME_FORMAT;
-
-            if (this.column.parameters && this.column.parameters.format) {
-                format = this.column.parameters.format;
-            }
-
-            return formatDate(parseISO(this.cellData.value), format);
+            return formatDate(new Date(this.cellData.value), this.format);
         },
     },
     methods: {
         onEditCell() {
+            const value = this.cellData.value
+                ? new Date(this.cellData.value)
+                : null;
+
             this.$emit('edit-cell', {
                 type: this.column.type,
                 props: {
                     bounds: this.$el.getBoundingClientRect(),
-                    value: this.presentationValue,
+                    value,
                     row: this.rowIndex,
                     column: this.columnIndex,
-                    format: this.column.parameters && this.column.parameters.format
-                        ? this.column.parameters.format
-                        : DEFAULT_DATE_TIME_FORMAT,
+                    format: this.format,
                     disabled: this.isLocked,
                     rowId: this.rowId,
                     columnId: this.column.id,
