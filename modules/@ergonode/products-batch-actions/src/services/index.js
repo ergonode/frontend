@@ -8,8 +8,8 @@ export const getTemplates = ({
     params,
 }) => $axios.$get('batch-action/templates', {
     params,
-    paramsSerializer(paramsToSerialise) {
-        if (!paramsToSerialise.ids) {
+    paramsSerializer(paramsToSerialize) {
+        if (!paramsToSerialize.ids) {
             return 'filter=all';
         }
 
@@ -18,7 +18,7 @@ export const getTemplates = ({
                 list = [],
                 included = false,
             },
-        } = paramsToSerialise;
+        } = paramsToSerialize;
 
         const filters = [];
 

@@ -172,7 +172,9 @@ export default {
                 $axios: this.$axios,
                 path: `${languageCode}/attributes/groups`,
                 languageCode,
-                onSuccess: groups => this.onFetchGroupsSuccess({
+                onSuccess: ({
+                    groups,
+                }) => this.onFetchGroupsSuccess({
                     groups,
                     items,
                     languageCode,
