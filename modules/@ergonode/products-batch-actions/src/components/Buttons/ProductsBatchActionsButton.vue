@@ -18,6 +18,9 @@
 <script>
 import BatchActionsButton from '@BatchActions/components/Buttons/BatchActionsButton';
 import {
+    getCount,
+} from '@BatchActions/services';
+import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
@@ -78,18 +81,18 @@ export default {
             return {
                 label: this.$t('@ProductsBatchActions.productBatchAction.components.ProductsBatchActions.deleteBatchActionLabel'),
                 action: ({
-                    ids,
-                    excludedIds,
+                    selectedRowsCount,
+                    filter,
                     onApply,
                 }) => {
                     this.$confirm({
                         type: MODAL_TYPE.DESTRUCTIVE,
                         title: this.$t('@ProductsBatchActions.productBatchAction.components.ProductsBatchActions.confirmTitle', {
-                            info: ids.length,
+                            info: selectedRowsCount,
                         }),
                         subtitle: this.$t('@ProductsBatchActions.productBatchAction.components.ProductsBatchActions.confirmSubtitle'),
                         applyTitle: this.$t('@ProductsBatchActions.productBatchAction.components.ProductsBatchActions.confirmApplyTitle', {
-                            info: ids.length,
+                            info: selectedRowsCount,
                         }),
                         action: () => {
                             onApply();
@@ -103,15 +106,8 @@ export default {
                                 },
                             };
 
-                            if (ids.length || excludedIds.length) {
-                                request.payload.filter = {
-                                    ids: {
-                                        list: ids.length > 0 ? ids : excludedIds,
-                                        included: ids.length > 0,
-                                    },
-                                };
-                            } else {
-                                request.payload.filter = 'all';
+                            if (filter) {
+                                request.payload.filter = filter;
                             }
 
                             this.addBatchAction({
@@ -135,12 +131,14 @@ export default {
                     ids,
                     excludedIds,
                     selectedRowsCount,
+                    filter,
                     onApply,
                 }) => {
                     this.updatingProductsPayload = {
                         ids,
                         excludedIds,
-                        selectedProductsCount: selectedRowsCount,
+                        selectedRowsCount,
+                        filter,
                         onApply,
                     };
                 },
@@ -191,11 +189,30 @@ export default {
         ...mapActions('batchAction', [
             'addBatchAction',
         ]),
-        onActionSelect(option) {
+        getFilter({
+            ids = [], excludedIds = [],
+        }) {
+            let filter = {};
+
+            if (ids.length || excludedIds.length) {
+                filter = {
+                    ids: {
+                        list: ids.length > 0 ? ids : excludedIds,
+                        included: ids.length > 0,
+                    },
+                };
+            } else {
+                filter = 'all';
+            }
+
+            return filter;
+        },
+        async onActionSelect(option) {
             const payload = {
                 ids: [],
                 excludedIds: [],
-                selectedRowsCount: this.selectedRowsCount,
+                selectedRowsCount: 0,
+                filter: null,
                 onApply: this.onClearSelectedRows,
             };
 
@@ -210,6 +227,20 @@ export default {
                     payload.excludedIds.push(key);
                 }
             });
+
+            payload.filter = this.getFilter({
+                ids: payload.ids,
+                excludedIds: payload.excludedIds,
+            });
+
+            const {
+                count,
+            } = await getCount({
+                $axios: this.$axios,
+                params: payload.filter,
+            });
+
+            payload.selectedRowsCount = count;
 
             option.action(payload);
         },

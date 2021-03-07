@@ -2,6 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import {
+    paramsSerializer,
+} from '@BatchActions/models/paramsSerializer';
 
 export const create = ({
     $axios,
@@ -14,3 +17,11 @@ export const getStatus = ({
     $axios,
     id,
 }) => $axios.$get(`batch-action/${id}`);
+
+export const getCount = ({
+    $axios,
+    params,
+}) => $axios.$get('batch-action/count', {
+    params,
+    paramsSerializer,
+});

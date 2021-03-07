@@ -25,6 +25,9 @@
 
 <script>
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
 import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
@@ -57,13 +60,16 @@ export default {
             type: Object,
             default: () => ({}),
         },
-        ids: {
-            type: Array,
-            default: () => [],
+        filter: {
+            type: [
+                Object,
+                String,
+            ],
+            required: true,
         },
-        excludedIds: {
-            type: Array,
-            default: () => [],
+        selectedRowsCount: {
+            type: Number,
+            default: 0,
         },
     },
     computed: {
@@ -123,6 +129,15 @@ export default {
             const tmp = {};
             const payload = [];
 
+            if (!keys.length) {
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.emptyAttributes'),
+                });
+
+                return false;
+            }
+
             keys.forEach((key) => {
                 const [
                     id,
@@ -148,27 +163,34 @@ export default {
                 href: 'batch-action',
                 payload: {
                     type: BATCH_ACTION_TYPE.UPDATE_PRODUCTS,
+                    filter: this.filter,
                     payload,
                 },
             };
 
-            if (this.ids.length || this.excludedIds.length) {
-                request.payload.filter = {
-                    ids: {
-                        list: this.ids.length > 0 ? this.ids : this.excludedIds,
-                        included: this.ids.length > 0,
-                    },
-                };
-            } else {
-                request.payload.filter = 'all';
-            }
+            this.$confirm({
+                type: MODAL_TYPE.DESTRUCTIVE,
+                title: this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.confirmCountTitle', {
+                    count: this.selectedRowsCount,
+                }),
+                subtitle: this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.confirmCountSubtitle', {
+                    count: this.selectedRowsCount,
+                }),
+                applyTitle: this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.confirmCountApplyPlural', {
+                    count: this.selectedRowsCount,
+                }),
+                cancelTitle: this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsButton.confirmCancel'),
+                action: () => {
+                    this.addBatchAction({
+                        id: uuid,
+                        request,
+                    });
 
-            this.addBatchAction({
-                id: uuid,
-                request,
+                    this.$emit('apply');
+                },
             });
 
-            this.$emit('apply');
+            return true;
         },
     },
 };
