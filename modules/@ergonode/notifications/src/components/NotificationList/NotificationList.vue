@@ -10,7 +10,7 @@
             <NotificationListExpandingSection
                 v-if="processingNotifications.length"
                 :title="$t('@Notifications.notification.components.NotificationList.processingSectionTitle')"
-                :notifications-count="processingSectionNotificationsCount">
+                :notifications-count="processingNotifications.length">
                 <template #body>
                     <Component
                         v-for="notification in processingNotifications"
@@ -109,11 +109,6 @@ export default {
             'notifications',
             'count',
         ]),
-        processingSectionNotificationsCount() {
-            return this.processingNotifications.reduce(
-                (prev, curr) => prev + curr.length, 0,
-            );
-        },
         isMoreNotifications() {
             const {
                 length: listLength,
