@@ -67,24 +67,24 @@
                     v-mask="minuteMask"
                     @input="setMinuteChange" />
             </FormSection>
-            <FormSection title="Start date and time">
+            <FormSection v-if="isInformation">
                 <Divider />
-                <DatePicker
-                    :value="date"
-                    :placeholder="format"
-                    :format="format"
-                    :disabled="!isAllowedToUpdate"
-                    :error-messages="errors[startFieldKey]"
-                    required
-                    label="Start date"
-                    @input="setDateChange" />
-                <TextField
-                    :value="time"
-                    :disabled="!isAllowedToUpdate"
-                    :input="timeInputType"
-                    required
-                    label="Start time"
-                    @input="setTimeChange" />
+                <Paragraph
+                    class="scheduler-form-paragraph"
+                    :title="formParagraphInformation">
+                    <template #prepend>
+                        <IconInfo
+                            :fill-color="blueColor"
+                            :width="20"
+                            :height="20" />
+                    </template>
+                    <template #recurence>
+                        <b>{{ recurenceInfo || 'one time' }}</b>
+                    </template>
+                    <template #dateTime>
+                        <b>{{ dataTime }}</b>.
+                    </template>
+                </Paragraph>
             </FormSection>
         </template>
     </Form>
@@ -102,6 +102,7 @@ import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import FormSubsection from '@UI/components/Form/Subsection/FormSubsection';
+import IconInfo from '@UI/components/Icons/Feedback/IconInfo';
 import Paragraph from '@UI/components/Paragraph/Paragraph';
 import TextField from '@UI/components/TextField/TextField';
 import Toggler from '@UI/components/Toggler/Toggler';
@@ -131,6 +132,7 @@ export default {
         TextField,
         Toggler,
         Divider,
+        IconInfo,
         Paragraph,
     },
     mixins: [
