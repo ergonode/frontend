@@ -10,7 +10,9 @@
                 :size="smallSize"
                 autofocus
                 :placeholder="format"
+                :disabled="disabled"
                 :format="format"
+                :error-messages="errorMessages"
                 @focus="onFocus" />
         </GridSelectEditContentCell>
     </GridEditNavigationCell>
@@ -18,30 +20,27 @@
 
 <script>
 import {
-    FILTER_OPERATOR,
-} from '@Core/defaults/operators';
-import {
     SIZE,
 } from '@Core/defaults/theme';
 import DatePicker from '@UI/components/DatePicker/DatePicker';
 import GridSelectEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
-import gridEditFilterCellMixin from '@UI/mixins/grid/gridEditFilterCellMixin';
+import gridEditCellMixin from '@UI/mixins/grid/gridEditCellMixin';
 import {
+    DEFAULT_DATE_TIME_FORMAT,
     DEFAULT_FORMAT,
 } from '@UI/models/calendar';
 import {
     format as formatDate,
-    parse as parseDate,
 } from 'date-fns';
 
 export default {
-    name: 'GridDateEditFilterCell',
+    name: 'GridDateTimeEditCell',
     components: {
         GridSelectEditContentCell,
         DatePicker,
     },
     mixins: [
-        gridEditFilterCellMixin,
+        gridEditCellMixin,
     ],
     props: {
         /**
@@ -49,7 +48,7 @@ export default {
          */
         format: {
             type: String,
-            default: DEFAULT_FORMAT,
+            default: DEFAULT_DATE_TIME_FORMAT,
         },
         /**
          * Date value
@@ -63,14 +62,8 @@ export default {
         },
     },
     data() {
-        let localValue = null;
-
-        if (this.value[FILTER_OPERATOR.EQUAL]) {
-            localValue = parseDate(this.value[FILTER_OPERATOR.EQUAL], this.format, new Date());
-        }
-
         return {
-            localValue,
+            localValue: this.value,
         };
     },
     computed: {
@@ -79,17 +72,20 @@ export default {
         },
     },
     beforeDestroy() {
-        const localValue = this.localValue ? formatDate(this.localValue, DEFAULT_FORMAT) : '';
+        if (!this.disabled) {
+            const localValue = this.localValue ? formatDate(this.localValue, DEFAULT_FORMAT) : '';
 
-        if (localValue !== this.value[FILTER_OPERATOR.EQUAL]) {
-            this.$emit('filter-value', {
-                value: {
-                    [FILTER_OPERATOR.EQUAL]: localValue,
-                },
-                columnId: this.columnId,
-                row: this.row,
-                column: this.column,
-            });
+            if (localValue !== this.value) {
+                this.$emit('cell-value', [
+                    {
+                        value: localValue,
+                        rowId: this.rowId,
+                        columnId: this.columnId,
+                        row: this.row,
+                        column: this.column,
+                    },
+                ]);
+            }
         }
     },
     methods: {
