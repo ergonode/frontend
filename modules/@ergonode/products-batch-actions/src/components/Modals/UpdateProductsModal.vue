@@ -43,8 +43,8 @@
                         </div>
                     </VerticalFixedScroll>
                     <UpdateProductsButton
-                        :ids="ids"
-                        :excluded-ids="excludedIds"
+                        :filter="filter"
+                        :selected-rows-count="selectedRowsCount"
                         :drafts="values"
                         :change-values="changeValues"
                         @apply="onApplyProductsUpdateBatchAction" />
@@ -104,7 +104,14 @@ export default {
             type: Array,
             default: () => [],
         },
-        selectedProductsCount: {
+        filter: {
+            type: [
+                Object,
+                String,
+            ],
+            required: true,
+        },
+        selectedRowsCount: {
             type: Number,
             default: 0,
         },
@@ -126,7 +133,7 @@ export default {
     computed: {
         title() {
             return this.$t('@ProductsBatchActions.productBatchAction.components.UpdateProductsModal.title', {
-                info: this.selectedProductsCount,
+                info: this.selectedRowsCount,
             });
         },
     },

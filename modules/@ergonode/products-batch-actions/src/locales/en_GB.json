@@ -13,6 +13,10 @@
           "confirmSubtitle": "Saving an empty attribute will clear its value in all edited products.",
           "confirmApplySingular": "Clear 1 attribute",
           "confirmApplyPlural": "Clear {info} attributes",
+          "emptyAttributes": "No selected attributes",
+          "confirmCountTitle": "Processing of {count} products",
+          "confirmCountSubtitle": "Are you sure you want to run a batch action for {count} products?",
+          "confirmCountApplyPlural": "Process {count} products",
           "confirmCancel": "Cancel"
         },
         "UpdateProductsModal": {
