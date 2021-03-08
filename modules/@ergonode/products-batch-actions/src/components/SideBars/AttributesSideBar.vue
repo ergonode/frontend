@@ -49,6 +49,9 @@ import {
     UNASSIGNED_GROUP_ID,
 } from '@Core/defaults/list';
 import {
+    arraysAreEqual,
+} from '@Core/models/arrayWrapper';
+import {
     deepClone,
 } from '@Core/models/objectWrapper';
 import {
@@ -168,6 +171,10 @@ export default {
             items,
             languageCode,
         }) {
+            const filteredItems = items.filter(({
+                templates,
+            }) => arraysAreEqual(templates, this.templateIds));
+
             await getGroups({
                 $axios: this.$axios,
                 path: `${languageCode}/attributes/groups`,
@@ -176,7 +183,7 @@ export default {
                     groups,
                 }) => this.onFetchGroupsSuccess({
                     groups,
-                    items,
+                    items: filteredItems,
                     languageCode,
                 }),
             });
