@@ -35,7 +35,7 @@ import {
 } from 'date-fns';
 
 export default {
-    name: 'GridDateEditFilterCell',
+    name: 'GridDateTimeEditFilterCell',
     components: {
         GridSelectEditContentCell,
         DatePicker,
@@ -50,16 +50,6 @@ export default {
         format: {
             type: String,
             default: DEFAULT_FORMAT,
-        },
-        /**
-         * Date value
-         */
-        value: {
-            type: [
-                Date,
-                Object,
-            ],
-            default: null,
         },
     },
     data() {
