@@ -27,7 +27,18 @@ const setI18nLanguage = async ({
 
         i18n.locale = languageCode;
     } catch (e) {
-        console.error(e);
+        console.warn(`No translation file for language ${languageCode}`);
+
+        languageCode = DEFAULT_LANGUAGE_CODE;
+
+        if (!languages.includes(languageCode)) {
+            const messages = await import(`@/.nuxt/locales/${languageCode}`);
+
+            languages.push(languageCode);
+            i18n.setLocaleMessage(languageCode, messages);
+        }
+
+        i18n.locale = languageCode;
     }
 };
 
