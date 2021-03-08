@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## CHANGELOG FOR v1.0.0-rc.1
+- feature [#755](https://github.com/ergonode/frontend/pull/755) Batch actions (derpdead)
+- feature [#757](https://github.com/ergonode/frontend/pull/757) Datetime advanced filter type (derpdead)
+- bugfix [#731](https://github.com/ergonode/frontend/pull/731) Support for cancelable specifics request, clear cancelabl (derpdead)
+- bugfix [#732](https://github.com/ergonode/frontend/pull/732) Stabilisation products and Grid (derpdead)
+- bugfix [#737](https://github.com/ergonode/frontend/pull/737) Attribute params (derpdead)
+- bugfix [#739](https://github.com/ergonode/frontend/pull/739) DatePicker, role privileges fixes (bleto)
+- bugfix [#745](https://github.com/ergonode/frontend/pull/745) Fix components imports (bleto)
+- bugfix [#758](https://github.com/ergonode/frontend/pull/758) Filter attribute by templates for batch-actions (bleto)
+- bugfix [#759](https://github.com/ergonode/frontend/pull/759) i18n fix default language (bleto)
+
 
 ## CHANGELOG FOR v1.0.0-beta.9
 - feature [#669](https://github.com/ergonode/frontend/pull/669) Categories sidebar (derpdead)
