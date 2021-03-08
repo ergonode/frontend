@@ -96,7 +96,7 @@ export default {
             if (!this.value) return 'Pick a date';
 
             const day = this.value.getDate();
-            const month = this.value.getMonth();
+            const month = this.value.getMonth() + 1;
             const year = this.value.getFullYear();
 
             switch (this.selectedCalendarType) {
