@@ -49,9 +49,6 @@ import {
     UNASSIGNED_GROUP_ID,
 } from '@Core/defaults/list';
 import {
-    arraysAreEqual,
-} from '@Core/models/arrayWrapper';
-import {
     deepClone,
 } from '@Core/models/objectWrapper';
 import {
@@ -173,7 +170,7 @@ export default {
         }) {
             const filteredItems = items.filter(({
                 templates,
-            }) => arraysAreEqual(templates, this.templateIds));
+            }) => this.templateIds.every(template => templates.includes(template)));
 
             await getGroups({
                 $axios: this.$axios,
