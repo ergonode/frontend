@@ -168,6 +168,10 @@ export default {
             items,
             languageCode,
         }) {
+            const filteredItems = items.filter(({
+                templates,
+            }) => this.templateIds.every(template => templates.includes(template)));
+
             await getGroups({
                 $axios: this.$axios,
                 path: `${languageCode}/attributes/groups`,
@@ -176,7 +180,7 @@ export default {
                     groups,
                 }) => this.onFetchGroupsSuccess({
                     groups,
-                    items,
+                    items: filteredItems,
                     languageCode,
                 }),
             });
