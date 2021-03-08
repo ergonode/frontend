@@ -13,8 +13,7 @@
 </template>
 
 <script>
-import ProductBatchActionDetailsGrid
-    from '@Modules/@ergonode/products-batch-actions/src/components/Grids/ProductBatchActionDetailsGrid';
+import ProductBatchActionDetailsGrid from '@ProductsBatchActions/components/Grids/ProductBatchActionDetailsGrid';
 import ModalGrid from '@UI/components/Modal/ModalGrid';
 
 export default {
