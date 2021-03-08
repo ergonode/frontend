@@ -102,9 +102,11 @@ export default {
         },
     },
     methods: {
-        onSelectValue() {
+        onSelectValue(event) {
             if (this.isOptionValid || (!this.isOptionValid && !this.value.disabled)) {
                 this.$emit('input', this.index);
+            } else {
+                event.stopPropagation();
             }
         },
     },

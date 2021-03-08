@@ -7,7 +7,8 @@
         :disabled="disabled"
         :draggable-id="item.type"
         :label="item.label"
-        @drag="onDrag">
+        @drag-start="onDragStart"
+        @drag-end="onDragEnd">
         <ListElementIcon>
             <IconFontSize />
         </ListElementIcon>
@@ -19,6 +20,9 @@
 </template>
 
 <script>
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 import IconFontSize from '@UI/components/Icons/Editor/IconFontSize';
 import ListDraggableElement from '@UI/components/List/ListDraggableElement';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
@@ -53,12 +57,24 @@ export default {
         ...mapActions('draggable', [
             '__setState',
         ]),
-        onDrag(isDragged) {
+        onDragStart() {
+            this.__setState({
+                key: 'isElementDragging',
+                value: DRAGGED_ELEMENT.LIST,
+            });
             this.__setState({
                 key: 'draggedElement',
-                value: isDragged
-                    ? this.item.type
-                    : null,
+                value: this.item.type,
+            });
+        },
+        onDragEnd() {
+            this.__setState({
+                key: 'isElementDragging',
+                value: null,
+            });
+            this.__setState({
+                key: 'draggedElement',
+                value: null,
             });
         },
     },

@@ -16,6 +16,9 @@
     },
     "product": {
       "components": {
+        "UpdateProductsButton": {
+          "alertSuccess": "Produkty zostały zaktualizowane"
+        },
         "RestoreForm": {
           "modalTitle": "Wybierz atrybuty, których wartości chcesz przywrócić z {from} do wartości dziedziczonej w ({to})"
         },
@@ -83,7 +86,12 @@
     },
     "batchAction": {
       "components": {
+        "UpdateProductsModal": {
+          "title": "Edytowanie {info} produktów"
+        },
         "ProductsBatchActions": {
+          "deleteBatchActionLabel": "Usuń produkty",
+          "editBatchActionLabel": "Edytuj produkty",
           "confirmTitle": "Czy jesteś pewień usunięcia permamentnie {info} produktów?",
           "confirmSubtitle": "Produkty będą usunięte z systemu bez odwrotnie i nie będą mogłby być przywrócone.",
           "confirmApplyTitle": "USUŃ {info} PRODUKTY",

@@ -3,18 +3,96 @@
  * See LICENSE for license details.
  */
 import {
+    create,
+    getStatus,
+} from '@BatchActions/services';
+
+import {
     types,
 } from './mutations';
 
 export default {
-    addBatchAction({
+    async addBatchAction({
         commit,
     }, payload) {
-        commit(types.ADD_BATCH_ACTION, payload);
+        const {
+            id,
+            request,
+        } = payload;
+
+        try {
+            const {
+                id: actionId,
+            } = await create({
+                $axios: this.app.$axios,
+                ...request,
+            });
+
+            commit(types.ADD_ACTION_TO_QUEUE, {
+                actionId,
+                ...payload,
+            });
+        } catch (error) {
+            const event = new CustomEvent(id, {
+                detail: {
+                    id,
+                    request,
+                    error,
+                },
+            });
+
+            document.documentElement.dispatchEvent(event);
+        }
     },
-    removeBatchAction({
+    async getActionStatus({
+        state,
         commit,
-    }, index) {
-        commit(types.REMOVE_BATCH_ACTION, index);
+    }, action) {
+        const {
+            id,
+            actionId,
+            request,
+        } = action;
+
+        try {
+            const {
+                all_entries,
+                processed_entries,
+            } = await getStatus({
+                $axios: this.app.$axios,
+                id: actionId,
+            });
+
+            if (all_entries === processed_entries) {
+                const event = new CustomEvent(id, {
+                    detail: {
+                        id,
+                        request,
+                    },
+                });
+
+                document.documentElement.dispatchEvent(event);
+
+                commit(
+                    types.REMOVE_ACTION_FROM_QUEUE,
+                    state.actionsQueue.findIndex(actionQueue => actionQueue.id === id),
+                );
+            }
+        } catch (error) {
+            const event = new CustomEvent(id, {
+                detail: {
+                    id,
+                    request,
+                    error,
+                },
+            });
+
+            document.documentElement.dispatchEvent(event);
+
+            commit(
+                types.REMOVE_ACTION_FROM_QUEUE,
+                state.actionsQueue.findIndex(actionQueue => actionQueue.id === id),
+            );
+        }
     },
 };

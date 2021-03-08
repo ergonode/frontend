@@ -51,6 +51,16 @@ export default {
             type: String,
             default: DEFAULT_FORMAT,
         },
+        /**
+         * Date value
+         */
+        value: {
+            type: [
+                Date,
+                Object,
+            ],
+            default: null,
+        },
     },
     data() {
         let localValue = null;

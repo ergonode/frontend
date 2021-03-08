@@ -27,7 +27,7 @@ export default {
         },
     ],
     extendMethods: {
-        '@Notifications/store/notification/action/getProcessingNotifications': async ({
+        '@Notifications/store/notification/action/getProcessingNotifications/__before': async ({
             $this,
         }) => {
             const isAllowedToRead = $this.$hasAccess([
@@ -54,21 +54,7 @@ export default {
                 cancelToken: source.token,
             });
 
-            const successNotifications = {
-                component: Components.NotificationListExportSuccessItem,
-                notifications: [],
-                section: ACTION_CENTER_SECTIONS.NOTIFICATIONS,
-            };
-            const warningNotifications = {
-                component: Components.NotificationListExportWarningItem,
-                notifications: [],
-                section: ACTION_CENTER_SECTIONS.NOTIFICATIONS,
-            };
-            const processingNotifications = {
-                component: Components.NotificationListExportProcessingItem,
-                notifications: [],
-                section: ACTION_CENTER_SECTIONS.PROCESSING,
-            };
+            const notifications = [];
 
             exportStatuses.forEach((notification) => {
                 const {
@@ -76,22 +62,18 @@ export default {
                 } = notification;
 
                 if (status === 'PRECESSED') {
-                    processingNotifications.notifications.push({
+                    notifications.push({
                         ...notification,
                         createdAt: notification.started_at,
                         readAt: false,
                         message: `Exporting "${notification.name}"`,
+                        section: ACTION_CENTER_SECTIONS.PROCESSING,
+                        component: Components.NotificationListExportProcessingItem,
                     });
                 }
             });
 
-            return [
-                successNotifications,
-                warningNotifications,
-                processingNotifications,
-            ].filter(({
-                notifications,
-            }) => notifications.length > 0);
+            return notifications;
         },
     },
 };

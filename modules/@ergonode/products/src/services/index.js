@@ -47,16 +47,6 @@ export const update = ({
     data,
 }) => $axios.$put(`products/${id}`, data);
 
-export const validateValue = ({
-    $axios,
-    id,
-    attributeId,
-    languageCode,
-    data,
-}) => $axios.$post(`${languageCode}/products/${id}/attribute/${attributeId}/validate`, data, {
-    withLanguage: false,
-});
-
 export const updateValues = ({
     $axios,
     data,

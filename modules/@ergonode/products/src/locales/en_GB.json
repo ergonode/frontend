@@ -16,6 +16,9 @@
     },
     "product": {
       "components": {
+        "UpdateProductsButton": {
+          "alertSuccess": "Products have been updated"
+        },
         "RestoreForm": {
           "modalTitle": "Select attributes which values you want to restore from {from} to parent translation ({to})"
         },
@@ -86,7 +89,12 @@
     },
     "batchAction": {
       "components": {
+        "UpdateProductsModal": {
+          "title": "Editing {info} products"
+        },
         "ProductsBatchActions": {
+          "deleteBatchActionLabel": "Delete products",
+          "editBatchActionLabel": "Edit products",
           "confirmTitle": "Are you sure you want to permanently delete {info} products?",
           "confirmSubtitle": "The products will be deleted from the system forever and cannot be restored.",
           "confirmApplyTitle": "DELETE {info} PRODUCTS",

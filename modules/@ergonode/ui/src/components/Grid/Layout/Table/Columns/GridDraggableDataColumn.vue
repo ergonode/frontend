@@ -53,7 +53,7 @@
                 :is-disabled="disabledRows[rowIds[rowIndex]]"
                 :is-locked="!(column.editable && isEditable)"
                 :is-copyable="column.editable && isEditable && !disabledRows[rowIds[rowIndex]]"
-                :is-selected="selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
+                :is-selected="getSelectedRowState(rowIndex)"
                 @cell-value="onCellValueChange"
                 @edit-cell="onEditCell" />
         </GridColumn>
@@ -171,6 +171,13 @@ export default {
             default: () => ({}),
         },
         /**
+         * The map of rows excluded from selection
+         */
+        excludedFromSelectionRows: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
          * Determines if filters are visible
          */
         isBasicFilter: {
@@ -183,6 +190,13 @@ export default {
         isEditable: {
             type: Boolean,
             default: true,
+        },
+        /**
+         * Determines if every row should be selected
+         */
+        isSelectedAll: {
+            type: Boolean,
+            default: false,
         },
     },
     computed: {
@@ -214,6 +228,10 @@ export default {
         },
         onEditCell(payload) {
             this.$emit('edit-cell', payload);
+        },
+        getSelectedRowState(index) {
+            return this.selectedRows[this.rowIds[index]]
+                || (this.isSelectedAll && !this.excludedFromSelectionRows[this.rowIds[index]]);
         },
     },
 };

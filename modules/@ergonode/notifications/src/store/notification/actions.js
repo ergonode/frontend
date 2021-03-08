@@ -2,13 +2,21 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-
+import {
+    capitalizeAndConcatenationArray,
+} from '@Core/models/stringWrapper';
+import {
+    Components,
+} from '@Notifications/config/imports';
+import {
+    ACTION_CENTER_SECTIONS,
+} from '@Notifications/defaults';
 import {
     check,
     getAll,
     update,
     updateAll,
-} from '@Notifications/services/index';
+} from '@Notifications/services';
 
 import {
     types,
@@ -71,19 +79,35 @@ export default {
                     params,
                 });
 
+                const extendedSlots = this.$getExtendSlot('@Notifications/components/NotificationList/Item');
+
                 commit('__SET_STATE', {
                     key: 'notifications',
                     value: [
                         ...state.notifications,
                         ...collection.map(({
+                            type,
                             read_at,
                             created_at,
+                            object_id,
                             ...rest
-                        }) => ({
-                            ...rest,
-                            readAt: read_at,
-                            createdAt: created_at,
-                        })),
+                        }) => {
+                            const mappedType = capitalizeAndConcatenationArray(type.split('-'));
+                            let component = Components.NotificationListItem;
+
+                            if (typeof extendedSlots[mappedType] !== 'undefined') {
+                                component = extendedSlots[mappedType];
+                            }
+
+                            return {
+                                ...rest,
+                                readAt: read_at,
+                                createdAt: created_at,
+                                objectId: object_id,
+                                component,
+                                section: ACTION_CENTER_SECTIONS.NOTIFICATIONS,
+                            };
+                        }),
                     ],
                 });
                 commit('__SET_STATE', {
@@ -112,16 +136,17 @@ export default {
         onError = () => {},
     }) {
         try {
-            const notifications = await this.$getExtendMethod('@Notifications/store/notification/action/getProcessingNotifications', {
+            const notifications = await this.$getExtendMethod('@Notifications/store/notification/action/getProcessingNotifications/__before', {
                 $this: this,
             });
 
             commit('__SET_STATE', {
                 key: 'processingNotifications',
-                value: notifications.reduce((prev, curr) => [
-                    ...prev,
-                    ...curr,
-                ], []),
+                value: [].concat(...notifications),
+            });
+
+            await this.$getExtendMethod('@Notifications/store/notification/action/getProcessingNotifications/__after', {
+                $this: this,
             });
 
             onSuccess();

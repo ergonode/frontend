@@ -19,12 +19,12 @@
                 <slot name="prependHeader" />
             </template>
             <template #actions>
-                <BatchActionButton
-                    v-if="isBatchActionVisible"
-                    :highlighted="isAnyRowSelected"
-                    :options="batchActions"
-                    @action="onBatchActionSelect" />
-                <slot name="actionsHeader" />
+                <slot
+                    name="actionsHeader"
+                    :selected-rows="selectedRows"
+                    :excluded-from-selection-rows="excludedFromSelectionRows"
+                    :selected-rows-count="selectedRowsCount"
+                    :on-clear-selected-rows="onClearSelectedRows" />
             </template>
             <template #configuration>
                 <slot name="headerConfiguration" />
@@ -54,12 +54,14 @@
                         :pagination="pagination"
                         :row-height="tableLayoutConfig.rowHeight"
                         :extended-components="extendedComponents[gridLayout.TABLE]"
-                        :selected-rows="selectedRows[pagination.page]"
+                        :selected-rows="selectedRows"
+                        :excluded-from-selection-rows="excludedFromSelectionRows"
                         :is-prefetching-data="isPrefetchingData"
                         :is-layout-resolved="isLayoutResolved[layout]"
                         :is-editable="isEditable"
                         :is-select-column="isSelectColumn"
                         :is-basic-filter="isBasicFilter"
+                        :is-selected-all="isSelectedAll"
                         @sort-column="onSortColumn"
                         @filter="onFilterChange"
                         @cell-value="onCellValueChange"
@@ -67,7 +69,9 @@
                         @row-action="onRowAction"
                         @remove-column="onRemoveColumn"
                         @swap-columns="onSwapColumns"
-                        @row-select="onRowSelect"
+                        @rows-select="onRowsSelect"
+                        @excluded-rows-select="onExcludedRowsSelect"
+                        @select-all="onSelectAllRows"
                         @resolved="onResolvedLayout" />
                     <GridCollectionLayout
                         v-else
@@ -128,7 +132,6 @@ import {
 import {
     getUUID,
 } from '@Core/models/stringWrapper';
-import BatchActionButton from '@UI/components/Grid/Buttons/BatchActionButton';
 import AddGridColumnDropZone from '@UI/components/Grid/DropZone/AddGridColumnDropZone';
 import GridPageSelector from '@UI/components/Grid/Footer/GridPageSelector';
 import GridPagination from '@UI/components/Grid/Footer/GridPagination';
@@ -156,7 +159,6 @@ export default {
         GridTableLayout,
         GridCollectionLayout,
         GridPageSelector,
-        BatchActionButton,
     },
     props: {
         /**
@@ -214,13 +216,6 @@ export default {
         pagination: {
             type: Object,
             default: DEFAULT_GRID_PAGINATION,
-        },
-        /**
-         * The list of batch actions
-         */
-        batchActions: {
-            type: Array,
-            default: () => [],
         },
         /**
          * Determines default layout of Grid
@@ -322,6 +317,8 @@ export default {
                 rowHeight: ROW_HEIGHT.SMALL,
             },
             selectedRows: {},
+            excludedFromSelectionRows: {},
+            isSelectedAll: false,
             isLayoutResolved: {
                 [GRID_LAYOUT.TABLE]: false,
                 [GRID_LAYOUT.COLLECTION]: false,
@@ -358,19 +355,20 @@ export default {
                 return getUUID();
             });
         },
-        isAnyRowSelected() {
-            if (!this.selectedRows[this.pagination.page]) {
-                return false;
+        selectedRowsCount() {
+            if (this.isSelectedAll) {
+                const {
+                    length: excludedRows,
+                } = Object.keys(this.excludedFromSelectionRows)
+                    .filter(key => this.excludedFromSelectionRows[key]);
+
+                return this.dataCount - excludedRows;
             }
 
-            return Object.values(this.selectedRows[this.pagination.page])
-                .some(isSelected => isSelected);
+            return Object.keys(this.selectedRows).filter(key => this.selectedRows[key]).length;
         },
         isAnyFilter() {
             return Object.keys(this.filters).length > 0;
-        },
-        isBatchActionVisible() {
-            return this.batchActions.length > 0;
         },
         isListElementDragging() {
             return this.isElementDragging === DRAGGED_ELEMENT.LIST;
@@ -409,42 +407,35 @@ export default {
         onRemoveAllFilters() {
             this.$emit('remove-all-filters');
         },
-        onBatchActionSelect(option) {
-            if (Object.keys(this.selectedRows[this.pagination.page]).length > 0) {
-                let {
-                    rowIds,
-                } = this;
+        onRowsSelect({
+            isSelected,
+            rowIds,
+        }) {
+            rowIds.forEach((rowId) => {
+                this.selectedRows[rowId] = isSelected;
+            });
 
-                const rowsOffset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
-                const fixedIndex = rowsOffset + (this.isBasicFilter ? 2 : 1);
-
-                rowIds = [];
-
-                Object.keys(this.selectedRows[this.pagination.page]).forEach((key) => {
-                    rowIds.push(this.rowIds[+key - fixedIndex]);
-                });
-
-                option.action({
-                    payload: {
-                        rowIds,
-                    },
-                    onSuccess: () => {
-                        this.selectedRows = {
-                            ...this.selectedRows,
-                            [this.pagination.page]: {},
-                        };
-                    },
-                    onError: () => {
-                        throw new Error('Mass action is either without defined an action nor is not valid');
-                    },
-                });
-            }
-        },
-        onRowSelect(selectedRows) {
             this.selectedRows = {
                 ...this.selectedRows,
-                [this.pagination.page]: selectedRows,
             };
+        },
+        onExcludedRowsSelect({
+            isExcluded,
+            rowIds,
+        }) {
+            rowIds.forEach((rowId) => {
+                this.excludedFromSelectionRows[rowId] = isExcluded;
+            });
+
+            this.excludedFromSelectionRows = {
+                ...this.excludedFromSelectionRows,
+            };
+        },
+        onSelectAllRows(isSelectedAll) {
+            this.isSelectedAll = isSelectedAll;
+
+            this.selectedRows = {};
+            this.excludedFromSelectionRows = {};
         },
         onApplySettings({
             tableConfig,
@@ -499,6 +490,11 @@ export default {
                     itemsPerPage: number,
                 });
             }
+        },
+        onClearSelectedRows() {
+            this.isSelectedAll = false;
+            this.selectedRows = {};
+            this.excludedFromSelectionRows = {};
         },
     },
 };

@@ -24,7 +24,6 @@ import {
     removeValues,
     update,
     updateValues,
-    validateValue,
 } from '@Products/services/index';
 
 import {
@@ -450,6 +449,7 @@ export default {
     },
     async updateProductStatus({
         state,
+        dispatch,
     }, {
         attributeId,
         value,
@@ -461,17 +461,18 @@ export default {
             const {
                 id,
             } = state;
-            const data = {
-                value,
-            };
 
-            await validateValue({
-                $axios: this.app.$axios,
-                id,
-                attributeId,
-                languageCode,
-                data,
-            });
+            await dispatch(
+                'attribute/validateAttributeValue',
+                {
+                    id: attributeId,
+                    languageCode,
+                    value,
+                },
+                {
+                    root: true,
+                },
+            );
 
             const productStatusData = [
                 {
@@ -675,23 +676,22 @@ export default {
     }, {
         languageCode,
         fieldKey,
-        productId,
         elementId,
         value,
         scope,
     }) {
         try {
-            const data = {
-                value,
-            };
-
-            await validateValue({
-                $axios: this.app.$axios,
-                id: productId,
-                attributeId: elementId,
-                languageCode,
-                data,
-            });
+            await dispatch(
+                'attribute/validateAttributeValue',
+                {
+                    id: elementId,
+                    languageCode,
+                    value,
+                },
+                {
+                    root: true,
+                },
+            );
 
             if (rootState.feedback.errors[scope]) {
                 dispatch(

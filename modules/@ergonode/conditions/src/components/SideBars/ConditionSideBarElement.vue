@@ -7,7 +7,8 @@
         :draggable-id="item.id"
         :disabled="disabled"
         :label="item.name"
-        @drag="onDrag">
+        @drag-start="onDragStart"
+        @drag-end="onDragEnd">
         <ListElementDescription>
             <ListElementTitle :title="item.name" />
         </ListElementDescription>
@@ -15,6 +16,9 @@
 </template>
 
 <script>
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 import {
     getUUID,
 } from '@Core/models/stringWrapper';
@@ -46,17 +50,29 @@ export default {
         ...mapActions('draggable', [
             '__setState',
         ]),
-        onDrag(isDragged) {
+        onDragStart() {
+            this.__setState({
+                key: 'isElementDragging',
+                value: DRAGGED_ELEMENT.LIST,
+            });
             this.__setState({
                 key: 'draggedElement',
-                value: isDragged
-                    ? {
-                        id: getUUID(),
-                        type: this.item.id,
-                        name: this.item.name,
-                        code: this.item.code,
-                    }
-                    : null,
+                value: {
+                    id: getUUID(),
+                    type: this.item.id,
+                    name: this.item.name,
+                    code: this.item.code,
+                },
+            });
+        },
+        onDragEnd() {
+            this.__setState({
+                key: 'isElementDragging',
+                value: null,
+            });
+            this.__setState({
+                key: 'draggedElement',
+                value: null,
             });
         },
     },

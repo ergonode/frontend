@@ -41,8 +41,8 @@ export default {
          * The validation errors
          */
         errors: {
-            type: Object,
-            default: () => ({}),
+            type: String,
+            default: '',
         },
     },
     data() {

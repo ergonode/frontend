@@ -31,8 +31,8 @@ export default {
         position: relative;
         display: grid;
         grid-template-rows: max-content;
-        row-gap: 12px;
-        column-gap: 16px;
+        grid-template-columns: 1fr max-content;
+        grid-gap: 12px 16px;
         align-items: center;
         padding: 12px;
 

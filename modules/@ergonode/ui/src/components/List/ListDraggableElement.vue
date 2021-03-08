@@ -18,16 +18,10 @@
 
 <script>
 import {
-    DRAGGED_ELEMENT,
-} from '@Core/defaults/grid';
-import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '@Core/models/layout/ElementCopy';
 import IconDragDrop from '@UI/components/Icons/Actions/IconDragDrop';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'ListDraggableElement',
@@ -81,9 +75,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('draggable', [
-            '__setState',
-        ]),
         onDragStart(event) {
             addElementCopyToDocumentBody({
                 event,
@@ -93,22 +84,14 @@ export default {
 
             this.isDragged = true;
 
-            this.__setState({
-                key: 'isElementDragging',
-                value: DRAGGED_ELEMENT.LIST,
-            });
-            this.$emit('drag', true);
+            this.$emit('drag-start', true);
         },
         onDragEnd(event) {
             removeElementCopyFromDocumentBody(event);
 
             this.isDragged = false;
 
-            this.__setState({
-                key: 'isElementDragging',
-                value: null,
-            });
-            this.$emit('drag', false);
+            this.$emit('drag-end', false);
         },
     },
 };

@@ -13,7 +13,7 @@
             </template>
             <template #actions>
                 <ToolBarUserButton />
-                <template v-for="(component, index) in extendedNavigationBar">
+                <template v-for="(component, index) in extendedToolBar">
                     <Component
                         :is="component.component"
                         :key="index"
@@ -24,6 +24,12 @@
         <NavigationSideBar @expand="onExpandNavigationSideBar" />
         <AppMain>
             <slot />
+            <template v-for="(component, index) in extendedAppMain">
+                <Component
+                    :is="component.component"
+                    :key="index"
+                    v-bind="component.props" />
+            </template>
             <FlashMessages />
         </AppMain>
         <Component
@@ -61,7 +67,6 @@ export default {
     },
     data() {
         return {
-            executingBatchActions: {},
             breadcrumbs: [],
             isExpandedNavigationSideBar: true,
         };
@@ -70,9 +75,6 @@ export default {
         ...mapState('core', [
             'modals',
         ]),
-        ...mapState('batchAction', [
-            'batchActions',
-        ]),
         navigationBarPosition() {
             return {
                 top: 0,
@@ -80,74 +82,24 @@ export default {
                 right: 0,
             };
         },
-        extendedNavigationBar() {
-            return this.$getExtendSlot('@Core/layouts/default/navigationBar');
+        extendedToolBar() {
+            return this.$getExtendSlot('@Core/layouts/default/toolBar');
+        },
+        extendedAppMain() {
+            return this.$getExtendSlot('@Core/layouts/default/appMain');
         },
     },
     watch: {
         $route() {
             this.breadcrumbs = this.$route.meta.breadcrumbs || [];
         },
-        batchActions() {
-            const request = [];
-
-            this.batchActions.forEach(({
-                id,
-                href,
-                type,
-                payload,
-            }) => {
-                if (!this.executingBatchActions[id]) {
-                    let event = null;
-
-                    this.executingBatchActions[id] = true;
-
-                    request.push(
-                        this.$axios.$post(href, {
-                            type,
-                            ...payload,
-                        }).then(() => {
-                            event = new CustomEvent(id, {
-                                detail: {
-                                    id,
-                                    payload,
-                                },
-                            });
-                        }).catch((error) => {
-                            event = new CustomEvent(id, {
-                                detail: {
-                                    id,
-                                    error,
-                                },
-                            });
-                        }).finally(() => {
-                            delete this.executingBatchActions[id];
-
-                            document.documentElement.dispatchEvent(event);
-                        }),
-                    );
-                }
-            });
-
-            Promise.all(request);
-        },
     },
     created() {
         this.breadcrumbs = this.$route.meta.breadcrumbs || [];
     },
-    mounted() {
-        this.setRequestTimeout();
-    },
-    beforeDestroy() {
-        this.invalidateRequestTimeout();
-    },
     methods: {
         ...mapActions('core', [
             'removeModal',
-        ]),
-        ...mapActions('notification', [
-            'setRequestTimeout',
-            'invalidateRequestTimeout',
         ]),
         onCloseModal(index) {
             this.removeModal(index);

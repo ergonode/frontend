@@ -146,7 +146,8 @@
     "@ergonode/status-transitions": "local",
     "@ergonode/users": "local",
     "@ergonode/import": "local",
-    "@ergonode/batch-actions": "local"
+    "@ergonode/batch-actions": "local",
+    "@ergonode/products-batch-actions": "local"
   },
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": true
