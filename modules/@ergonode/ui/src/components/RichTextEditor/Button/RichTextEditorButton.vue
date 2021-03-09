@@ -8,7 +8,7 @@
         :theme="secondaryTheme"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
-        @click.native="commandCallback">
+        @mousedown.native.prevent="commandCallback">
         <template #icon>
             <Component
                 :is="iconComponent"

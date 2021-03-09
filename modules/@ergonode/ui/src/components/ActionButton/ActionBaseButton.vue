@@ -7,7 +7,7 @@
         <div
             class="action-base-button__activator"
             ref="activator"
-            @click="onClick"
+            @mousedown="onMouseDown"
             @mouseenter="onMouseEnter"
             @mouseleave="onMouseLeave">
             <slot name="button" />
@@ -17,14 +17,14 @@
             :parent-reference="$refs.activator"
             :fixed="fixedContent"
             :visible="isFocused"
-            @click-outside="onClickOutside">
+            @click-outside="onMouseDownOutside">
             <List>
                 <ListElement
                     v-for="(option, index) in options"
                     :key="index"
                     :size="smallSize"
                     :disabled="option.disabled"
-                    @click.native.prevent="event => onSelectedValue(event, index)">
+                    @mousedown.native.prevent="event => onSelectedValue(event, index)">
                     <slot
                         name="option"
                         :option="option">
@@ -133,12 +133,21 @@ export default {
             this.isHovered = false;
             this.$emit('hover', false);
         },
-        onClick() {
+        onMouseDown(event) {
+            event.preventDefault();
+
             this.isFocused = !this.isFocused;
         },
-        onClickOutside({
+        onMouseDownOutside({
+            event,
             isClickedOutside,
         }) {
+            const isClickedInsideActivator = this.$refs.activator.contains(event.target);
+
+            if (isClickedInsideActivator) {
+                return;
+            }
+
             if (isClickedOutside || (this.dismissible && !isClickedOutside)) {
                 this.isFocused = false;
             }
