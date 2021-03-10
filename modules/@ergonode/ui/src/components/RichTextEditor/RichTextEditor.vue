@@ -14,14 +14,12 @@
         :alignment="alignment"
         :size="size"
         :details-label="informationLabel"
-        @mousedown="onMouseDown"
-        @mouseup="onMouseUp">
+        @mousedown="onMouseDown">
         <template #activator>
             <RichTextEditorMenuBubble
                 v-if="!disabled"
                 :editor="editor"
-                ref="menuBubble"
-                @active="onMenuBubbleActive" />
+                ref="menuBubble" />
             <slot name="prepend" />
             <InputController :size="size">
                 <ResizeObserver @resize="onResize">
@@ -60,7 +58,6 @@
         </template>
         <RichTextEditorMenu
             v-if="!isSolidType"
-            ref="menu"
             :type="type"
             :editor="editor"
             :editor-width="editorWidth" />
@@ -93,6 +90,7 @@ import {
     Blockquote,
     Bold,
     BulletList,
+    HardBreak,
     Heading,
     History,
     HorizontalRule,
@@ -260,6 +258,7 @@ export default {
                 new Bold(),
                 new Italic(),
                 new Underline(),
+                new HardBreak(),
                 new Blockquote(),
                 new OrderedList(),
                 new HorizontalRule(),
@@ -294,17 +293,19 @@ export default {
         this.editor.destroy();
     },
     methods: {
+        onMouseDown(event) {
+            if (!this.isFocused) {
+                event.preventDefault();
+
+                this.editor.focus();
+            }
+        },
         onResize(entry) {
             const {
                 width,
             } = entry.contentRect;
 
             this.editorWidth = width;
-        },
-        onMenuBubbleActive(isActive) {
-            if (!this.isFocused) {
-                this.isFocused = isActive;
-            }
         },
         onFocus({
             event,
@@ -319,8 +320,6 @@ export default {
             this.isFocused = true;
         },
         onBlur() {
-            this.isFocused = false;
-
             if (!this.disabled) {
                 // TODO:
                 // It will be fixed in +2.0 tiptap
@@ -333,26 +332,8 @@ export default {
 
                 this.$emit('blur', html);
             }
-        },
-        onMouseDown(event) {
-            if (this.disabled) {
-                return;
-            }
 
-            const isClickedInsideEditor = this.$refs.editorContent.$el.contains(event.target);
-
-            if (!isClickedInsideEditor) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-        },
-        onMouseUp() {
-            if (this.disabled) {
-                return;
-            }
-
-            this.editor.focus();
-            this.isFocused = true;
+            this.isFocused = false;
         },
     },
 };
