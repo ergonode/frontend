@@ -7,6 +7,7 @@
         :is="component"
         :data-cy="dataCyGenerator"
         :column="columnIndex"
+        :row-id="rowId"
         :row="rowIndex"
         :href="action.href"
         :disabled="disabled"
@@ -18,6 +19,16 @@
 export default {
     name: 'GridActionCell',
     props: {
+        /**
+         * Unique row identifier
+         */
+        rowId: {
+            type: [
+                String,
+                Number,
+            ],
+            required: true,
+        },
         /**
          * The component of action cell
          */

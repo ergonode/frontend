@@ -4,10 +4,12 @@
  */
 <template>
     <GridActionColumn>
-        <GridTableCell
-            :row="rowsOffset"
-            :column="columnsOffset"
-            :locked="true" />
+        <template #header>
+            <GridTableCell
+                :row="rowsOffset"
+                :column="columnsOffset"
+                :locked="true" />
+        </template>
         <GridTableCell
             v-if="isBasicFilter"
             :row="rowsOffset + basicFiltersOffset"
@@ -19,6 +21,7 @@
             :component="actionCellComponents[column.id]"
             :column-index="columnsOffset"
             :column="column"
+            :row-id="rowIds[rowIndex]"
             :action="row._links.value[column.id]"
             :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
             :disabled="disabledRows[rowIds[rowIndex]]"

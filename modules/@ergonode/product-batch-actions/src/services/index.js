@@ -4,7 +4,7 @@
  */
 import {
     paramsSerializer,
-} from '@BatchActions/models/paramsSerializer';
+} from '@BatchActions/models/batchActionMapper';
 
 export const getTemplates = ({
     $axios,

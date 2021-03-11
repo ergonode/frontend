@@ -30,6 +30,16 @@ export default {
     },
     props: {
         /**
+         * Unique row identifier
+         */
+        rowId: {
+            type: [
+                String,
+                Number,
+            ],
+            required: true,
+        },
+        /**
          * Determines if component is selected
          */
         selected: {
@@ -87,7 +97,7 @@ export default {
 
                             this.$emit('action', {
                                 key: 'delete',
-                                value: null,
+                                value: this.rowId,
                             });
                         } catch (e) {
                             if (this.$axios.isCancel(e)) {

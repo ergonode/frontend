@@ -60,6 +60,28 @@ export function getDraftsBasedOnCellValues(cellValues) {
     }, {});
 }
 
+export function getFilterQueryParams({
+    filter = '',
+    advancedFilter = '',
+
+}) {
+    let mappedFilter = '';
+
+    if (advancedFilter) {
+        mappedFilter = advancedFilter;
+    }
+
+    if (filter) {
+        if (mappedFilter) {
+            mappedFilter += filter;
+        } else {
+            mappedFilter = filter;
+        }
+    }
+
+    return mappedFilter;
+}
+
 export function getParams({
     $route,
     $cookies,
@@ -69,8 +91,6 @@ export function getParams({
         query: {
             page = DEFAULT_PAGE,
             itemsPerPage = DATA_LIMIT,
-            filter = '',
-            advancedFilter = '',
             field = '',
             order = '',
         },
@@ -83,16 +103,10 @@ export function getParams({
         columns: $cookies.get(`GRID_CONFIG:${$route.name}`) || defaultColumns,
     };
 
-    if (advancedFilter) {
-        params.filter = advancedFilter;
-    }
+    const mappedFilter = getFilterQueryParams($route.query);
 
-    if (filter) {
-        if (params.filter) {
-            params.filter += filter;
-        } else {
-            params.filter = filter;
-        }
+    if (mappedFilter) {
+        params.filter = mappedFilter;
     }
 
     if (field) {

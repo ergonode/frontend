@@ -27,6 +27,16 @@ export default {
     },
     props: {
         /**
+         * Unique row identifier
+         */
+        rowId: {
+            type: [
+                String,
+                Number,
+            ],
+            required: true,
+        },
+        /**
          * Determines if component is selected
          */
         selected: {

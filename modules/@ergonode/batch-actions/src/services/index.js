@@ -4,7 +4,7 @@
  */
 import {
     paramsSerializer,
-} from '@BatchActions/models/paramsSerializer';
+} from '@BatchActions/models/batchActionMapper';
 
 export const create = ({
     $axios,
@@ -12,11 +12,6 @@ export const create = ({
     href,
     payload,
 }) => $axios[type](href, payload);
-
-export const getStatus = ({
-    $axios,
-    id,
-}) => $axios.$get(`batch-action/${id}`);
 
 export const getCount = ({
     $axios,

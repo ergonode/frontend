@@ -18,6 +18,9 @@
 <script>
 import BatchActionsButton from '@BatchActions/components/Buttons/BatchActionsButton';
 import {
+    getFilter,
+} from '@BatchActions/models/batchActionMapper';
+import {
     getCount,
 } from '@BatchActions/services';
 import {
@@ -27,15 +30,11 @@ import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
 import {
-    getUUID,
-} from '@Core/models/stringWrapper';
-import {
     BATCH_ACTION_TYPE,
 } from '@ProductBatchActions/defaults';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -45,6 +44,10 @@ export default {
         UpdateProductsModal: () => import('@ProductBatchActions/components/Modals/UpdateProductsModal'),
     },
     props: {
+        query: {
+            type: String,
+            default: '',
+        },
         selectedRows: {
             type: Object,
             default: () => ({}),
@@ -61,10 +64,6 @@ export default {
             type: Function,
             default: () => {},
         },
-        onFetchData: {
-            type: Function,
-            default: () => {},
-        },
     },
     data() {
         return {
@@ -72,11 +71,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('batchAction', {
-            removeProductsBatchActions: state => state.actionsQueue.filter(
-                batchAction => batchAction.payload.type === BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
-            ),
-        }),
         removeBatchActionItem() {
             return {
                 label: this.$t('@ProductBatchActions.productBatchAction.components.ProductsBatchActions.deleteBatchActionLabel'),
@@ -97,7 +91,6 @@ export default {
                         action: () => {
                             onApply();
 
-                            const uuid = getUUID();
                             const request = {
                                 type: '$post',
                                 href: 'batch-action',
@@ -111,14 +104,10 @@ export default {
                             }
 
                             this.addBatchAction({
-                                id: uuid,
                                 request,
+                                onSuccess: this.onAddProductsBatchActionSuccess,
+                                onError: this.onAddProductsBatchActionError,
                             });
-
-                            document.documentElement.addEventListener(
-                                uuid,
-                                this.onRemoveProductsBatchAction,
-                            );
                         },
                     });
                 },
@@ -128,15 +117,11 @@ export default {
             return {
                 label: this.$t('@ProductBatchActions.productBatchAction.components.ProductsBatchActions.editBatchActionLabel'),
                 action: ({
-                    ids,
-                    excludedIds,
                     selectedRowsCount,
                     filter,
                     onApply,
                 }) => {
                     this.updatingProductsPayload = {
-                        ids,
-                        excludedIds,
                         selectedRowsCount,
                         filter,
                         onApply,
@@ -165,47 +150,21 @@ export default {
             return this.selectedRowsCount > 0;
         },
     },
-    mounted() {
-        this.removeProductsBatchActions.forEach(({
-            id,
-        }) => {
-            document.documentElement.addEventListener(
-                id,
-                this.onRemoveProductsBatchAction,
-            );
-        });
-    },
-    beforeDestroy() {
-        this.removeProductsBatchActions.forEach(({
-            id,
-        }) => {
-            document.documentElement.removeEventListener(
-                id,
-                this.onRemoveProductsBatchAction,
-            );
-        });
-    },
     methods: {
         ...mapActions('batchAction', [
             'addBatchAction',
         ]),
-        getFilter({
-            ids = [], excludedIds = [],
-        }) {
-            let filter = {};
-
-            if (ids.length || excludedIds.length) {
-                filter = {
-                    ids: {
-                        list: ids.length > 0 ? ids : excludedIds,
-                        included: ids.length > 0,
-                    },
-                };
-            } else {
-                filter = 'all';
-            }
-
-            return filter;
+        onAddProductsBatchActionSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: this.$t('@ProductBatchActions.productBatchAction.components.ProductsBatchActions.successAlert'),
+            });
+        },
+        onAddProductsBatchActionError() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: this.$t('@ProductBatchActions.productBatchAction.components.ProductsBatchActions.errorAlert'),
+            });
         },
         async onActionSelect(option) {
             const payload = {
@@ -228,9 +187,10 @@ export default {
                 }
             });
 
-            payload.filter = this.getFilter({
+            payload.filter = getFilter({
                 ids: payload.ids,
                 excludedIds: payload.excludedIds,
+                query: this.query,
             });
 
             const {
@@ -243,21 +203,6 @@ export default {
             payload.selectedRowsCount = count;
 
             option.action(payload);
-        },
-        async onRemoveProductsBatchAction(event) {
-            if (!event.detail.error) {
-                this.$addAlert({
-                    type: ALERT_TYPE.SUCCESS,
-                    message: this.$t('@ProductBatchActions.productBatchAction.components.ProductsBatchActions.successAlert'),
-                });
-
-                this.onFetchData();
-            }
-
-            document.documentElement.removeEventListener(
-                event.detail.id,
-                this.onRemoveProductsBatchAction,
-            );
         },
         onCloseUpdatingProductsModal() {
             this.updatingProductsPayload = null;

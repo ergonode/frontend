@@ -4,9 +4,7 @@
  */
 <template>
     <div class="attributes-vertical-tab">
-        <AttributesSideBar
-            :ids="ids"
-            :excluded-ids="excludedIds" />
+        <AttributesSideBar :filter="filter" />
     </div>
 </template>
 
@@ -19,13 +17,9 @@ export default {
         AttributesSideBar,
     },
     props: {
-        ids: {
-            type: Array,
-            default: () => [],
-        },
-        excludedIds: {
-            type: Array,
-            default: () => [],
+        filter: {
+            type: Object,
+            default: () => ({}),
         },
     },
 };

@@ -40,7 +40,6 @@
                     props: {
                         ...actionsHeaderProps,
                         ...headerItem.props,
-                        onFetchData,
                     },
                 })" />
             <ExpandNumericButton
@@ -115,6 +114,7 @@ import {
 } from '@Core/models/cookies';
 import {
     getDefaultDataFromQueryParams,
+    getFilterQueryParams,
     getParams,
     getParsedFilters,
 } from '@Core/models/mappers/gridDataMapper';
@@ -528,6 +528,7 @@ export default {
         }) {
             return {
                 disabled: !this.isAllowedToUpdate,
+                query: getFilterQueryParams(this.$route.query),
                 ...props,
             };
         },

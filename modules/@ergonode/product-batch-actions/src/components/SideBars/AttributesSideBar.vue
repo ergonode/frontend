@@ -83,27 +83,15 @@ export default {
         AttributeSideBarElement,
     },
     props: {
-        ids: {
-            type: Array,
-            default: () => [],
-        },
-        excludedIds: {
-            type: Array,
-            default: () => [],
+        filter: {
+            type: Object,
+            default: () => ({}),
         },
     },
     async fetch() {
-        const params = {};
-
-        if (this.ids.length || this.excludedIds.length) {
-            params.ids = {
-                list: this.ids.length > 0 ? this.ids : this.excludedIds,
-                included: this.ids.length > 0,
-            };
-        }
         this.templateIds = await getTemplates({
             $axios: this.$axios,
-            params,
+            params: this.filter,
         });
 
         await this.getAttributesForLanguage({
