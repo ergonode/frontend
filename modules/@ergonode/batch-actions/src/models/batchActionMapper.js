@@ -18,7 +18,6 @@ export function paramsSerializer(paramsToSerialize) {
     const filters = [];
 
     if (query) {
-
         filters.push(`query=${query}`);
     }
 
