@@ -30,7 +30,8 @@
           "confirmTitle": "Czy jesteś pewień usunięcia permamentnie {info} produktów?",
           "confirmSubtitle": "Produkty będą usunięte z systemu bez odwrotnie i nie będą mogłby być przywrócone.",
           "confirmApplyTitle": "USUŃ {info} PRODUKTY",
-          "successAlert": "Produkty zostały usunięte"
+          "successAlert": "Akcja jest procesowana, poinformujemy Cię w Centrum akcji kiedy będzie gotowa.",
+          "errorAlert": "Wystąpił błąd w trakcie procesowania akcji, zobacz szczegóły w Centrum akcji."
         },
         "RemoveFormFieldDropZone": {
           "title": "Usuń element"

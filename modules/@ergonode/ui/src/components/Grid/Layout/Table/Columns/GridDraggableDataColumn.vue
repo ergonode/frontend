@@ -11,16 +11,19 @@
         @swap="onSwapColumns">
         <GridColumn
             :index="columnIndex"
+            :resizeable="true"
             @resize="onResizeColumn">
-            <GridHeaderCell
-                :row-index="rowsOffset"
-                :column-index="columnIndex"
-                :column-id="column.id"
-                :label="column.label"
-                :deletable="column.deletable"
-                :sort-order="sortOrder"
-                @sort="onSortColumn"
-                @remove="onRemoveColumn" />
+            <template #header>
+                <GridHeaderCell
+                    :row-index="rowsOffset"
+                    :column-index="columnIndex"
+                    :column-id="column.id"
+                    :label="column.label"
+                    :deletable="column.deletable"
+                    :sort-order="sortOrder"
+                    @sort="onSortColumn"
+                    @remove="onRemoveColumn" />
+            </template>
             <template v-if="isBasicFilter">
                 <GridFilterDataCell
                     v-if="column.filter"

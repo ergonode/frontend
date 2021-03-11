@@ -96,20 +96,9 @@ export default {
         modalFeedbackMixin,
     ],
     props: {
-        ids: {
-            type: Array,
-            default: () => [],
-        },
-        excludedIds: {
-            type: Array,
-            default: () => [],
-        },
         filter: {
-            type: [
-                Object,
-                String,
-            ],
-            required: true,
+            type: Object,
+            default: () => ({}),
         },
         selectedRowsCount: {
             type: Number,
@@ -141,8 +130,7 @@ export default {
         const extendedVerticalTabs = await this.$getExtendMethod('@ProductBatchActions/components/Modals/UpdateProductsModal/verticalTabs', {
             $this: this,
             props: {
-                ids: this.ids,
-                excludedIds: this.excludedIds,
+                filter: this.filter,
             },
         });
 

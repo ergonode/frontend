@@ -3,16 +3,18 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="column">
-        <GridTableCell
-            editing-allowed
-            :edit-key-code="32"
-            :row="rowsOffset"
-            :column="0"
-            @mousedown.native="onSelectAllRows"
-            @edit="onSelectAllRows">
-            <GridCheckEditCell :value="rowsSelectionState" />
-        </GridTableCell>
+    <GridColumn>
+        <template #header>
+            <GridTableCell
+                editing-allowed
+                :edit-key-code="32"
+                :row="rowsOffset"
+                :column="0"
+                @mousedown.native="onSelectAllRows"
+                @edit="onSelectAllRows">
+                <GridCheckEditCell :value="rowsSelectionState" />
+            </GridTableCell>
+        </template>
         <GridTableCell
             v-for="(rowId, rowIndex) in rowIds"
             :key="rowIndex"
@@ -23,14 +25,18 @@
             @edit="onSelectRow({ rowId, value: !selectedRows[rowId] })">
             <GridCheckEditCell :value="selectedRows[rowId]" />
         </GridTableCell>
-    </div>
+    </GridColumn>
 </template>
 
 <script>
+import GridColumn from '@UI/components/Grid/Layout/Table/Columns/GridColumn';
 import selectRowMixin from '@Users/mixins/grid/columns/selectRowMixin';
 
 export default {
     name: 'GridPrivilegeRowCheckColumn',
+    components: {
+        GridColumn,
+    },
     mixins: [
         selectRowMixin,
     ],
@@ -78,17 +84,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .column {
-        display: grid;
-        background-color: $WHITE;
-
-        & > .grid-table-cell:nth-child(1) {
-            position: sticky;
-            top: 0;
-            z-index: $Z_INDEX_LVL_2;
-            background-color: $WHITESMOKE;
-        }
-    }
-</style>

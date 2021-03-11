@@ -4,18 +4,17 @@
  */
 <template>
     <GridActionColumn>
-        <GridTableCell
-            editing-allowed
-            :disabled="!isAnyData"
-            :edit-key-code="32"
-            :row="rowsOffset"
-            :column="0"
-            @mousedown.native="onSelectAll"
-            @edit="onSelectAll">
-            <GridCheckEditCell
+        <template #header>
+            <GridSelectRowHeaderCell
+                :rows-offset="rowsOffset"
+                :row-ids="rowIds"
+                :selected-rows="selectedRows"
+                :excluded-from-selection-rows="excludedFromSelectionRows"
                 :disabled="!isAnyData"
-                :value="rowsSelectionState" />
-        </GridTableCell>
+                :is-selected-all="isSelectedAll"
+                @excluded-rows-select="onExcludedRowsSelect"
+                @rows-select="onRowsSelect" />
+        </template>
         <GridTableCell
             v-if="isBasicFilter"
             :locked="true"
@@ -44,18 +43,18 @@
 import {
     deepClone,
 } from '@Core/models/objectWrapper';
-import GridCheckEditCell from '@UI/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell';
 import GridSelectRowEditCell from '@UI/components/Grid/Layout/Table/Cells/Edit/GridSelectRowEditCell';
 import GridSelectRowActionFabCell from '@UI/components/Grid/Layout/Table/Cells/GridSelectRowActionFabCell';
 import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
+import GridSelectRowHeaderCell from '@UI/components/Grid/Layout/Table/Cells/Header/GridSelectRowHeaderCell';
 import GridActionColumn from '@UI/components/Grid/Layout/Table/Columns/GridActionColumn';
 
 export default {
     name: 'GridSelectRowColumn',
     components: {
+        GridSelectRowHeaderCell,
         GridActionColumn,
         GridTableCell,
-        GridCheckEditCell,
         GridSelectRowEditCell,
         GridSelectRowActionFabCell,
     },
@@ -128,29 +127,6 @@ export default {
         isAnyData() {
             return this.dataCount > 0;
         },
-        rowsSelectionState() {
-            if (this.isSelectedAll) {
-                if (this.rowIds.every(rowId => this.excludedFromSelectionRows[rowId])) {
-                    return 0;
-                }
-
-                if (this.rowIds.every(rowId => !this.excludedFromSelectionRows[rowId])) {
-                    return 1;
-                }
-
-                return 2;
-            }
-
-            if (this.rowIds.every(rowId => !this.selectedRows[rowId])) {
-                return 0;
-            }
-
-            if (this.rowIds.every(rowId => this.selectedRows[rowId])) {
-                return 1;
-            }
-
-            return 2;
-        },
         basicFiltersOffset() {
             return this.isBasicFilter ? 1 : 0;
         },
@@ -188,18 +164,11 @@ export default {
                 });
             }
         },
-        onSelectAll() {
-            if (this.isSelectedAll) {
-                this.$emit('excluded-rows-select', {
-                    isExcluded: this.rowsSelectionState > 0,
-                    rowIds: deepClone(this.rowIds),
-                });
-            } else {
-                this.$emit('rows-select', {
-                    isSelected: this.rowsSelectionState === 0,
-                    rowIds: deepClone(this.rowIds),
-                });
-            }
+        onExcludedRowsSelect(payload) {
+            this.$emit('excluded-rows-select', payload);
+        },
+        onRowsSelect(payload) {
+            this.$emit('rows-select', payload);
         },
         onSelectRow({
             row,

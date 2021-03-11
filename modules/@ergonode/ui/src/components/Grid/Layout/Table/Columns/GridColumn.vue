@@ -4,8 +4,12 @@
  */
 <template>
     <div :class="classes">
+        <div class="grid-column__header">
+            <slot name="header" />
+        </div>
         <slot />
         <GridColumnResizer
+            v-if="resizeable"
             @width-change="onUpdateWidth"
             @resize="onResize" />
     </div>
@@ -24,7 +28,14 @@ export default {
          */
         index: {
             type: Number,
-            required: true,
+            default: 0,
+        },
+        /**
+         * Determines if column is being able to resize
+         */
+        resizeable: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {
@@ -61,7 +72,7 @@ export default {
         background-color: $WHITE;
         will-change: width;
 
-        & > .grid-table-cell:nth-child(1) {
+        &__header {
             position: sticky;
             top: 0;
             z-index: $Z_INDEX_LVL_2;

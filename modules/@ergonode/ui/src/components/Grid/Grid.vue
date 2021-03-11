@@ -457,6 +457,16 @@ export default {
             key,
             value,
         }) {
+            delete this.selectedRows[value];
+            delete this.excludedFromSelectionRows[value];
+
+            this.selectedRows = {
+                ...this.selectedRows,
+            };
+            this.excludedFromSelectionRows = {
+                ...this.excludedFromSelectionRows,
+            };
+
             this.$emit(`${key}-row`, value);
         },
         onRemoveColumn(payload) {

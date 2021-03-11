@@ -168,6 +168,7 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        height: 100%;
         outline: none;
         box-sizing: border-box;
         border-bottom: $BORDER_1_GREY;
