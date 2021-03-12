@@ -21,6 +21,7 @@ import {
     getFilter,
 } from '@BatchActions/models/batchActionMapper';
 import {
+    create,
     getCount,
 } from '@BatchActions/services';
 import {
@@ -33,9 +34,6 @@ import {
     BATCH_ACTION_TYPE,
 } from '@ProductBatchActions/defaults';
 import PRIVILEGES from '@Products/config/privileges';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'ProductsBatchActionsButton',
@@ -88,7 +86,7 @@ export default {
                         applyTitle: this.$t('@ProductBatchActions.productBatchAction.components.ProductsBatchActions.confirmApplyTitle', {
                             info: selectedRowsCount,
                         }),
-                        action: () => {
+                        action: async () => {
                             onApply();
 
                             const request = {
@@ -103,10 +101,8 @@ export default {
                                 request.payload.filter = filter;
                             }
 
-                            this.addBatchAction({
+                            await this.addBatchAction({
                                 request,
-                                onSuccess: this.onAddProductsBatchActionSuccess,
-                                onError: this.onAddProductsBatchActionError,
                             });
                         },
                     });
@@ -151,20 +147,29 @@ export default {
         },
     },
     methods: {
-        ...mapActions('batchAction', [
-            'addBatchAction',
-        ]),
-        onAddProductsBatchActionSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: this.$t('@ProductBatchActions.productBatchAction.components.ProductsBatchActions.successAlert'),
-            });
-        },
-        onAddProductsBatchActionError() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: this.$t('@ProductBatchActions.productBatchAction.components.ProductsBatchActions.errorAlert'),
-            });
+        async addBatchAction({
+            request,
+        }) {
+            try {
+                await create({
+                    $axios: this.$axios,
+                    ...request,
+                });
+
+                this.$addAlert({
+                    type: ALERT_TYPE.SUCCESS,
+                    message: this.$t('@ProductBatchActions.productBatchAction.components.ProductsBatchActions.successAlert'),
+                });
+            } catch (e) {
+                if (this.$axios.isCancel(e)) {
+                    return;
+                }
+
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: this.$t('@ProductBatchActions.productBatchAction.components.ProductsBatchActions.errorAlert'),
+                });
+            }
         },
         async onActionSelect(option) {
             const payload = {

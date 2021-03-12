@@ -86,21 +86,6 @@
           "getRequest": "Products haven’t been fetched properly"
         }
       }
-    },
-    "batchAction": {
-      "components": {
-        "UpdateProductsModal": {
-          "title": "Editing {info} products"
-        },
-        "ProductsBatchActions": {
-          "deleteBatchActionLabel": "Delete products",
-          "editBatchActionLabel": "Edit products",
-          "confirmTitle": "Are you sure you want to permanently delete {info} products?",
-          "confirmSubtitle": "The products will be deleted from the system forever and cannot be restored.",
-          "confirmApplyTitle": "DELETE {info} PRODUCTS",
-          "successAlert": "Products have been removed"
-        }
-      }
     }
   }
 }

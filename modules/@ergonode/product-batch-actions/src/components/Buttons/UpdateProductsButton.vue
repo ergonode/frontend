@@ -25,6 +25,9 @@
 
 <script>
 import {
+    create,
+} from '@BatchActions/services';
+import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
@@ -32,18 +35,12 @@ import {
 } from '@Core/defaults/modals';
 import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
 import {
-    getUUID,
-} from '@Core/models/stringWrapper';
-import {
     BATCH_ACTION_TYPE,
 } from '@ProductBatchActions/defaults';
 import PRIVILEGES from '@Products/config/privileges';
 import Button from '@UI/components/Button/Button';
 import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
 import IconSync from '@UI/components/Icons/Feedback/IconSync';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'UpdateProductsButton',
@@ -80,10 +77,30 @@ export default {
         },
     },
     methods: {
-        ...mapActions('batchAction', [
-            'addBatchAction',
-            'removeBatchAction',
-        ]),
+        async addBatchAction({
+            request,
+        }) {
+            try {
+                await create({
+                    $axios: this.$axios,
+                    ...request,
+                });
+
+                this.$addAlert({
+                    type: ALERT_TYPE.SUCCESS,
+                    message: this.$t('@ProductBatchActions.productBatchAction.components.UpdateProductsButton.successAlert'),
+                });
+            } catch (e) {
+                if (this.$axios.isCancel(e)) {
+                    return;
+                }
+
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: this.$t('@ProductBatchActions.productBatchAction.components.UpdateProductsButton.errorAlert'),
+                });
+            }
+        },
         async onSubmit() {
             let emptyValues = 0;
 
@@ -124,8 +141,6 @@ export default {
         },
         onUpdateProducts() {
             const keys = Object.keys(this.drafts);
-            const uuid = getUUID();
-
             const tmp = {};
             const payload = [];
 
@@ -180,9 +195,8 @@ export default {
                     count: this.selectedRowsCount,
                 }),
                 cancelTitle: this.$t('@ProductBatchActions.productBatchAction.components.UpdateProductsButton.confirmCancel'),
-                action: () => {
-                    this.addBatchAction({
-                        id: uuid,
+                action: async () => {
+                    await this.addBatchAction({
                         request,
                     });
 
