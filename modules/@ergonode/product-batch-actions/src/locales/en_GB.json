@@ -17,7 +17,9 @@
           "confirmCountTitle": "Processing of {count} products",
           "confirmCountSubtitle": "Are you sure you want to run a batch action for {count} products?",
           "confirmCountApplyPlural": "Process {count} products",
-          "confirmCancel": "Cancel"
+          "confirmCancel": "Cancel",
+          "successAlert": "Action is processing, we will notify you in the Action center when it is complete.",
+          "errorAlert": "An error has occurred while processing action, see details in the Action center."
         },
         "UpdateProductsModal": {
           "title": "Editing {info} products",

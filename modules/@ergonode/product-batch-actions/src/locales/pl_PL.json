@@ -17,7 +17,9 @@
           "confirmCountTitle": "Przetwarzanie {count} produktów",
           "confirmCountSubtitle": "Czy jesteś pewny że chcesz uruchomić akcję masową dla {count} produktów?",
           "confirmCountApplyPlural": "Przetwórz {count} poroduktów",
-          "confirmCancel": "Anuluj"
+          "confirmCancel": "Anuluj",
+          "successAlert": "Akcja jest procesowana, poinformujemy Cię w Centrum akcji kiedy będzie gotowa.",
+          "errorAlert": "Wystąpił błąd w trakcie procesowania akcji, zobacz szczegóły w Centrum akcji."
         },
         "UpdateProductsModal": {
           "title": "Edytowanie {info} produktów",
