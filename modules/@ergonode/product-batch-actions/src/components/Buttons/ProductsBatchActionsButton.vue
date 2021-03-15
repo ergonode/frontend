@@ -72,6 +72,7 @@ export default {
         removeBatchActionItem() {
             return {
                 label: this.$t('@ProductBatchActions.productBatchAction.components.ProductsBatchActions.deleteBatchActionLabel'),
+                type: BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
                 action: ({
                     selectedRowsCount,
                     filter,
@@ -112,6 +113,7 @@ export default {
         editBatchActionItem() {
             return {
                 label: this.$t('@ProductBatchActions.productBatchAction.components.ProductsBatchActions.editBatchActionLabel'),
+                type: BATCH_ACTION_TYPE.UPDATE_PRODUCTS,
                 action: ({
                     selectedRowsCount,
                     filter,
@@ -202,7 +204,10 @@ export default {
                 count,
             } = await getCount({
                 $axios: this.$axios,
-                params: payload.filter,
+                payload: {
+                    filter: payload.filter,
+                    type: option.type,
+                },
             });
 
             payload.selectedRowsCount = count;
