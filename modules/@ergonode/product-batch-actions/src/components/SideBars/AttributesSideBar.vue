@@ -91,7 +91,9 @@ export default {
     async fetch() {
         this.templateIds = await getTemplates({
             $axios: this.$axios,
-            params: this.filter,
+            payload: {
+                filter: this.filter,
+            },
         });
 
         await this.getAttributesForLanguage({
