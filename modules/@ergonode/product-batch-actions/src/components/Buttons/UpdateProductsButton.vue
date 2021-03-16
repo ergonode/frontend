@@ -77,11 +77,11 @@ export default {
         },
     },
     methods: {
-        async addBatchAction({
+        addBatchAction({
             request,
         }) {
             try {
-                await create({
+                create({
                     $axios: this.$axios,
                     ...request,
                 });
@@ -101,7 +101,7 @@ export default {
                 });
             }
         },
-        async onSubmit() {
+        onSubmit() {
             let emptyValues = 0;
 
             const keys = Object.keys(this.drafts);
@@ -195,8 +195,8 @@ export default {
                     count: this.selectedRowsCount,
                 }),
                 cancelTitle: this.$t('@ProductBatchActions.productBatchAction.components.UpdateProductsButton.confirmCancel'),
-                action: async () => {
-                    await this.addBatchAction({
+                action: () => {
+                    this.addBatchAction({
                         request,
                     });
 

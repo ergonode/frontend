@@ -87,7 +87,7 @@ export default {
                         applyTitle: this.$t('@ProductBatchActions.productBatchAction.components.ProductsBatchActions.confirmApplyTitle', {
                             info: selectedRowsCount,
                         }),
-                        action: async () => {
+                        action: () => {
                             onApply();
 
                             const request = {
@@ -102,7 +102,7 @@ export default {
                                 request.payload.filter = filter;
                             }
 
-                            await this.addBatchAction({
+                            this.addBatchAction({
                                 request,
                             });
                         },
@@ -149,11 +149,11 @@ export default {
         },
     },
     methods: {
-        async addBatchAction({
+        addBatchAction({
             request,
         }) {
             try {
-                await create({
+                create({
                     $axios: this.$axios,
                     ...request,
                 });
