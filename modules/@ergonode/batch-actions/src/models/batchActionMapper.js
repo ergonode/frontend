@@ -8,7 +8,7 @@ export function getFilter({
     excludedIds,
     query,
 }) {
-    const filter = {
+    let filter = {
         query,
     };
 
@@ -17,6 +17,8 @@ export function getFilter({
             list: ids.length > 0 ? ids : excludedIds,
             included: ids.length > 0,
         };
+    } else if (!query) {
+        filter = 'all';
     }
 
     return filter;

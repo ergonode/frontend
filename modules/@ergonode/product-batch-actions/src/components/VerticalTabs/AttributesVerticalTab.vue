@@ -18,7 +18,10 @@ export default {
     },
     props: {
         filter: {
-            type: Object,
+            type: [
+                Object,
+                String,
+            ],
             default: () => ({}),
         },
     },
