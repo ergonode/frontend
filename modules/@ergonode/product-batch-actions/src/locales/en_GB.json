@@ -33,7 +33,8 @@
           "confirmSubtitle": "The products will be deleted from the system forever and cannot be restored.",
           "confirmApplyTitle": "DELETE {info} PRODUCTS",
           "successAlert": "Action is processing, we will notify you in the Action center when it is complete.",
-          "errorAlert": "An error has occurred while processing action, see details in the Action center."
+          "errorAlert": "An error has occurred while processing action, see details in the Action center.",
+          "countError": "Batch action filter error"
         },
         "RemoveFormFieldDropZone": {
           "title": "Remove item"

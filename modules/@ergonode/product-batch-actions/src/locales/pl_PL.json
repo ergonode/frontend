@@ -19,7 +19,8 @@
           "confirmCountApplyPlural": "Przetwórz {count} poroduktów",
           "confirmCancel": "Anuluj",
           "successAlert": "Akcja jest procesowana, poinformujemy Cię w Centrum akcji kiedy będzie gotowa.",
-          "errorAlert": "Wystąpił błąd w trakcie procesowania akcji, zobacz szczegóły w Centrum akcji."
+          "errorAlert": "Wystąpił błąd w trakcie procesowania akcji, zobacz szczegóły w Centrum akcji.",
+          "countError": "Błąd filtra akcji masowych"
         },
         "UpdateProductsModal": {
           "title": "Edytowanie {info} produktów",
