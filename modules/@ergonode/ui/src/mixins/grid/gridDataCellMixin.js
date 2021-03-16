@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
