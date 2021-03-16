@@ -8,4 +8,7 @@ export default {
     aliases: {
         '@Channels': '/',
     },
+    relations: [
+        '@ergonode/notifications',
+    ],
 };

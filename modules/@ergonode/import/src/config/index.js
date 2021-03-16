@@ -8,4 +8,7 @@ export default {
     aliases: {
         '@Import': '/',
     },
+    relations: [
+        '@ergonode/notifications',
+    ],
 };

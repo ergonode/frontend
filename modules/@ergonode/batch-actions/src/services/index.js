@@ -13,3 +13,10 @@ export const getCount = ({
     $axios,
     payload,
 }) => $axios.$post('batch-action/count', payload);
+
+export const getBatchActionStatuses = ({
+    $axios,
+    cancelToken,
+}) => $axios.$get('profile/batch-action', {
+    cancelToken,
+});

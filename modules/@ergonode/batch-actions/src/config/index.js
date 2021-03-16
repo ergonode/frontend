@@ -8,4 +8,7 @@ export default {
     aliases: {
         '@BatchActions': '/',
     },
+    relations: [
+        '@ergonode/notifications',
+    ],
 };

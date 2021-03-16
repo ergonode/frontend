@@ -174,45 +174,55 @@ export default {
             }
         },
         async onActionSelect(option) {
-            const payload = {
-                ids: [],
-                excludedIds: [],
-                selectedRowsCount: 0,
-                filter: null,
-                onApply: this.onClearSelectedRows,
-            };
+            try {
+                const payload = {
+                    ids: [],
+                    excludedIds: [],
+                    selectedRowsCount: 0,
+                    filter: null,
+                    onApply: this.onClearSelectedRows,
+                };
 
-            Object.keys(this.selectedRows).forEach((key) => {
-                if (this.selectedRows[key]) {
-                    payload.ids.push(key);
+                Object.keys(this.selectedRows).forEach((key) => {
+                    if (this.selectedRows[key]) {
+                        payload.ids.push(key);
+                    }
+                });
+
+                Object.keys(this.excludedFromSelectionRows).forEach((key) => {
+                    if (this.excludedFromSelectionRows[key]) {
+                        payload.excludedIds.push(key);
+                    }
+                });
+
+                payload.filter = getFilter({
+                    ids: payload.ids,
+                    excludedIds: payload.excludedIds,
+                    query: this.query,
+                });
+
+                const {
+                    count,
+                } = await getCount({
+                    $axios: this.$axios,
+                    payload: {
+                        filter: payload.filter,
+                        type: option.type,
+                    },
+                });
+                payload.selectedRowsCount = count;
+
+                option.action(payload);
+            } catch (e) {
+                if (this.$axios.isCancel(e)) {
+                    return;
                 }
-            });
 
-            Object.keys(this.excludedFromSelectionRows).forEach((key) => {
-                if (this.excludedFromSelectionRows[key]) {
-                    payload.excludedIds.push(key);
-                }
-            });
-
-            payload.filter = getFilter({
-                ids: payload.ids,
-                excludedIds: payload.excludedIds,
-                query: this.query,
-            });
-
-            const {
-                count,
-            } = await getCount({
-                $axios: this.$axios,
-                payload: {
-                    filter: payload.filter,
-                    type: option.type,
-                },
-            });
-
-            payload.selectedRowsCount = count;
-
-            option.action(payload);
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: this.$t('@ProductBatchActions.productBatchAction.components.ProductsBatchActions.countError'),
+                });
+            }
         },
         onCloseUpdatingProductsModal() {
             this.updatingProductsPayload = null;
