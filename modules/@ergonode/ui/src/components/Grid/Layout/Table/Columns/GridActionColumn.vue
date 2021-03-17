@@ -29,6 +29,8 @@ export default {
             position: sticky;
             top: 0;
             z-index: $Z_INDEX_LVL_2;
+            display: grid;
+            height: 33px;
             background-color: $WHITESMOKE;
         }
     }

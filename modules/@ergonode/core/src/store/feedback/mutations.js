@@ -13,8 +13,6 @@ export const types = {
     REMOVE_SCOPE_ERROR: 'REMOVE_SCOPE_ERROR',
     REMOVE_SCOPE_ERRORS: 'REMOVE_SCOPE_ERRORS',
     REMOVE_SCOPE_CHANGE_VALUES: 'REMOVE_SCOPE_CHANGE_VALUES',
-    REMOVE_ERRORS: 'REMOVE_ERRORS',
-    REMOVE_CHANGE_VALUES: 'REMOVE_CHANGE_VALUES',
 };
 
 export default {
@@ -47,12 +45,6 @@ export default {
             },
         };
     },
-    [types.REMOVE_ERROR](state, key) {
-        delete state.errors[key];
-        state.errors = {
-            ...state.errors,
-        };
-    },
     [types.REMOVE_SCOPE_ERRORS](state, scope) {
         delete state.errors[scope];
         state.errors = {
@@ -73,11 +65,5 @@ export default {
         state.errors[scope] = {
             ...state.errors[scope],
         };
-    },
-    [types.REMOVE_ERRORS](state) {
-        state.errors = {};
-    },
-    [types.REMOVE_CHANGE_VALUES](state) {
-        state.errors = {};
     },
 };

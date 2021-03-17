@@ -101,13 +101,10 @@ export default {
                 value: imageID,
             });
 
-            const elementDescriptions = attributes.reduce((prev, curr) => {
-                const tmp = prev;
-
-                tmp[curr.id] = curr.label || curr.code;
-
-                return tmp;
-            }, {});
+            const elementDescriptions = attributes.reduce((prev, curr) => ({
+                ...prev,
+                [curr.id]: curr.label || curr.code,
+            }), {});
 
             const layoutElements = getMappedLayoutElements(
                 elements,

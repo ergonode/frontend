@@ -55,6 +55,11 @@ export default {
         fieldKeys = {},
     }) {
         if (errors) {
+            console.log(getMappedScopedErrors({
+                errors,
+                fieldKeys,
+                scope,
+            }));
             commit(types.SET_ERRORS, getMappedScopedErrors({
                 errors,
                 fieldKeys,
@@ -83,10 +88,5 @@ export default {
             scope,
             fieldKey,
         });
-    },
-    removeError({
-        commit,
-    }, key) {
-        commit(types.REMOVE_ERROR, key);
     },
 };

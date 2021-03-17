@@ -169,7 +169,6 @@ export default {
         justify-content: space-between;
         align-items: center;
         outline: none;
-        box-sizing: border-box;
         border-bottom: $BORDER_1_GREY;
         cursor: pointer;
 

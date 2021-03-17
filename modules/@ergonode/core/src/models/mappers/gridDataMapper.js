@@ -53,11 +53,10 @@ export function getDraftsBasedOnCellValues(cellValues) {
         rowId,
         columnId,
         value,
-    }) => {
-        const tmp = prev;
-        tmp[`${rowId}/${columnId}`] = value;
-        return tmp;
-    }, {});
+    }) => ({
+        ...prev,
+        [`${rowId}/${columnId}`]: value,
+    }), {});
 }
 
 export function getFilterQueryParams({

@@ -25,7 +25,7 @@
                 :gap="gap"
                 :scope="scope"
                 :change-values="changeValues"
-                :errors="conditionErrors[`element-${item.row}`]"
+                :errors="conditionErrors[item.id]"
                 :disabled="disabled"
                 :is-prefetching-data="
                     fetchingTypes[item.type]

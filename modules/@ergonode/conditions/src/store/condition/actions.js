@@ -154,6 +154,9 @@ export default {
                 conditionsValues,
                 tree,
             } = state;
+
+            console.log(conditionsValues, tree);
+
             let data = {
                 conditions: getParsedConditions({
                     values: conditionsValues,
@@ -206,6 +209,10 @@ export default {
             onError({
                 errors: e.data.errors,
                 scope,
+                fieldKeys: state.tree.reduce((prev, curr, index) => ({
+                    ...prev,
+                    [`element-${index}`]: curr.id,
+                }), {}),
             });
         }
     },
@@ -226,6 +233,7 @@ export default {
                 tree,
                 conditionsValues,
             } = state;
+
             let data = {
                 conditions: getParsedConditions({
                     values: conditionsValues,
@@ -272,6 +280,10 @@ export default {
             onError({
                 errors: e.data.errors,
                 scope,
+                fieldKeys: state.tree.reduce((prev, curr, index) => ({
+                    ...prev,
+                    [`element-${index}`]: curr.id,
+                }), {}),
             });
         }
     },
@@ -301,9 +313,9 @@ export default {
     removeConditionValue({
         commit,
         state,
-    }, conditionId) {
-        if (state.conditionsValues[conditionId]) {
-            commit(types.REMOVE_CONDITION_VALUE_FROM_SET, conditionId);
+    }, id) {
+        if (state.conditionsValues[id]) {
+            commit(types.REMOVE_CONDITION_VALUE_FROM_SET, id);
         }
     },
 };
