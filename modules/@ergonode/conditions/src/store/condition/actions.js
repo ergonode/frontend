@@ -213,6 +213,7 @@ export default {
                     ...prev,
                     [`element-${index}`]: curr.id,
                 }), {}),
+                getOnlyFirstError: true,
             });
         }
     },
@@ -284,6 +285,7 @@ export default {
                     ...prev,
                     [`element-${index}`]: curr.id,
                 }), {}),
+                getOnlyFirstError: true,
             });
         }
     },

@@ -53,17 +53,14 @@ export default {
         errors,
         scope = 'default',
         fieldKeys = {},
+        getOnlyFirstError = false,
     }) {
         if (errors) {
-            console.log(getMappedScopedErrors({
-                errors,
-                fieldKeys,
-                scope,
-            }));
             commit(types.SET_ERRORS, getMappedScopedErrors({
                 errors,
                 fieldKeys,
                 scope,
+                getOnlyFirstError,
             }));
         }
     },
