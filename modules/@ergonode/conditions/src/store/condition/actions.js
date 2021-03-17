@@ -155,8 +155,6 @@ export default {
                 tree,
             } = state;
 
-            console.log(conditionsValues, tree);
-
             let data = {
                 conditions: getParsedConditions({
                     values: conditionsValues,
