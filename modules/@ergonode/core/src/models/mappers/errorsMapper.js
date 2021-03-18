@@ -15,22 +15,19 @@ export const getMappedErrors = ({
     for (let i = 0; i < keys.length; i += 1) {
         const key = keys[i];
         const fieldKey = fieldKeys[key] || key;
+        const errorMessages = errors[key];
 
-        if (Array.isArray(errors[key])) {
+        if (Array.isArray(errorMessages)) {
             if (getOnlyFirstError) {
-                const [
-                    errorMessage,
-                ] = errors[key];
-
-                mappedErrors[fieldKey] = errorMessage;
+                mappedErrors[fieldKey] = errorMessages;
             } else {
-                mappedErrors[fieldKey] = errors[key].join(', ');
+                mappedErrors[fieldKey] = errorMessages.join(', ');
             }
-        } else if (typeof errors[key] === 'object') {
+        } else if (typeof errorMessages === 'object') {
             mappedErrors = {
                 ...mappedErrors,
                 [fieldKey]: getMappedErrors({
-                    errors: errors[key],
+                    errors: errorMessages,
                     fieldKeys,
                     getOnlyFirstError,
                 }),
@@ -38,7 +35,7 @@ export const getMappedErrors = ({
         } else {
             mappedErrors = {
                 ...mappedErrors,
-                [fieldKey]: errors[key],
+                [fieldKey]: errorMessages,
             };
         }
     }

@@ -19,5 +19,5 @@ const dictionaries = Object.values(extendsModules)
 
 export default () => dictionaries.reduce((acc, current) => ({
     ...acc,
-    [current.stateProp]: current.defaultValue
+    [current.stateProp]: current.defaultValue,
 }), {});

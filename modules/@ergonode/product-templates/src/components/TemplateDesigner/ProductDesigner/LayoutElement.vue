@@ -38,9 +38,11 @@ import {
     updateResizablePlaceholderWidth,
 } from '@Templates/models/layout/ResizablePlaceholder';
 import {
+    getElementColumn,
     getElementHeight,
     getElementMinHeight,
     getElementMinWidth,
+    getElementRow,
     getElementWidth,
     getHighlightingLayoutDropPositions,
     getHighlightingPositions,
@@ -306,8 +308,7 @@ export default {
             );
 
             if (width <= this.maxWidth && width >= this.minWidth) {
-                const column = Math.ceil(width / (this.minWidth + (this.gap * 2)));
-
+                const column = getElementColumn(width, this.minWidth, this.gap);
                 const actualColumn = this.element.column + column - 1;
 
                 this.newWidth = Math.min(fixedWidth, column);
@@ -342,7 +343,7 @@ export default {
             );
 
             if (height <= this.maxHeight && height >= this.minHeight) {
-                const row = Math.ceil(height / (this.minHeight + (this.gap * 2)));
+                const row = getElementRow(height, this.minHeight, this.gap);
                 const actualRow = this.element.row + row - 1;
 
                 this.newHeight = Math.min(fixedHeight, row);
