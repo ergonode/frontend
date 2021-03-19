@@ -7,6 +7,7 @@
 const isObstacle = (obstacles, x, y) => obstacles.some(
     obstacle => obstacle.row === y && obstacle.column === x,
 );
+
 const isObstacleInRangeOf = (obstacles, x, y, xRange, yRange) => obstacles.some((obstacle) => {
     const {
         row,
@@ -15,6 +16,7 @@ const isObstacleInRangeOf = (obstacles, x, y, xRange, yRange) => obstacles.some(
 
     return row >= y && row <= yRange && column >= x && column <= xRange;
 });
+
 const fillHighlightingPositions = (highlightingPositions, x, y, xRange, yRange) => {
     let column = x;
     while (column <= xRange) {
@@ -27,6 +29,7 @@ const fillHighlightingPositions = (highlightingPositions, x, y, xRange, yRange) 
         column += 1;
     }
 };
+
 const positionsSetToArray = (set) => {
     const array = [];
 
@@ -43,6 +46,7 @@ const positionsSetToArray = (set) => {
 
     return array;
 };
+
 const addObstaclesToHighlightingPositions = ({
     positions,
     obstacles,
@@ -270,6 +274,14 @@ export function getMaxRowForGivenColumn(column, highlightingPositions, layoutHei
 
 export function getGapsValue(gap, count) {
     return gap * ((count - 1) * 2);
+}
+
+export function getElementRow(height, minHeight, gap) {
+    return Math.ceil(height / (minHeight + (gap * 2)));
+}
+
+export function getElementColumn(width, minWidth, gap) {
+    return Math.ceil(width / (minWidth + (gap * 2)));
 }
 
 export function getElementWidth(minWidth, width, gap) {

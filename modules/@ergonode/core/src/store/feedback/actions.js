@@ -53,12 +53,14 @@ export default {
         errors,
         scope = 'default',
         fieldKeys = {},
+        getOnlyFirstError = false,
     }) {
         if (errors) {
             commit(types.SET_ERRORS, getMappedScopedErrors({
                 errors,
                 fieldKeys,
                 scope,
+                getOnlyFirstError,
             }));
         }
     },
@@ -83,10 +85,5 @@ export default {
             scope,
             fieldKey,
         });
-    },
-    removeError({
-        commit,
-    }, key) {
-        commit(types.REMOVE_ERROR, key);
     },
 };

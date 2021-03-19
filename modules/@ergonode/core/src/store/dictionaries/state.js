@@ -17,8 +17,7 @@ const dictionaries = Object.values(extendsModules)
         return connectedArray;
     }, []);
 
-export default () => dictionaries.reduce((acc, current) => {
-    const newObject = acc;
-    newObject[current.stateProp] = current.defaultValue;
-    return newObject;
-}, {});
+export default () => dictionaries.reduce((acc, current) => ({
+    ...acc,
+    [current.stateProp]: current.defaultValue,
+}), {});

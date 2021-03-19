@@ -53,11 +53,10 @@ export function getDraftsBasedOnCellValues(cellValues) {
         rowId,
         columnId,
         value,
-    }) => {
-        const tmp = prev;
-        tmp[`${rowId}/${columnId}`] = value;
-        return tmp;
-    }, {});
+    }) => ({
+        ...prev,
+        [`${rowId}/${columnId}`]: value,
+    }), {});
 }
 
 export function getFilterQueryParams({
@@ -65,21 +64,17 @@ export function getFilterQueryParams({
     advancedFilter = '',
 
 }) {
-    let mappedFilter = '';
+    const filters = [];
 
     if (advancedFilter) {
-        mappedFilter = advancedFilter;
+        filters.push(advancedFilter);
     }
 
     if (filter) {
-        if (mappedFilter) {
-            mappedFilter += filter;
-        } else {
-            mappedFilter = filter;
-        }
+        filters.push(filter);
     }
 
-    return mappedFilter;
+    return filters.join(';');
 }
 
 export function getParams({

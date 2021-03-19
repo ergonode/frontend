@@ -6,6 +6,7 @@
 export const getMappedErrors = ({
     errors,
     fieldKeys = {},
+    getOnlyFirstError = false,
 }) => {
     const keys = Object.keys(errors);
 
@@ -14,21 +15,27 @@ export const getMappedErrors = ({
     for (let i = 0; i < keys.length; i += 1) {
         const key = keys[i];
         const fieldKey = fieldKeys[key] || key;
+        const errorMessages = errors[key];
 
-        if (Array.isArray(errors[key])) {
-            mappedErrors[fieldKey] = errors[key].join(', ');
-        } else if (typeof errors[key] === 'object') {
+        if (Array.isArray(errorMessages)) {
+            if (getOnlyFirstError) {
+                mappedErrors[fieldKey] = errorMessages;
+            } else {
+                mappedErrors[fieldKey] = errorMessages.join(', ');
+            }
+        } else if (typeof errorMessages === 'object') {
             mappedErrors = {
                 ...mappedErrors,
                 [fieldKey]: getMappedErrors({
-                    errors: errors[key],
+                    errors: errorMessages,
                     fieldKeys,
+                    getOnlyFirstError,
                 }),
             };
         } else {
             mappedErrors = {
                 ...mappedErrors,
-                [fieldKey]: errors[key],
+                [fieldKey]: errorMessages,
             };
         }
     }
@@ -40,10 +47,12 @@ export const getMappedScopedErrors = ({
     errors,
     fieldKeys,
     scope,
+    getOnlyFirstError = false,
 }) => ({
     [scope]: getMappedErrors({
         errors,
         fieldKeys,
+        getOnlyFirstError,
     }),
 });
 
