@@ -4,8 +4,8 @@
  */
 <template>
     <button
-        type="button"
-        class="advanced-filters-remove-all-button">
+        class="advanced-filters-remove-all-button"
+        type="button">
         <IconCancel />
         {{ title }}
     </button>

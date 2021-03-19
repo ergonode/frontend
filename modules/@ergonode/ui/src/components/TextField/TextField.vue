@@ -82,6 +82,7 @@ import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
  * `TextField` is a default text input component.
  *  It might be configured with `prepend` and `append` slots.
  */
+
 export default {
     name: 'TextField',
     components: {

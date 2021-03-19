@@ -5,6 +5,7 @@
 <template>
     <button
         class="tab-bar-item"
+        type="button"
         v-text="item.title"
         @click="onSelect" />
 </template>

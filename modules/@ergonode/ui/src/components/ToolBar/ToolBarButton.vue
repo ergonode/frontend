@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <button :class="classes">
+    <button
+        :class="classes"
+        type="button">
         <slot />
     </button>
 </template>
