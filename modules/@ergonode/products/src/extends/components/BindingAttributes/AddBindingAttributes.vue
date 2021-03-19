@@ -5,6 +5,7 @@
 <template>
     <button
         :class="classes"
+        type="button"
         @click="onShowModal">
         <IconAdd />
         <span :class="titleClasses">Add attribute</span>

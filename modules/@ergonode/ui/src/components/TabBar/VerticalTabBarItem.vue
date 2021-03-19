@@ -5,6 +5,7 @@
 <template>
     <button
         :class="classes"
+        type="button"
         @click="onClick">
         <Component
             v-if="isIcon"

@@ -5,7 +5,7 @@
 <template>
     <DropdownFooter
         :size="size"
-        :space-between="spaceBetween">
+        :space-between="true">
         <Button
             :size="tinySize"
             title="OK"
@@ -43,13 +43,6 @@ export default {
                 SIZE.SMALL,
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
-        },
-        /**
-         * Equal space between each component
-         */
-        spaceBetween: {
-            type: Boolean,
-            default: true,
         },
     },
     computed: {

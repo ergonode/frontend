@@ -5,6 +5,7 @@
 <template>
     <button
         :class="classes"
+        type="button"
         @click="onRemove">
         <span
             :class="titleClasses"
