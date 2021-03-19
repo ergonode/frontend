@@ -131,11 +131,15 @@ module.exports = {
         isDev: process.env.NODE_ENV !== 'production',
     },
     i18n: {
+        locales: [
+            'en_GB',
+            'pl_PL',
+        ],
+        defaultLocale: 'en_GB',
         vueI18n: {
-            locale: 'en_GB',
             fallbackLocale: 'en_GB',
-            silentTranslationWarn: true,
         },
+        parsePages: false,
         vuex: false,
         strategy: 'no_prefix',
     },
