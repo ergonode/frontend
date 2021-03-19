@@ -3,12 +3,13 @@
  * See LICENSE for license details.
  */
 
-let associatedLabel = 0;
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
 
 export default {
     beforeCreate() {
-        this.associatedLabel = associatedLabel.toString();
-        associatedLabel += 1;
+        this.associatedLabel = getUUID();
     },
     beforeDestroy() {
         delete this.associatedLabel;

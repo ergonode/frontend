@@ -156,7 +156,9 @@ module.exports = {
         optimizeCSS: true,
         loaders: {
             css: {
-                icss: true,
+                modules: {
+                    compileType: 'icss',
+                },
             },
             vue: {
                 compilerOptions: {
