@@ -7,6 +7,7 @@ export default {
     order: 50,
     relations: [
         '@ergonode/core',
+        '@ergonode/attribute-groups',
     ],
     aliases: {
         '@Attributes': '/',

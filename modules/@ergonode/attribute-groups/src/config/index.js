@@ -4,7 +4,7 @@
  */
 export default {
     name: '@ergonode/attribute-groups',
-    order: 50,
+    order: 60,
     relations: [
         '@ergonode/core',
     ],
