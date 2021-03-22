@@ -4,7 +4,7 @@
  */
 import {
     SYSTEM_TYPES,
-} from '@Attributes/defaults/attributes';
+} from '@Attributes/defaults';
 import {
     getUUID,
 } from '@Core/models/stringWrapper';

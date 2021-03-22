@@ -4,11 +4,11 @@
  */
 import {
     SYSTEM_TYPES,
-} from '@Attributes/defaults/attributes';
+} from '@Attributes/defaults';
 import {
     get as getAttribute,
     getAutocomplete as getAttributesAutocomplete,
-} from '@Attributes/services/attribute/index';
+} from '@Attributes/services';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';

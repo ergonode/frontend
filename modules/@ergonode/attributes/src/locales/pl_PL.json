@@ -69,62 +69,6 @@
         }
       }
     },
-    "attributeGroup": {
-      "_": {
-        "title": "Grupy atrybutów",
-        "headTitle": "Grupy atrybutów - Ergonode",
-        "noGroups": "Brak grup atrybutów",
-        "createFirst": "W systemie nie ma grup atrybutów, stwórz pierwszą."
-      },
-      "components": {
-        "AttributeGroupForm": {
-          "title": "Opcje",
-          "nameLabel": "Nazwa systemowa",
-          "nameHint": "Nazwa systemowa musi być unikalna"
-        },
-        "AttributeGroupTranslationForm": {
-          "nameLabel": "Nazwa grupy"
-        },
-        "AttributeGroupsAutocomplete": {
-          "groupLabel": "Grupy"
-        },
-        "CreateAttributeGroupButton": {
-          "addButton": "Nowa grupa atrybutów"
-        },
-        "RemoveAttributeGroupButton": {
-          "deleteButton": "Usuń grupę atrybutów",
-          "deleteTitle": "Czy na pewno chcesz usunąć tę grupę atrybutów?",
-          "deleteSuccess": "Grupa atrybutów usunięta",
-          "deleteRequest": "Grupa atrybutów nie została usunięta"
-        },
-        "UpdateAttributeGroupTranslationButton": {
-          "updateSuccess": "Tłumaczenia grupy atrybutów zostały zaktualizowane"
-        },
-        "AttributeGroupsGrid": {
-          "getRequest": "Grupa atrybutów nie została pobrana prawidłowo",
-          "deleteSuccess": "Grupa atrybutów usunięta"
-        },
-        "CreateAttributeGroupModalForm": {
-          "create": "Stwórz grupę atrybutów",
-          "createSuccess": "Grupa atrybutów została stworzona"
-        },
-        "AttributeGroupGeneralTab": {
-          "updateSuccess": "Grupa atrybutów została zaktualizowana"
-        }
-      },
-      "pages": {
-        "id": {
-          "getRequest": "Grupa atrybutów nie została pobrana prawidłowo"
-        }
-      },
-      "store": {
-        "action": {
-          "updateCancel": "Aktualizacja grupy atrybutów została anulowana",
-          "createCancel": "Tworzenie grupy atrybutów zostało anulowane",
-          "deleteCancel": "Usuwanie grupy atrybutów zostało anulowane"
-        }
-      }
-    },
     "attributeExtend": {
       "components": {
         "AttributeOptionKeyValues": {

@@ -34,7 +34,7 @@ import AttributesAutocomplete from '@Attributes/components/Autocompletes/Attribu
 import {
     SKU_MODEL,
     TYPES,
-} from '@Attributes/defaults/attributes';
+} from '@Attributes/defaults';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import {

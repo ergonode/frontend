@@ -23,7 +23,7 @@ export const prepareParametersData = ({
         parameters,
     } = $this.state.attribute;
 
-    if (typeConfig.params && isObject(typeConfig.params)) {
+    if (isObject(typeConfig.params)) {
         const {
             value: paramsOptions,
             key: paramKey,

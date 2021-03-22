@@ -21,7 +21,7 @@
 import PRIVILEGES from '@Attributes/config/privileges';
 import {
     ATTRIBUTE_CREATED_EVENT_NAME,
-} from '@Attributes/defaults/attributes';
+} from '@Attributes/defaults';
 import Fab from '@UI/components/Fab/Fab';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 

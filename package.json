@@ -128,6 +128,7 @@
     "@ergonode/ui": "local",
     "@ergonode/activity-logs": "local",
     "@ergonode/attributes": "local",
+    "@ergonode/attribute-groups": "local",
     "@ergonode/authentication": "local",
     "@ergonode/categories": "local",
     "@ergonode/category-trees": "local",

@@ -121,7 +121,9 @@ export function getMaxKeyValue(object) {
  * @returns {boolean}
  */
 export function isObject(object) {
-    return typeof object === 'object' && object !== null;
+    return typeof object === 'object'
+        && object !== null
+        && typeof object !== 'undefined';
 }
 
 /**

@@ -34,7 +34,7 @@
 import CreateAttributeButton from '@Attributes/components/Buttons/CreateAttributeButton';
 import {
     ATTRIBUTE_CREATED_EVENT_NAME,
-} from '@Attributes/defaults/attributes';
+} from '@Attributes/defaults';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
 
