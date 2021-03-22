@@ -57,11 +57,11 @@
     },
     "productExtend": {
       "components": {
-        "AddBindingAttributes" : {
+        "AddBindingAttributes": {
           "title": "Dodaj atrybut",
           "infoAlert": "Dowiązujący atrybut nie może zostać dodany w momencie kiedy są dodane warianty produktowe. Żeby dodać kolejny atrybut, usuń dowiązane warianty."
         },
-        "BindingAttribute" : {
+        "BindingAttribute": {
           "infoAlert": "Dowiązujący atrybut nie może zostać usunięty w momencie kiedy są dodane warianty produktowe. Żeby usunąć atrybut, usuń dowiązane warianty."
         },
         "AddBindingAttributesButton": {

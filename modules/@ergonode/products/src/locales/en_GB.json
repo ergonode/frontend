@@ -57,11 +57,11 @@
     },
     "productExtend": {
       "components": {
-        "AddBindingAttributes" : {
+        "AddBindingAttributes": {
           "title": "Add attribute",
           "infoAlert": "Binding attribute cannot be added when there are variants chosen. To add the next attribute, please remove all of the variants."
         },
-        "BindingAttribute" : {
+        "BindingAttribute": {
           "infoAlert": "Binding attribute cannot be removed when there are variants chosen. To remove the attribute, please remove all of the variants."
         },
         "AddBindingAttributesButton": {
