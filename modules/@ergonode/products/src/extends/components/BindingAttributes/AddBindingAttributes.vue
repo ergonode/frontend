@@ -8,7 +8,9 @@
         type="button"
         @click="onShowModal">
         <IconAdd />
-        <span :class="titleClasses">Add attribute</span>
+        <span
+            :class="titleClasses"
+            v-text="title" />
         <AddBindingAttributesModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
@@ -17,6 +19,9 @@
 </template>
 
 <script>
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
 export default {
@@ -24,6 +29,12 @@ export default {
     components: {
         IconAdd,
         AddBindingAttributesModalForm: () => import('@Products/extends/components/Modals/AddBindingAttributesModalForm'),
+    },
+    props: {
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
@@ -41,9 +52,21 @@ export default {
                 'add-binding-attributes__title',
             ];
         },
+        title() {
+            return this.$t('@Products.productExtend.components.AddBindingAttributes.title');
+        },
     },
     methods: {
         onShowModal() {
+            if (this.disabled) {
+                this.$addAlert({
+                    type: ALERT_TYPE.INFO,
+                    message: this.$t('@Products.productExtend.components.AddBindingAttributes.infoAlert'),
+                });
+
+                return;
+            }
+
             this.isModalVisible = true;
         },
         onCloseModal() {

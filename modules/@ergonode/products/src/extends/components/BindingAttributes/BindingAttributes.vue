@@ -6,11 +6,14 @@
     <GridPanelHeader>
         <BindingAttribute
             v-for="(attribute, index) in attributes"
-            :index="index"
-            :attribute="attribute"
             :key="attribute.id"
+            :index="index"
+            :disabled="disabled"
+            :attribute="attribute"
             @remove="onRemoveBinding" />
-        <AddBindingAttributes @added="onAddedBinding" />
+        <AddBindingAttributes
+            :disabled="disabled"
+            @added="onAddedBinding" />
     </GridPanelHeader>
 </template>
 
@@ -30,6 +33,10 @@ export default {
         attributes: {
             type: Array,
             default: () => [],
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
         },
     },
     methods: {

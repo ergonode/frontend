@@ -15,6 +15,9 @@
 </template>
 
 <script>
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import IconCancel from '@UI/components/Icons/Actions/IconCancel';
 
 export default {
@@ -31,6 +34,10 @@ export default {
             type: Object,
             required: true,
         },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         classes() {
@@ -46,6 +53,15 @@ export default {
     },
     methods: {
         onRemove() {
+            if (this.disabled) {
+                this.$addAlert({
+                    type: ALERT_TYPE.INFO,
+                    message: this.$t('@Products.productExtend.components.BindingAttribute.infoAlert'),
+                });
+
+                return;
+            }
+
             this.$emit('remove', this.index);
         },
     },
