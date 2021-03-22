@@ -56,6 +56,7 @@
             <BindingAttributes
                 v-if="isBindingAttributesExpanded"
                 :attributes="bindingAttributes"
+                :disabled="rows.length > 0"
                 @remove-binding="onRemoveBinding"
                 @added="onAttributeBindingAdded" />
         </template>
