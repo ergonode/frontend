@@ -85,10 +85,7 @@ export default {
         if (!this.notifications.length) {
             this.isFetchingData = true;
 
-            await Promise.all([
-                this.getNotifications({}),
-                this.getProcessingNotifications({}),
-            ]);
+            await this.getProcessingNotifications({});
 
             this.isFetchingData = false;
         }
@@ -122,33 +119,38 @@ export default {
     watch: {
         visible: {
             immediate: true,
-            handler() {
+            async handler() {
                 if (this.visible) {
-                    this.requestProcessingNotifications();
+                    await Promise.all([
+                        this.checkUnreadNotifications({}),
+                        this.getNotifications({}),
+                        this.requestProcessingNotifications(),
+                    ]);
+                    this.isFetchingData = false;
                 } else {
+                    this.__setState({
+                        key: 'offset',
+                        value: 0,
+                    });
+                    this.__setState({
+                        key: 'notifications',
+                        value: [],
+                    });
                     this.$clearCancelTokens([
                         AXIOS_CANCEL_TOKEN_PROCESSING_NOTIFICATION_KEY,
                     ]);
                     clearTimeout(this.timeout);
                     this.timeout = null;
+                    this.isFetchingData = true;
                 }
             },
         },
-    },
-    beforeDestroy() {
-        this.__setState({
-            key: 'offset',
-            value: 0,
-        });
-        this.__setState({
-            key: 'notifications',
-            value: [],
-        });
     },
     methods: {
         ...mapActions('notification', [
             'getNotifications',
             'getProcessingNotifications',
+            'checkUnreadNotifications',
             '__setState',
         ]),
         async onIntersect(isIntersecting) {
