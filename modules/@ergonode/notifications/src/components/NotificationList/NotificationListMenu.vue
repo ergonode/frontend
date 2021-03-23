@@ -64,9 +64,11 @@ export default {
     methods: {
         ...mapActions('notification', [
             'markAllNotificationsAsRead',
+            'checkUnreadNotifications',
         ]),
-        onMarkAllAssRead() {
-            this.markAllNotificationsAsRead();
+        async onMarkAllAssRead() {
+            await this.markAllNotificationsAsRead();
+            await this.checkUnreadNotifications({});
         },
         onSelectValue(value) {
             value.action();

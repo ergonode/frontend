@@ -130,17 +130,23 @@ export default {
     methods: {
         ...mapActions('notification', [
             'markNotificationAsRead',
+            'checkUnreadNotifications',
         ]),
         onSelectMenuItem(value) {
             value.action();
         },
-        onSeeDetails() {
+        async onSeeDetails() {
             this.$emit('details', this.item.objectId);
+
+            if (this.item.readAt === null) {
+                await this.onMarkAsRead();
+            }
         },
-        onMarkAsRead() {
-            this.markNotificationAsRead({
+        async onMarkAsRead() {
+            await this.markNotificationAsRead({
                 id: this.item.id,
             });
+            await this.checkUnreadNotifications({});
         },
         onMouseLeave() {
             if (!this.isMenuFocused) {
