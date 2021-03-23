@@ -4,7 +4,9 @@
  */
 <template>
     <div class="horizontal-tab-bar">
-        <div class="horizontal-tab-bar__items">
+        <div
+            ref="items"
+            class="horizontal-tab-bar__items">
             <template v-for="(item, index) in items">
                 <slot
                     name="item"
@@ -19,7 +21,11 @@
             </template>
             <slot name="appendItems" />
         </div>
-        <TabBarItemSlider :selected-index="selectedTabIndex" />
+        <ClientOnly>
+            <TabBarItemSlider
+                :items-reference="$refs.items"
+                :selected-index="selectedTabIndex" />
+        </ClientOnly>
         <slot
             name="content"
             v-if="items.length"

@@ -90,7 +90,7 @@ import {
     debounce,
 } from 'debounce';
 import {
-    mapState,
+    mapGetters,
 } from 'vuex';
 
 export default {
@@ -145,7 +145,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('core', [
+        ...mapGetters('core', [
             'defaultLanguageCode',
         ]),
         selectedNodes() {

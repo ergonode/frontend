@@ -9,7 +9,6 @@ export default () => ({
     email: '',
     firstName: '',
     lastName: '',
-    language: '',
     languageCode: '',
     password: '',
     passwordRepeat: '',

@@ -7,6 +7,7 @@
         <template v-if="isTabVisible">
             <div
                 data-cy="tab-bar__items"
+                ref="items"
                 class="horizontal-routing-tab-bar__items">
                 <template v-for="(item, index) in items">
                     <slot
@@ -24,7 +25,11 @@
                     </slot>
                 </template>
             </div>
-            <TabBarItemSlider :selected-index="selectedTabIndex" />
+            <ClientOnly>
+                <TabBarItemSlider
+                    :items-reference="$refs.items"
+                    :selected-index="selectedTabIndex" />
+            </ClientOnly>
         </template>
         <div class="horizontal-routing-tab-bar__content">
             <slot

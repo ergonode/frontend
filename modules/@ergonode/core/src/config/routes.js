@@ -12,7 +12,6 @@ import Privileges from './privileges';
 export const ROUTE_NAME = {
     PLACEHOLDER: 'placeholder',
     SETTINGS: 'settings',
-    SETTINGS_LANGUAGES: 'settings-languages',
     SETTINGS_LANGUAGES_INHERITANCE: 'settings-languages-inheritance',
     SETTINGS_UNITS: 'settings-units',
     SETTINGS_UNIT_EDIT: 'unit-id',
@@ -32,7 +31,7 @@ export default [
         name: ROUTE_NAME.SETTINGS,
         path: '/settings',
         redirect: {
-            name: ROUTE_NAME.SETTINGS_LANGUAGES,
+            name: ROUTE_NAME.SETTINGS_LANGUAGES_INHERITANCE,
         },
         component: Pages.Settings,
         meta: {
@@ -57,21 +56,6 @@ export default [
             },
         },
         children: [
-            {
-                name: ROUTE_NAME.SETTINGS_LANGUAGES,
-                path: 'languages',
-                component: Tabs.MainSettingsTab,
-                meta: {
-                    title: 'Languages',
-                    breadcrumbs: [
-                        {
-                            title: 'System',
-                            icon: Icons.Settings,
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
             {
                 name: ROUTE_NAME.SETTINGS_LANGUAGES_INHERITANCE,
                 path: 'languages-inheritance',

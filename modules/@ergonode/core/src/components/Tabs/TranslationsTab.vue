@@ -6,24 +6,25 @@
     <CenterViewTemplate :fixed="true">
         <template #header>
             <div class="translation-language-select">
-                <TranslationSelect
+                <LanguageSelect
+                    :value="selectedLanguages"
                     data-cy="translation-language-select"
-                    v-model="selectedLanguages"
-                    :options="languageOptions"
+                    label="Translations"
                     :size="smallSize"
                     :multiselect="true"
                     :clearable="true"
-                    label="Translations" />
+                    @input="onTranslationLanguageCodeChange" />
             </div>
         </template>
         <template #centeredContent>
-            <slot :language-codes="selectedLanguageCodes" />
+            <slot :language-codes="selectedLanguages" />
         </template>
         <slot name="saveButton" />
     </CenterViewTemplate>
 </template>
 
 <script>
+import LanguageSelect from '@Core/components/Selects/LanguageSelect';
 import {
     TRANSLATIONS_LANGUAGES,
 } from '@Core/defaults/cookies';
@@ -31,9 +32,7 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
-import TranslationSelect from '@UI/components/Select/TranslationSelect';
 import {
-    mapGetters,
     mapState,
 } from 'vuex';
 
@@ -41,7 +40,7 @@ export default {
     name: 'TranslationsTab',
     components: {
         CenterViewTemplate,
-        TranslationSelect,
+        LanguageSelect,
     },
     data() {
         return {
@@ -52,49 +51,48 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        ...mapGetters('core', [
-            'activeLanguages',
-            'getActiveLanguageByCode',
+        ...mapState('core', [
+            'inheritedLanguagesTree',
         ]),
         smallSize() {
             return SIZE.SMALL;
         },
-        languageOptions() {
-            return this.activeLanguages.map(({
-                code, name,
-            }) => ({
-                id: code,
-                key: code,
-                value: name,
-            }));
-        },
-        selectedLanguageCodes() {
-            return this.selectedLanguages.map(language => language.id);
-        },
-    },
-    watch: {
-        selectedLanguages(value) {
-            this.$cookies.set(TRANSLATIONS_LANGUAGES, value);
+        cookieKey() {
+            return `${TRANSLATIONS_LANGUAGES}_${this.$route.name}`;
         },
     },
     created() {
-        const cookieValue = this.$cookies.get(TRANSLATIONS_LANGUAGES);
-        const isEveryLanguageExist = cookieValue
-            ? cookieValue.every(e => this.getActiveLanguageByCode(e.key).name)
-            : null;
+        const cookieLanguages = this.$cookies.get(this.cookieKey) || [];
+        const languagesToSelect = this.inheritedLanguagesTree.filter(
+            language => cookieLanguages.some(
+                cookieLanguage => cookieLanguage === language.code,
+            ),
+        );
 
-        if (cookieValue && isEveryLanguageExist) {
-            this.selectedLanguages = cookieValue;
+        if (languagesToSelect.length === cookieLanguages.length && cookieLanguages.length > 0) {
+            this.selectedLanguages = languagesToSelect.map(language => language.code);
         } else {
-            this.$cookies.remove(TRANSLATIONS_LANGUAGES);
-            this.selectedLanguages = [
-                {
-                    id: this.userLanguageCode,
-                    key: this.userLanguageCode,
-                    value: this.getActiveLanguageByCode(this.userLanguageCode).name,
-                },
-            ];
+            const userLanguage = this.inheritedLanguagesTree.find(
+                language => language.code === this.userLanguageCode,
+            );
+
+            if (userLanguage) {
+                this.selectedLanguages = [
+                    userLanguage.code,
+                ];
+
+                this.$cookies.set(this.cookieKey, [
+                    userLanguage.code,
+                ]);
+            }
         }
+    },
+    methods: {
+        onTranslationLanguageCodeChange(value) {
+            this.selectedLanguages = value;
+
+            this.$cookies.set(this.cookieKey, value);
+        },
     },
 };
 </script>

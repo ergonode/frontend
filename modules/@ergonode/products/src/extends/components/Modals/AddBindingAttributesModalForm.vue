@@ -57,9 +57,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            language: state => state.user.language,
-        }),
         ...mapState('product', [
             'id',
             'bindings',

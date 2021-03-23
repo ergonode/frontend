@@ -8,7 +8,6 @@ import {
 } from '@Core/models/mappers/errorsMapper';
 import {
     mapActions,
-    mapGetters,
     mapState,
 } from 'vuex';
 
@@ -26,8 +25,8 @@ export default {
         ...mapState('tab', [
             'translations',
         ]),
-        ...mapGetters('core', [
-            'getActiveLanguageByCode',
+        ...mapState('core', [
+            'inheritedLanguagesTree',
         ]),
         translationErrors() {
             return getMappedTranslationErrors({
@@ -36,7 +35,15 @@ export default {
             });
         },
         selectedLanguage() {
-            return this.getActiveLanguageByCode(this.languageCode).name || null;
+            const language = this.inheritedLanguagesTree.find(({
+                code,
+            }) => code === this.languageCode);
+
+            if (!language) {
+                return '';
+            }
+
+            return language.name;
         },
     },
     methods: {

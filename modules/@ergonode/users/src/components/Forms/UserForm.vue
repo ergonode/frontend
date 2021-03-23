@@ -58,11 +58,10 @@
                     :disabled="!isAllowedToUpdate"
                     :label="$t('user.form.activeLabel')"
                     @input="setStatusValue" />
-                <Select
-                    :value="language"
+                <LanguageSelect
+                    :value="languageCode"
                     required
                     :label="$t('user.form.languageLabel')"
-                    :options="languageOptions"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[languageFieldKey]"
                     @input="setLanguageValue" />
@@ -85,6 +84,7 @@
 </template>
 
 <script>
+import LanguageSelect from '@Core/components/Selects/LanguageSelect';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import Button from '@UI/components/Button/Button';
@@ -100,13 +100,13 @@ import CreateUserButton from '@Users/components/Buttons/CreateUserButton';
 import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
-    mapGetters,
     mapState,
 } from 'vuex';
 
 export default {
     name: 'UserForm',
     components: {
+        LanguageSelect,
         RolesAutocomplete,
         CreateUserButton,
         SelectListNoDataPlaceholder,
@@ -123,9 +123,6 @@ export default {
         formFeedbackMixin,
     ],
     computed: {
-        ...mapGetters('core', [
-            'activeLanguages',
-        ]),
         ...mapState('user', [
             'id',
             'email',
@@ -133,7 +130,7 @@ export default {
             'lastName',
             'password',
             'passwordRepeat',
-            'language',
+            'languageCode',
             'isActive',
             'role',
         ]),
@@ -152,11 +149,6 @@ export default {
                 PRIVILEGES.USER.create,
             ]));
         },
-        languageOptions() {
-            return this.activeLanguages.map(({
-                name,
-            }) => name);
-        },
         emailFieldKey() {
             return 'email';
         },
@@ -173,7 +165,7 @@ export default {
             return 'passwordRepeat';
         },
         languageFieldKey() {
-            return 'language';
+            return 'languageCode';
         },
         roleIdFieldKey() {
             return 'roleId';

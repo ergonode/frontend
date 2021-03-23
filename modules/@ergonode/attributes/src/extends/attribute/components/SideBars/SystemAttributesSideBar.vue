@@ -48,6 +48,7 @@ import Preloader from '@UI/components/Preloader/Preloader';
 import SideBar from '@UI/components/SideBar/SideBar';
 import debounce from 'debounce';
 import {
+    mapGetters,
     mapState,
 } from 'vuex';
 
@@ -89,7 +90,7 @@ export default {
         ...mapState('authentication', {
             languagePrivileges: state => state.user.languagePrivileges,
         }),
-        ...mapState('core', [
+        ...mapGetters('core', [
             'defaultLanguageCode',
         ]),
         attributesByLanguage() {
