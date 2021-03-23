@@ -142,7 +142,6 @@ export default {
                     ]);
                     clearTimeout(this.timeout);
                     this.timeout = null;
-                    this.isFetchingData = true;
                 }
             },
         },
