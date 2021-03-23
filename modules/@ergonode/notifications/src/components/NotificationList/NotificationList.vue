@@ -121,6 +121,7 @@ export default {
             immediate: true,
             async handler() {
                 if (this.visible) {
+                    this.isFetchingData = true;
                     await Promise.all([
                         this.checkUnreadNotifications({}),
                         this.getNotifications({}),
