@@ -81,10 +81,6 @@ export default {
             id,
         } = params;
 
-        const {
-            defaultLanguageCode: languageCode,
-        } = store.state.core;
-
         await store.dispatch('dictionaries/getInitialDictionaries', {
             keys: [
                 'productTypes',
@@ -102,7 +98,7 @@ export default {
         });
         await store.dispatch('product/getInheritedProduct', {
             id,
-            languageCode,
+            languageCode: store.getters['core/defaultLanguageCode'],
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,

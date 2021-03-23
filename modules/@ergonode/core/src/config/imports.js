@@ -9,7 +9,6 @@ export const Pages = {
 };
 
 export const Tabs = {
-    MainSettingsTab: () => import('@Core/components/Tabs/MainSettingsTab').then(m => m.default || m),
     LanguagesSettingsTab: () => import('@Core/components/Tabs/LanguagesSettingsTab').then(m => m.default || m),
     UnitSettingsTab: () => import('@Core/components/Tabs/UnitSettingsTab').then(m => m.default || m),
     UnitGeneralTab: () => import('@Core/components/Tabs/UnitGeneralTab').then(m => m.default || m),

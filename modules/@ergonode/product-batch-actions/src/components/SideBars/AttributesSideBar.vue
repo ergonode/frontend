@@ -68,7 +68,7 @@ import Preloader from '@UI/components/Preloader/Preloader';
 import SideBar from '@UI/components/SideBar/SideBar';
 import SideBarNoDataPlaceholder from '@UI/components/SideBar/SideBarNoDataPlaceholder';
 import {
-    mapState,
+    mapGetters,
 } from 'vuex';
 
 export default {
@@ -115,7 +115,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('core', [
+        ...mapGetters('core', [
             'defaultLanguageCode',
         ]),
         groupedAttributesByLanguage() {

@@ -177,9 +177,6 @@ export default {
                 await dispatch('core/getLanguageTree', {}, {
                     root: true,
                 });
-                await dispatch('core/setDefaultLanguage', {}, {
-                    root: true,
-                });
 
                 onSuccess();
             } catch (e) {

@@ -74,19 +74,24 @@ export default {
         };
     },
     computed: {
+        ...mapState('authentication', {
+            languagePrivileges: state => state.user.languagePrivileges,
+        }),
         ...mapState('core', [
-            'defaultLanguageCode',
+            'inheritedLanguagesTree',
         ]),
         ...mapGetters('core', [
-            'activeLanguages',
+            'defaultLanguageCode',
         ]),
         tinySize() {
             return SIZE.TINY;
         },
         languageOptions() {
-            return this.activeLanguages.map(({
-                name,
-            }) => name);
+            return this.inheritedLanguagesTree
+                .filter(language => this.languagePrivileges[language.code]
+                    && this.languagePrivileges[language.code].read).map(({
+                    name,
+                }) => name);
         },
     },
     created() {
@@ -94,12 +99,12 @@ export default {
     },
     methods: {
         getWorkflowLanguageName() {
-            return this.activeLanguages.find(({
+            return this.inheritedLanguagesTree.find(({
                 code,
             }) => code === this.defaultLanguageCode).name;
         },
         getWorkflowLanguageCode() {
-            return this.activeLanguages.find(({
+            return this.inheritedLanguagesTree.find(({
                 name,
             }) => name === this.workflowLanguage).code;
         },
@@ -107,11 +112,9 @@ export default {
             try {
                 this.isPrefetchingData = true;
 
-                const workflowLanguageCode = this.getWorkflowLanguageCode();
-
                 const statusesCount = await getStatusesCount({
                     $axios: this.$axios,
-                    workflowLanguage: workflowLanguageCode,
+                    workflowLanguage: this.getWorkflowLanguageCode(),
                 });
 
                 this.statuses = statusesCount.map((status) => {

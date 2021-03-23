@@ -119,16 +119,16 @@ export default {
 
 <style lang="scss" scoped>
     .tab-bar-item {
-        outline: none;
         display: flex;
-        flex: 0 0 176px;
         justify-content: center;
+        min-width: 176px;
+        padding: 6px 16px 0;
         color: $GRAPHITE_DARK;
         font: $FONT_MEDIUM_14_20;
-        padding-top: 6px;
         word-break: break-all;
         text-overflow: ellipsis;
         cursor: pointer;
+        outline: none;
         overflow: hidden;
 
         &--error {

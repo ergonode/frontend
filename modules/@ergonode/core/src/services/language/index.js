@@ -15,8 +15,3 @@ export const getAll = ({
 }) => $axios.$get('languages', {
     params,
 });
-
-export const update = ({
-    $axios,
-    data,
-}) => $axios.$put('languages', data);

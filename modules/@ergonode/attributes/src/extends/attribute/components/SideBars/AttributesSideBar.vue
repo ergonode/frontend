@@ -78,7 +78,7 @@ import SideBarNoDataPlaceholder from '@UI/components/SideBar/SideBarNoDataPlaceh
 import debounce from 'debounce';
 import {
     mapActions,
-    mapState,
+    mapGetters,
 } from 'vuex';
 
 export default {
@@ -128,7 +128,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('core', [
+        ...mapGetters('core', [
             'defaultLanguageCode',
         ]),
         groupedAttributesByLanguage() {

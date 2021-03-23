@@ -83,7 +83,6 @@ export default {
     methods: {
         ...mapActions('core', [
             'setLanguageTree',
-            'setDefaultLanguage',
             'updateLanguageTree',
         ]),
         ...mapActions('authentication', [
@@ -133,8 +132,6 @@ export default {
             this.isSubmitting = false;
         },
         onGetUserSuccess() {
-            this.setDefaultLanguage();
-
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Languages tree has been updated',

@@ -35,10 +35,10 @@ export default {
     .tab-bar-item {
         outline: none;
         display: flex;
-        flex: 0 0 176px;
+        min-width: 176px;
         justify-content: center;
-        padding-top: 6px;
         border: none;
+        padding: 6px 16px 0;
         background-color: transparent;
         color: $GRAPHITE_DARK;
         font: $FONT_MEDIUM_14_20;

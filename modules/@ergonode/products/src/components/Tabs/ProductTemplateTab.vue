@@ -60,6 +60,7 @@ import Preloader from '@UI/components/Preloader/Preloader';
 import TitleBarSubActions from '@UI/components/TitleBar/TitleBarSubActions';
 import {
     mapActions,
+    mapGetters,
     mapState,
 } from 'vuex';
 
@@ -97,7 +98,7 @@ export default {
         ...mapState('authentication', {
             languagePrivileges: state => state.user.languagePrivileges,
         }),
-        ...mapState('core', [
+        ...mapGetters('core', [
             'defaultLanguageCode',
         ]),
         ...mapState('product', [

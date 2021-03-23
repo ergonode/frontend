@@ -22,7 +22,6 @@ export default {
     async getUser(
         {
             commit,
-            rootGetters,
         },
         {
             id,
@@ -39,7 +38,6 @@ export default {
             });
             // EXTENDED BEFORE METHOD
 
-            const getActiveLanguageByCode = rootGetters['core/getActiveLanguageByCode'];
             const data = await get({
                 $axios: this.app.$axios,
                 id,
@@ -76,10 +74,6 @@ export default {
             commit('__SET_STATE', {
                 key: 'lastName',
                 value: last_name,
-            });
-            commit('__SET_STATE', {
-                key: 'language',
-                value: getActiveLanguageByCode(language).name,
             });
             commit('__SET_STATE', {
                 key: 'languageCode',
@@ -130,7 +124,6 @@ export default {
             commit,
             dispatch,
             rootState,
-            rootGetters,
         },
         {
             scope,
@@ -143,7 +136,7 @@ export default {
                 id,
                 firstName,
                 lastName,
-                language,
+                languageCode,
                 password,
                 passwordRepeat,
                 isActive,
@@ -151,37 +144,31 @@ export default {
                 drafts,
                 languagePrivilegesCollection,
             } = state;
-            const getActiveLanguageByName = rootGetters['core/getActiveLanguageByName'];
-            const getActiveLanguageByCode = rootGetters['core/getActiveLanguageByCode'];
             const activeLanguages = Object.keys(languagePrivilegesCollection)
-                .reduce((acc, languageCode) => {
-                    const languages = acc;
-
-                    if (getActiveLanguageByCode(languageCode).name) {
-                        languages[languageCode] = languagePrivilegesCollection[languageCode];
-                    }
-                    return languages;
-                }, {});
+                .reduce((acc, activeLanguageCode) => ({
+                    ...acc,
+                    [activeLanguageCode]: languagePrivilegesCollection[activeLanguageCode],
+                }), {});
 
             const mappedDrafts = {};
 
             Object.keys(drafts).forEach((key) => {
                 const [
-                    languageCode,
+                    draftLanguageCode,
                     privilege,
                 ] = key.split('/');
 
-                if (typeof mappedDrafts[languageCode] === 'undefined') {
-                    mappedDrafts[languageCode] = {};
+                if (typeof mappedDrafts[draftLanguageCode] === 'undefined') {
+                    mappedDrafts[draftLanguageCode] = {};
                 }
 
-                mappedDrafts[languageCode][privilege] = Boolean(drafts[key]);
+                mappedDrafts[draftLanguageCode][privilege] = Boolean(drafts[key]);
             });
 
             let data = {
                 firstName,
                 lastName,
-                language: getActiveLanguageByName(language).code,
+                language: languageCode,
                 password,
                 passwordRepeat,
                 roleId: role,
@@ -308,7 +295,6 @@ export default {
     async createUser(
         {
             state,
-            rootGetters,
         },
         {
             scope,
@@ -325,16 +311,15 @@ export default {
                 passwordRepeat,
                 role,
                 isActive,
-                language,
+                languageCode,
             } = state;
-            const getActiveLanguageByName = rootGetters['core/getActiveLanguageByName'];
             let data = {
                 email,
                 firstName,
                 lastName,
                 password,
                 passwordRepeat,
-                language: getActiveLanguageByName(language).code,
+                language: languageCode,
                 roleId: role,
                 isActive,
             };
