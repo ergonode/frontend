@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 
@@ -34,7 +34,7 @@ describe('mouse/isMouseOutsideElement', () => {
             100,
         ), 0, 0);
 
-        expect(isOutside).toBeTruthy();
+        expect(isOutside).toBeFalsy();
     });
 
     it('Arguments are not set', () => {

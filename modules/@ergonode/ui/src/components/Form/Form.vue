@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -62,6 +62,7 @@
                             v-if="isProceedButtonVisible"
                             data-cy="proceed"
                             :title="proceedTitle"
+                            :disabled="disabled"
                             :theme="secondaryTheme"
                             @click.native="onProceed">
                             <template

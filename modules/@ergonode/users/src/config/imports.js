@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 export const Pages = {
@@ -17,9 +17,10 @@ export const Tabs = {
 };
 
 export const Icons = {
-    Settings: () => import('@Core/components/Icons/Menu/IconSettings'),
+    Settings: () => import('@Core/components/Icons/Menu/IconSettings').then(m => m.default || m),
 };
 
 export const Components = {
-    GridLanguageRowCheckColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridLanguageRowCheckColumn'),
+    GridLanguageRowCheckColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridLanguageRowCheckColumn').then(m => m.default || m),
+    GridLanguageNameHintDataCell: () => import('@Users/components/Grid/Layout/Table/Cells/Data//GridLanguageNameHintDataCell').then(m => m.default || m),
 };

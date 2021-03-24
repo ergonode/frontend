@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 export const Pages = {
@@ -15,14 +15,14 @@ export const Tabs = {
 };
 
 export const Icons = {
-    Settings: () => import('@Core/components/Icons/Menu/IconSettings'),
+    Settings: () => import('@Core/components/Icons/Menu/IconSettings').then(m => m.default || m),
 };
 
 export const Components = {
-    GridPrivilegeNameHintDataCell: () => import('@Roles/components/Grid/Layout/Table/Cells/Data/GridPrivilegeNameHintDataCell'),
-    GridPrivilegeRowCheckColumn: () => import('@Roles/components/Grid/Layout/Table/Columns/GridPrivilegeRowCheckColumn'),
-    UserFormRole: () => import('@Roles/extends/user/components/Forms/UserFormRole'),
-    TransitionFormRole: () => import('@Roles/extends/transition/components/Forms/TransitionFormRole'),
+    GridPrivilegeNameHintDataCell: () => import('@Roles/components/Grid/Layout/Table/Cells/Data/GridPrivilegeNameHintDataCell').then(m => m.default || m),
+    GridPrivilegeRowCheckColumn: () => import('@Roles/components/Grid/Layout/Table/Columns/GridPrivilegeRowCheckColumn').then(m => m.default || m),
+    UserFormRole: () => import('@Roles/extends/user/components/Forms/UserFormRole').then(m => m.default || m),
+    TransitionFormRole: () => import('@Roles/extends/transition/components/Forms/TransitionFormRole').then(m => m.default || m),
 };
 
 export const Store = {

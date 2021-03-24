@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -102,9 +102,11 @@ export default {
         },
     },
     methods: {
-        onSelectValue() {
+        onSelectValue(event) {
             if (this.isOptionValid || (!this.isOptionValid && !this.value.disabled)) {
                 this.$emit('input', this.index);
+            } else {
+                event.stopPropagation();
             }
         },
     },

@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -25,7 +25,7 @@
                 :gap="gap"
                 :scope="scope"
                 :change-values="changeValues"
-                :errors="conditionErrors[`element-${item.row}`]"
+                :errors="conditionErrors[item.id]"
                 :disabled="disabled"
                 :is-prefetching-data="
                     fetchingTypes[item.type]
@@ -121,15 +121,6 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
-        onFetchingType({
-            type,
-            fetching,
-        }) {
-            this.fetchingTypes = {
-                ...this.fetchingTypes,
-                [type]: fetching,
-            };
-        },
         onAddItem({
             type,
         }) {

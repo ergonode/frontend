@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -28,6 +28,7 @@
                             <Button
                                 title="GO TO COLLECTIONS"
                                 :size="smallSize"
+                                :disabled="!isAllowedToUpdate"
                                 @click.native="onNavigateToCollections" />
                         </template>
                     </TabBarNoDataPlaceholder>
@@ -38,6 +39,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Collections/config/privileges';
 import {
     ROUTE_NAME,
 } from '@Collections/config/routes';
@@ -73,6 +75,11 @@ export default {
         };
     },
     computed: {
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT_COLLECTION.update,
+            ]);
+        },
         smallSize() {
             return SIZE.SMALL;
         },

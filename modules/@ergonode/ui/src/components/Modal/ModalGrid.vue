@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -60,14 +60,9 @@ export default {
     .modal-grid {
         display: flex;
         flex-direction: column;
-        width: 960px;
+        width: 1080px;
         height: 80%;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_6_DP;
-
-        &__header {
-            color: $GRAPHITE_DARK;
-            font: $FONT_SEMI_BOLD_20_24;
-        }
     }
 </style>

@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -19,6 +19,7 @@
             :year="year"
             :years="years"
             :calendar-type="selectedCalendarType"
+            :disabled-past="disabledPast"
             @input="onDateChange"
             @month="onMonthChange"
             @year="onYearChange"
@@ -68,6 +69,13 @@ export default {
             type: Date,
             default: null,
         },
+        /**
+         * Determines whether to exclude past dates
+         */
+        disabledPast: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         const now = new Date();
@@ -88,7 +96,7 @@ export default {
             if (!this.value) return 'Pick a date';
 
             const day = this.value.getDate();
-            const month = this.value.getMonth();
+            const month = this.value.getMonth() + 1;
             const year = this.value.getFullYear();
 
             switch (this.selectedCalendarType) {

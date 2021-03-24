@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 
@@ -89,6 +89,10 @@ export default {
             ];
         },
         markDrawingCommands() {
+            if (this.value === 2) {
+                return 'M2,5 h10';
+            }
+
             return 'M5.22179 9.44443L0.777344 5.17093L2.02179 3.97435L5.22179 7.05127L11.9773 0.555542L13.2218 1.75212L5.22179 9.44443Z';
         },
     },
@@ -210,7 +214,6 @@ export default {
 
             &:indeterminate + label {
                 #{$checkbox}__mark {
-                    d: path("M2,5 h10");
                     stroke-width: 2px;
                 }
             }

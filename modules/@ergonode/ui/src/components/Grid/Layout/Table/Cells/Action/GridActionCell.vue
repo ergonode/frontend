@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -7,10 +7,11 @@
         :is="component"
         :data-cy="dataCyGenerator"
         :column="columnIndex"
+        :row-id="rowId"
         :row="rowIndex"
         :href="action.href"
-        :is-disabled="isDisabled"
-        :is-selected="isSelected"
+        :disabled="disabled"
+        :selected="selected"
         @action="onAction" />
 </template>
 
@@ -18,6 +19,16 @@
 export default {
     name: 'GridActionCell',
     props: {
+        /**
+         * Unique row identifier
+         */
+        rowId: {
+            type: [
+                String,
+                Number,
+            ],
+            required: true,
+        },
         /**
          * The component of action cell
          */
@@ -59,14 +70,14 @@ export default {
         /**
          * Determines if component is selected
          */
-        isSelected: {
+        selected: {
             type: Boolean,
             default: false,
         },
         /**
          * Determinate if the component is disabled
          */
-        isDisabled: {
+        disabled: {
             type: Boolean,
             default: false,
         },

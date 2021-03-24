@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -64,9 +64,11 @@ export default {
     methods: {
         ...mapActions('notification', [
             'markAllNotificationsAsRead',
+            'checkUnreadNotifications',
         ]),
-        onMarkAllAssRead() {
-            this.markAllNotificationsAsRead();
+        async onMarkAllAssRead() {
+            await this.markAllNotificationsAsRead();
+            await this.checkUnreadNotifications({});
         },
         onSelectValue(value) {
             value.action();

@@ -1,0 +1,60 @@
+{
+  "@ProductBatchActions": {
+    "productBatchAction": {
+      "_": {
+        "title": "Product attributes",
+        "getRequest": "Attribute hasn’t been fetched properly",
+        "submit": "SAVE CHANGES"
+      },
+      "components": {
+        "UpdateProductsButton": {
+          "confirmTitleSingular": "Are you sure you want to clear the value of 1 attribute?",
+          "confirmTitlePlural": "Are you sure you want to clear the values of {info} attributes?",
+          "confirmSubtitle": "Saving an empty attribute will clear its value in all edited products.",
+          "confirmApplySingular": "Clear 1 attribute",
+          "confirmApplyPlural": "Clear {info} attributes",
+          "emptyAttributes": "No selected attributes",
+          "confirmCountTitle": "Processing of {count} products",
+          "confirmCountSubtitle": "Are you sure you want to run a batch action for {count} products?",
+          "confirmCountApplyPlural": "Process {count} products",
+          "confirmCancel": "Cancel",
+          "successAlert": "Action is processing, we will notify you in the Action center when it is complete.",
+          "errorAlert": "An error has occurred while processing action, see details in the Action center."
+        },
+        "UpdateProductsModal": {
+          "title": "Editing {info} products",
+          "getComponent": "There is not defined attribute component for {info} type.",
+          "draggableFormTitle": "Edited attributes"
+        },
+        "ProductsBatchActions": {
+          "deleteBatchActionLabel": "Delete products",
+          "editBatchActionLabel": "Edit products",
+          "confirmTitle": "Are you sure you want to permanently delete {info} products?",
+          "confirmSubtitle": "The products will be deleted from the system forever and cannot be restored.",
+          "confirmApplyTitle": "DELETE {info} PRODUCTS",
+          "successAlert": "Action is processing, we will notify you in the Action center when it is complete.",
+          "errorAlert": "An error has occurred while processing action, see details in the Action center.",
+          "countError": "Batch action filter error"
+        },
+        "RemoveFormFieldDropZone": {
+          "title": "Remove item"
+        },
+        "AttributesSideBar": {
+          "noAttributesTitle": "No attributes",
+          "noAttributesSubtitle": "There are no common attributes for selected products.",
+          "notAssigned": "Not assigned"
+        },
+        "AttributeNotDefinedField": {
+          "title": "Attribute for {info} type is not defined."
+        },
+        "ProductBatchActionDetailsGrid": {
+          "detailsLabel": "Date of start",
+          "getRequest": "Products batch action details haven’t been fetched properly"
+        },
+        "ProductBatchActionDetailsModalGrid": {
+          "title": "Details"
+        }
+      }
+    }
+  }
+}

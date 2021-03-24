@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -19,6 +19,9 @@
 </template>
 
 <script>
+import {
+    toCapitalize,
+} from '@Core/models/stringWrapper';
 import DatePickerContentHeader from '@UI/components/DatePicker/DatePickerContentHeader';
 import DatePickerNode from '@UI/components/DatePicker/Node/DatePickerNode';
 import {
@@ -66,9 +69,7 @@ export default {
             return getParsedDate(this.rangeValue);
         },
         currentMonth() {
-            return this.today.toLocaleString('default', {
-                month: 'short',
-            });
+            return this.getShortMonth(this.today);
         },
         parsedYear() {
             if (this.value) {
@@ -85,23 +86,26 @@ export default {
                 return '';
             }
 
-            return this.value.toLocaleString('default', {
-                month: 'short',
-            });
+            return this.getShortMonth(this.value);
         },
         parsedRangeMonth() {
             if (!this.rangeValue) {
                 return '';
             }
 
-            return this.rangeValue.toLocaleString('default', {
-                month: 'short',
-            });
+            return this.getShortMonth(this.rangeValue);
         },
     },
     methods: {
         onClick(month) {
             this.$emit('select', month);
+        },
+        getShortMonth(date) {
+            const shortMonth = date.toLocaleString('en-GB', {
+                month: 'short',
+            });
+
+            return toCapitalize(shortMonth);
         },
         isSelectedMonth(month) {
             if (this.rangeValue) {
@@ -112,7 +116,8 @@ export default {
             return this.parsedMonth === month;
         },
         isCurrentDate(month) {
-            return this.currentMonth === month;
+            return toCapitalize(this.currentMonth) === month
+                && this.year === this.today.getFullYear();
         },
         isWithinRange(month, index) {
             if (!(this.parsedRangeValue && this.parsedValue)) {

@@ -1,10 +1,11 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
     <button
         :class="classes"
+        type="button"
         @click="onRemove">
         <span
             :class="titleClasses"
@@ -14,6 +15,9 @@
 </template>
 
 <script>
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import IconCancel from '@UI/components/Icons/Actions/IconCancel';
 
 export default {
@@ -30,6 +34,10 @@ export default {
             type: Object,
             required: true,
         },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         classes() {
@@ -45,6 +53,15 @@ export default {
     },
     methods: {
         onRemove() {
+            if (this.disabled) {
+                this.$addAlert({
+                    type: ALERT_TYPE.INFO,
+                    message: this.$t('@Products.productExtend.components.BindingAttribute.infoAlert'),
+                });
+
+                return;
+            }
+
             this.$emit('remove', this.index);
         },
     },

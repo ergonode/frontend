@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 import {
@@ -8,9 +8,15 @@ import {
 
 export default {
     extendComponents: {
-        '@Core/layouts/default/navigationBar': [
+        '@Core/layouts/default/toolBar': [
             {
                 component: Components.ToolBarNotificationButton,
+            },
+        ],
+        '@Core/layouts/default/appMain': [
+            {
+                component: Components.NotificationsListener,
+                props: {},
             },
         ],
     },

@@ -1,11 +1,11 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
     <button
-        type="button"
-        class="advanced-filters-remove-all-button">
+        class="advanced-filters-remove-all-button"
+        type="button">
         <IconCancel />
         {{ title }}
     </button>

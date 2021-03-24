@@ -1,9 +1,12 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
-    <div class="action-column">
+    <div class="grid-action-column">
+        <div class="grid-action-column__header">
+            <slot name="header" />
+        </div>
         <slot />
     </div>
 </template>
@@ -16,16 +19,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .action-column {
+    .grid-action-column {
         flex-shrink: 0;
         display: grid;
         width: 32px;
         background-color: $WHITE;
 
-        & > .grid-table-cell:nth-child(1) {
+        &__header {
             position: sticky;
             top: 0;
             z-index: $Z_INDEX_LVL_2;
+            display: grid;
+            height: 33px;
             background-color: $WHITESMOKE;
         }
     }

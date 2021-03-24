@@ -1,0 +1,11 @@
+{
+  "@BatchActions": {
+    "batchActions": {
+      "components": {
+        "BatchActionsButton": {
+          "title": "Akcje"
+        }
+      }
+    }
+  }
+}

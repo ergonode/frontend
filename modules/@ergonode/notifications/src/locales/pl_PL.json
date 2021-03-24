@@ -15,7 +15,8 @@
           "markAllAsRead": "Oznacz wszystkie jako przeczytane"
         },
         "NotificationListItem": {
-          "markAsRead": "Oznacz jako przeczytany"
+          "markAsRead": "Oznacz jako przeczytany",
+          "seeDetails": "Zobacz szczegóły"
         },
         "NotificationList": {
           "processingSectionTitle": "Procesowanie",

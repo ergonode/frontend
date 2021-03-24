@@ -1,26 +1,31 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
     <GridActionColumn>
-        <GridTableCell
-            editing-allowed
-            :edit-key-code="32"
-            :row="rowsOffset"
-            :column="0"
-            @mousedown.native="onSelectAll"
-            @edit="onSelectAll">
-            <GridCheckEditCell
+        <template #header>
+            <GridSelectRowHeaderCell
+                :rows-offset="rowsOffset"
+                :row-ids="rowIds"
+                :selected-rows="selectedRows"
+                :excluded-from-selection-rows="excludedFromSelectionRows"
                 :disabled="!isAnyData"
-                :value="rowsSelectionState" />
-        </GridTableCell>
+                :is-selected-all="isSelectedAll"
+                @excluded-rows-select="onExcludedRowsSelect"
+                @rows-select="onRowsSelect" />
+        </template>
         <GridTableCell
             v-if="isBasicFilter"
             :locked="true"
             :row="rowsOffset + 1"
             :column="0">
-            <GridCheckPlaceholderCell />
+            <GridSelectRowActionFabCell
+                :disabled="!isAnyData"
+                @select-all-global="onSelectAllGlobal"
+                @select-all-on-this-page="onSelectAllOnThisPage"
+                @deselect-all-global="onDeselectAllGlobal"
+                @deselect-all-on-this-page="onDeselectAllOnThisPage" />
         </GridTableCell>
         <GridSelectRowEditCell
             v-for="(row, rowIndex) in dataCount"
@@ -28,26 +33,30 @@
             :column="0"
             :disabled="disabledRows[rowIds[rowIndex]]"
             :row="rowsOffset + row + basicFiltersOffset"
-            :selected="selectedRows[rowsOffset + row + basicFiltersOffset]"
+            :row-id="rowIds[rowIndex]"
+            :selected="getSelectedRowState(rowIndex)"
             @select="onSelectRow" />
     </GridActionColumn>
 </template>
 
 <script>
-import GridCheckPlaceholderCell from '@UI/components/Grid/GridCheckPlaceholderCell';
-import GridCheckEditCell from '@UI/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell';
+import {
+    deepClone,
+} from '@Core/models/objectWrapper';
 import GridSelectRowEditCell from '@UI/components/Grid/Layout/Table/Cells/Edit/GridSelectRowEditCell';
+import GridSelectRowActionFabCell from '@UI/components/Grid/Layout/Table/Cells/GridSelectRowActionFabCell';
 import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
+import GridSelectRowHeaderCell from '@UI/components/Grid/Layout/Table/Cells/Header/GridSelectRowHeaderCell';
 import GridActionColumn from '@UI/components/Grid/Layout/Table/Columns/GridActionColumn';
 
 export default {
     name: 'GridSelectRowColumn',
     components: {
+        GridSelectRowHeaderCell,
         GridActionColumn,
         GridTableCell,
-        GridCheckEditCell,
         GridSelectRowEditCell,
-        GridCheckPlaceholderCell,
+        GridSelectRowActionFabCell,
     },
     props: {
         /**
@@ -86,6 +95,13 @@ export default {
             default: () => ({}),
         },
         /**
+         * The map of rows excluded from selection
+         */
+        excludedFromSelectionRows: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
          * The number from which rows are enumerated
          */
         rowsOffset: {
@@ -99,63 +115,84 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if every row should be selected
+         */
+        isSelectedAll: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         isAnyData() {
             return this.dataCount > 0;
-        },
-        rowsSelectionState() {
-            const {
-                length,
-            } = Object.keys(this.selectedRows);
-
-            if (length === 0) {
-                return 0;
-            }
-
-            if (this.dataCount === length) {
-                return 1;
-            }
-
-            return 2;
         },
         basicFiltersOffset() {
             return this.isBasicFilter ? 1 : 0;
         },
     },
     methods: {
-        onSelectAll() {
-            if (this.rowsSelectionState > 0) {
-                this.$emit('row-select', {});
+        onSelectAllGlobal() {
+            this.$emit('select-all', true);
+        },
+        onSelectAllOnThisPage() {
+            if (this.isSelectedAll) {
+                this.$emit('excluded-rows-select', {
+                    isExcluded: false,
+                    rowIds: deepClone(this.rowIds),
+                });
             } else {
-                const selectedRows = {};
-
-                // If we had chosen option with selected all of the options, we need to remove it
-                // and mark visible rows as selected
-                const fixedIndex = this.isBasicFilter ? 2 : 1;
-
-                for (let i = fixedIndex; i < this.dataCount + fixedIndex; i += 1) {
-                    selectedRows[i + this.rowsOffset] = true;
-                }
-
-                this.$emit('row-select', selectedRows);
+                this.$emit('rows-select', {
+                    isSelected: true,
+                    rowIds: deepClone(this.rowIds),
+                });
             }
+        },
+        onDeselectAllGlobal() {
+            this.$emit('select-all', false);
+        },
+        onDeselectAllOnThisPage() {
+            if (this.isSelectedAll) {
+                this.$emit('excluded-rows-select', {
+                    isExcluded: true,
+                    rowIds: deepClone(this.rowIds),
+                });
+            } else {
+                this.$emit('rows-select', {
+                    isSelected: false,
+                    rowIds: deepClone(this.rowIds),
+                });
+            }
+        },
+        onExcludedRowsSelect(payload) {
+            this.$emit('excluded-rows-select', payload);
+        },
+        onRowsSelect(payload) {
+            this.$emit('rows-select', payload);
         },
         onSelectRow({
             row,
             selected,
         }) {
-            const selectedRows = {
-                ...this.selectedRows,
-            };
-
-            if (selected) {
-                selectedRows[row] = true;
+            if (this.isSelectedAll) {
+                this.$emit('excluded-rows-select', {
+                    isExcluded: !selected,
+                    rowIds: [
+                        row,
+                    ],
+                });
             } else {
-                delete selectedRows[row];
+                this.$emit('rows-select', {
+                    isSelected: selected,
+                    rowIds: [
+                        row,
+                    ],
+                });
             }
-
-            this.$emit('row-select', selectedRows);
+        },
+        getSelectedRowState(index) {
+            return this.selectedRows[this.rowIds[index]]
+                || (this.isSelectedAll && !this.excludedFromSelectionRows[this.rowIds[index]]);
         },
     },
 };

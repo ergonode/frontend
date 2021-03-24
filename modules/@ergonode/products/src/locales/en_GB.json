@@ -16,6 +16,9 @@
     },
     "product": {
       "components": {
+        "UpdateProductsButton": {
+          "alertSuccess": "Products have been updated"
+        },
         "RestoreForm": {
           "modalTitle": "Select attributes which values you want to restore from {from} to parent translation ({to})"
         },
@@ -40,12 +43,20 @@
       },
       "pages": {
         "id": {
-          "getRequest": "Inherited product hasn't been fetched properly"
+          "getInheritedProductRequest": "Inherited product hasn't been fetched properly",
+          "getProductRequest": "Product hasn't been fetched properly"
         }
       }
     },
     "productExtend": {
       "components": {
+        "AddBindingAttributes": {
+          "title": "Add attribute",
+          "infoAlert": "Binding attribute cannot be added when there are variants chosen. To add the next attribute, please remove all of the variants."
+        },
+        "BindingAttribute": {
+          "infoAlert": "Binding attribute cannot be removed when there are variants chosen. To remove the attribute, please remove all of the variants."
+        },
         "AddBindingAttributesButton": {
           "title": "Add binding attributes"
         },
@@ -73,16 +84,6 @@
           "attachedLabel": "Attached",
           "notAttachedLabel": "Not attached",
           "getRequest": "Products haven’t been fetched properly"
-        }
-      }
-    },
-    "batchAction": {
-      "components": {
-        "ProductsBatchActions": {
-          "confirmTitle": "Are you sure you want to permanently delete {info} products?",
-          "confirmSubtitle": "The products will be deleted from the system forever and cannot be restored.",
-          "confirmApplyTitle": "DELETE {info} PRODUCTS",
-          "successAlert": "Products have been removed"
         }
       }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -8,7 +8,8 @@
         :disabled="isDisabled"
         :hint="item.name ? `#${item.code}` : ''"
         :label="item.name"
-        @drag="onDrag">
+        @drag-start="onDragStart"
+        @drag-end="onDragEnd">
         <ListElementDescription>
             <ListElementTitle :title="item.name" />
             <ListElementHint :title="item.code" />
@@ -17,6 +18,9 @@
 </template>
 
 <script>
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 import ListDraggableElement from '@UI/components/List/ListDraggableElement';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementHint from '@UI/components/List/ListElementHint';
@@ -71,16 +75,28 @@ export default {
         ...mapActions('draggable', [
             '__setState',
         ]),
-        onDrag(isDragged) {
+        onDragStart() {
+            this.__setState({
+                key: 'isElementDragging',
+                value: DRAGGED_ELEMENT.LIST,
+            });
             this.__setState({
                 key: 'draggedElement',
-                value: isDragged
-                    ? {
-                        id: this.item.id,
-                        code: this.item.code,
-                        name: this.item.name,
-                    }
-                    : null,
+                value: {
+                    id: this.item.id,
+                    code: this.item.code,
+                    name: this.item.name,
+                },
+            });
+        },
+        onDragEnd() {
+            this.__setState({
+                key: 'isElementDragging',
+                value: null,
+            });
+            this.__setState({
+                key: 'draggedElement',
+                value: null,
             });
         },
     },

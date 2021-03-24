@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 export default {
@@ -10,7 +10,6 @@ export default {
         '@ergonode/attributes',
         '@ergonode/product-templates',
         '@ergonode/segments',
-        '@ergonode/batch-actions',
     ],
     aliases: {
         '@Products': '/',

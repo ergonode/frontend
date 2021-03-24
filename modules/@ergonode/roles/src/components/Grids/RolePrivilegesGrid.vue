@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -10,7 +10,7 @@
         :errors="errors"
         :data-count="filtered"
         :extended-components="extendedGridComponents"
-        :is-prefetching-data="isFetchingData"
+        :is-prefetching-data="isPrefetchingData"
         :is-editable="isAllowedToUpdate"
         :is-border="true"
         @cell-value="onCellValueChange"
@@ -20,6 +20,7 @@
                 <UpdateRolePrivilegesButton
                     :scope="scope"
                     :errors="errors"
+                    :drafts="drafts"
                     :change-values="changeValues"
                     @updated="onUpdatedRolePrivileges" />
             </div>
@@ -76,36 +77,12 @@ export default {
             default: () => ({}),
         },
     },
-    async fetch() {
-        await this.getInitialDictionaries({
-            keys: [
-                'privileges',
-            ],
-        });
-
-        const {
-            rows,
-            columns,
-        } = getMappedGridData({
-            fullDataList: this.privilegesDictionary,
-            selectedData: this.privileges,
-            defaults: privilegesDefaults,
-            isEditable: this.isAllowedToUpdate,
-        });
-        const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`) || '';
-
-        this.columns = getSortedColumnsByIDs(columns, config.split(','));
-        this.filtered = this.privilegesDictionary.length;
-        this.rows = rows;
-
-        this.isFetchingData = false;
-    },
     data() {
         return {
             columns: [],
             rows: [],
             filtered: 0,
-            isFetchingData: true,
+            isPrefetchingData: true,
         };
     },
     computed: {
@@ -119,6 +96,15 @@ export default {
             return this.$hasAccess([
                 PRIVILEGES.USER_ROLE.update,
             ]);
+        },
+    },
+    watch: {
+        privileges: {
+            deep: true,
+            immediate: true,
+            async handler() {
+                await this.onFetchData();
+            },
         },
     },
     methods: {
@@ -170,6 +156,30 @@ export default {
                 fieldKey: 'rolePrivileges',
                 value: this.drafts,
             });
+        },
+        async onFetchData() {
+            await this.getInitialDictionaries({
+                keys: [
+                    'privileges',
+                ],
+            });
+
+            const {
+                rows,
+                columns,
+            } = getMappedGridData({
+                fullDataList: this.privilegesDictionary,
+                selectedData: this.privileges,
+                defaults: privilegesDefaults,
+                isEditable: this.isAllowedToUpdate,
+            });
+            const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`) || '';
+
+            this.columns = getSortedColumnsByIDs(columns, config.split(','));
+            this.filtered = this.privilegesDictionary.length;
+            this.rows = rows;
+
+            this.isPrefetchingData = false;
         },
     },
 };

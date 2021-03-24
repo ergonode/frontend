@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 export const THIS_YEAR = +(new Date().getFullYear());
@@ -96,6 +96,14 @@ export const getParsedDate = (date) => {
 export const isEqual = (date, withDate) => date.day === withDate.day
         && date.month === withDate.month
         && date.year === withDate.year;
+
+export const isPastDate = (date, withDate) => withDate.year < date.year
+    || (withDate.year === date.year && withDate.month < date.month)
+    || (
+        withDate.year === date.year
+        && withDate.month === date.month
+        && withDate.day < date.day
+    );
 
 export const getMonthIndex = (monthDesc) => {
     const monthDescriptions = Object.values(CALENDAR_MONTHS);

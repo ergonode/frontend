@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -8,7 +8,8 @@
         :disabled="isDisabled"
         :hint="hint"
         :label="title"
-        @drag="onDrag">
+        @drag-start="onDragStart"
+        @drag-end="onDragEnd">
         <ListElementIcon>
             <template v-for="(formComponent, index) in typeIconComponent">
                 <Component
@@ -30,6 +31,9 @@
 </template>
 
 <script>
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 import {
     capitalizeAndConcatenationArray,
 } from '@Core/models/stringWrapper';
@@ -112,10 +116,24 @@ export default {
         ...mapActions('draggable', [
             '__setState',
         ]),
-        onDrag(isDragged) {
+        onDragStart() {
+            this.__setState({
+                key: 'isElementDragging',
+                value: DRAGGED_ELEMENT.LIST,
+            });
             this.__setState({
                 key: 'draggedElement',
-                value: isDragged ? `${this.item.code}:${this.languageCode}` : null,
+                value: `${this.item.code}:${this.languageCode}`,
+            });
+        },
+        onDragEnd() {
+            this.__setState({
+                key: 'isElementDragging',
+                value: null,
+            });
+            this.__setState({
+                key: 'draggedElement',
+                value: null,
             });
         },
     },

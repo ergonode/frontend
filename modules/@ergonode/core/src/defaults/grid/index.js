@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 export const ROW_INTERVALS = [
@@ -80,6 +80,7 @@ export const DRAGGED_ELEMENT = {
     FILTER: 'FILTER',
     TEMPLATE: 'TEMPLATE',
     LIST: 'LIST',
+    FORM_FIELD: 'FORM_FIELD',
 };
 
 export const DATA_LIMIT = 25;

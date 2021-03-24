@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 import {
@@ -80,7 +80,7 @@ export default {
 
             const {
                 name,
-                elements,
+                elements = [],
             } = template;
 
             commit('__SET_STATE', {
@@ -96,13 +96,10 @@ export default {
                 value: id,
             });
 
-            const elementDescriptions = attributes.reduce((prev, curr) => {
-                const tmp = prev;
-
-                tmp[curr.id] = curr.label || curr.code;
-
-                return tmp;
-            }, {});
+            const elementDescriptions = attributes.reduce((prev, curr) => ({
+                ...prev,
+                [curr.id]: curr.label || curr.code,
+            }), {});
 
             const layoutElements = getMappedLayoutElements(
                 elements,

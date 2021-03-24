@@ -1,83 +1,57 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
     <ToolBarButton
+        ref="toolBarButton"
         :selected="isFocused"
         @click.native="onClick">
         <slot name="input" />
-        <FadeTransition>
-            <div
-                v-if="isFocused"
-                ref="menu"
-                class="dropdown">
-                <slot name="dropdown" />
-            </div>
-        </FadeTransition>
+        <Dropdown
+            v-if="isReadyToRender"
+            :parent-reference="$refs.toolBarButton"
+            :visible="isFocused"
+            @click-outside="onClickOutside">
+            <slot
+                name="dropdown"
+                :visible="isFocused" />
+        </Dropdown>
     </ToolBarButton>
 </template>
 
 <script>
+import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
 import ToolBarButton from '@UI/components/ToolBar/ToolBarButton';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
-import {
-    isMouseOutsideElement,
-} from '@UI/models/mouse';
 
 export default {
     name: 'ToolBarSelectButton',
     components: {
+        Dropdown,
         ToolBarButton,
-        FadeTransition,
     },
     data() {
         return {
             isFocused: false,
+            isReadyToRender: false,
             isClickedOutside: false,
         };
     },
-    watch: {
-        isFocused() {
-            if (this.isFocused) {
-                window.addEventListener('click', this.onClickOutside);
-            } else {
-                window.removeEventListener('click', this.onClickOutside);
-            }
-            this.$emit('focus', this.isFocused);
-        },
-    },
-    beforeDestroy() {
-        window.removeEventListener('click', this.onClickOutside);
-    },
     methods: {
         onClick() {
-            if (!this.isFocused) {
-                window.addEventListener('click', this.onClickOutside);
+            if (!this.isReadyToRender) {
+                this.isReadyToRender = true;
             }
+
+            this.isFocused = !this.isFocused;
         },
         onClickOutside({
-            pageX, pageY,
+            isClickedOutside,
         }) {
-            const {
-                menu,
-            } = this.$refs;
-
-            this.isFocused = !isMouseOutsideElement(menu, pageX, pageY);
+            if (isClickedOutside) {
+                this.isFocused = false;
+            }
         },
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .dropdown {
-        position: absolute;
-        top: 48px;
-        right: 0;
-        z-index: $Z_INDEX_NAV;
-        display: flex;
-        background-color: $WHITE;
-        box-shadow: $ELEVATOR_2_DP;
-        color: $GRAPHITE;
-    }
-</style>

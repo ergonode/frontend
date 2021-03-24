@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -7,13 +7,14 @@
         <template #content>
             <RolePrivilegesGrid
                 :scope="scope"
-                :change-values="changeValues"
-                :errors="errors" />
+                :errors="errors"
+                :change-values="changeValues" />
         </template>
     </CenterViewTemplate>
 </template>
 
 <script>
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import RolePrivilegesGrid from '@Roles/components/Grids/RolePrivilegesGrid';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
@@ -23,19 +24,8 @@ export default {
         RolePrivilegesGrid,
         CenterViewTemplate,
     },
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+    mixins: [
+        tabFeedbackMixin,
+    ],
 };
 </script>

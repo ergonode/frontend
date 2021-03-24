@@ -65,7 +65,8 @@
         "action": {
           "createCancel": "Tworzenie atrybutu zostało przerwane",
           "updateCancel": "Aktualizacja atrybutu została przerwana",
-          "deleteCancel": "Usuwanie atrybutu zostało przerwane"
+          "deleteCancel": "Usuwanie atrybutu zostało przerwane",
+          "validateCancel": "Walidowanie wartości atrybutu zostało przerwane"
         }
       }
     },

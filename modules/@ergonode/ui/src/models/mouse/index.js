@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 export function isMouseOutsideElement(element, xPos, yPos) {
@@ -13,10 +13,10 @@ export function isMouseOutsideElement(element, xPos, yPos) {
         width,
         height,
     } = element.getBoundingClientRect();
-    const leftAtTheLeft = xPos <= right - width;
-    const leftAtTheRight = xPos >= right;
-    const leftAtTheTop = yPos <= top;
-    const leftAtTheBottom = yPos >= (top + height);
+    const leftAtTheLeft = xPos < right - width;
+    const leftAtTheRight = xPos > right;
+    const leftAtTheTop = yPos < top;
+    const leftAtTheBottom = yPos > (top + height);
 
     return leftAtTheTop
         || leftAtTheBottom

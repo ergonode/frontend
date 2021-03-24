@@ -1,11 +1,9 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
-    <DropdownFooter
-        :size="size"
-        :space-between="spaceBetween">
+    <DropdownFooter :size="size">
         <Button
             :theme="secondaryTheme"
             :size="tinySize"
@@ -39,13 +37,6 @@ export default {
                 SIZE.SMALL,
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
-        },
-        /**
-         * Equal space between each component
-         */
-        spaceBetween: {
-            type: Boolean,
-            default: false,
         },
     },
     computed: {

@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 /**
@@ -332,11 +332,10 @@ export function sumIntegers(array) {
  * @returns {Object} Flat object
  */
 export function arrayToObject(array, keyField, value) {
-    return array.reduce((prev, current) => {
-        const newObject = prev;
-        newObject[current[keyField]] = current[value];
-        return newObject;
-    }, {});
+    return array.reduce((prev, current) => ({
+        ...prev,
+        [current[keyField]]: current[value],
+    }), {});
 }
 
 /**

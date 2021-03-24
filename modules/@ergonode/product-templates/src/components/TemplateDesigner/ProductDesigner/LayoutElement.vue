@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -38,9 +38,11 @@ import {
     updateResizablePlaceholderWidth,
 } from '@Templates/models/layout/ResizablePlaceholder';
 import {
+    getElementColumn,
     getElementHeight,
     getElementMinHeight,
     getElementMinWidth,
+    getElementRow,
     getElementWidth,
     getHighlightingLayoutDropPositions,
     getHighlightingPositions,
@@ -54,9 +56,6 @@ import {
     ELEVATOR_HOLE,
 } from '@UI/assets/scss/_js-variables/elevators.scss';
 import IconResize from '@UI/components/Icons/Others/IconResize';
-import {
-    getBackgroundItem,
-} from '@UI/models/designer/intex';
 import {
     mapActions,
     mapState,
@@ -262,23 +261,9 @@ export default {
             const width = this.getElementWidthBasedOnMouseXPosition(pageX);
             const height = this.getElementHeightBasedOnMouseYPosition(pageY);
 
-            const backgroundItem = getBackgroundItem({
-                pageX,
-                pageY,
-                itemClass: 'template-designer-background-item',
-            });
-
-            let column = this.layoutWidth;
-            let row = this.layoutHeight;
-
-            if (backgroundItem) {
-                column = Math.min(backgroundItem.column, this.layoutWidth);
-                row = Math.min(backgroundItem.row, this.layoutHeight);
-            }
-
             requestAnimationFrame(() => {
-                this.updateElementWidth(width, column);
-                this.updateElementHeight(height, row);
+                this.updateElementWidth(width);
+                this.updateElementHeight(height);
             });
         },
         onStopResizing() {
@@ -308,7 +293,7 @@ export default {
         getElementHeightBasedOnMouseYPosition(yPos) {
             return this.startHeight + yPos - this.startY;
         },
-        updateElementWidth(width, column) {
+        updateElementWidth(width) {
             const maxColumn = getMaxColumnForGivenRow(
                 this.actualElementRow,
                 this.highlightingPositions,
@@ -323,9 +308,12 @@ export default {
             );
 
             if (width <= this.maxWidth && width >= this.minWidth) {
-                this.newWidth = column - this.element.column + 1;
+                const column = getElementColumn(width, this.minWidth, this.gap);
+                const actualColumn = this.element.column + column - 1;
 
-                if (column !== this.actualElementColumn) {
+                this.newWidth = Math.min(fixedWidth, column);
+
+                if (actualColumn !== this.actualElementColumn) {
                     updateResizablePlaceholderWidth(getElementWidth(
                         this.minWidth,
                         this.newWidth,
@@ -335,12 +323,12 @@ export default {
 
                 this.$el.style.width = `${width}px`;
 
-                this.actualElementColumn = column;
+                this.actualElementColumn = actualColumn;
             } else if (width < this.minWidth) {
                 this.$el.style.width = `${this.minWidth}px`;
             }
         },
-        updateElementHeight(height, row) {
+        updateElementHeight(height) {
             const maxRow = getMaxRowForGivenColumn(
                 this.actualElementColumn,
                 this.highlightingPositions,
@@ -355,9 +343,12 @@ export default {
             );
 
             if (height <= this.maxHeight && height >= this.minHeight) {
-                this.newHeight = row - this.element.row + 1;
+                const row = getElementRow(height, this.minHeight, this.gap);
+                const actualRow = this.element.row + row - 1;
 
-                if (row !== this.actualElementRow) {
+                this.newHeight = Math.min(fixedHeight, row);
+
+                if (actualRow !== this.actualElementRow) {
                     updateResizablePlaceholderHeight(getElementHeight(
                         this.minHeight,
                         this.newHeight,
@@ -367,7 +358,7 @@ export default {
 
                 this.$el.style.height = `${height}px`;
 
-                this.actualElementRow = row;
+                this.actualElementRow = actualRow;
             } else if (height < this.minHeight) {
                 this.$el.style.height = `${this.minHeight}px`;
             }

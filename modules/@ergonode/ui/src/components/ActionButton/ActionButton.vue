@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -24,6 +24,7 @@
                       -->
                     <slot
                         name="prepend"
+                        :focused="isFocused"
                         :color="color" />
                 </template>
                 <template #append="{ color }">
@@ -33,6 +34,7 @@
                       -->
                     <slot
                         name="append"
+                        :focused="isFocused"
                         :color="color">
                         <IconArrowDropdown
                             :fill-color="color"

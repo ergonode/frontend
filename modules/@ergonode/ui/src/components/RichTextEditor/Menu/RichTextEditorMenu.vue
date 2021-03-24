@@ -1,27 +1,25 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
     <EditorMenuBar :editor="editor">
         <template #default="{ commands, isActive }">
-            <ResizeObserver @resize="onResize">
-                <div
-                    :class="classes"
-                    :style="styles">
-                    <RichTextEditorButton
-                        v-for="(extension, index) in visibleExtensions"
-                        :key="`${extension.name}|${index}`"
-                        :extension="extension"
-                        :is-active="isActive"
-                        :commands="commands" />
-                    <RichTextEditorActionIconButton
-                        v-if="hiddenExtensions.length"
-                        :options="hiddenExtensions"
-                        :is-active="isActive"
-                        :commands="commands" />
-                </div>
-            </ResizeObserver>
+            <div
+                :class="classes"
+                :style="styles">
+                <RichTextEditorButton
+                    v-for="(extension, index) in visibleExtensions"
+                    :key="`${extension.name}|${index}`"
+                    :extension="extension"
+                    :is-active="isActive"
+                    :commands="commands" />
+                <RichTextEditorActionIconButton
+                    v-if="hiddenExtensions.length"
+                    :options="hiddenExtensions"
+                    :is-active="isActive"
+                    :commands="commands" />
+            </div>
         </template>
     </EditorMenuBar>
 </template>
@@ -34,7 +32,6 @@ import {
 import {
     INPUT_TYPE,
 } from '@Core/defaults/theme';
-import ResizeObserver from '@UI/components/Observers/ResizeObserver';
 import RichTextEditorActionIconButton from '@UI/components/RichTextEditor/Button/RichTextEditorActionIconButton';
 import RichTextEditorButton from '@UI/components/RichTextEditor/Button/RichTextEditorButton';
 import {
@@ -44,7 +41,6 @@ import {
 export default {
     name: 'RichTextEditorMenu',
     components: {
-        ResizeObserver,
         RichTextEditorButton,
         RichTextEditorActionIconButton,
         EditorMenuBar,
@@ -58,6 +54,13 @@ export default {
             default: null,
         },
         /**
+         * Editor width
+         */
+        editorWidth: {
+            type: Number,
+            default: 0,
+        },
+        /**
          * Determines style of component based on type
          */
         type: {
@@ -65,11 +68,6 @@ export default {
             default: INPUT_TYPE.UNDERLINE,
             validator: value => Object.values(INPUT_TYPE).indexOf(value) !== -1,
         },
-    },
-    data() {
-        return {
-            width: 0,
-        };
     },
     computed: {
         classes() {
@@ -84,7 +82,7 @@ export default {
             };
         },
         maxVisibleExtensions() {
-            const max = Math.floor(this.width / EXTENSION_BUTTON_WIDTH);
+            const max = Math.floor(this.editorWidth / EXTENSION_BUTTON_WIDTH);
 
             return max === EXTENSIONS.length ? max : max - 1;
         },
@@ -93,15 +91,6 @@ export default {
         },
         hiddenExtensions() {
             return EXTENSIONS.slice(this.maxVisibleExtensions, EXTENSIONS.length);
-        },
-    },
-    methods: {
-        onResize(entry) {
-            const {
-                width,
-            } = entry.contentRect;
-
-            this.width = width;
         },
     },
 };

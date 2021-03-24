@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 
@@ -28,7 +28,7 @@ export default {
         },
     ],
     extendMethods: {
-        '@Notifications/store/notification/action/getProcessingNotifications': async ({
+        '@Notifications/store/notification/action/getProcessingNotifications/__before': async ({
             $this,
         }) => {
             const isAllowedToRead = $this.$hasAccess([
@@ -55,21 +55,7 @@ export default {
                 cancelToken: source.token,
             });
 
-            const successNotifications = {
-                component: Components.NotificationListImportSuccessItem,
-                notifications: [],
-                section: ACTION_CENTER_SECTIONS.NOTIFICATIONS,
-            };
-            const warningNotifications = {
-                component: Components.NotificationListImportWarningItem,
-                notifications: [],
-                section: ACTION_CENTER_SECTIONS.NOTIFICATIONS,
-            };
-            const processingNotifications = {
-                component: Components.NotificationListImportProcessingItem,
-                notifications: [],
-                section: ACTION_CENTER_SECTIONS.PROCESSING,
-            };
+            const notifications = [];
 
             importStatuses.forEach((notification) => {
                 const {
@@ -77,22 +63,18 @@ export default {
                 } = notification;
 
                 if (status === 'PRECESSED') {
-                    processingNotifications.notifications.push({
+                    notifications.push({
                         ...notification,
                         createdAt: notification.started_at,
                         readAt: false,
                         message: `Importing "${notification.name}"`,
+                        section: ACTION_CENTER_SECTIONS.PROCESSING,
+                        component: Components.NotificationListImportProcessingItem,
                     });
                 }
             });
 
-            return [
-                successNotifications,
-                warningNotifications,
-                processingNotifications,
-            ].filter(({
-                notifications,
-            }) => notifications.length > 0);
+            return notifications;
         },
     },
 };

@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 
@@ -11,24 +11,23 @@ import {
     DEFAULT_LANGUAGE_CODE,
 } from '@Core/defaults/cookies';
 
-const languages = [];
-
 const setI18nLanguage = async ({
     i18n,
     languageCode,
 }) => {
+    let messages = '';
+
     try {
-        if (!languages.includes(languageCode)) {
-            const messages = await import(`@/.nuxt/locales/${languageCode}`);
-
-            languages.push(languageCode);
-            i18n.setLocaleMessage(languageCode, messages);
-        }
-
-        i18n.locale = languageCode;
+        messages = require(`@/.nuxt/locales/${languageCode}`);
     } catch (e) {
-        console.error(e);
+        console.warn(`No translation file for language ${languageCode}`);
+
+        messages = require(`@/.nuxt/locales/${DEFAULT_LANGUAGE_CODE}`);
     }
+
+    i18n.setLocaleMessage(languageCode, messages);
+
+    await i18n.setLocale(languageCode);
 };
 
 export default async ({

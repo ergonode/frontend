@@ -1,12 +1,11 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
     <Component
         :is="styleComponent"
         ref="activator"
-        :style="{height, flexBasis: height }"
         :height="height"
         :focused="isFocused"
         :error="isError"
@@ -15,28 +14,29 @@
         :alignment="alignment"
         :size="size"
         :details-label="informationLabel"
-        @mousedown="onMouseDown"
-        @mouseup="onMouseUp">
+        @mousedown="onMouseDown">
         <template #activator>
             <RichTextEditorMenuBubble
                 v-if="!disabled"
                 :editor="editor"
-                ref="menuBubble"
-                @active="onMenuBubbleActive" />
+                ref="menuBubble" />
             <slot name="prepend" />
             <InputController :size="size">
-                <div class="rich-text-editor">
-                    <VerticalFixedScroll>
-                        <EditorContent
-                            class="rich-text-editor__content"
-                            ref="editorContent"
-                            :editor="editor" />
-                    </VerticalFixedScroll>
-                    <RichTextEditorMenu
-                        v-if="isSolidType && isFocused"
-                        :type="type"
-                        :editor="editor" />
-                </div>
+                <ResizeObserver @resize="onResize">
+                    <div class="rich-text-editor">
+                        <VerticalFixedScroll>
+                            <EditorContent
+                                class="rich-text-editor__content"
+                                ref="editorContent"
+                                :editor="editor" />
+                        </VerticalFixedScroll>
+                        <RichTextEditorMenu
+                            v-if="isSolidType && isFocused"
+                            :type="type"
+                            :editor="editor"
+                            :editor-width="editorWidth" />
+                    </div>
+                </ResizeObserver>
                 <InputLabel
                     v-if="label"
                     :style="{ top: 0 }"
@@ -58,9 +58,9 @@
         </template>
         <RichTextEditorMenu
             v-if="!isSolidType"
-            ref="menu"
             :type="type"
-            :editor="editor" />
+            :editor="editor"
+            :editor-width="editorWidth" />
         <template #details>
             <slot name="details" />
         </template>
@@ -78,6 +78,7 @@ import InputLabel from '@UI/components/Input/InputLabel';
 import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
 import InputUnderlineStyle from '@UI/components/Input/InputUnderlineStyle';
 import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
+import ResizeObserver from '@UI/components/Observers/ResizeObserver';
 import RichTextEditorMenu from '@UI/components/RichTextEditor/Menu/RichTextEditorMenu';
 import RichTextEditorMenuBubble from '@UI/components/RichTextEditor/MenuBubble/RichTextEditorMenuBubble';
 import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
@@ -89,6 +90,7 @@ import {
     Blockquote,
     Bold,
     BulletList,
+    HardBreak,
     Heading,
     History,
     HorizontalRule,
@@ -110,6 +112,7 @@ export default {
         RichTextEditorMenuBubble,
         EditorContent,
         VerticalFixedScroll,
+        ResizeObserver,
         ErrorHint: () => import('@UI/components/Hints/ErrorHint'),
     },
     mixins: [
@@ -218,6 +221,7 @@ export default {
         return {
             isFocused: false,
             editor: null,
+            editorWidth: 0,
         };
     },
     computed: {
@@ -254,6 +258,7 @@ export default {
                 new Bold(),
                 new Italic(),
                 new Underline(),
+                new HardBreak(),
                 new Blockquote(),
                 new OrderedList(),
                 new HorizontalRule(),
@@ -288,10 +293,19 @@ export default {
         this.editor.destroy();
     },
     methods: {
-        onMenuBubbleActive(isActive) {
+        onMouseDown(event) {
             if (!this.isFocused) {
-                this.isFocused = isActive;
+                event.preventDefault();
+
+                this.editor.focus();
             }
+        },
+        onResize(entry) {
+            const {
+                width,
+            } = entry.contentRect;
+
+            this.editorWidth = width;
         },
         onFocus({
             event,
@@ -306,8 +320,6 @@ export default {
             this.isFocused = true;
         },
         onBlur() {
-            this.isFocused = false;
-
             if (!this.disabled) {
                 // TODO:
                 // It will be fixed in +2.0 tiptap
@@ -320,26 +332,8 @@ export default {
 
                 this.$emit('blur', html);
             }
-        },
-        onMouseDown(event) {
-            if (this.disabled) {
-                return;
-            }
 
-            const isClickedInsideEditor = this.$refs.editorContent.$el.contains(event.target);
-
-            if (!isClickedInsideEditor) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-        },
-        onMouseUp() {
-            if (this.disabled) {
-                return;
-            }
-
-            this.editor.focus();
-            this.isFocused = true;
+            this.isFocused = false;
         },
     },
 };

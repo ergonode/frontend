@@ -1,8 +1,13 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-// eslint-disable-next-line import/no-extraneous-dependencies
+import {
+    Components,
+} from '@Notifications/config/imports';
+import {
+    ACTION_CENTER_SECTIONS,
+} from '@Notifications/defaults';
 import axios from 'axios';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Vue from 'vue';
@@ -34,8 +39,8 @@ const testedAction = (context = {}, payload = {}) => actions[action]
         app: {
             $axios: axios,
         },
+        $getExtendSlot: () => ({}),
     })(context, payload);
-
 const mutations = {
     __SET_STATE(state, {
         key, value,
@@ -65,22 +70,26 @@ describe('Notifications', () => {
 
         it('Requesting for notifications', async () => {
             const createdAt = new Date();
-
             const mockedNotification = {
                 id: '1',
+                object_id: '123',
                 author: 'Jan kowalski',
                 message: 'Super!!',
                 created_at: createdAt,
                 avatar_id: 'abcde1234',
                 read_at: null,
+                type: 'simple',
             };
             const mockedResultNotification = {
                 id: '1',
                 author: 'Jan kowalski',
                 message: 'Super!!',
-                createdAt,
                 avatar_id: 'abcde1234',
                 readAt: null,
+                createdAt,
+                objectId: '123',
+                component: Components.NotificationListItem,
+                section: ACTION_CENTER_SECTIONS.NOTIFICATIONS,
             };
 
             action = 'getNotifications';

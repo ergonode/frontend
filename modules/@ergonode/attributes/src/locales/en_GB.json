@@ -65,7 +65,8 @@
         "action": {
           "createCancel": "Creating attribute has been canceled",
           "updateCancel": "Updating attribute has been canceled",
-          "deleteCancel": "Removing attribute has been canceled"
+          "deleteCancel": "Removing attribute has been canceled",
+          "validateCancel": "Validating attribute value has been canceled"
         }
       }
     },

@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -41,12 +41,11 @@
         <ul
             v-else-if="isHovered"
             class="navigation-side-bar-group__items">
-            <div
-                class="navigation-side-bar-group__expanded-title">
+            <li class="navigation-side-bar-group__expanded-title">
                 <span
                     class="navigation-side-bar-group__title"
                     v-text="route.group.title" />
-            </div>
+            </li>
             <NavigationSideBarGroupElement
                 v-for="(child, index) in route.routes"
                 :key="index"

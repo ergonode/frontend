@@ -1,6 +1,6 @@
 /* eslint-disable no-throw-literal */
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 import {
@@ -24,7 +24,6 @@ import {
     removeValues,
     update,
     updateValues,
-    validateValue,
 } from '@Products/services/index';
 
 import {
@@ -307,11 +306,10 @@ export default {
             onError({
                 errors: e.data.errors,
                 scope,
-                fieldKeys: data.skus.reduce((prev, curr, index) => {
-                    const tmp = prev;
-                    tmp[`element-${index}`] = curr;
-                    return tmp;
-                }, {}),
+                fieldKeys: data.skus.reduce((prev, curr, index) => ({
+                    ...prev,
+                    [`element-${index}`]: curr,
+                }), {}),
             });
         }
     },
@@ -450,6 +448,7 @@ export default {
     },
     async updateProductStatus({
         state,
+        dispatch,
     }, {
         attributeId,
         value,
@@ -461,17 +460,18 @@ export default {
             const {
                 id,
             } = state;
-            const data = {
-                value,
-            };
 
-            await validateValue({
-                $axios: this.app.$axios,
-                id,
-                attributeId,
-                languageCode,
-                data,
-            });
+            await dispatch(
+                'attribute/validateAttributeValue',
+                {
+                    id: attributeId,
+                    languageCode,
+                    value,
+                },
+                {
+                    root: true,
+                },
+            );
 
             const productStatusData = [
                 {
@@ -675,23 +675,22 @@ export default {
     }, {
         languageCode,
         fieldKey,
-        productId,
         elementId,
         value,
         scope,
     }) {
         try {
-            const data = {
-                value,
-            };
-
-            await validateValue({
-                $axios: this.app.$axios,
-                id: productId,
-                attributeId: elementId,
-                languageCode,
-                data,
-            });
+            await dispatch(
+                'attribute/validateAttributeValue',
+                {
+                    id: elementId,
+                    languageCode,
+                    value,
+                },
+                {
+                    root: true,
+                },
+            );
 
             if (rootState.feedback.errors[scope]) {
                 dispatch(

@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -104,6 +104,9 @@ export default {
         markAsRead() {
             return this.$t('@Notifications.notification.components.NotificationListItem.markAsRead');
         },
+        seeDetails() {
+            return this.$t('@Notifications.notification.components.NotificationListItem.seeDetails');
+        },
         menuItems() {
             const items = [];
 
@@ -114,20 +117,36 @@ export default {
                 });
             }
 
+            if (this.item.objectId) {
+                items.push({
+                    text: this.seeDetails,
+                    action: this.onSeeDetails,
+                });
+            }
+
             return items;
         },
     },
     methods: {
         ...mapActions('notification', [
             'markNotificationAsRead',
+            'checkUnreadNotifications',
         ]),
         onSelectMenuItem(value) {
             value.action();
         },
-        onMarkAsRead() {
-            this.markNotificationAsRead({
+        async onSeeDetails() {
+            this.$emit('details', this.item.objectId);
+
+            if (this.item.readAt === null) {
+                await this.onMarkAsRead();
+            }
+        },
+        async onMarkAsRead() {
+            await this.markNotificationAsRead({
                 id: this.item.id,
             });
+            await this.checkUnreadNotifications({});
         },
         onMouseLeave() {
             if (!this.isMenuFocused) {

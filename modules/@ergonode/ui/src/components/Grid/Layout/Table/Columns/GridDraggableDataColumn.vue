@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -11,16 +11,19 @@
         @swap="onSwapColumns">
         <GridColumn
             :index="columnIndex"
+            :resizeable="true"
             @resize="onResizeColumn">
-            <GridHeaderCell
-                :row-index="rowsOffset"
-                :column-index="columnIndex"
-                :column-id="column.id"
-                :label="column.label"
-                :deletable="column.deletable"
-                :sort-order="sortOrder"
-                @sort="onSortColumn"
-                @remove="onRemoveColumn" />
+            <template #header>
+                <GridHeaderCell
+                    :row-index="rowsOffset"
+                    :column-index="columnIndex"
+                    :column-id="column.id"
+                    :label="column.label"
+                    :deletable="column.deletable"
+                    :sort-order="sortOrder"
+                    @sort="onSortColumn"
+                    @remove="onRemoveColumn" />
+            </template>
             <template v-if="isBasicFilter">
                 <GridFilterDataCell
                     v-if="column.filter"
@@ -53,7 +56,7 @@
                 :is-disabled="disabledRows[rowIds[rowIndex]]"
                 :is-locked="!(column.editable && isEditable)"
                 :is-copyable="column.editable && isEditable && !disabledRows[rowIds[rowIndex]]"
-                :is-selected="selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
+                :is-selected="getSelectedRowState(rowIndex)"
                 @cell-value="onCellValueChange"
                 @edit-cell="onEditCell" />
         </GridColumn>
@@ -171,6 +174,13 @@ export default {
             default: () => ({}),
         },
         /**
+         * The map of rows excluded from selection
+         */
+        excludedFromSelectionRows: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
          * Determines if filters are visible
          */
         isBasicFilter: {
@@ -183,6 +193,13 @@ export default {
         isEditable: {
             type: Boolean,
             default: true,
+        },
+        /**
+         * Determines if every row should be selected
+         */
+        isSelectedAll: {
+            type: Boolean,
+            default: false,
         },
     },
     computed: {
@@ -214,6 +231,10 @@ export default {
         },
         onEditCell(payload) {
             this.$emit('edit-cell', payload);
+        },
+        getSelectedRowState(index) {
+            return this.selectedRows[this.rowIds[index]]
+                || (this.isSelectedAll && !this.excludedFromSelectionRows[this.rowIds[index]]);
         },
     },
 };

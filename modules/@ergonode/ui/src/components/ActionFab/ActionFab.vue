@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -24,7 +24,11 @@
                     -->
                     <slot
                         name="icon"
-                        :color="iconFillColor" />
+                        :color="iconFillColor">
+                        <IconArrowDropdown
+                            :fill-color="iconFillColor"
+                            :state="iconArrowState" />
+                    </slot>
                 </template>
             </Fab>
         </template>
@@ -42,6 +46,9 @@
 
 <script>
 import {
+    ARROW,
+} from '@Core/defaults/icons';
+import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
@@ -53,6 +60,7 @@ import {
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import ActionBaseButton from '@UI/components/ActionButton/ActionBaseButton';
 import Fab from '@UI/components/Fab/Fab';
+import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 
 /**
  * `ActionFab` is an `ActionBaseButton` with a `IconButton` inside named slot `button`.
@@ -63,6 +71,7 @@ export default {
     components: {
         Fab,
         ActionBaseButton,
+        IconArrowDropdown,
     },
     props: {
         /**
@@ -145,6 +154,9 @@ export default {
             }
 
             return WHITE;
+        },
+        iconArrowState() {
+            return this.isFocused ? ARROW.UP : ARROW.DOWN;
         },
     },
     methods: {

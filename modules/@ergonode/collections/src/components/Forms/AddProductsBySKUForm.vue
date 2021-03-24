@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -68,7 +68,9 @@ export default {
         errorMapper(errors) {
             return Object.keys(errors).reduce((prev, curr) => [
                 ...prev,
-                ...Object.keys(errors[curr]).map(key => `${key} - ${errors[curr][key]}`),
+                ...(typeof errors[curr] === 'string' ? [
+                    errors[curr],
+                ] : Object.keys(errors[curr]).map(key => `${key} - ${errors[curr][key]}`)),
             ], []);
         },
         onSKUChange(value) {

@@ -1,13 +1,13 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
     <GridTableCell
         :column="column"
         :row="row"
-        :selected="isSelected"
-        :disabled="isDisabled"
+        :selected="selected"
+        :disabled="disabled"
         :edit-key-code="32"
         @mousedown.native="onEdit"
         @edit="onEdit">
@@ -27,16 +27,26 @@ export default {
     },
     props: {
         /**
+         * Unique row identifier
+         */
+        rowId: {
+            type: [
+                String,
+                Number,
+            ],
+            required: true,
+        },
+        /**
          * Determines if component is selected
          */
-        isSelected: {
+        selected: {
             type: Boolean,
             default: false,
         },
         /**
          * Determinate if the component is disabled
          */
-        isDisabled: {
+        disabled: {
             type: Boolean,
             default: false,
         },

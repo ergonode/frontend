@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -37,6 +37,16 @@ export default {
             required: true,
         },
         /**
+         * Unique row identifier
+         */
+        rowId: {
+            type: [
+                String,
+                Number,
+            ],
+            required: true,
+        },
+        /**
          * Determines if component is selected
          */
         selected: {
@@ -55,7 +65,7 @@ export default {
         onSelect() {
             if (!this.disabled) {
                 this.$emit('select', {
-                    row: this.row,
+                    row: this.rowId,
                     selected: !this.selected,
                 });
             }

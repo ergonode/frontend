@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 import {
@@ -8,6 +8,9 @@ import {
 
 export default {
     extendComponents: {
+        '@UI/components/Grid/Layout/Table/Cells/Data': {
+            LANGUAGE_NAME_HINT: Components.GridLanguageNameHintDataCell,
+        },
         '@UI/components/Grid/Layout/Table/Columns': {
             LANGUAGE_ROW_CHECK: Components.GridLanguageRowCheckColumn,
         },

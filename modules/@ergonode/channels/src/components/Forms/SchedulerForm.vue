@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -31,6 +31,7 @@
                     :format="format"
                     :disabled="!isAllowedToUpdate || !isActive"
                     :error-messages="errors[startFieldKey]"
+                    disabled-past
                     required
                     label="Start date"
                     @input="setDateChange" />

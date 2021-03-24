@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 import {
@@ -53,11 +53,28 @@ export function getDraftsBasedOnCellValues(cellValues) {
         rowId,
         columnId,
         value,
-    }) => {
-        const tmp = prev;
-        tmp[`${rowId}/${columnId}`] = value;
-        return tmp;
-    }, {});
+    }) => ({
+        ...prev,
+        [`${rowId}/${columnId}`]: value,
+    }), {});
+}
+
+export function getFilterQueryParams({
+    filter = '',
+    advancedFilter = '',
+
+}) {
+    const filters = [];
+
+    if (advancedFilter) {
+        filters.push(advancedFilter);
+    }
+
+    if (filter) {
+        filters.push(filter);
+    }
+
+    return filters.join(';');
 }
 
 export function getParams({
@@ -69,8 +86,6 @@ export function getParams({
         query: {
             page = DEFAULT_PAGE,
             itemsPerPage = DATA_LIMIT,
-            filter = '',
-            advancedFilter = '',
             field = '',
             order = '',
         },
@@ -83,16 +98,10 @@ export function getParams({
         columns: $cookies.get(`GRID_CONFIG:${$route.name}`) || defaultColumns,
     };
 
-    if (advancedFilter) {
-        params.filter = advancedFilter;
-    }
+    const mappedFilter = getFilterQueryParams($route.query);
 
-    if (filter) {
-        if (params.filter) {
-            params.filter += filter;
-        } else {
-            params.filter = filter;
-        }
+    if (mappedFilter) {
+        params.filter = mappedFilter;
     }
 
     if (field) {

@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -30,7 +30,6 @@ import {
 } from '@UI/models/calendar';
 import {
     format as formatDate,
-    parse as parseDate,
 } from 'date-fns';
 
 export default {
@@ -50,16 +49,20 @@ export default {
             type: String,
             default: DEFAULT_FORMAT,
         },
+        /**
+         * Date value
+         */
+        value: {
+            type: [
+                Date,
+                Object,
+            ],
+            default: null,
+        },
     },
     data() {
-        let localValue = null;
-
-        if (this.value) {
-            localValue = parseDate(this.value, this.format, new Date());
-        }
-
         return {
-            localValue,
+            localValue: this.value,
         };
     },
     computed: {

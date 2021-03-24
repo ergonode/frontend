@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -39,7 +39,7 @@
                         :size="size"
                         @clear="onClear"
                         @apply="onDismiss" />
-                    <SelectDropdownApplyFooter
+                    <SelectDropdownFooter
                         v-else
                         :size="size"
                         @clear="onClear"
@@ -56,14 +56,14 @@ import {
 } from '@Core/defaults/theme';
 import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
 import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
-import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
+import SelectDropdownFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownFooter';
 import SelectList from '@UI/components/SelectList/SelectList';
 
 export default {
     name: 'SelectDropdown',
     components: {
+        SelectDropdownFooter,
         MultiselectDropdownFooter,
-        SelectDropdownApplyFooter,
         Dropdown,
         SelectList,
     },

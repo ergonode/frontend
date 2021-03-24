@@ -16,6 +16,9 @@
     },
     "product": {
       "components": {
+        "UpdateProductsButton": {
+          "alertSuccess": "Produkty zostały zaktualizowane"
+        },
         "RestoreForm": {
           "modalTitle": "Wybierz atrybuty, których wartości chcesz przywrócić z {from} do wartości dziedziczonej w ({to})"
         },
@@ -51,6 +54,13 @@
     },
     "productExtend": {
       "components": {
+        "AddBindingAttributes": {
+          "title": "Dodaj atrybut",
+          "infoAlert": "Dowiązujący atrybut nie może zostać dodany w momencie kiedy są dodane warianty produktowe. Żeby dodać kolejny atrybut, usuń dowiązane warianty."
+        },
+        "BindingAttribute": {
+          "infoAlert": "Dowiązujący atrybut nie może zostać usunięty w momencie kiedy są dodane warianty produktowe. Żeby usunąć atrybut, usuń dowiązane warianty."
+        },
         "AddBindingAttributesButton": {
           "title": "Dodaj atrybuty dowiązujące"
         },
@@ -75,16 +85,6 @@
           "noProducts": "Brak produktów",
           "createFirst": "Brak produktów z wariantami albo produktów prostych w systemie, stwórz pierwszy.",
           "getRequest": "Produkty nie zostały pobrane"
-        }
-      }
-    },
-    "batchAction": {
-      "components": {
-        "ProductsBatchActions": {
-          "confirmTitle": "Czy jesteś pewień usunięcia permamentnie {info} produktów?",
-          "confirmSubtitle": "Produkty będą usunięte z systemu bez odwrotnie i nie będą mogłby być przywrócone.",
-          "confirmApplyTitle": "USUŃ {info} PRODUKTY",
-          "successAlert": "Produkty zostały usunięte"
         }
       }
     }

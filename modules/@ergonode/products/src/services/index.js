@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 
@@ -46,16 +46,6 @@ export const update = ({
     id,
     data,
 }) => $axios.$put(`products/${id}`, data);
-
-export const validateValue = ({
-    $axios,
-    id,
-    attributeId,
-    languageCode,
-    data,
-}) => $axios.$post(`${languageCode}/products/${id}/attribute/${attributeId}/validate`, data, {
-    withLanguage: false,
-});
 
 export const updateValues = ({
     $axios,

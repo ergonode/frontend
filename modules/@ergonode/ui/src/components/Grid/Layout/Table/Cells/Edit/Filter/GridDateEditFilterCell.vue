@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -50,6 +50,16 @@ export default {
         format: {
             type: String,
             default: DEFAULT_FORMAT,
+        },
+        /**
+         * Date value
+         */
+        value: {
+            type: [
+                Date,
+                Object,
+            ],
+            default: null,
         },
     },
     data() {

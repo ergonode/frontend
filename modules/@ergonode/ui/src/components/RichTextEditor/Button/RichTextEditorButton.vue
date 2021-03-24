@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -8,7 +8,7 @@
         :theme="secondaryTheme"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
-        @click.native="commandCallback">
+        @mousedown.native.prevent="commandCallback">
         <template #icon>
             <Component
                 :is="iconComponent"

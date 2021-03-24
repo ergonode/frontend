@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 import {
@@ -8,7 +8,6 @@ import {
     Tabs,
 } from '@Collections/config/imports';
 import PRIVILEGES from '@Collections/config/privileges';
-import PRODUCT_PRIVILEGES from '@Products/config/privileges';
 
 export const ROUTE_NAME = {
     COLLECTIONS: 'collections',
@@ -124,9 +123,7 @@ export default [
                             routeName: ROUTE_NAME.COLLECTIONS_GRID,
                         },
                     ],
-                    privileges: [
-                        PRODUCT_PRIVILEGES.PRODUCT.read,
-                    ],
+                    privileges: [],
                 },
             },
         ],

@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -18,10 +18,10 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Categories/config/privileges';
 import {
     CATEGORY_CREATED_EVENT_NAME,
 } from '@Categories/defaults/attributes';
-import PRIVILEGES from '@Trees/config/privileges';
 import Fab from '@UI/components/Fab/Fab';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
@@ -50,7 +50,7 @@ export default {
     computed: {
         isAllowedToCreate() {
             return this.$hasAccess([
-                PRIVILEGES.CATEGORY_TREE.create,
+                PRIVILEGES.CATEGORY.create,
             ]);
         },
     },

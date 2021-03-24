@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -34,6 +34,7 @@
             }">
             <DatePickerContent
                 :value="value"
+                :disabled-past="disabledPast"
                 @input="onSelectValue" />
             <SelectDropdownApplyFooter
                 @clear="onClear"
@@ -153,6 +154,13 @@ export default {
          * Determinate if the component is disabled
          */
         disabled: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * Determines whether to exclude past dates
+         */
+        disabledPast: {
             type: Boolean,
             default: false,
         },
