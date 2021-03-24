@@ -50,7 +50,6 @@ How to do a release and publish modules:
 
 ## Installation
 
-
 **1) Startup**
 
 Clone project repository to your local directory:
@@ -84,6 +83,11 @@ You might want automatically setup all modules by executing command:
 ```bash
 npm run modules:all
 ```
+> All available modules can be found in the `package.json` file in the `_availableModules` section, and required modules in the `_requiredModules` section.
+
+> The `_availableModules` is an object where the key is the module name and the value is the module type.
+The `local` type defines local modules located in the `modules` directory, and the `npm` type defines modules hosted on npm.
+
 **3) Build**
 
 Run development mode
@@ -138,18 +142,17 @@ No! At the moment we have only one testing implementation to production environm
 
 ## Contributing
 
-Before you start making any pull requests checkout our [contribution guide][contribut]. If you have any questions or ideas feel free to join our [slack][slack] or send us an email: contributors@ergonode.com
+Before you start making any pull requests checkout our [contribution guide][contribut]. If you have any questions or ideas feel free to join our [slack][slack] or send us an email: team@ergonode.com
 
 ## Partners
 
-Ergonode is open-source, and it can be brought to you only by great community and partners supported by our core team. If you want to be on that list please send us an email: contributors@ergonode.com
+Ergonode is open-source, and it can be brought to you only by great community and partners supported by our core team. If you want to be on that list please send us an email: team@ergonode.com
 
 ## The license
 
 Ergonode source code is released under the [OSL 3.0 License][license].
 
-[discord]: https://discord.gg/NntXFa4
-[slack]: https://ergonode.slack.com/join/shared_invite/enQtOTA2ODY0ODMxNTI0LThlZGE2YWE0YzY4NzU1ODk3NWRmNTJiMGI2NmM5ZTgxYTk0MWRhMjM1Y2M4MjdjZjAxY2FkOWE1M2FhZmJkMDY
+[slack]: https://join.slack.com/t/ergonode-community/shared_invite/zt-ibppxnyc-4Ykac1Gh64Qkk5SWy3sg3w
 [contribut]: http://docs.ergonode.com/#/community/contribution
 [license]: ./LICENSE.txt
 [roadmap]: https://ergonode.com/features/#roadmap
