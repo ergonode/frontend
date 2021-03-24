@@ -91,12 +91,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .check-placeholder-cell {
-        display: flex;
-        flex: 1;
-        justify-content: center;
-        align-items: center;
-    }
-</style>
