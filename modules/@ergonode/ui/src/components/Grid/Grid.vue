@@ -502,7 +502,6 @@ export default {
             }
         },
         onClearSelectedRows() {
-            console.log('clearing all');
             this.isSelectedAll = false;
             this.selectedRows = {};
             this.excludedFromSelectionRows = {};
