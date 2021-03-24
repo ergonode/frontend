@@ -13,7 +13,7 @@ export default {
             languagePrivileges,
         } = rootState.authentication.user;
 
-        return languagePrivileges[code].read;
+        return languagePrivileges[code] && languagePrivileges[code].read;
     }),
     defaultLanguageCode: (state, getters, rootState) => {
         if (rootState.authentication.user) {
@@ -25,11 +25,13 @@ export default {
                     code,
                 }) => languagePrivileges[code].read);
 
-            if (!defaultLanguage) {
-                return null;
+            if (defaultLanguage) {
+                return defaultLanguage.code;
             }
 
-            return defaultLanguage.code;
+            if (getters.availableLanguages.length) {
+                return getters.availableLanguages[0].code;
+            }
         }
 
         return null;

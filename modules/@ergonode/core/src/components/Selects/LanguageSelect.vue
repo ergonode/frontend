@@ -23,6 +23,7 @@ import {
 } from '@Core/defaults/theme';
 import TranslationSelect from '@UI/components/Select/TranslationSelect';
 import {
+    mapGetters,
     mapState,
 } from 'vuex';
 
@@ -77,12 +78,12 @@ export default {
         },
     },
     computed: {
+        ...mapGetters('core', [
+            'availableLanguages',
+        ]),
         ...mapState('authentication', {
             languagePrivileges: state => state.user.languagePrivileges,
         }),
-        ...mapState('core', [
-            'inheritedLanguagesTree',
-        ]),
         languages() {
             if (this.multiselect) {
                 return this.languageOptions.filter(
@@ -97,9 +98,7 @@ export default {
             );
         },
         languageOptions() {
-            return this.inheritedLanguagesTree
-                .filter(language => this.languagePrivileges[language.code]
-                        && this.languagePrivileges[language.code].read)
+            return this.availableLanguages
                 .map(language => ({
                     id: language.id,
                     key: language.code,
