@@ -19,7 +19,11 @@ export const getMappedErrors = ({
 
         if (Array.isArray(errorMessages)) {
             if (getOnlyFirstError) {
-                mappedErrors[fieldKey] = errorMessages;
+                const [
+                    errorMessage = '',
+                ] = errorMessages;
+
+                mappedErrors[fieldKey] = errorMessage;
             } else {
                 mappedErrors[fieldKey] = errorMessages.join(', ');
             }
