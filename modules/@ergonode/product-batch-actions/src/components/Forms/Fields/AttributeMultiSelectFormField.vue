@@ -9,6 +9,7 @@
         :placeholder="placeholder"
         :label="label"
         :multiselect="true"
+        :clearable="true"
         :options="options"
         :error-messages="errorMessages"
         @focus="onFocus"
