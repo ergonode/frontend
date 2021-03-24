@@ -193,17 +193,39 @@ export default {
             return childrenLength;
         },
     },
-    watch: {
-        items: {
-            immediate: true,
-            handler() {
-                this.localItems = deepClone(this.items);
-            },
-        },
+    created() {
+        this.localItems = deepClone(this.items);
     },
     methods: {
         onValueChange() {
-            this.$emit('input', deepClone(this.localItems));
+            const items = [];
+
+            let shiftValue = 0;
+
+            this.localItems.forEach((item) => {
+                const itemRow = item.row + shiftValue;
+
+                items.push({
+                    ...item,
+                    row: itemRow,
+                });
+
+                if (this.hiddenItems[item.id]) {
+                    const shiftColumnValue = item.column - this.hiddenItems[item.id][0].column + 1;
+
+                    this.hiddenItems[item.id].forEach((hiddenItem, index) => {
+                        items.push({
+                            ...hiddenItem,
+                            row: itemRow + index + 1,
+                            column: hiddenItem.column + shiftColumnValue,
+                        });
+                    });
+
+                    shiftValue += this.hiddenItems[item.id].length;
+                }
+            });
+
+            this.$emit('input', items);
         },
         onUpdateItems({
             since,
