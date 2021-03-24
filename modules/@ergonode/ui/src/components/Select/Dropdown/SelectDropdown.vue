@@ -169,7 +169,7 @@ export default {
                 return false;
             }
 
-            return this.multiselect || this.clearable;
+            return this.clearable;
         },
     },
     methods: {
