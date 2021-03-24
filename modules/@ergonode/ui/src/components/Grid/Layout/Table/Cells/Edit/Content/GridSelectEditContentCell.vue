@@ -17,6 +17,6 @@ export default {
 <style lang="scss" scoped>
     .grid-select-edit-content-cell {
         position: fixed;
-        z-index: $Z_INDEX_LVL_5;
+        z-index: $Z_INDEX_LVL_7;
     }
 </style>

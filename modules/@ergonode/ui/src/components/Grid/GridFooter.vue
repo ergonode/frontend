@@ -16,7 +16,7 @@ export default {
 
 <style lang="scss" scoped>
     .grid-footer {
-        z-index: $Z_INDEX_LVL_5;
+        z-index: $Z_INDEX_LVL_6;
         display: flex;
         justify-content: space-between;
         align-items: center;
