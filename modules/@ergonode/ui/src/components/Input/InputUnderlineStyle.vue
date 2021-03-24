@@ -207,7 +207,7 @@ export default {
             cursor: not-allowed;
 
             #{$underline}__details-label {
-                color: $GRAPHITE_LIGHT;
+                color: $GRAPHITE;
             }
         }
     }

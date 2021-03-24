@@ -23,7 +23,7 @@
             <slot name="prepend" />
             <InputController :size="size">
                 <ResizeObserver @resize="onResize">
-                    <div class="rich-text-editor">
+                    <div :class="classes">
                         <VerticalFixedScroll>
                             <EditorContent
                                 class="rich-text-editor__content"
@@ -225,8 +225,13 @@ export default {
         };
     },
     computed: {
-        isSolidType() {
-            return this.type === INPUT_TYPE.SOLID;
+        classes() {
+            return [
+                'rich-text-editor',
+                {
+                    'rich-text-editor--disabled': this.disabled,
+                },
+            ];
         },
         styleComponent() {
             if (this.type === INPUT_TYPE.SOLID) {
@@ -235,11 +240,14 @@ export default {
 
             return InputUnderlineStyle;
         },
+        informationLabel() {
+            return this.errorMessages || this.hint;
+        },
         isError() {
             return Boolean(this.errorMessages);
         },
-        informationLabel() {
-            return this.errorMessages || this.hint;
+        isSolidType() {
+            return this.type === INPUT_TYPE.SOLID;
         },
     },
     watch: {
@@ -348,6 +356,10 @@ export default {
         flex-direction: column;
         height: 100%;
         box-sizing: border-box;
+
+        &--disabled {
+            color: $GRAPHITE;
+        }
 
         &__content {
             position: relative;
