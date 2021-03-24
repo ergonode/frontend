@@ -126,7 +126,6 @@ export default {
 
         &--disabled {
             background-color: $WHITESMOKE;
-            color: $GREY_DARK;
             cursor: not-allowed;
         }
 

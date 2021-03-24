@@ -220,7 +220,7 @@ export default {
             }
 
             #{$solid}__details-label {
-                color: $GRAPHITE_LIGHT;
+                color: $GRAPHITE;
             }
         }
     }
