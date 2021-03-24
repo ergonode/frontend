@@ -77,8 +77,8 @@ export default {
         ...mapState('authentication', {
             languagePrivileges: state => state.user.languagePrivileges,
         }),
-        ...mapState('core', [
-            'inheritedLanguagesTree',
+        ...mapGetters('core', [
+            'availableLanguages',
         ]),
         ...mapGetters('core', [
             'defaultLanguageCode',
@@ -87,11 +87,9 @@ export default {
             return SIZE.TINY;
         },
         languageOptions() {
-            return this.inheritedLanguagesTree
-                .filter(language => this.languagePrivileges[language.code]
-                    && this.languagePrivileges[language.code].read).map(({
-                    name,
-                }) => name);
+            return this.availableLanguages.map(({
+                name,
+            }) => name);
         },
     },
     created() {
@@ -99,12 +97,12 @@ export default {
     },
     methods: {
         getWorkflowLanguageName() {
-            return this.inheritedLanguagesTree.find(({
+            return this.availableLanguages.find(({
                 code,
             }) => code === this.defaultLanguageCode).name;
         },
         getWorkflowLanguageCode() {
-            return this.inheritedLanguagesTree.find(({
+            return this.availableLanguages.find(({
                 name,
             }) => name === this.workflowLanguage).code;
         },
