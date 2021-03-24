@@ -17,7 +17,7 @@ export default {
 <style lang="scss" scoped>
     .grid-text-edit-content-cell {
         position: fixed;
-        z-index: $Z_INDEX_LVL_5;
+        z-index: $Z_INDEX_LVL_7;
         padding: 8px;
         box-sizing: border-box;
         background-color: $WHITE;
