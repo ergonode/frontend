@@ -104,7 +104,7 @@ export default {
         }
 
         &--disabled {
-            color: $GREY_DARK;
+            color: $GRAPHITE;
         }
     }
 </style>

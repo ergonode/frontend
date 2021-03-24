@@ -297,7 +297,7 @@ export default {
         }
 
         &:disabled {
-            color: $GRAPHITE_LIGHT;
+            color: $GRAPHITE;
             cursor: not-allowed;
         }
 
