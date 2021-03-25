@@ -10,6 +10,7 @@
         :label="label"
         :options="options"
         :error-messages="errorMessages"
+        :clearable="true"
         @focus="onFocus"
         @input="onValueChange">
         <template #append>

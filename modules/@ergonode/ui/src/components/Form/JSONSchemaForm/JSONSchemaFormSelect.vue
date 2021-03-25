@@ -11,6 +11,7 @@
         :required="schema.isRequired"
         :options="schema.enum_titles || schema.enum"
         :error-messages="errorMessages"
+        :clearable="!schema.isRequired"
         @input="onValueChange" />
 </template>
 
