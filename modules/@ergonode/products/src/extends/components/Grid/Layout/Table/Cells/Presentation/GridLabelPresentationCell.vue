@@ -51,7 +51,7 @@ export default {
             if (!this.options[this.value]) {
                 return '';
             }
-            return this.options[this.value].label;
+            return this.options[this.value].label || this.options[this.value].code;
         },
     },
 };
