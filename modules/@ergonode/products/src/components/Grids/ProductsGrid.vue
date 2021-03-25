@@ -508,7 +508,7 @@ export default {
                 const attributeId = element.attributeId || element.element_id;
 
                 if (attributeId) {
-                    const languageCode = element.languageCode || this.userLanguageCode;
+                    const languageCode = element.language || this.userLanguageCode;
 
                     if (typeof disabledElements[languageCode] === 'undefined') {
                         disabledElements[languageCode] = {};
