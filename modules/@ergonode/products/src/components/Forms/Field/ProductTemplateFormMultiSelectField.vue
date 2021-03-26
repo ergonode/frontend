@@ -69,6 +69,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        changedValues: {
+            type: Object,
+            default: () => ({}),
+        },
         disabled: {
             type: Boolean,
             default: false,
@@ -112,6 +116,10 @@ export default {
 
             if (!this.hasOptions) {
                 return [];
+            }
+
+            if (typeof this.changedValues[this.fieldKey] !== 'undefined') {
+                return this.changedValues[this.fieldKey];
             }
 
             const value = this.drafts[this.languageCode][attribute_code] || [];

@@ -65,6 +65,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        changedValues: {
+            type: Object,
+            default: () => ({}),
+        },
         disabled: {
             type: Boolean,
             default: false,
@@ -96,7 +100,8 @@ export default {
                 return '';
             }
 
-            const value = this.drafts[this.languageCode][attribute_code];
+            const value = this.changedValues[this.fieldKey]
+                || this.drafts[this.languageCode][attribute_code];
 
             return getMappedObjectOption({
                 option: {

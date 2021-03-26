@@ -14,16 +14,12 @@
                         @input="onSelectLanguage" />
                 </div>
                 <div class="view-template-header__section">
-                    <ProductCompleteness :completeness="completeness" />
-                    <TitleBarSubActions>
-                        <ProductWorkflowActionButton
-                            v-if="status"
-                            :language-code="languageCode" />
-                    </TitleBarSubActions>
+                    <ProductCompleteness :language-code="languageCode" />
+                    <ProductWorkflowActionButton :language-code="languageCode" />
                     <RestoreProductButton
+                        :product-template-scope="scope"
                         :language-code="languageCode"
-                        :elements="elements"
-                        @restored="onRestoredProductValues" />
+                        :elements="elements" />
                 </div>
             </template>
             <template #centeredContent>
@@ -40,7 +36,7 @@
             <UpdateProductTemplateButton
                 :scope="scope"
                 :attributes="attributes"
-                @updated="onProductTemplateUpdated" />
+                :language-code="languageCode" />
         </CenterViewTemplate>
     </IntersectionObserver>
 </template>
@@ -57,7 +53,6 @@ import ProductCompleteness from '@Products/components/Progress/ProductCompletene
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import Preloader from '@UI/components/Preloader/Preloader';
-import TitleBarSubActions from '@UI/components/TitleBar/TitleBarSubActions';
 import {
     mapActions,
     mapState,
@@ -73,7 +68,6 @@ export default {
         Preloader,
         ProductTemplateForm,
         CenterViewTemplate,
-        TitleBarSubActions,
         ProductCompleteness,
         ProductWorkflowActionButton,
     },
@@ -83,12 +77,6 @@ export default {
     ],
     data() {
         return {
-            templates: {},
-            completeness: {
-                missing: [],
-                filled: 0,
-                required: 0,
-            },
             isFetchingData: false,
             languageCode: '',
         };
@@ -103,8 +91,8 @@ export default {
         ...mapState('product', [
             'id',
             'template',
+            'templates',
             'prevTemplate',
-            'status',
             'drafts',
         ]),
         elements() {
@@ -126,29 +114,26 @@ export default {
             'validateProduct',
             'setDraftValue',
             'getInheritedProduct',
-            'getProductWorkflow',
             'getProductTemplate',
-            'getProductCompleteness',
+            'getProductCollections',
         ]),
-        onProductTemplateUpdated() {
-            this.getProductCompleteness({
-                languageCode: this.languageCode,
-                id: this.id,
-                onSuccess: (({
-                    completeness,
-                }) => {
-                    this.completeness = completeness;
-                }),
-            });
-        },
         async onIntersect(isIntersecting) {
             if (isIntersecting) {
                 if (this.template !== this.prevTemplate) {
-                    this.templates = {};
-
                     this.isFetchingData = true;
 
-                    await this.getProductTemplateData(this.languageCode);
+                    await Promise.all([
+                        this.getInheritedProduct({
+                            id: this.id,
+                            languageCode: this.languageCode,
+                        }),
+                        this.getProductTemplate({
+                            languageCode: this.languageCode,
+                        }),
+                        this.getProductCollections({
+                            languageCode: this.languageCode,
+                        }),
+                    ]);
 
                     this.isFetchingData = false;
                 }
@@ -156,42 +141,15 @@ export default {
         },
         async getProductTemplateData(languageCode) {
             const requests = [
-                this.getProductCompleteness({
-                    languageCode,
+                this.getInheritedProduct({
                     id: this.id,
-                    onSuccess: (({
-                        completeness,
-                    }) => {
-                        this.completeness = completeness;
-                    }),
-                }),
-                this.getProductWorkflow({
                     languageCode,
-                    id: this.id,
                 }),
             ];
 
             if (typeof this.templates[languageCode] === 'undefined') {
                 requests.push(
                     this.getProductTemplate({
-                        languageCode,
-                        id: this.id,
-                        onSuccess: (({
-                            elements,
-                        }) => {
-                            this.templates = {
-                                ...this.templates,
-                                [languageCode]: elements,
-                            };
-                        }),
-                    }),
-                );
-            }
-
-            if (typeof this.drafts[languageCode] === 'undefined') {
-                requests.push(
-                    this.getInheritedProduct({
-                        id: this.id,
                         languageCode,
                     }),
                 );
@@ -200,26 +158,11 @@ export default {
             await Promise.all(requests);
         },
         async onSelectLanguage(value) {
-            await this.getProductTemplateData(value);
+            if (value !== this.languageCode) {
+                await this.getProductTemplateData(value);
 
-            this.languageCode = value;
-        },
-        async onRestoredProductValues() {
-            await Promise.all([
-                this.getProductCompleteness({
-                    languageCode: this.languageCode,
-                    id: this.id,
-                    onSuccess: (({
-                        completeness,
-                    }) => {
-                        this.completeness = completeness;
-                    }),
-                }),
-                this.getInheritedProduct({
-                    id: this.id,
-                    languageCode: this.languageCode,
-                }),
-            ]);
+                this.languageCode = value;
+            }
         },
         async onValueChange(payload) {
             this.setDraftValue({

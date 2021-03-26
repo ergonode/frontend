@@ -134,6 +134,10 @@ export default {
             this.$emit('hover', false);
         },
         onMouseDown(event) {
+            if (this.disabled) {
+                return;
+            }
+
             event.preventDefault();
 
             this.isFocused = !this.isFocused;
@@ -172,7 +176,6 @@ export default {
 
         &--disabled {
             cursor: not-allowed;
-            pointer-events: none;
         }
 
         &__activator {

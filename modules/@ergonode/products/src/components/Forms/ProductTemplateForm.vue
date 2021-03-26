@@ -118,6 +118,7 @@ export default {
                 languageCode: this.languageCode,
                 errors: this.errors,
                 drafts: this.drafts,
+                changedValues: this.changeValues,
                 disabled: !this.isAllowedToUpdate(elementProps.properties.scope),
                 ...elementProps,
                 ...extendedProps,
@@ -133,7 +134,7 @@ export default {
         onValueChange(payload) {
             this.onScopeValueChange({
                 scope: this.scope,
-                fieldKey: `${payload.languageCode}|${payload.fieldKey}`,
+                fieldKey: payload.fieldKey,
                 value: payload.value,
             });
 

@@ -16,7 +16,7 @@
             v-if="isModalVisible"
             :language-code="languageCode"
             :elements="elements"
-            @restored="onRestored"
+            :product-template-scope="productTemplateScope"
             @close="onCloseModal" />
     </Button>
 </template>
@@ -42,6 +42,10 @@ export default {
         RestoreProductAttributesModalForm: () => import('@Products/components/Modals/RestoreProductAttributesModalForm'),
     },
     props: {
+        productTemplateScope: {
+            type: String,
+            default: '',
+        },
         languageCode: {
             type: String,
             required: true,
@@ -83,10 +87,6 @@ export default {
         },
         onCloseModal() {
             this.isModalVisible = false;
-        },
-        onRestored() {
-            this.onCloseModal();
-            this.$emit('restored');
         },
     },
 };

@@ -10,7 +10,7 @@
             :value="localValue"
             :label="label"
             :placeholder="properties.placeholder"
-            :foramt="parameter"
+            :format="parameter"
             :error-messages="errors[fieldKey]"
             :required="properties.required"
             :disabled="disabled"
@@ -72,6 +72,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        changedValues: {
+            type: Object,
+            default: () => ({}),
+        },
         disabled: {
             type: Boolean,
             default: false,
@@ -99,7 +103,8 @@ export default {
                 attribute_code,
             } = this.properties;
 
-            const value = this.drafts[this.languageCode][attribute_code];
+            const value = this.changedValues[this.fieldKey]
+                || this.drafts[this.languageCode][attribute_code];
 
             return value ? new Date(value) : null;
         },

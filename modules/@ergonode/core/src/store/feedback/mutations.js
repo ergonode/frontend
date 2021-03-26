@@ -11,6 +11,7 @@ export const types = {
     SET_CHANGE_VALUES_SCOPE_SAVE_FLAG: 'SET_CHANGE_VALUES_SCOPE_SAVE_FLAG',
     REMOVE_ERROR: 'REMOVE_ERROR',
     REMOVE_SCOPE_ERROR: 'REMOVE_SCOPE_ERROR',
+    REMOVE_SCOPE_CHANGE_VALUE: 'REMOVE_SCOPE_CHANGE_VALUE',
     REMOVE_SCOPE_ERRORS: 'REMOVE_SCOPE_ERRORS',
     REMOVE_SCOPE_CHANGE_VALUES: 'REMOVE_SCOPE_CHANGE_VALUES',
 };
@@ -64,6 +65,15 @@ export default {
         delete state.errors[scope][fieldKey];
         state.errors[scope] = {
             ...state.errors[scope],
+        };
+    },
+    [types.REMOVE_SCOPE_CHANGE_VALUE](state, {
+        scope,
+        fieldKey,
+    }) {
+        delete state.changeValues[scope][fieldKey];
+        state.changeValues[scope] = {
+            ...state.changeValues[scope],
         };
     },
 };

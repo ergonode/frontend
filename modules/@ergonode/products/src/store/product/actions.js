@@ -7,6 +7,7 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
+    deepClone,
     getKeyByValue,
 } from '@Core/models/objectWrapper';
 import {
@@ -35,6 +36,7 @@ export default {
         commit,
     }, payload) => commit(types.SET_DRAFT_VALUE, payload),
     async getProductWorkflow({
+        state,
         commit,
     }, {
         id,
@@ -59,7 +61,13 @@ export default {
 
             commit('__SET_STATE', {
                 key: 'workflow',
-                value: workflow,
+                value: {
+                    ...state.workflow,
+                    [languageCode]: {
+                        currentStatus: status,
+                        statuses: workflow,
+                    },
+                },
             });
 
             onSuccess();
@@ -368,9 +376,11 @@ export default {
             });
         }
     },
-    async getProductTemplate({}, {
+    async getProductTemplate({
+        state,
+        commit,
+    }, {
         languageCode,
-        id,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -380,12 +390,18 @@ export default {
             } = await getTemplate({
                 $axios: this.app.$axios,
                 languageCode,
-                id,
+                id: state.id,
             });
 
-            onSuccess({
-                elements,
+            commit('__SET_STATE', {
+                key: 'templates',
+                value: {
+                    ...state.templates,
+                    [languageCode]: elements,
+                },
             });
+
+            onSuccess();
         } catch (e) {
             if (this.app.$axios.isCancel(e)) {
                 return;
@@ -422,9 +438,11 @@ export default {
             onError(e);
         }
     },
-    async getProductCompleteness({}, {
+    async getProductCompleteness({
+        state,
+        commit,
+    }, {
         languageCode,
-        id,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -432,12 +450,18 @@ export default {
             const completeness = await getCompleteness({
                 $axios: this.app.$axios,
                 languageCode,
-                id,
+                id: state.id,
             });
 
-            onSuccess({
-                completeness,
+            commit('__SET_STATE', {
+                key: 'completeness',
+                value: {
+                    ...state.completeness,
+                    [languageCode]: completeness,
+                },
             });
+
+            onSuccess();
         } catch (e) {
             if (this.app.$axios.isCancel(e)) {
                 return;
@@ -599,6 +623,7 @@ export default {
     },
     async updateProductValues({
         state,
+        commit,
         rootState,
     }, {
         scope,
@@ -609,6 +634,7 @@ export default {
         try {
             const {
                 id,
+                drafts,
             } = state;
             const data = [
                 {
@@ -618,17 +644,18 @@ export default {
             ];
 
             const cachedAttributes = {};
+            const localDrafts = deepClone(drafts);
             const changeValues = rootState.feedback.changeValues[scope] || {};
             const errors = rootState.feedback.errors[scope] || {};
 
             Object.keys(changeValues).forEach((key) => {
                 const [
-                    languageCode,
                     code,
-                ] = key.split('|');
+                    languageCode,
+                ] = key.split('/');
 
-                if (key !== 'saved' && typeof errors[code] === 'undefined') {
-                    const attributeId = attributes[code.split('/')[0]];
+                if (key !== 'saved' && typeof errors[key] === 'undefined') {
+                    const attributeId = attributes[code];
 
                     if (typeof cachedAttributes[attributeId] === 'undefined') {
                         cachedAttributes[attributeId] = data[0].payload.length;
@@ -643,6 +670,8 @@ export default {
                         language: languageCode,
                         value: changeValues[key],
                     });
+
+                    localDrafts[languageCode][code] = changeValues[key];
                 }
             });
 
@@ -652,6 +681,15 @@ export default {
                     data,
                 },
             });
+
+            commit('__SET_STATE', {
+                key: 'drafts',
+                value: {
+                    ...state.drafts,
+                    ...localDrafts,
+                },
+            });
+
             onSuccess();
         } catch (e) {
             if (this.app.$axios.isCancel(e)) {
