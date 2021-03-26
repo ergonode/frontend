@@ -6,8 +6,8 @@ import {
     Icons,
     Pages,
     Tabs,
-} from './imports';
-import Privileges from './privileges';
+} from '@ActivityLogs/config/imports';
+import Privileges from '@ActivityLogs/config/privileges';
 
 export const ROUTE_NAME = {
     ACTIVITY_LOGS: 'activity-logs',

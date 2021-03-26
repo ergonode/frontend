@@ -6,8 +6,8 @@ import {
     Icons,
     Pages,
     Tabs,
-} from './imports';
-import Privileges from './privileges';
+} from '@Statuses/config/imports';
+import Privileges from '@Statuses/config/privileges';
 
 export const ROUTE_NAME = {
     PRODUCT_STATUSES: 'product-statuses',

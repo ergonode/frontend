@@ -32,7 +32,6 @@
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errors[typeIdFieldKey]"
                     @input="setTypeValue" />
-                <Divider v-if="extendedForm.length" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
                         :is="field.component"

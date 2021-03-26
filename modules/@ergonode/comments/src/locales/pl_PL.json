@@ -1,0 +1,41 @@
+{
+  "@Comments": {
+    "_": {
+      "cancel": "Anuluj",
+      "deleteConfirm": "Tak, usuń"
+    },
+    "comment": {
+      "components": {
+        "CommentsForm": {
+          "addButton": "Nowy komentarz",
+          "noDataTitle": "Brak wyników",
+          "noDataPlaceholder": "Here you can share information with other people.",
+          "showMore": "ZAŁADUJ WIĘCEJ KOMENTARZY ({nr})",
+          "getRequest": "Komentarze nie zostały pobrane prawidłowo"
+        },
+        "CommentPresentation": {
+          "deleteTitle": "Czy jesteś pewny że chcesz usunąć ten komentarz?",
+          "deleteSuccess": "Komentarz usunięty",
+          "createdInfo": "Stworzony {date}",
+          "editedInfo": "Edytowany {date}"
+        },
+        "CommentEdit": {
+          "headerEdit": "Edytuj komentarz",
+          "headerAdd": "Dodaj komentarz",
+          "label": "Komentarz",
+          "buttonEdit": "Zapisz komentarz",
+          "buttonAdd": "Dodaj komentarz",
+          "messageEdit": "Komentarz zedytowany",
+          "messageAdd": "Komentarz stworzony"
+        }
+      },
+      "store": {
+        "action": {
+          "createCancel": "Tworzenie komentarza zostało przerwane",
+          "updateCancel": "Aktualizacja komentarza została przerwana",
+          "deleteCancel": "Usuwanie komentarza zostało przerwane"
+        }
+      }
+    }
+  }
+}

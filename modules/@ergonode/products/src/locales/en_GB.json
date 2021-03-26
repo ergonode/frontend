@@ -26,13 +26,6 @@
           "confirmTitle": "Are you sure you want to change status to {info}?",
           "alertSuccess": "Status has been updated"
         },
-        "ProductsWidget": {
-          "getRequest": "Product information hasn't been fetched properly"
-        },
-        "CompletenessWidget": {
-          "title": "Completeness",
-          "getRequest": "Products completeness haven’t been fetched properly"
-        },
         "CreateProductButton": {
           "title": "NEW PRODUCT"
         },

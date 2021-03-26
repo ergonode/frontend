@@ -6,8 +6,8 @@ import {
     Icons,
     Pages,
     Tabs,
-} from './imports';
-import Privileges from './privileges';
+} from '@Templates/config/imports';
+import Privileges from '@Templates/config/privileges';
 
 export const ROUTE_NAME = {
     PRODUCT_TEMPLATES: 'product-templates',

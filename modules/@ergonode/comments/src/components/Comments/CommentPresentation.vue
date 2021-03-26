@@ -40,11 +40,11 @@
         <template #footer>
             <span
                 class="comment-info"
-                v-text="`Created ${formatDate(comment.created_at)}`" />
+                v-text="createdInfo" />
             <span
                 v-if="comment.edited_at"
                 class="comment-info"
-                v-text="`Edited ${formatDate(comment.edited_at)}`" />
+                v-text="editedInfo" />
         </template>
     </Comment>
 </template>
@@ -118,6 +118,16 @@ export default {
         isAbleToDelete() {
             return this.comment._links.delete;
         },
+        createdInfo() {
+            return this.$t('@Comments.comment.components.CommentPresentation.createdInfo', {
+                date: this.formatDate(this.comment.created_at),
+            });
+        },
+        editedInfo() {
+            return this.$t('@Comments.comment.components.CommentPresentation.editedInfo', {
+                date: this.formatDate(this.comment.edited_at),
+            });
+        },
     },
     methods: {
         ...mapActions('comment', [
@@ -129,8 +139,9 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this comment?',
-                applyTitle: 'YES, REMOVE',
+                title: this.$t('@Comments.comment.components.CommentPresentation.deleteTitle'),
+                applyTitle: this.$t('@Comments._.deleteConfirm'),
+                cancelTitle: this.$t('@Comments._.cancel'),
                 action: () => {
                     const {
                         id,
@@ -147,7 +158,7 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Comment removed',
+                message: this.$t('@Comments.comment.components.CommentPresentation.deleteSuccess'),
             });
         },
         onRemoveError({

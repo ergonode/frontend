@@ -6,7 +6,7 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <UserForm
-                :submit-title="$t('core.buttons.submit')"
+                :submit-title="$t('@Users._.submit')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="errors"
@@ -61,7 +61,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('user.messages.updateSuccess'),
+                message: this.$t('@Users.user.components.UserGeneralTab.updateSuccess'),
             });
 
             this.isSubmitting = false;

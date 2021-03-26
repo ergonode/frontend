@@ -3,15 +3,14 @@
  * See LICENSE for license details.
  */
 import {
-    getCategory,
-    setCategory,
-} from '@Categories/extends/product/methods';
-
-import {
     Components,
     Icons,
     Store,
-} from './imports';
+} from '@Categories/config/imports';
+import {
+    getCategory,
+    setCategory,
+} from '@Categories/extends/product/methods';
 
 export default {
     extendStore: {

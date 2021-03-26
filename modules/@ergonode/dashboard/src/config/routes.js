@@ -5,7 +5,7 @@
 import {
     Icons,
     Pages,
-} from './imports';
+} from '@Dashboard/config/imports';
 
 export const ROUTE_NAME = {
     DASHBOARD: 'dashboard',

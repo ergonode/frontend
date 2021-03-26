@@ -4,6 +4,9 @@
  */
 <template>
     <div class="product-collection-item">
+        <!-- TODO: Change relation to `multimedia` href.
+             INFO: Secure relationship does not break the application.
+        -->
         <LazyImage
             v-if="item.image"
             :href="`multimedia/${item.image}/download/default`"

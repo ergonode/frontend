@@ -20,7 +20,7 @@ export const getCheckColumn = (optionType, isEditable) => ({
 export const nameColumn = {
     id: 'name',
     label: 'Name',
-    type: 'PRIVILEGE_NAME_HINT',
+    type: 'LANGUAGE_NAME_HINT',
     editable: false,
     visible: true,
 };

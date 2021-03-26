@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        :title="$t('user.form.title')"
+        :title="$t('@Users.user.components.UserForm.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
@@ -19,28 +19,28 @@
                 <TextField
                     :value="email"
                     required
-                    :label="$t('user.form.emailLabel')"
+                    :label="$t('@Users.user.components.UserForm.emailLabel')"
                     :error-messages="errors[emailFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setEmailValue" />
                 <TextField
                     :value="firstName"
                     required
-                    :label="$t('user.form.nameLabel')"
+                    :label="$t('@Users.user.components.UserForm.nameLabel')"
                     :error-messages="errors[firstNameFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     @input="setFirstNameValue" />
                 <TextField
                     :value="lastName"
                     required
-                    :label="$t('user.form.lastNameLabel')"
+                    :label="$t('@Users.user.components.UserForm.lastNameLabel')"
                     :error-messages="errors[lastNameFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     @input="setLastNameValue" />
                 <TextField
                     :value="password"
                     required
-                    :label="$t('user.form.passwordLabel')"
+                    :label="$t('@Users.user.components.UserForm.passwordLabel')"
                     :input="{ type: 'password' }"
                     :error-messages="errors[passwordFieldKey]"
                     :disabled="!isAllowedToUpdate"
@@ -48,7 +48,7 @@
                 <TextField
                     :value="passwordRepeat"
                     required
-                    :label="$t('user.form.passwordRepeatLabel')"
+                    :label="$t('@Users.user.components.UserForm.passwordRepeatLabel')"
                     :input="{ type: 'password' }"
                     :error-messages="errors[passwordRepeatFieldKey]"
                     :disabled="!isAllowedToUpdate"
@@ -56,23 +56,16 @@
                 <Toggler
                     :value="isActive"
                     :disabled="!isAllowedToUpdate"
-                    :label="$t('user.form.activeLabel')"
+                    :label="$t('@Users.user.components.UserForm.activeLabel')"
                     @input="setStatusValue" />
                 <Select
                     :value="language"
                     required
-                    :label="$t('user.form.languageLabel')"
+                    :label="$t('@Users.user.components.UserForm.languageLabel')"
                     :options="languageOptions"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[languageFieldKey]"
                     @input="setLanguageValue" />
-                <RolesAutocomplete
-                    :value="role"
-                    :required="true"
-                    :disabled="!isAllowedToUpdate"
-                    :error-messages="errors[roleIdFieldKey]"
-                    @input="setRoleValue" />
-                <Divider v-if="extendedForm.length" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
                         :is="field.component"
@@ -95,7 +88,6 @@ import Select from '@UI/components/Select/Select';
 import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
 import TextField from '@UI/components/TextField/TextField';
 import Toggler from '@UI/components/Toggler/Toggler';
-import RolesAutocomplete from '@Users/components/Autocompletes/RolesAutocomplete';
 import CreateUserButton from '@Users/components/Buttons/CreateUserButton';
 import PRIVILEGES from '@Users/config/privileges';
 import {
@@ -107,7 +99,6 @@ import {
 export default {
     name: 'UserForm',
     components: {
-        RolesAutocomplete,
         CreateUserButton,
         SelectListNoDataPlaceholder,
         Button,
@@ -135,7 +126,6 @@ export default {
             'passwordRepeat',
             'language',
             'isActive',
-            'role',
         ]),
         extendedForm() {
             return this.$extendedForm({
@@ -174,12 +164,6 @@ export default {
         },
         languageFieldKey() {
             return 'language';
-        },
-        roleIdFieldKey() {
-            return 'roleId';
-        },
-        roleFieldKey() {
-            return 'role';
         },
         isActiveFieldKey() {
             return 'isActive';
@@ -269,18 +253,6 @@ export default {
             this.onScopeValueChange({
                 scope: this.scope,
                 fieldKey: this.languageFieldKey,
-                value,
-            });
-        },
-        setRoleValue(value) {
-            this.__setState({
-                key: this.roleFieldKey,
-                value,
-            });
-
-            this.onScopeValueChange({
-                scope: this.scope,
-                fieldKey: this.roleFieldKey,
                 value,
             });
         },

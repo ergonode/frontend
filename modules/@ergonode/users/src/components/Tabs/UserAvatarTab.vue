@@ -6,7 +6,7 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <UserAvatarForm
-                :submit-title="$t('core.buttons.submit')"
+                :submit-title="$t('@Users._.submit')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="errors"
@@ -74,7 +74,7 @@ export default {
         async onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('user.messages.updateAvatarSuccess'),
+                message: this.$t('@Users.profile.components.UserAvatarTab.updateAvatarSuccess'),
             });
 
             if (this.user.id === this.id) {

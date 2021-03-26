@@ -34,7 +34,6 @@
                     :error-messages="errors[skuFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setSkuValue" />
-                <Divider v-if="extendedForm.length" />
                 <template v-for="(formComponent, index) in extendedForm">
                     <Component
                         :is="formComponent.component"

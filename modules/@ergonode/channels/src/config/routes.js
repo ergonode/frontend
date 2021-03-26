@@ -6,8 +6,8 @@ import {
     Icons,
     Pages,
     Tabs,
-} from './imports';
-import Privileges from './privileges';
+} from '@Channels/config/imports';
+import Privileges from '@Channels/config/privileges';
 
 export const ROUTE_NAME = {
     CHANNELS: 'channels',

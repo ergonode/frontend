@@ -25,7 +25,6 @@
                     :label="$t('@Categories.category.components.CategoryForm.nameLabel')"
                     :hint="$t('@Categories.category.components.CategoryForm.nameHint')"
                     @input="setCodeValue" />
-                <Divider v-if="extendedForm.length" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
                         :is="field.component"

@@ -15,5 +15,5 @@ export const Tabs = {
 };
 
 export const Icons = {
-    Product: () => import('@Products/components/Icons/IconProduct').then(m => m.default || m),
+    Product: () => import('@Segments/components/Icons/IconProduct').then(m => m.default || m),
 };

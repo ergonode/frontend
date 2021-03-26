@@ -10,8 +10,8 @@ export default {
     },
     relations: [
         '@ergonode/ui',
-        '@ergonode/attributes',
-        '@ergonode/media',
+        '@ergonode/authentication',
+        '@ergonode/batch-actions',
     ],
     plugins: [
         {

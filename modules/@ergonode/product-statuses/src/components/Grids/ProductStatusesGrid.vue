@@ -53,13 +53,13 @@ import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
 import CreateProductStatusButton from '@Statuses/components/Buttons/CreateProductStatusButton';
+import PRIVILEGES from '@Statuses/config/privileges';
 import {
     ROUTE_NAME,
 } from '@Statuses/config/routes';
 import {
     PRODUCT_STATUS_CREATED_EVENT_NAME,
 } from '@Statuses/defaults';
-import PRIVILEGES from '@Transitions/config/privileges';
 import Grid from '@UI/components/Grid/Grid';
 import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 

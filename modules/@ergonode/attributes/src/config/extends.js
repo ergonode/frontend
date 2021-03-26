@@ -12,7 +12,7 @@ import {
 } from '@Attributes/config/routes';
 import {
     TYPES,
-} from '@Attributes/defaults/attributes';
+} from '@Attributes/defaults';
 import {
     createOptionsData,
     getAttributeOptions,
@@ -30,6 +30,53 @@ import {
     setTemplateData,
 } from '@Attributes/extends/productTemplate/methods';
 
+const AttributeIcons = {
+    [TYPES.NUMERIC]: [
+        {
+            component: Icons.IconNumeric,
+        },
+    ],
+    [TYPES.TEXT]: [
+        {
+            component: Icons.IconText,
+        },
+    ],
+    [TYPES.TEXT_AREA]: [
+        {
+            component: Icons.IconTextArea,
+        },
+    ],
+    [TYPES.SELECT]: [
+        {
+            component: Icons.IconSelect,
+        },
+    ],
+    [TYPES.MULTI_SELECT]: [
+        {
+            component: Icons.IconMultiSelect,
+        },
+    ],
+    [TYPES.DATE]: [
+        {
+            component: Icons.IconDate,
+        },
+    ],
+    [TYPES.UNIT]: [
+        {
+            component: Icons.IconUnit,
+        },
+    ],
+    [TYPES.PRICE]: [
+        {
+            component: Icons.IconPrice,
+        },
+    ],
+    [TYPES.IMAGE]: [
+        {
+            component: Icons.IconImage,
+        },
+    ],
+};
 const getTypeConfiguration = ({
     $this, type,
 }) => {
@@ -395,57 +442,13 @@ export default {
                 },
             ],
         },
-        '@Attributes/components/Lists/AttributeListElement/Icon': {
-            [TYPES.NUMERIC]: [
-                {
-                    component: Icons.IconNumeric,
-                },
-            ],
-            [TYPES.TEXT]: [
-                {
-                    component: Icons.IconText,
-                },
-            ],
-            [TYPES.TEXT_AREA]: [
-                {
-                    component: Icons.IconTextArea,
-                },
-            ],
-            [TYPES.SELECT]: [
-                {
-                    component: Icons.IconSelect,
-                },
-            ],
-            [TYPES.MULTI_SELECT]: [
-                {
-                    component: Icons.IconMultiSelect,
-                },
-            ],
-            [TYPES.DATE]: [
-                {
-                    component: Icons.IconDate,
-                },
-            ],
-            [TYPES.UNIT]: [
-                {
-                    component: Icons.IconUnit,
-                },
-            ],
-            [TYPES.PRICE]: [
-                {
-                    component: Icons.IconPrice,
-                },
-            ],
-            [TYPES.IMAGE]: [
-                {
-                    component: Icons.IconImage,
-                },
-            ],
-        },
+        '@Attributes/extends/components/SideBars/AttributeSideBarElement/icons': AttributeIcons,
+        '@Templates/components/TemplateDesigner/ProductDesigner/AttributeElementContent/icons': AttributeIcons,
         '@Templates/components/Forms/ProductTemplateForm': {
             __ALL: [
                 {
                     component: Components.ProductTemplateFormPresentation,
+                    order: 20,
                 },
             ],
         },
