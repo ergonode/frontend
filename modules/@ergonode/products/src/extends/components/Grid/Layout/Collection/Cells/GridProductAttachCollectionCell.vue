@@ -6,6 +6,9 @@
     <div
         class="collection-cell"
         @click="onClick">
+        <!-- TODO: Change relation to `multimedia` href.
+             INFO: Secure relationship does not break the application.
+        -->
         <LazyImage
             v-if="data.image"
             :href="`multimedia/${data.image}/download/default`"

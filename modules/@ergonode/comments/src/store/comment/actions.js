@@ -199,7 +199,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Creating comment has been canceled',
+                    message: this.app.i18n.t('@Comments.comment.store.action.createCancel'),
                 });
 
                 return;
@@ -282,7 +282,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating comment has been canceled',
+                    message: this.app.i18n.t('@Comments.comment.store.action.updateCancel'),
                 });
 
                 return;
@@ -341,7 +341,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Removing comment has been canceled',
+                    message: this.app.i18n.t('@Comments.comment.store.action.deleteCancel'),
                 });
 
                 return;

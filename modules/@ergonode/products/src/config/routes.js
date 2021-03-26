@@ -6,8 +6,8 @@ import {
     Icons,
     Pages,
     Tabs,
-} from './imports';
-import PRIVILEGES from './privileges';
+} from '@Products/config/imports';
+import PRIVILEGES from '@Products/config/privileges';
 
 export const ROUTE_NAME = {
     CATALOG: 'catalog',

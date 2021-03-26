@@ -57,7 +57,7 @@
 <script>
 import {
     get as getAttribute,
-} from '@Attributes/services/attribute';
+} from '@Attributes/services';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';

@@ -6,6 +6,7 @@ export default {
     name: '@ergonode/product-templates',
     order: 80,
     relations: [
+        '@ergonode/core',
         '@ergonode/attributes',
     ],
     aliases: {

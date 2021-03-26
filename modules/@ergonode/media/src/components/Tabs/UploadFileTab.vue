@@ -64,9 +64,6 @@ import {
 import {
     formatBytes,
 } from '@Core/models/stringWrapper';
-import UploadFileList from '@Media/components/List/UploadFileList';
-import UploadFileListElement from '@Media/components/List/UploadFileListElement';
-import UploadFileListLoadingElement from '@Media/components/List/UploadFileListLoadingElement';
 import {
     GREEN,
     WHITE,
@@ -74,6 +71,9 @@ import {
 import Button from '@UI/components/Button/Button';
 import IconUploadCloudFile from '@UI/components/Icons/Actions/IconUploadCloudFile';
 import ListScrollableContainer from '@UI/components/List/ListScrollableContainer';
+import UploadFileList from '@UI/components/UploadFileList/UploadFileList';
+import UploadFileListElement from '@UI/components/UploadFileList/UploadFileListElement';
+import UploadFileListLoadingElement from '@UI/components/UploadFileList/UploadFileListLoadingElement';
 import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
 
 export default {

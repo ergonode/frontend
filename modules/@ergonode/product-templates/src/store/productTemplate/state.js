@@ -6,6 +6,5 @@ export default () => ({
     layoutElements: [],
     title: '',
     id: '',
-    image: null,
     types: [],
 });

@@ -15,7 +15,7 @@ export const Tabs = {
 };
 
 export const Icons = {
-    Channels: () => import('@Channels/components/Icons/IconChannels').then(m => m.default || m),
+    Channels: () => import('@Import/components/Icons/IconChannels').then(m => m.default || m),
 };
 
 export const Components = {

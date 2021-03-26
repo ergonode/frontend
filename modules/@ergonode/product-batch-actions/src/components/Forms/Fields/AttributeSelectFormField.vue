@@ -24,7 +24,7 @@
 <script>
 import {
     getOption,
-} from '@Attributes/services/attribute';
+} from '@Attributes/services';
 import {
     GRAPHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';

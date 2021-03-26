@@ -100,11 +100,8 @@ export default {
                 return '';
             }
 
-            if (typeof this.changedValues[this.fieldKey] !== 'undefined') {
-                return this.changedValues[this.fieldKey];
-            }
-
-            const value = this.drafts[this.languageCode][attribute_code];
+            const value = this.changedValues[this.fieldKey]
+                || this.drafts[this.languageCode][attribute_code];
 
             return getMappedObjectOption({
                 option: {

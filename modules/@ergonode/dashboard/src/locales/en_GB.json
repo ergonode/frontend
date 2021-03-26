@@ -1,0 +1,46 @@
+{
+  "@Dashboard": {
+    "dashboard": {
+      "_": {
+        "headTitle": "Dashboard - Ergonode"
+      },
+      "components": {
+        "EmptyDashboardPage": {
+          "title": "Create your products in 3 simple steps",
+          "subtitle": "Prepare your products’ experience in Ergonode! First start with the attributes, then configure the product template, and finally start to enrich your product data!",
+          "attributeTitle": "New attribute",
+          "templateTitle": "New template",
+          "productTitle": "New product",
+          "first": {
+            "subtitle": "Start with attributes",
+            "description": "Attributes are the smallest elements that describe your product. For example, it could be a color, description, photo or dimensions."
+          },
+          "second": {
+            "subtitle": "Configure product template",
+            "description": "Product template is a set of attributes, whose position and size can be freely configured, thanks to that it can reflect your products look."
+          },
+          "third": {
+            "subtitle": "Create your products",
+            "description": "Here you can start to enrich your products with data, descriptions, photos and start preparing translations for other languages."
+          }
+        },
+        "WelcomeUser": {
+          "welcome": "Welcome {name}!",
+          "question": "How are you today?"
+        },
+        "CompletenessWidget": {
+          "title": "Completeness",
+          "getRequest": "Products completeness haven’t been fetched properly"
+        },
+        "ProductsWidget": {
+          "title": "Products",
+          "getRequest": "Product information hasn't been fetched properly"
+        },
+        "StatusesWidget": {
+          "title": "Statuses",
+          "getRequest": "Product statuses haven’t been fetched properly"
+        }
+      }
+    }
+  }
+}

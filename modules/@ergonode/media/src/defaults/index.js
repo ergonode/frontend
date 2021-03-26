@@ -7,4 +7,10 @@ export const MEDIA_TYPE = {
     APPLICATION: 'application',
 };
 
+export const ATTRIBUTE_TYPES = {
+    FILE: 'FILE',
+    GALLERY: 'GALLERY',
+    IMAGE: 'IMAGE',
+};
+
 export const RESOURCES_UPLOADED_EVENT_NAME = 'resources-uploaded';

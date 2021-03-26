@@ -42,10 +42,12 @@ export default {
             return SIZE.EXTRA_LARGE;
         },
         welcomeText() {
-            return `Welcome ${this.user.firstName}!`;
+            return this.$t('@Dashboard.dashboard.components.WelcomeUser.welcome', {
+                name: this.user.firstName,
+            });
         },
         whatsGoingOnText() {
-            return 'How are you today?';
+            return this.$t('@Dashboard.dashboard.components.WelcomeUser.question');
         },
     },
 

@@ -23,7 +23,7 @@
 import PRIVILEGES from '@Attributes/config/privileges';
 import {
     ATTRIBUTE_CREATED_EVENT_NAME,
-} from '@Attributes/defaults/attributes';
+} from '@Attributes/defaults';
 import {
     SIZE,
 } from '@Core/defaults/theme';

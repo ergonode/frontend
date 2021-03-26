@@ -11,7 +11,6 @@
         :multiselect="multiselect"
         :clearable="clearable"
         label="Languages"
-        :custom-fetch-event="collectionCreatedEventName"
         :error-messages="errorMessages"
         :disabled="disabled"
         href="languages/autocomplete"
@@ -25,9 +24,6 @@
 </template>
 
 <script>
-import {
-    COLLECTION_CREATED_EVENT_NAME,
-} from '@Collections/defaults';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
 
@@ -71,9 +67,6 @@ export default {
         },
     },
     computed: {
-        collectionCreatedEventName() {
-            return COLLECTION_CREATED_EVENT_NAME;
-        },
         noDataPlaceholder() {
             return {
                 title: 'No languages',

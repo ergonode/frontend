@@ -5,7 +5,16 @@
 export default {
     name: '@ergonode/authentication',
     order: 20,
+    relations: [
+        '@ergonode/core',
+    ],
     aliases: {
         '@Authentication': '/',
     },
+    plugins: [
+        {
+            ssr: true,
+            src: './plugins/privilege',
+        },
+    ],
 };

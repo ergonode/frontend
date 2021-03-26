@@ -4,7 +4,7 @@
  */
 import {
     Pages,
-} from './imports';
+} from '@Authentication/config/imports';
 
 export const ROUTE_NAME = {
     INDEX: 'index',

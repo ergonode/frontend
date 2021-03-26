@@ -69,7 +69,7 @@
 <script>
 import {
     SYSTEM_TYPES,
-} from '@Attributes/defaults/attributes';
+} from '@Attributes/defaults';
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';

@@ -1,0 +1,46 @@
+{
+  "@Dashboard": {
+    "dashboard": {
+      "_": {
+        "headTitle": "Dashboard - Ergonode"
+      },
+      "components": {
+        "EmptyDashboardPage": {
+          "title": "Stwórz swoje pordukty w 3 prostych krokach",
+          "subtitle": "Odwzoruj swoją kartę produktową w Ergonode! W pierwszej kolejności zacznij od stworzenia atrybutów, potem skonfiguruj szablon produktowy na bazie karty produktowej w systemie ecommerce a następnie uzupełnij ją!",
+          "attributeTitle": "Nowy atrybut",
+          "templateTitle": "Nowy szablon",
+          "productTitle": "Nowy produkt",
+          "first": {
+            "subtitle": "Zacznij od atrybutów",
+            "description": "Atrybuty to najmniejsze elemnty, które opisują Twój produkt. Może to być na przykład kolor, opis, zdjęcie lub wymiar."
+          },
+          "second": {
+            "subtitle": "Skonfiguruj szablon produktowy",
+            "description": "Szablon produktu to zestaw atrybutów, których położenie i wielkość można dowolnie konfigurować, dzięki czemu może on odzwierciedlać wygląd Twoich produktów."
+          },
+          "third": {
+            "subtitle": "Stwórz swoje produkty",
+            "description": "Tutaj możesz zacząć wzbogacać swoje produkty o dane, opisy, zdjęcia oraz rozpocząć przygotowywanie tłumaczeń na inne języki."
+          }
+        },
+        "WelcomeUser": {
+          "welcome": "Witaj {name}!",
+          "question": "Jak się masz?"
+        },
+        "CompletenessWidget": {
+          "title": "Kompletność",
+          "getRequest": "Kompletność produktów nie została pobrana"
+        },
+        "ProductsWidget": {
+          "title": "Produkty",
+          "getRequest": "Informacje produktowe nie zostały pobrane"
+        },
+        "StatusesWidget": {
+          "title": "Statusy",
+          "getRequest": "Statusy produktów nie zostały pobrane"
+        }
+      }
+    }
+  }
+}

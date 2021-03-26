@@ -6,10 +6,10 @@
 import {
     Icons,
     Tabs,
-} from './imports';
+} from '@Products/config/imports';
 import {
     ROUTE_NAME as PRODUCT_ROUTE_NAME,
-} from './routes';
+} from '@Products/config/routes';
 
 export const ROUTE_NAME = {
     PRODUCT_EDIT_VARIANTS: 'product-id-variants',

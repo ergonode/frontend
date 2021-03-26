@@ -71,7 +71,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: app.i18n.t('user.errors.getRequest'),
+                    message: app.i18n.t('@Users.user.pages.id.getRequest'),
                 });
             },
         });
@@ -113,7 +113,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.title} - Users - Ergonode`,
+            title: `${this.title} - ${this.$t('@Users.user._.headTitle')}`,
         };
     },
 };

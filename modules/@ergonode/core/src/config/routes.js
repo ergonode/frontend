@@ -6,8 +6,8 @@ import {
     Icons,
     Pages,
     Tabs,
-} from './imports';
-import Privileges from './privileges';
+} from '@Core/config/imports';
+import Privileges from '@Core/config/privileges';
 
 export const ROUTE_NAME = {
     PLACEHOLDER: 'placeholder',

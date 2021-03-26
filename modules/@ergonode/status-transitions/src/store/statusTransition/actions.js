@@ -52,7 +52,6 @@ export default {
             });
             const {
                 condition_set_id: conditionSetId,
-                role_ids: rolesIds,
             } = data;
 
             const regex = /%20/g;
@@ -71,10 +70,6 @@ export default {
             commit('__SET_STATE', {
                 key: 'destination',
                 value: destinationOption,
-            });
-            commit('__SET_STATE', {
-                key: 'roles',
-                value: rolesIds,
             });
             commit('__SET_STATE', {
                 key: 'conditionSetId',
@@ -117,11 +112,8 @@ export default {
                 source,
                 destination,
                 conditionSetId,
-                roles,
             } = state;
-            let data = {
-                roles,
-            };
+            let data = {};
 
             if (conditionSetId) {
                 data.condition_set = conditionSetId;
@@ -188,12 +180,10 @@ export default {
             const {
                 source,
                 destination,
-                roles,
             } = state;
             let data = {
                 source: isObject(source) ? source.id : null,
                 destination: isObject(destination) ? destination.id : null,
-                roles,
             };
             // EXTENDED BEFORE METHOD
             const extendedData = await this.$getExtendMethod('@Transitions/store/statusTransition/action/createStatusTransition/__before', {
