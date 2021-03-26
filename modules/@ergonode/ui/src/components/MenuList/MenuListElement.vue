@@ -9,6 +9,7 @@
         @mouseleave="onMouseLeave">
         <NuxtLink
             class="menu-list-element__link"
+            aria-label="Menu list element"
             :to="{ path: item.routing }">
             <Component
                 :is="item.icon"

@@ -6,6 +6,7 @@
     <button
         :class="classes"
         type="button"
+        aria-label="Binding attribute"
         @click="onRemove">
         <span
             :class="titleClasses"

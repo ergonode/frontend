@@ -5,6 +5,7 @@
 <template>
     <NuxtLink
         class="breadcrumb"
+        aria-label="Breadcrumb"
         :to="breadcrumb.route">
         <Component
             :is="breadcrumbIconComponent"

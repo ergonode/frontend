@@ -9,6 +9,7 @@
         @mouseleave="onMouseLeave">
         <NuxtLink
             :to="{ path: route.path, query: route.query }"
+            aria-label="Navigation side bar group element"
             class="navigation-side-bar-group-element__link">
             <div class="navigation-side-bar-group-element__dot" />
             <span

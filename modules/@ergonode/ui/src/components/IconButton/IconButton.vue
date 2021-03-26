@@ -6,7 +6,8 @@
     <button
         type="button"
         :class="classes"
-        :disabled="disabled">
+        :disabled="disabled"
+        aria-label="Icon button">
         <!--
             @slot Icon
             @binding {string} color color of an icon

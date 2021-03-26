@@ -6,7 +6,9 @@
     <nav :class="classes">
         <ol class="navigation-side-bar__menu">
             <li>
-                <NuxtLink to="/dashboard">
+                <NuxtLink
+                    aria-label="Menu list element"
+                    to="/dashboard">
                     <NavigationSideBarLogo :is-expanded="isExpanded" />
                 </NuxtLink>
             </li>

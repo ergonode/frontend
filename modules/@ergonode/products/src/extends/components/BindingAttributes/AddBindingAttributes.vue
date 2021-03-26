@@ -6,6 +6,7 @@
     <button
         :class="classes"
         type="button"
+        aria-label="Add binding attributes"
         @click="onShowModal">
         <IconAdd />
         <span
