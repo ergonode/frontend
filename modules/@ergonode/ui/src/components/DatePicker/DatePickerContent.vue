@@ -44,7 +44,6 @@ import {
     getPreviousYear,
     getPreviousYearsRange,
     getYearsWithinRange,
-    zeroPad,
 } from '@UI/models/calendar';
 import {
     format as formatDate,
