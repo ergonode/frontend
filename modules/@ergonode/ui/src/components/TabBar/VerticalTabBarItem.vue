@@ -6,6 +6,7 @@
     <button
         :class="classes"
         type="button"
+        :aria-label="item.title"
         @click="onClick">
         <Component
             v-if="isIcon"

@@ -6,6 +6,7 @@
     <button
         class="tab-bar-item"
         type="button"
+        :aria-label="item.title"
         v-text="item.title"
         @click="onSelect" />
 </template>

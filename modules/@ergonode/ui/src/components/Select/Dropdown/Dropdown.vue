@@ -3,11 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
+    <span
         :class="classes"
         ref="dropdown">
         <slot />
-    </div>
+    </span>
 </template>
 
 <script>

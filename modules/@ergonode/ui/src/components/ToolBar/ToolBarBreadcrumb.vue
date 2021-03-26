@@ -11,6 +11,7 @@
         <NuxtLink
             v-if="breadcrumb.id"
             class="tool-bar-breadcrumb__link"
+            aria-label="Breadcrumb link"
             :to="{
                 name: breadcrumb.routeName,
                 params: { id: $route.params[breadcrumb.id]}
@@ -19,6 +20,7 @@
         <NuxtLink
             v-else-if="breadcrumb.routeName"
             class="tool-bar-breadcrumb__link"
+            aria-label="Breadcrumb link"
             :to="{ name: breadcrumb.routeName }"
             v-text="breadcrumb.title" />
         <span

@@ -9,6 +9,7 @@
         @mouseleave="onMouseLeave">
         <NuxtLink
             :to="{ name: route.name }"
+            aria-label="Navigation side bar element"
             class="navigation-side-bar-element__link">
             <div class="navigation-side-bar-element__icon">
                 <Component

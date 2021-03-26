@@ -7,6 +7,7 @@
         :style="floatingStyle"
         :class="classes"
         :disabled="disabled"
+        aria-label="Fab button"
         type="button"
         @mouseenter="onFocus"
         @mouseleave="onBlur"

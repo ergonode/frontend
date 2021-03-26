@@ -5,6 +5,7 @@
 <template>
     <button
         class="advanced-filters-remove-all-button"
+        :aria-label="title"
         type="button">
         <IconCancel />
         {{ title }}

@@ -5,6 +5,7 @@
 <template>
     <button
         :class="classes"
+        aria-label="Tool bar button"
         type="button">
         <slot />
     </button>
