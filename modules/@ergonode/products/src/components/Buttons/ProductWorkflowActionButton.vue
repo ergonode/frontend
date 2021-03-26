@@ -90,18 +90,28 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
+        currentStatus() {
+            if (!this.workflow[this.languageCode]) {
+                return {
+                    color: '',
+                    name: '',
+                };
+            }
+
+            return this.currentStatus;
+        },
         badgeColor() {
-            return this.workflow[this.languageCode].currentStatus.color;
+            return this.currentStatus.color;
         },
         title() {
             if (this.isFetchingData) {
                 return '';
             }
 
-            return this.workflow[this.languageCode].currentStatus.name;
+            return this.currentStatus.name;
         },
         options() {
-            if (this.isFetchingData) {
+            if (this.isFetchingData || !this.workflow[this.languageCode]) {
                 return [];
             }
 
