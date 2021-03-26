@@ -6,6 +6,7 @@ export default {
     name: '@ergonode/activity-logs',
     order: 110,
     relations: [
+        '@ergonode/core',
         '@ergonode/users',
     ],
     aliases: {

@@ -5,7 +5,7 @@
 import {
     Components,
     Icons,
-} from './imports';
+} from '@Conditions/config/imports';
 
 export default {
     extendMethods: {

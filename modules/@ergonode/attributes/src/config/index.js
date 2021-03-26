@@ -5,6 +5,10 @@
 export default {
     name: '@ergonode/attributes',
     order: 50,
+    relations: [
+        '@ergonode/core',
+        '@ergonode/attribute-groups',
+    ],
     aliases: {
         '@Attributes': '/',
     },

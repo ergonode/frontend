@@ -4,11 +4,11 @@
  */
 import {
     SYSTEM_TYPES,
-} from '@Attributes/defaults/attributes';
+} from '@Attributes/defaults';
 import {
     get as getAttribute,
     getAutocomplete as getAttributesAutocomplete,
-} from '@Attributes/services/attribute/index';
+} from '@Attributes/services';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -80,7 +80,6 @@ export default {
 
             const {
                 name,
-                image_id: imageID,
                 elements = [],
             } = template;
 
@@ -95,10 +94,6 @@ export default {
             commit('__SET_STATE', {
                 key: 'id',
                 value: id,
-            });
-            commit('__SET_STATE', {
-                key: 'image',
-                value: imageID,
             });
 
             const elementDescriptions = attributes.reduce((prev, curr) => ({
@@ -156,12 +151,10 @@ export default {
             const {
                 id,
                 title,
-                image,
                 layoutElements,
             } = state;
             let data = {
                 name: title,
-                image,
                 elements: getMappedLayoutElementsForAPIUpdate(layoutElements),
             };
 
@@ -300,11 +293,9 @@ export default {
         try {
             const {
                 title,
-                image,
             } = state;
             let data = {
                 name: title,
-                image,
             };
 
             // EXTENDED BEFORE METHOD

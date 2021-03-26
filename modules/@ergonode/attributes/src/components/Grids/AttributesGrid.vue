@@ -43,7 +43,7 @@ import {
 } from '@Attributes/config/routes';
 import {
     ATTRIBUTE_CREATED_EVENT_NAME,
-} from '@Attributes/defaults/attributes';
+} from '@Attributes/defaults';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';

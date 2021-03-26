@@ -28,7 +28,6 @@
                     disabled
                     label="Preview"
                     height="246px" />
-                <Divider v-if="extendedForm.length" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
                         :is="field.component"

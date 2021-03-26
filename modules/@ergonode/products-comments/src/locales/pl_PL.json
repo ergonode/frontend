@@ -1,0 +1,12 @@
+{
+  "@ProductsComments": {
+    "product": {
+      "components": {
+        "ProductCommentsTab": {
+          "getRequest": "Komentarze nie zostały pobrane prawidłowo",
+          "noData": "Tutaj możesz podzielić się informacjami o produkcie z innymi osobami."
+        }
+      }
+    }
+  }
+}

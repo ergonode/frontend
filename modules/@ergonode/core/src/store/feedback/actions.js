@@ -75,6 +75,17 @@ export default {
         commit(types.REMOVE_SCOPE_ERRORS, scope);
         commit(types.REMOVE_SCOPE_CHANGE_VALUES, scope);
     },
+    removeScopeChangeValue({
+        commit,
+    }, {
+        scope,
+        fieldKey,
+    }) {
+        commit(types.REMOVE_SCOPE_CHANGE_VALUE, {
+            scope,
+            fieldKey,
+        });
+    },
     removeScopeError({
         commit,
     }, {

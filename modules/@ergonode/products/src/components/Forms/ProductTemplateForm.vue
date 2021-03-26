@@ -8,12 +8,9 @@
         :style="gridTemplateRows">
         <Component
             v-for="(element, index) in elements"
-            :is="formComponents[element.type]"
+            :is="formComponents[element.type].component"
             :key="index"
-            :disabled="!isAllowedToUpdate(element.properties.scope)"
-            :language-code="languageCode"
-            :errors="errors"
-            v-bind="elements[index]"
+            v-bind="bindingProps(element)"
             @input="onValueChange" />
     </div>
 </template>
@@ -21,7 +18,7 @@
 <script>
 import {
     SCOPE,
-} from '@Attributes/defaults/attributes';
+} from '@Attributes/defaults';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import {
     capitalizeAndConcatenationArray,
@@ -57,6 +54,9 @@ export default {
         ...mapState('authentication', {
             languagePrivileges: state => state.user.languagePrivileges,
         }),
+        ...mapState('product', [
+            'drafts',
+        ]),
         ...mapGetters('core', [
             'rootLanguage',
         ]),
@@ -84,18 +84,46 @@ export default {
         elements: {
             immediate: true,
             handler() {
-                this.elements.forEach((element) => {
-                    const {
-                        type,
-                    } = element;
+                this.elements.forEach(({
+                    type,
+                }) => {
                     if (typeof this.formComponents[type] === 'undefined') {
-                        this.formComponents[type] = () => import(`@Products/components/Forms/Field/ProductTemplateForm${capitalizeAndConcatenationArray(type.split('_'))}Field`);
+                        const extendedField = this.$extendedForm({
+                            key: '@Products/components/Forms/ProductTemplateForm',
+                            type,
+                        });
+
+                        if (Array.isArray(extendedField) && extendedField.length) {
+                            const [
+                                firstExtendedField,
+                            ] = extendedField;
+
+                            this.formComponents[type] = firstExtendedField;
+                        } else {
+                            this.formComponents[type] = {
+                                component: () => import(`@Products/components/Forms/Field/ProductTemplateForm${capitalizeAndConcatenationArray(type.split('_'))}Field`)
+                                    .catch(() => import('@Products/components/Forms/Field/ProductTemplateFormNoTypeField')),
+                            };
+                        }
                     }
                 });
             },
         },
     },
     methods: {
+        bindingProps(elementProps) {
+            const extendedProps = this.formComponents[elementProps.type].props || {};
+
+            return {
+                languageCode: this.languageCode,
+                errors: this.errors,
+                drafts: this.drafts,
+                changedValues: this.changeValues,
+                disabled: !this.isAllowedToUpdate(elementProps.properties.scope),
+                ...elementProps,
+                ...extendedProps,
+            };
+        },
         isAllowedToUpdate(scope) {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
@@ -106,7 +134,7 @@ export default {
         onValueChange(payload) {
             this.onScopeValueChange({
                 scope: this.scope,
-                fieldKey: `${payload.languageCode}|${payload.fieldKey}`,
+                fieldKey: payload.fieldKey,
                 value: payload.value,
             });
 

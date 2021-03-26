@@ -24,6 +24,7 @@
                         <ImageCarousel
                             v-else
                             :image-ids="value"
+                            href="multimedia/[[ID]]/download/default"
                             :current-index="currentIndex"
                             @current="onCurrentIndexChange" />
                         <div

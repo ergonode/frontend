@@ -6,8 +6,8 @@ import {
     Icons,
     Pages,
     Tabs,
-} from './imports';
-import Privileges from './privileges';
+} from '@Transitions/config/imports';
+import Privileges from '@Transitions/config/privileges';
 
 export const ROUTE_NAME = {
     STATUS_TRANSITIONS: 'status-transitions',

@@ -45,9 +45,6 @@ import {
     INPUT_TYPE,
 } from '@Core/defaults/theme';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
-import {
-    ROUTE_NAME,
-} from '@Dashboard/config/routes';
 import LinkButton from '@UI/components/LinkButton/LinkButton';
 import TextField from '@UI/components/TextField/TextField';
 import Toggler from '@UI/components/Toggler/Toggler';
@@ -110,9 +107,14 @@ export default {
                 onError: this.onLoginError,
             });
         },
-        onLoginSuccess() {
+        async onLoginSuccess() {
+            const extendedRedirectName = await this.$getExtendMethod('@Authentication/components/Forms/LoginCredentialsForm/redirectName', {
+                $this: this,
+            });
+            const redirectName = [].concat(...extendedRedirectName);
+
             this.$router.push({
-                name: ROUTE_NAME.DASHBOARD,
+                name: redirectName[redirectName.length - 1],
             });
 
             this.isSubmitting = false;

@@ -27,66 +27,55 @@
                     :error-messages="errors[typeFieldKey]"
                     @input="onTypeChange" />
             </FormSection>
-            <FormSection v-if="type">
-                <TextField
-                    :data-cy="dataCyGenerator(codeFieldKey)"
-                    :value="code"
-                    required
-                    :error-messages="errors[codeFieldKey]"
-                    :disabled="isDisabled || !isAllowedToUpdate"
-                    :label="$t('@Attributes.attribute.components.AttributeForm.nameLabel')"
-                    :hint="$t('@Attributes.attribute.components.AttributeForm.nameHint')"
-                    @input="setCodeValue" />
-                <AttributeGroupsAutocomplete
-                    :data-cy="dataCyGenerator(groupsFieldKey)"
-                    :value="groups"
-                    :multiselect="true"
-                    :clearable="true"
-                    :disabled="!isAllowedToUpdate"
-                    :error-messages="errors[groupsFieldKey]"
-                    @input="setGroupsValue" />
-                <Divider />
-            </FormSection>
-            <FormSection
-                v-if="type"
-                :title="$t('@Attributes.attribute.components.AttributeForm.sectionTitle')">
-                <Select
-                    :data-cy="dataCyGenerator(scopeFieldKey)"
-                    :value="attributeScope"
-                    required
-                    :label="$t('@Attributes.attribute.components.AttributeForm.scopeLabel')"
-                    :disabled="!isAllowedToUpdate"
-                    :options="attributeScopeOptions"
-                    :error-messages="errors[scopeFieldKey]"
-                    @input="setScopeValue">
-                    <template #append>
-                        <InfoHint :hint="scopeHint" />
+            <template v-if="type">
+                <FormSection>
+                    <TextField
+                        :data-cy="dataCyGenerator(codeFieldKey)"
+                        :value="code"
+                        required
+                        :error-messages="errors[codeFieldKey]"
+                        :disabled="isDisabled || !isAllowedToUpdate"
+                        :label="$t('@Attributes.attribute.components.AttributeForm.nameLabel')"
+                        :hint="$t('@Attributes.attribute.components.AttributeForm.nameHint')"
+                        @input="setCodeValue" />
+                </FormSection>
+                <FormSection :title="$t('@Attributes.attribute.components.AttributeForm.sectionTitle')">
+                    <Select
+                        :data-cy="dataCyGenerator(scopeFieldKey)"
+                        :value="attributeScope"
+                        required
+                        :label="$t('@Attributes.attribute.components.AttributeForm.scopeLabel')"
+                        :disabled="!isAllowedToUpdate"
+                        :options="attributeScopeOptions"
+                        :error-messages="errors[scopeFieldKey]"
+                        @input="setScopeValue">
+                        <template #append>
+                            <InfoHint :hint="scopeHint" />
+                        </template>
+                    </Select>
+                    <template v-for="(formComponent, index) in extendedForm">
+                        <Component
+                            :is="formComponent.component"
+                            :key="index"
+                            v-bind="bindingProps(formComponent)" />
                     </template>
-                </Select>
-                <template v-for="(formComponent, index) in extendedForm">
-                    <Component
-                        :is="formComponent.component"
-                        :key="index"
-                        v-bind="bindingProps(formComponent)" />
-                </template>
-            </FormSection>
+                </FormSection>
+            </template>
         </template>
     </Form>
 </template>
 
 <script>
-import AttributeGroupsAutocomplete from '@Attributes/components/Autocompletes/AttributeGroupsAutocomplete';
 import PRIVILEGES from '@Attributes/config/privileges';
 import {
     SCOPE,
-} from '@Attributes/defaults/attributes';
+} from '@Attributes/defaults';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     getKeyByValue,
     isObject,
 } from '@Core/models/objectWrapper';
-import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import InfoHint from '@UI/components/Hints/InfoHint';
@@ -101,13 +90,11 @@ import {
 export default {
     name: 'AttributeForm',
     components: {
-        AttributeGroupsAutocomplete,
         Form,
         FormSection,
         InfoHint,
         TextField,
         Select,
-        Divider,
     },
     mixins: [
         formActionsMixin,
@@ -117,7 +104,6 @@ export default {
         ...mapState('attribute', [
             'id',
             'code',
-            'groups',
             'type',
         ]),
         ...mapState('attribute', {
@@ -164,9 +150,6 @@ export default {
         },
         typeFieldKey() {
             return 'type';
-        },
-        groupsFieldKey() {
-            return 'groups';
         },
         scopeFieldKey() {
             return 'scope';
@@ -222,18 +205,6 @@ export default {
             this.onScopeValueChange({
                 scope: this.scope,
                 fieldKey: this.scopeFieldKey,
-                value,
-            });
-        },
-        setGroupsValue(value) {
-            this.__setState({
-                key: this.groupsFieldKey,
-                value,
-            });
-
-            this.onScopeValueChange({
-                scope: this.scope,
-                fieldKey: this.groupsFieldKey,
                 value,
             });
         },

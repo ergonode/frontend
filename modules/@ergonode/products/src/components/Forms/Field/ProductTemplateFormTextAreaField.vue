@@ -80,6 +80,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        changedValues: {
+            type: Object,
+            default: () => ({}),
+        },
         disabled: {
             type: Boolean,
             default: false,
@@ -103,6 +107,10 @@ export default {
             'drafts',
         ]),
         fieldData() {
+            if (typeof this.changedValues[this.fieldKey] !== 'undefined') {
+                return this.changedValues[this.fieldKey];
+            }
+
             const {
                 attribute_code,
             } = this.properties;

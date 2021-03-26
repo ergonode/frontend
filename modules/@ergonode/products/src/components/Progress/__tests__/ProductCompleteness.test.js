@@ -17,8 +17,11 @@ const store = new Store({
     state: {
         product: {
             completeness: {
-                filled: 1,
-                required: 1,
+                en_GB: {
+                    missing: [],
+                    filled: 1,
+                    required: 1,
+                },
             },
         },
     },
@@ -34,16 +37,7 @@ describe('Badges/ProductCompleteness', () => {
             localVue,
             mocks,
             propsData: {
-                completeness: {
-                    filled: 1,
-                    required: 1,
-                    missing: [],
-                },
-            },
-            computed: {
-                color() {
-                    return '';
-                },
+                languageCode: 'en_GB',
             },
         });
     });

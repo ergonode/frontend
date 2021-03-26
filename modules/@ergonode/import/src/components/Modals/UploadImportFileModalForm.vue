@@ -46,7 +46,6 @@ import {
 } from '@Core/defaults/theme';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import UploadImportButton from '@Import/components/Buttons/UploadImportButton';
-import UploadFile from '@Media/components/Inputs/UploadFile/UploadFile';
 import {
     GREEN,
 } from '@UI/assets/scss/_js-variables/colors.scss';
@@ -56,6 +55,7 @@ import IconFile from '@UI/components/Icons/Others/IconFile';
 import LinkButton from '@UI/components/LinkButton/LinkButton';
 import ModalForm from '@UI/components/Modal/ModalForm';
 import Paragraph from '@UI/components/Paragraph/Paragraph';
+import UploadFile from '@UI/components/UploadFile/UploadFile';
 import {
     mapActions,
 } from 'vuex';

@@ -26,9 +26,6 @@
           "confirmTitle": "Czy jesteś pewien zmiany statusu na {info}?",
           "alertSuccess": "Status został zaktualizowany"
         },
-        "ProductsWidget": {
-          "getRequest": "Informacje produktowe nie zostały pobrane"
-        },
         "CompletenessWidget": {
           "title": "Kompletność",
           "getRequest": "Kompletność prduktów nie została pobrana"

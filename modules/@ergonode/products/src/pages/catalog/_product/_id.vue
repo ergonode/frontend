@@ -96,16 +96,6 @@ export default {
                 });
             },
         });
-        await store.dispatch('product/getInheritedProduct', {
-            id,
-            languageCode: store.getters['core/defaultLanguageCode'],
-            onError: () => {
-                app.$addAlert({
-                    type: ALERT_TYPE.ERROR,
-                    message: app.i18n.t('@Products.product.pages.id.getInheritedProductRequest'),
-                });
-            },
-        });
     },
     data() {
         return {

@@ -6,8 +6,8 @@ import {
     Icons,
     Pages,
     Tabs,
-} from './imports';
-import Privileges from './privileges';
+} from '@Categories/config/imports';
+import Privileges from '@Categories/config/privileges';
 
 export const ROUTE_NAME = {
     CATEGORIES: 'categories',

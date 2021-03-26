@@ -10,5 +10,5 @@ export const Components = {
 };
 
 export const Icons = {
-    IconAttributes: () => import('@Attributes/components/Icons/IconAttributes'),
+    IconAttributes: () => import('@Attributes/components/Icons/IconAttributes').then(m => m.default || m),
 };

@@ -25,7 +25,6 @@
                     :error-messages="errors[codeFieldKey]"
                     hint="System name must be unique"
                     @input="setCodeValue" />
-                <Divider v-if="extendedForm.length" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
                         :is="field.component"

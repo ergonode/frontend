@@ -4,7 +4,7 @@
  */
 <template>
     <Page>
-        <TitleBar title="Profile">
+        <TitleBar :title="$t('@Users.profile._.title')">
             <template #mainAction>
                 <template
                     v-for="(actionItem, index) in extendedMainAction">
@@ -56,7 +56,7 @@ export default {
     },
     head() {
         return {
-            title: 'Profile - Ergonode',
+            title: this.$t('@Users.profile._.headTitle'),
         };
     },
 };

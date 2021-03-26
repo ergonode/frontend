@@ -38,7 +38,7 @@ import beforeRouteEnterMixin from '@Core/mixins/route/beforeRouteEnterMixin';
 import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import RemoveProductStatusButton from '@Statuses/components/Buttons/RemoveProductStatusButton';
-import PRIVILEGES from '@Transitions/config/privileges';
+import PRIVILEGES from '@Statuses/config/privileges';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@UI/components/TitleBar/TitleBar';

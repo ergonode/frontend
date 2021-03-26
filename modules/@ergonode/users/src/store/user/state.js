@@ -14,6 +14,5 @@ export default () => ({
     passwordRepeat: '',
     languagePrivilegesCollection: null,
     isActive: true,
-    role: null,
     drafts: {},
 });

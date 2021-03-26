@@ -5,6 +5,9 @@
 export default {
     name: '@ergonode/notifications',
     order: 40,
+    relations: [
+        '@ergonode/core',
+    ],
     aliases: {
         '@Notifications': '/',
     },

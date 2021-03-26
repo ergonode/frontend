@@ -7,5 +7,5 @@ export const Components = {
 };
 
 export const Icons = {
-    IconCategory: () => import('@Categories/components/Icons/IconCategory').then(m => m.default || m),
+    IconCategory: () => import('@Conditions/components/Icons/IconCategory').then(m => m.default || m),
 };

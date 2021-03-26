@@ -25,8 +25,8 @@
         v-bind="extendedProps['grid']">
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('user.grid.placeholderTitle')"
-                :subtitle="$t('user.grid.placeholderSubtitle')">
+                :title="$t('@Users.user._.noUsers')"
+                :subtitle="$t('@Users.user._.createFirst')">
                 <template #action>
                     <CreateUserButton />
                 </template>
@@ -136,7 +136,7 @@ export default {
         onRemoveRow() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'User removed',
+                message: this.$t('@Users.user.components.UsersGrid.deleteSuccess'),
             });
             this.onFetchData();
         },
@@ -176,7 +176,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Users haven’t been fetched properly',
+                message: this.$t('@Users.user.components.UsersGrid.getRequest'),
             });
         },
         onRemoveAllFilters() {

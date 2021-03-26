@@ -5,7 +5,7 @@
  */
 import {
     SKU_MODEL_ID,
-} from '@Attributes/defaults/attributes';
+} from '@Attributes/defaults';
 
 export const prepareTemplateData = ({
     $this,

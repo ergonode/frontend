@@ -7,7 +7,7 @@
         <LazyImage
             v-for="(id, index) in imageIds"
             :class="currentIndex === index ? 'visible' : 'non-visible'"
-            :href="`multimedia/${id}/download/default`"
+            :href="hrefById(id)"
             :value="id"
             :key="id"
             object-fit="contain" />
@@ -79,6 +79,13 @@ export default {
             type: Array,
             default: () => [],
         },
+        /**
+         * URL of backend endpoint
+         */
+        href: {
+            type: String,
+            required: true,
+        },
     },
     computed: {
         secondaryTheme() {
@@ -106,6 +113,13 @@ export default {
         },
         onNextImage() {
             this.$emit('current', this.currentIndex + 1);
+        },
+        hrefById(id) {
+            const replacements = {
+                '[[ID]]': id,
+            };
+
+            return this.href.replace(/\[\[\w+\]\]/g, key => replacements[key] || key);
         },
     },
 };
