@@ -4,17 +4,21 @@
  */
 <template>
     <ActionButton
-        :title="status.name"
+        :title="title"
         :theme="secondaryTheme"
         :size="smallSize"
-        :disabled="!isAllowedToUpdate || !workflow.length"
-        :options="workflow"
+        :disabled="!isAllowedToUpdate || !options.length"
+        :options="options"
         :fixed-content="true"
         @input="onUpdateStatus">
         <template #prepend>
             <PointBadge
-                :color="status.color"
+                v-if="!isFetchingData"
+                :color="badgeColor"
                 :style="badgeStyles" />
+        </template>
+        <template #append>
+            <Preloader v-if="isFetchingData" />
         </template>
         <template #option="{ option }">
             <ListElementAction :size="smallSize">
@@ -48,6 +52,7 @@ import PointBadge from '@UI/components/Badges/PointBadge';
 import ListElementAction from '@UI/components/List/ListElementAction';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
+import Preloader from '@UI/components/Preloader/Preloader';
 import {
     mapActions,
     mapState,
@@ -56,6 +61,7 @@ import {
 export default {
     name: 'ProductWorkflowActionButton',
     components: {
+        Preloader,
         PointBadge,
         ActionButton,
         ListElementAction,
@@ -68,9 +74,14 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            isFetchingData: true,
+        };
+    },
     computed: {
         ...mapState('product', [
-            'status',
+            'id',
             'workflow',
         ]),
         smallSize() {
@@ -79,10 +90,22 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        isAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.PRODUCT.update,
-            ]);
+        badgeColor() {
+            return this.workflow[this.languageCode].currentStatus.color;
+        },
+        title() {
+            if (this.isFetchingData) {
+                return '';
+            }
+
+            return this.workflow[this.languageCode].currentStatus.name;
+        },
+        options() {
+            if (this.isFetchingData) {
+                return [];
+            }
+
+            return this.workflow[this.languageCode].statuses;
         },
         badgeStyles() {
             return {
@@ -94,6 +117,28 @@ export default {
                 margin: '0 8px',
             };
         },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT.update,
+            ]);
+        },
+    },
+    watch: {
+        languageCode: {
+            immediate: true,
+            async handler() {
+                if (typeof this.workflow[this.languageCode] === 'undefined') {
+                    this.isFetchingData = true;
+
+                    await this.getProductWorkflow({
+                        languageCode: this.languageCode,
+                        id: this.id,
+                    });
+
+                    this.isFetchingData = false;
+                }
+            },
+        },
     },
     methods: {
         ...mapActions('product', [
@@ -101,14 +146,9 @@ export default {
             'getProductWorkflow',
         ]),
         onUpdateStatus({
+            id: statusId,
             code,
         }) {
-            const {
-                id: statusId,
-            } = this.workflow.find(({
-                code: workflowCode,
-            }) => code === workflowCode);
-
             this.$confirm({
                 type: MODAL_TYPE.POSITIVE,
                 title: this.$t('@Products.product.components.ProductWorkflowActionButton.confirmTitle', {
@@ -117,17 +157,11 @@ export default {
                 action: () => this.updateProductStatus({
                     value: statusId,
                     languageCode: this.languageCode,
-                    attributeId: this.status.attribute_id,
+                    attributeId: this.workflow[this.languageCode].currentStatus.attribute_id,
                     onSuccess: () => {
-                        const {
-                            params: {
-                                id,
-                            },
-                        } = this.$route;
-
                         this.getProductWorkflow({
                             languageCode: this.languageCode,
-                            id,
+                            id: this.id,
                         });
                         this.$addAlert({
                             type: ALERT_TYPE.SUCCESS,

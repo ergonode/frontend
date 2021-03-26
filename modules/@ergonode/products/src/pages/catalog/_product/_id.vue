@@ -81,10 +81,6 @@ export default {
             id,
         } = params;
 
-        const {
-            defaultLanguageCode: languageCode,
-        } = store.state.core;
-
         await store.dispatch('dictionaries/getInitialDictionaries', {
             keys: [
                 'productTypes',
@@ -97,16 +93,6 @@ export default {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
                     message: app.i18n.t('@Products.product.pages.id.getProductRequest'),
-                });
-            },
-        });
-        await store.dispatch('product/getInheritedProduct', {
-            id,
-            languageCode,
-            onError: () => {
-                app.$addAlert({
-                    type: ALERT_TYPE.ERROR,
-                    message: app.i18n.t('@Products.product.pages.id.getInheritedProductRequest'),
                 });
             },
         });

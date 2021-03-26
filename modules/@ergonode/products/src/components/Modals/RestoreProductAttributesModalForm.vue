@@ -33,6 +33,7 @@ import RestoreForm from '@Products/components/Forms/RestoreForm';
 import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -45,6 +46,10 @@ export default {
         modalFeedbackMixin,
     ],
     props: {
+        productTemplateScope: {
+            type: String,
+            default: '',
+        },
         languageCode: {
             type: String,
             required: true,
@@ -60,9 +65,19 @@ export default {
             elementsToRestore: {},
         };
     },
+    computed: {
+        ...mapState('product', [
+            'id',
+        ]),
+    },
     methods: {
         ...mapActions('product', [
             'removeProductValues',
+            'getProductCompleteness',
+            'getInheritedProduct',
+        ]),
+        ...mapActions('feedback', [
+            'removeScopeChangeValue',
         ]),
         onUpdateElementsToRestore(elements) {
             this.elementsToRestore = elements;
@@ -93,6 +108,8 @@ export default {
                 return;
             }
 
+            this.isSubmitting = true;
+
             this.removeScopeErrors(this.scope);
             this.removeProductValues({
                 languageCode: this.languageCode,
@@ -103,19 +120,38 @@ export default {
                 onError: this.onSubmitError,
             });
         },
-        onSubmitSuccess(attributes) {
+        async onSubmitSuccess(attributes) {
             const attributesDescription = attributes
                 .map(attribute => attribute.label || `#${attribute.properties.attribute_code}`)
                 .join(', ');
 
+            attributes.forEach((attribute) => {
+                this.removeScopeChangeValue({
+                    scope: this.productTemplateScope,
+                    fieldKey: `${attribute.properties.attribute_code}/${this.languageCode}`,
+                });
+            });
+
+            await Promise.all([
+                this.getProductCompleteness({
+                    languageCode: this.languageCode,
+                }),
+                this.getInheritedProduct({
+                    id: this.id,
+                    languageCode: this.languageCode,
+                }),
+            ]);
+
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('@Products.product.components.RestoreProductAttributesModalForm.successAlert').replace('[[info]]', attributesDescription),
+                message: this.$t('@Products.product.components.RestoreProductAttributesModalForm.successAlert', {
+                    info: attributesDescription,
+                }),
             });
 
             this.isSubmitting = false;
 
-            this.$emit('restored');
+            this.onClose();
         },
         onSubmitError(errors) {
             this.onError(errors);

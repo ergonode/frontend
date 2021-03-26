@@ -13,6 +13,7 @@
             :disabled="!isAllowedToUpdate(element.properties.scope)"
             :language-code="languageCode"
             :errors="errors"
+            :changed-values="changeValues"
             v-bind="elements[index]"
             @input="onValueChange" />
     </div>
@@ -106,7 +107,7 @@ export default {
         onValueChange(payload) {
             this.onScopeValueChange({
                 scope: this.scope,
-                fieldKey: `${payload.languageCode}|${payload.fieldKey}`,
+                fieldKey: payload.fieldKey,
                 value: payload.value,
             });
 

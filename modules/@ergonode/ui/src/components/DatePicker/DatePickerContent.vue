@@ -33,8 +33,8 @@ import DatePickerCalendar from '@UI/components/DatePicker/Calendar/DatePickerCal
 import DatePickerHeader from '@UI/components/DatePicker/DatePickerHeader';
 import DatePickerNavigationHeader from '@UI/components/DatePicker/DatePickerNavigationHeader';
 import {
-    CALENDAR_MONTHS,
     CALENDAR_TYPE,
+    DEFAULT_FORMAT,
     getHeaderForCalendarDaysType,
     getHeaderForCalendarYearsType,
     getNextMonth,
@@ -46,6 +46,9 @@ import {
     getYearsWithinRange,
     zeroPad,
 } from '@UI/models/calendar';
+import {
+    format as formatDate,
+} from 'date-fns';
 
 export default {
     name: 'DatePickerContent',
@@ -76,6 +79,13 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * Date format used for parsing value
+         */
+        format: {
+            type: String,
+            default: DEFAULT_FORMAT,
+        },
     },
     data() {
         const now = new Date();
@@ -95,16 +105,14 @@ export default {
         title() {
             if (!this.value) return 'Pick a date';
 
-            const day = this.value.getDate();
             const month = this.value.getMonth() + 1;
             const year = this.value.getFullYear();
 
             switch (this.selectedCalendarType) {
             case CALENDAR_TYPE.DAY:
-                return `${day}.${zeroPad(month, 2)}.${year}`;
+                return formatDate(this.value, this.format);
             case CALENDAR_TYPE.MONTH: {
-                const monthDesc = Object.values(CALENDAR_MONTHS)[month];
-                return `${monthDesc} ${year}`;
+                return getHeaderForCalendarDaysType(month, year);
             }
             case CALENDAR_TYPE.YEAR:
                 return year;

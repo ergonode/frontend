@@ -57,6 +57,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        languageCode: {
+            type: String,
+            default: '',
+        },
     },
     data() {
         return {
@@ -76,6 +80,7 @@ export default {
     methods: {
         ...mapActions('product', [
             'updateProductValues',
+            'getProductCompleteness',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -90,17 +95,19 @@ export default {
                 onError: this.onUpdateError,
             });
         },
-        onUpdateSuccess() {
+        async onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Product has been updated',
             });
 
+            await this.getProductCompleteness({
+                languageCode: this.languageCode,
+            });
+
             this.isSubmitting = false;
 
             this.markChangeValuesAsSaved(this.scope);
-
-            this.$emit('updated');
         },
         onUpdateError(errors) {
             this.onError(errors);

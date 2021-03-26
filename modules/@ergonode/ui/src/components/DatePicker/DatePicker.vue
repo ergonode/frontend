@@ -34,6 +34,7 @@
             }">
             <DatePickerContent
                 :value="value"
+                :format="format"
                 :disabled-past="disabledPast"
                 @input="onSelectValue" />
             <SelectDropdownApplyFooter
