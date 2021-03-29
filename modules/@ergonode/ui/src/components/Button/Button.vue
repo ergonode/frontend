@@ -133,11 +133,11 @@ export default {
 
         position: relative;
         display: flex;
-        flex-shrink: 0;
-        justify-content: center;
         align-items: center;
         width: max-content;
+        white-space: nowrap;
         border: none;
+        box-sizing: content-box;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         text-transform: uppercase;
         cursor: pointer;

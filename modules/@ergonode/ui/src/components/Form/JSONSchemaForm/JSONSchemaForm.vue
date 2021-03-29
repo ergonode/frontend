@@ -107,6 +107,7 @@ export default {
                     component: () => import(`@UI/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(type)}`),
                 });
             }
+
             return components;
         },
         onValueChange({
