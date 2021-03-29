@@ -83,6 +83,9 @@ import {
     removeArrayIndexes,
 } from '@Core/models/arrayWrapper';
 import {
+    getMergedTreeData,
+} from '@Core/models/mappers/treeDesignerMapper';
+import {
     deepClone,
 } from '@Core/models/objectWrapper';
 import Designer from '@UI/components/Designer/Designer';
@@ -198,34 +201,7 @@ export default {
     },
     methods: {
         onValueChange() {
-            const items = [];
-
-            let shiftValue = 0;
-
-            this.localItems.forEach((item) => {
-                const itemRow = item.row + shiftValue;
-
-                items.push({
-                    ...item,
-                    row: itemRow,
-                });
-
-                if (this.hiddenItems[item.id]) {
-                    const shiftColumnValue = item.column - this.hiddenItems[item.id][0].column + 1;
-
-                    this.hiddenItems[item.id].forEach((hiddenItem, index) => {
-                        items.push({
-                            ...hiddenItem,
-                            row: itemRow + index + 1,
-                            column: hiddenItem.column + shiftColumnValue,
-                        });
-                    });
-
-                    shiftValue += this.hiddenItems[item.id].length;
-                }
-            });
-
-            this.$emit('input', items);
+            this.$emit('input', getMergedTreeData(this.localItems, this.hiddenItems));
         },
         onUpdateItems({
             since,
@@ -263,14 +239,15 @@ export default {
         }) {
             this.localItems = insertValueAtIndex(this.localItems, item, index);
 
-            this.onValueChange();
+            console.log('insertItem');
         },
         onAddItem(item) {
             this.localItems.push(item);
 
-            this.onValueChange();
+            console.log('addItem');
         },
         onRemoveItem(index) {
+            console.log('removeItem');
             this.localItems.splice(index, 1);
         },
         onRemoveItems({
@@ -278,20 +255,27 @@ export default {
             row,
             column,
         }) {
-            const indexesToRemove = [];
-            let itemIds = [
+            const indexesToRemove = [
+                row,
+            ];
+            const itemIds = [
                 id,
             ];
 
-            if (this.localItems.some(item => item.id === id)) {
-                indexesToRemove.push(row);
-            }
-
             if (typeof this.hiddenItems[id] !== 'undefined') {
-                itemIds = [
-                    ...itemIds,
-                    ...this.hiddenItems[id].map(hiddenItem => hiddenItem.id),
-                ];
+                for (let i = row + 1; i < this.items.length; i += 1) {
+                    const item = this.items[i];
+
+                    if (item.column <= column) {
+                        break;
+                    }
+
+                    if (typeof this.hiddenItems[item.id] !== 'undefined') {
+                        delete this.hiddenItems[item.id];
+                    }
+
+                    itemIds.push(item.id);
+                }
 
                 delete this.hiddenItems[id];
             } else {
