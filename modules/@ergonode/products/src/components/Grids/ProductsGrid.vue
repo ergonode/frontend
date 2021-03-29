@@ -257,7 +257,6 @@ export default {
     },
     watch: {
         async $route(from, to) {
-            console.log('return', from, to);
             if (from.name !== to.name) {
                 return;
             }
