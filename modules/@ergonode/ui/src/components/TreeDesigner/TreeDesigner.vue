@@ -238,16 +238,11 @@ export default {
             item,
         }) {
             this.localItems = insertValueAtIndex(this.localItems, item, index);
-
-            console.log('insertItem');
         },
         onAddItem(item) {
             this.localItems.push(item);
-
-            console.log('addItem');
         },
         onRemoveItem(index) {
-            console.log('removeItem');
             this.localItems.splice(index, 1);
         },
         onRemoveItems({
