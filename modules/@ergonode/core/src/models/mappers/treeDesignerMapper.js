@@ -2,6 +2,13 @@
  * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import {
+    insertValuesAtIndex,
+} from '@Core/models/arrayWrapper';
+import {
+    deepClone,
+} from '@Core/models/objectWrapper';
+
 export function getMappedTree({
     data,
     childrenId,
@@ -80,4 +87,49 @@ export function getParsedTree({
     }
 
     return parsedTree;
+}
+
+export function getMergedTreeData(items, hiddenItems) {
+    let mergedItems = deepClone(items);
+
+    const insertHiddenItems = (hidden = {}, parentIds = []) => {
+        let parentIdsNumber = parentIds.length;
+        const tmpHidden = {
+            ...hidden,
+        };
+
+        parentIds.forEach((parentId) => {
+            const itemIndex = mergedItems.findIndex(item => String(item.id) === String(parentId));
+
+            if (itemIndex !== -1) {
+                const item = mergedItems[itemIndex];
+                const itemsToInsert = [];
+
+                hidden[parentId].forEach((hiddenItem, index) => {
+                    itemsToInsert.push({
+                        ...hiddenItem,
+                        row: item.row + index + 1,
+                        column: item.column + 1,
+                    });
+                });
+
+                parentIdsNumber -= 1;
+                delete tmpHidden[parentId];
+
+                for (let i = itemIndex + 1; i < mergedItems.length; i += 1) {
+                    mergedItems[i].row += itemsToInsert.length;
+                }
+
+                mergedItems = insertValuesAtIndex(mergedItems, itemsToInsert, itemIndex + 1);
+            }
+        });
+
+        if (parentIdsNumber) {
+            insertHiddenItems(tmpHidden, Object.keys(tmpHidden));
+        }
+    };
+
+    insertHiddenItems(hiddenItems, Object.keys(hiddenItems));
+
+    return mergedItems;
 }
