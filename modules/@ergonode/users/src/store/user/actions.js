@@ -6,6 +6,7 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
+    deepClone,
     isObject,
 } from '@Core/models/objectWrapper';
 import {
@@ -16,7 +17,6 @@ import {
     update,
     uploadAvatar,
 } from '@Users/services/user/index';
-import deepmerge from 'deepmerge';
 
 export default {
     async getUser(
@@ -138,25 +138,15 @@ export default {
                 drafts,
                 languagePrivilegesCollection,
             } = state;
-            const activeLanguages = Object.keys(languagePrivilegesCollection)
-                .reduce((acc, activeLanguageCode) => ({
-                    ...acc,
-                    [activeLanguageCode]: languagePrivilegesCollection[activeLanguageCode],
-                }), {});
-
-            const mappedDrafts = {};
+            const privileges = deepClone(languagePrivilegesCollection);
 
             Object.keys(drafts).forEach((key) => {
                 const [
-                    draftLanguageCode,
+                    privilegeLanguageCode,
                     privilege,
                 ] = key.split('/');
 
-                if (typeof mappedDrafts[draftLanguageCode] === 'undefined') {
-                    mappedDrafts[draftLanguageCode] = {};
-                }
-
-                mappedDrafts[draftLanguageCode][privilege] = Boolean(drafts[key]);
+                privileges[privilegeLanguageCode][privilege] = drafts[key];
             });
 
             let data = {
@@ -166,10 +156,7 @@ export default {
                 password,
                 passwordRepeat,
                 isActive,
-                languagePrivilegesCollection: deepmerge(
-                    activeLanguages,
-                    mappedDrafts,
-                ),
+                languagePrivilegesCollection: privileges,
             };
             // EXTENDED BEFORE METHOD
             const extendedData = await this.$getExtendMethod('@Users/store/user/action/updateUser/__before', {

@@ -178,17 +178,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .badge-preview {
-        display: grid;
-        grid-gap: 8px;
-
-        &__badge {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 30px;
-        }
-    }
-</style>

@@ -12,6 +12,7 @@
                         label="Edit language"
                         :value="languageCode"
                         @input="onSelectLanguage" />
+                    <ReadOnlyBadge v-if="isReadOnlyLanguage" />
                 </div>
                 <div class="view-template-header__section">
                     <ProductCompleteness :language-code="languageCode" />
@@ -50,6 +51,7 @@ import RestoreProductButton from '@Products/components/Buttons/RestoreProductBut
 import UpdateProductTemplateButton from '@Products/components/Buttons/UpdateProductTemplateButton';
 import ProductTemplateForm from '@Products/components/Forms/ProductTemplateForm';
 import ProductCompleteness from '@Products/components/Progress/ProductCompleteness';
+import ReadOnlyBadge from '@UI/components/Badges/ReadOnlyBadge';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import Preloader from '@UI/components/Preloader/Preloader';
@@ -62,6 +64,7 @@ import {
 export default {
     name: 'ProductTemplateTab',
     components: {
+        ReadOnlyBadge,
         UpdateProductTemplateButton,
         LanguageTreeSelect,
         RestoreProductButton,
@@ -104,6 +107,9 @@ export default {
                 ...prev,
                 [curr.properties.attribute_code]: curr.properties.attribute_id,
             }), {});
+        },
+        isReadOnlyLanguage() {
+            return !this.languagePrivileges[this.languageCode].edit;
         },
     },
     created() {
@@ -183,6 +189,7 @@ export default {
 <style lang="scss" scoped>
     .view-template-header__section {
         display: grid;
+        align-items: center;
         grid-auto-flow: column;
         grid-column-gap: 24px;
     }

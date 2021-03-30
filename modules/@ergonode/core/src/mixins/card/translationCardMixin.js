@@ -6,6 +6,10 @@ import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import {
     getMappedTranslationErrors,
 } from '@Core/models/mappers/errorsMapper';
+import ReadOnlyBadge from '@UI/components/Badges/ReadOnlyBadge';
+import Card from '@UI/components/Card/Card';
+import Form from '@UI/components/Form/Form';
+import FormSection from '@UI/components/Form/Section/FormSection';
 import {
     mapActions,
     mapState,
@@ -15,6 +19,12 @@ export default {
     mixins: [
         formFeedbackMixin,
     ],
+    components: {
+        ReadOnlyBadge,
+        FormSection,
+        Form,
+        Card,
+    },
     props: {
         languageCode: {
             type: String,
@@ -28,6 +38,9 @@ export default {
         ...mapState('core', [
             'inheritedLanguagesTree',
         ]),
+        ...mapState('authentication', {
+            languagePrivileges: state => state.user.languagePrivileges,
+        }),
         translationErrors() {
             return getMappedTranslationErrors({
                 errors: this.errors,
@@ -44,6 +57,9 @@ export default {
             }
 
             return language.name;
+        },
+        isReadOnly() {
+            return !this.languagePrivileges[this.languageCode].edit;
         },
     },
     methods: {
