@@ -104,6 +104,7 @@ export default {
 
             this.removeScopeErrors(this.scope);
             this.createAttribute({
+                scope: this.scope,
                 onSuccess: this.onProceedSuccess,
                 onError: this.onCreateError,
             });

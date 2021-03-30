@@ -104,7 +104,7 @@
     "productTemplate": {
       "components": {
         "ProductTemplateFormPresentation": {
-          "title": "Presentation product",
+          "title": "Product presentation",
           "defaultLabel": "Default label attribute",
           "defaultImage": "Default image attribute",
           "noLabelTitle": "No text attributes",
