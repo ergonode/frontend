@@ -38,6 +38,9 @@ export default {
             default: '',
         },
     },
+    fetch() {
+        this.onGetProductCompleteness();
+    },
     data() {
         return {
             isFetchingData: true,
@@ -87,25 +90,25 @@ export default {
         },
     },
     watch: {
-        languageCode: {
-            immediate: true,
-            async handler() {
-                if (typeof this.completeness[this.languageCode] === 'undefined') {
-                    this.isFetchingData = true;
-
-                    await this.getProductCompleteness({
-                        languageCode: this.languageCode,
-                    });
-
-                    this.isFetchingData = false;
-                }
-            },
+        languageCode() {
+            this.onGetProductCompleteness();
         },
     },
     methods: {
         ...mapActions('product', [
             'getProductCompleteness',
         ]),
+        async onGetProductCompleteness() {
+            if (typeof this.completeness[this.languageCode] === 'undefined') {
+                this.isFetchingData = true;
+
+                await this.getProductCompleteness({
+                    languageCode: this.languageCode,
+                });
+
+                this.isFetchingData = false;
+            }
+        },
     },
 };
 </script>
