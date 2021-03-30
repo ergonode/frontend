@@ -5,7 +5,8 @@
 <template>
     <button
         :class="['link-button', { 'link-button--disabled': disabled }]"
-        type="button">
+        type="button"
+        :aria-label="title">
         <slot name="prepend" />
         <span v-text="title" />
         <slot name="append" />

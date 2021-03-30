@@ -27,7 +27,7 @@
                         <ProductStatusBadge :status="status" />
                         <span v-text="status.value" />
                     </li>
-                    <div
+                    <li
                         class="list-status-element-divider"
                         :key="`${status.id}|${index}`" />
                 </template>

@@ -4,11 +4,12 @@
  */
 <template>
     <TextField
-        :value="localValue"
+        :value="value"
         :size="schema.size"
         :label="schema.title"
         :disabled="schema.disabled"
         :required="schema.isRequired"
+        :hint="schema.description"
         :error-messages="errorMessages"
         @input="onValueChange" />
 </template>
@@ -44,17 +45,8 @@ export default {
             default: '',
         },
     },
-    data() {
-        return {
-            localValue: '',
-        };
-    },
-    created() {
-        this.localValue = this.value;
-    },
     methods: {
         onValueChange(value) {
-            this.localValue = value;
             this.$emit('input', value);
         },
     },

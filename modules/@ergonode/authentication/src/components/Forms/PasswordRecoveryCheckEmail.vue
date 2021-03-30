@@ -20,6 +20,7 @@
                 <template #infoLink>
                     <a
                         class="paragraph__link"
+                        aria-label="Paragraph link"
                         v-text="$t('@Authentication.authentication.components.PasswordRecoveryCheckEmail.infoLink')"
                         @click="onRedirectToHelp" />
                 </template>

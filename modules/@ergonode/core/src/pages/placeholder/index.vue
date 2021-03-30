@@ -39,6 +39,7 @@
                 </q>
                 <a
                     class="section__video-link"
+                    aria-label="Video link"
                     href="https://www.youtube.com/watch?v=Dylp3c3_OBQ"
                     target="_blank">
                     Dr. Emmett „Doc” Brown

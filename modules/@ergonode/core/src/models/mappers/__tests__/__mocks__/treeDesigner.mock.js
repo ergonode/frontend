@@ -132,6 +132,142 @@ export const dataDetails = [
     },
 ];
 
+export const localItems = [
+    {
+        id: 1,
+        row: 0,
+        column: 1,
+    },
+    {
+        id: 2,
+        row: 1,
+        column: 1,
+    },
+    {
+        id: 3,
+        row: 2,
+        column: 1,
+    },
+    {
+        id: 4,
+        row: 3,
+        column: 1,
+    },
+];
+
+export const hiddenItems = {
+    1: [
+        {
+            id: 5,
+            row: 2,
+            column: 2,
+        },
+        {
+            id: 6,
+            row: 3,
+            column: 2,
+        },
+    ],
+    6: [
+        {
+            id: 7,
+            row: 4,
+            column: 3,
+        },
+        {
+            id: 8,
+            row: 5,
+            column: 3,
+        },
+    ],
+    3: [
+        {
+            id: 9,
+            row: 4,
+            column: 3,
+        },
+        {
+            id: 10,
+            row: 5,
+            column: 3,
+        },
+        {
+            id: 11,
+            row: 4,
+            column: 3,
+        },
+        {
+            id: 12,
+            row: 5,
+            column: 3,
+        },
+    ],
+};
+
+export const expectedData = [
+    {
+        id: 1,
+        row: 0,
+        column: 1,
+    },
+    {
+        id: 5,
+        row: 1,
+        column: 2,
+    },
+    {
+        id: 6,
+        row: 2,
+        column: 2,
+    },
+    {
+        id: 7,
+        row: 3,
+        column: 3,
+    },
+    {
+        id: 8,
+        row: 4,
+        column: 3,
+    },
+    {
+        id: 2,
+        row: 5,
+        column: 1,
+    },
+    {
+        id: 3,
+        row: 6,
+        column: 1,
+    },
+
+    {
+        id: 9,
+        row: 7,
+        column: 2,
+    },
+    {
+        id: 10,
+        row: 8,
+        column: 2,
+    },
+    {
+        id: 11,
+        row: 9,
+        column: 2,
+    },
+    {
+        id: 12,
+        row: 10,
+        column: 2,
+    },
+    {
+        id: 4,
+        row: 11,
+        column: 1,
+    },
+];
+
 export const reducer = (id) => {
     const {
         code,
