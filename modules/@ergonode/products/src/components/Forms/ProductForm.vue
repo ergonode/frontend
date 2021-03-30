@@ -53,7 +53,6 @@ import {
 } from '@Core/models/objectWrapper';
 import PRIVILEGES from '@Products/config/privileges';
 import Button from '@UI/components/Button/Button';
-import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import Select from '@UI/components/Select/Select';
@@ -67,7 +66,6 @@ export default {
     name: 'ProductForm',
     components: {
         Button,
-        Divider,
         Form,
         FormSection,
         Select,

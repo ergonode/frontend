@@ -67,7 +67,6 @@ import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import PRIVILEGES from '@Statuses/config/privileges';
 import CheckBox from '@UI/components/CheckBox/CheckBox';
 import ColorPicker from '@UI/components/ColorPicker/ColorPicker';
-import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import InfoHint from '@UI/components/Hints/InfoHint';
@@ -80,7 +79,6 @@ import {
 export default {
     name: 'ProductStatusForm',
     components: {
-        Divider,
         Form,
         FormSection,
         TextField,

@@ -47,7 +47,6 @@
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import PRIVILEGES from '@Roles/config/privileges';
-import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import TextArea from '@UI/components/TextArea/TextArea';
@@ -60,7 +59,6 @@ import {
 export default {
     name: 'UserRoleForm',
     components: {
-        Divider,
         Form,
         FormSection,
         TextField,
