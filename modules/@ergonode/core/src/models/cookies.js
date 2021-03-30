@@ -7,6 +7,15 @@ import {
     swapItemPosition,
 } from '@Core/models/arrayWrapper';
 
+export function getCookieKey(store, key, callback) {
+    const {
+        user = null,
+    } = store.state.authentication;
+    const userKey = user && user.id ? `[${user.id}]${key}` : key;
+
+    return callback(userKey);
+}
+
 export const removeCookieAtIndex = ({
     cookies,
     cookieName,

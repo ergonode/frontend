@@ -74,11 +74,11 @@ export default {
     },
     watch: {
         selectedLanguages(value) {
-            this.$cookies.set(TRANSLATIONS_LANGUAGES, value);
+            this.$userCookies.set(TRANSLATIONS_LANGUAGES, value);
         },
     },
     created() {
-        const cookieValue = this.$cookies.get(TRANSLATIONS_LANGUAGES);
+        const cookieValue = this.$userCookies.get(TRANSLATIONS_LANGUAGES);
         const isEveryLanguageExist = cookieValue
             ? cookieValue.every(e => this.getActiveLanguageByCode(e.key).name)
             : null;
@@ -86,7 +86,7 @@ export default {
         if (cookieValue && isEveryLanguageExist) {
             this.selectedLanguages = cookieValue;
         } else {
-            this.$cookies.remove(TRANSLATIONS_LANGUAGES);
+            this.$userCookies.remove(TRANSLATIONS_LANGUAGES);
             this.selectedLanguages = [
                 {
                     id: this.userLanguageCode,

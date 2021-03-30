@@ -184,7 +184,7 @@ export default {
 
             await getGridData({
                 $route: this.$route,
-                $cookies: this.$cookies,
+                $cookies: this.$userCookies,
                 $axios: this.$axios,
                 path: `products/${this.$route.params.id}/children-and-available-products`,
                 params,

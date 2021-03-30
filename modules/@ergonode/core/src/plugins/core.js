@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 import {
+    getCookieKey,
+} from '@Core/models/cookies';
+import {
     isEmpty,
     isObject,
 } from '@Core/models/objectWrapper';
@@ -10,7 +13,19 @@ import deepmerge from 'deepmerge';
 
 export default ({
     app,
+    store,
 }, inject) => {
+    inject('userCookies', {
+        set(key, value) {
+            getCookieKey(store, key, userKey => app.$cookies.set(userKey, value));
+        },
+        get(key) {
+            return getCookieKey(store, key, userKey => app.$cookies.get(userKey));
+        },
+        remove(key) {
+            getCookieKey(store, key, userKey => app.$cookies.remove(userKey));
+        },
+    });
     inject('confirm', (payload) => {
         app.store.dispatch('core/addModal', {
             component: () => import('@UI/components/ConfirmModal/ConfirmModal'),

@@ -60,7 +60,7 @@ export default {
             selectedData: this.privileges,
             defaults: privilegesDefaults,
         });
-        const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`) || '';
+        const config = this.$userCookies.get(`GRID_CONFIG:${this.$route.name}`) || '';
 
         this.filtered = this.dictionaryPrivileges.length;
         this.columns = getSortedColumnsByIDs(columns, config.split(','));
