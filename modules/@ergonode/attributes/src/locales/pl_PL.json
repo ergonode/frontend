@@ -104,7 +104,7 @@
     "productTemplate": {
       "components": {
         "ProductTemplateFormPresentation": {
-          "title": "Produkt prezentacyjny",
+          "title": "Prezentacja produktu",
           "defaultLabel": "Domyślna atrybut etykiety",
           "defaultImage": "Domyślny atrybut obrazu",
           "noLabelTitle": "Brak atrybutu takstowego",

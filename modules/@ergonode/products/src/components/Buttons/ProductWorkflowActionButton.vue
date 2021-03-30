@@ -74,6 +74,9 @@ export default {
             required: true,
         },
     },
+    fetch() {
+        this.onGetProductWorkflow();
+    },
     data() {
         return {
             isFetchingData: true,
@@ -90,22 +93,27 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
+        languageWorkflow() {
+            if (typeof this.workflow[this.languageCode] === 'undefined') {
+                return {
+                    currentStatus: {
+                        color: '',
+                        name: '',
+                    },
+                    statuses: [],
+                };
+            }
+
+            return this.workflow[this.languageCode];
+        },
         badgeColor() {
-            return this.workflow[this.languageCode].currentStatus.color;
+            return this.languageWorkflow.currentStatus.color;
         },
         title() {
-            if (this.isFetchingData) {
-                return '';
-            }
-
-            return this.workflow[this.languageCode].currentStatus.name;
+            return this.languageWorkflow.currentStatus.name;
         },
         options() {
-            if (this.isFetchingData) {
-                return [];
-            }
-
-            return this.workflow[this.languageCode].statuses;
+            return this.languageWorkflow.statuses;
         },
         badgeStyles() {
             return {
@@ -124,20 +132,8 @@ export default {
         },
     },
     watch: {
-        languageCode: {
-            immediate: true,
-            async handler() {
-                if (typeof this.workflow[this.languageCode] === 'undefined') {
-                    this.isFetchingData = true;
-
-                    await this.getProductWorkflow({
-                        languageCode: this.languageCode,
-                        id: this.id,
-                    });
-
-                    this.isFetchingData = false;
-                }
-            },
+        languageCode() {
+            this.onGetProductWorkflow();
         },
     },
     methods: {
@@ -145,6 +141,18 @@ export default {
             'updateProductStatus',
             'getProductWorkflow',
         ]),
+        async onGetProductWorkflow() {
+            if (typeof this.workflow[this.languageCode] === 'undefined') {
+                this.isFetchingData = true;
+
+                await this.getProductWorkflow({
+                    languageCode: this.languageCode,
+                    id: this.id,
+                });
+
+                this.isFetchingData = false;
+            }
+        },
         onUpdateStatus({
             id: statusId,
             code,

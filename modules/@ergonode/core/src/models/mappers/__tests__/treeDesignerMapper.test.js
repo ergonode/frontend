@@ -4,12 +4,16 @@
  */
 import {
     apiData,
+    expectedData,
+    hiddenItems,
+    localItems,
     mappedTree,
     mappedTreeWithoutReducer,
     reducer,
 } from '@Core/models/mappers/__tests__/__mocks__/treeDesigner.mock';
 import {
     getMappedTree,
+    getMergedTreeData,
     getParsedTree,
 } from '@Core/models/mappers/treeDesignerMapper';
 
@@ -109,6 +113,16 @@ describe('treeDesignerMapper/getParsedTree', () => {
             });
 
             expect(result).toEqual([]);
+        });
+    });
+});
+
+describe('treeDesignerMapper/getMergedTreeData', () => {
+    it('Based on local items, get merged data', () => {
+        const result = getMergedTreeData(localItems, hiddenItems);
+
+        expectedData.forEach((node) => {
+            expect(result).toContainObject(node);
         });
     });
 });

@@ -376,7 +376,9 @@ export default {
                 }
             }
 
-            delete this.filterValues[id];
+            const isReplaceRequired = this.sortOrder.field === column.id
+                || typeof this.filterValues[column.id] !== 'undefined'
+                || typeof this.advancedFilterValues[column.id] !== 'undefined';
 
             removeCookieAtIndex({
                 cookies: this.$userCookies,
@@ -384,25 +386,29 @@ export default {
                 index,
             });
 
-            const query = {
-                ...this.$route.query,
-                filter: getParsedFilters(this.filterValues),
-            };
+            if (isReplaceRequired) {
+                delete this.filterValues[id];
 
-            if (query.field === id) {
-                delete query.field;
-                delete query.order;
+                const filter = getParsedFilters(this.filterValues);
+
+                const query = {
+                    ...this.$route.query,
+                    filter,
+                };
+
+                if (query.field === id) {
+                    delete query.field;
+                    delete query.order;
+                }
+
+                if (query.filter === '' || query.filter === null) {
+                    delete query.filter;
+                }
+
+                this.$router.replace({
+                    query,
+                });
             }
-
-            if (query.filter === '' || query.filter === null) {
-                delete query.filter;
-            }
-
-            this.$router.replace({
-                query,
-            });
-
-            this.onFetchData();
         },
         onAdvancedFilterPositionChange({
             from,
@@ -434,7 +440,7 @@ export default {
             index,
             filter,
         }) {
-            delete this.advancedFilterValues[filter.id];
+            const isReplaceRequired = typeof this.advancedFilterValues[filter.id] !== 'undefined';
 
             removeCookieAtIndex({
                 cookies: this.$userCookies,
@@ -451,15 +457,21 @@ export default {
                 id,
             }) => id !== filter.id);
 
-            this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    advancedFilter: getParsedFilters(this.advancedFilterValues),
-                    page: DEFAULT_PAGE,
-                },
-            });
+            if (isReplaceRequired) {
+                delete this.advancedFilterValues[filter.id];
+
+                this.$router.replace({
+                    query: {
+                        ...this.$route.query,
+                        advancedFilter: getParsedFilters(this.advancedFilterValues),
+                        page: DEFAULT_PAGE,
+                    },
+                });
+            }
         },
         onAdvancedFilterRemoveAll() {
+            const isReplaceRequired = Object.keys(this.advancedFilterValues).length > 0;
+
             this.$userCookies.remove(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
 
             this.advancedFilters.forEach(({
@@ -474,16 +486,18 @@ export default {
 
             this.advancedFilters = [];
 
-            const query = {
-                ...this.$route.query,
-                page: DEFAULT_PAGE,
-            };
+            if (isReplaceRequired) {
+                const query = {
+                    ...this.$route.query,
+                    page: DEFAULT_PAGE,
+                };
 
-            delete query.advancedFilter;
+                delete query.advancedFilter;
 
-            this.$router.replace({
-                query,
-            });
+                this.$router.replace({
+                    query,
+                });
+            }
         },
         onEditRow(args) {
             const lastIndex = args.length - 1;

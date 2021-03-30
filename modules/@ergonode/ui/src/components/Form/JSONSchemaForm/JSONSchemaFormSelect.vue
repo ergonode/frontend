@@ -10,6 +10,7 @@
         :disabled="schema.disabled"
         :required="schema.isRequired"
         :options="schema.enum_titles || schema.enum"
+        :hint="schema.description"
         :error-messages="errorMessages"
         :clearable="!schema.isRequired"
         @input="onValueChange" />
