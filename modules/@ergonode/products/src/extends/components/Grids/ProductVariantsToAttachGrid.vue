@@ -242,7 +242,7 @@ export default {
 
             await getGridData({
                 $route: this.$route,
-                $cookies: this.$cookies,
+                $cookies: this.$userCookies,
                 $axios: this.$axios,
                 path: `products/${this.id}/children-and-available-products`,
                 params,
@@ -275,7 +275,7 @@ export default {
 
             await getGridData({
                 $route: this.$route,
-                $cookies: this.$cookies,
+                $cookies: this.$userCookies,
                 $axios: this.$axios,
                 path: `products/${this.id}/children-and-available-products`,
                 params,
