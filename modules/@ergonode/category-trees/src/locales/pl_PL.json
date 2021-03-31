@@ -6,7 +6,14 @@
       "proceed": "Stwórz & Edytuj",
       "cancel": "Anuluj",
       "deleteConfirm": "Tak, usuń",
-      "notAssigned": "Nie przypisane"
+      "notAssigned": "Nie przypisane",
+      "routes": {
+        "title": "Drzewa kategorii",
+        "group": "Struktura produktu",
+        "editOption": "Opcje",
+        "editTranslation": "Tłumaczenia",
+        "editDesigner": "Kreator"
+      }
     },
     "tree": {
       "_": {

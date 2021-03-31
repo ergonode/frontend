@@ -1,5 +1,10 @@
 {
   "@Dashboard": {
+    "_": {
+      "routes": {
+        "title": "Dashboard"
+      }
+    },
     "dashboard": {
       "_": {
         "headTitle": "Dashboard - Ergonode"

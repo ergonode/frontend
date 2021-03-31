@@ -9,6 +9,10 @@ import {
 } from '@Templates/config/imports';
 import Privileges from '@Templates/config/privileges';
 
+export const GROUP = {
+    id: 'product-design',
+    title: '@Templates._.routes.group',
+};
 export const ROUTE_NAME = {
     PRODUCT_TEMPLATES: 'product-templates',
     PRODUCT_TEMPLATE_EDIT: 'product-template-id',
@@ -24,15 +28,16 @@ export default [
         component: Pages.ProductTemplates,
         meta: {
             access: true,
-            title: 'Product templates',
+            title: '@Templates._.routes.title',
             group: {
-                title: 'Product design',
+                id: GROUP.id,
+                title: GROUP.title,
                 menuPosition: 3,
                 icon: Icons.Templates,
             },
             breadcrumbs: [
                 {
-                    title: 'Product design',
+                    title: GROUP.title,
                     icon: Icons.Templates,
                 },
             ],
@@ -60,14 +65,14 @@ export default [
                 path: 'general',
                 component: Tabs.ProductTemplateGeneralTab,
                 meta: {
-                    title: 'Options',
+                    title: '@Templates._.routes.editOption',
                     breadcrumbs: [
                         {
-                            title: 'Product design',
+                            title: GROUP.title,
                             icon: Icons.Templates,
                         },
                         {
-                            title: 'Product templates',
+                            title: '@Templates._.routes.title',
                             routeName: ROUTE_NAME.PRODUCT_TEMPLATES,
                         },
                     ],
@@ -79,14 +84,14 @@ export default [
                 path: 'template',
                 component: Tabs.TemplateDesignerTab,
                 meta: {
-                    title: 'Designer',
+                    title: '@Templates._.routes.editDesigner',
                     breadcrumbs: [
                         {
-                            title: 'Product design',
+                            title: GROUP.title,
                             icon: Icons.Templates,
                         },
                         {
-                            title: 'Product templates',
+                            title: '@Templates._.routes.title',
                             routeName: ROUTE_NAME.PRODUCT_TEMPLATES,
                         },
                     ],

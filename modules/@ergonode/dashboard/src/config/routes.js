@@ -18,7 +18,7 @@ export default [
         component: Pages.Dashboard,
         meta: {
             access: true,
-            title: 'Dashboard',
+            title: '@Dashboard._.routes.title',
             icon: Icons.Dashboard,
             isMenu: true,
             menuPosition: -1000,

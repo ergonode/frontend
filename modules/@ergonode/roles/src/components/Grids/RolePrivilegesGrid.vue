@@ -173,7 +173,7 @@ export default {
                 defaults: privilegesDefaults,
                 isEditable: this.isAllowedToUpdate,
             });
-            const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`) || '';
+            const config = this.$userCookies.get(`GRID_CONFIG:${this.$route.name}`) || '';
 
             this.columns = getSortedColumnsByIDs(columns, config.split(','));
             this.filtered = this.privilegesDictionary.length;

@@ -62,7 +62,7 @@ export default {
         },
     },
     created() {
-        const cookieLanguages = this.$cookies.get(this.cookieKey) || [];
+        const cookieLanguages = this.$userCookies(this.cookieKey) || [];
         const languagesToSelect = this.inheritedLanguagesTree.filter(
             language => cookieLanguages.some(
                 cookieLanguage => cookieLanguage === language.code,

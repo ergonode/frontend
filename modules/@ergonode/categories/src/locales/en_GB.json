@@ -7,7 +7,13 @@
       "cancel": "Cancel",
       "clear": "Clear",
       "deleteConfirm": "Yes, remove",
-      "notAssigned": "Not assigned"
+      "notAssigned": "Not assigned",
+      "routes": {
+        "title": "Categories",
+        "group": "Product design",
+        "editOption": "Options",
+        "editTranslation": "Translations"
+      }
     },
     "category": {
       "_": {

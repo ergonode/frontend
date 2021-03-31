@@ -9,6 +9,10 @@ import {
 } from '@Channels/config/imports';
 import Privileges from '@Channels/config/privileges';
 
+export const GROUP = {
+    id: 'data-exchange',
+    title: '@Channels._.routes.group',
+};
 export const ROUTE_NAME = {
     CHANNELS: 'channels',
     CHANNELS_GRID: 'channels-grid',
@@ -28,9 +32,10 @@ export default [
         },
         meta: {
             access: true,
-            title: 'Channels',
+            title: '@Channels._.routes.title',
             group: {
-                title: 'Data exchange',
+                id: GROUP.id,
+                title: GROUP.title,
                 menuPosition: 4,
                 icon: Icons.Channels,
             },
@@ -50,7 +55,7 @@ export default [
                     title: '',
                     breadcrumbs: [
                         {
-                            title: 'Data exchange',
+                            title: GROUP.title,
                             icon: Icons.Channels,
                         },
                     ],
@@ -75,14 +80,14 @@ export default [
                 path: 'general',
                 component: Tabs.ChannelGeneralTab,
                 meta: {
-                    title: 'Options',
+                    title: '@Channels._.routes.editOption',
                     breadcrumbs: [
                         {
-                            title: 'Data exchange',
+                            title: GROUP.title,
                             icon: Icons.Channels,
                         },
                         {
-                            title: 'Channels',
+                            title: '@Channels._.routes.title',
                             routeName: ROUTE_NAME.CHANNELS_GRID,
                         },
                     ],
@@ -94,14 +99,14 @@ export default [
                 path: 'history',
                 component: Tabs.ChannelHistoryTab,
                 meta: {
-                    title: 'History',
+                    title: '@Channels._.routes.editHistory',
                     breadcrumbs: [
                         {
-                            title: 'Data exchange',
+                            title: GROUP.title,
                             icon: Icons.Channels,
                         },
                         {
-                            title: 'Channels',
+                            title: '@Channels._.routes.title',
                             routeName: ROUTE_NAME.CHANNELS_GRID,
                         },
                     ],
@@ -113,14 +118,14 @@ export default [
                 path: 'scheduler',
                 component: Tabs.ChannelSchedulerTab,
                 meta: {
-                    title: 'Scheduler',
+                    title: '@Channels._.routes.editScheduler',
                     breadcrumbs: [
                         {
-                            title: 'Data exchange',
+                            title: GROUP.title,
                             icon: Icons.Channels,
                         },
                         {
-                            title: 'Channels',
+                            title: '@Channels._.routes.title',
                             routeName: ROUTE_NAME.CHANNELS_GRID,
                         },
                     ],

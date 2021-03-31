@@ -9,6 +9,10 @@ import {
 } from '@Segments/config/imports';
 import Privileges from '@Segments/config/privileges';
 
+export const GROUP = {
+    id: 'products',
+    title: '@Segments._.routes.group',
+};
 export const ROUTE_NAME = {
     SEGMENTS: 'segments',
     SEGMENTS_GRID: 'segments-grid',
@@ -28,9 +32,10 @@ export default [
         },
         meta: {
             access: true,
-            title: 'Segments',
+            title: '@Segments._.routes.title',
             group: {
-                title: 'Products',
+                id: GROUP.id,
+                title: GROUP.title,
                 menuPosition: 2,
                 icon: Icons.Product,
             },
@@ -50,7 +55,7 @@ export default [
                     title: '',
                     breadcrumbs: [
                         {
-                            title: 'Products',
+                            title: GROUP.title,
                             icon: Icons.Product,
                         },
                     ],
@@ -75,14 +80,14 @@ export default [
                 path: 'general',
                 component: Tabs.SegmentGeneralTab,
                 meta: {
-                    title: 'Options',
+                    title: '@Segments._.routes.editOption',
                     breadcrumbs: [
                         {
-                            title: 'Products',
+                            title: GROUP.title,
                             icon: Icons.Product,
                         },
                         {
-                            title: 'Segments',
+                            title: '@Segments._.routes.title',
                             routeName: ROUTE_NAME.SEGMENTS_GRID,
                         },
                     ],
@@ -94,14 +99,14 @@ export default [
                 path: 'translations',
                 component: Tabs.SegmentTranslationsTab,
                 meta: {
-                    title: 'Translations',
+                    title: '@Segments._.routes.editTranslation',
                     breadcrumbs: [
                         {
-                            title: 'Products',
+                            title: GROUP.title,
                             icon: Icons.Product,
                         },
                         {
-                            title: 'Segments',
+                            title: '@Segments._.routes.title',
                             routeName: ROUTE_NAME.SEGMENTS_GRID,
                         },
                     ],
@@ -113,14 +118,14 @@ export default [
                 path: 'conditions',
                 component: Tabs.ConditionDesignerTab,
                 meta: {
-                    title: 'Conditions',
+                    title: '@Segments._.routes.editConditions',
                     breadcrumbs: [
                         {
-                            title: 'Products',
+                            title: GROUP.title,
                             icon: Icons.Product,
                         },
                         {
-                            title: 'Segments',
+                            title: '@Segments._.routes.title',
                             routeName: ROUTE_NAME.SEGMENTS_GRID,
                         },
                     ],

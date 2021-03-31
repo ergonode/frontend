@@ -1,4 +1,16 @@
 {
+  "@Media": {
+    "_": {
+      "routes": {
+        "title": "Media",
+        "group": "Zasoby",
+        "editOption": "Opcje",
+        "editTranslations": "Tłumaczenia",
+        "editInformation": "Informacje",
+        "editRelations": "Relacje"
+      }
+    }
+  },
   "media": {
     "grid": {
       "placeholderTitle": "Brak multimediów",

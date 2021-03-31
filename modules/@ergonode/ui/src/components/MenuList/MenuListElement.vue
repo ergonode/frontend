@@ -14,14 +14,19 @@
             <Component
                 :is="item.icon"
                 :fill-color="iconFillColor" />
-            <span
-                class="link-text"
-                v-text="item.title" />
+            <TranslatableTitleProvider :title="item.title">
+                <template #default="{ translatableTitle }">
+                    <span
+                        class="link-text"
+                        v-text="translatableTitle" />
+                </template>
+            </TranslatableTitleProvider>
         </NuxtLink>
     </li>
 </template>
 
 <script>
+import TranslatableTitleProvider from '@Core/components/Translation/TranslatableTitleProvider';
 import {
     GRAPHITE,
     GREEN,
@@ -30,6 +35,9 @@ import {
 
 export default {
     name: 'MenuListElement',
+    components: {
+        TranslatableTitleProvider,
+    },
     props: {
         /**
          * Item data model

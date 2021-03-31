@@ -6,7 +6,15 @@
       "proceed": "Create & Edit",
       "cancel": "Cancel",
       "deleteConfirm": "Yes, remove",
-      "notAssigned": "Not assigned"
+      "notAssigned": "Not assigned",
+      "routes": {
+        "title": "Users",
+        "group": "System",
+        "editOption": "Options",
+        "editAvatar": "Avatar",
+        "editLanguage": "Language restrictions",
+        "profile": "Activity log"
+      }
     },
     "user": {
       "_": {

@@ -17,7 +17,7 @@
             <Button
                 data-cy="logout-button"
                 :theme="secondaryTheme"
-                title="LOG OUT"
+                :title="$t('@Core.core.components.ToolBarUserSelectContent.logout')"
                 @click.native="onLogout" />
         </div>
     </div>

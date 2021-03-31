@@ -255,7 +255,7 @@ export default {
         async onFetchData() {
             const params = getParams({
                 $route: this.$route,
-                $cookies: this.$cookies,
+                $cookies: this.$userCookies,
             });
 
             if (typeof params.filter === 'undefined') {
@@ -270,7 +270,7 @@ export default {
 
             await getGridData({
                 $route: this.$route,
-                $cookies: this.$cookies,
+                $cookies: this.$userCookies,
                 $axios: this.$axios,
                 path: `products/${this.$route.params.id}/children-and-available-products`,
                 params,

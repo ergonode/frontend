@@ -4,6 +4,7 @@
  */
 
 import {
+    GROUP,
     ROUTE_NAME as PRODUCT_ROUTE_NAME,
 } from '@Products/config/routes';
 import {
@@ -24,14 +25,14 @@ export default [
                 path: 'comments',
                 component: Tabs.ProductCommentsTab,
                 meta: {
-                    title: 'Comments',
+                    title: '@ProductsComments._.routes.editComments',
                     breadcrumbs: [
                         {
-                            title: 'Products',
+                            title: GROUP.title,
                             icon: Icons.Product,
                         },
                         {
-                            title: 'Catalog',
+                            title: '@Products._.routes.title',
                             routeName: PRODUCT_ROUTE_NAME.PRODUCTS_CATALOG,
                         },
                     ],

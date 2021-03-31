@@ -1,4 +1,14 @@
 {
+  "@Templates": {
+    "_": {
+      "routes": {
+        "title": "Product templates",
+        "group": "Product design",
+        "editOption": "Options",
+        "editDesigner": "Designer"
+      }
+    }
+  },
   "productTemplate": {
     "grid": {
       "placeholderTitle": "No product templates",

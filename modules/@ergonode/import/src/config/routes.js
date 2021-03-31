@@ -9,6 +9,10 @@ import {
 } from '@Import/config/imports';
 import Privileges from '@Import/config/privileges';
 
+export const GROUP = {
+    id: 'data-exchange',
+    title: '@Import._.routes.group',
+};
 export const ROUTE_NAME = {
     IMPORTS: 'imports',
     IMPORTS_GRID: 'imports-grid',
@@ -27,9 +31,10 @@ export default [
         },
         meta: {
             access: true,
-            title: 'Imports',
+            title: '@Import._.routes.title',
             group: {
-                title: 'Data exchange',
+                id: GROUP.id,
+                title: GROUP.title,
                 menuPosition: 4,
                 icon: Icons.Channels,
             },
@@ -49,7 +54,7 @@ export default [
                     title: '',
                     breadcrumbs: [
                         {
-                            title: 'Data exchange',
+                            title: GROUP.title,
                             icon: Icons.Channels,
                         },
                     ],
@@ -74,14 +79,14 @@ export default [
                 path: 'general',
                 component: Tabs.ImportProfileGeneralTab,
                 meta: {
-                    title: 'Options',
+                    title: '@Import._.routes.editOption',
                     breadcrumbs: [
                         {
-                            title: 'Sources',
+                            title: GROUP.title,
                             icon: Icons.Channels,
                         },
                         {
-                            title: 'Import profiles',
+                            title: '@Import._.routes.title',
                             routeName: ROUTE_NAME.IMPORTS_GRID,
                         },
                     ],
@@ -93,14 +98,14 @@ export default [
                 path: 'history',
                 component: Tabs.ImportProfileHistoryTab,
                 meta: {
-                    title: 'History',
+                    title: '@Import._.routes.editHistory',
                     breadcrumbs: [
                         {
-                            title: 'Sources',
+                            title: GROUP.title,
                             icon: Icons.Channels,
                         },
                         {
-                            title: 'Import profiles',
+                            title: '@Import._.routes.title',
                             routeName: ROUTE_NAME.IMPORTS_GRID,
                         },
                     ],

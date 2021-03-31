@@ -9,6 +9,10 @@ import {
 } from '@Attributes/config/imports';
 import Privileges from '@Attributes/config/privileges';
 
+export const GROUP = {
+    id: 'product-design',
+    title: '@Attributes._.routes.group',
+};
 export const ROUTE_NAME = {
     ATTRIBUTES: 'attributes',
     ATTRIBUTES_GRID: 'attributes-grid',
@@ -27,9 +31,10 @@ export default [
         },
         meta: {
             access: true,
-            title: 'Attributes',
+            title: '@Attributes._.routes.title',
             group: {
-                title: 'Product design',
+                id: GROUP.id,
+                title: GROUP.title,
                 menuPosition: 3,
                 icon: Icons.Templates,
             },
@@ -49,7 +54,7 @@ export default [
                     title: '',
                     breadcrumbs: [
                         {
-                            title: 'Product design',
+                            title: GROUP.title,
                             icon: Icons.Templates,
                         },
                     ],
@@ -74,14 +79,14 @@ export default [
                 path: 'general',
                 component: Tabs.AttributeGeneralTab,
                 meta: {
-                    title: 'Options',
+                    title: '@Attributes._.routes.editOption',
                     breadcrumbs: [
                         {
-                            title: 'Product design',
+                            title: GROUP.title,
                             icon: Icons.Templates,
                         },
                         {
-                            title: 'Attributes',
+                            title: '@Attributes._.routes.title',
                             routeName: ROUTE_NAME.ATTRIBUTES_GRID,
                         },
                     ],
@@ -93,14 +98,14 @@ export default [
                 path: 'translations',
                 component: Tabs.AttributeTranslationsTab,
                 meta: {
-                    title: 'Translations',
+                    title: '@Attributes._.routes.editTranslation',
                     breadcrumbs: [
                         {
-                            title: 'Product design',
+                            title: GROUP.title,
                             icon: Icons.Templates,
                         },
                         {
-                            title: 'Attributes',
+                            title: '@Attributes._.routes.title',
                             routeName: ROUTE_NAME.ATTRIBUTES_GRID,
                         },
                     ],

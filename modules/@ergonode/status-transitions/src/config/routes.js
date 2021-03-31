@@ -9,6 +9,10 @@ import {
 } from '@Transitions/config/imports';
 import Privileges from '@Transitions/config/privileges';
 
+export const GROUP = {
+    id: 'workflow',
+    title: '@Transitions._.routes.group',
+};
 export const ROUTE_NAME = {
     STATUS_TRANSITIONS: 'status-transitions',
     STATUS_TRANSITIONS_GRID: 'status-transitions-grid',
@@ -27,9 +31,10 @@ export default [
         },
         meta: {
             access: true,
-            title: 'Status transitions',
+            title: '@Transitions._.routes.title',
             group: {
-                title: 'Workflow',
+                id: GROUP.id,
+                title: GROUP.title,
                 menuPosition: 7,
                 icon: Icons.Flow,
             },
@@ -49,7 +54,7 @@ export default [
                     title: '',
                     breadcrumbs: [
                         {
-                            title: 'Workflow',
+                            title: GROUP.title,
                             icon: Icons.Flow,
                         },
                     ],
@@ -74,14 +79,14 @@ export default [
                 path: 'general',
                 component: Tabs.StatusTransitionGeneralTab,
                 meta: {
-                    title: 'Options',
+                    title: '@Transitions._.routes.editOption',
                     breadcrumbs: [
                         {
-                            title: 'Workflow',
+                            title: GROUP.title,
                             icon: Icons.Flow,
                         },
                         {
-                            title: 'Status transitions',
+                            title: '@Transitions._.routes.title',
                             routeName: ROUTE_NAME.STATUS_TRANSITIONS_GRID,
                         },
                     ],
@@ -93,14 +98,14 @@ export default [
                 path: 'conditions',
                 component: Tabs.ConditionDesignerTab,
                 meta: {
-                    title: 'Conditions',
+                    title: '@Transitions._.routes.editConditions',
                     breadcrumbs: [
                         {
-                            title: 'Workflow',
+                            title: GROUP.title,
                             icon: Icons.Flow,
                         },
                         {
-                            title: 'Status transitions',
+                            title: '@Transitions._.routes.title',
                             routeName: ROUTE_NAME.STATUS_TRANSITIONS_GRID,
                         },
                     ],
