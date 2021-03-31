@@ -135,7 +135,7 @@ export default {
 
             await getGridData({
                 $route: this.$route,
-                $cookies: this.$cookies,
+                $cookies: this.$userCookies,
                 $axios: this.$axios,
                 path: `batch-action/${this.item.objectId}/entries`,
                 params,

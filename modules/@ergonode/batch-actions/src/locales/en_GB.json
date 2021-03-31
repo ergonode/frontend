@@ -6,6 +6,9 @@
           "title": "Actions"
         }
       }
+    },
+    "batchActionExtend": {
+      "message": "Processing"
     }
   }
 }

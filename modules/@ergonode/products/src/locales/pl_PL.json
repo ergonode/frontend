@@ -1,6 +1,15 @@
 {
   "@Products": {
     "_": {
+      "routes": {
+        "title": "Katalog",
+        "group": "Produkty",
+        "editGeneral": "Opcje",
+        "editTemplate": "Szablon",
+        "editHistory": "Historia",
+        "editVariants": "Warianty",
+        "editGroups": "Grupy"
+      },
       "title": "Katalog",
       "headTitle": "Katalog - Ergonode",
       "addProducts": "Dodaj produkty",

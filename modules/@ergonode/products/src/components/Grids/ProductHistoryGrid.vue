@@ -108,12 +108,12 @@ export default {
         async onFetchData() {
             await getGridData({
                 $route: this.$route,
-                $cookies: this.$cookies,
+                $cookies: this.$userCookies,
                 $axios: this.$axios,
                 path: `products/${this.$route.params.id}/history`,
                 params: getParams({
                     $route: this.$route,
-                    $cookies: this.$cookies,
+                    $cookies: this.$userCookies,
                 }),
                 onSuccess: this.onFetchDataSuccess,
                 onError: this.onFetchDataError,

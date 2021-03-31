@@ -1,4 +1,14 @@
 {
+  "@Import": {
+    "_": {
+      "routes": {
+        "title": "Profile importowe",
+        "group": "Wymiana danych",
+        "editOption": "Opcje",
+        "editHistory": "Historia"
+      }
+    }
+  },
   "import": {
     "grid": {
       "placeholderTitle": "Brak profilów importowych",

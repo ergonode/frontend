@@ -8,6 +8,7 @@ import {
     Tabs,
 } from '@Products/config/imports';
 import {
+    GROUP,
     ROUTE_NAME as PRODUCT_ROUTE_NAME,
 } from '@Products/config/routes';
 
@@ -25,15 +26,15 @@ export default [
                 path: 'variants',
                 component: Tabs.ProductVariantsTab,
                 meta: {
-                    title: 'Variants',
+                    title: '@Products._.routes.editVariants',
                     visible: false,
                     breadcrumbs: [
                         {
-                            title: 'Products',
+                            title: GROUP.title,
                             icon: Icons.Product,
                         },
                         {
-                            title: 'Catalog',
+                            title: '@Products._.routes.title',
                             routeName: PRODUCT_ROUTE_NAME.PRODUCTS_CATALOG,
                         },
                     ],
@@ -45,15 +46,15 @@ export default [
                 path: 'group',
                 component: Tabs.ProductGroupTab,
                 meta: {
-                    title: 'Groups',
+                    title: '@Products._.routes.editGroups',
                     visible: false,
                     breadcrumbs: [
                         {
-                            title: 'Products',
+                            title: GROUP.title,
                             icon: Icons.Product,
                         },
                         {
-                            title: 'Catalog',
+                            title: '@Products._.routes.title',
                             routeName: PRODUCT_ROUTE_NAME.PRODUCTS_CATALOG,
                         },
                     ],

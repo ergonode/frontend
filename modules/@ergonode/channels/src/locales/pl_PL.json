@@ -1,4 +1,15 @@
 {
+  "@Channels": {
+    "_": {
+      "routes": {
+        "title": "Kanały",
+        "group": "Wymiana danych",
+        "editOption": "Opcje",
+        "editHistory": "Historia",
+        "editScheduler": "Harmonogram"
+      }
+    }
+  },
   "channel": {
     "grid": {
       "placeholderTitle": "Brak kanałów",

@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import {
+    GROUP,
     ROUTE_NAME as PRODUCT_ROUTE_NAME,
 } from '@Products/config/routes';
 
@@ -24,14 +25,14 @@ export default [
                 path: 'collections',
                 component: Tabs.ProductCollectionTab,
                 meta: {
-                    title: 'Collections',
+                    title: '@Collections._.routes.editCollections',
                     breadcrumbs: [
                         {
-                            title: 'Products',
+                            title: GROUP.title,
                             icon: Icons.Product,
                         },
                         {
-                            title: 'Catalog',
+                            title: '@Products._.routes.title',
                             routeName: PRODUCT_ROUTE_NAME.PRODUCTS_CATALOG,
                         },
                     ],

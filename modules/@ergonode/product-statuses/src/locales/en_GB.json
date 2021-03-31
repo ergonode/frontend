@@ -1,4 +1,14 @@
 {
+  "@Statuses": {
+    "_": {
+      "routes": {
+        "title": "Product statuses",
+        "group": "Workflow",
+        "editOption": "Options",
+        "editTranslations": "Translations"
+      }
+    }
+  },
   "productStatus": {
     "grid": {
       "placeholderTitle": "No product statuses",

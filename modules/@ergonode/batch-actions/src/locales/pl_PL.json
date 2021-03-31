@@ -1,11 +1,14 @@
 {
   "@BatchActions": {
-    "batchActions": {
+    "batchAction": {
       "components": {
         "BatchActionsButton": {
           "title": "Akcje"
         }
       }
+    },
+    "batchActionExtend": {
+      "message": "Przetwarzanie"
     }
   }
 }

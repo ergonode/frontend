@@ -9,6 +9,10 @@ import {
 } from '@Core/config/imports';
 import Privileges from '@Core/config/privileges';
 
+export const GROUP = {
+    id: 'system',
+    title: '@Core._.routes.group',
+};
 export const ROUTE_NAME = {
     PLACEHOLDER: 'placeholder',
     SETTINGS: 'settings',
@@ -36,15 +40,16 @@ export default [
         component: Pages.Settings,
         meta: {
             access: true,
-            title: 'Settings',
+            title: '@Core._.routes.title',
             group: {
-                title: 'System',
+                id: GROUP.id,
+                title: GROUP.title,
                 menuPosition: 1000,
                 icon: Icons.Settings,
             },
             breadcrumbs: [
                 {
-                    title: 'System',
+                    title: GROUP.title,
                     icon: Icons.Settings,
                 },
             ],
@@ -61,10 +66,10 @@ export default [
                 path: 'languages-inheritance',
                 component: Tabs.LanguagesSettingsTab,
                 meta: {
-                    title: 'Languages inheritance',
+                    title: '@Core._.routes.editInheritance',
                     breadcrumbs: [
                         {
-                            title: 'System',
+                            title: GROUP.title,
                             icon: Icons.Settings,
                         },
                     ],
@@ -76,10 +81,10 @@ export default [
                 path: 'units',
                 component: Tabs.UnitSettingsTab,
                 meta: {
-                    title: 'Units',
+                    title: '@Core._.routes.editUnits',
                     breadcrumbs: [
                         {
-                            title: 'System',
+                            title: GROUP.title,
                             icon: Icons.Settings,
                         },
                     ],
@@ -104,14 +109,14 @@ export default [
                 path: 'general',
                 component: Tabs.UnitGeneralTab,
                 meta: {
-                    title: 'Options',
+                    title: '@Core._.routes.editUnitsOptions',
                     breadcrumbs: [
                         {
-                            title: 'System',
+                            title: GROUP.title,
                             icon: Icons.Settings,
                         },
                         {
-                            title: 'Units',
+                            title: '@Core._.routes.editUnits',
                             routeName: ROUTE_NAME.SETTINGS_UNITS,
                         },
                     ],

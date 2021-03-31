@@ -1,4 +1,14 @@
 {
+  "@Templates": {
+    "_": {
+      "routes": {
+        "title": "Szablony produktu",
+        "group": "Struktura produktu",
+        "editOption": "Opcje",
+        "editDesigner": "Kreator"
+      }
+    }
+  },
   "productTemplate": {
     "grid": {
       "placeholderTitle": "Brak szablonów produktowych",

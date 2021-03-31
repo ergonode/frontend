@@ -1,4 +1,15 @@
 {
+  "@Segments": {
+    "_": {
+      "routes": {
+        "title": "Segmanty",
+        "group": "Produkty",
+        "editOption": "Opcje",
+        "editTranslation": "Tłumaczenia",
+        "editConditions": "Warunki"
+      }
+    }
+  },
   "segment": {
     "form": {
       "segmentsLabel": "Z reguł segmentacji",

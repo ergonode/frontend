@@ -1,4 +1,25 @@
 {
+  "@Core": {
+    "_": {
+      "routes": {
+        "title": "Settings",
+        "group": "System",
+        "editLanguages": "Languages",
+        "editInheritance": "Languages inheritance",
+        "editUnits": "Units",
+        "editUnitsOptions": "Options",
+        "userMenu": "My account",
+        "userMenuProfile": "My profile"
+      }
+    },
+    "core": {
+      "components": {
+        "ToolBarUserSelectContent": {
+          "logout": "LOG OUT"
+        }
+      }
+    }
+  },
   "core": {
     "buttons": {
       "create": "CREATE",

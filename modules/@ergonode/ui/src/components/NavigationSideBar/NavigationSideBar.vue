@@ -105,7 +105,7 @@ export default {
                     || this.$hasAccess([
                         route.meta.privileges.read,
                     ]))) {
-                    if (route.meta.group && !groups[route.meta.group.title]) {
+                    if (route.meta.group && !groups[route.meta.group.id]) {
                         const routeData = {
                             group: {
                                 ...route.meta.group,
@@ -118,10 +118,10 @@ export default {
                             routeData.menuPosition = route.meta.group.menuPosition;
                         }
                         routes.push(routeData);
-                        groups[route.meta.group.title] = true;
-                    } else if (route.meta.group && groups[route.meta.group.title]) {
+                        groups[route.meta.group.id] = true;
+                    } else if (route.meta.group && groups[route.meta.group.id]) {
                         const index = routes
-                            .findIndex(r => r.group && r.group.title === route.meta.group.title);
+                            .findIndex(r => r.group && r.group.id === route.meta.group.id);
 
                         routes[index].routes.push({
                             ...route,

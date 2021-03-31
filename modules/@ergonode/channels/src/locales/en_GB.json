@@ -1,4 +1,15 @@
 {
+  "@Channels": {
+    "_": {
+      "routes": {
+        "title": "Channels",
+        "group": "Data exchange",
+        "editOption": "Options",
+        "editHistory": "History",
+        "editScheduler": "Scheduler"
+      }
+    }
+  },
   "channel": {
     "grid": {
       "placeholderTitle": "No channels",

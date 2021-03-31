@@ -189,7 +189,7 @@ export default {
         const requests = [
             this.onFetchData(),
         ];
-        const advFiltersIds = this.$cookies.get(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
+        const advFiltersIds = this.$userCookies.get(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
 
         if (advFiltersIds) {
             requests.push(this.onFetchAdvancedFilters(advFiltersIds));
@@ -310,7 +310,7 @@ export default {
                 const columnCode = payload.split('/')[1];
 
                 insertCookieAtIndex({
-                    cookies: this.$cookies,
+                    cookies: this.$userCookies,
                     cookieName: `GRID_CONFIG:${this.$route.name}`,
                     index: 0,
                     data: columnCode,
@@ -331,7 +331,7 @@ export default {
                 }
             } catch {
                 removeCookieAtIndex({
-                    cookies: this.$cookies,
+                    cookies: this.$userCookies,
                     cookieName: `GRID_CONFIG:${this.$route.name}`,
                     index: 0,
                 });
@@ -342,7 +342,7 @@ export default {
             to,
         }) {
             changeCookiePosition({
-                cookies: this.$cookies,
+                cookies: this.$userCookies,
                 cookieName: `GRID_CONFIG:${this.$route.name}`,
                 from,
                 to,
@@ -381,7 +381,7 @@ export default {
                 || typeof this.advancedFilterValues[column.id] !== 'undefined';
 
             removeCookieAtIndex({
-                cookies: this.$cookies,
+                cookies: this.$userCookies,
                 cookieName: `GRID_CONFIG:${this.$route.name}`,
                 index,
             });
@@ -415,7 +415,7 @@ export default {
             to,
         }) {
             changeCookiePosition({
-                cookies: this.$cookies,
+                cookies: this.$userCookies,
                 cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
                 from,
                 to,
@@ -443,7 +443,7 @@ export default {
             const isReplaceRequired = typeof this.advancedFilterValues[filter.id] !== 'undefined';
 
             removeCookieAtIndex({
-                cookies: this.$cookies,
+                cookies: this.$userCookies,
                 cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
                 index,
             });
@@ -472,7 +472,7 @@ export default {
         onAdvancedFilterRemoveAll() {
             const isReplaceRequired = Object.keys(this.advancedFilterValues).length > 0;
 
-            this.$cookies.remove(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
+            this.$userCookies.remove(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
 
             this.advancedFilters.forEach(({
                 attributeId,
@@ -540,9 +540,11 @@ export default {
         bindingProps({
             props = {},
         }) {
+            const query = getFilterQueryParams(this.$route.query);
+
             return {
                 disabled: !this.isAllowedToUpdate,
-                query: getFilterQueryParams(this.$route.query),
+                query: query.replace(/\[|\]/g, ''),
                 ...props,
             };
         },
@@ -571,7 +573,7 @@ export default {
 
             await getAdvancedFiltersData({
                 $route: this.$route,
-                $cookies: this.$cookies,
+                $cookies: this.$userCookies,
                 $axios: this.$axios,
                 path: 'products',
                 params: filtersParams,
@@ -592,7 +594,7 @@ export default {
             };
 
             insertCookieAtIndex({
-                cookies: this.$cookies,
+                cookies: this.$userCookies,
                 cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
                 index: 0,
                 data: filterCode,
@@ -600,7 +602,7 @@ export default {
 
             await getAdvancedFiltersData({
                 $route: this.$route,
-                $cookies: this.$cookies,
+                $cookies: this.$userCookies,
                 $axios: this.$axios,
                 $addAlert: this.$addAlert,
                 path: 'products',
@@ -632,7 +634,7 @@ export default {
                 this.advancedFilters.unshift(filter);
             } else {
                 removeCookieAtIndex({
-                    cookies: this.$cookies,
+                    cookies: this.$userCookies,
                     cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
                     index: 0,
                 });
@@ -645,7 +647,7 @@ export default {
         },
         onGetAdvancedFilterError() {
             removeCookieAtIndex({
-                cookies: this.$cookies,
+                cookies: this.$userCookies,
                 cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
                 index: 0,
             });
@@ -735,12 +737,12 @@ export default {
         async onFetchData() {
             await getGridData({
                 $route: this.$route,
-                $cookies: this.$cookies,
+                $cookies: this.$userCookies,
                 $axios: this.$axios,
                 path: 'products',
                 params: getParams({
                     $route: this.$route,
-                    $cookies: this.$cookies,
+                    $cookies: this.$userCookies,
                     defaultColumns: 'index,sku,_links,esa_default_image,esa_default_label',
                 }),
                 onSuccess: this.onFetchDataSuccess,

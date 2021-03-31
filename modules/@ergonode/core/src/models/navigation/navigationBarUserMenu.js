@@ -6,15 +6,15 @@ import PRIVILEGES from '@Core/config/privileges';
 
 export default [
     {
-        title: 'My account',
+        title: '@Core._.routes.userMenu',
         menu: [
             {
-                title: 'My profile',
+                title: '@Core._.routes.userMenuProfile',
                 routing: '/profile/activity-log-grid',
                 icon: () => import('@Core/components/Icons/Menu/IconUser'),
             },
             {
-                title: 'Settings',
+                title: '@Core._.routes.title',
                 routing: '/settings',
                 icon: () => import('@Core/components/Icons/Menu/IconSettings'),
                 privileges: [
