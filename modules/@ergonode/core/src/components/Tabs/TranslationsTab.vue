@@ -11,6 +11,7 @@
                     data-cy="translation-language-select"
                     label="Translations"
                     :size="smallSize"
+                    :restricted-by-privileges="true"
                     :multiselect="true"
                     :clearable="true"
                     @input="onTranslationLanguageCodeChange" />
@@ -33,6 +34,7 @@ import {
 } from '@Core/defaults/theme';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
+    mapGetters,
     mapState,
 } from 'vuex';
 
@@ -54,6 +56,10 @@ export default {
         ...mapState('core', [
             'inheritedLanguagesTree',
         ]),
+        ...mapGetters('core', [
+            'availableLanguages',
+            'defaultLanguageCode',
+        ]),
         smallSize() {
             return SIZE.SMALL;
         },
@@ -66,6 +72,8 @@ export default {
         const languagesToSelect = this.inheritedLanguagesTree.filter(
             language => cookieLanguages.some(
                 cookieLanguage => cookieLanguage === language.code,
+            ) && this.availableLanguages.some(
+                availableLanguage => availableLanguage.code === language.code,
             ),
         );
 
@@ -76,15 +84,17 @@ export default {
                 language => language.code === this.userLanguageCode,
             );
 
-            if (userLanguage) {
-                this.selectedLanguages = [
-                    userLanguage.code,
-                ];
+            const languageCodeToSet = userLanguage
+                ? userLanguage.code
+                : this.defaultLanguageCode;
 
-                this.$cookies.set(this.cookieKey, [
-                    userLanguage.code,
-                ]);
-            }
+            this.selectedLanguages = [
+                languageCodeToSet,
+            ];
+
+            this.$cookies.set(this.cookieKey, [
+                languageCodeToSet,
+            ]);
         }
     },
     methods: {

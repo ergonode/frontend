@@ -146,6 +146,10 @@ export default {
                     privilege,
                 ] = key.split('/');
 
+                if (typeof privileges[privilegeLanguageCode] === 'undefined') {
+                    privileges[privilegeLanguageCode] = {};
+                }
+
                 privileges[privilegeLanguageCode][privilege] = drafts[key];
             });
 

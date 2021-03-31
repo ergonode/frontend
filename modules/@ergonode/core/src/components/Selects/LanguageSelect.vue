@@ -4,7 +4,7 @@
  */
 <template>
     <TranslationSelect
-        :value="languages"
+        :value="languagesValue"
         :label="label"
         :size="size"
         :multiselect="multiselect"
@@ -72,19 +72,26 @@ export default {
             type: Boolean,
             default: false,
         },
+        restrictedByPrivileges: {
+            type: Boolean,
+            default: false,
+        },
         errorMessages: {
             type: String,
             default: '',
         },
     },
     computed: {
-        ...mapGetters('core', [
-            'availableLanguages',
-        ]),
         ...mapState('authentication', {
             languagePrivileges: state => state.user.languagePrivileges,
         }),
-        languages() {
+        ...mapState('core', [
+            'languages',
+        ]),
+        ...mapGetters('core', [
+            'availableLanguages',
+        ]),
+        languagesValue() {
             if (this.multiselect) {
                 return this.languageOptions.filter(
                     language => this.value.some(
@@ -98,12 +105,13 @@ export default {
             );
         },
         languageOptions() {
-            return this.availableLanguages
-                .map(language => ({
-                    id: language.id,
-                    key: language.code,
-                    value: language.name,
-                }));
+            return (this.restrictedByPrivileges
+                ? this.availableLanguages
+                : this.languages).map(language => ({
+                id: language.id,
+                key: language.code,
+                value: language.name,
+            }));
         },
     },
     methods: {

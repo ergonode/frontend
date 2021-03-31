@@ -18,12 +18,12 @@ export default {
     defaultLanguageCode: (state, getters, rootState) => {
         if (rootState.authentication.user) {
             const {
-                languagePrivileges,
+                language: languageCode,
             } = rootState.authentication.user;
-            const defaultLanguage = state.inheritedLanguagesTree
-                .find(({
-                    code,
-                }) => languagePrivileges[code].read);
+
+            const defaultLanguage = getters.availableLanguages.find(
+                language => language.code === languageCode,
+            );
 
             if (defaultLanguage) {
                 return defaultLanguage.code;

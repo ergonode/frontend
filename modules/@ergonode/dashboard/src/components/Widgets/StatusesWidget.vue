@@ -10,7 +10,7 @@
             <ActionButton
                 :fixed-content="true"
                 :size="tinySize"
-                :title="workflowLanguage"
+                :title="workflowLanguage.name"
                 :disabled="isPrefetchingData"
                 :options="languageOptions"
                 @input="onValueChange" />
@@ -70,7 +70,7 @@ export default {
         return {
             workflowLanguage: '',
             statuses: [],
-            isPrefetchingData: true,
+            isPrefetchingData: false,
         };
     },
     computed: {
@@ -93,26 +93,18 @@ export default {
         },
     },
     created() {
-        this.workflowLanguage = this.getWorkflowLanguageName();
+        this.workflowLanguage = this.availableLanguages.find(({
+            code,
+        }) => code === this.defaultLanguageCode);
     },
     methods: {
-        getWorkflowLanguageName() {
-            return this.availableLanguages.find(({
-                code,
-            }) => code === this.defaultLanguageCode).name;
-        },
-        getWorkflowLanguageCode() {
-            return this.availableLanguages.find(({
-                name,
-            }) => name === this.workflowLanguage).code;
-        },
         async getStatusesCount() {
             try {
                 this.isPrefetchingData = true;
 
                 const statusesCount = await getStatusesCount({
                     $axios: this.$axios,
-                    workflowLanguage: this.getWorkflowLanguageCode(),
+                    workflowLanguage: this.workflowLanguage.code,
                 });
 
                 this.statuses = statusesCount.map((status) => {
@@ -147,7 +139,9 @@ export default {
             }
         },
         async onValueChange(value) {
-            this.workflowLanguage = value;
+            this.workflowLanguage = this.availableLanguages.find(({
+                name,
+            }) => name === value);
 
             await this.getStatusesCount();
         },
