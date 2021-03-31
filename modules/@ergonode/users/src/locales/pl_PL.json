@@ -6,7 +6,15 @@
       "proceed": "Stwórz & Edytuj",
       "cancel": "Anuluj",
       "deleteConfirm": "Tak, usuń",
-      "notAssigned": "Nie przypisane"
+      "notAssigned": "Nie przypisane",
+      "routes": {
+        "title": "Użytkownicy",
+        "group": "System",
+        "editOption": "Opcje",
+        "editAvatar": "Avatar",
+        "editLanguage": "Ograniczenia językowe",
+        "profile": "Log aktywności"
+      }
     },
     "user": {
       "_": {

@@ -16,7 +16,7 @@
                 :fill-color="iconFillColor" />
             <span
                 class="link-text"
-                v-text="item.title" />
+                v-text="getTranslation(item.title)" />
         </NuxtLink>
     </li>
 </template>
@@ -70,6 +70,9 @@ export default {
         },
         onMouseLeave() {
             this.isHover = false;
+        },
+        getTranslation(title) {
+            return title.charAt(0) === '@' ? this.$t(title) : title;
         },
     },
 

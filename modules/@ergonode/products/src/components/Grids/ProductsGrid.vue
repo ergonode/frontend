@@ -540,9 +540,11 @@ export default {
         bindingProps({
             props = {},
         }) {
+            const query = getFilterQueryParams(this.$route.query);
+
             return {
                 disabled: !this.isAllowedToUpdate,
-                query: getFilterQueryParams(this.$route.query),
+                query: query.replace(/\[|\]/g, ''),
                 ...props,
             };
         },

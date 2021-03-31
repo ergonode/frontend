@@ -142,20 +142,27 @@ export default {
             languageCode,
             limit = 99999,
         }) {
-            await getItems({
-                $axios: this.$axios,
-                path: `${languageCode}/attributes`,
-                languageCode,
-                params: {
-                    limit,
-                    offset: 0,
-                    view: 'list',
-                    filter: `templates=${this.templateIds.join(',')}`,
-                    field: 'code',
-                    order: 'ASC',
-                },
-                onSuccess: this.onFetchItemsSuccess,
-            });
+            if (this.templateIds.length) {
+                await getItems({
+                    $axios: this.$axios,
+                    path: `${languageCode}/attributes`,
+                    languageCode,
+                    params: {
+                        limit,
+                        offset: 0,
+                        view: 'list',
+                        filter: `templates=${this.templateIds.join(',')}`,
+                        field: 'code',
+                        order: 'ASC',
+                    },
+                    onSuccess: this.onFetchItemsSuccess,
+                });
+            } else {
+                this.onFetchItemsSuccess({
+                    items: [],
+                    languageCode,
+                });
+            }
         },
         async onFetchItemsSuccess({
             items,

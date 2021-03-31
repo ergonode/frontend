@@ -18,7 +18,7 @@
                 <span
                     v-if="isExpanded"
                     class="navigation-side-bar-group__title"
-                    v-text="route.group.title" />
+                    v-text="getTranslation(route.group.title)" />
             </FadeNavigationSideBarTextTransition>
             <IconArrowDropdown
                 v-if="isExpanded"
@@ -44,7 +44,7 @@
             <li class="navigation-side-bar-group__expanded-title">
                 <span
                     class="navigation-side-bar-group__title"
-                    v-text="route.group.title" />
+                    v-text="getTranslation(route.group.title)" />
             </li>
             <NavigationSideBarGroupElement
                 v-for="(child, index) in route.routes"
@@ -157,6 +157,9 @@ export default {
                 ...route,
                 query,
             };
+        },
+        getTranslation(title) {
+            return title.charAt(0) === '@' ? this.$t(title) : title;
         },
         onGroupSelect() {
             if (this.isExpanded) {

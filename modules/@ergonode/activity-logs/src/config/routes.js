@@ -9,6 +9,10 @@ import {
 } from '@ActivityLogs/config/imports';
 import Privileges from '@ActivityLogs/config/privileges';
 
+export const GROUP = {
+    id: 'system',
+    title: '@ActivityLogs._.routes.group',
+};
 export const ROUTE_NAME = {
     ACTIVITY_LOGS: 'activity-logs',
     ACTIVITY_LOGS_GRID: 'activity-logs-grid',
@@ -24,9 +28,10 @@ export default [
         },
         meta: {
             access: true,
-            title: 'Activity logs',
+            title: '@ActivityLogs._.routes.title',
             group: {
-                title: 'System',
+                id: GROUP.id,
+                title: GROUP.title,
                 menuPosition: 1000,
                 icon: Icons.Settings,
             },
@@ -46,7 +51,7 @@ export default [
                     title: '',
                     breadcrumbs: [
                         {
-                            title: 'System',
+                            title: GROUP.title,
                             icon: Icons.Settings,
                         },
                     ],

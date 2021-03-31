@@ -6,7 +6,14 @@
       "proceed": "Create & Edit",
       "cancel": "Cancel",
       "deleteConfirm": "Yes, remove",
-      "notAssigned": "Not assigned"
+      "notAssigned": "Not assigned",
+      "routes": {
+        "title": "Category trees",
+        "group": "Product design",
+        "editOption": "Options",
+        "editTranslation": "Translations",
+        "editDesigner": "Designer"
+      }
     },
     "tree": {
       "_": {

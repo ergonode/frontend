@@ -9,6 +9,10 @@ import {
 } from '@Media/config/imports';
 import Privileges from '@Media/config/privileges';
 
+export const GROUP = {
+    id: 'resources',
+    title: '@Media._.routes.group',
+};
 export const ROUTE_NAME = {
     MEDIA: 'media',
     MEDIA_GRID: 'media-grid',
@@ -29,9 +33,10 @@ export default [
         },
         meta: {
             access: true,
-            title: 'Media',
+            title: '@Media._.routes.title',
             group: {
-                title: 'Resources',
+                id: GROUP.id,
+                title: GROUP.title,
                 menuPosition: 6,
                 icon: Icons.Media,
             },
@@ -51,7 +56,7 @@ export default [
                     title: '',
                     breadcrumbs: [
                         {
-                            title: 'Resources',
+                            title: GROUP.title,
                             icon: Icons.Media,
                         },
                     ],
@@ -76,14 +81,14 @@ export default [
                 path: 'general',
                 component: Tabs.ResourceGeneralTab,
                 meta: {
-                    title: 'Options',
+                    title: '@Media._.routes.editOption',
                     breadcrumbs: [
                         {
-                            title: 'Resources',
+                            title: GROUP.title,
                             icon: Icons.Media,
                         },
                         {
-                            title: 'Media',
+                            title: '@Media._.routes.title',
                             routeName: ROUTE_NAME.MEDIA_GRID,
                         },
                     ],
@@ -95,14 +100,14 @@ export default [
                 path: 'translations',
                 component: Tabs.ResourceTranslationsTab,
                 meta: {
-                    title: 'Translations',
+                    title: '@Media._.routes.editTranslations',
                     breadcrumbs: [
                         {
-                            title: 'Resources',
+                            title: GROUP.title,
                             icon: Icons.Media,
                         },
                         {
-                            title: 'Media',
+                            title: '@Media._.routes.title',
                             routeName: ROUTE_NAME.MEDIA_GRID,
                         },
                     ],
@@ -114,14 +119,14 @@ export default [
                 path: 'information',
                 component: Tabs.ResourceInformationTab,
                 meta: {
-                    title: 'Information',
+                    title: '@Media._.routes.editInformation',
                     breadcrumbs: [
                         {
-                            title: 'Resources',
+                            title: GROUP.title,
                             icon: Icons.Media,
                         },
                         {
-                            title: 'Media',
+                            title: '@Media._.routes.title',
                             routeName: ROUTE_NAME.MEDIA_GRID,
                         },
                     ],
@@ -133,14 +138,14 @@ export default [
                 path: 'relations',
                 component: Tabs.ResourceRelationsTab,
                 meta: {
-                    title: 'Relations',
+                    title: '@Media._.routes.editRelations',
                     breadcrumbs: [
                         {
-                            title: 'Resources',
+                            title: GROUP.title,
                             icon: Icons.Media,
                         },
                         {
-                            title: 'Media',
+                            title: '@Media._.routes.title',
                             routeName: ROUTE_NAME.MEDIA_GRID,
                         },
                     ],

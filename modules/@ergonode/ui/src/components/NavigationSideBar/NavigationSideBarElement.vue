@@ -20,7 +20,7 @@
                 <span
                     v-if="isExpanded"
                     class="navigation-side-bar-element__title"
-                    v-text="route.meta.title" />
+                    v-text="getTranslation(route.meta.title)" />
             </FadeNavigationSideBarTextTransition>
         </NuxtLink>
     </li>
@@ -87,6 +87,9 @@ export default {
         },
         onMouseLeave() {
             this.isHovered = false;
+        },
+        getTranslation(title) {
+            return title.charAt(0) === '@' ? this.$t(title) : title;
         },
     },
 };

@@ -16,7 +16,7 @@
                 :class="classes"
                 tabindex="-1"
                 @click="onLinkSelect">
-                {{ item.title }}
+                {{ getTranslation(item.title) }}
                 <IconError
                     v-if="hasError"
                     view-box="6 -6 12 36"
@@ -112,6 +112,9 @@ export default {
             if (this.item.route.name !== this.$route.name) {
                 this.$emit('select', this.index);
             }
+        },
+        getTranslation(title) {
+            return title.charAt(0) === '@' ? this.$t(title) : title;
         },
     },
 };

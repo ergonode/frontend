@@ -14,7 +14,7 @@
             <div class="navigation-side-bar-group-element__dot" />
             <span
                 class="navigation-side-bar-group-element__title"
-                v-text="route.meta.title" />
+                v-text="getTranslation(route.meta.title)" />
         </NuxtLink>
     </li>
 </template>
@@ -69,6 +69,9 @@ export default {
         },
         onMouseLeave() {
             this.isHovered = false;
+        },
+        getTranslation(title) {
+            return title.charAt(0) === '@' ? this.$t(title) : title;
         },
     },
 };

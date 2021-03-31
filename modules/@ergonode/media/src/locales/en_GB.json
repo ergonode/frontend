@@ -1,4 +1,16 @@
 {
+  "@Media": {
+    "_": {
+      "routes": {
+        "title": "Media",
+        "group": "Resources",
+        "editOption": "Options",
+        "editTranslations": "Translations",
+        "editInformation": "Information",
+        "editRelations": "Relations"
+      }
+    }
+  },
   "media": {
     "form": {
       "productRelationsTitle": "Relations in products"

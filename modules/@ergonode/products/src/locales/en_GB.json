@@ -1,6 +1,15 @@
 {
   "@Products": {
     "_": {
+      "routes": {
+        "title": "Catalog",
+        "group": "Products",
+        "editGeneral": "Options",
+        "editTemplate": "Template",
+        "editHistory": "History",
+        "editVariants": "Variants",
+        "editGroups": "Groups"
+      },
       "title": "Catalog",
       "headTitle": "Catalog - Ergonode",
       "addProducts": "Add products",

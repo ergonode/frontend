@@ -6,7 +6,7 @@
     <div class="menu-section">
         <MenuListHeader
             v-if="title"
-            :title="title" />
+            :title="getTranslation(title)" />
         <ul class="menu-section__list">
             <MenuListElement
                 v-for="(item, index) in visibleMenu"
@@ -51,6 +51,11 @@ export default {
 
                 return this.$hasAccess(privileges);
             });
+        },
+    },
+    methods: {
+        getTranslation(title) {
+            return title.charAt(0) === '@' ? this.$t(title) : title;
         },
     },
 };

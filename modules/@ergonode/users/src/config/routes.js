@@ -9,6 +9,10 @@ import {
 } from '@Users/config/imports';
 import Privileges from '@Users/config/privileges';
 
+export const GROUP = {
+    id: 'system',
+    title: '@Users._.routes.group',
+};
 export const ROUTE_NAME = {
     USERS: 'users',
     USERS_GRID: 'users-grid',
@@ -30,9 +34,10 @@ export default [
         },
         meta: {
             access: true,
-            title: 'Users',
+            title: '@Users._.routes.title',
             group: {
-                title: 'System',
+                id: GROUP.id,
+                title: GROUP.title,
                 menuPosition: 1000,
                 icon: Icons.Settings,
             },
@@ -52,7 +57,7 @@ export default [
                     title: '',
                     breadcrumbs: [
                         {
-                            title: 'System',
+                            title: GROUP.title,
                             icon: Icons.Settings,
                         },
                     ],
@@ -77,14 +82,14 @@ export default [
                 path: 'general',
                 component: Tabs.UserGeneralTab,
                 meta: {
-                    title: 'Options',
+                    title: '@Users._.routes.editOption',
                     breadcrumbs: [
                         {
-                            title: 'System',
+                            title: GROUP.title,
                             icon: Icons.Settings,
                         },
                         {
-                            title: 'Users',
+                            title: '@Users._.routes.title',
                             routeName: ROUTE_NAME.USERS_GRID,
                         },
                     ],
@@ -96,14 +101,14 @@ export default [
                 path: 'avatar',
                 component: Tabs.UserAvatarTab,
                 meta: {
-                    title: 'Avatar',
+                    title: '@Users._.routes.editAvatar',
                     breadcrumbs: [
                         {
-                            title: 'System',
+                            title: GROUP.title,
                             icon: Icons.Settings,
                         },
                         {
-                            title: 'Users',
+                            title: '@Users._.routes.title',
                             name: ROUTE_NAME.USERS_GRID,
                         },
                     ],
@@ -115,14 +120,14 @@ export default [
                 path: 'language-restrictions',
                 component: Tabs.UserLanguageRestrictionsTab,
                 meta: {
-                    title: 'Language restrictions',
+                    title: '@Users._.routes.editLanguage',
                     breadcrumbs: [
                         {
-                            title: 'System',
+                            title: GROUP.title,
                             icon: Icons.Settings,
                         },
                         {
-                            title: 'Users',
+                            title: '@Users._.routes.title',
                             name: ROUTE_NAME.USERS_GRID,
                         },
                     ],
@@ -147,7 +152,7 @@ export default [
                 path: 'activity-log-grid',
                 component: Tabs.UserActivityLogsTab,
                 meta: {
-                    title: 'Activity log',
+                    title: '@Users._.routes.profile',
                     privileges: [],
                 },
             },

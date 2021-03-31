@@ -9,6 +9,10 @@ import {
 } from '@Collections/config/imports';
 import PRIVILEGES from '@Collections/config/privileges';
 
+export const GROUP = {
+    id: 'products',
+    title: '@Collections._.routes.group',
+};
 export const ROUTE_NAME = {
     COLLECTIONS: 'collections',
     COLLECTIONS_GRID: 'collections-grid',
@@ -27,9 +31,10 @@ export default [
             name: ROUTE_NAME.COLLECTIONS_GRID,
         },
         meta: {
-            title: 'Collections',
+            title: '@Collections._.routes.title',
             group: {
-                title: 'Products',
+                id: GROUP.id,
+                title: GROUP.title,
                 menuPosition: 2,
                 icon: Icons.Product,
             },
@@ -49,7 +54,7 @@ export default [
                     title: '',
                     breadcrumbs: [
                         {
-                            title: 'Products',
+                            title: GROUP.title,
                             icon: Icons.Product,
                         },
                     ],
@@ -74,14 +79,14 @@ export default [
                 path: 'general',
                 component: Tabs.CollectionGeneralTab,
                 meta: {
-                    title: 'Options',
+                    title: '@Collections._.routes.editGeneral',
                     breadcrumbs: [
                         {
-                            title: 'Products',
+                            title: GROUP.title,
                             icon: Icons.Product,
                         },
                         {
-                            title: 'Collections',
+                            title: '@Collections._.routes.title',
                             routeName: ROUTE_NAME.COLLECTIONS_GRID,
                         },
                     ],
@@ -93,14 +98,14 @@ export default [
                 path: 'translations',
                 component: Tabs.CollectionTranslationsTab,
                 meta: {
-                    title: 'Translations',
+                    title: '@Collections._.routes.editTranslation',
                     breadcrumbs: [
                         {
-                            title: 'Products',
+                            title: GROUP.title,
                             icon: Icons.Product,
                         },
                         {
-                            title: 'Collections',
+                            title: '@Collections._.routes.title',
                             routeName: ROUTE_NAME.COLLECTIONS_GRID,
                         },
                     ],
@@ -112,14 +117,14 @@ export default [
                 path: 'products',
                 component: Tabs.CollectionProductsTab,
                 meta: {
-                    title: 'Products',
+                    title: '@Collections._.routes.editProducts',
                     breadcrumbs: [
                         {
-                            title: 'Products',
+                            title: GROUP.title,
                             icon: Icons.Product,
                         },
                         {
-                            title: 'Collections',
+                            title: '@Collections._.routes.title',
                             routeName: ROUTE_NAME.COLLECTIONS_GRID,
                         },
                     ],

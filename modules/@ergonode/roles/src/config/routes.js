@@ -9,6 +9,10 @@ import {
 } from '@Roles/config/imports';
 import Privileges from '@Roles/config/privileges';
 
+export const GROUP = {
+    id: 'system',
+    title: '@Roles._.routes.group',
+};
 export const ROUTE_NAME = {
     USER_ROLES: 'user-roles',
     USER_ROLES_GRID: 'user-roles-grid',
@@ -27,9 +31,10 @@ export default [
         },
         meta: {
             access: true,
-            title: 'User roles',
+            title: '@Roles._.routes.title',
             group: {
-                title: 'System',
+                id: GROUP.id,
+                title: GROUP.title,
                 menuPosition: 1000,
                 icon: Icons.Settings,
             },
@@ -49,7 +54,7 @@ export default [
                     title: '',
                     breadcrumbs: [
                         {
-                            title: 'System',
+                            title: GROUP.title,
                             icon: Icons.Settings,
                         },
                     ],
@@ -74,14 +79,14 @@ export default [
                 path: 'general',
                 component: Tabs.RoleGeneralTab,
                 meta: {
-                    title: 'Options',
+                    title: '@Roles._.routes.editOption',
                     breadcrumbs: [
                         {
-                            title: 'System',
+                            title: GROUP.title,
                             icon: Icons.Settings,
                         },
                         {
-                            title: 'User roles',
+                            title: '@Roles._.routes.title',
                             routeName: ROUTE_NAME.USER_ROLES_GRID,
                         },
                     ],
@@ -93,14 +98,14 @@ export default [
                 path: 'privileges',
                 component: Tabs.RolePrivilegesTab,
                 meta: {
-                    title: 'Privileges',
+                    title: '@Roles._.routes.editPrivileges',
                     breadcrumbs: [
                         {
-                            title: 'System',
+                            title: GROUP.title,
                             icon: Icons.Settings,
                         },
                         {
-                            title: 'User roles',
+                            title: '@Roles._.routes.title',
                             routeName: ROUTE_NAME.USER_ROLES_GRID,
                         },
                     ],

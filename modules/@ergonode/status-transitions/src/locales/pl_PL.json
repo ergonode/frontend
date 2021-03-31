@@ -1,4 +1,14 @@
 {
+  "@Transitions": {
+    "_": {
+      "routes": {
+        "title": "Przejścia statusów",
+        "group": "Przepływ pracy",
+        "editOption": "Opcje",
+        "editConditions": "Warunki"
+      }
+    }
+  },
   "transition": {
     "grid": {
       "placeholderTitle": "Brak przejść statusowych",

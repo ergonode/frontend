@@ -22,11 +22,11 @@
             class="tool-bar-breadcrumb__link"
             aria-label="Breadcrumb link"
             :to="{ name: breadcrumb.routeName }"
-            v-text="breadcrumb.title" />
+            v-text="getTranslation(breadcrumb.title)" />
         <span
             v-else
             class="tool-bar-breadcrumb__title"
-            v-text="breadcrumb.title" />
+            v-text="getTranslation(breadcrumb.title)" />
         <span class="tool-bar-breadcrumb__divider">/</span>
     </div>
 </template>
@@ -53,6 +53,11 @@ export default {
         },
         breadcrumbIcon() {
             return this.breadcrumb.icon || null;
+        },
+    },
+    methods: {
+        getTranslation(title) {
+            return title.charAt(0) === '@' ? this.$t(title) : title;
         },
     },
 };

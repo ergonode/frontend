@@ -1,4 +1,16 @@
 {
+  "@Collections": {
+    "_": {
+      "routes": {
+        "title": "Collections",
+        "group": "Products",
+        "editGeneral": "Options",
+        "editTranslation": "Translations",
+        "editProducts": "Products",
+        "editCollections": "Collections"
+      }
+    }
+  },
   "collection": {
     "form": {
       "typeLabel": "Type",
