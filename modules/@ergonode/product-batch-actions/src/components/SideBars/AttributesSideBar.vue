@@ -158,10 +158,7 @@ export default {
                     onSuccess: this.onFetchItemsSuccess,
                 });
             } else {
-                this.onFetchItemsSuccess({
-                    items: [],
-                    languageCode,
-                });
+                this.isPrefetchingData = false;
             }
         },
         async onFetchItemsSuccess({
