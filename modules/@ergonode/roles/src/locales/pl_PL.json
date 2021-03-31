@@ -6,7 +6,13 @@
       "proceed": "Stwórz & Edytuj",
       "cancel": "Anuluj",
       "deleteConfirm": "Tak, usuń",
-      "notAssigned": "Nie przypisane"
+      "notAssigned": "Nie przypisane",
+      "routes": {
+        "title": "Role użytkownika",
+        "group": "System",
+        "editOption": "Opcje",
+        "editPrivileges": "Uprawnienia"
+      }
     },
     "role": {
       "_": {

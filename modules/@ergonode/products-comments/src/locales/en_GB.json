@@ -1,5 +1,10 @@
 {
   "@ProductsComments": {
+    "_": {
+      "routes": {
+        "editComments": "Comments"
+      }
+    },
     "product": {
       "components": {
         "ProductCommentsTab": {

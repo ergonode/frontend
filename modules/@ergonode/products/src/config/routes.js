@@ -9,6 +9,10 @@ import {
 } from '@Products/config/imports';
 import PRIVILEGES from '@Products/config/privileges';
 
+export const GROUP = {
+    id: 'products',
+    title: '@Products._.routes.group',
+};
 export const ROUTE_NAME = {
     CATALOG: 'catalog',
     PRODUCTS_CATALOG: 'catalog-products',
@@ -28,9 +32,10 @@ export default [
         },
         meta: {
             access: true,
-            title: 'Catalog',
+            title: '@Products._.routes.title',
             group: {
-                title: 'Products',
+                id: GROUP.id,
+                title: GROUP.title,
                 menuPosition: 2,
                 icon: Icons.Product,
             },
@@ -50,7 +55,7 @@ export default [
                     title: '',
                     breadcrumbs: [
                         {
-                            title: 'Products',
+                            title: GROUP.title,
                             icon: Icons.Product,
                         },
                     ],
@@ -75,14 +80,14 @@ export default [
                 path: 'general',
                 component: Tabs.ProductGeneralTab,
                 meta: {
-                    title: 'Options',
+                    title: '@Products._.routes.editGeneral',
                     breadcrumbs: [
                         {
-                            title: 'Products',
+                            title: GROUP.title,
                             icon: Icons.Product,
                         },
                         {
-                            title: 'Catalog',
+                            title: '@Products._.routes.title',
                             routeName: ROUTE_NAME.PRODUCTS_CATALOG,
                         },
                     ],
@@ -94,14 +99,14 @@ export default [
                 path: 'template',
                 component: Tabs.ProductTemplateTab,
                 meta: {
-                    title: 'Template',
+                    title: '@Products._.routes.editTemplate',
                     breadcrumbs: [
                         {
-                            title: 'Products',
+                            title: GROUP.title,
                             icon: Icons.Product,
                         },
                         {
-                            title: 'Catalog',
+                            title: '@Products._.routes.title',
                             routeName: ROUTE_NAME.PRODUCTS_CATALOG,
                         },
                     ],
@@ -113,14 +118,14 @@ export default [
                 path: 'history',
                 component: Tabs.ProductHistoryTab,
                 meta: {
-                    title: 'History',
+                    title: '@Products._.routes.editHistory',
                     breadcrumbs: [
                         {
-                            title: 'Products',
+                            title: GROUP.title,
                             icon: Icons.Product,
                         },
                         {
-                            title: 'Catalog',
+                            title: '@Products._.routes.title',
                             routeName: ROUTE_NAME.PRODUCTS_CATALOG,
                         },
                     ],

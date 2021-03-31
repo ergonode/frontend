@@ -22,7 +22,7 @@ export default [
                 path: 'privileges-grid',
                 component: Tabs.UserPrivilegesTab,
                 meta: {
-                    title: 'Privileges',
+                    title: '@Roles._.routes.editPrivileges',
                     privileges: [],
                 },
             },

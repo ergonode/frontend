@@ -1,4 +1,14 @@
 {
+  "@Transitions": {
+    "_": {
+      "routes": {
+        "title": "Status transitions",
+        "group": "Workflow",
+        "editOption": "Options",
+        "editConditions": "Conditions"
+      }
+    }
+  },
   "transition": {
     "grid": {
       "placeholderTitle": "No status transitions",

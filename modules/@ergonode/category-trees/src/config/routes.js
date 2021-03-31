@@ -9,6 +9,10 @@ import {
 } from '@Trees/config/imports';
 import Privileges from '@Trees/config/privileges';
 
+export const GROUP = {
+    id: 'product-design',
+    title: '@Trees._.routes.group',
+};
 export const ROUTE_NAME = {
     CATEGORY_TREES: 'category-trees',
     CATEGORY_TREES_GRID: 'category-trees-grid',
@@ -28,9 +32,10 @@ export default [
         },
         meta: {
             access: true,
-            title: 'Category trees',
+            title: '@Trees._.routes.title',
             group: {
-                title: 'Product design',
+                id: GROUP.id,
+                title: GROUP.title,
                 menuPosition: 3,
                 icon: Icons.Templates,
             },
@@ -50,7 +55,7 @@ export default [
                     title: '',
                     breadcrumbs: [
                         {
-                            title: 'Product design',
+                            title: GROUP.title,
                             icon: Icons.Templates,
                         },
                     ],
@@ -75,14 +80,14 @@ export default [
                 path: 'general',
                 component: Tabs.CategoryTreeGeneralTab,
                 meta: {
-                    title: 'Options',
+                    title: '@Trees._.routes.editOption',
                     breadcrumbs: [
                         {
-                            title: 'Product design',
+                            title: GROUP.title,
                             icon: Icons.Templates,
                         },
                         {
-                            title: 'Category trees',
+                            title: '@Trees._.routes.title',
                             routeName: ROUTE_NAME.CATEGORY_TREES_GRID,
                         },
                     ],
@@ -94,14 +99,14 @@ export default [
                 path: 'translations',
                 component: Tabs.CategoryTreeTranslationsTab,
                 meta: {
-                    title: 'Translations',
+                    title: '@Trees._.routes.editTranslation',
                     breadcrumbs: [
                         {
-                            title: 'Product design',
+                            title: GROUP.title,
                             icon: Icons.Templates,
                         },
                         {
-                            title: 'Category trees',
+                            title: '@Trees._.routes.title',
                             routeName: ROUTE_NAME.CATEGORY_TREES_GRID,
                         },
                     ],
@@ -113,14 +118,14 @@ export default [
                 path: 'designer',
                 component: Tabs.CategoryTreeDesignerTab,
                 meta: {
-                    title: 'Designer',
+                    title: '@Trees._.routes.editDesigner',
                     breadcrumbs: [
                         {
-                            title: 'Product design',
+                            title: GROUP.title,
                             icon: Icons.Templates,
                         },
                         {
-                            title: 'Category trees',
+                            title: '@Trees._.routes.title',
                             routeName: ROUTE_NAME.CATEGORY_TREES_GRID,
                         },
                     ],

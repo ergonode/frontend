@@ -1,5 +1,11 @@
 {
   "@ActivityLogs": {
+    "_": {
+      "routes": {
+        "title": "Activity logs",
+        "group": "System"
+      }
+    },
     "activityLog": {
       "_": {
         "title": "Users activity logs"

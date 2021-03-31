@@ -15,10 +15,14 @@
                 :is="listIcon"
                 :fill-color="listIconFillColor" />
             <FadeNavigationSideBarTextTransition>
-                <span
-                    v-if="isExpanded"
-                    class="navigation-side-bar-group__title"
-                    v-text="route.group.title" />
+                <TranslatableTitleProvider :title="route.group.title">
+                    <template #default="{ translatableTitle }">
+                        <span
+                            v-if="isExpanded"
+                            class="navigation-side-bar-group__title"
+                            v-text="translatableTitle" />
+                    </template>
+                </TranslatableTitleProvider>
             </FadeNavigationSideBarTextTransition>
             <IconArrowDropdown
                 v-if="isExpanded"
@@ -42,9 +46,13 @@
             v-else-if="isHovered"
             class="navigation-side-bar-group__items">
             <li class="navigation-side-bar-group__expanded-title">
-                <span
-                    class="navigation-side-bar-group__title"
-                    v-text="route.group.title" />
+                <TranslatableTitleProvider :title="route.group.title">
+                    <template #default="{ translatableTitle }">
+                        <span
+                            class="navigation-side-bar-group__title"
+                            v-text="translatableTitle" />
+                    </template>
+                </TranslatableTitleProvider>
             </li>
             <NavigationSideBarGroupElement
                 v-for="(child, index) in route.routes"
@@ -57,6 +65,7 @@
 </template>
 
 <script>
+import TranslatableTitleProvider from '@Core/components/Translation/TranslatableTitleProvider';
 import {
     ARROW,
 } from '@Core/defaults/icons';
@@ -77,6 +86,7 @@ export default {
         FadeNavigationSideBarTextTransition,
         NavigationSideBarGroupElement,
         IconArrowDropdown,
+        TranslatableTitleProvider,
     },
     props: {
         /**

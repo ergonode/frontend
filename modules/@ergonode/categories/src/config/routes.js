@@ -9,6 +9,10 @@ import {
 } from '@Categories/config/imports';
 import Privileges from '@Categories/config/privileges';
 
+export const GROUP = {
+    id: 'product-design',
+    title: '@Categories._.routes.group',
+};
 export const ROUTE_NAME = {
     CATEGORIES: 'categories',
     CATEGORIES_GRID: 'categories-grid',
@@ -27,9 +31,10 @@ export default [
         },
         meta: {
             access: true,
-            title: 'Categories',
+            title: '@Categories._.routes.title',
             group: {
-                title: 'Product design',
+                id: GROUP.id,
+                title: GROUP.title,
                 menuPosition: 3,
                 icon: Icons.Templates,
             },
@@ -49,7 +54,7 @@ export default [
                     title: '',
                     breadcrumbs: [
                         {
-                            title: 'Product design',
+                            title: GROUP.title,
                             icon: Icons.Templates,
                         },
                     ],
@@ -74,14 +79,14 @@ export default [
                 path: 'general',
                 component: Tabs.CategoryGeneralTab,
                 meta: {
-                    title: 'Options',
+                    title: '@Categories._.routes.editOption',
                     breadcrumbs: [
                         {
-                            title: 'Product design',
+                            title: GROUP.title,
                             icon: Icons.Templates,
                         },
                         {
-                            title: 'Categories',
+                            title: '@Categories._.routes.title',
                             routeName: ROUTE_NAME.CATEGORIES_GRID,
                         },
                     ],
@@ -93,14 +98,14 @@ export default [
                 path: 'translations',
                 component: Tabs.CategoryTranslationsTab,
                 meta: {
-                    title: 'Translations',
+                    title: '@Categories._.routes.editTranslation',
                     breadcrumbs: [
                         {
-                            title: 'Product design',
+                            title: GROUP.title,
                             icon: Icons.Templates,
                         },
                         {
-                            title: 'Categories',
+                            title: '@Categories._.routes.title',
                             routeName: ROUTE_NAME.CATEGORIES_GRID,
                         },
                     ],

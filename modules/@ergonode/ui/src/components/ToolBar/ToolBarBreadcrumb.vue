@@ -8,36 +8,44 @@
             :is="breadcrumbIcon"
             v-if="breadcrumb.icon"
             :fill-color="breadcrumbIconFillColor" />
-        <NuxtLink
-            v-if="breadcrumb.id"
-            class="tool-bar-breadcrumb__link"
-            aria-label="Breadcrumb link"
-            :to="{
-                name: breadcrumb.routeName,
-                params: { id: $route.params[breadcrumb.id]}
-            }"
-            v-text="breadcrumb.title" />
-        <NuxtLink
-            v-else-if="breadcrumb.routeName"
-            class="tool-bar-breadcrumb__link"
-            aria-label="Breadcrumb link"
-            :to="{ name: breadcrumb.routeName }"
-            v-text="breadcrumb.title" />
-        <span
-            v-else
-            class="tool-bar-breadcrumb__title"
-            v-text="breadcrumb.title" />
+        <TranslatableTitleProvider :title="breadcrumb.title">
+            <template #default="{ translatableTitle }">
+                <NuxtLink
+                    v-if="breadcrumb.id"
+                    class="tool-bar-breadcrumb__link"
+                    aria-label="Breadcrumb link"
+                    :to="{
+                        name: breadcrumb.routeName,
+                        params: { id: $route.params[breadcrumb.id]}
+                    }"
+                    v-text="breadcrumb.title" />
+                <NuxtLink
+                    v-else-if="breadcrumb.routeName"
+                    class="tool-bar-breadcrumb__link"
+                    aria-label="Breadcrumb link"
+                    :to="{ name: breadcrumb.routeName }"
+                    v-text="translatableTitle" />
+                <span
+                    v-else
+                    class="tool-bar-breadcrumb__title"
+                    v-text="translatableTitle" />
+            </template>
+        </TranslatableTitleProvider>
         <span class="tool-bar-breadcrumb__divider">/</span>
     </div>
 </template>
 
 <script>
+import TranslatableTitleProvider from '@Core/components/Translation/TranslatableTitleProvider';
 import {
     GREEN,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'ToolBarBreadcrumb',
+    components: {
+        TranslatableTitleProvider,
+    },
     props: {
         /**
          * Breadcrumb data model

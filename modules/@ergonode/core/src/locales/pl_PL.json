@@ -1,4 +1,25 @@
 {
+  "@Core": {
+    "_": {
+      "routes": {
+        "title": "Ustawienia",
+        "group": "System",
+        "editLanguages": "Języki",
+        "editInheritance": "Dziedziczenie języków",
+        "editUnits": "Jednostki",
+        "editUnitsOptions": "Opcje",
+        "userMenu": "Moje konto",
+        "userMenuProfile": "Mój profil"
+      }
+    },
+    "core": {
+      "components": {
+        "ToolBarUserSelectContent": {
+          "logout": "WYLOGUJ"
+        }
+      }
+    }
+  },
   "core": {
     "buttons": {
       "create": "Stwórz",

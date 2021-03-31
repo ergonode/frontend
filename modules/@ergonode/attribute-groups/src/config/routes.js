@@ -9,6 +9,10 @@ import {
 } from '@AttributeGroups/config/imports';
 import Privileges from '@AttributeGroups/config/privileges';
 
+export const GROUP = {
+    id: 'product-design',
+    title: '@AttributeGroups._.routes.group',
+};
 export const ROUTE_NAME = {
     ATTRIBUTE_GROUPS: 'attribute-groups',
     ATTRIBUTE_GROUPS_GRID: 'attribute-groups-grid',
@@ -27,9 +31,10 @@ export default [
         },
         meta: {
             access: true,
-            title: 'Attribute groups',
+            title: '@AttributeGroups._.routes.title',
             group: {
-                title: 'Product design',
+                id: GROUP.id,
+                title: GROUP.title,
                 menuPosition: 3,
                 icon: Icons.Templates,
             },
@@ -49,7 +54,7 @@ export default [
                     title: '',
                     breadcrumbs: [
                         {
-                            title: 'Product design',
+                            title: GROUP.title,
                             icon: Icons.Templates,
                         },
                     ],
@@ -74,14 +79,14 @@ export default [
                 path: 'general',
                 component: Tabs.AttributeGroupGeneralTab,
                 meta: {
-                    title: 'Options',
+                    title: '@AttributeGroups._.routes.editOption',
                     breadcrumbs: [
                         {
-                            title: 'Product design',
+                            title: GROUP.title,
                             icon: Icons.Templates,
                         },
                         {
-                            title: 'Attribute groups',
+                            title: '@AttributeGroups._.routes.title',
                             routeName: ROUTE_NAME.ATTRIBUTE_GROUPS_GRID,
                         },
                     ],
@@ -93,14 +98,14 @@ export default [
                 path: 'translations',
                 component: Tabs.AttributeGroupTranslationsTab,
                 meta: {
-                    title: 'Translations',
+                    title: '@AttributeGroups._.routes.editTranslation',
                     breadcrumbs: [
                         {
-                            title: 'Product design',
+                            title: GROUP.title,
                             icon: Icons.Templates,
                         },
                         {
-                            title: 'Attribute groups',
+                            title: '@AttributeGroups._.routes.title',
                             routeName: ROUTE_NAME.ATTRIBUTE_GROUPS_GRID,
                         },
                     ],

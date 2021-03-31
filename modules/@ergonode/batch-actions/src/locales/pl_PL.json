@@ -6,6 +6,9 @@
           "title": "Akcje"
         }
       }
+    },
+    "batchActionExtend": {
+      "message": "Przetwarzanie"
     }
   }
 }

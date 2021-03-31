@@ -46,7 +46,7 @@ export default {
                         ...notification,
                         createdAt: notification.started_at,
                         readAt: false,
-                        message: `Processing "${notification.name}"`,
+                        message: `${$this.$t('@BatchActions.batchActionExtend.message')} "${notification.name}"`,
                         section: ACTION_CENTER_SECTIONS.PROCESSING,
                         component: Components.NotificationListBatchActionsProcessingItem,
                     });

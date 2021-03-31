@@ -9,6 +9,10 @@ import {
 } from '@Statuses/config/imports';
 import Privileges from '@Statuses/config/privileges';
 
+export const GROUP = {
+    id: 'workflow',
+    title: '@Statuses._.routes.group',
+};
 export const ROUTE_NAME = {
     PRODUCT_STATUSES: 'product-statuses',
     PRODUCT_STATUSES_GRID: 'product-statuses-grid',
@@ -26,9 +30,10 @@ export default [
             name: ROUTE_NAME.PRODUCT_STATUSES_GRID,
         },
         meta: {
-            title: 'Product statuses',
+            title: '@Statuses._.routes.title',
             group: {
-                title: 'Workflow',
+                id: GROUP.id,
+                title: GROUP.title,
                 menuPosition: 7,
                 icon: Icons.Flow,
             },
@@ -48,7 +53,7 @@ export default [
                     title: '',
                     breadcrumbs: [
                         {
-                            title: 'Workflow',
+                            title: GROUP.title,
                             icon: Icons.Flow,
                         },
                     ],
@@ -73,14 +78,14 @@ export default [
                 path: 'general',
                 component: Tabs.ProductStatusGeneralTab,
                 meta: {
-                    title: 'Options',
+                    title: '@Statuses._.routes.editOption',
                     breadcrumbs: [
                         {
-                            title: 'Workflow',
+                            title: GROUP.title,
                             icon: Icons.Flow,
                         },
                         {
-                            title: 'Product statuses',
+                            title: '@Statuses._.routes.title',
                             routeName: ROUTE_NAME.PRODUCT_STATUSES_GRID,
                         },
                     ],
@@ -92,14 +97,14 @@ export default [
                 path: 'translations',
                 component: Tabs.ProductStatusTranslationsTab,
                 meta: {
-                    title: 'Translations',
+                    title: '@Statuses._.routes.editTranslations',
                     breadcrumbs: [
                         {
-                            title: 'Workflow',
+                            title: GROUP.title,
                             icon: Icons.Flow,
                         },
                         {
-                            title: 'Product statuses',
+                            title: '@Statuses._.routes.title',
                             routeName: ROUTE_NAME.PRODUCT_STATUSES_GRID,
                         },
                     ],
