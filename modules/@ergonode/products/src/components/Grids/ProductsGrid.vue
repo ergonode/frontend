@@ -408,6 +408,8 @@ export default {
                 this.$router.replace({
                     query,
                 });
+            } else {
+                this.columns.splice(index, 1);
             }
         },
         onAdvancedFilterPositionChange({
