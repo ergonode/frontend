@@ -6,6 +6,7 @@
     <InformationBadge
         :background="status.color"
         :color="textColor"
+        :shadow="true"
         :title="status.label" />
 </template>
 

@@ -26,6 +26,7 @@
           "deleteRequest": "User hasn’t been deleted"
         },
         "UpdateLanguageRestrictionsButton": {
+          "updateLanguageValidation": "Language restrictions are requiring at least one read privilege for any language",
           "updateLanguageSuccess": "Language privileges have been updated"
         },
         "UserForm": {

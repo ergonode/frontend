@@ -4,6 +4,9 @@
  */
 <template>
     <Card :title="selectedLanguage">
+        <template #appendHeader>
+            <ReadOnlyBadge v-if="isReadOnly" />
+        </template>
         <Form :errors="translationErrors">
             <template #body>
                 <FormSection>
@@ -13,7 +16,7 @@
                         label="Alternate text"
                         resize="none"
                         height="150px"
-                        :disabled="!isAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate || isReadOnly"
                         :error-messages="translationErrors[altKeyField]"
                         @input="(value) => setTranslationPropertyValue(value, altKeyField)" />
                     <template v-for="(field, index) in extendedForm">
@@ -31,19 +34,11 @@
 <script>
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 import PRIVILEGES from '@Media/config/privileges';
-import Card from '@UI/components/Card/Card';
-import Divider from '@UI/components/Dividers/Divider';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
 import TextArea from '@UI/components/TextArea/TextArea';
 
 export default {
     name: 'ResourceTranslationForm',
     components: {
-        Divider,
-        FormSection,
-        Form,
-        Card,
         TextArea,
     },
     mixins: [
@@ -69,7 +64,7 @@ export default {
             props = {},
         }) {
             return {
-                disabled: !this.isAllowedToUpdate,
+                disabled: !this.isAllowedToUpdate || this.isReadOnly,
                 scope: this.scope,
                 changeValues: this.changeValues,
                 errors: this.translationErrors,

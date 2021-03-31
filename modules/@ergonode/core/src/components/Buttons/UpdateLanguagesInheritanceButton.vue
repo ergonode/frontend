@@ -112,7 +112,7 @@ export default {
                 });
             } else {
                 this.$addAlert({
-                    type: ALERT_TYPE.INFO,
+                    type: ALERT_TYPE.WARNING,
                     message: 'Language inheritance tree cannot be saved without any language',
                 });
             }

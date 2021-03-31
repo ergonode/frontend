@@ -81,7 +81,6 @@ import LanguageSelect from '@Core/components/Selects/LanguageSelect';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import Button from '@UI/components/Button/Button';
-import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import Select from '@UI/components/Select/Select';
@@ -102,7 +101,6 @@ export default {
         CreateUserButton,
         SelectListNoDataPlaceholder,
         Button,
-        Divider,
         Form,
         FormSection,
         TextField,

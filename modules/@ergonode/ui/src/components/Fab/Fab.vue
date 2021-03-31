@@ -37,6 +37,9 @@ import {
     RED,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
+import {
+    Z_INDEX_LVL_2,
+} from '@UI/assets/scss/_js-variables/indexes.scss';
 
 /**
  * `Fab` is a default component to display action in page.
@@ -118,6 +121,7 @@ export default {
 
             return {
                 position: 'absolute',
+                zIndex: Z_INDEX_LVL_2,
                 ...this.floating,
             };
         },

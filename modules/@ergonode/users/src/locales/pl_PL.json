@@ -26,6 +26,7 @@
           "deleteRequest": "Użytkownik nie został usunięty"
         },
         "UpdateLanguageRestrictionsButton": {
+          "updateLanguageValidation": "Uprawnienia językowe wymagają co najmniej jednego uprawnienia do odczytu",
           "updateLanguageSuccess": "Uprawnienia językowe zostały zaktualizowane"
         },
         "UserForm": {

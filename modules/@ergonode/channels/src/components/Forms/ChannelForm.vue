@@ -59,7 +59,6 @@ import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     GRAPHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import JSONSchemaForm from '@UI/components/Form/JSONSchemaForm/JSONSchemaForm';
 import FormSection from '@UI/components/Form/Section/FormSection';
@@ -74,7 +73,6 @@ import {
 export default {
     name: 'ChannelForm',
     components: {
-        Divider,
         IconSpinner,
         Form,
         JSONSchemaForm,

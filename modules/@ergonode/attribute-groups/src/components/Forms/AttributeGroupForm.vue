@@ -40,7 +40,6 @@
 import PRIVILEGES from '@AttributeGroups/config/privileges';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import TextField from '@UI/components/TextField/TextField';
@@ -52,7 +51,6 @@ import {
 export default {
     name: 'AttributeGroupForm',
     components: {
-        Divider,
         Form,
         FormSection,
         TextField,

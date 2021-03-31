@@ -4,6 +4,9 @@
  */
 <template>
     <Card :title="selectedLanguage">
+        <template #appendHeader>
+            <ReadOnlyBadge v-if="isReadOnly" />
+        </template>
         <Form :errors="translationErrors">
             <template #body>
                 <FormSection>
@@ -12,7 +15,7 @@
                         :value="translations.label[languageCode]"
                         :label="$t('@Attributes.attribute.components.AttributeTranslationForm.nameLabel')"
                         :error-messages="translationErrors[labelFieldKey]"
-                        :disabled="!isAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate || isReadOnly"
                         @input="(value) => setTranslationPropertyValue(value, labelFieldKey)" />
                     <TextArea
                         :data-cy="dataCyGenerator(hintFieldKey)"
@@ -21,7 +24,7 @@
                         resize="none"
                         height="150px"
                         :error-messages="translationErrors[hintFieldKey]"
-                        :disabled="!isAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate || isReadOnly"
                         @input="(value) => setTranslationPropertyValue(value, hintFieldKey)" />
                     <template v-for="(formComponent, index) in extendedForm">
                         <Component
@@ -41,10 +44,6 @@ import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
-import Card from '@UI/components/Card/Card';
-import Divider from '@UI/components/Dividers/Divider';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
 import TextArea from '@UI/components/TextArea/TextArea';
 import TextField from '@UI/components/TextField/TextField';
 import {
@@ -54,10 +53,6 @@ import {
 export default {
     name: 'AttributeTranslationForm',
     components: {
-        Card,
-        Form,
-        FormSection,
-        Divider,
         TextField,
         TextArea,
     },
@@ -97,7 +92,7 @@ export default {
             props = {},
         }) {
             return {
-                disabled: !this.isAllowedToUpdate,
+                disabled: !this.isAllowedToUpdate || this.isReadOnly,
                 typeKey: this.typeKey,
                 scope: this.scope,
                 changeValues: this.changeValues,
