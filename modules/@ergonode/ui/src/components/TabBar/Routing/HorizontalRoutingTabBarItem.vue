@@ -12,27 +12,32 @@
                 hasSuccess,
                 hasError,
             }">
-            <div
-                :class="classes"
-                tabindex="-1"
-                @click="onLinkSelect">
-                {{ getTranslation(item.title) }}
-                <IconError
-                    v-if="hasError"
-                    view-box="6 -6 12 36"
-                    :fill-color="redColor" />
-                <IconMark
-                    v-else-if="hasSuccess"
-                    :fill-color="greenColor" />
-                <IconSync
-                    v-else-if="hasValueToSave"
-                    :fill-color="graphiteDarkColor" />
-            </div>
+            <TranslatableTitleProvider :title="item.title">
+                <template #default="{ translatableTitle }">
+                    <div
+                        :class="classes"
+                        tabindex="-1"
+                        @click="onLinkSelect">
+                        {{ translatableTitle }}
+                        <IconError
+                            v-if="hasError"
+                            view-box="6 -6 12 36"
+                            :fill-color="redColor" />
+                        <IconMark
+                            v-else-if="hasSuccess"
+                            :fill-color="greenColor" />
+                        <IconSync
+                            v-else-if="hasValueToSave"
+                            :fill-color="graphiteDarkColor" />
+                    </div>
+                </template>
+            </TranslatableTitleProvider>
         </template>
     </FeedbackProvider>
 </template>
 
 <script>
+import TranslatableTitleProvider from '@Core/components/Translation/TranslatableTitleProvider';
 import {
     GRAPHITE_DARK,
     GREEN,
@@ -50,6 +55,7 @@ export default {
         IconError,
         IconSync,
         IconMark,
+        TranslatableTitleProvider,
     },
     props: {
         /**
@@ -112,9 +118,6 @@ export default {
             if (this.item.route.name !== this.$route.name) {
                 this.$emit('select', this.index);
             }
-        },
-        getTranslation(title) {
-            return title.charAt(0) === '@' ? this.$t(title) : title;
         },
     },
 };

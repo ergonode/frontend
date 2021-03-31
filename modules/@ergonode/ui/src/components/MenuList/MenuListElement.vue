@@ -14,14 +14,19 @@
             <Component
                 :is="item.icon"
                 :fill-color="iconFillColor" />
-            <span
-                class="link-text"
-                v-text="getTranslation(item.title)" />
+            <TranslatableTitleProvider :title="item.title">
+                <template #default="{ translatableTitle }">
+                    <span
+                        class="link-text"
+                        v-text="translatableTitle" />
+                </template>
+            </TranslatableTitleProvider>
         </NuxtLink>
     </li>
 </template>
 
 <script>
+import TranslatableTitleProvider from '@Core/components/Translation/TranslatableTitleProvider';
 import {
     GRAPHITE,
     GREEN,
@@ -30,6 +35,9 @@ import {
 
 export default {
     name: 'MenuListElement',
+    components: {
+        TranslatableTitleProvider,
+    },
     props: {
         /**
          * Item data model
@@ -70,9 +78,6 @@ export default {
         },
         onMouseLeave() {
             this.isHover = false;
-        },
-        getTranslation(title) {
-            return title.charAt(0) === '@' ? this.$t(title) : title;
         },
     },
 

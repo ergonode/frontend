@@ -17,16 +17,21 @@
                     :fill-color="listIconFillColor" />
             </div>
             <FadeNavigationSideBarTextTransition>
-                <span
-                    v-if="isExpanded"
-                    class="navigation-side-bar-element__title"
-                    v-text="getTranslation(route.meta.title)" />
+                <TranslatableTitleProvider :title="route.meta.title">
+                    <template #default="{ translatableTitle }">
+                        <span
+                            v-if="isExpanded"
+                            class="navigation-side-bar-element__title"
+                            v-text="translatableTitle" />
+                    </template>
+                </TranslatableTitleProvider>
             </FadeNavigationSideBarTextTransition>
         </NuxtLink>
     </li>
 </template>
 
 <script>
+import TranslatableTitleProvider from '@Core/components/Translation/TranslatableTitleProvider';
 import {
     GREEN,
     WHITE,
@@ -37,6 +42,7 @@ export default {
     name: 'NavigationSideBarElement',
     components: {
         FadeNavigationSideBarTextTransition,
+        TranslatableTitleProvider,
     },
     props: {
         /**
@@ -87,9 +93,6 @@ export default {
         },
         onMouseLeave() {
             this.isHovered = false;
-        },
-        getTranslation(title) {
-            return title.charAt(0) === '@' ? this.$t(title) : title;
         },
     },
 };

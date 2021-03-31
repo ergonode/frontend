@@ -12,21 +12,29 @@
             aria-label="Navigation side bar group element"
             class="navigation-side-bar-group-element__link">
             <div class="navigation-side-bar-group-element__dot" />
-            <span
-                class="navigation-side-bar-group-element__title"
-                v-text="getTranslation(route.meta.title)" />
+            <TranslatableTitleProvider :title="route.meta.title">
+                <template #default="{ translatableTitle }">
+                    <span
+                        class="navigation-side-bar-group-element__title"
+                        v-text="translatableTitle" />
+                </template>
+            </TranslatableTitleProvider>
         </NuxtLink>
     </li>
 </template>
 
 <script>
 
+import TranslatableTitleProvider from '@Core/components/Translation/TranslatableTitleProvider';
 import {
     getParentRoutePath,
 } from '@Core/models/navigation/tabs';
 
 export default {
     name: 'NavigationSideBarGroupElement',
+    components: {
+        TranslatableTitleProvider,
+    },
     props: {
         /**
          * Route data model
@@ -69,9 +77,6 @@ export default {
         },
         onMouseLeave() {
             this.isHovered = false;
-        },
-        getTranslation(title) {
-            return title.charAt(0) === '@' ? this.$t(title) : title;
         },
     },
 };
