@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## CHANGELOG FOR v1.0.0-rc.2
+- bugfix [#763](https://github.com/ergonode/frontend/pull/763) RTE better handling mouse events (derpdead)
+- bugfix [#764](https://github.com/ergonode/frontend/pull/764) Batch actions stabilisation (derpdead)
+- bugfix [#765](https://github.com/ergonode/frontend/pull/765) Batch actions vuex state error (bleto)
+- bugfix [#767](https://github.com/ergonode/frontend/pull/767) Batch actions change endpoint type (bleto)
+- bugfix [#769](https://github.com/ergonode/frontend/pull/769) Update dependencies (derpdead)
+- bugfix [#770](https://github.com/ergonode/frontend/pull/770) Add missing filter (derpdead)
+- bugfix [#794](https://github.com/ergonode/frontend/pull/794) Optimising requests for product template (derpdead)
+- bugfix [#795](https://github.com/ergonode/frontend/pull/795) Fixes to html validator (bleto)
+- bugfix [#796](https://github.com/ergonode/frontend/pull/796) JSON Schema description support (derpdead)
+- bugfix [#797](https://github.com/ergonode/frontend/pull/797) Category tree hidden missing items (derpdead)
+- bugfix [#809](https://github.com/ergonode/frontend/pull/809) Languages (derpdead)
+- feature [#772](https://github.com/ergonode/frontend/pull/772) Feature/action center with batch actions (bleto)
+- feature [#778](https://github.com/ergonode/frontend/pull/778) Prevent from adding / removing binding attributes (bleto)
+- feature [#779](https://github.com/ergonode/frontend/pull/779) Remove active languages, instead of use languages from tree (derpdead)
+- feature [#785](https://github.com/ergonode/frontend/pull/785) Increase color for disabled inputs (derpdead)
+- feature [#802](https://github.com/ergonode/frontend/pull/802) New method for managing user cookies (derpdead)
+- feature [#804](https://github.com/ergonode/frontend/pull/804) Add routes translations (bleto)
+- performance [#774](https://github.com/ergonode/frontend/pull/774) Webpack, dependencies update (derpdead)
+- performance [#773](https://github.com/ergonode/frontend/pull/773) Stabilisation (derpdead)
+- refactor [#790](https://github.com/ergonode/frontend/pull/790) Feature/module relations (bleto)
+- docs [#768](https://github.com/ergonode/frontend/pull/768) Update copyrights(bleto)
+
 ## CHANGELOG FOR v1.0.0-rc.1
 - feature [#755](https://github.com/ergonode/frontend/pull/755) Batch actions (derpdead)
 - feature [#757](https://github.com/ergonode/frontend/pull/757) Datetime advanced filter type (derpdead)
