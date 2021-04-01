@@ -122,11 +122,13 @@ export default {
             async handler() {
                 if (this.visible) {
                     this.isFetchingData = true;
+
                     await Promise.all([
                         this.checkUnreadNotifications({}),
                         this.getNotifications({}),
                         this.requestProcessingNotifications(),
                     ]);
+
                     this.isFetchingData = false;
                 } else {
                     this.__setState({
