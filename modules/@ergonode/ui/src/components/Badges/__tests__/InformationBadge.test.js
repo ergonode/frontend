@@ -31,7 +31,7 @@ describe('Badges/InformationBadge', () => {
 
     describe('Styling', () => {
         it('backgroundColor', () => {
-            expect(wrapper.vm.badgeStyles).toStrictEqual({
+            expect(wrapper.vm.styles).toStrictEqual({
                 backgroundColor: WHITE,
                 color: GRAPHITE_DARK,
             });
