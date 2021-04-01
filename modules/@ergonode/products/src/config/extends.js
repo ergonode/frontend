@@ -41,9 +41,9 @@ export default {
             case ROUTE_NAME.PRODUCT_EDIT: {
                 switch (type) {
                 case PRODUCT_TYPE.WITH_VARIANTS:
-                    return tabs.filter(tab => tab.visible || tab.title === 'Variants');
+                    return tabs.filter(tab => tab.visible || tab.scope === 'productVariantsTab');
                 case PRODUCT_TYPE.GROUPING:
-                    return tabs.filter(tab => tab.visible || tab.title === 'Groups');
+                    return tabs.filter(tab => tab.visible || tab.scope === 'productGroupTab');
                 default:
                     return tabs.filter(tab => tab.visible);
                 }
