@@ -10,7 +10,7 @@
             <ActionButton
                 :fixed-content="true"
                 :size="tinySize"
-                :title="workflowLanguage"
+                :title="workflowLanguage.name"
                 :disabled="isPrefetchingData"
                 :options="languageOptions"
                 @input="onValueChange" />
@@ -70,48 +70,41 @@ export default {
         return {
             workflowLanguage: '',
             statuses: [],
-            isPrefetchingData: true,
+            isPrefetchingData: false,
         };
     },
     computed: {
-        ...mapState('core', [
-            'defaultLanguageCode',
+        ...mapState('authentication', {
+            languagePrivileges: state => state.user.languagePrivileges,
+        }),
+        ...mapGetters('core', [
+            'availableLanguages',
         ]),
         ...mapGetters('core', [
-            'activeLanguages',
+            'defaultLanguageCode',
         ]),
         tinySize() {
             return SIZE.TINY;
         },
         languageOptions() {
-            return this.activeLanguages.map(({
+            return this.availableLanguages.map(({
                 name,
             }) => name);
         },
     },
     created() {
-        this.workflowLanguage = this.getWorkflowLanguageName();
+        this.workflowLanguage = this.availableLanguages.find(({
+            code,
+        }) => code === this.defaultLanguageCode);
     },
     methods: {
-        getWorkflowLanguageName() {
-            return this.activeLanguages.find(({
-                code,
-            }) => code === this.defaultLanguageCode).name;
-        },
-        getWorkflowLanguageCode() {
-            return this.activeLanguages.find(({
-                name,
-            }) => name === this.workflowLanguage).code;
-        },
         async getStatusesCount() {
             try {
                 this.isPrefetchingData = true;
 
-                const workflowLanguageCode = this.getWorkflowLanguageCode();
-
                 const statusesCount = await getStatusesCount({
                     $axios: this.$axios,
-                    workflowLanguage: workflowLanguageCode,
+                    workflowLanguage: this.workflowLanguage.code,
                 });
 
                 this.statuses = statusesCount.map((status) => {
@@ -146,7 +139,9 @@ export default {
             }
         },
         async onValueChange(value) {
-            this.workflowLanguage = value;
+            this.workflowLanguage = this.availableLanguages.find(({
+                name,
+            }) => name === value);
 
             await this.getStatusesCount();
         },

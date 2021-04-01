@@ -177,9 +177,6 @@ export default {
                 await dispatch('core/getLanguageTree', {}, {
                     root: true,
                 });
-                await dispatch('core/setDefaultLanguage', {}, {
-                    root: true,
-                });
 
                 onSuccess();
             } catch (e) {
@@ -217,6 +214,11 @@ export default {
             const transformedUserData = camelcaseKeys(user);
 
             transformedUserData.privileges = getMappedPrivileges(transformedUserData.privileges);
+
+            if (Array.isArray(transformedUserData.languagePrivileges)) {
+                transformedUserData.languagePrivileges = {};
+            }
+
             commit('__SET_STATE', {
                 key: 'user',
                 value: transformedUserData,

@@ -37,6 +37,7 @@ import IconSync from '@UI/components/Icons/Feedback/IconSync';
 import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -56,6 +57,10 @@ export default {
         };
     },
     computed: {
+        ...mapState('user', [
+            'drafts',
+            'languagePrivilegesCollection',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.USER.update,
@@ -71,14 +76,33 @@ export default {
             if (this.isSubmitting) {
                 return;
             }
-            this.isSubmitting = true;
 
-            this.removeScopeErrors(this.scope);
-            this.updateUser({
-                scope: this.scope,
-                onSuccess: this.onUpdateSuccess,
-                onError: this.onUpdateError,
-            });
+            const isAnyReadPrivilege = Object.keys(this.languagePrivilegesCollection)
+                .some(languageCode => Object.keys(this.languagePrivilegesCollection[languageCode])
+                    .filter(privilege => privilege === 'read')
+                    .some((privilege) => {
+                        if (typeof this.drafts[`${languageCode}/${privilege}`] === 'undefined') {
+                            return this.languagePrivilegesCollection[languageCode][privilege];
+                        }
+
+                        return this.drafts[`${languageCode}/${privilege}`];
+                    }));
+
+            if (isAnyReadPrivilege) {
+                this.isSubmitting = true;
+
+                this.removeScopeErrors(this.scope);
+                this.updateUser({
+                    scope: this.scope,
+                    onSuccess: this.onUpdateSuccess,
+                    onError: this.onUpdateError,
+                });
+            } else {
+                this.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: this.$t('@Users.user.components.UpdateLanguageRestrictionsButton.updateLanguageValidation'),
+                });
+            }
         },
         onUpdateSuccess() {
             this.$addAlert({

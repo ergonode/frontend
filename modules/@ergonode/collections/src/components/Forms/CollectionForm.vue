@@ -48,7 +48,6 @@ import CollectionTypesAutocomplete from '@Collections/components/Autocompletes/C
 import PRIVILEGES from '@Collections/config/privileges';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import TextField from '@UI/components/TextField/TextField';
@@ -61,7 +60,6 @@ export default {
     name: 'CollectionForm',
     components: {
         CollectionTypesAutocomplete,
-        Divider,
         Form,
         FormSection,
         TextField,

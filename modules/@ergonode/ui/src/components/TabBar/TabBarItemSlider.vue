@@ -5,7 +5,7 @@
 <template>
     <div
         class="tab-bar-item-slider"
-        :style="positionStyle" />
+        :style="style" />
 </template>
 
 <script>
@@ -19,13 +19,36 @@ export default {
             type: Number,
             required: true,
         },
+        /**
+         * The DOM element reference for item container
+         */
+        itemsReference: {
+            required: true,
+        },
     },
     computed: {
-        positionStyle() {
-            const elementWidth = 176;
+        itemWidth() {
+            if (!this.itemsReference) {
+                return 0;
+            }
 
+            return this.itemsReference.children[this.selectedIndex].offsetWidth;
+        },
+        itemsWidth() {
+            if (!this.itemsReference) {
+                return 0;
+            }
+
+            return [
+                ...this.itemsReference.children,
+            ]
+                .slice(0, this.selectedIndex)
+                .reduce((offsetWidth, curr) => offsetWidth + curr.offsetWidth, 0);
+        },
+        style() {
             return {
-                transform: `translateX(${this.selectedIndex * elementWidth}px)`,
+                width: `${this.itemWidth}px`,
+                transform: `translateX(${this.itemsWidth}px)`,
             };
         },
     },
@@ -38,9 +61,13 @@ export default {
         top: 39px;
         left: 0;
         z-index: $Z_INDEX_LVL_1;
-        width: 176px;
         height: 2px;
         background-color: $GREEN;
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+        transition:
+            width,
+            transform 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+        will-change:
+            width,
+            transform;
     }
 </style>

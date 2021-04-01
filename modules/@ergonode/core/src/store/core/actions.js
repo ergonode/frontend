@@ -10,7 +10,6 @@ import {
 } from '@Core/models/mappers/treeDesignerMapper';
 import {
     getAll as getAllLanguages,
-    update as updateLanguage,
 } from '@Core/services/language/index';
 import {
     get as getLanguageTree,
@@ -64,39 +63,6 @@ export default {
             }
 
             onError(e);
-        }
-    },
-    async updateLanguages({}, {
-        languages = [],
-        scope,
-        onSuccess = () => {},
-        onError = () => {},
-    }) {
-        try {
-            const data = {
-                collection: languages,
-            };
-
-            await updateLanguage({
-                $axios: this.app.$axios,
-                data,
-            });
-
-            onSuccess();
-        } catch (e) {
-            if (this.app.$axios.isCancel(e)) {
-                this.app.$addAlert({
-                    type: ALERT_TYPE.WARNING,
-                    message: 'Updating languages has been canceled',
-                });
-
-                return;
-            }
-
-            onError({
-                errors: e.data.errors,
-                scope,
-            });
         }
     },
     async updateLanguageTree({}, {
@@ -159,24 +125,6 @@ export default {
             key: 'inheritedLanguagesTree',
             value: languageInheritanceTree,
         });
-    },
-    setDefaultLanguage({
-        state, commit, rootState,
-    }) {
-        if (rootState.authentication.user) {
-            const {
-                languagePrivileges,
-            } = rootState.authentication.user;
-            const defaultLanguage = state.inheritedLanguagesTree
-                .find(({
-                    code,
-                }) => languagePrivileges[code].read === true);
-
-            commit('__SET_STATE', {
-                key: 'defaultLanguageCode',
-                value: defaultLanguage.code,
-            });
-        }
     },
     addModal({
         commit,

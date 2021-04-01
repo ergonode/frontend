@@ -41,7 +41,6 @@ import {
 } from '@Users/models/gridDataMapper';
 import {
     mapActions,
-    mapGetters,
     mapState,
 } from 'vuex';
 
@@ -82,8 +81,8 @@ export default {
         };
     },
     computed: {
-        ...mapGetters('core', [
-            'activeLanguages',
+        ...mapState('core', [
+            'inheritedLanguagesTree',
         ]),
         ...mapState('user', [
             'drafts',
@@ -143,7 +142,7 @@ export default {
             });
         },
         onFetchData() {
-            const fullDataList = this.activeLanguages.map(({
+            const fullDataList = this.inheritedLanguagesTree.map(({
                 name,
                 code,
             }) => ({

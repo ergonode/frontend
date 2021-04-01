@@ -250,12 +250,14 @@ export default {
             row,
             column,
         }) {
-            const indexesToRemove = [
-                row,
-            ];
+            const indexesToRemove = [];
             const itemIds = [
                 id,
             ];
+
+            if (this.localItems.some(item => item.id === id)) {
+                indexesToRemove.push(row);
+            }
 
             if (typeof this.hiddenItems[id] !== 'undefined') {
                 for (let i = row + 1; i < this.items.length; i += 1) {

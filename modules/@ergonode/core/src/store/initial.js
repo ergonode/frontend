@@ -32,7 +32,6 @@ export async function nuxtServerInit({
             await dispatch('authentication/getUser', {});
             await dispatch('core/getLanguages', {});
             await dispatch('core/getLanguageTree', {});
-            await dispatch('core/setDefaultLanguage');
         } catch (e) {
             console.error(e);
         }

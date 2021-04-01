@@ -6,6 +6,7 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
+    deepClone,
     isObject,
 } from '@Core/models/objectWrapper';
 import {
@@ -16,13 +17,11 @@ import {
     update,
     uploadAvatar,
 } from '@Users/services/user/index';
-import deepmerge from 'deepmerge';
 
 export default {
     async getUser(
         {
             commit,
-            rootGetters,
         },
         {
             id,
@@ -39,7 +38,6 @@ export default {
             });
             // EXTENDED BEFORE METHOD
 
-            const getActiveLanguageByCode = rootGetters['core/getActiveLanguageByCode'];
             const data = await get({
                 $axios: this.app.$axios,
                 id,
@@ -75,10 +73,6 @@ export default {
             commit('__SET_STATE', {
                 key: 'lastName',
                 value: last_name,
-            });
-            commit('__SET_STATE', {
-                key: 'language',
-                value: getActiveLanguageByCode(language).name,
             });
             commit('__SET_STATE', {
                 key: 'languageCode',
@@ -125,7 +119,6 @@ export default {
             commit,
             dispatch,
             rootState,
-            rootGetters,
         },
         {
             scope,
@@ -138,51 +131,36 @@ export default {
                 id,
                 firstName,
                 lastName,
-                language,
+                languageCode,
                 password,
                 passwordRepeat,
                 isActive,
                 drafts,
                 languagePrivilegesCollection,
             } = state;
-            const getActiveLanguageByName = rootGetters['core/getActiveLanguageByName'];
-            const getActiveLanguageByCode = rootGetters['core/getActiveLanguageByCode'];
-            const activeLanguages = Object.keys(languagePrivilegesCollection)
-                .reduce((acc, languageCode) => {
-                    const languages = acc;
-
-                    if (getActiveLanguageByCode(languageCode).name) {
-                        languages[languageCode] = languagePrivilegesCollection[languageCode];
-                    }
-                    return languages;
-                }, {});
-
-            const mappedDrafts = {};
+            const privileges = deepClone(languagePrivilegesCollection);
 
             Object.keys(drafts).forEach((key) => {
                 const [
-                    languageCode,
+                    privilegeLanguageCode,
                     privilege,
                 ] = key.split('/');
 
-                if (typeof mappedDrafts[languageCode] === 'undefined') {
-                    mappedDrafts[languageCode] = {};
+                if (typeof privileges[privilegeLanguageCode] === 'undefined') {
+                    privileges[privilegeLanguageCode] = {};
                 }
 
-                mappedDrafts[languageCode][privilege] = Boolean(drafts[key]);
+                privileges[privilegeLanguageCode][privilege] = drafts[key];
             });
 
             let data = {
                 firstName,
                 lastName,
-                language: getActiveLanguageByName(language).code,
+                language: languageCode,
                 password,
                 passwordRepeat,
                 isActive,
-                languagePrivilegesCollection: deepmerge(
-                    activeLanguages,
-                    mappedDrafts,
-                ),
+                languagePrivilegesCollection: privileges,
             };
             // EXTENDED BEFORE METHOD
             const extendedData = await this.$getExtendMethod('@Users/store/user/action/updateUser/__before', {
@@ -301,7 +279,6 @@ export default {
     async createUser(
         {
             state,
-            rootGetters,
         },
         {
             scope,
@@ -317,16 +294,15 @@ export default {
                 password,
                 passwordRepeat,
                 isActive,
-                language,
+                languageCode,
             } = state;
-            const getActiveLanguageByName = rootGetters['core/getActiveLanguageByName'];
             let data = {
                 email,
                 firstName,
                 lastName,
                 password,
                 passwordRepeat,
-                language: getActiveLanguageByName(language).code,
+                language: languageCode,
                 isActive,
             };
 

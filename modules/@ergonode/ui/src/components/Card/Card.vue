@@ -4,10 +4,13 @@
  */
 <template>
     <div class="card">
-        <section v-if="title">
+        <section
+            class="card__header"
+            v-if="title">
             <h2
-                class="card__header"
+                class="card__title"
                 v-text="title" />
+            <slot name="appendHeader" />
         </section>
         <section class="card__body">
             <slot />
@@ -37,13 +40,22 @@ export default {
         box-shadow: $ELEVATOR_2_DP;
 
         &__header {
+            display: flex;
+            align-items: center;
+            column-gap: 8px;
             padding: 16px 24px;
-            color: $GRAPHITE_DARK;
-            font: $FONT_MEDIUM_24_32;
             border-bottom: $BORDER_1_GREY;
         }
 
+        &__title {
+            color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_24_32;
+        }
+
         &__body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 24px;
         }
     }

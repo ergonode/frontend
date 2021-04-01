@@ -4,8 +4,8 @@
  */
 <template>
     <div
-        :class="['badge', `badge--${size}`]"
-        :style="badgeStyles">
+        :class="classes"
+        :style="styles">
         <slot name="prepend" />
         <BadgeLabel :label="title" />
     </div>
@@ -61,9 +61,25 @@ export default {
             default: SIZE.REGULAR,
             validator: value => Object.values(SIZE).indexOf(value) !== -1,
         },
+        /**
+         * Determinates if the badge has box shadow
+         */
+        shadow: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
-        badgeStyles() {
+        classes() {
+            return [
+                'badge',
+                `badge--${this.size}`,
+                {
+                    'badge--shadow': this.shadow,
+                },
+            ];
+        },
+        styles() {
             return {
                 backgroundColor: this.background,
                 color: this.color,
@@ -77,7 +93,11 @@ export default {
     .badge {
         display: flex;
         align-items: center;
-        box-shadow: $ELEVATOR_2_DP;
+        width: fit-content;
+
+        &--shadow {
+            box-shadow: $ELEVATOR_2_DP;
+        }
 
         &--small {
             height: 16px;

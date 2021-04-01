@@ -83,7 +83,6 @@ export default {
     methods: {
         ...mapActions('core', [
             'setLanguageTree',
-            'setDefaultLanguage',
             'updateLanguageTree',
         ]),
         ...mapActions('authentication', [
@@ -113,7 +112,7 @@ export default {
                 });
             } else {
                 this.$addAlert({
-                    type: ALERT_TYPE.INFO,
+                    type: ALERT_TYPE.WARNING,
                     message: 'Language inheritance tree cannot be saved without any language',
                 });
             }
@@ -128,13 +127,11 @@ export default {
         onUpdateError(message) {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message,
+                message: message.errors.languages,
             });
             this.isSubmitting = false;
         },
         onGetUserSuccess() {
-            this.setDefaultLanguage();
-
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Languages tree has been updated',

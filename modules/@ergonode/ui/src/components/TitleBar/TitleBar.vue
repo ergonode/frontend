@@ -10,15 +10,7 @@
             </template>
             <template #append>
                 <slot name="prependBadge" />
-                <InformationIconBadge
-                    v-if="isReadOnly"
-                    :background="blueColor"
-                    :color="whiteColor"
-                    title="READ ONLY">
-                    <template #icon="{ color }">
-                        <IconLock :fill-color="color" />
-                    </template>
-                </InformationIconBadge>
+                <ReadOnlyBadge v-if="isReadOnly" />
             </template>
         </TitleBarHeader>
         <TitleBarActions>
@@ -34,18 +26,16 @@ import {
     GREEN,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import InformationIconBadge from '@UI/components/Badges/InformationIconBadge';
-import IconLock from '@UI/components/Icons/Feedback/IconLock';
+import ReadOnlyBadge from '@UI/components/Badges/ReadOnlyBadge';
 import TitleBarActions from '@UI/components/TitleBar/TitleBarActions';
 import TitleBarHeader from '@UI/components/TitleBar/TitleBarHeader';
 
 export default {
     name: 'TitleBar',
     components: {
+        ReadOnlyBadge,
         TitleBarHeader,
         TitleBarActions,
-        IconLock,
-        InformationIconBadge,
     },
     props: {
         /**

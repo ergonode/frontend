@@ -51,7 +51,7 @@ export default {
             'completeness',
         ]),
         languageCompleteness() {
-            if (this.isFetchingData) {
+            if (this.isFetchingData || !this.completeness[this.languageCode]) {
                 return {
                     missing: [],
                     filled: 0,

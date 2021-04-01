@@ -4,6 +4,9 @@
  */
 <template>
     <Card :title="selectedLanguage">
+        <template #appendHeader>
+            <ReadOnlyBadge v-if="isReadOnly" />
+        </template>
         <Form :errors="translationErrors">
             <template #body>
                 <FormSection>
@@ -21,7 +24,7 @@
                         resize="vertical"
                         height="150px"
                         :error-messages="translationErrors[descriptionKeyField]"
-                        :disabled="!isAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate || isReadOnly"
                         @input="(value) => setTranslationPropertyValue(
                             value,
                             descriptionKeyField,
@@ -41,20 +44,12 @@
 <script>
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 import PRIVILEGES from '@Segments/config/privileges';
-import Card from '@UI/components/Card/Card';
-import Divider from '@UI/components/Dividers/Divider';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
 import TextArea from '@UI/components/TextArea/TextArea';
 import TextField from '@UI/components/TextField/TextField';
 
 export default {
     name: 'SegmentTranslationForm',
     components: {
-        Divider,
-        Form,
-        FormSection,
-        Card,
         TextField,
         TextArea,
     },
@@ -84,7 +79,7 @@ export default {
             props = {},
         }) {
             return {
-                disabled: !this.isAllowedToUpdate,
+                disabled: !this.isAllowedToUpdate || this.isReadOnly,
                 scope: this.scope,
                 changeValues: this.changeValues,
                 errors: this.translationErrors,

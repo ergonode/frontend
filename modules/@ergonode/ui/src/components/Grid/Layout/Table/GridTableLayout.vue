@@ -792,6 +792,7 @@ export default {
     .grid-table-layout {
         position: relative;
         display: flex;
+        flex: 1 1 auto;
         overflow: auto;
 
         &--placeholder {

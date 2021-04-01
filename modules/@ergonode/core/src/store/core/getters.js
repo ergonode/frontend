@@ -6,20 +6,34 @@ export default {
     rootLanguage: state => state.inheritedLanguagesTree.find(({
         column,
     }) => column === 0),
-    getLanguage: state => languageId => state.languages.find(({
-        id,
-    }) => id === languageId),
-    activeLanguages: state => state.languages.filter(({
-        active,
-    }) => active === true),
-    getActiveLanguageByCode: (state, getters) => c => getters.activeLanguages.find(
-        ({
-            code,
-        }) => code === c,
-    ) || {},
-    getActiveLanguageByName: (state, getters) => n => getters.activeLanguages.find(
-        ({
-            name,
-        }) => name === n,
-    ) || {},
+    availableLanguages: (state, getters, rootState) => state.inheritedLanguagesTree.filter(({
+        code,
+    }) => {
+        const {
+            languagePrivileges,
+        } = rootState.authentication.user;
+
+        return languagePrivileges[code] && languagePrivileges[code].read;
+    }),
+    defaultLanguageCode: (state, getters, rootState) => {
+        if (rootState.authentication.user) {
+            const {
+                language: languageCode,
+            } = rootState.authentication.user;
+
+            const defaultLanguage = getters.availableLanguages.find(
+                language => language.code === languageCode,
+            );
+
+            if (defaultLanguage) {
+                return defaultLanguage.code;
+            }
+
+            if (getters.availableLanguages.length) {
+                return getters.availableLanguages[0].code;
+            }
+        }
+
+        return null;
+    },
 };

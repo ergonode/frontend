@@ -58,11 +58,10 @@
                     :disabled="!isAllowedToUpdate"
                     :label="$t('@Users.user.components.UserForm.activeLabel')"
                     @input="setStatusValue" />
-                <Select
-                    :value="language"
+                <LanguageSelect
+                    :value="languageCode"
                     required
                     :label="$t('@Users.user.components.UserForm.languageLabel')"
-                    :options="languageOptions"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[languageFieldKey]"
                     @input="setLanguageValue" />
@@ -78,10 +77,10 @@
 </template>
 
 <script>
+import LanguageSelect from '@Core/components/Selects/LanguageSelect';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import Button from '@UI/components/Button/Button';
-import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import Select from '@UI/components/Select/Select';
@@ -92,17 +91,16 @@ import CreateUserButton from '@Users/components/Buttons/CreateUserButton';
 import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
-    mapGetters,
     mapState,
 } from 'vuex';
 
 export default {
     name: 'UserForm',
     components: {
+        LanguageSelect,
         CreateUserButton,
         SelectListNoDataPlaceholder,
         Button,
-        Divider,
         Form,
         FormSection,
         TextField,
@@ -114,9 +112,6 @@ export default {
         formFeedbackMixin,
     ],
     computed: {
-        ...mapGetters('core', [
-            'activeLanguages',
-        ]),
         ...mapState('user', [
             'id',
             'email',
@@ -124,7 +119,7 @@ export default {
             'lastName',
             'password',
             'passwordRepeat',
-            'language',
+            'languageCode',
             'isActive',
         ]),
         extendedForm() {
@@ -142,11 +137,6 @@ export default {
                 PRIVILEGES.USER.create,
             ]));
         },
-        languageOptions() {
-            return this.activeLanguages.map(({
-                name,
-            }) => name);
-        },
         emailFieldKey() {
             return 'email';
         },
@@ -163,7 +153,7 @@ export default {
             return 'passwordRepeat';
         },
         languageFieldKey() {
-            return 'language';
+            return 'languageCode';
         },
         isActiveFieldKey() {
             return 'isActive';

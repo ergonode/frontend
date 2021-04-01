@@ -22,7 +22,6 @@
 import LanguageSideBarElement from '@Core/components/SideBars/LanguageSideBarElement';
 import SideBar from '@UI/components/SideBar/SideBar';
 import {
-    mapGetters,
     mapState,
 } from 'vuex';
 
@@ -50,21 +49,18 @@ export default {
         ...mapState('core', [
             'languages',
         ]),
-        ...mapGetters('core', [
-            'activeLanguages',
-        ]),
         filteredLanguages() {
             if (this.searchValue) {
                 const rgx = new RegExp(this.searchValue, 'i');
 
-                return this.activeLanguages.filter(
+                return this.languages.filter(
                     ({
                         code, name,
                     }) => code.match(rgx) || name.match(rgx),
                 );
             }
 
-            return this.activeLanguages;
+            return this.languages;
         },
     },
     methods: {

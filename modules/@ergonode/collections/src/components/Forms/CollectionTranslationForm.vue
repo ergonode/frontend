@@ -4,6 +4,9 @@
  */
 <template>
     <Card :title="selectedLanguage">
+        <template #appendHeader>
+            <ReadOnlyBadge v-if="isReadOnly" />
+        </template>
         <Form :errors="translationErrors">
             <template #body>
                 <FormSection>
@@ -11,7 +14,7 @@
                         :data-cy="dataCyGenerator(nameKeyField)"
                         :value="translations.name[languageCode]"
                         label="Product collection name"
-                        :disabled="!isAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate || isReadOnly"
                         :error-messages="translationErrors[nameKeyField]"
                         @input="(value) => setTranslationPropertyValue(value, nameKeyField)" />
                     <TextArea
@@ -21,7 +24,7 @@
                         resize="vertical"
                         height="150px"
                         :error-messages="translationErrors[descriptionKeyField]"
-                        :disabled="!isAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate || isReadOnly"
                         @input="(value) => setTranslationPropertyValue(
                             value,
                             descriptionKeyField,
@@ -41,20 +44,12 @@
 <script>
 import PRIVILEGES from '@Collections/config/privileges';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
-import Card from '@UI/components/Card/Card';
-import Divider from '@UI/components/Dividers/Divider';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
 import TextArea from '@UI/components/TextArea/TextArea';
 import TextField from '@UI/components/TextField/TextField';
 
 export default {
     name: 'CollectionTranslationForm',
     components: {
-        Divider,
-        FormSection,
-        Form,
-        Card,
         TextArea,
         TextField,
     },
@@ -84,7 +79,7 @@ export default {
             props = {},
         }) {
             return {
-                disabled: !this.isAllowedToUpdate,
+                disabled: !this.isAllowedToUpdate || this.isReadOnly,
                 scope: this.scope,
                 changeValues: this.changeValues,
                 errors: this.translationErrors,
