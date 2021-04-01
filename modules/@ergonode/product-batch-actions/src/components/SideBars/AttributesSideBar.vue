@@ -116,6 +116,7 @@ export default {
     },
     computed: {
         ...mapGetters('core', [
+            'rootLanguage',
             'defaultLanguageCode',
         ]),
         groupedAttributesByLanguage() {
@@ -143,6 +144,12 @@ export default {
             limit = 99999,
         }) {
             if (this.templateIds.length) {
+                let filter = `templates=${this.templateIds.join(',')}`;
+
+                if (this.rootLanguage.code !== languageCode) {
+                    filter += ';scope=local';
+                }
+
                 await getItems({
                     $axios: this.$axios,
                     path: `${languageCode}/attributes`,
@@ -151,7 +158,7 @@ export default {
                         limit,
                         offset: 0,
                         view: 'list',
-                        filter: `templates=${this.templateIds.join(',')}`,
+                        filter,
                         field: 'code',
                         order: 'ASC',
                     },

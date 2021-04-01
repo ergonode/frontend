@@ -127,7 +127,7 @@ export default {
         onUpdateError(message) {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message,
+                message: message.errors.languages,
             });
             this.isSubmitting = false;
         },
