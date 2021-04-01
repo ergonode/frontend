@@ -1,6 +1,6 @@
 {
   "name": "@ergonode/segments",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.2",
   "author": "Team Ergonode <team@ergonode.com>",
   "description": "Ergonode segments module",
   "license": "OSL-3.0",
