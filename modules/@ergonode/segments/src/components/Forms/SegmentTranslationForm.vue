@@ -15,7 +15,7 @@
                         :value="translations.name[languageCode]"
                         label="Condition set name"
                         :error-messages="translationErrors[nameKeyField]"
-                        :disabled="!isAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate || isReadOnly"
                         @input="(value) => setTranslationPropertyValue(value, nameKeyField)" />
                     <TextArea
                         :data-cy="dataCyGenerator(descriptionKeyField)"
