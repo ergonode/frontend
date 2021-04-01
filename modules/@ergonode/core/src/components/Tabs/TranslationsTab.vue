@@ -80,7 +80,7 @@ export default {
         if (languagesToSelect.length === cookieLanguages.length && cookieLanguages.length > 0) {
             this.selectedLanguages = languagesToSelect.map(language => language.code);
         } else {
-            const userLanguage = this.inheritedLanguagesTree.find(
+            const userLanguage = this.availableLanguages.find(
                 language => language.code === this.userLanguageCode,
             );
 
