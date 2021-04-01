@@ -54,8 +54,8 @@ export default {
 
         &__body {
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             padding: 24px;
         }
     }
