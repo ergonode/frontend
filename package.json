@@ -33,7 +33,8 @@
     "publish:all": "lerna publish ${semver} --force-publish --no-push --no-changelog",
     "list:modules": "lerna la",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@babel/register": "^7.13.8",
@@ -70,7 +71,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.13.14",
-    "@babel/eslint-parser": "^7.13.14",
     "@babel/plugin-transform-runtime": "^7.13.10",
     "@babel/preset-env": "^7.13.12",
     "@babel/runtime": "^7.13.10",
