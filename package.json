@@ -34,9 +34,7 @@
     "list:modules": "lerna la",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "postinstall": "husky install",
-    "prepublishOnly": "pinst --disable",
-    "postpublish": "pinst --enable"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@babel/register": "^7.13.8",
