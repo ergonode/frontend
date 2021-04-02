@@ -159,11 +159,6 @@ module.exports = {
         cssSourceMap: true,
         optimizeCSS: true,
         loaders: {
-            css: {
-                modules: {
-                    compileType: 'icss',
-                },
-            },
             vue: {
                 compilerOptions: {
                     modules: [
