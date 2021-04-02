@@ -4,8 +4,6 @@
  * See LICENSE for license details.
  */
 
-import dotenv from 'dotenv';
-import getRepoInfo from 'git-repo-info';
 import {
     join,
 } from 'path';
@@ -18,12 +16,7 @@ import {
     version,
 } from './package';
 
-dotenv.config({
-    path: '.env',
-});
-
 const IS_DEV = process.env.NODE_ENV !== 'production';
-const BASE_URL = process.env.API_BASE_URL || 'http://localhost:8000';
 const PARALLEL = process.env.PARALLEL || false;
 
 module.exports = {
@@ -149,7 +142,7 @@ module.exports = {
         ],
     },
     axios: {
-        baseURL: BASE_URL || 'http://localhost:8000',
+        baseURL: 'http://localhost:8080',
     },
     build: {
         babel: {
@@ -216,12 +209,20 @@ module.exports = {
             performance: true,
         },
     },
-    env: {
-        baseURL: BASE_URL,
+
+    publicRuntimeConfig: {
+        axios: {
+            browserBaseURL: process.env.API_BASE_URL,
+        },
         NUXT_ENV: process.env.NUXT_ENV || process.env.NODE_ENV || 'development',
         VUE_APP_VERSION: version,
-        VUE_APP_GIT_INFO: getRepoInfo(),
         SHOW_RELEASE_INFO: process.env.SHOW_RELEASE_INFO || false,
         LEAVE_TEST_TAG_ATTRS: process.env.LEAVE_TEST_TAG_ATTRS || true,
+    },
+
+    privateRuntimeConfig: {
+        axios: {
+            baseURL: process.env.API_BASE_URL,
+        },
     },
 };
