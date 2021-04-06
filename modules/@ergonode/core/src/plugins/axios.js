@@ -82,6 +82,7 @@ const removeCancelToken = (token) => {
 
 export default function ({
     $axios,
+    $config,
     app,
     store,
     error,
@@ -123,7 +124,7 @@ export default function ({
                 language,
             } = store.state.authentication.user;
 
-            configLocal.baseURL = `${process.env.baseURL}${language}/`;
+            configLocal.baseURL = `${$config.axios.browserBaseURL}${language}/`;
         }
 
         if (!config.url.includes('token/refresh')) {
@@ -230,6 +231,7 @@ export default function ({
                             key: 'isLogged',
                             value: false,
                         });
+
                         redirect('/');
                     })
                     .finally(() => { isRefreshing = false; }));

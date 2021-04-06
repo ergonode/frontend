@@ -5,7 +5,7 @@
 <template>
     <main class="login">
         <section class="login__body">
-            <GitInformation />
+            <GitReleaseInformation v-if="isReleaseInformation" />
             <FluidBlob />
             <div class="login-body__form">
                 <slot name="form" />
@@ -53,7 +53,6 @@ import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
 import IconLogoName from '@Core/components/Icons/Logo/IconLogoName';
-import GitInformation from '@Core/components/ReleaseInfo/GitInformation';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -70,10 +69,10 @@ export default {
     components: {
         LinkButton,
         Footer,
-        GitInformation,
         IconLogoName,
         FluidBlob,
         Select,
+        GitReleaseInformation: () => import('@Core/components/GitReleaseInformation/GitReleaseInformation'),
     },
     data() {
         return {
@@ -89,6 +88,9 @@ export default {
         },
         languageOptions() {
             return Object.values(TRANSLATIONS);
+        },
+        isReleaseInformation() {
+            return this.$config.SHOW_RELEASE_INFO;
         },
     },
     methods: {
