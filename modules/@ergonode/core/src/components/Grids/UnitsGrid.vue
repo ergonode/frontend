@@ -24,15 +24,25 @@
         @filter="onFilterChange"
         @remove-all-filters="onRemoveAllFilters"
         v-bind="extendedProps['grid']">
-        <template #actionsHeader>
+        <template #actionsHeader="actionsHeaderProps">
+            <Component
+                v-for="(headerItem, index) in extendedActionHeader"
+                :is="headerItem.component"
+                :key="index"
+                v-bind="bindingProps({
+                    props: {
+                        ...actionsHeaderProps,
+                        ...headerItem.props,
+                    },
+                })" />
             <CreateUnitButton @created="onUnitCreated" />
-            <template
-                v-for="(actionItem, index) in extendedActionHeader">
-                <Component
-                    :is="actionItem.component"
-                    :key="index"
-                    v-bind="bindingProps(actionItem)" />
-            </template>
+        </template>
+        <template #appendFooter>
+            <Component
+                v-for="(footerItem, index) in extendedFooter"
+                :is="footerItem.component"
+                :key="index"
+                v-bind="bindingProps(footerItem)" />
         </template>
     </Grid>
 </template>
@@ -53,6 +63,7 @@ import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
+    getFilterQueryParams,
     getParams,
     getParsedFilters,
 } from '@Core/models/mappers/gridDataMapper';
@@ -102,13 +113,16 @@ export default {
         };
     },
     computed: {
+        extendedActionHeader() {
+            return this.$getExtendSlot('@Core/components/Grids/UnitsGrid/actionHeader');
+        },
+        extendedFooter() {
+            return this.$getExtendSlot('@Core/components/Grids/UnitsGrid/footer');
+        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.SETTINGS.update,
             ]);
-        },
-        extendedActionHeader() {
-            return this.$getExtendSlot('@Core/components/Grids/UnitGrid/actionsHeader');
         },
     },
     watch: {
@@ -136,14 +150,6 @@ export default {
         ...mapActions('dictionaries', [
             'getDictionary',
         ]),
-        bindingProps({
-            props = {},
-        }) {
-            return {
-                privileges: PRIVILEGES.SETTINGS,
-                ...props,
-            };
-        },
         onUnitCreated() {
             this.onFetchData();
         },
@@ -242,6 +248,17 @@ export default {
                     ...pagination,
                 },
             });
+        },
+        bindingProps({
+            props = {},
+        }) {
+            const query = getFilterQueryParams(this.$route.query);
+
+            return {
+                disabled: !this.isAllowedToUpdate,
+                query: query.replace(/\[|\]/g, ''),
+                ...props,
+            };
         },
     },
 };

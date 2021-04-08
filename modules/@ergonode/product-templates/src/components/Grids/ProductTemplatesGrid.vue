@@ -27,6 +27,25 @@
         @filter="onFilterChange"
         @remove-all-filters="onRemoveAllFilters"
         v-bind="extendedProps['grid']">
+        <template #actionsHeader="actionsHeaderProps">
+            <Component
+                v-for="(headerItem, index) in extendedActionHeader"
+                :is="headerItem.component"
+                :key="index"
+                v-bind="bindingProps({
+                    props: {
+                        ...actionsHeaderProps,
+                        ...headerItem.props,
+                    },
+                })" />
+        </template>
+        <template #appendFooter>
+            <Component
+                v-for="(footerItem, index) in extendedFooter"
+                :is="footerItem.component"
+                :key="index"
+                v-bind="bindingProps(footerItem)" />
+        </template>
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
                 :title="$t('productTemplate.grid.placeholderTitle')"
@@ -35,15 +54,6 @@
                     <CreateProductTemplateButton />
                 </template>
             </GridNoDataPlaceholder>
-        </template>
-        <template #actionsHeader>
-            <template
-                v-for="(actionItem, index) in extendedActionHeader">
-                <Component
-                    :is="actionItem.component"
-                    :key="index"
-                    v-bind="bindingProps(actionItem)" />
-            </template>
         </template>
     </Grid>
 </template>
@@ -60,6 +70,7 @@ import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
+    getFilterQueryParams,
     getParams,
     getParsedFilters,
 } from '@Core/models/mappers/gridDataMapper';
@@ -117,7 +128,10 @@ export default {
     },
     computed: {
         extendedActionHeader() {
-            return this.$getExtendSlot('@Templates/components/Grids/ProductTemplatesGrid/actionsHeader');
+            return this.$getExtendSlot('@Templates/components/Grids/ProductTemplatesGrid/actionHeader');
+        },
+        extendedFooter() {
+            return this.$getExtendSlot('@Templates/components/Grids/ProductTemplatesGrid/footer');
         },
         collectionCellBinding() {
             return {
@@ -168,14 +182,6 @@ export default {
         );
     },
     methods: {
-        bindingProps({
-            props = {},
-        }) {
-            return {
-                privileges: PRIVILEGES.TEMPLATE_DESIGNER,
-                ...props,
-            };
-        },
         onProductTemplateCreated() {
             this.onFetchData();
         },
@@ -269,6 +275,17 @@ export default {
                     ...pagination,
                 },
             });
+        },
+        bindingProps({
+            props = {},
+        }) {
+            const query = getFilterQueryParams(this.$route.query);
+
+            return {
+                disabled: !this.isAllowedToUpdate,
+                query: query.replace(/\[|\]/g, ''),
+                ...props,
+            };
         },
     },
 };

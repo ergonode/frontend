@@ -18,7 +18,17 @@
         @filter="onFilterChange"
         @remove-all-filters="onRemoveAllFilters"
         v-bind="extendedProps['grid']">
-        <template #actionsHeader>
+        <template #actionsHeader="actionsHeaderProps">
+            <Component
+                v-for="(headerItem, index) in extendedActionHeader"
+                :is="headerItem.component"
+                :key="index"
+                v-bind="bindingProps({
+                    props: {
+                        ...actionsHeaderProps,
+                        ...headerItem.props,
+                    },
+                })" />
             <div class="export-details-tiles">
                 <Tile
                     v-for="(detail, index) in details"
@@ -28,6 +38,11 @@
             </div>
         </template>
         <template #appendFooter>
+            <Component
+                v-for="(footerItem, index) in extendedFooter"
+                :is="footerItem.component"
+                :key="index"
+                v-bind="bindingProps(footerItem)" />
             <DownloadExportFileButton
                 v-if="downloadLink"
                 :link="downloadLink"
@@ -38,6 +53,7 @@
 
 <script>
 import DownloadExportFileButton from '@Channels/components/Buttons/DownloadExportFileButton';
+import PRIVILEGES from '@Channels/config/privileges';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -109,12 +125,23 @@ export default {
         };
     },
     computed: {
+        extendedActionHeader() {
+            return this.$getExtendSlot('@Channels/components/Grids/ExportDetailsGrid/actionHeader');
+        },
+        extendedFooter() {
+            return this.$getExtendSlot('@Channels/components/Grids/ExportDetailsGrid/footer');
+        },
         exportFilename() {
             if (this.details.length < 1) {
                 return 'not specified';
             }
 
             return this.details[1].value;
+        },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.CHANNEL.update,
+            ]);
         },
     },
     methods: {
@@ -198,6 +225,15 @@ export default {
             this.rows = rows;
             this.filtered = filtered;
             this.isPrefetchingData = false;
+        },
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                disabled: !this.isAllowedToUpdate,
+                query: getParsedFilters(this.localParams.filter),
+                ...props,
+            };
         },
     },
 };

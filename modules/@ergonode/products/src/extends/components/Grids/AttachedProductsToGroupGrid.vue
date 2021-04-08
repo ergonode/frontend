@@ -25,6 +25,26 @@
         @filter="onFilterChange"
         @remove-all-filters="onRemoveAllFilters"
         v-bind="extendedProps['grid']">
+        <template #actionsHeader="actionsHeaderProps">
+            <Component
+                v-for="(headerItem, index) in extendedActionHeader"
+                :is="headerItem.component"
+                :key="index"
+                v-bind="bindingProps({
+                    props: {
+                        ...actionsHeaderProps,
+                        ...headerItem.props,
+                    },
+                })" />
+            <AddProductsToGroupActionButton />
+        </template>
+        <template #appendFooter>
+            <Component
+                v-for="(footerItem, index) in extendedFooter"
+                :is="footerItem.component"
+                :key="index"
+                v-bind="bindingProps(footerItem)" />
+        </template>
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
                 :title="$t('@Products.productExtend.components.AttachedProductsToGroupGrid.noProductsInGroup')"
@@ -33,9 +53,6 @@
                     <AddProductsToGroupButton />
                 </template>
             </GridNoDataPlaceholder>
-        </template>
-        <template #actionsHeader>
-            <AddProductsToGroupActionButton />
         </template>
     </Grid>
 </template>
@@ -58,6 +75,7 @@ import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponent
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
     getDefaultDataFromQueryParams,
+    getFilterQueryParams,
     getParams,
     getParsedFilters,
 } from '@Core/models/mappers/gridDataMapper';
@@ -117,6 +135,12 @@ export default {
         };
     },
     computed: {
+        extendedActionHeader() {
+            return this.$getExtendSlot('@Products/components/Grids/AttachedProductsToGroupGrid/actionHeader');
+        },
+        extendedFooter() {
+            return this.$getExtendSlot('@Products/components/Grids/AttachedProductsToGroupGrid/footer');
+        },
         collectionCellBinding() {
             return {
                 imageColumn: 'default_image',
@@ -267,6 +291,17 @@ export default {
                     ...pagination,
                 },
             });
+        },
+        bindingProps({
+            props = {},
+        }) {
+            const query = getFilterQueryParams(this.$route.query);
+
+            return {
+                disabled: !this.isAllowedToUpdate,
+                query: query.replace(/\[|\]/g, ''),
+                ...props,
+            };
         },
     },
 };

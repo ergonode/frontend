@@ -21,6 +21,25 @@
         @filter="onFilterChange"
         @remove-all-filters="onRemoveAllFilters"
         v-bind="extendedProps['grid']">
+        <template #actionsHeader="actionsHeaderProps">
+            <Component
+                v-for="(headerItem, index) in extendedActionHeader"
+                :is="headerItem.component"
+                :key="index"
+                v-bind="bindingProps({
+                    props: {
+                        ...actionsHeaderProps,
+                        ...headerItem.props,
+                    },
+                })" />
+        </template>
+        <template #appendFooter>
+            <Component
+                v-for="(footerItem, index) in extendedFooter"
+                :is="footerItem.component"
+                :key="index"
+                v-bind="bindingProps(footerItem)" />
+        </template>
         <ExportDetailsModalGrid
             v-if="isExportDetailsModalVisible"
             :export-id="selectedRow.exportId"
@@ -30,6 +49,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Channels/config/privileges';
 import {
     EXPORT_CREATED_EVENT_NAME,
 } from '@Channels/defaults';
@@ -43,6 +63,7 @@ import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
+    getFilterQueryParams,
     getParams,
     getParsedFilters,
 } from '@Core/models/mappers/gridDataMapper';
@@ -92,6 +113,19 @@ export default {
             isPrefetchingData: true,
             isExportDetailsModalVisible: false,
         };
+    },
+    computed: {
+        extendedActionHeader() {
+            return this.$getExtendSlot('@Channels/components/Grids/ChannelHistoryGrid/actionHeader');
+        },
+        extendedFooter() {
+            return this.$getExtendSlot('@Channels/components/Grids/ChannelHistoryGrid/footer');
+        },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.CHANNEL.update,
+            ]);
+        },
     },
     watch: {
         async $route(from, to) {
@@ -225,6 +259,17 @@ export default {
                     ...pagination,
                 },
             });
+        },
+        bindingProps({
+            props = {},
+        }) {
+            const query = getFilterQueryParams(this.$route.query);
+
+            return {
+                disabled: !this.isAllowedToUpdate,
+                query: query.replace(/\[|\]/g, ''),
+                ...props,
+            };
         },
     },
 };

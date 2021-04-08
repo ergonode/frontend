@@ -18,10 +18,31 @@
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
         @remove-all-filters="onRemoveAllFilters"
-        v-bind="extendedProps['grid']" />
+        v-bind="extendedProps['grid']">
+        <template #actionsHeader="actionsHeaderProps">
+            <Component
+                v-for="(headerItem, index) in extendedActionHeader"
+                :is="headerItem.component"
+                :key="index"
+                v-bind="bindingProps({
+                    props: {
+                        ...actionsHeaderProps,
+                        ...headerItem.props,
+                    },
+                })" />
+        </template>
+        <template #appendFooter>
+            <Component
+                v-for="(footerItem, index) in extendedFooter"
+                :is="footerItem.component"
+                :key="index"
+                v-bind="bindingProps(footerItem)" />
+        </template>
+    </Grid>
 </template>
 
 <script>
+import PRIVILEGES from '@ActivityLogs/config/privileges';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -32,6 +53,7 @@ import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
+    getFilterQueryParams,
     getParams,
     getParsedFilters,
 } from '@Core/models/mappers/gridDataMapper';
@@ -75,6 +97,19 @@ export default {
             filtered: 0,
             isPrefetchingData: true,
         };
+    },
+    computed: {
+        extendedActionHeader() {
+            return this.$getExtendSlot('@ActivityLogs/components/Grids/UserActivityLogsGrid/actionHeader');
+        },
+        extendedFooter() {
+            return this.$getExtendSlot('@ActivityLogs/components/Grids/UserActivityLogsGrid/footer');
+        },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.USER.update,
+            ]);
+        },
     },
     watch: {
         async $route(from, to) {
@@ -171,6 +206,17 @@ export default {
                     ...pagination,
                 },
             });
+        },
+        bindingProps({
+            props = {},
+        }) {
+            const query = getFilterQueryParams(this.$route.query);
+
+            return {
+                disabled: !this.isAllowedToUpdate,
+                query: query.replace(/\[|\]/g, ''),
+                ...props,
+            };
         },
     },
 };

@@ -15,6 +15,18 @@
         :is-border="true"
         @cell-value="onCellValueChange"
         v-bind="extendedProps['grid']">
+        <template #actionsHeader="actionsHeaderProps">
+            <Component
+                v-for="(headerItem, index) in extendedActionHeader"
+                :is="headerItem.component"
+                :key="index"
+                v-bind="bindingProps({
+                    props: {
+                        ...actionsHeaderProps,
+                        ...headerItem.props,
+                    },
+                })" />
+        </template>
         <template #footer>
             <div class="role-privileges-footer">
                 <UpdateRolePrivilegesButton
@@ -23,6 +35,11 @@
                     :drafts="drafts"
                     :change-values="changeValues"
                     @updated="onUpdatedRolePrivileges" />
+                <Component
+                    v-for="(footerItem, index) in extendedFooter"
+                    :is="footerItem.component"
+                    :key="index"
+                    v-bind="bindingProps(footerItem)" />
             </div>
         </template>
     </Grid>
@@ -33,6 +50,7 @@ import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
+    getFilterQueryParams,
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
 import UpdateRolePrivilegesButton from '@Roles/components/Buttons/UpdateRolePrivilegesButton';
@@ -92,6 +110,12 @@ export default {
         ...mapState('role', [
             'privileges',
         ]),
+        extendedActionHeader() {
+            return this.$getExtendSlot('@Roles/components/Grids/RolePrivilegesGrid/actionHeader');
+        },
+        extendedFooter() {
+            return this.$getExtendSlot('@Roles/components/Grids/RolePrivilegesGrid/footer');
+        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.USER_ROLE.update,
@@ -180,6 +204,17 @@ export default {
             this.rows = rows;
 
             this.isPrefetchingData = false;
+        },
+        bindingProps({
+            props = {},
+        }) {
+            const query = getFilterQueryParams(this.$route.query);
+
+            return {
+                disabled: !this.isAllowedToUpdate,
+                query: query.replace(/\[|\]/g, ''),
+                ...props,
+            };
         },
     },
 };

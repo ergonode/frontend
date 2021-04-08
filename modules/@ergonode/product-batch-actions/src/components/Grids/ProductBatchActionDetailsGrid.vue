@@ -18,7 +18,17 @@
         @filter="onFilterChange"
         @remove-all-filters="onRemoveAllFilters"
         v-bind="extendedProps['grid']">
-        <template #actionsHeader>
+        <template #actionsHeader="actionsHeaderProps">
+            <Component
+                v-for="(headerItem, index) in extendedActionHeader"
+                :is="headerItem.component"
+                :key="index"
+                v-bind="bindingProps({
+                    props: {
+                        ...actionsHeaderProps,
+                        ...headerItem.props,
+                    },
+                })" />
             <div class="notification-details-tiles">
                 <Tile
                     v-for="(detail, index) in details"
@@ -26,6 +36,13 @@
                     :label="detail.label"
                     :value="detail.value" />
             </div>
+        </template>
+        <template #appendFooter>
+            <Component
+                v-for="(footerItem, index) in extendedFooter"
+                :is="footerItem.component"
+                :key="index"
+                v-bind="bindingProps(footerItem)" />
         </template>
     </Grid>
 </template>
@@ -46,6 +63,7 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import PRIVILEGES from '@Products/config/privileges';
 import Grid from '@UI/components/Grid/Grid';
 import Tile from '@UI/components/Tile/Tile';
 
@@ -85,6 +103,12 @@ export default {
         };
     },
     computed: {
+        extendedActionHeader() {
+            return this.$getExtendSlot('@ProductBatchActions/components/Grids/ProductBatchActionDetailsGrid/actionHeader');
+        },
+        extendedFooter() {
+            return this.$getExtendSlot('@ProductBatchActions/components/Grids/ProductBatchActionDetailsGrid/footer');
+        },
         details() {
             return [
                 {
@@ -92,6 +116,11 @@ export default {
                     value: this.item.createdAt,
                 },
             ];
+        },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT.update,
+            ]);
         },
     },
     methods: {
@@ -160,6 +189,15 @@ export default {
             this.rows = rows;
             this.filtered = filtered;
             this.isPrefetchingData = false;
+        },
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                disabled: !this.isAllowedToUpdate,
+                query: getParsedFilters(this.localParams.filter),
+                ...props,
+            };
         },
     },
 };
