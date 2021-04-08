@@ -21,13 +21,6 @@
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
             :items="asyncTabs" />
-        <template
-            v-for="(modal, index) in extendedModals">
-            <Component
-                :is="modal.component"
-                :key="index"
-                v-bind="bindingProps(modal)" />
-        </template>
     </Page>
 </template>
 
@@ -55,9 +48,6 @@ export default {
     computed: {
         extendedMainAction() {
             return this.$getExtendSlot('@Roles/pages/roles/mainAction');
-        },
-        extendedModals() {
-            return this.$getExtendSlot('@Roles/pages/roles/injectModal');
         },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.USER_ROLE.namespace);
