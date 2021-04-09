@@ -10,6 +10,7 @@ export default {
         '@ergonode/products',
         '@ergonode/attributes',
         '@ergonode/batch-actions',
+        '@ergonode/notifications',
     ],
     aliases: {
         '@ProductBatchActions': '/',
