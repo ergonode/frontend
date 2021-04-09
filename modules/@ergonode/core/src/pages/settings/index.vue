@@ -22,13 +22,6 @@
             :items="asyncTabs"
             :change-values="changeValues"
             :errors="errors" />
-        <template
-            v-for="(modal, index) in extendedModals">
-            <Component
-                :is="modal.component"
-                :key="index"
-                v-bind="bindingProps(modal)" />
-        </template>
     </Page>
 </template>
 
@@ -62,9 +55,6 @@ export default {
         ]),
         extendedMainAction() {
             return this.$getExtendSlot('@Core/pages/settings/mainAction');
-        },
-        extendedModals() {
-            return this.$getExtendSlot('@Core/pages/settings/injectModal');
         },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.SETTINGS.namespace);

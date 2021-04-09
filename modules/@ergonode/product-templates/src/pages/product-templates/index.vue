@@ -23,13 +23,6 @@
                 <ProductTemplatesGrid />
             </template>
         </CenterViewTemplate>
-        <template
-            v-for="(modal, index) in extendedModals">
-            <Component
-                :is="modal.component"
-                :key="index"
-                v-bind="bindingProps(modal)" />
-        </template>
     </Page>
 </template>
 
@@ -57,9 +50,6 @@ export default {
     computed: {
         extendedMainAction() {
             return this.$getExtendSlot('@Templates/pages/product-templates/mainAction');
-        },
-        extendedModals() {
-            return this.$getExtendSlot('@Templates/pages/product-templates/injectModal');
         },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.TEMPLATE_DESIGNER.namespace);
