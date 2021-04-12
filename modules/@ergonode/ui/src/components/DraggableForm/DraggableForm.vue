@@ -12,6 +12,7 @@
         <Form
             :title="title"
             :disabled="disabled"
+            :width="width"
             :errors="errors"
             :change-values="changeValues"
             :errors-presentation-mapper="errorsPresentationMapper">
