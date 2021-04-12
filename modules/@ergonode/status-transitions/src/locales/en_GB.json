@@ -13,7 +13,6 @@
         "editConditions": "Conditions"
       }
     },
-
     "transition": {
       "_": {
         "title": "Status transitions",
