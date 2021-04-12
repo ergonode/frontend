@@ -5,6 +5,7 @@
 <template>
     <NotificationListItemTemplate
         :item="item"
+        :details="true"
         @details="onShowDetails">
         <template #prepend>
             <NotificationListItemAvatar :item="item" />
