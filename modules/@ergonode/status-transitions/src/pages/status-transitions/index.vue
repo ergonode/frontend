@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar
-            title="Status transition"
+            :title="$t('@Transitions.transition._.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <template
@@ -65,7 +65,7 @@ export default {
     },
     head() {
         return {
-            title: 'Status transitions - Ergonode',
+            title: this.$t('@Transitions.transition._.headTitle'),
         };
     },
 };

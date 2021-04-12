@@ -154,7 +154,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating status transition has been canceled',
+                    message: this.app.i18n.t('@Transitions.transition.store.action.updateCancel'),
                 });
 
                 return;
@@ -220,7 +220,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Creating status trsnaition has been canceled',
+                    message: this.app.i18n.t('@Transitions.transition.store.action.createCancel'),
                 });
 
                 return;
@@ -275,7 +275,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Removing status transition has been canceled',
+                    message: this.app.i18n.t('@Transitions.transition.store.action.deleteCancel'),
                 });
 
                 return;
