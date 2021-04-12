@@ -6,16 +6,7 @@
     <GridViewTemplate>
         <template #sidebar>
             <VerticalTabBar :items="verticalTabs">
-                <FadeTransition>
-                    <DropZone
-                        v-show="isDropZoneVisible"
-                        :hover-background-color="graphiteLightColor"
-                        title="REMOVE CONDITION">
-                        <template #icon="{ color }">
-                            <IconRemoveFilter :fill-color="color" />
-                        </template>
-                    </DropZone>
-                </FadeTransition>
+                <RemoveConditionDropZone />
             </VerticalTabBar>
         </template>
         <template #grid>
@@ -34,34 +25,23 @@
 
 <script>
 import ConditionSetTreeDesigner from '@Conditions/components/TreeDesigners/ConditionSetTreeDesigner';
-import {
-    DRAGGED_ELEMENT,
-} from '@Core/defaults/grid';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import PRIVILEGES from '@Statuses/config/privileges';
 import UpdateProductStatusConditionDesignerButton
     from '@Transitions/components/Buttons/UpdateProductStatusConditionDesignerButton';
-import {
-    GRAPHITE_LIGHT,
-} from '@UI/assets/scss/_js-variables/colors.scss';
-import DropZone from '@UI/components/DropZone/DropZone';
-import IconRemoveFilter from '@UI/components/Icons/Actions/IconRemoveFilter';
+import RemoveConditionDropZone from '@Transitions/components/DropZones/RemoveConditionDropZone';
 import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
 import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
     name: 'ConditionDesignerTab',
     components: {
+        RemoveConditionDropZone,
         UpdateProductStatusConditionDesignerButton,
         GridViewTemplate,
-        IconRemoveFilter,
-        DropZone,
-        FadeTransition,
         VerticalTabBar,
         ConditionSetTreeDesigner,
     },
@@ -74,19 +54,10 @@ export default {
         };
     },
     computed: {
-        ...mapState('draggable', [
-            'isElementDragging',
-        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.WORKFLOW.update,
             ]);
-        },
-        isDropZoneVisible() {
-            return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;
-        },
-        graphiteLightColor() {
-            return GRAPHITE_LIGHT;
         },
     },
     async mounted() {

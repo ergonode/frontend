@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="Status change"
+        :title="$t('@Transitions.transition.components.TransitionForm.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
@@ -19,7 +19,7 @@
                 <TranslationSelect
                     :value="source"
                     :required="true"
-                    label="From"
+                    :label="$t('@Transitions.transition.components.TransitionForm.fromLabel')"
                     :options="sourceOptions"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errors[sourceFieldKey]"
@@ -27,7 +27,7 @@
                 <TranslationSelect
                     :value="destination"
                     :required="true"
-                    label="To"
+                    :label="$t('@Transitions.transition.components.TransitionForm.toLabel')"
                     :options="destinationOptions"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errors[destinationFieldKey]"

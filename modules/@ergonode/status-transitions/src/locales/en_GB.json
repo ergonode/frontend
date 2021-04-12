@@ -1,18 +1,70 @@
 {
   "@Transitions": {
     "_": {
+      "submit": "Save changes",
+      "create": "Create",
+      "proceed": "Create & Edit",
+      "cancel": "Cancel",
+      "deleteConfirm": "Yes, remove",
       "routes": {
         "title": "Status transitions",
         "group": "Workflow",
         "editOption": "Options",
         "editConditions": "Conditions"
       }
-    }
-  },
-  "transition": {
-    "grid": {
-      "placeholderTitle": "No status transitions",
-      "placeholderSubtitle": "There are no status transitions in the system, so you can add the first one."
+    },
+    "transition": {
+      "_": {
+        "title": "Status transitions",
+        "headTitle": "Status transitions - Ergonode"
+      },
+      "components": {
+        "CreateStatusTransitionButton": {
+          "title": "NEW TRANSITION"
+        },
+        "RemoveStatusTransitionButton": {
+          "title": "REMOVE TRANSITION",
+          "confirmTitle": "Are you sure you want to delete this transition?",
+          "successMessage": "Transition removed",
+          "errorMessage": "Transition hasn`t been deleted"
+        },
+        "UpdateProductStatusConditionDesignerButton": {
+          "successMessage": "Status transition conditions have been updated"
+        },
+        "TransitionForm": {
+          "title": "Status change",
+          "fromLabel": "From",
+          "toLabel": "to"
+        },
+        "TransitionsGrid": {
+          "placeholderTitle": "No status transitions",
+          "placeholderSubtitle": "There are no status transitions in the system, so you can add the first one.",
+          "successMessage": "Status transition removed",
+          "errorMessage": "Status transitions haven’t been fetched properly"
+        },
+        "CreateStatusTransitionModalForm": {
+          "title": "Create status transition",
+          "successMessage": "Transition created"
+        },
+        "RemoveConditionDropZone": {
+          "title": "REMOVE CONDITION"
+        },
+        "TransitionGeneralTab": {
+          "successMessage": "Status transition has been updated"
+        }
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Transition hasn’t been fetched properly"
+        }
+      },
+      "store": {
+        "action": {
+          "createCancel": "Creating status transition has been canceled",
+          "updateCancel": "Updating status transition has been canceled",
+          "deleteCancel": "Removing status transition has been canceled"
+        }
+      }
     }
   }
 }
