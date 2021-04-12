@@ -42,7 +42,6 @@
 </template>
 
 <script>
-import PRIVILEGES from '@ActivityLogs/config/privileges';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -61,6 +60,7 @@ import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
 import Grid from '@UI/components/Grid/Grid';
+import PRIVILEGES from '@Users/config/privileges';
 
 export default {
     name: 'UserActivityLogsGrid',
@@ -100,10 +100,10 @@ export default {
     },
     computed: {
         extendedActionHeader() {
-            return this.$getExtendSlot('@ActivityLogs/components/Grids/UserActivityLogsGrid/actionHeader');
+            return this.$getExtendSlot('@Users/components/Grids/UserActivityLogsGrid/actionHeader');
         },
         extendedFooter() {
-            return this.$getExtendSlot('@ActivityLogs/components/Grids/UserActivityLogsGrid/footer');
+            return this.$getExtendSlot('@Users/components/Grids/UserActivityLogsGrid/footer');
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
