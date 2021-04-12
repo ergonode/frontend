@@ -11,7 +11,6 @@ export default {
     relations: [
         '@ergonode/ui',
         '@ergonode/authentication',
-        '@ergonode/batch-actions',
     ],
     plugins: [
         {

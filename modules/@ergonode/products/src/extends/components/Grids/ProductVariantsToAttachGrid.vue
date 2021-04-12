@@ -25,8 +25,17 @@
         @remove-all-filters="onRemoveAllFilters"
         @filter="onFilterChange"
         v-bind="extendedProps['grid']">
-        <template #actionsHeader>
-            <slot name="actionsHeader" />
+        <template #actionsHeader="actionsHeaderProps">
+            <Component
+                v-for="(headerItem, index) in extendedActionHeader"
+                :is="headerItem.component"
+                :key="index"
+                v-bind="bindingProps({
+                    props: {
+                        ...actionsHeaderProps,
+                        ...headerItem.props,
+                    },
+                })" />
         </template>
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
@@ -34,6 +43,11 @@
                 :subtitle="$t('@Products.productExtend.components.ProductVariantsToAttachGrid.changeBindingAttributes')" />
         </template>
         <template #appendFooter>
+            <Component
+                v-for="(footerItem, index) in extendedFooter"
+                :is="footerItem.component"
+                :key="index"
+                v-bind="bindingProps(footerItem)" />
             <UpdateProductsAttachmentButton
                 :scope="scope"
                 :errors="errors"
@@ -64,6 +78,7 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import PRIVILEGES from '@Products/config/privileges';
 import UpdateProductsAttachmentButton from '@Products/extends/components/Buttons/UpdateProductsAttachmentButton';
 import Grid from '@UI/components/Grid/Grid';
 import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
@@ -130,6 +145,12 @@ export default {
             'bindings',
             'selectAttributes',
         ]),
+        extendedActionHeader() {
+            return this.$getExtendSlot('@Products/components/Grids/ProductsVariantsToAttachGrid/actionHeader');
+        },
+        extendedFooter() {
+            return this.$getExtendSlot('@Products/components/Grids/ProductsVariantsToAttachGrid/footer');
+        },
         bindingAttributes() {
             return this.selectAttributes.filter(
                 attribute => this.bindings.some(
@@ -181,6 +202,11 @@ export default {
             });
 
             return disabledProducts;
+        },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT.update,
+            ]);
         },
     },
     methods: {
@@ -367,6 +393,15 @@ export default {
                 fieldKey: 'productVariantsToAttachGrid',
                 value: this.drafts,
             });
+        },
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                disabled: !this.isAllowedToUpdate,
+                query: getParsedFilters(this.localParams.filter),
+                ...props,
+            };
         },
     },
 };

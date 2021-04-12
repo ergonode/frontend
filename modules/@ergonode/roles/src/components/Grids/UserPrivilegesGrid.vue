@@ -11,7 +11,27 @@
         :is-prefetching-data="isPrefetchingData"
         :is-editable="false"
         :is-border="true"
-        v-bind="extendedProps['grid']" />
+        v-bind="extendedProps['grid']">
+        <template #actionsHeader="actionsHeaderProps">
+            <Component
+                v-for="(headerItem, index) in extendedActionHeader"
+                :is="headerItem.component"
+                :key="index"
+                v-bind="bindingProps({
+                    props: {
+                        ...actionsHeaderProps,
+                        ...headerItem.props,
+                    },
+                })" />
+        </template>
+        <template #appendFooter>
+            <Component
+                v-for="(footerItem, index) in extendedFooter"
+                :is="footerItem.component"
+                :key="index"
+                v-bind="bindingProps(footerItem)" />
+        </template>
+    </Grid>
 </template>
 
 <script>
@@ -19,8 +39,10 @@ import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
+    getFilterQueryParams,
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
+import PRIVILEGES from '@Roles/config/privileges';
 import privilegesDefaults from '@Roles/defaults/privileges';
 import Grid from '@UI/components/Grid/Grid';
 import {
@@ -91,11 +113,33 @@ export default {
         ...mapState('dictionaries', {
             dictionaryPrivileges: state => state.privileges,
         }),
+        extendedActionHeader() {
+            return this.$getExtendSlot('@Roles/components/Grids/UserPrivilegesGrid/actionHeader');
+        },
+        extendedFooter() {
+            return this.$getExtendSlot('@Roles/components/Grids/UserPrivilegesGrid/footer');
+        },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.USER_ROLE.update,
+            ]);
+        },
     },
     methods: {
         ...mapActions('dictionaries', [
             'getInitialDictionaries',
         ]),
+        bindingProps({
+            props = {},
+        }) {
+            const query = getFilterQueryParams(this.$route.query);
+
+            return {
+                disabled: !this.isAllowedToUpdate,
+                query: query.replace(/\[|\]/g, ''),
+                ...props,
+            };
+        },
     },
 };
 </script>

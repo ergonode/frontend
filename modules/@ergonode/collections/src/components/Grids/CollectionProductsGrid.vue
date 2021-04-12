@@ -27,10 +27,25 @@
         @filter="onFilterChange"
         @remove-all-filters="onRemoveAllFilters"
         v-bind="extendedProps['grid']">
-        <template #actionsHeader>
+        <template #actionsHeader="actionsHeaderProps">
+            <Component
+                v-for="(headerItem, index) in extendedActionHeader"
+                :is="headerItem.component"
+                :key="index"
+                v-bind="bindingProps({
+                    props: {
+                        ...actionsHeaderProps,
+                        ...headerItem.props,
+                    },
+                })" />
             <AddProductsToCollectionButton @added="onAddedProducts" />
         </template>
         <template #appendFooter>
+            <Component
+                v-for="(footerItem, index) in extendedFooter"
+                :is="footerItem.component"
+                :key="index"
+                v-bind="bindingProps(footerItem)" />
             <UpdateCollectionProductsVisibilityButton
                 :scope="scope"
                 :errors="errors"
@@ -58,6 +73,7 @@ import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
     getDefaultDataFromQueryParams,
     getDraftsBasedOnCellValues,
+    getFilterQueryParams,
     getParams,
     getParsedFilters,
 } from '@Core/models/mappers/gridDataMapper';
@@ -126,16 +142,22 @@ export default {
         };
     },
     computed: {
-        isAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.PRODUCT_COLLECTION.update,
-            ]);
+        extendedActionHeader() {
+            return this.$getExtendSlot('@Collections/components/Grids/CollectionProductsGrid/actionHeader');
+        },
+        extendedFooter() {
+            return this.$getExtendSlot('@Collections/components/Grids/CollectionProductsGrid/footer');
         },
         collectionCellBinding() {
             return {
                 imageColumn: 'default_image',
                 descriptionColumn: 'default_label',
             };
+        },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT_COLLECTION.update,
+            ]);
         },
     },
     watch: {
@@ -285,6 +307,17 @@ export default {
                     ...pagination,
                 },
             });
+        },
+        bindingProps({
+            props = {},
+        }) {
+            const query = getFilterQueryParams(this.$route.query);
+
+            return {
+                disabled: !this.isAllowedToUpdate,
+                query: query.replace(/\[|\]/g, ''),
+                ...props,
+            };
         },
     },
 };

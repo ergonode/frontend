@@ -24,12 +24,29 @@
         @remove-all-filters="onRemoveAllFilters"
         @filter="onFilterChange"
         v-bind="extendedProps['grid']">
+        <template #actionsHeader="actionsHeaderProps">
+            <Component
+                v-for="(headerItem, index) in extendedActionHeader"
+                :is="headerItem.component"
+                :key="index"
+                v-bind="bindingProps({
+                    props: {
+                        ...actionsHeaderProps,
+                        ...headerItem.props,
+                    },
+                })" />
+        </template>
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
                 :title="$t('@Products.productExtend.components.ProductsToAttachForGroupGrid.noProducts')"
                 :subtitle="$t('@Products.productExtend.components.ProductsToAttachForGroupGrid.createFirst')" />
         </template>
         <template #appendFooter>
+            <Component
+                v-for="(footerItem, index) in extendedFooter"
+                :is="footerItem.component"
+                :key="index"
+                v-bind="bindingProps(footerItem)" />
             <UpdateProductsAttachmentButton
                 :scope="scope"
                 :errors="errors"
@@ -57,6 +74,7 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import PRIVILEGES from '@Products/config/privileges';
 import UpdateProductsAttachmentButton from '@Products/extends/components/Buttons/UpdateProductsAttachmentButton';
 import Grid from '@UI/components/Grid/Grid';
 import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
@@ -113,6 +131,12 @@ export default {
         };
     },
     computed: {
+        extendedActionHeader() {
+            return this.$getExtendSlot('@Products/components/Grids/ProductsToAttachForGroupGrid/actionHeader');
+        },
+        extendedFooter() {
+            return this.$getExtendSlot('@Products/components/Grids/ProductsToAttachForGroupGrid/footer');
+        },
         collectionCellBinding() {
             return {
                 imageColumn: 'default_image',
@@ -122,6 +146,11 @@ export default {
                     'attached',
                 ],
             };
+        },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT.update,
+            ]);
         },
     },
     methods: {
@@ -268,6 +297,15 @@ export default {
                 fieldKey: 'productsToAttachForGroupGrid',
                 value: this.drafts,
             });
+        },
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                disabled: !this.isAllowedToUpdate,
+                query: getParsedFilters(this.localParams.filter),
+                ...props,
+            };
         },
     },
 };

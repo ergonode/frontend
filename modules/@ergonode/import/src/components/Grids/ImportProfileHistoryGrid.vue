@@ -21,6 +21,25 @@
         @filter="onFilterChange"
         @remove-all-filters="onRemoveAllFilters"
         v-bind="extendedProps['grid']">
+        <template #actionsHeader="actionsHeaderProps">
+            <Component
+                v-for="(headerItem, index) in extendedActionHeader"
+                :is="headerItem.component"
+                :key="index"
+                v-bind="bindingProps({
+                    props: {
+                        ...actionsHeaderProps,
+                        ...headerItem.props,
+                    },
+                })" />
+        </template>
+        <template #appendFooter>
+            <Component
+                v-for="(footerItem, index) in extendedFooter"
+                :is="footerItem.component"
+                :key="index"
+                v-bind="bindingProps(footerItem)" />
+        </template>
         <ImportDetailsModalGrid
             v-if="isImportDetailsModalVisible"
             :import-id="selectedRow.importId"
@@ -40,12 +59,14 @@ import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
+    getFilterQueryParams,
     getParams,
     getParsedFilters,
 } from '@Core/models/mappers/gridDataMapper';
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import PRIVILEGES from '@Import/config/privileges';
 import {
     IMPORT_CREATED_EVENT_NAME,
 } from '@Import/defaults';
@@ -92,6 +113,19 @@ export default {
             isPrefetchingData: true,
             isImportDetailsModalVisible: false,
         };
+    },
+    computed: {
+        extendedActionHeader() {
+            return this.$getExtendSlot('@Import/components/Grids/ImportProfileHistoryGrid/actionHeader');
+        },
+        extendedFooter() {
+            return this.$getExtendSlot('@Import/components/Grids/ImportProfileHistoryGrid/footer');
+        },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.IMPORT.update,
+            ]);
+        },
     },
     watch: {
         async $route(from, to) {
@@ -225,6 +259,17 @@ export default {
                     ...pagination,
                 },
             });
+        },
+        bindingProps({
+            props = {},
+        }) {
+            const query = getFilterQueryParams(this.$route.query);
+
+            return {
+                disabled: !this.isAllowedToUpdate,
+                query: query.replace(/\[|\]/g, ''),
+                ...props,
+            };
         },
     },
 };

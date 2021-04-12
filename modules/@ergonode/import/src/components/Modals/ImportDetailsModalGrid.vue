@@ -22,7 +22,17 @@
                 @filter="onFilterChange"
                 @remove-all-filters="onRemoveAllFilters"
                 v-bind="extendedProps['grid']">
-                <template #actionsHeader>
+                <template #actionsHeader="actionsHeaderProps">
+                    <Component
+                        v-for="(headerItem, index) in extendedActionHeader"
+                        :is="headerItem.component"
+                        :key="index"
+                        v-bind="bindingProps({
+                            props: {
+                                ...actionsHeaderProps,
+                                ...headerItem.props,
+                            },
+                        })" />
                     <div class="import-details-tiles">
                         <Tile
                             v-for="(detail, index) in details"
@@ -30,6 +40,13 @@
                             :label="detail.label"
                             :value="detail.value" />
                     </div>
+                </template>
+                <template #appendFooter>
+                    <Component
+                        v-for="(footerItem, index) in extendedFooter"
+                        :is="footerItem.component"
+                        :key="index"
+                        v-bind="bindingProps(footerItem)" />
                 </template>
             </Grid>
         </template>
@@ -52,6 +69,7 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import PRIVILEGES from '@Import/config/privileges';
 import Grid from '@UI/components/Grid/Grid';
 import ModalGrid from '@UI/components/Modal/ModalGrid';
 import Tile from '@UI/components/Tile/Tile';
@@ -112,6 +130,19 @@ export default {
             localParams: DEFAULT_GRID_FETCH_PARAMS(),
             pagination: DEFAULT_GRID_PAGINATION(),
         };
+    },
+    computed: {
+        extendedActionHeader() {
+            return this.$getExtendSlot('@Import/components/Grids/ImportDetailsModalGrid/actionHeader');
+        },
+        extendedFooter() {
+            return this.$getExtendSlot('@Import/components/Grids/ImportDetailsModalGrid/footer');
+        },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.IMPORT.update,
+            ]);
+        },
     },
     methods: {
         ...mapActions('import', [
@@ -185,6 +216,15 @@ export default {
         },
         onClose() {
             this.$emit('close');
+        },
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                disabled: !this.isAllowedToUpdate,
+                query: getParsedFilters(this.localParams.filter),
+                ...props,
+            };
         },
     },
 };
