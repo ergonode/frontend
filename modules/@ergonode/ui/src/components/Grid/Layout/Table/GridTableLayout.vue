@@ -796,7 +796,7 @@ export default {
         overflow: auto;
 
         &--placeholder {
-            flex-shrink: 0;
+            flex: 0 0 auto;
         }
     }
 </style>
