@@ -293,6 +293,7 @@ export default {
         border: none;
         padding: 0;
         background-color: transparent;
+        box-shadow: none;
         color: $GRAPHITE_DARK;
 
         &::placeholder {
