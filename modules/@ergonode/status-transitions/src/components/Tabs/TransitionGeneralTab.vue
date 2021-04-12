@@ -6,7 +6,7 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <TransitionForm
-                :submit-title="$t('core.buttons.submit')"
+                :submit-title="$t('@Transitions._.submit')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="errors"
@@ -61,7 +61,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Status transition has been updated',
+                message: this.$t('@Transitions.transition.components.TransitionGeneralTab.successMessage'),
             });
 
             this.isSubmitting = false;

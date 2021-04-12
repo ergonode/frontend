@@ -70,7 +70,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'Transition hasn`t been fetched properly',
+                    message: app.i18n.t('@Transitions.transition.pages.id.getRequest'),
                 });
             },
         });
@@ -80,12 +80,6 @@ export default {
             'source',
             'destination',
         ]),
-        params() {
-            const {
-                id,
-            } = this.$route.params;
-            return id.split('--');
-        },
         title() {
             return `${this.source.value} -> ${this.destination.value}`;
         },
@@ -122,7 +116,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.title} - Status transitions - Ergonode`,
+            title: `${this.title} - ${this.$t('@Transitions.transition._.headTitle')}`,
         };
     },
 };

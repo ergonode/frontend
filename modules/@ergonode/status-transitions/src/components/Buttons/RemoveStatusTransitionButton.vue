@@ -6,7 +6,7 @@
     <Button
         :theme="secondaryTheme"
         :size="smallSize"
-        title="REMOVE TRANSITION"
+        :title="$t('@Transitions.transition.components.RemoveStatusTransitionButton.title')"
         :disabled="!isAllowedToDelete"
         @click.native="onRemove">
         <template #prepend="{ color }">
@@ -62,18 +62,21 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this transition?',
-                applyTitle: 'YES, REMOVE',
-                action: () => this.removeStatusTransition({
-                    onSuccess: this.onRemoveSuccess,
-                    onError: this.onRemoveError,
-                }),
+                title: this.$t('@Transitions.transition.components.RemoveStatusTransitionButton.confirmTitle'),
+                applyTitle: this.$t('@Transitions._.deleteConfirm'),
+                action: this.onRemoveStatusTransition,
+            });
+        },
+        onRemoveStatusTransition() {
+            this.removeStatusTransition({
+                onSuccess: this.onRemoveSuccess,
+                onError: this.onRemoveError,
             });
         },
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Transition removed',
+                message: this.$t('@Transitions.transition.components.RemoveStatusTransitionButton.successMessage'),
             });
             this.$router.push({
                 name: ROUTE_NAME.STATUS_TRANSITIONS_GRID,
@@ -82,7 +85,7 @@ export default {
         onRemoveError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Transition hasn`t been deleted',
+                message: this.$t('@Transitions.transition.components.RemoveStatusTransitionButton.errorMessage'),
             });
         },
     },

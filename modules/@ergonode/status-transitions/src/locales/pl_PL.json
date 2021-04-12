@@ -1,18 +1,70 @@
 {
   "@Transitions": {
     "_": {
+      "submit": "Zapisz zmiany",
+      "create": "Stwórz",
+      "proceed": "Stwórz & Edytuj",
+      "cancel": "Anuluj",
+      "deleteConfirm": "Tak, usuń",
       "routes": {
-        "title": "Przejścia statusów",
+        "title": "Tranzycje warunku",
         "group": "Przepływ pracy",
         "editOption": "Opcje",
         "editConditions": "Warunki"
       }
-    }
-  },
-  "transition": {
-    "grid": {
-      "placeholderTitle": "Brak przejść statusowych",
-      "placeholderSubtitle": "W systemie nie ma przejść statusowych, stwórz pierwsze."
+    },
+    "transition": {
+      "_": {
+        "title": "Transycje warunku",
+        "headTitle": "Transycje warunku - Ergonode"
+      },
+      "components": {
+        "CreateStatusTransitionButton": {
+          "title": "NOWA TRANZYCJA"
+        },
+        "RemoveStatusTransitionButton": {
+          "title": "Usuń tranzycję",
+          "confirmTitle": "Czy jesteś pewny że chcesz usunąć tą tranzycję?",
+          "successMessage": "Tranzycja usunięta",
+          "errorMessage": "Tranzycja nie została usunięta"
+        },
+        "UpdateProductStatusConditionDesignerButton": {
+          "successMessage": "Warunki tranzycji statusu zostały zaktualizowane"
+        },
+        "TransitionForm": {
+          "title": "Zmiana statusu",
+          "fromLabel": "Od",
+          "toLabel": "Do"
+        },
+        "TransitionsGrid": {
+          "placeholderTitle": "Brak tranzycji statusu",
+          "placeholderSubtitle": "W systemie nie ma tranzycji statusów, dodaj pierwszy.",
+          "successMessage": "Tranzycja statusu usunięta",
+          "errorMessage": "Tranzycje statusów nie zostały pobrane prawidłowo"
+        },
+        "CreateStatusTransitionModalForm": {
+          "title": "Stwórz tranzycję statusu",
+          "successMessage": "Tranzycja statusu stworzona"
+        },
+        "RemoveConditionDropZone": {
+          "title": "Usuń warunek"
+        },
+        "TransitionGeneralTab": {
+          "successMessage": "Tranzycja statusu została zaktualizowana"
+        }
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Tranzycja nie została pobrana prawidłowo"
+        }
+      },
+      "store": {
+        "action": {
+          "createCancel": "Tworzenie tranzycji statusu zostało przerwane",
+          "updateCancel": "Aktualizacja tranzycji statusu została przerwana",
+          "deleteCancel": "Usuwanie tranzycji statusu zostało przerwane"
+        }
+      }
     }
   }
 }

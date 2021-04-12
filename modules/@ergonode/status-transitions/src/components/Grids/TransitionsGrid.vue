@@ -44,8 +44,8 @@
         </template>
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('transition.grid.placeholderTitle')"
-                :subtitle="$t('transition.grid.placeholderSubtitle')">
+                :title="$t('@Transitions.transition.components.TransitionsGrid.placeholderTitle')"
+                :subtitle="$t('@Transitions.transition.components.TransitionsGrid.placeholderSubtitle')">
                 <template #action>
                     <CreateStatusTransitionButton />
                 </template>
@@ -174,7 +174,7 @@ export default {
         onRemoveRow() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Status transition removed',
+                message: this.$t('@Transitions.transition.components.TransitionsGrid.successMessage'),
             });
             this.onFetchData();
         },
@@ -215,7 +215,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Status transitions haven’t been fetched properly',
+                message: this.$t('@Transitions.transition.components.TransitionsGrid.errorMessage'),
             });
         },
         onRemoveAllFilters() {
