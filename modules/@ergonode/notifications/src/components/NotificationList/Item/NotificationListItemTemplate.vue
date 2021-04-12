@@ -63,6 +63,10 @@ export default {
             type: Object,
             required: true,
         },
+        details: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
@@ -117,7 +121,7 @@ export default {
                 });
             }
 
-            if (this.item.objectId) {
+            if (this.details) {
                 items.push({
                     text: this.seeDetails,
                     action: this.onSeeDetails,
