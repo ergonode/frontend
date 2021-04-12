@@ -8,8 +8,8 @@
         @close="onClose">
         <template #body>
             <TransitionForm
-                :submit-title="$t('core.buttons.create')"
-                :proceed-title="$t('core.buttons.proceed')"
+                :submit-title="$t('@Transitions._.create')"
+                :proceed-title="$t('@Transitions._.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :scope="scope"
@@ -25,9 +25,6 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    THEME,
-} from '@Core/defaults/theme';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import TransitionForm from '@Transitions/components/Forms/TransitionForm';
 import {
@@ -59,9 +56,6 @@ export default {
             'source',
             'destination',
         ]),
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
     },
     created() {
         this.getProductStatuses({
@@ -113,7 +107,7 @@ export default {
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Transition created',
+                message: this.$t('@Transitions.transition.components.CreateStatusTransitionModalForm.successMessage'),
             });
 
             this.isSubmitting = false;

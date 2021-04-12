@@ -4,7 +4,7 @@
  */
 <template>
     <Button
-        title="NEW TRANSITION"
+        :title="$t('@Transitions.transition.components.CreateStatusTransitionButton.title')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">
