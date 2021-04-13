@@ -47,4 +47,4 @@ config/*
 # exception to the rule
 !config/.copyright
 modules.config.js
-.huskyrc
+.husky

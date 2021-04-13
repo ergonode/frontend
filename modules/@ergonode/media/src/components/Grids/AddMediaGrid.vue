@@ -27,12 +27,29 @@
             @remove-all-filters="onRemoveAllFilters"
             @filter="onFilterChange"
             v-bind="extendedProps['grid']">
+            <template #actionsHeader="actionsHeaderProps">
+                <Component
+                    v-for="(headerItem, index) in extendedActionHeader"
+                    :is="headerItem.component"
+                    :key="index"
+                    v-bind="bindingProps({
+                        props: {
+                            ...actionsHeaderProps,
+                            ...headerItem.props,
+                        },
+                    })" />
+            </template>
             <template #noDataPlaceholder>
                 <GridNoDataPlaceholder
                     :title="$t('media.grid.placeholderTitle')"
                     :subtitle="$t('media.grid.placeholderSubtitle')" />
             </template>
             <template #appendFooter>
+                <Component
+                    v-for="(footerItem, index) in extendedFooter"
+                    :is="footerItem.component"
+                    :key="index"
+                    v-bind="bindingProps(footerItem)" />
                 <Button
                     title="SAVE MEDIA"
                     :size="smallSize"
@@ -133,10 +150,11 @@ export default {
         };
     },
     computed: {
-        isAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.MULTIMEDIA.update,
-            ]);
+        extendedActionHeader() {
+            return this.$getExtendSlot('@Media/components/Grids/AddMediaGrid/actionHeader');
+        },
+        extendedFooter() {
+            return this.$getExtendSlot('@Media/components/Grids/AddMediaGrid/footer');
         },
         smallSize() {
             return SIZE.SMALL;
@@ -198,6 +216,11 @@ export default {
             }
 
             return rows;
+        },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.MULTIMEDIA.update,
+            ]);
         },
     },
     created() {
@@ -388,6 +411,15 @@ export default {
                     id: args[lastIndex],
                 },
             });
+        },
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                disabled: !this.isAllowedToUpdate,
+                query: getParsedFilters(this.localParams.filter),
+                ...props,
+            };
         },
     },
 };

@@ -118,11 +118,11 @@ export default {
                 return [];
             }
 
-            if (typeof this.changedValues[this.fieldKey] !== 'undefined') {
-                return this.changedValues[this.fieldKey];
-            }
+            let value = this.drafts[this.languageCode][attribute_code] || [];
 
-            const value = this.drafts[this.languageCode][attribute_code] || [];
+            if (typeof this.changedValues[this.fieldKey] !== 'undefined') {
+                value = this.changedValues[this.fieldKey];
+            }
 
             return getMappedMatchedArrayOptions({
                 optionIds: value,

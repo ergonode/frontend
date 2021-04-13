@@ -60,6 +60,7 @@
                 <AdvancedFilters
                     :value="advancedFilterValues"
                     :filters="advancedFilters"
+                    :extended-filters="extendedAdvancedFilters"
                     @swap="onAdvancedFilterPositionChange"
                     @remove="onAdvancedFilterRemove"
                     @remove-all="onAdvancedFilterRemoveAll"
@@ -237,6 +238,9 @@ export default {
         },
         extendedFooter() {
             return this.$getExtendSlot('@Products/components/Grids/ProductsGrid/footer');
+        },
+        extendedAdvancedFilters() {
+            return this.$getExtendSlot('@Products/components/Grids/ProductsGrid/advancedFilters');
         },
         isAnyFilter() {
             return this.filtered === 0

@@ -9,7 +9,7 @@
         <template #default="{ hasValueToSave }">
             <Button
                 data-cy="submit"
-                :title="$t('core.buttons.submit')"
+                :title="$t('@Transitions._.submit')"
                 :floating="saveChangesButtonFloatingStyle"
                 :disabled="!isAllowedToUpdate"
                 @click.native="onSubmit">
@@ -120,7 +120,7 @@ export default {
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Status transition conditions have been updated',
+                message: this.$t('@Transitions.transition.components.UpdateProductStatusConditionDesignerButton.successMessage'),
             });
 
             this.isSubmitting = false;

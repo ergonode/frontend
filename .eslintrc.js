@@ -11,9 +11,6 @@ module.exports = {
         jest: true,
         'cypress/globals': true,
     },
-    parserOptions: {
-        parser: 'babel-eslint',
-    },
     extends: [
         'airbnb-base',
         'plugin:vue/strongly-recommended',

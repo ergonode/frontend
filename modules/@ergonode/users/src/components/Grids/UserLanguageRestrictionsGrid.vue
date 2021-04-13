@@ -14,7 +14,24 @@
         :is-border="true"
         @cell-value="onCellValueChange"
         v-bind="extendedProps['grid']">
+        <template #actionsHeader="actionsHeaderProps">
+            <Component
+                v-for="(headerItem, index) in extendedActionHeader"
+                :is="headerItem.component"
+                :key="index"
+                v-bind="bindingProps({
+                    props: {
+                        ...actionsHeaderProps,
+                        ...headerItem.props,
+                    },
+                })" />
+        </template>
         <template #footer>
+            <Component
+                v-for="(footerItem, index) in extendedFooter"
+                :is="footerItem.component"
+                :key="index"
+                v-bind="bindingProps(footerItem)" />
             <div class="language-privileges-footer">
                 <UpdateLanguageRestrictionsButton
                     :scope="scope"
@@ -29,6 +46,7 @@
 import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
+    getFilterQueryParams,
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
 import Grid from '@UI/components/Grid/Grid';
@@ -88,6 +106,12 @@ export default {
             'drafts',
             'languagePrivilegesCollection',
         ]),
+        extendedActionHeader() {
+            return this.$getExtendSlot('@Users/components/Grids/UserLanguageRestrictionsGrid/actionHeader');
+        },
+        extendedFooter() {
+            return this.$getExtendSlot('@Users/components/Grids/UserLanguageRestrictionsGrid/footer');
+        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.USER.update,
@@ -166,6 +190,17 @@ export default {
             this.columns = getSortedColumnsByIDs(columns, config.split(','));
             this.rows = rows;
             this.filtered = fullDataList.length;
+        },
+        bindingProps({
+            props = {},
+        }) {
+            const query = getFilterQueryParams(this.$route.query);
+
+            return {
+                disabled: !this.isAllowedToUpdate,
+                query: query.replace(/\[|\]/g, ''),
+                ...props,
+            };
         },
     },
 };

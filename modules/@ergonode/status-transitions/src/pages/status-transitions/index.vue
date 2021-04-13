@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar
-            title="Status transition"
+            :title="$t('@Transitions.transition._.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <template
@@ -21,13 +21,6 @@
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
             :items="asyncTabs" />
-        <template
-            v-for="(modal, index) in extendedModals">
-            <Component
-                :is="modal.component"
-                :key="index"
-                v-bind="bindingProps(modal)" />
-        </template>
     </Page>
 </template>
 
@@ -56,9 +49,6 @@ export default {
         extendedMainAction() {
             return this.$getExtendSlot('@Transitions/pages/status-transitions/mainAction');
         },
-        extendedModals() {
-            return this.$getExtendSlot('@Transitions/pages/status-transitions/injectModal');
-        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.WORKFLOW.namespace);
         },
@@ -75,7 +65,7 @@ export default {
     },
     head() {
         return {
-            title: 'Status transitions - Ergonode',
+            title: this.$t('@Transitions.transition._.headTitle'),
         };
     },
 };
