@@ -47,10 +47,6 @@ describe('Badges/ProductCompleteness', () => {
         expect(ProductCompleteness.name).toEqual('ProductCompleteness');
     });
 
-    it('Check caption', () => {
-        expect(wrapper.vm.title).toBe('100% Completed');
-    });
-
     it('Check progress', () => {
         expect(wrapper.vm.progress).toBe(100);
     });
