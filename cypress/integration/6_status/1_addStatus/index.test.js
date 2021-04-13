@@ -11,10 +11,6 @@ import {
 import {
     MultiSteps,
 } from '../../../models/index';
-import {
-    removeRequest,
-    sendRequest,
-} from '../../../models/requests';
 
 const requestName = 'statusRequest';
 const url = 'status';
@@ -56,22 +52,22 @@ beforeEach(() => {
     });
 });
 
-MultiSteps([
-    Then,
-    And,
-], 'I send a {string} request and status code should be {int}', (reqType, status) => {
-    sendRequest({
-        reqType,
-        status,
-        requestName,
-    });
-});
+// MultiSteps([
+//     Then,
+//     And,
+// ], 'I send a {string} request and status code should be {int}', (reqType, status) => {
+//     sendRequest({
+//         reqType,
+//         status,
+//         requestName,
+//     });
+// });
 
-Then('I remove element by request', () => {
-    removeRequest({
-        path: 'status',
-    });
-});
+// Then('I remove element by request', () => {
+//     removeRequest({
+//         path: 'status',
+//     });
+// });
 
 And('I choose {int} option from {string} color picker field', (optionNr, id) => {
     cy.get(`[data-cy=${id}]`).click();

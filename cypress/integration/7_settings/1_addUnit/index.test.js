@@ -11,10 +11,6 @@ import {
 import {
     MultiSteps,
 } from '../../../models/index';
-import {
-    removeRequest,
-    sendRequest,
-} from '../../../models/requests';
 
 const requestName = 'unitsRequest';
 const url = 'units';
@@ -56,22 +52,22 @@ beforeEach(() => {
     });
 });
 
-MultiSteps([
-    Then,
-    And,
-], 'I send a {string} request and status code should be {int}', (reqType, status) => {
-    sendRequest({
-        reqType,
-        status,
-        requestName,
-    });
-});
+// MultiSteps([
+//     Then,
+//     And,
+// ], 'I send a {string} request and status code should be {int}', (reqType, status) => {
+//     sendRequest({
+//         reqType,
+//         status,
+//         requestName,
+//     });
+// });
 
-Then('I remove element by request', () => {
-    removeRequest({
-        path: 'units',
-    });
-});
+// Then('I remove element by request', () => {
+//     removeRequest({
+//         path: 'units',
+//     });
+// });
 
 MultiSteps([
     Given,

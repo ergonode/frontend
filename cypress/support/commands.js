@@ -2,10 +2,6 @@
  * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import {
-    DICTIONARIES,
-} from '../defaults';
-
 Cypress.Commands.add('apiRequest', ({
     method, url, alias,
 }) => {
@@ -19,32 +15,13 @@ Cypress.Commands.add('apiRequest', ({
 });
 
 Cypress.Commands.add('login', (email, pass) => {
-    cy.server();
-
-    cy.clearCookies();
+    // cy.clearCookies();
+    // cy.clearCookie('token');
     cy.visit('');
-    cy
-        .wrap(Object.keys(DICTIONARIES))
-        .each((d) => {
-            cy
-                .route({
-                    method: 'GET',
-                    url: `**/${DICTIONARIES[d]}`,
-                })
-                .as(d);
-        });
-    cy
-        .route({
-            method: 'POST',
-            url: '**/login',
-        })
-        .as('postLogin');
-    cy
-        .route({
-            method: 'GET',
-            url: '**/profile',
-        })
-        .as('profile');
+    cy.intercept('POST', '**/login').as('postLogin');
+    cy.intercept('GET', '**/profile').as('profile');
+    cy.intercept('GET', '**/languages?limit=9999&offset=0&view=list&field=name&order=ASC').as('languages');
+    cy.intercept('GET', '**/language/tree').as('languageTree');
     cy
         .get('[data-cy=login-email]')
         .find('input')
@@ -60,20 +37,20 @@ Cypress.Commands.add('login', (email, pass) => {
         .click();
     cy
         .wait('@postLogin')
-        .its('status')
+        .its('response.statusCode')
         .should('eq', 200);
     cy
         .wait('@profile')
-        .its('status')
+        .its('response.statusCode')
         .should('eq', 200);
     cy
-        .wrap(Object.keys(DICTIONARIES))
-        .each((d) => {
-            cy
-                .wait(`@${d}`)
-                .its('status')
-                .should('eq', 200);
-        });
+        .wait('@languages')
+        .its('response.statusCode')
+        .should('eq', 200);
+    cy
+        .wait('@languageTree')
+        .its('response.statusCode')
+        .should('eq', 200);
     cy
         .url()
         .should('include', '/dashboard');
