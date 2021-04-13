@@ -27,6 +27,7 @@ const store = new Store({
     },
 });
 const mocks = {
+    $t: () => {},
     $store: store,
 };
 afterEach(() => store.reset());
