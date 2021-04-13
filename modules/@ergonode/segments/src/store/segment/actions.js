@@ -146,7 +146,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating segment has been canceled',
+                    message: this.app.i18n.t('@Segments.segment.store.action.updateCancel'),
                 });
 
                 return;
@@ -212,7 +212,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Creating segment has been canceled',
+                    message: this.app.i18n.t('@Segments.segment.store.action.createCancel'),
                 });
 
                 return;
@@ -263,7 +263,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Removing segment has been canceled',
+                    message: this.app.i18n.t('@Segments.segment.store.action.removeCancel'),
                 });
 
                 return;

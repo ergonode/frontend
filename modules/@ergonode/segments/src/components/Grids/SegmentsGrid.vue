@@ -44,8 +44,8 @@
         </template>
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('segment.grid.placeholderTitle')"
-                :subtitle="$t('segment.grid.placeholderSubtitle')">
+                :title="$t('@Segments.segment._.noSegments')"
+                :subtitle="$t('@Segments.segment._.createFirst')">
                 <template #action>
                     <CreateSegmentButton />
                 </template>
@@ -174,7 +174,7 @@ export default {
         onRemoveRow() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Segment removed',
+                message: this.$t('@Segments.segment.components.SegmentsGrid.successMessage'),
             });
             this.onFetchData();
         },
@@ -214,7 +214,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Segments haven’t been fetched properly',
+                message: this.$t('@Segments.segment.components.SegmentsGrid.errorMessage'),
             });
         },
         onRemoveAllFilters() {

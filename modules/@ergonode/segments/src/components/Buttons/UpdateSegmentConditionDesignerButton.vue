@@ -9,7 +9,7 @@
         <template #default="{ hasValueToSave }">
             <Button
                 data-cy="submit"
-                :title="$t('core.buttons.submit')"
+                :title="$t('@Segments._.submit')"
                 :floating="saveChangesButtonFloatingStyle"
                 :disabled="!isAllowedToUpdate"
                 @click.native="onSubmit">
@@ -120,7 +120,7 @@ export default {
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Segment conditions have been updated',
+                message: this.$t('@Segments.segment.components.UpdateSegmentConditionDesignerButton.successMessage'),
             });
 
             this.isSubmitting = false;
