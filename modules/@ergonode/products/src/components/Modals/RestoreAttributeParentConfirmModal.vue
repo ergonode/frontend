@@ -6,11 +6,11 @@
     <ModalOverlay @close="onClose">
         <Modal data-cy="modal">
             <ConfirmModalHeader
-                title="Do you want to restore parent translation value of selected cell?"
+                :title="$t('@Products.product.components.RestoreAttributeParentConfirmModal.confirmTitle')"
                 @close="onClose" />
             <ModalFooter>
                 <Button
-                    title="YES, RESTORE"
+                    :title="$t('@Products.product.components.RestoreAttributeParentConfirmModal.buttonTitle')"
                     :size="smallSize"
                     @click.native="onRestore">
                     <template
@@ -112,7 +112,7 @@ export default {
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Value restored',
+                message: this.$t('@Products.product.components.RestoreAttributeParentConfirmModal.successMessage'),
             });
             this.$emit('restore', {
                 languageCode,
@@ -126,7 +126,7 @@ export default {
         onRestoreProductDraftError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Restore error',
+                message: this.$t('@Products.product.components.RestoreAttributeParentConfirmModal.errorMessage'),
             });
 
             this.isSubmitting = false;

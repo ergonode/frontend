@@ -25,6 +25,45 @@
     },
     "product": {
       "components": {
+        "UpdateProductTemplateButton": {
+          "successMessage": "Product has been updated"
+        },
+        "DoughnutProductsChart": {
+          "label": "Products",
+          "subtitle": "Products total"
+        },
+        "ProductTemplateFormNoTypeField": {
+          "placeholderTitle": "No support for {info} type of attribute"
+        },
+        "ProductForm": {
+          "title": "Options",
+          "typeLabel": "Product type",
+          "skuLabel": "SKU",
+          "skuHint": "Products SKU must be unique"
+        },
+        "ProductsGrid": {
+          "filtersButtonTitle": "FILTERS",
+          "noFilterErrorMessage": "Attribute has no filter",
+          "removeSuccessMessage": "Product removed",
+          "getErrorMessage": "Products haven’t been fetched properl"
+        },
+        "RestoreAttributeParentConfirmModal": {
+          "confirmTitle": "Do you want to restore parent translation value of selected cell?",
+          "buttonTitle": "YES, RESTORE",
+          "successMessage": "Product value restored",
+          "errorMessage": "Couldn`t restore product value"
+        },
+        "CreateProductModalForm": {
+          "successMessage": "Product created"
+        },
+        "ProductCompleteness": {
+          "title": "{info}% Completed",
+          "missingFields": "Missing fields: {info}",
+          "allCompleted": "All completed"
+        },
+        "ProductGeneralTab": {
+          "successMessage": "Product has been updated"
+        },
         "UpdateProductsButton": {
           "alertSuccess": "Products have been updated"
         },
@@ -59,6 +98,20 @@
     },
     "productExtend": {
       "components": {
+        "AddProductsBySKUModalForm": {
+          "title": "Add products by SKU",
+          "submitTitle": "ADD TO PRODUCT GROUP",
+          "successMessage": "Products have been added to product group"
+        },
+        "AddBindingAttributesModalForm": {
+          "title": "Add binding attributes",
+          "submitTitle": "ADD ATTRIBUTES",
+          "successMessage": "Attribute bindings added"
+        },
+        "ProductVariantsTab": {
+          "placeholderTitle": "No binding attributes",
+          "placeholderSubtitle": "Binding attribute is the common attribute of the products, which link products together into the product with variants."
+        },
         "AddBindingAttributes": {
           "title": "Add attribute",
           "infoAlert": "Binding attribute cannot be added when there are variants chosen. To add the next attribute, please remove all of the variants."
@@ -85,7 +138,9 @@
         },
         "AttachedProductsToGroupGrid": {
           "noProductsInGroup": "No products in group",
-          "addProductToGroup": "There are no product added to the group, so you can add the first one."
+          "addProductToGroup": "There are no product added to the group, so you can add the first one.",
+          "successMessage": "Product removed from group",
+          "errorMessage": "Group Product haven’t been fetched properly"
         },
         "ProductsToAttachForGroupGrid": {
           "noProducts": "No products",
@@ -93,6 +148,19 @@
           "attachedLabel": "Attached",
           "notAttachedLabel": "Not attached",
           "getRequest": "Products haven’t been fetched properly"
+        },
+        "AddProductsBySKUForm": {
+          "skuLabel": "By SKU",
+          "skuHint": "Separate multiple SKU’s by using enter or comma, e.g. “SKU1, SKU2, SKU3”"
+        },
+        "ProductAttributeBindingField": {
+          "label": "Binding attribute"
+        },
+        "ProductAttributesBindingForm": {
+          "listTitle": "ADD BINDING ATTRIBUTE"
+        },
+        "UpdateProductsAttachmentButton": {
+          "successMessage": "Products attachment have been updated"
         }
       }
     }

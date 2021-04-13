@@ -67,9 +67,6 @@ import {
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
-import {
-    THEME,
-} from '@Core/defaults/theme';
 import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
@@ -147,9 +144,6 @@ export default {
                 descriptionColumn: 'default_label',
             };
         },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
@@ -199,7 +193,7 @@ export default {
         onRemoveRow() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product added to group removed',
+                message: this.$t('@Products.productExtend.components.AttachedProductsToGroupGrid.successMessage'),
             });
             this.onFetchData();
         },
@@ -244,7 +238,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Product added to group haven’t been fetched properly',
+                message: this.$t('@Products.productExtend.components.AttachedProductsToGroupGrid.errorMessage'),
             });
         },
         onRemoveAllFilters() {

@@ -6,7 +6,7 @@
     <Button
         :theme="secondaryTheme"
         :size="smallSize"
-        title="REMOVE PRODUCT"
+        :title="$t('@Products.product.components.RemoveProductButton.title')"
         :disabled="!isAllowedToDelete"
         @click.native="onRemove">
         <template #prepend="{ color }">
