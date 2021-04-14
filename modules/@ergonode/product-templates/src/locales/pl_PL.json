@@ -12,62 +12,62 @@
         "editOption": "Opcje",
         "editDesigner": "Kreator"
       }
-    }
-  },
-  "productTemplate": {
-    "_": {
-      "title": "Szablony produktowe",
-      "headTitle": "Szablony produktowe - Ergonode",
-      "noTemplate": "Brak szablonów produktowych",
-      "createFirst": "W systemie nie ma szablonów produktowych, stwórz pierwszy."
     },
-    "pages": {
-      "id": {
-        "getRequest": "Szablon produktowy nie został pobrana poprawnie"
-      }
-    },
-    "store": {
-      "action": {
-        "createCancel": "Tworzenie szablonu produktowego zostało przerwane",
-        "updateCancel": "Aktualizacja szablonu produktowego została przerwana",
-        "deleteCancel": "Usuwanie szablonu produktowego zostało przerwane"
-      }
-    },
-    "components": {
-      "RemoveElementDropZone": {
-        "title": "Usuń element"
+    "productTemplate": {
+      "_": {
+        "title": "Szablony produktowe",
+        "headTitle": "Szablony produktowe - Ergonode",
+        "noTemplate": "Brak szablonów produktowych",
+        "createFirst": "W systemie nie ma szablonów produktowych, stwórz pierwszy."
       },
-      "WidgetsSideBar": {
-        "title": "Widgety"
+      "pages": {
+        "id": {
+          "getRequest": "Szablon produktowy nie został pobrana poprawnie"
+        }
       },
-      "SectionTemplateModalForm": {
-        "title": "Ustawienia tytułu sekcji",
-        "sectionLabel": "Tytuł sekcji",
-        "requiredError": "Tytuł jest wymagany.",
-        "maxCharactersError": "Tytuł przekroczył 255 znaków."
+      "store": {
+        "action": {
+          "createCancel": "Tworzenie szablonu produktowego zostało przerwane",
+          "updateCancel": "Aktualizacja szablonu produktowego została przerwana",
+          "deleteCancel": "Usuwanie szablonu produktowego zostało przerwane"
+        }
       },
-      "CreateProductTemplateModalForm": {
-        "title": "Stwórz szablon produktu",
-        "successMessage": "Szablon produktu został stworzony"
-      },
-      "ProductTemplatesGrid": {
-        "successMessage": "Szablon produktu został usunięty",
-        "errorMessage": "Szablony produktów nie zostały pobrane poprawnie"
-      },
-      "ProductTemplateForm": {
-        "title": "Opcje",
-        "nameLabel": "Nazwa szablonu"
-      },
-      "UpdateTemplateDesignerButton": {
-        "successMessage": "Szablon został zaktualizowany"
-      },
-      "RemoveProductTemplateButton": {
-        "title": "Usuń szablon",
-        "confirmTitle": "Czy jesteś pewien, że chcesz usunąć ten szablon?",
-        "successMessage": "Szablon został usunięty"
-      },
-      "CreateProductTemplateButton": {
-        "title": "Nowy szablon"
+      "components": {
+        "RemoveElementDropZone": {
+          "title": "Usuń element"
+        },
+        "WidgetsSideBar": {
+          "title": "Widgety"
+        },
+        "SectionTemplateModalForm": {
+          "title": "Ustawienia tytułu sekcji",
+          "sectionLabel": "Tytuł sekcji",
+          "requiredError": "Tytuł jest wymagany.",
+          "maxCharactersError": "Tytuł przekroczył 255 znaków."
+        },
+        "CreateProductTemplateModalForm": {
+          "title": "Stwórz szablon produktu",
+          "successMessage": "Szablon produktu został stworzony"
+        },
+        "ProductTemplatesGrid": {
+          "successMessage": "Szablon produktu został usunięty",
+          "errorMessage": "Szablony produktów nie zostały pobrane poprawnie"
+        },
+        "ProductTemplateForm": {
+          "title": "Opcje",
+          "nameLabel": "Nazwa szablonu"
+        },
+        "UpdateTemplateDesignerButton": {
+          "successMessage": "Szablon został zaktualizowany"
+        },
+        "RemoveProductTemplateButton": {
+          "title": "Usuń szablon",
+          "confirmTitle": "Czy jesteś pewien, że chcesz usunąć ten szablon?",
+          "successMessage": "Szablon został usunięty"
+        },
+        "CreateProductTemplateButton": {
+          "title": "Nowy szablon"
+        }
       }
     }
   }

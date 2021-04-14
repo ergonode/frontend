@@ -12,65 +12,65 @@
         "editOption": "Options",
         "editDesigner": "Designer"
       }
-    }
-  },
-  "productTemplate": {
-    "_": {
-      "title": "Product templates",
-      "headTitle": "Product templates - Ergonode",
-      "noTemplate": "No product templates",
-      "createFirst": "There are no product templates in the system, you can add the first one."
     },
-    "pages": {
-      "id": {
-        "getRequest": "Product template hasn't been fetched properly"
-      }
-    },
-    "store": {
-      "action": {
-        "createCancel": "Creating product template has been canceled",
-        "updateCancel": "Updating product template has been canceled",
-        "deleteCancel": "Removing product template has been canceled"
-      }
-    },
-    "components": {
-      "RemoveElementDropZone": {
-        "title": "Remove element"
+    "productTemplate": {
+      "_": {
+        "title": "Product templates",
+        "headTitle": "Product templates - Ergonode",
+        "noTemplate": "No product templates",
+        "createFirst": "There are no product templates in the system, you can add the first one."
       },
-      "WidgetsSideBar": {
-        "title": "Widgets"
+      "pages": {
+        "id": {
+          "getRequest": "Product template hasn't been fetched properly"
+        }
       },
-      "SectionTemplateModalForm": {
-        "title": "Section title settings",
-        "sectionLabel": "Section title",
-        "requiredError": "Title is required.",
-        "maxCharactersError": "Title exceeded 255 characters."
+      "store": {
+        "action": {
+          "createCancel": "Creating product template has been canceled",
+          "updateCancel": "Updating product template has been canceled",
+          "deleteCancel": "Removing product template has been canceled"
+        }
       },
-      "CreateProductTemplateModalForm": {
-        "title": "Create product template",
-        "successMessage": "Product template created"
-      },
-      "ProductTemplatesGrid": {
-        "successMessage": "Product template removed",
-        "errorMessage": "Product templates haven’t been fetched properly"
-      },
-      "ProductTemplateForm": {
-        "title": "Options",
-        "nameLabel": "Template name"
-      },
-      "UpdateTemplateDesignerButton": {
-        "successMessage": "Template has been updated"
-      },
-      "RemoveProductTemplateButton": {
-        "title": "Remove template",
-        "confirmTitle": "Are you sure you want to delete this template?",
-        "successMessage": "Template removed"
-      },
-      "CreateProductTemplateButton": {
-        "title": "New template"
-      },
-      "ProductTemplateAutocomplete": {
-        "label": "Product template"
+      "components": {
+        "RemoveElementDropZone": {
+          "title": "Remove element"
+        },
+        "WidgetsSideBar": {
+          "title": "Widgets"
+        },
+        "SectionTemplateModalForm": {
+          "title": "Section title settings",
+          "sectionLabel": "Section title",
+          "requiredError": "Title is required.",
+          "maxCharactersError": "Title exceeded 255 characters."
+        },
+        "CreateProductTemplateModalForm": {
+          "title": "Create product template",
+          "successMessage": "Product template created"
+        },
+        "ProductTemplatesGrid": {
+          "successMessage": "Product template removed",
+          "errorMessage": "Product templates haven’t been fetched properly"
+        },
+        "ProductTemplateForm": {
+          "title": "Options",
+          "nameLabel": "Template name"
+        },
+        "UpdateTemplateDesignerButton": {
+          "successMessage": "Template has been updated"
+        },
+        "RemoveProductTemplateButton": {
+          "title": "Remove template",
+          "confirmTitle": "Are you sure you want to delete this template?",
+          "successMessage": "Template removed"
+        },
+        "CreateProductTemplateButton": {
+          "title": "New template"
+        },
+        "ProductTemplateAutocomplete": {
+          "label": "Product template"
+        }
       }
     }
   }
