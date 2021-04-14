@@ -74,7 +74,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'Segment hasn`t been fetched properly',
+                    message: this.$t('@Segments.segment.pages.id.getRequest'),
                 });
             },
         });
@@ -116,7 +116,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.code} - Segments - Ergonode`,
+            title: `${this.code} - ${this.$t('@Segments.segment._.headTitle')}`,
         };
     },
 };

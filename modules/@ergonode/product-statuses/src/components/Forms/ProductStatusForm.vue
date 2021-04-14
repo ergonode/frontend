@@ -1,10 +1,10 @@
-/*
+sw/*
  * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
     <Form
-        title="Options"
+        :title="$t('@Statuses.productStatus.components.ProductStatusForm.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
@@ -22,16 +22,16 @@
                     required
                     :error-messages="errors[codeFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    label="System name"
-                    hint="System name must be unique"
+                    :label="$t('@Statuses.productStatus.components.ProductStatusForm.nameLabel')"
+                    :hint="$t('@Statuses.productStatus.components.ProductStatusForm.nameHint')"
                     @input="setCodeValue" />
                 <CheckBox
                     :value="isDefaultStatus"
-                    label="Default status of new products"
+                    :label="$t('@Statuses.productStatus.components.ProductStatusForm.defaultStatusLabel')"
                     :disabled="!isAllowedToUpdate"
                     @input="setStatusAsDefaultValue">
                     <template #append>
-                        <InfoHint hint="You may set only one status as a default" />
+                        <InfoHint :hint="$t('@Statuses.productStatus.components.ProductStatusForm.defaultStatusHint')" />
                     </template>
                 </CheckBox>
                 <ColorPicker
@@ -43,8 +43,8 @@
                     :dismissible="false"
                     :options="colorOptions"
                     :fixed-content="false"
-                    label="Badge color"
-                    hint="Badge color is needed for presentation purpose"
+                    :label="$t('@Statuses.productStatus.components.ProductStatusForm.badgeLabel')"
+                    :hint="$t('@Statuses.productStatus.components.ProductStatusForm.badgeHint')"
                     :disabled="!isAllowedToUpdate"
                     @input="setColorValue" />
                 <template v-for="(field, index) in extendedForm">

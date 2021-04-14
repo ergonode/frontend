@@ -8,8 +8,8 @@
         @close="onClose">
         <template #body>
             <ProductStatusForm
-                :submit-title="$t('core.buttons.create')"
-                :proceed-title="$t('core.buttons.proceed')"
+                :submit-title="$t('@Statuses._.create')"
+                :proceed-title="$t('@Statuses._.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :scope="scope"
@@ -25,9 +25,6 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    THEME,
-} from '@Core/defaults/theme';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import ProductStatusForm from '@Statuses/components/Forms/ProductStatusForm';
 import {
@@ -52,11 +49,6 @@ export default {
             isSubmitting: false,
             isProceeding: false,
         };
-    },
-    computed: {
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
     },
     methods: {
         ...mapActions('productStatus', [
@@ -99,7 +91,7 @@ export default {
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product status created',
+                message: this.$t('@Statuses.productStatus.components.CreateProductStatusModalForm.successMessage'),
             });
 
             this.isSubmitting = false;

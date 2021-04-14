@@ -10,7 +10,7 @@
         :searchable="true"
         :multiselect="multiselect"
         :clearable="clearable"
-        :label="$t('productTemplate.autocomplete.productTemplate')"
+        :label="$t('@Templates.productTemplate.components.ProductTemplateAutocomplete.label')"
         :custom-fetch-event="productTemplateCreatedEventName"
         :error-messages="errorMessages"
         :disabled="disabled"
@@ -82,8 +82,8 @@ export default {
         },
         noDataPlaceholder() {
             return {
-                title: this.$t('productTemplate.autocomplete.productTemplateNoDataPlaceholderTitle'),
-                subtitle: this.$t('productTemplate.autocomplete.productTemplateNoDataPlaceholderSubtitle'),
+                title: this.$t('@Templates.productTemplate._.noTemplate'),
+                subtitle: this.$t('@Templates.productTemplate._.createFirst'),
             };
         },
     },

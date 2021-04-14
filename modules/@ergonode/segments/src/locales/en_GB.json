@@ -1,6 +1,11 @@
 {
   "@Segments": {
     "_": {
+      "submit": "Save changes",
+      "create": "Create",
+      "proceed": "Create & Edit",
+      "cancel": "Cancel",
+      "deleteConfirm": "Yes, remove",
       "routes": {
         "title": "Segments",
         "group": "Products",
@@ -8,17 +13,69 @@
         "editTranslation": "Translations",
         "editConditions": "Conditions"
       }
-    }
-  },
-  "segment": {
-    "form": {
-      "segmentsLabel": "From segmentation rules",
-      "noSegmentsTitle": "No segments",
-      "noSegmentsSubtitle": "There are no segments in the system, so you can add the first one."
     },
-    "grid": {
-      "placeholderTitle": "No segments",
-      "placeholderSubtitle": "There are no segments in the system, so you can add the first one."
+    "segment": {
+      "_": {
+        "title": "Segments",
+        "headTitle": "Segments - Ergonode",
+        "noSegments": "No segments",
+        "createFirst": "There are no segments in the system, so you can add the first one."
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Segment hasn’t been fetched properly"
+        }
+      },
+      "store": {
+        "action": {
+          "createCancel": "Creating segment has been canceled",
+          "updateCancel": "Updating segment has been canceled",
+          "deleteCancel": "Removing segment has been canceled"
+        }
+      },
+      "components": {
+        "CreateSegmentModalForm": {
+          "title": "Create segment",
+          "successMessage": "Segment created"
+        },
+        "RemoveConditionDropZone": {
+          "title": "Remove condition"
+        },
+        "SegmentsGrid": {
+          "successMessage": "Segment removed",
+          "errorMessage": "Segments haven’t been fetched properly"
+        },
+        "SegmentForm": {
+          "title": "Options",
+          "nameLabel": "System name",
+          "nameHint": "System name must be unique"
+        },
+        "SegmentTranslationForm": {
+          "conditionSetNameLabel": "Condition set name",
+          "descriptionLabel": "Description"
+        },
+        "CreateSegmentButton": {
+          "title": "New segment"
+        },
+        "RemoveSegmentButton": {
+          "title": "Remove segment",
+          "confirmTitle": "Are you sure you want to delete this segment?",
+          "successMessage": "Segment removed",
+          "errorMessage": "Segment hasn`t been deleted"
+        },
+        "UpdateSegmentConditionDesignerButton": {
+          "successMessage": "Segment conditions have been updated"
+        },
+        "UpdateSegmentTranslationButton": {
+          "successMessage": "Segment translations have been updated"
+        },
+        "SegmentsAutocomplete": {
+          "label": "From segmentation rules"
+        },
+        "SegmentGeneralTab": {
+          "successMessage": "Segment has been updated"
+        }
+      }
     }
   }
 }

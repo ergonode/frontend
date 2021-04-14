@@ -5,7 +5,7 @@
 <template>
     <Button
         data-cy="new-template"
-        title="NEW TEMPLATE"
+        :title="$t('@Templates.productTemplate.components.CreateProductTemplateButton.title')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">

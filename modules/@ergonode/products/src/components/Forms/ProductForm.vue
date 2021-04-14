@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="Options"
+        :title="$t('@Products.product.components.ProductForm.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
@@ -20,7 +20,7 @@
                     :value="type"
                     required
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    label="Product type"
+                    :label="$t('@Products.product.components.ProductForm.typeLabel')"
                     :error-messages="errors[typeFieldKey]"
                     :options="productTypesValues"
                     @input="setTypeValue" />
@@ -28,8 +28,8 @@
             <FormSection v-if="type">
                 <TextField
                     :value="sku"
-                    hint="Products SKU must be unique"
-                    label="SKU"
+                    :label="$t('@Products.product.components.ProductForm.skuLabel')"
+                    :hint="$t('@Products.product.components.ProductForm.skuHint')"
                     required
                     :error-messages="errors[skuFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"

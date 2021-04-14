@@ -4,11 +4,11 @@
  */
 <template>
     <ModalForm
-        title="Add binding attributes"
+        :title="$t('@Products.productExtend.components.AddBindingAttributesModalForm.title')"
         @close="onClose">
         <template #body>
             <ProductAttributesBindingForm
-                submit-title="ADD ATTRIBUTES"
+                :submit-title="$t('@Products.productExtend.components.AddBindingAttributesModalForm.submitTitle')"
                 :proceed-title="$t('@Products._.cancel')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
@@ -26,9 +26,6 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    THEME,
-} from '@Core/defaults/theme';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import {
     arraysAreEqual,
@@ -61,12 +58,6 @@ export default {
             'id',
             'bindings',
         ]),
-        description() {
-            return 'Binding attribute is the common attribute of the products, which link products together into the product with variants.';
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
     },
     created() {
         this.localBindings = [
@@ -111,7 +102,7 @@ export default {
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Attribute bindings added',
+                message: this.$t('@Products.productExtend.components.AddBindingAttributesModalForm.successMessage'),
             });
 
             this.isSubmitting = false;

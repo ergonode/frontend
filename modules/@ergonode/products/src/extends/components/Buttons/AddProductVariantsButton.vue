@@ -37,7 +37,7 @@ export default {
     props: {
         title: {
             type: String,
-            default: 'CHOOSE VARIANTS',
+            default: '',
         },
         /**
          * The theme of the component

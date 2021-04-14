@@ -6,16 +6,7 @@
     <GridViewTemplate>
         <template #sidebar>
             <VerticalTabBar :items="verticalTabs">
-                <FadeTransition>
-                    <DropZone
-                        v-show="isDropZoneVisible"
-                        :hover-background-color="graphiteLightColor"
-                        title="REMOVE CONDITION">
-                        <template #icon="{ color }">
-                            <IconRemoveFilter :fill-color="color" />
-                        </template>
-                    </DropZone>
-                </FadeTransition>
+                <RemoveConditionDropZone />
             </VerticalTabBar>
         </template>
         <template #grid>
@@ -34,48 +25,29 @@
 
 <script>
 import ConditionSetTreeDesigner from '@Conditions/components/TreeDesigners/ConditionSetTreeDesigner';
-import {
-    DRAGGED_ELEMENT,
-} from '@Core/defaults/grid';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import UpdateSegmentConditionDesignerButton from '@Segments/components/Buttons/UpdateSegmentConditionDesignerButton';
+import RemoveConditionDropZone from '@Segments/components/DropZones/RemoveConditionDropZone';
 import PRIVILEGES from '@Segments/config/privileges';
-import {
-    GRAPHITE_LIGHT,
-} from '@UI/assets/scss/_js-variables/colors.scss';
-import DropZone from '@UI/components/DropZone/DropZone';
-import IconRemoveFilter from '@UI/components/Icons/Actions/IconRemoveFilter';
 import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
 import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
     name: 'ConditionDesignerTab',
     components: {
+        RemoveConditionDropZone,
         UpdateSegmentConditionDesignerButton,
         GridViewTemplate,
-        IconRemoveFilter,
-        DropZone,
-        FadeTransition,
         VerticalTabBar,
         ConditionSetTreeDesigner,
     },
     mixins: [
         tabFeedbackMixin,
     ],
-    data() {
-        return {
-            isSubmitting: false,
-        };
-    },
     computed: {
-        ...mapState('draggable', [
-            'isElementDragging',
-        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.SEGMENT.update,
@@ -93,12 +65,6 @@ export default {
                     },
                 },
             ];
-        },
-        isDropZoneVisible() {
-            return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;
-        },
-        graphiteLightColor() {
-            return GRAPHITE_LIGHT;
         },
     },
     beforeDestroy() {
