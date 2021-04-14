@@ -4,12 +4,12 @@
  */
 <template>
     <ModalForm
-        title="Create segment"
+        :title="$t('@Segments.segment.components.CreateSegmentModalForm.title')"
         @close="onClose">
         <template #body>
             <SegmentForm
-                :submit-title="$t('core.buttons.create')"
-                :proceed-title="$t('core.buttons.proceed')"
+                :submit-title="$t('@Segments._.create')"
+                :proceed-title="$t('@Segments._.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :scope="scope"
@@ -25,9 +25,6 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    THEME,
-} from '@Core/defaults/theme';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import SegmentForm from '@Segments/components/Forms/SegmentForm';
 import {
@@ -52,11 +49,6 @@ export default {
             isSubmitting: false,
             isProceeding: false,
         };
-    },
-    computed: {
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
     },
     methods: {
         ...mapActions('segment', [
@@ -99,7 +91,7 @@ export default {
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Segment created',
+                message: this.$t('@Segments.segment.components.CreateSegmentModalForm.successMessage'),
             });
 
             this.isSubmitting = false;

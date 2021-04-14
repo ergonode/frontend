@@ -7,7 +7,7 @@
         data-cy="delete-segment"
         :theme="secondaryTheme"
         :size="smallSize"
-        title="REMOVE SEGMENT"
+        :title="$t('@Segments.segment.components.RemoveSegmentButton.title')"
         :disabled="!isAllowedToDelete"
         @click.native="onRemove">
         <template #prepend="{ color }">
@@ -63,8 +63,8 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this segment?',
-                applyTitle: 'YES, REMOVE',
+                title: this.$t('@Segments.segment.components.RemoveSegmentButton.confirmTitle'),
+                applyTitle: this.$t('@Segments._.deleteConfirm'),
                 action: () => this.removeSegment({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
@@ -74,7 +74,7 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Segment removed',
+                message: this.$t('@Segments.segment.components.RemoveSegmentButton.successMessage'),
             });
             this.$router.push({
                 name: ROUTE_NAME.SEGMENTS_GRID,
@@ -83,7 +83,7 @@ export default {
         onRemoveError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Segmet hasn`t been deleted',
+                message: this.$t('@Segments.segment.components.RemoveSegmentButton.errorMessage'),
             });
         },
     },

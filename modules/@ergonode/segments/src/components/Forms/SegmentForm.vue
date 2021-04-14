@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="Options"
+        :title="$t('@Segments.segment.components.SegmentForm.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
@@ -20,10 +20,10 @@
                     :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
                     required
-                    label="System name"
+                    :label="$t('@Segments.segment.components.SegmentForm.nameLabel')"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errors[codeFieldKey]"
-                    hint="System name must be unique"
+                    :hint="$t('@Segments.segment.components.SegmentForm.nameHint')"
                     @input="setCodeValue" />
                 <template v-for="(field, index) in extendedForm">
                     <Component

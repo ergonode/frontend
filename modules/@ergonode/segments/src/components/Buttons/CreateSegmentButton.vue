@@ -5,7 +5,7 @@
 <template>
     <Button
         data-cy="new-segment"
-        title="NEW SEGMENT"
+        :title="$t('@Segments.segment.components.CreateSegmentButton.title')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">
