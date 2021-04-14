@@ -7,7 +7,7 @@ Feature: CREATE: Attribute groups
     When I click on "new-attribute-group" button
     Then Element "modal" is visible
 
-  @give-up
+  @other
   Scenario: Close modal
     When I close modal
     Then Element "modal" not exist

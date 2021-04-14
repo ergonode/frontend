@@ -20,9 +20,9 @@ Feature: READ: Attribute groups
     * I can see "text_attribute_group" text on "title-bar-header" element
     * Element "attribute-group-code" is visible
     * I can see "attribute-group-code" input with the "text_attribute_group" term
-    * I can see "attribute-group-code" input as disabled
-    * I click back arrow
-    Then I see "attribute-groups/grid" page
+    * I can see "attribute-group-code" field as disabled
+    Then I click back arrow
+    * I see "attribute-groups/grid" page
 
   @success
   Scenario: Read attribute group translation - success
@@ -33,8 +33,8 @@ Feature: READ: Attribute groups
     * I see "attribute-groups/group/%UUID%/translations" page
     * I choose "[1]" option from "translation-language-select" multi select field
     * I can see "attribute-group-name_en_GB" input with the "" term
-    * I can see "attribute-group-name_en_GB" input as enabled
+    * I can see "attribute-group-name_en_GB" field as enabled
     * I can see "attribute-group-name_pl_PL" input with the "" term
-    * I can see "attribute-group-name_pl_PL" input as enabled
-    * I click back arrow
-    Then I see "attribute-groups/grid" page
+    * I can see "attribute-group-name_pl_PL" field as enabled
+    Then I click back arrow
+    * I see "attribute-groups/grid" page

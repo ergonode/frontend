@@ -44,18 +44,49 @@ MultiSteps([
 MultiSteps([
     When,
     Then,
-], 'I can see {string} input as disabled', (id) => {
+], 'I can see {string} textarea with the {string} term', (id, term) => {
     cy.get(`[data-cy=${id}]`)
-        .find('input')
+        .find('textarea')
+        .should('have.value', term);
+});
+
+MultiSteps([
+    When,
+    Then,
+], 'I can see {string} select with the {string} term', (id, term) => {
+    cy.get(`[data-cy=${id}]`)
+        .find('.input-select-value')
+        .should(($ele) => {
+            expect($ele.text().trim()).equal(term);
+        });
+});
+
+MultiSteps([
+    When,
+    Then,
+], 'I can see {string} select as not empty', (id) => {
+    cy.get(`[data-cy=${id}]`)
+        .find('.input-select-value')
+        .should(($ele) => {
+            expect($ele.text().trim()).not.equal('');
+        });
+});
+
+MultiSteps([
+    When,
+    Then,
+], 'I can see {string} field as disabled', (id) => {
+    cy.get(`[data-cy=${id}]`)
+        .find('input, select, textarea')
         .should('have.attr', 'disabled', 'disabled');
 });
 
 MultiSteps([
     When,
     Then,
-], 'I can see {string} input as enabled', (id) => {
+], 'I can see {string} field as enabled', (id) => {
     cy.get(`[data-cy=${id}]`)
-        .find('input')
+        .find('input, select, textarea')
         .should('not.have.attr', 'disabled');
 });
 
@@ -115,7 +146,7 @@ MultiSteps([
         .click();
     cy.get(`[data-cy=${id}-drop-down]`)
         .should('be.visible')
-        .find('.list > .list-element')
+        .find('.list-element')
         .as('elementList');
     cy.get('@elementList')
         .its('length')

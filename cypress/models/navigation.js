@@ -28,7 +28,7 @@ export const checkGridRow = ({
                     cy
                         .get('@grid')
                         .find(`.coordinates-${columnIndex}-${rowNr}`)
-                        .should('be.visible')
+                        .should('exist')
                         .as(`checkingCell${columnIndex}`);
                     if (parsedColumns[columnIndex] === 'true' || parsedColumns[columnIndex] === 'false') {
                         cy
