@@ -44,8 +44,8 @@
         </template>
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('productStatus.grid.placeholderTitle')"
-                :subtitle="$t('productStatus.grid.placeholderSubtitle')">
+                :title="$t('@Statuses.productStatus._.noProductStatus')"
+                :subtitle="$t('@Statuses.productStatus._.createFirst')">
                 <template #action>
                     <CreateProductStatusButton />
                 </template>
@@ -174,7 +174,7 @@ export default {
         onRemoveRow() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product status removed',
+                message: this.$t('@Statuses.productStatus.components.ProductStatusesGrid.successMessage'),
             });
             this.onFetchData();
         },
@@ -214,7 +214,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Product statuses haven’t been fetched properly',
+                message: this.$t('@Statuses.productStatus.components.ProductStatusesGrid.errorMessage'),
             });
         },
         onRemoveAllFilters() {

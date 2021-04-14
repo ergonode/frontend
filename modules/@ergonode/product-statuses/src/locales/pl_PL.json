@@ -1,18 +1,74 @@
 {
   "@Statuses": {
     "_": {
+      "submit": "Zapisz zmiany",
+      "create": "Stwórz",
+      "proceed": "Stwórz & Edytuj",
+      "cancel": "Anuluj",
+      "deleteConfirm": "Tak, usuń",
       "routes": {
         "title": "Statusy produktu",
         "group": "Przepływ pracy",
         "editOption": "Opcje",
         "editTranslations": "Tłumaczenia"
       }
-    }
-  },
-  "productStatus": {
-    "grid": {
-      "placeholderTitle": "Brak statusów produktowych",
-      "placeholderSubtitle": "W systemie nie ma statusów produktowych, stwórz pierwszy."
+    },
+    "productStatus": {
+      "_": {
+        "title": "Status produktu",
+        "headTitle": "Statusy produktów - Ergonode",
+        "noProductStatus": "Brak statusów produktu",
+        "createFirst": "W systemie nie ma statusów produktu, stwórz pierwszy."
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Status produktu nie została pobrana poprawnie"
+        }
+      },
+      "store": {
+        "action": {
+          "createCancel": "Tworzenie statusu produktu zostało przerwane",
+          "updateCancel": "Aktualizacja statusu produktu została przerwana",
+          "deleteCancel": "Usuwanie statusu produktu zostało przerwane"
+        }
+      },
+      "components": {
+        "ProductStatusGeneralTab": {
+          "successMessage": "Status produktu został zaktualizowany"
+        },
+        "CreateProductStatusModalForm": {
+          "successMessage": "Status produktu został stworzony"
+        },
+        "ProductStatusesGrid": {
+          "successMessage": "Status produktu został usunięty",
+          "errorMessage": "Status produktu nie został pobrany prawidłowo"
+        },
+        "ProductStatusForm": {
+          "title": "Opcje",
+          "nameLabel": "Nazwa systemowa",
+          "nameHint": "Nazwa systemowa musi być unikatowa",
+          "defaultStatusLabel": "Domyślny status nowych produktów",
+          "defaultStatusHint": "Możesz ustawić tylko jeden domyślny status dla produktów",
+          "badgeLabel": "Kolor znacznika",
+          "badgeHint": "Kolor znacznika jest wymagany w celach prezentacyjnych"
+        },
+        "ProductStatusTranslationForm": {
+          "nameLabel": "Nazwa statusu",
+          "descriptionLabel": "Opis statusu"
+        },
+        "CreateProductStatusButton": {
+          "title": "Nowy status"
+        },
+        "RemoveProductStatusButton": {
+          "title": "Usuń status",
+          "confirmTitle": "Czy jesteś pewien, że chcesz usunąć ten status produktu?",
+          "successMessage": "Status produktu został usunięty",
+          "errorMessage": "Status produktu nie został usunięty"
+        },
+        "UpdateProductStatusTranslationButton": {
+          "successMessage": "Tłumaczenia statusu produktowego zostały zaktualizowane"
+        }
+      }
     }
   }
 }

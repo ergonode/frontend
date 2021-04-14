@@ -5,7 +5,7 @@
 <template>
     <Button
         data-cy="new-status"
-        title="NEW STATUS"
+        :title="$t('@Statuses.productStatus.components.CreateProductStatusButton.title')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">
