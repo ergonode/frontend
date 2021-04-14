@@ -48,8 +48,8 @@
         </template>
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('productTemplate.grid.placeholderTitle')"
-                :subtitle="$t('productTemplate.grid.placeholderSubtitle')">
+                :title="$t('@Templates.productTemplate._.noTemplate')"
+                :subtitle="$t('@Templates.productTemplate._.createFirst')">
                 <template #action>
                     <CreateProductTemplateButton />
                 </template>
@@ -188,7 +188,7 @@ export default {
         onRemoveRow() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product template removed',
+                message: this.$t('@Templates.productTemplate.components.ProductTemplatesGrid.successMessage'),
             });
             this.onFetchData();
         },
@@ -228,7 +228,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Product templates haven’t been fetched properly',
+                message: this.$t('@Templates.productTemplate.components.ProductTemplatesGrid.errorMessage'),
             });
         },
         onRemoveAllFilters() {

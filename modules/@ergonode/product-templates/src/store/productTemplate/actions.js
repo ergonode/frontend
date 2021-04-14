@@ -193,7 +193,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating product template has been canceled',
+                    message: this.app.i18n.t('@Templates.productTemplate.store.action.updateCancel'),
                 });
 
                 return;
@@ -334,7 +334,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Creating product template has been canceled',
+                    message: this.app.i18n.t('@Templates.productTemplate.store.action.createCancel'),
                 });
 
                 return;
@@ -382,7 +382,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Removing product template has been canceled',
+                    message: this.app.i18n.t('@Templates.productTemplate.store.action.deleteCancel'),
                 });
 
                 return;

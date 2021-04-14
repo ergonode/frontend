@@ -103,7 +103,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.title} - Product templates - Ergonode`,
+            title: `${this.title} - ${this.$t('@Templates.productTemplate._.headTitle')}`,
         };
     },
 };
