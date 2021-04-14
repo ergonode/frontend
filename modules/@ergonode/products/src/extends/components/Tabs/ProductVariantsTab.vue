@@ -56,8 +56,8 @@ export default {
         listPlaceholder() {
             return {
                 style: 'margin-top: 24px; align-self: center',
-                title: 'No binding attributes',
-                subtitle: 'Binding attribute is the common attribute of the products, which link products together into the product with variants.',
+                title: this.$t('@Products.productExtend.components.ProductVariantsTab.placeholderTitle'),
+                subtitle: this.$t('@Products.productExtend.components.ProductVariantsTab.placeholderSubtitle'),
             };
         },
     },

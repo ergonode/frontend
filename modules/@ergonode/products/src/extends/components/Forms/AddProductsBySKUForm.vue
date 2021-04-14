@@ -17,8 +17,8 @@
             <FormSection>
                 <TextArea
                     :value="productSkus"
-                    label="By SKU"
-                    hint="Separate multiple SKU’s by using enter or comma, e.g. “SKU1, SKU2, SKU3”"
+                    :label="$t('@Products.productExtend.components.AddProductsBySKUForm.skuLabel')"
+                    :hint="$t('@Products.productExtend.components.AddProductsBySKUForm.skuHint')"
                     resize="none"
                     height="150px"
                     :error-messages="presentationErrors.join(' ')"

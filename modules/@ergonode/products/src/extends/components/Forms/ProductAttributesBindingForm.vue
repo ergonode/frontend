@@ -15,7 +15,7 @@
         <template #body>
             <FormListSection
                 :disabled="isDisabled"
-                add-list-title="ADD BINDING ATTRIBUTE"
+                :add-list-title="$t('@Products.productExtend.components.ProductAttributesBindingForm.listTitle')"
                 @add="onAddRecord">
                 <FormListSubsection v-if="bindings.length && selectAttributes.length">
                     <ProductAttributeBindingField

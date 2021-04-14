@@ -25,9 +25,6 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    THEME,
-} from '@Core/defaults/theme';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import ProductForm from '@Products/components/Forms/ProductForm';
 import {
@@ -59,11 +56,6 @@ export default {
             isSubmitting: false,
             isProceeding: false,
         };
-    },
-    computed: {
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
     },
     methods: {
         ...mapActions('product', [
@@ -109,7 +101,7 @@ export default {
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product created',
+                message: this.$t('@Products.product.components.CreateProductModalForm.successMessage'),
             });
 
             this.isSubmitting = false;

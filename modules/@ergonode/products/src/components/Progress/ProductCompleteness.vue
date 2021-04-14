@@ -64,10 +64,16 @@ export default {
         hint() {
             const missing = this.languageCompleteness.missing.map(field => field.name);
 
-            return missing.length ? `Missing fields: ${missing.join(', ')}` : 'All completed';
+            return missing.length
+                ? this.$t('@Products.product.components.ProductCompleteness.missingFields', {
+                    info: missing.join(', '),
+                })
+                : this.$t('@Products.product.components.ProductCompleteness.allCompleted');
         },
         title() {
-            return `${this.progress}% Completed`;
+            return this.$t('@Products.product.components.ProductCompleteness.title', {
+                info: this.progress,
+            });
         },
         progress() {
             const {
