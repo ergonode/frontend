@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        :title="$t('media.form.productRelationsTitle')"
+        :title="$t('@Media.media.components.ResourceRelationsForm.title')"
         v-if="isPrefetchingData || (!isPrefetchingData && rows.length)">
         <template #body>
             <FormSection>
@@ -37,8 +37,8 @@
     </Form>
     <TabBarNoDataPlaceholder
         v-else
-        :title="$t('media.tab.productRelationsPlaceholderTitle')"
-        :subtitle="$t('media.tab.productRelationsPlaceholderSubtitle')" />
+        :title="$t('@Media.media.components.ResourceRelationsForm.placeholderTitle')"
+        :subtitle="$t('@Media.media.components.ResourceRelationsForm.placeholderSubtitle')" />
 </template>
 
 <script>

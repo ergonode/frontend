@@ -1,6 +1,11 @@
 {
   "@Media": {
     "_": {
+      "submit": "Save changes",
+      "create": "Create",
+      "proceed": "Create & Edit",
+      "cancel": "Cancel",
+      "deleteConfirm": "Yes, remove",
       "routes": {
         "title": "Media",
         "group": "Resources",
@@ -9,19 +14,97 @@
         "editInformation": "Information",
         "editRelations": "Relations"
       }
-    }
-  },
-  "media": {
-    "form": {
-      "productRelationsTitle": "Relations in products"
     },
-    "grid": {
-      "placeholderTitle": "No media",
-      "placeholderSubtitle": "There are no media in the system, you can upload the first one."
-    },
-    "tab": {
-      "productRelationsPlaceholderTitle": "No relations in products",
-      "productRelationsPlaceholderSubtitle": "Here you can see information about relations in products."
+    "media": {
+      "_": {
+        "title": "Media",
+        "headTitle": "Media - Ergonode",
+        "noMedia": "No media",
+        "createFirst": "There are no media in the system, you can add the first one."
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Resource hasn't been fetched properly"
+        }
+      },
+      "store": {
+        "action": {
+          "createCancel": "Creating resource has been canceled",
+          "updateCancel": "Updating resource has been canceled",
+          "deleteCancel": "Removing resource has been canceled"
+        }
+      },
+      "components": {
+        "ResourceRelationsForm": {
+          "title": "Relations in products",
+          "placeholderTitle": "No relations in products",
+          "placeholderSubtitle": "Here you can see information about relations in products."
+        },
+        "UploadFileTab": {
+          "informationLabel": "Drag and drop files",
+          "logicOperator": "or",
+          "browseTitle": "Browse file",
+          "successMessage": "File uploaded",
+          "errorMessage": "Internal server error"
+        },
+        "ResourceGeneralTab": {
+          "successMessage": "Resource has been updated"
+        },
+        "ModalMediaTabBar": {
+          "title": "Add resources"
+        },
+        "UploadImageFile": {
+          "singularTitle": "Add image",
+          "pluralTitle": "Add images",
+          "mediaTabTitle": "Media",
+          "uploadFilesTabTitle": "Upload files",
+          "changeImageOptionTitle": "Change this image",
+          "downloadImageOptionTitle": "Download this image",
+          "removeImageOptionTitle": "Remove this image",
+          "addImageToGalleryOptionTitle": "Add image to gallery",
+          "detachFromGalleryOptionTitle": "Detach this image from gallery"
+        },
+        "UploadFiles": {
+          "title": "Add files",
+          "mediaTabTitle": "Media",
+          "uploadFilesTabTitle": "Upload files"
+        },
+        "MediaGrid": {
+          "successMessage": "Media removed",
+          "errorMessage": "Media haven’t been fetched properly"
+        },
+        "AddMediaGrid": {
+          "successUpdateMessage": "Resources have been updated",
+          "infoMessage": "No changes have been made",
+          "successRemoveMessage": "Resource removed",
+          "errorGetMessage": "Resources haven’t been fetched properly"
+        },
+        "ResourceTranslationForm": {
+          "altLabel": "Alternate text"
+        },
+        "ResourceForm": {
+          "title": "Options",
+          "filenameLabel": "File name",
+          "previewLabel": "Preview"
+        },
+        "UploadResourcesButton": {
+          "title": "Upload files",
+          "modalTitle": "Add resources",
+          "modalTabTitle": "Upload files"
+        },
+        "UpdateResourceTranslationButton": {
+          "successMessage": "Resource translations have been updated"
+        },
+        "RemoveResourceButton": {
+          "title": "Remove resource",
+          "confirmTitle": "Are you sure you want to delete this resource?",
+          "successMessage": "Resource removed",
+          "errorMessage": "Resource hasn`t been deleted"
+        },
+        "LinkRelationButton": {
+          "errorMessage": "Unknown relation type"
+        }
+      }
     }
   }
 }

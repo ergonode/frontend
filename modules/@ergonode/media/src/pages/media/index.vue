@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar
-            title="Media"
+            :title="$t('@Media.media._.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <template
@@ -65,7 +65,7 @@ export default {
     },
     head() {
         return {
-            title: 'Media - Ergonode',
+            title: this.$t('@Media.media._.headTitle'),
         };
     },
 };
