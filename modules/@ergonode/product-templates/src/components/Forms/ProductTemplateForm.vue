@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="Options"
+        :title="$t('@Templates.productTemplate.components.ProductTemplateForm.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
@@ -21,7 +21,7 @@
                     :value="title"
                     required
                     :error-messages="errors[nameFieldKey]"
-                    label="Template name"
+                    :label="$t('@Templates.productTemplate.components.ProductTemplateForm.nameLabel')"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setTitleValue" />
             </FormSection>
