@@ -7,7 +7,7 @@
         data-cy="delete-template"
         :theme="secondaryTheme"
         :size="smallSize"
-        title="REMOVE TEMPLATE"
+        :title="$t('@Templates.productTemplate.components.RemoveProductTemplateButton.title')"
         :disabled="!isAllowedToDelete"
         @click.native="onRemove">
         <template #prepend="{ color }">
@@ -64,7 +64,7 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Template removed',
+                message: this.$t('@Templates.productTemplate.components.RemoveProductTemplateButton.successMessage'),
             });
             this.$router.push({
                 name: ROUTE_NAME.PRODUCT_TEMPLATES,
@@ -73,8 +73,8 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this template?',
-                applyTitle: 'YES, REMOVE',
+                title: this.$t('@Templates.productTemplate.components.RemoveProductTemplateButton.confirmTitle'),
+                applyTitle: this.$t('@Templates._.deleteConfirm'),
                 action: () => {
                     this.removeTemplate({
                         scope: this.scope,

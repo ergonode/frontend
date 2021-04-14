@@ -4,12 +4,12 @@
  */
 <template>
     <ModalForm
-        title="Create product template"
+        :title="$t('@Templates.productTemplate.components.CreateProductTemplateModalForm.title')"
         @close="onClose">
         <template #body>
             <ProductTemplateForm
-                :submit-title="$t('core.buttons.create')"
-                :proceed-title="$t('core.buttons.proceed')"
+                :submit-title="$t('@Templates._.create')"
+                :proceed-title="$t('@Templates._.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :scope="scope"
@@ -25,9 +25,6 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    THEME,
-} from '@Core/defaults/theme';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import ProductTemplateForm from '@Templates/components/Forms/ProductTemplateForm';
 import {
@@ -52,11 +49,6 @@ export default {
             isSubmitting: false,
             isProceeding: false,
         };
-    },
-    computed: {
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
     },
     methods: {
         ...mapActions('productTemplate', [
@@ -99,7 +91,7 @@ export default {
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product template created',
+                message: this.$t('@Templates.productTemplate.components.CreateProductTemplateModalForm.successMessage'),
             });
 
             this.isSubmitting = false;

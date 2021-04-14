@@ -4,7 +4,7 @@
  */
 <template>
     <SideBar
-        title="Widgets"
+        :title="$t('@Templates.productTemplate.components.WidgetsSideBar.title')"
         :items="widgets">
         <template #item="{ item }">
             <WidgetSideBarElement

@@ -4,22 +4,22 @@
  */
 <template>
     <ModalForm
-        title="Section title settings"
+        :title="$t('@Templates.productTemplate.components.SectionTemplateModalForm.title')"
         @close="onClose">
         <template #headerPrepend>
             <IconFontSize />
         </template>
         <template #body>
             <Form
-                submit-title="SAVE"
-                :proceed-title="$t('core.buttons.cancel')"
+                :submit-title="$t('@Templates._.submit')"
+                :proceed-title="$t('@Templates._.cancel')"
                 @submit="onSubmit"
                 @proceed="onClose">
                 <template #body>
                     <FormSection>
                         <TextField
                             :value="title"
-                            label="Section title"
+                            :label="$t('@Templates.productTemplate.components.SectionTemplateModalForm.sectionLabel')"
                             required
                             :error-messages="error"
                             @input="onTitleChange" />
@@ -124,10 +124,10 @@ export default {
             }
         },
         setTitleError() {
-            this.error = 'Title is required.';
+            this.error = this.$t('@Templates.productTemplate.components.SectionTemplateModalForm.requiredError');
         },
         setLengthError() {
-            this.error = 'Title exceeded 255 characters.';
+            this.error = this.$t('@Templates.productTemplate.components.SectionTemplateModalForm.maxCharactersError');
         },
     },
 };

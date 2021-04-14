@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar
-            title="Templates"
+            :title="$t('@Templates.productTemplate._.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <template
@@ -67,7 +67,7 @@ export default {
     },
     head() {
         return {
-            title: 'Product templates - Ergonode',
+            title: this.$t('@Templates.productTemplate._.headTitle'),
         };
     },
 };
