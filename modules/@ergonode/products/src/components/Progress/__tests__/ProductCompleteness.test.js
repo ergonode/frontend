@@ -27,6 +27,7 @@ const store = new Store({
     },
 });
 const mocks = {
+    $t: () => {},
     $store: store,
 };
 afterEach(() => store.reset());
@@ -45,10 +46,6 @@ describe('Badges/ProductCompleteness', () => {
     it('Component is named well', () => {
         expect(typeof ProductCompleteness.name).toBe('string');
         expect(ProductCompleteness.name).toEqual('ProductCompleteness');
-    });
-
-    it('Check caption', () => {
-        expect(wrapper.vm.title).toBe('100% Completed');
     });
 
     it('Check progress', () => {

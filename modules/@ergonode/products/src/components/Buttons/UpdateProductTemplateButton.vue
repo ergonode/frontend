@@ -9,7 +9,7 @@
         <template #default="{ hasValueToSave }">
             <Button
                 data-cy="submit"
-                :title="$t('core.buttons.submit')"
+                :title="$t('@Products._.submit')"
                 :floating="{ bottom: '24px', right: '24px' }"
                 :disabled="!isAllowedToUpdate"
                 @click.native="onSubmit">
@@ -98,7 +98,7 @@ export default {
         async onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product has been updated',
+                message: this.$t('@Products.product.components.UpdateProductTemplateButton.successMessage'),
             });
 
             await this.getProductCompleteness({
