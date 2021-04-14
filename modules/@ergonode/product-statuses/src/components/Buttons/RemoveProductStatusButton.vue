@@ -7,7 +7,7 @@
         data-cy="delete-status"
         :theme="secondaryTheme"
         :size="smallSize"
-        title="REMOVE STATUS"
+        :title="$t('@Statuses.productStatus.components.RemoveProductStatusButton.title')"
         :disabled="!isAllowedToDelete"
         @click.native="onRemove">
         <template #prepend="{ color }">
@@ -64,8 +64,8 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this product status?',
-                applyTitle: 'YES, REMOVE',
+                title: this.$t('@Statuses.productStatus.components.RemoveProductStatusButton.confirmTitle'),
+                applyTitle: this.$t('@Statuses._.deleteConfirm'),
                 action: () => this.removeProductStatus({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
@@ -75,7 +75,7 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product status removed',
+                message: this.$t('@Statuses.productStatus.components.RemoveProductStatusButton.successMessage'),
             });
             this.$router.push({
                 name: ROUTE_NAME.PRODUCT_STATUSES_GRID,
@@ -84,7 +84,7 @@ export default {
         onRemoveError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Product status hasn`t been deleted',
+                message: this.$t('@Statuses.productStatus.components.RemoveProductStatusButton.errorMessage'),
             });
         },
     },

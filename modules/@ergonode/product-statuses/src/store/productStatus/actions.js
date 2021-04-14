@@ -222,7 +222,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating product status has been canceled',
+                    message: this.app.i18n.t('@Statuses.productStatus.store.action.updateCancel'),
                 });
 
                 return;
@@ -289,7 +289,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Creating product status has been canceled',
+                    message: this.app.i18n.t('@Statuses.productStatus.store.action.createCancel'),
                 });
 
                 return;
@@ -336,7 +336,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Removing product status has been canceled',
+                    message: this.app.i18n.t('@Statuses.productStatus.store.action.deleteCancel'),
                 });
 
                 return;

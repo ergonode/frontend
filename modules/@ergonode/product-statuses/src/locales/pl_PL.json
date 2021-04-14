@@ -1,18 +1,37 @@
 {
   "@Statuses": {
     "_": {
+      "submit": "Zapisz zmiany",
+      "create": "Stwórz",
+      "proceed": "Stwórz & Edytuj",
+      "cancel": "Anuluj",
+      "deleteConfirm": "Tak, usuń",
       "routes": {
         "title": "Statusy produktu",
         "group": "Przepływ pracy",
         "editOption": "Opcje",
         "editTranslations": "Tłumaczenia"
       }
-    }
-  },
-  "productStatus": {
-    "grid": {
-      "placeholderTitle": "Brak statusów produktowych",
-      "placeholderSubtitle": "W systemie nie ma statusów produktowych, stwórz pierwszy."
+    },
+    "productStatus": {
+      "_": {
+        "title": "Status produktu",
+        "headTitle": "Statusy produktów - Ergonode",
+        "noProductStatus": "Brak statusów produktu",
+        "createFirst": "W systemie nie ma statusów produktu, stwórz pierwszy."
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Status produktu nie została pobrana poprawnie"
+        }
+      },
+      "store": {
+        "action": {
+          "createCancel": "Tworzenie statusu produktu zostało przerwane",
+          "updateCancel": "Aktualizacja statusu produktu została przerwana",
+          "deleteCancel": "Usuwanie statusu produktu zostało przerwane"
+        }
+      }
     }
   }
 }
