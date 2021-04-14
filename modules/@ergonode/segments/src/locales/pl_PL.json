@@ -1,8 +1,13 @@
 {
   "@Segments": {
     "_": {
+      "submit": "Zapisz zmiany",
+      "create": "Stwórz",
+      "proceed": "Stwórz & Edytuj",
+      "cancel": "Anuluj",
+      "deleteConfirm": "Tak, usuń",
       "routes": {
-        "title": "Segmanty",
+        "title": "Segmenty",
         "group": "Produkty",
         "editOption": "Opcje",
         "editTranslation": "Tłumaczenia",
@@ -11,14 +16,66 @@
     }
   },
   "segment": {
-    "form": {
-      "segmentsLabel": "Z reguł segmentacji",
-      "noSegmentsTitle": "Brak segmentów",
-      "noSegmentsSubtitle": "W systemie nie ma segmentów, stwórz pierwszy."
+    "_": {
+      "title": "Segmenty",
+      "headTitle": "Segmenty - Ergonode",
+      "noSegments": "Brak segmentów",
+      "createFirst": "W systemie nie ma segmentów, dodaj pierwszy."
     },
-    "grid": {
-      "placeholderTitle": "Brak segmentów",
-      "placeholderSubtitle": "W systemie nie ma segmentów, stwórz pierwszy."
+    "pages": {
+      "id": {
+        "getRequest": "Segmenty nie zostały pobrane poprawnie"
+      }
+    },
+    "store": {
+      "action": {
+        "createCancel": "Tworzenie segmentu zostało anulowane",
+        "updateCancel": "Aktualizacja segmentu została anulowana",
+        "deleteCancel": "Usuwanie segmentu zostało anulowane"
+      }
+    },
+    "components": {
+      "CreateSegmentModalForm": {
+        "title": "Stwórz segment",
+        "successMessage": "Segment został stworzony"
+      },
+      "RemoveConditionDropZone": {
+        "title": "Usuń warunek"
+      },
+      "SegmentsGrid": {
+        "successMessage": "Segment został usunięty",
+        "errorMessage": "Segmenty nie zostały pobrane poprawnie"
+      },
+      "SegmentForm": {
+        "title": "Opcje",
+        "nameLabel": "Nazwa systemowa",
+        "nameHint": "Nazwa systemowa musi być unikatowa"
+      },
+      "SegmentTranslationForm": {
+        "conditionSetNameLabel": "Nazwa zestawu warunków",
+        "descriptionLabel": "Opis"
+      },
+      "CreateSegmentButton": {
+        "title": "Nowy segment"
+      },
+      "RemoveSegmentButton": {
+        "title": "Usuń segment",
+        "confirmTitle": "Czy jesteś pewien, że chcesz usunąć ten segment?",
+        "successMessage": "Segment został usunięty",
+        "errorMessage": "Segment nie został usunięty"
+      },
+      "UpdateSegmentConditionDesignerButton": {
+        "successMessage": "Warunki segmentujące zostały zaktualizowane"
+      },
+      "UpdateSegmentTranslationButton": {
+        "successMessage": "Tłumaczenia segmentu zostały zaktualizowane"
+      },
+      "SegmentsAutocomplete": {
+        "label": "Z reguł segmnentacji"
+      },
+      "SegmentGeneralTab": {
+        "successMessage": "Segment został zaktualizowany"
+      }
     }
   }
 }
