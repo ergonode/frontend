@@ -6,7 +6,7 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <SegmentForm
-                :submit-title="$t('core.buttons.submit')"
+                :submit-title="$t('@Segments._.submit')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="errors"
@@ -61,7 +61,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Segment has been updated',
+                message: this.$t('@Segments.segment.components.SegmentGeneralTab.successMessage'),
             });
 
             this.isSubmitting = false;

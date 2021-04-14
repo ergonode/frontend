@@ -185,5 +185,6 @@ export default {
     box-shadow: $ELEVATOR_HOLE;
     color: $GRAPHITE;
     font: $FONT_BOLD_12_16;
+    text-transform: uppercase;
 }
 </style>

@@ -10,7 +10,7 @@
         :searchable="true"
         :multiselect="multiselect"
         :clearable="clearable"
-        :label="$t('segment.form.segmentsLabel')"
+        :label="$t('@Segments.segment.components.SegmentsAutocomplete.label')"
         :custom-fetch-event="segmentCreatedEventName"
         :error-messages="errorMessages"
         :disabled="disabled"
@@ -82,8 +82,8 @@ export default {
         },
         noDataPlaceholder() {
             return {
-                title: this.$t('segment.form.noSegmentsTitle'),
-                subtitle: this.$t('segment.form.noSegmentsSubtitle'),
+                title: this.$t('@Segments.segment._.noSegments'),
+                subtitle: this.$t('@Segments.segment._.createFirst'),
             };
         },
     },
