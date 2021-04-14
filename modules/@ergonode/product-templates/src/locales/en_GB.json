@@ -1,6 +1,11 @@
 {
   "@Templates": {
     "_": {
+      "submit": "Save changes",
+      "create": "Create",
+      "proceed": "Create & Edit",
+      "cancel": "Cancel",
+      "deleteConfirm": "Yes, remove",
       "routes": {
         "title": "Product templates",
         "group": "Product design",
@@ -10,14 +15,63 @@
     }
   },
   "productTemplate": {
-    "grid": {
-      "placeholderTitle": "No product templates",
-      "placeholderSubtitle": "There are no product templates in the system, so you can add the first one."
+    "_": {
+      "title": "Product templates",
+      "headTitle": "Product templates - Ergonode",
+      "noTemplate": "No product templates",
+      "createFirst": "There are no product templates in the system, you can add the first one."
     },
-    "autocomplete": {
-      "productTemplate": "Product template",
-      "productTemplateNoDataPlaceholderTitle": "No product templates",
-      "productTemplateNoDataPlaceholderSubtitle": "There are no product templates in the system, so you can add the first one."
+    "pages": {
+      "id": {
+        "getRequest": "Product template hasn't been fetched properly"
+      }
+    },
+    "store": {
+      "action": {
+        "createCancel": "Creating product template has been canceled",
+        "updateCancel": "Updating product template has been canceled",
+        "deleteCancel": "Removing product template has been canceled"
+      }
+    },
+    "components": {
+      "RemoveElementDropZone": {
+        "title": "Remove element"
+      },
+      "WidgetsSideBar": {
+        "title": "Widgets"
+      },
+      "SectionTemplateModalForm": {
+        "title": "Section title settings",
+        "sectionLabel": "Section title",
+        "requiredError": "Title is required.",
+        "maxCharactersError": "Title exceeded 255 characters."
+      },
+      "CreateProductTemplateModalForm": {
+        "title": "Create product template",
+        "successMessage": "Product template created"
+      },
+      "ProductTemplatesGrid": {
+        "successMessage": "Product template removed",
+        "errorMessage": "Product templates haven’t been fetched properly"
+      },
+      "ProductTemplateForm": {
+        "title": "Options",
+        "nameLabel": "Template name"
+      },
+      "UpdateTemplateDesignerButton": {
+        "successMessage": "Template has been updated"
+      },
+      "RemoveProductTemplateButton": {
+        "title": "Remove template",
+        "confirmTitle": "Are you sure you want to delete this template?",
+        "successMessage": "Template removed"
+      },
+      "CreateProductTemplateButton": {
+        "title": "New template"
+      },
+      "ProductTemplateAutocomplete": {
+        "label": "Product template"
+      }
     }
   }
 }
