@@ -61,7 +61,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product has been updated',
+                message: this.$t('@Products.product.components.ProductGeneralTab.successMessage'),
             });
 
             this.isSubmitting = false;

@@ -11,7 +11,9 @@
             <span
                 class="products-doughnut-chart__title"
                 v-text="dataCount" />
-            <span class="products-doughnut-chart__subtitle">Products total</span>
+            <span
+                class="products-doughnut-chart__subtitle"
+                v-text="subtitle" />
         </div>
         <DoughnutChart
             class="products-doughnut-chart__doughnut"
@@ -49,17 +51,12 @@ export default {
             validator: value => /^#([A-Fa-f0-9]{6})$/.test(value),
         },
     },
-    data() {
-        return {
-            chartData: {
-                labels: [
-                    'Products',
-                ],
-                datasets: this.datasets,
-            },
-        };
-    },
     computed: {
+        styles() {
+            return {
+                backgroundColor: this.backgroundColor,
+            };
+        },
         chartOptions() {
             return {
                 cutoutPercentage: 94,
@@ -71,10 +68,16 @@ export default {
                 },
             };
         },
-        styles() {
+        chartData() {
             return {
-                backgroundColor: this.backgroundColor,
+                labels: [
+                    this.$t('@Products.product.components.DoughnutProductsChart.label'),
+                ],
+                datasets: this.datasets,
             };
+        },
+        subtitle() {
+            return this.$t('@Products.product.components.DoughnutProductsChart.subtitle');
         },
     },
 };

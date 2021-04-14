@@ -4,13 +4,13 @@
  */
 <template>
     <ModalForm
-        title="Add products by SKU"
+        :title="$t('@Products.productExtend.components.AddProductsBySKUModalForm.title')"
         @close="onClose">
         <template #body>
             <AddProductsBySKUForm
                 :product-skus="productSkus"
-                submit-title="ADD TO PRODUCT GROUP"
-                :proceed-title="$t('core.buttons.cancel')"
+                :submit-title="$t('@Products.productExtend.components.AddProductsBySKUModalForm.submitTitle')"
+                :proceed-title="$t('@Products._.cancel')"
                 :is-submitting="isAdding"
                 :scope="scope"
                 :errors="scopeErrors"
@@ -26,9 +26,6 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    THEME,
-} from '@Core/defaults/theme';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import AddProductsBySKUForm from '@Products/extends/components/Forms/AddProductsBySKUForm';
 import {
@@ -53,11 +50,6 @@ export default {
             productSkus: '',
             isAdding: false,
         };
-    },
-    computed: {
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
     },
     methods: {
         ...mapActions('product', [
@@ -88,7 +80,7 @@ export default {
         onSubmitSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Products have been added to product group',
+                message: this.$t('@Products.productExtend.components.AddProductsBySKUModalForm.successMessage'),
             });
 
             this.isAdding = false;

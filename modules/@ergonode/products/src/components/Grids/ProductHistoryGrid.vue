@@ -133,13 +133,6 @@ export default {
         },
     },
     methods: {
-        onRemoveRow() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Product history removed',
-            });
-            this.onFetchData();
-        },
         async onFetchData() {
             await getGridData({
                 $route: this.$route,

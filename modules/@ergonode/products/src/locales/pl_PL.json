@@ -25,6 +25,47 @@
     },
     "product": {
       "components": {
+        "UpdateProductTemplateButton": {
+          "title": "Dodaj produkty po SKU",
+          "submitTitle": "DODAJ DO PRODUKTU GRUPUJĄCEGO",
+          "successMessage": "Produkt został zaktualizowany"
+        },
+        "DoughnutProductsChart": {
+          "label": "Produkty",
+          "subtitle": "Wszystkie produkty"
+        },
+        "ProductTemplateFormNoTypeField": {
+          "placeholderTitle": "Brak wsparcia dla {info} typu atrybutu"
+        },
+        "ProductForm": {
+          "title": "Opcje",
+          "typeLabel": "Typ produktowy",
+          "skuLabel": "SKU",
+          "skuHint": "SKU produktowe musi być unikatowe"
+        },
+        "ProductsGrid": {
+          "filtersButtonTitle": "FILTRY",
+          "noFilterErrorMessage": "Atrybut nie ma filtra",
+          "removeSuccessMessage": "Produkt został usunięty",
+          "getErrorMessage": "Produkty nie zostały pobrane poprawnie"
+        },
+        "RestoreAttributeParentConfirmModal": {
+          "confirmTitle": "Czy chcesz przywrócić tłumaczenia dla języka nadrzędnego?",
+          "buttonTitle": "TAK, PRZYWRÓC",
+          "successMessage": "Wartość produktu została przywrócona",
+          "errorMessage": "Nie można było przywrócić wartości produktu"
+        },
+        "CreateProductModalForm": {
+          "successMessage": "Produkt został stworzony"
+        },
+        "ProductCompleteness": {
+          "title": "{info}% Wypełnione",
+          "missingFields": "Brakujące pola: {info}",
+          "allCompleted": "Wszystkie wypełnione"
+        },
+        "ProductGeneralTab": {
+          "successMessage": "Produkt został zaktualizowany"
+        },
         "UpdateProductsButton": {
           "alertSuccess": "Produkty zostały zaktualizowane"
         },
@@ -63,6 +104,18 @@
     },
     "productExtend": {
       "components": {
+        "AddProductsBySKUModalForm": {
+          "successMessage": "Produkty zostały dodane do produktu grupującego"
+        },
+        "AddBindingAttributesModalForm": {
+          "title": "Dodaj atrybuty dowiązujące",
+          "submitTitle": "Dodaj atrybuty",
+          "successMessage": "Atrybuty dowiązujące zostały dodane"
+        },
+        "ProductVariantsTab": {
+          "placeholderTitle": "Brak atrybutów dowiązujących",
+          "placeholderSubtitle": "Atrybuty dowiązujące są częścią wspólną atrybutów w produkcie, która łączy produkty w warianty produktu."
+        },
         "AddBindingAttributes": {
           "title": "Dodaj atrybut",
           "infoAlert": "Dowiązujący atrybut nie może zostać dodany w momencie kiedy są dodane warianty produktowe. Żeby dodać kolejny atrybut, usuń dowiązane warianty."
@@ -88,12 +141,27 @@
         },
         "AttachedProductsToGroupGrid": {
           "noProductsInGroup": "Brak produktów w grupie",
-          "addProductToGroup": "Brak produktów w grupie, dodaj pierwszy."
+          "addProductToGroup": "Brak produktów w grupie, dodaj pierwszy.",
+          "successMessage": "Produkt został usunięty z grupy",
+          "errorMessage": "Produkt należacy do grupy nie został pobrany poprawnie"
         },
         "ProductsToAttachForGroupGrid": {
           "noProducts": "Brak produktów",
           "createFirst": "Brak produktów z wariantami albo produktów prostych w systemie, stwórz pierwszy.",
           "getRequest": "Produkty nie zostały pobrane"
+        },
+        "AddProductsBySKUForm": {
+          "skuLabel": "Po SKU",
+          "skuHint": "Oddziel wiele SKU używając znaku nowej linii albo przecinka, np. “SKU1, SKU2, SKU3”"
+        },
+        "ProductAttributeBindingField": {
+          "label": "Dowiązujący atrybut"
+        },
+        "ProductAttributesBindingForm": {
+          "listTitle": "DODAJ ATRYBUT DOWIĄZUJĄCY"
+        },
+        "UpdateProductsAttachmentButton": {
+          "successMessage": "Załącznik do produktów został zaktualizowany"
         }
       }
     }

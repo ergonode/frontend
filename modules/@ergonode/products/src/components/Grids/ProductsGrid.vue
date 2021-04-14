@@ -43,7 +43,7 @@
                     },
                 })" />
             <ExpandNumericButton
-                title="FILTERS"
+                :title="$t('@Products.product.components.ProductsGrid.filtersButtonTitle')"
                 :number="advancedFilters.length"
                 :is-expanded="isFiltersExpanded"
                 @click.native="onFiltersExpand" />
@@ -647,7 +647,7 @@ export default {
 
                 this.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'Attribute has no filter',
+                    message: this.$t('@Products.product.components.ProductsGrid.noFilterErrorMessage'),
                 });
             }
         },
@@ -736,7 +736,7 @@ export default {
         onRemoveRow() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product removed',
+                message: this.$t('@Products.product.components.ProductsGrid.removeSuccessMessage'),
             });
             this.onFetchData();
         },
@@ -767,7 +767,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Products haven’t been fetched properly',
+                message: this.$t('@Products.product.components.ProductsGrid.getErrorMessage'),
             });
         },
         onRemoveAllFilters() {

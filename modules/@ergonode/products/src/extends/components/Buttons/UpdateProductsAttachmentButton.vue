@@ -9,7 +9,7 @@
         <template #default="{ hasValueToSave }">
             <Button
                 data-cy="submit"
-                :title="$t('core.buttons.submit')"
+                :title="$t('@Products._.submit')"
                 @click.native="onSubmit">
                 <template #prepend="{ color }">
                     <IconSpinner
@@ -100,7 +100,7 @@ export default {
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Products attachment have been updated',
+                message: this.$t('@Products.productExtend.components.UpdateProductsAttachmentButton.successMessage'),
             });
 
             this.isSubmitting = false;

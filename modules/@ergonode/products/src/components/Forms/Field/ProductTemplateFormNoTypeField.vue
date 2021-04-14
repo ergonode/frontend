@@ -36,7 +36,9 @@ export default {
     },
     computed: {
         placeholderTitle() {
-            return `No support for "${this.type}" type of attribute`;
+            return this.$t('@Products.product.components.ProductTemplateFormNoTypeField.placeholderTitle', {
+                info: this.type,
+            });
         },
     },
 };

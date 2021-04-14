@@ -9,7 +9,7 @@
         <TranslationSelect
             :value="attribute"
             required
-            label="Binding attribute"
+            :label="$t('@Products.productExtend.components.ProductAttributeBindingField.label')"
             :error-messages="errorMessages"
             :size="smallSize"
             :options="filteredOptions"

@@ -38,9 +38,6 @@
 import {
     COLLECTION_IMAGE_HEIGHT,
 } from '@Core/defaults/grid';
-import {
-    THEME,
-} from '@Core/defaults/theme';
 import LazyImage from '@UI/components/LazyImage/LazyImage';
 import Toggler from '@UI/components/Toggler/Toggler';
 
@@ -71,11 +68,6 @@ export default {
             default: false,
         },
     },
-    data() {
-        return {
-            isHovered: false,
-        };
-    },
     computed: {
         cellValue() {
             const draft = this.drafts[`${this.data.id}/attached`];
@@ -89,9 +81,6 @@ export default {
         },
         placeholderImage() {
             return require('@UI/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
         },
         collectionImageHeight() {
             return COLLECTION_IMAGE_HEIGHT;
