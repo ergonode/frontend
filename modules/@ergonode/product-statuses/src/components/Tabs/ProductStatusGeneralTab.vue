@@ -6,7 +6,7 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <ProductStatusForm
-                :submit-title="$t('core.buttons.submit')"
+                :submit-title="$t('@Statuses._.submit')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="errors"
@@ -61,7 +61,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product status has been updated',
+                message: this.$t('@Statuses.productStatus.components.ProductStatusGeneralTab.successMessage'),
             });
 
             this.isSubmitting = false;

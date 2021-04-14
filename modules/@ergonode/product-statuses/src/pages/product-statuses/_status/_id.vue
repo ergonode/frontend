@@ -75,7 +75,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'Product status hasn`t been fetched properly',
+                    message: this.$t('@Statuses.productStatus.pages.id.getRequest'),
                 });
             },
         });
@@ -119,7 +119,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.code} - Product statuses - Ergonode`,
+            title: `${this.code} - ${this.$t('@Statuses.productStatus._.headTitle')}`,
         };
     },
 };
