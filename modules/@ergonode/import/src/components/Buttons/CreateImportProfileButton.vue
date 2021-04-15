@@ -4,7 +4,7 @@
  */
 <template>
     <Button
-        title="NEW IMPORT PROFILE"
+        :title="$t('@Import.import.components.CreateImportProfileButton.title')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">

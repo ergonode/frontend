@@ -1,18 +1,88 @@
 {
   "@Import": {
     "_": {
+      "submit": "Save changes",
+      "create": "Create",
+      "proceed": "Create & Edit",
+      "cancel": "Cancel",
+      "deleteConfirm": "Yes, remove",
       "routes": {
         "title": "Import profiles",
         "group": "Data exchange",
         "editOption": "Options",
         "editHistory": "History"
       }
-    }
-  },
-  "import": {
-    "grid": {
-      "placeholderTitle": "No import profiles",
-      "placeholderSubtitle": "There are no import profiles in the system, so you can add the first one."
+    },
+    "import": {
+      "_": {
+        "title": "Import profiles",
+        "headTitle": "Import profiles - Ergonode",
+        "noImportProfile": "No import profiles",
+        "createFirst": "There are no import profiles in the system, you can add the first one."
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Import profile hasn't been fetched properly"
+        }
+      },
+      "store": {
+        "action": {
+          "dateOfStartLabel": "Date of start",
+          "statusLabel": "Status",
+          "recordsLabel": "Records",
+          "errorsLabel": "Errors",
+          "createCancel": "Creating import profile has been canceled",
+          "updateCancel": "Updating import profile has been canceled",
+          "deleteCancel": "Removing import profile has been canceled",
+          "uploadCancel": "Uploading import profile has been canceled"
+        }
+      },
+      "components": {
+        "ImportProfileGeneralTab": {
+          "successMessage": "Import profile has been updated"
+        },
+        "UploadImportFileModalForm": {
+          "title": "Upload import file",
+          "uploadLabel": "Upload file",
+          "paragraphText": "It may take some time to upload, please be patient. Maybe this is a great time for coffee?"
+        },
+        "ImportDetailsModalGrid": {
+          "title": "Import details",
+          "errorMessage": "Import details haven’t been fetched properly"
+        },
+        "CreateImportProfileModalForm": {
+          "title": "Create import profile",
+          "successMessage": "Import profile created"
+        },
+        "ImportProfilesGrid": {
+          "successMessage": "Import profile removed",
+          "errorMessage": "Import profiles haven’t been fetched properly"
+        },
+        "ImportProfileHistoryGrid": {
+          "successMessage": "Import profile history removed",
+          "errorMessage": "Import profile history haven’t been fetched properly"
+        },
+        "ImportProfileForm": {
+          "title": "Options",
+          "typeLabel": "Profile type"
+        },
+        "UploadImportButton": {
+          "title": "Import now",
+          "successMessage": "File uploaded"
+        },
+        "RemoveImportButton": {
+          "title": "Remove import profile",
+          "confirmTitle": "Are you sure you want to delete this import profile?",
+          "successMessage": "Import profile removed",
+          "errorMessage": "Import profile hasn`t been deleted"
+        },
+        "CreateImportProfileButton": {
+          "title": "New import profile"
+        },
+        "CreateImportButton": {
+          "title": "Import now"
+        }
+      }
     }
   }
 }

@@ -1,18 +1,87 @@
 {
   "@Import": {
     "_": {
+      "submit": "Zapisz zmiany",
+      "create": "Stwórz",
+      "proceed": "Stwórz & Edytuj",
+      "cancel": "Anuluj",
+      "deleteConfirm": "Tak, usuń",
       "routes": {
         "title": "Profile importowe",
         "group": "Wymiana danych",
         "editOption": "Opcje",
         "editHistory": "Historia"
       }
-    }
-  },
-  "import": {
-    "grid": {
-      "placeholderTitle": "Brak profilów importowych",
-      "placeholderSubtitle": "W systemie nie ma profilów importowych, stwórz pierwszy."
+    },
+    "import": {
+      "_": {
+        "title": "Profile importowe",
+        "headTitle": "Profile importowe - Ergonode",
+        "noTemplate": "Brak profili importowych",
+        "createFirst": "W systemie nie ma profili importowych, stwórz pierwszy."
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Profil importowy nie został pobrana poprawnie"
+        }
+      },
+      "store": {
+        "action": {
+          "dateOfStartLabel": "Data rozpoczecia",
+          "statusLabel": "Status",
+          "recordsLabel": "Rekordy",
+          "errorsLabel": "Błędy",
+          "createCancel": "Tworzenie profilu importowego zostało przerwane",
+          "updateCancel": "Aktualizacja profilu importowego została przerwana",
+          "deleteCancel": "Usuwanie profilu improtowego zostało przerwane"
+        }
+      },
+      "components": {
+        "ImportProfileGeneralTab": {
+          "successMessage": "Profil importowy został zaktualizowany"
+        },
+        "UploadImportFileModalForm": {
+          "title": "Dodaj plik importowy",
+          "uploadLabel": "Dodaj plik",
+          "paragraphText": "Dodawanie pliku może zająć trochę czasu, bądź cierpliwy. Może to jest dobry czas by pójść po kawę??"
+        },
+        "ImportDetailsModalGrid": {
+          "title": "Szczegóły importu",
+          "errorMessage": "Szczegóły importu nie zostały pobrane poprawnie"
+        },
+        "CreateImportProfileModalForm": {
+          "title": "Stwórz profil importowy",
+          "successMessage": "Profil importowy został stworzony"
+        },
+        "ImportProfilesGrid": {
+          "successMessage": "Profil importowy został usunięty",
+          "errorMessage": "Profile importowe nie zostały pobrane poprawnie"
+        },
+        "ImportProfileHistoryGrid": {
+          "successMessage": "Historia profilu importowego została usunięta",
+          "errorMessage": "Historia profilu importowego nie została pobrana poprawnie"
+        },
+        "ImportProfileForm": {
+          "title": "Opcje",
+          "typeLabel": "Typ profilu"
+        },
+        "UploadImportButton": {
+          "title": "Importuj teraz",
+          "successMessage": "Plik został dodany"
+        },
+        "RemoveImportButton": {
+          "title": "Usuń profil importowy",
+          "confirmTitle": "Czy jesteś pewien, że chcesz usuąć ten profil importowy?",
+          "successMessage": "Profil improtowy został usunięty",
+          "errorMessage": "Profil improtowy nie został usunięty"
+        },
+        "CreateImportProfileButton": {
+          "title": "Nowy profil importowy"
+        },
+        "CreateImportButton": {
+          "title": "Importuj teraz"
+        }
+      }
     }
   }
 }

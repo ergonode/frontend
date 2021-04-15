@@ -4,7 +4,7 @@
  */
 <template>
     <ModalForm
-        title="Upload import file"
+        :title="$t('@Import.import.components.UploadImportFileModalForm.title')"
         @close="onClose">
         <template #body>
             <Form>
@@ -14,7 +14,7 @@
                         <UploadFile
                             :value="Boolean(csvFile)"
                             accept-files="csv/*"
-                            label="Upload file"
+                            :label="$t('@Import.import.components.UploadImportFileModalForm.uploadLabel')"
                             :scope="scope"
                             :error-messages="scopeErrors.upload"
                             required
@@ -41,9 +41,6 @@
 </template>
 
 <script>
-import {
-    THEME,
-} from '@Core/defaults/theme';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import UploadImportButton from '@Import/components/Buttons/UploadImportButton';
 import {
@@ -84,11 +81,8 @@ export default {
         greenColor() {
             return GREEN;
         },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
         paragraphText() {
-            return 'It may take some time to upload, please be patient. Maybe this is a great time for coffee?';
+            return this.$t('@Import.import.components.UploadImportFileModalForm.paragraphText');
         },
     },
     methods: {

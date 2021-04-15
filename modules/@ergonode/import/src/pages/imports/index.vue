@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar
-            title="Import profiles"
+            :title="$t('@Import.import._.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <template
@@ -65,7 +65,7 @@ export default {
     },
     head() {
         return {
-            title: 'Import profiles - Ergonode',
+            title: this.$t('@Import.import._.headTitle'),
         };
     },
 };

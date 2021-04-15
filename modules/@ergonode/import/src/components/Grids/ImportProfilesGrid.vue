@@ -44,8 +44,8 @@
         </template>
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('import.grid.placeholderTitle')"
-                :subtitle="$t('import.grid.placeholderSubtitle')">
+                :title="$t('@Import.import._.noImportProfiles')"
+                :subtitle="$t('@Import.import._.createFirst')">
                 <template #action>
                     <CreateImportProfileButton />
                 </template>
@@ -174,7 +174,7 @@ export default {
         onRemoveRow() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Import profile removed',
+                message: this.$t('@Import.import.components.ImportProfilesGrid.successMessage'),
             });
             this.onFetchData();
         },
@@ -214,7 +214,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Import profiles haven’t been fetched properly',
+                message: this.$t('@Import.import.components.ImportProfilesGrid.errorMessage'),
             });
         },
         onRemoveAllFilters() {
