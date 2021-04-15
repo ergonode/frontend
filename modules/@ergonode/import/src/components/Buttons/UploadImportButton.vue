@@ -9,7 +9,7 @@
         <template #default="{ hasValueToSave }">
             <Button
                 data-cy="submit"
-                title="IMPORT NOW"
+                :title="$t('@Import.import.components.UploadImportButton.title')"
                 :disabled="!isAllowedToUpdate"
                 @click.native="onSubmit">
                 <template #prepend="{ color }">
@@ -88,7 +88,7 @@ export default {
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'File uploaded',
+                message: this.$t('@Import.import.components.UploadImportButton.successMessage'),
             });
 
             this.isSubmitting = false;

@@ -4,7 +4,7 @@
  */
 <template>
     <ModalGrid
-        title="Import details"
+        :title="$t('@Import.import.components.ImportDetailsModalGrid.title')"
         @close="onClose">
         <template #body>
             <Grid
@@ -199,7 +199,7 @@ export default {
         onFetchGridDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Grid data haven’t been fetched properly',
+                message: this.$t('@Import.import.components.ImportDetailsModalGrid.errorMessage'),
             });
 
             this.isPrefetchingData = false;

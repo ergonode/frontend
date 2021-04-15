@@ -6,7 +6,7 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <ImportProfileForm
-                :submit-title="$t('core.buttons.submit')"
+                :submit-title="$t('@Import._.submit')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="errors"
@@ -61,7 +61,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Import profile has been updated',
+                message: this.$t('@Import.import.components.ImportProfileGeneralTab.successMessage'),
             });
 
             this.isSubmitting = false;
