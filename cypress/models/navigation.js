@@ -58,7 +58,8 @@ export const noGridRow = ({
     cy
         .get('@grid')
         .find('.grid-table-cell > span')
-        .should('not.contain', searchValue);
+        .should('not.have.value', searchValue);
+    // .should('not.contain', searchValue);
 };
 
 export const actionOnGrid = ({
