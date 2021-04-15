@@ -1,6 +1,11 @@
 {
   "@Channels": {
     "_": {
+      "submit": "Zapisz zmiany",
+      "create": "Stwórz",
+      "proceed": "Stwórz & Edytuj",
+      "cancel": "Anuluj",
+      "deleteConfirm": "Tak, usuń",
       "routes": {
         "title": "Kanały",
         "group": "Wymiana danych",
@@ -8,12 +13,96 @@
         "editHistory": "Historia",
         "editScheduler": "Harmonogram"
       }
-    }
-  },
-  "channel": {
-    "grid": {
-      "placeholderTitle": "Brak kanałów",
-      "placeholderSubtitle": "W systemie nie ma kanałów, stwórz pierwszy."
+    },
+    "channel": {
+      "_": {
+        "title": "Kanały",
+        "headTitle": "Kanały - Ergonode",
+        "noChannel": "Brak kanałów",
+        "createFirst": "W systemie nie ma kanałów, stwórz pierwszy."
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Kanał nie został pobrany poprawnie"
+        }
+      },
+      "store": {
+        "action": {
+          "dateOfStartLabel": "Data rozpoczęcia",
+          "dateOfFinishLabel": "Data zakończenia",
+          "statusLabel": "Status",
+          "processedLabel": "Przetworzone",
+          "errorsLabel": "Błędy",
+          "createCancel": "Tworzenie kanału zostało przerwane",
+          "createExportCancel": "Tworzenie eksportu zostało przerwane",
+          "updateCancel": "Aktualizowanie kanału zostało przerwane",
+          "updateSchedulerCancel": "Aktualizowanie harmonogramu zostało przerwane",
+          "deleteCancel": "Usuwanie kanału zostało przerwane"
+        }
+      },
+      "components": {
+        "ChannelSchedulerTab": {
+          "successMessage": "Harmonogram kanału został zaktualizowany",
+          "errorMessage": "Konfiguracja harmonogramu nie została pobrana poprawnie"
+        },
+        "ChannelGeneralTab": {
+          "successMessage": "Kanał został zaktualizowany"
+        },
+        "ExportDetailsModalGrid": {
+          "title": "Szczegóły eksportu"
+        },
+        "CreateChannelModalForm": {
+          "title": "Stwórz kanał",
+          "successMessage": "Kanał został stworzony"
+        },
+        "ExportDetailsGrid": {
+          "defaultExportFilename": "nie określone",
+          "errorMessage": "Szczegóły eksportu nie zostały pobrane poprawnie"
+        },
+        "ChannelsGrid": {
+          "successMessage": "Kanał został usunięty",
+          "errorMessage": "Kanały nie zostały pobrane poprawnie"
+        },
+        "ChannelHistoryGrid": {
+          "successMessage": "Historia kanału została usunięta",
+          "errorMessage": "Kanały nie zostały pobrane poprawnie"
+        },
+        "SchedulerForm": {
+          "title": "Harmonogram",
+          "activeLabel": "Włącz harmonogram",
+          "timeRangeSectionTitle": "Data i czas rozpoczęscia",
+          "startDateLabel": "Data rozpoczęcia",
+          "startTimeLabel": "Czas rozpoczęcia",
+          "recurrenceTimeSectionTitle": "Rekurencyjny czas",
+          "hoursLabel": "Godziny",
+          "minutesLabel": "Minuty",
+          "oneTimeRecurrenceInfo": "jeden raz",
+          "paragraphTitle": "Interwał czasowy, który określa jak często proces zostanie wykonany.",
+          "paragraphTimeInfo": "Eksporty rozpoczną się z częstotliwością [[recurrence]] zaczynając [[dateTime]]",
+          "paragraphInfo": "Eksport rozpocznie się [[recurrence]] zaczynając [[dateTime]]"
+        },
+        "ChannelForm": {
+          "title": "Opcje",
+          "typeLabel": "Typ kanału"
+        },
+        "RemoveChannelButton": {
+          "title": "Usuń kanał",
+          "confirmTitle": "Czy jesteś pewien, że chcesz usunąć ten kanał?",
+          "successMessage": "Kanał został usunięty",
+          "errorMessage": "Kanał nie został usunięty"
+        },
+        "DownloadExportFileButton": {
+          "title": "Ściągnij plik"
+        },
+        "CreateExportButton": {
+          "title": "Eksportuj teraz",
+          "confirmTitle": "Czy jesteś pewiem, że chcesz rozpocząć eksport?",
+          "successMessage": "Eksport został zakończony"
+        },
+        "CreateChannelButton": {
+          "title": "Nowy kanał"
+        }
+      }
     }
   }
 }

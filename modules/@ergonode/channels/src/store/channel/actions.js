@@ -129,23 +129,23 @@ export default {
             onSuccess({
                 details: [
                     {
-                        label: 'Date of start',
+                        label: this.app.i18n.t('@Channels.channel.store.action.dateOfStartLabel'),
                         value: details.started_at,
                     },
                     {
-                        label: 'Date of finish',
+                        label: this.app.i18n.t('@Channels.channel.store.action.dateOfFinishLabel'),
                         value: details.ended_at,
                     },
                     {
-                        label: 'Status',
+                        label: this.app.i18n.t('@Channels.channel.store.action.statusLabel'),
                         value: details.status,
                     },
                     {
-                        label: 'Processed',
+                        label: this.app.i18n.t('@Channels.channel.store.action.processedLabel'),
                         value: details.processed || '0',
                     },
                     {
-                        label: 'Errors',
+                        label: this.app.i18n.t('@Channels.channel.store.action.errorsLabel'),
                         value: details.errors || '0',
                     },
                 ],
@@ -282,7 +282,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Creating channel has been canceled',
+                    message: this.app.i18n.t('@Channels.channel.store.action.createCancel'),
                 });
 
                 return;
@@ -341,7 +341,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Creating channel export has been canceled',
+                    message: this.app.i18n.t('@Channels.channel.store.action.createExportCancel'),
                 });
 
                 return;
@@ -408,7 +408,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating channel has been canceled',
+                    message: this.app.i18n.t('@Channels.channel.store.action.updateCancel'),
                 });
 
                 return;
@@ -472,7 +472,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating channel scheduler has been canceled',
+                    message: this.app.i18n.t('@Channels.channel.store.action.updateSchedulerCancel'),
                 });
 
                 return;
@@ -517,7 +517,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Removing channel has been canceled',
+                    message: this.app.i18n.t('@Channels.channel.store.action.deleteCancel'),
                 });
 
                 return;

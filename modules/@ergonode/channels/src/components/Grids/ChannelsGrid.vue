@@ -44,8 +44,8 @@
         </template>
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('channel.grid.placeholderTitle')"
-                :subtitle="$t('channel.grid.placeholderSubtitle')">
+                :title="$t('@Channels.channel._.noChannel')"
+                :subtitle="$t('@Channels.channel._.createFirst')">
                 <template #action>
                     <CreateChannelButton />
                 </template>
@@ -174,7 +174,7 @@ export default {
         onRemoveRow() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Channel removed',
+                message: this.$t('@Channels.channel.components.ChannelsGrid.successMessage'),
             });
             this.onFetchData();
         },
@@ -214,7 +214,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Channels haven’t been fetched properly',
+                message: this.$t('@Channels.channel.components.ChannelsGrid.errorMessage'),
             });
         },
         onRemoveAllFilters() {
