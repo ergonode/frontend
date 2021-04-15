@@ -1,18 +1,41 @@
 {
   "@Import": {
     "_": {
+      "submit": "Zapisz zmiany",
+      "create": "Stwórz",
+      "proceed": "Stwórz & Edytuj",
+      "cancel": "Anuluj",
+      "deleteConfirm": "Tak, usuń",
       "routes": {
         "title": "Profile importowe",
         "group": "Wymiana danych",
         "editOption": "Opcje",
         "editHistory": "Historia"
       }
-    }
-  },
-  "import": {
-    "grid": {
-      "placeholderTitle": "Brak profilów importowych",
-      "placeholderSubtitle": "W systemie nie ma profilów importowych, stwórz pierwszy."
+    },
+    "import": {
+      "_": {
+        "title": "Profile importowe",
+        "headTitle": "Profile importowe - Ergonode",
+        "noTemplate": "Brak profili importowych",
+        "createFirst": "W systemie nie ma profili importowych, stwórz pierwszy."
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Profil importowy nie został pobrana poprawnie"
+        }
+      },
+      "store": {
+        "action": {
+          "dateOfStartLabel": "",
+          "statusLabel": "",
+          "recordsLabel": "",
+          "errorsLabel": "",
+          "createCancel": "Tworzenie profilu importowego zostało przerwane",
+          "updateCancel": "Aktualizacja profilu importowego została przerwana",
+          "deleteCancel": "Usuwanie profilu improtowego zostało przerwane"
+        }
+      }
     }
   }
 }

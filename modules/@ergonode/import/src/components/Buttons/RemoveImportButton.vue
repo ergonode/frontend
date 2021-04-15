@@ -6,7 +6,7 @@
     <Button
         :theme="secondaryTheme"
         :size="smallSize"
-        title="REMOVE IMPORT"
+        :title="$t('@Import.import.components.RemoveImportButton.title')"
         :disabled="!isAllowedToDelete"
         @click.native="onRemove">
         <template #prepend="{ color }">
@@ -62,8 +62,8 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this import?',
-                applyTitle: 'YES, REMOVE',
+                title: this.$t('@Import.import.components.RemoveImportButton.confirmTitle'),
+                applyTitle: this.$t('@Import._.deleteConfirm'),
                 action: () => this.removeImport({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
@@ -73,7 +73,7 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Import profiles removed',
+                message: this.$('@Import.import.components.RemoveImportButton.successMessage'),
             });
             this.$router.push({
                 name: ROUTE_NAME.IMPORTS_GRID,
@@ -82,7 +82,7 @@ export default {
         onRemoveError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Import hasn`t been deleted',
+                message: this.$('@Import.import.components.RemoveImportButton.errorMessage'),
             });
         },
     },

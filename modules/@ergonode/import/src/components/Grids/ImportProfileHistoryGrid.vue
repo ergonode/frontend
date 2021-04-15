@@ -167,7 +167,7 @@ export default {
         onRemoveRow() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Import profile history removed',
+                message: this.$t('@Import.import.components.ImportProfileHistoryGrid.successMessage'),
             });
             this.onFetchData();
         },
@@ -212,7 +212,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Import profile history haven’t been fetched properly',
+                message: this.$t('@Import.import.components.ImportProfileHistoryGrid.errorMessage'),
             });
         },
         onRemoveAllFilters() {
