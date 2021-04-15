@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="Options"
+        :title="$t('@Media.media.components.ResourceForm.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
@@ -21,12 +21,12 @@
                     required
                     :error-messages="errors[nameFieldKey]"
                     :disabled="!isAllowedToUpdate"
-                    label="File name"
+                    :label="$t('@Media.media.components.ResourceForm.filenameLabel')"
                     @input="setNameValue" />
                 <UploadImageFile
                     :value="id"
                     disabled
-                    label="Preview"
+                    :label="$t('@Media.media.components.ResourceForm.previewLabel')"
                     height="246px" />
                 <template v-for="(field, index) in extendedForm">
                     <Component

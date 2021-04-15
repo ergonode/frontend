@@ -84,7 +84,7 @@ export default {
                 } else {
                     this.$addAlert({
                         type: ALERT_TYPE.ERROR,
-                        message: 'Unknown relation type',
+                        message: this.$t('@Media.media.components.LinkRelationButton.errorMessage'),
                     });
                 }
             }

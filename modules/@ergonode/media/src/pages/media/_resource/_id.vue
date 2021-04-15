@@ -69,7 +69,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'Media hasn`t been fetched properly',
+                    message: app.i18n.t('@Media.media.pages.id.getRequest'),
                 });
             },
         });
@@ -115,7 +115,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.name} - Media - Ergonode`,
+            title: `${this.name} - ${this.$t('@Media.media._.headTitle')}`,
         };
     },
 };

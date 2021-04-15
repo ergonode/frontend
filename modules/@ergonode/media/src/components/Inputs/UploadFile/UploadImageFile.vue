@@ -171,12 +171,16 @@ export default {
             return SIZE.SMALL;
         },
         title() {
-            return `Add Image${this.multiple ? 's' : ''}`;
+            if (this.multiple) {
+                return this.$t('@Media.media.components.UploadImageFile.pluralTitle');
+            }
+
+            return this.$t('@Media.media.components.UploadImageFile.singularTitle');
         },
         tabs() {
             const tabs = [
                 {
-                    title: 'Media',
+                    title: this.$t('@Media.media.components.UploadImageFile.mediaTabTitle'),
                     content: {
                         component: () => import('@Media/components/Grids/AddMediaGrid'),
                         props: {
@@ -195,7 +199,7 @@ export default {
 
             if (this.isAllowedToCreate) {
                 tabs.push({
-                    title: 'Upload files',
+                    title: this.$t('@Media.media.components.UploadImageFile.uploadFilesTabTitle'),
                     content: {
                         component: () => import('@Media/components/Tabs/UploadFileTab'),
                         listeners: {},
@@ -216,15 +220,15 @@ export default {
             if (!this.multiple) {
                 return [
                     {
-                        text: 'Change this image',
+                        text: this.$t('@Media.media.components.UploadImageFile.changeImageOptionTitle'),
                         action: this.onShowModal,
                     },
                     {
-                        text: 'Download this image',
+                        text: this.$t('@Media.media.components.UploadImageFile.downloadImageOptionTitle'),
                         action: this.onDownloadImage,
                     },
                     {
-                        text: 'Remove this image',
+                        text: this.$t('@Media.media.components.UploadImageFile.removeImageOptionTitle'),
                         action: this.onRemoveImage,
                     },
                 ];
@@ -232,15 +236,15 @@ export default {
 
             return [
                 {
-                    text: 'Add image to gallery',
+                    text: this.$t('@Media.media.components.UploadImageFile.addImageToGalleryOptionTitle'),
                     action: this.onShowModal,
                 },
                 {
-                    text: 'Download this image',
+                    text: this.$t('@Media.media.components.UploadImageFile.downloadImageOptionTitle'),
                     action: this.onDownloadImage,
                 },
                 {
-                    text: 'Detach this image from gallery',
+                    text: this.$t('@Media.media.components.UploadImageFile.detachFromGalleryOptionTitle'),
                     action: this.onRemoveImage,
                 },
             ];

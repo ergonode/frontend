@@ -6,7 +6,7 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <ResourceForm
-                :submit-title="$t('core.buttons.submit')"
+                :submit-title="$t('@Media._.submit')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="errors"
@@ -61,7 +61,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Resource has been updated',
+                message: this.$t('@Media.media.components.ResourceGeneralTab.successMessage'),
             });
 
             this.isSubmitting = false;

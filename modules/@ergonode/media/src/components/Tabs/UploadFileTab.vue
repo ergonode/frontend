@@ -25,12 +25,16 @@
                     view-box="0 0 48 32"
                     width="48"
                     height="32" />
-                <span class="information-label">Drag and drop files</span>
+                <span
+                    class="information-label"
+                    v-text="$t('@Media.media.components.UploadFileTab.informationLabel')" />
                 <template v-if="!isDraggedFileOver">
-                    <span class="information-label-logic-operator">or</span>
+                    <span
+                        class="information-label-logic-operator"
+                        v-text="$t('@Media.media.components.UploadFileTab.logicOperator')" />
                     <Button
                         :size="smallSize"
-                        title="BROWSE FILE"
+                        :title="$t('@Media.media.components.UploadFileTab.browseTitle')"
                         @click.native="onBrowseFile" />
                 </template>
             </label>
@@ -158,7 +162,7 @@ export default {
                 }) => {
                     this.$addAlert({
                         type: ALERT_TYPE.SUCCESS,
-                        message: 'File uploaded',
+                        message: this.$t('@Media.media.components.UploadFileTab.successMessage'),
                     });
                     this.$emit('uploaded-file', id);
                 }).catch((e) => {
@@ -178,7 +182,7 @@ export default {
                             fieldKeys: {},
                             scope: 'uploadFileTab',
                         }).uploadFileTab.upload
-                        : 'Internal server error';
+                        : this.$t('@Media.media.components.UploadFileTab.errorMessage');
                 });
             });
 

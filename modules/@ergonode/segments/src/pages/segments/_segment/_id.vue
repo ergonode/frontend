@@ -74,7 +74,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: this.$t('@Segments.segment.pages.id.getRequest'),
+                    message: app.i18n.t('@Segments.segment.pages.id.getRequest'),
                 });
             },
         });

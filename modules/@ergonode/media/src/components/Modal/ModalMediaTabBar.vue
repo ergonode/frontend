@@ -4,8 +4,7 @@
  */
 <template>
     <ModalTabBar
-        class="modal-media-tab-bar"
-        title="Add resources"
+        :title="$t('@Media.media.components.ModalMediaTabBar.title')"
         :items="tabs"
         @close="onCloseModal" />
 </template>
