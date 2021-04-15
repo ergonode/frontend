@@ -15,8 +15,8 @@
     },
     "transition": {
       "_": {
-        "title": "Transycje warunku",
-        "headTitle": "Transycje warunku - Ergonode"
+        "title": "Tranzycje warunku",
+        "headTitle": "Tranzycje warunku - Ergonode"
       },
       "components": {
         "CreateStatusTransitionButton": {

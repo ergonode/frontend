@@ -13,7 +13,7 @@
                     <TextArea
                         :data-cy="dataCyGenerator(altKeyField)"
                         :value="translations.alt[languageCode]"
-                        label="Alternate text"
+                        :label="$t('@Media.media.components.ResourceTranslationForm.altLabel')"
                         resize="none"
                         height="150px"
                         :disabled="!isAllowedToUpdate || isReadOnly"

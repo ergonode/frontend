@@ -47,8 +47,8 @@
         </template>
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('media.grid.placeholderTitle')"
-                :subtitle="$t('media.grid.placeholderSubtitle')">
+                :title="$t('@Media.media._.noMedia')"
+                :subtitle="$t('@Media.media._.createFirst')">
                 <template #action>
                     <UploadResourcesButton />
                 </template>
@@ -183,7 +183,7 @@ export default {
         onRemoveRow() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Media removed',
+                message: this.$t('@Media.media.components.MediaGrid.successMessage'),
             });
             this.onFetchData();
         },
@@ -223,7 +223,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Media haven’t been fetched properly',
+                message: this.$t('@Media.media.components.MediaGrid.errorMessage'),
             });
         },
         onRemoveAllFilters() {
