@@ -1,6 +1,11 @@
 {
   "@Media": {
     "_": {
+      "submit": "Zapisz zmiany",
+      "create": "Stwórz",
+      "proceed": "Stwórz & Edytuj",
+      "cancel": "Anuluj",
+      "deleteConfirm": "Tak, usuń",
       "routes": {
         "title": "Media",
         "group": "Zasoby",
@@ -9,16 +14,97 @@
         "editInformation": "Informacje",
         "editRelations": "Relacje"
       }
-    }
-  },
-  "media": {
-    "grid": {
-      "placeholderTitle": "Brak multimediów",
-      "placeholderSubtitle": "W systemie nie ma multimediów, dodaj pierwsze."
     },
-    "tab": {
-      "productRelationsPlaceholderTitle": "Brak relacji w produktach",
-      "productRelationsPlaceholderSubtitle": "Tutaj możesz zobaczyć informację na temat relacji w produktach."
+    "media": {
+      "_": {
+        "title": "Zasoby",
+        "headTitle": "Zasoby - Ergonode",
+        "noMedia": "Brak zasobów",
+        "createFirst": "W systemie nie ma zasobów, dodajpierwszy."
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Zasób nie został pobrany poprawnie"
+        }
+      },
+      "store": {
+        "action": {
+          "createCancel": "Tworzenie zasobu zostało przerwane",
+          "updateCancel": "Aktualizowanie zasobu zostało przerwane",
+          "deleteCancel": "Usuwanie zasobu zostało przerwane"
+        }
+      },
+      "components": {
+        "ResourceRelationsForm": {
+          "title": "Relacje w produktach",
+          "placeholderTitle": "Brak relacji w produktach",
+          "placeholderSubtitle": "Tutaj możesz zobaczyć informację dotyczące relacji w produktach."
+        },
+        "UploadFileTab": {
+          "informationLabel": "Przeciągnij i upuść pliki",
+          "logicOperator": "albo",
+          "browseTitle": "Przeglądaj plik",
+          "successMessage": "Plik dodany",
+          "errorMessage": "Wewnętrzny błąd serwera"
+        },
+        "ResourceGeneralTab": {
+          "successMessage": "Zasób został zaktualizowany"
+        },
+        "ModalMediaTabBar": {
+          "title": "Dodaj zasoby"
+        },
+        "UploadImageFile": {
+          "singularTitle": "Dodaj zdjęcie",
+          "pluralTitle": "Dodaj zdjęcia",
+          "mediaTabTitle": "Zasoby",
+          "uploadFilesTabTitle": "Dodaj pliki",
+          "changeImageOptionTitle": "Zmień to zdjęcie",
+          "downloadImageOptionTitle": "Pobierz to zdjęcie",
+          "removeImageOptionTitle": "Usuń to zdjęcie",
+          "addImageToGalleryOptionTitle": "Dodaj to zdjęcie do galerii",
+          "detachFromGalleryOptionTitle": "Odeptnij to zdjęcie z galerii"
+        },
+        "UploadFiles": {
+          "title": "Dodaj pliki",
+          "mediaTabTitle": "Zasoby",
+          "uploadFilesTabTitle": "Dodaj pliki"
+        },
+        "MediaGrid": {
+          "successMessage": "Zasób został usunięty",
+          "errorMessage": "Zasób nie został pobrany poprawnie"
+        },
+        "AddMediaGrid": {
+          "successUpdateMessage": "Zasoby zostały zaktualizowane",
+          "infoMessage": "Żadne zmiany nie zostały zrobione",
+          "successRemoveMessage": "Zasób został usunięty",
+          "errorGetMessage": "Zasoby nie zostały pobrane poprawnie"
+        },
+        "ResourceTranslationForm": {
+          "altLabel": "ALternatywny tekst"
+        },
+        "ResourceForm": {
+          "title": "Opcje",
+          "filenameLabel": "Nazwa pliku",
+          "previewLabel": "Podgląd"
+        },
+        "UploadResourcesButton": {
+          "title": "Dodaj pliki",
+          "modalTitle": "Dodaj zasób",
+          "modalTabTitle": "Dodaj pliki"
+        },
+        "UpdateResourceTranslationButton": {
+          "successMessage": "Tłumaczenia zasobu zostały zaktualizowane"
+        },
+        "RemoveResourceButton": {
+          "title": "Usuń zasób",
+          "confirmTitle": "Czy jesteś pewien, że chcesz usunąć ten zasób?",
+          "successMessage": "Zasób usunięty",
+          "errorMessage": "Zasób nie został usunięty"
+        },
+        "LinkRelationButton": {
+          "errorMessage": "Nieznany typ relacji"
+        }
+      }
     }
   }
 }
