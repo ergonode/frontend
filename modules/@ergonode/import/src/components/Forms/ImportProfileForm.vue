@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="Options"
+        :title="$t('@Import.import.components.ImportProfileForm.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
@@ -19,7 +19,7 @@
                 <Select
                     :value="type"
                     required
-                    label="Profile type"
+                    :label="$t('@Import.import.components.ImportProfileForm.typeLabel')"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :options="sourcesOptions"
                     :error-messages="errors[typeFieldKey]"

@@ -82,7 +82,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'Import profile hasn`t been fetched properly',
+                    message: app.i18n.t('@Import.import.pages.id.getRequest'),
                 });
             },
         });

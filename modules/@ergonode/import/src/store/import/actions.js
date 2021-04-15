@@ -97,19 +97,19 @@ export default {
             onSuccess({
                 details: [
                     {
-                        label: 'Date of start',
+                        label: this.app.i18n.t('@Import.import.store.action.dateOfStartLabel'),
                         value: details.started_at,
                     },
                     {
-                        label: 'Status',
+                        label: this.app.i18n.t('@Import.import.store.action.statusLabel'),
                         value: details.status,
                     },
                     {
-                        label: 'Records',
+                        label: this.app.i18n.t('@Import.import.store.action.recordsLabel'),
                         value: details.records || '0',
                     },
                     {
-                        label: 'Errors',
+                        label: this.app.i18n.t('@Import.import.store.action.errorsLabel'),
                         value: details.errors || '0',
                     },
                 ],
@@ -218,7 +218,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating import profile has been canceled',
+                    message: this.app.i18n.t('@Import.import.store.action.updateCancel'),
                 });
 
                 return;
@@ -263,7 +263,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Uploading import file has been canceled',
+                    message: this.app.i18n.t('@Import.import.store.action.uploadCancel'),
                 });
 
                 return;
@@ -338,7 +338,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Creating import profile has been canceled',
+                    message: this.app.i18n.t('@Import.import.store.action.createCancel'),
                 });
 
                 return;
@@ -386,7 +386,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Removing import profile has been canceled',
+                    message: this.app.i18n.t('@Import.import.store.action.removeCancel'),
                 });
 
                 return;
