@@ -71,10 +71,10 @@
           "successMessage": "File uploaded"
         },
         "RemoveImportButton": {
-          "title": "Remove import",
-          "confirmTitle": "Are you sure you want to delete this import?",
-          "successMessage": "Import profiles removed",
-          "errorMessage": "Import hasn`t been deleted"
+          "title": "Remove import profile",
+          "confirmTitle": "Are you sure you want to delete this import profile?",
+          "successMessage": "Import profile removed",
+          "errorMessage": "Import profile hasn`t been deleted"
         },
         "CreateImportProfileButton": {
           "title": "New import profile"
