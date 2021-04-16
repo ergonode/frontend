@@ -45,7 +45,6 @@
 <script>
 import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
-import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import ProductWorkflowActionButton from '@Products/components/Buttons/ProductWorkflowActionButton';
 import RestoreProductButton from '@Products/components/Buttons/RestoreProductButton';
 import UpdateProductTemplateButton from '@Products/components/Buttons/UpdateProductTemplateButton';
@@ -76,7 +75,6 @@ export default {
         ProductWorkflowActionButton,
     },
     mixins: [
-        gridModalMixin,
         tabFeedbackMixin,
     ],
     data() {

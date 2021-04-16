@@ -3,39 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <KeepAlive>
-        <Component
-            :is="component"
-            v-bind="props"
-            v-on="listeners" />
-    </KeepAlive>
+    <div class="horizontal-tab-bar-content">
+        <slot />
+    </div>
 </template>
 
 <script>
 export default {
     name: 'HorizontalTabBarContent',
-    props: {
-        /**
-         * Tab bar content component
-         */
-        component: {
-            type: Function,
-            required: true,
-        },
-        /**
-         * Props of content component
-         */
-        props: {
-            type: Object,
-            default: () => ({}),
-        },
-        /**
-         * Listeners of content component
-         */
-        listeners: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
 };
 </script>
+
+<style lang="scss" scoped>
+    .horizontal-tab-bar-content {
+        display: flex;
+        border-top: $BORDER_1_GREY;
+        height: 100%;
+        background-color: $WHITE;
+    }
+</style>

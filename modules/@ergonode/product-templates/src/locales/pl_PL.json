@@ -67,6 +67,9 @@
         },
         "CreateProductTemplateButton": {
           "title": "Nowy szablon"
+        },
+        "ProductTemplateAutocomplete": {
+          "label": "Szablon produktowy"
         }
       }
     }
