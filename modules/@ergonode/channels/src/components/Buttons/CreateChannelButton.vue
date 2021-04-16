@@ -4,7 +4,7 @@
  */
 <template>
     <Button
-        title="NEW CHANNEL"
+        :title="$t('@Channels.channel.components.CreateChannelButton.title')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">

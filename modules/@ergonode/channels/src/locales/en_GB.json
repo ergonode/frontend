@@ -1,6 +1,11 @@
 {
   "@Channels": {
     "_": {
+      "submit": "Save changes",
+      "create": "Create",
+      "proceed": "Create & Edit",
+      "cancel": "Cancel",
+      "deleteConfirm": "Yes, remove",
       "routes": {
         "title": "Channels",
         "group": "Data exchange",
@@ -8,12 +13,96 @@
         "editHistory": "History",
         "editScheduler": "Scheduler"
       }
-    }
-  },
-  "channel": {
-    "grid": {
-      "placeholderTitle": "No channels",
-      "placeholderSubtitle": "There are no channels in the system, so you can add the first one."
+    },
+    "channel": {
+      "_": {
+        "title": "Channels",
+        "headTitle": "Channels - Ergonode",
+        "noChannel": "No channels",
+        "createFirst": "There are no channels in the system, you can add the first one."
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Channel hasn't been fetched properly"
+        }
+      },
+      "store": {
+        "action": {
+          "dateOfStartLabel": "Date of start",
+          "dateOfFinishLabel": "Date of finish",
+          "statusLabel": "Status",
+          "processedLabel": "Processed",
+          "errorsLabel": "Errors",
+          "createCancel": "Creating channel has been canceled",
+          "createExportCancel": "Creating export has been canceled",
+          "updateCancel": "Updating channel has been canceled",
+          "updateSchedulerCancel": "Updating scheduler has been canceled",
+          "deleteCancel": "Removing channel has been canceled"
+        }
+      },
+      "components": {
+        "ChannelSchedulerTab": {
+          "successMessage": "Channel scheduler has been updated",
+          "errorMessage": "Scheduler configuration hasn`t been fetched properly"
+        },
+        "ChannelGeneralTab": {
+          "successMessage": "Channel has been updated"
+        },
+        "ExportDetailsModalGrid": {
+          "title": "Export details"
+        },
+        "CreateChannelModalForm": {
+          "title": "Create channel",
+          "successMessage": "Channel created"
+        },
+        "ExportDetailsGrid": {
+          "defaultExportFilename": "not specified",
+          "errorMessage": "Export details haven’t been fetched properly"
+        },
+        "ChannelsGrid": {
+          "successMessage": "Channel removed",
+          "errorMessage": "Channels haven’t been fetched properly"
+        },
+        "ChannelHistoryGrid": {
+          "successMessage": "Channel history removed",
+          "errorMessage": "Channels haven’t been fetched properly"
+        },
+        "SchedulerForm": {
+          "title": "Scheduler",
+          "activeLabel": "Enable scheduler",
+          "timeRangeSectionTitle": "Start date and time",
+          "startDateLabel": "Start date",
+          "startTimeLabel": "Start time",
+          "recurrenceTimeSectionTitle": "Recurrence time",
+          "hoursLabel": "Hours",
+          "minutesLabel": "Minutes",
+          "oneTimeRecurrenceInfo": "one time",
+          "paragraphTitle": "Time interval that determines how often the process will be executed.",
+          "paragraphTimeInfo": "Exports will start every [[recurrence]] starting on [[dateTime]]",
+          "paragraphInfo": "Export will run [[recurrence]] on [[dateTime]]"
+        },
+        "ChannelForm": {
+          "title": "Options",
+          "typeLabel": "Channel type"
+        },
+        "RemoveChannelButton": {
+          "title": "Remove channel",
+          "confirmTitle": "Are you sure you want to delete this channel?",
+          "successMessage": "Channel removed",
+          "errorMessage": "Channel hasn`t been deleted"
+        },
+        "DownloadExportFileButton": {
+          "title": "Download file"
+        },
+        "CreateExportButton": {
+          "title": "Export now",
+          "confirmTitle": "Are you sure you want to start export?",
+          "successMessage": "Export has been finished"
+        },
+        "CreateChannelButton": {
+          "title": "New channel"
+        }
+      }
     }
   }
 }

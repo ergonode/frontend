@@ -6,7 +6,7 @@
     <Button
         :theme="secondaryTheme"
         :size="smallSize"
-        title="REMOVE CHANNEL"
+        :title="$t('@Channels.channel.components.RemoveChannelButton.title')"
         :disabled="!isAllowedToDelete"
         @click.native="onRemove">
         <template #prepend="{ color }">
@@ -62,8 +62,8 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this channel?',
-                applyTitle: 'YES, REMOVE',
+                title: this.$t('@Channels.channel.components.RemoveChannelButton.confirmTitle'),
+                applyTitle: this.$t('@Channels._.deleteConfirm'),
                 action: () => this.removeChannel({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
@@ -73,7 +73,7 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Channel removed',
+                message: this.$t('@Channels.channel.components.RemoveChannelButton.successMessage'),
             });
             this.$router.push({
                 name: ROUTE_NAME.CHANNELS_GRID,
@@ -82,7 +82,7 @@ export default {
         onRemoveError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Channel hasn`t been deleted',
+                message: this.$t('@Channels.channel.components.RemoveChannelButton.errorMessage'),
             });
         },
     },

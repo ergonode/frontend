@@ -386,7 +386,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: this.app.i18n.t('@Import.import.store.action.removeCancel'),
+                    message: this.app.i18n.t('@Import.import.store.action.deleteCancel'),
                 });
 
                 return;

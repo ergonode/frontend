@@ -133,7 +133,7 @@ export default {
         },
         exportFilename() {
             if (this.details.length < 1) {
-                return 'not specified';
+                return this.$t('@Channels.channel.components.ExportDetailsGrid.defaultExportFilename');
             }
 
             return this.details[1].value;
@@ -211,7 +211,7 @@ export default {
         onFetchGridDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Export details haven’t been fetched properly',
+                message: this.$t('@Channels.channel.components.ExportDetailsGrid.errorMessage'),
             });
 
             this.isPrefetchingData = false;

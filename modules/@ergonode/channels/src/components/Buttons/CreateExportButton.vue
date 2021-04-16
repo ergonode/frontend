@@ -4,7 +4,7 @@
  */
 <template>
     <Button
-        title="EXPORT NOW"
+        :title="$t('@Channels.channel.components.CreateExportButton.title')"
         :size="smallSize"
         :theme="secondaryTheme"
         :disabled="!isAllowedToUpdate"
@@ -42,11 +42,6 @@ export default {
         Button,
         IconAdd,
     },
-    data() {
-        return {
-            isModalVisible: false,
-        };
-    },
     computed: {
         isAllowedToUpdate() {
             return this.$hasAccess([
@@ -67,7 +62,7 @@ export default {
         onCreateExport() {
             this.$confirm({
                 type: MODAL_TYPE.POSITIVE,
-                title: 'Are you sure you want to start export?',
+                title: this.$t('@Channels.channel.components.CreateExportButton.confirmTitle'),
                 action: () => this.createChannelExport({
                     onSuccess: this.onExportSuccess,
                 }),
@@ -76,7 +71,7 @@ export default {
         onExportSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Export has been finished',
+                message: this.$t('@Channels.channel.components.CreateExportButton.successMessage'),
             });
 
             const event = new CustomEvent(EXPORT_CREATED_EVENT_NAME);
