@@ -25,6 +25,10 @@ export default {
         itemsReference: {
             required: true,
         },
+        scrollLeft: {
+            type: Number,
+            default: 0,
+        },
     },
     computed: {
         itemWidth() {
@@ -48,7 +52,7 @@ export default {
         style() {
             return {
                 width: `${this.itemWidth}px`,
-                transform: `translateX(${this.itemsWidth}px)`,
+                transform: `translateX(${this.itemsWidth - this.scrollLeft}px)`,
             };
         },
     },
