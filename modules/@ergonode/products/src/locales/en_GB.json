@@ -94,6 +94,22 @@
           "getInheritedProductRequest": "Inherited product hasn't been fetched properly",
           "getProductRequest": "Product hasn't been fetched properly"
         }
+      },
+      "store": {
+        "action": {
+          "skuRequiredLabel": "Sku is required",
+          "segmentRequiredLabel": "Segment rule is required",
+          "addBySKUCancel": "Adding product by skus has been canceled",
+          "addBySKUToCollectionCancel": "Adding product by skus to collection has been canceled",
+          "addFromSegmentCancel": "Adding products from segment has been canceled",
+          "createCancel": "Creating product has been canceled",
+          "updateCancel": "Updating product has been canceled",
+          "updateDraftCancel": "Updating product draft has been canceled",
+          "applyDraftCancel": "Applying product draft has been canceled",
+          "deleteCancel": "Removing product has been canceled",
+          "deleteChildrenCancel": "Removing product children has been canceled",
+          "deleteDraftCancel": "Removing product draft has been canceled"
+        }
       }
     },
     "productExtend": {

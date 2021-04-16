@@ -4,12 +4,12 @@
  */
 <template>
     <ModalForm
-        title="Create product collection"
+        :title="$t('@Collections.collection.components.CreateCollectionModalForm.title')"
         @close="onClose">
         <template #body>
             <CollectionForm
-                :submit-title="$t('core.buttons.create')"
-                :proceed-title="$t('core.buttons.proceed')"
+                :submit-title="$t('@Collections._.create')"
+                :proceed-title="$t('@Collections._.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :scope="scope"
@@ -29,9 +29,6 @@ import {
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    THEME,
-} from '@Core/defaults/theme';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import ModalForm from '@UI/components/Modal/ModalForm';
 import {
@@ -52,11 +49,6 @@ export default {
             isSubmitting: false,
             isProceeding: false,
         };
-    },
-    computed: {
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
     },
     methods: {
         ...mapActions('collection', [
@@ -99,7 +91,7 @@ export default {
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Collection created',
+                message: this.$t('@Collections.collection.components.CreateCollectionModalForm.successMessage'),
             });
 
             this.isSubmitting = false;

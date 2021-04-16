@@ -249,7 +249,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Adding product by skus has been canceled',
+                    message: this.app.i18n.t('@Products.product.store.action.addBySKU'),
                 });
 
                 return;
@@ -282,7 +282,7 @@ export default {
         try {
             if (!mappedSkus.length) {
                 errors.skus = [
-                    'Sku is required',
+                    this.app.i18n.t('@Products.product.store.action.skuRequiredLabel'),
                 ];
                 isAnyError = true;
             }
@@ -305,7 +305,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Adding product by skus to collection has been canceled',
+                    message: this.app.i18n.t('@Products.product.store.action.addBySKUToCollectionCancel'),
                 });
 
                 return;
@@ -341,7 +341,7 @@ export default {
 
             if (!data.segments.length) {
                 errors.segments = [
-                    'Segment rule is required',
+                    this.app.i18n.t('@Products.product.store.action.segmentRequiredLabel'),
                 ];
                 isAnyError = true;
             }
@@ -364,7 +364,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Adding products from segment has been canceled',
+                    message: this.app.i18n.t('@Products.product.store.action.addFromSegmentCancel'),
                 });
 
                 return;
@@ -526,7 +526,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating product status has been canceled',
+                    message: this.app.i18n.t('@Products.product.store.action.updateCancel'),
                 });
 
                 return;
@@ -609,7 +609,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Applying product draft has been canceled',
+                    message: this.app.i18n.t('@Products.product.store.action.applyDraftCancel'),
                 });
 
                 return;
@@ -695,7 +695,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Applying product draft has been canceled',
+                    message: this.app.i18n.t('@Products.product.store.action.applyDraftCancel'),
                 });
 
                 return;
@@ -746,7 +746,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating product draft has been canceled',
+                    message: this.app.i18n.t('@Products.product.store.action.updateDraftCancel'),
                 });
 
                 return;
@@ -852,7 +852,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating product has been canceled',
+                    message: this.app.i18n.t('@Products.product.store.action.updateCancel'),
                 });
 
                 return;
@@ -929,7 +929,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Creating product has been canceled',
+                    message: this.app.i18n.t('@Products.product.store.action.createCancel'),
                 });
 
                 return;
@@ -982,7 +982,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Removing product draft has been canceled',
+                    message: this.app.i18n.t('@Products.product.store.action.deleteCancel'),
                 });
 
                 return;
@@ -1020,7 +1020,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Removing product children has been canceled',
+                    message: this.app.i18n.t('@Products.product.store.action.deleteChildrenCancel'),
                 });
 
                 return;
@@ -1071,7 +1071,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Removing product draft has been canceled',
+                    message: this.app.i18n.t('@Products.product.store.action.deleteDraftCancel'),
                 });
 
                 return;
