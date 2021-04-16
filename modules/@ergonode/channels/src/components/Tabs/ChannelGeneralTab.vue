@@ -6,7 +6,7 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <ChannelForm
-                :submit-title="$t('core.buttons.submit')"
+                :submit-title="$t('@Channels._.submit')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="errors"
@@ -61,7 +61,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Channel has been updated',
+                message: this.$t('@Channels.channel.components.ChannelGeneralTab.successMessage'),
             });
 
             this.isSubmitting = false;

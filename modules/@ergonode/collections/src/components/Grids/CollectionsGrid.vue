@@ -44,8 +44,8 @@
         </template>
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('collection.grid.placeholderTitle')"
-                :subtitle="$t('collection.grid.placeholderSubtitle')">
+                :title="$t('@Collections.collection._.noCollection')"
+                :subtitle="$t('@Collections.collection._.createFirst')">
                 <template #action>
                     <CreateCollectionButton />
                 </template>
@@ -174,7 +174,7 @@ export default {
         onRemoveRow() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Collection removed',
+                message: this.$t('@Collections.collection.components.CollectionsGrid.successMessage'),
             });
             this.onFetchData();
         },
@@ -214,7 +214,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Collections haven’t been fetched properly',
+                message: this.$t('@Collections.collection.components.CollectionsGrid.errorMessage'),
             });
         },
         onRemoveAllFilters() {

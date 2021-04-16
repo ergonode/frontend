@@ -79,7 +79,7 @@ import {
 } from '@Media/defaults';
 import {
     get,
-} from '@Media/services/index';
+} from '@Media/services';
 import {
     GREEN,
 } from '@UI/assets/scss/_js-variables/colors.scss';
@@ -149,16 +149,12 @@ export default {
         return {
             isPrefetchingData: false,
             isModalVisible: false,
-            currentIndex: 0,
             localValue: {},
         };
     },
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
-        },
-        secondaryPlainTheme() {
-            return THEME.SECONDARY_PLAIN;
         },
         smallSize() {
             return SIZE.SMALL;
@@ -167,12 +163,12 @@ export default {
             return GREEN;
         },
         title() {
-            return 'Add Files';
+            return this.$t('@Media.media.components.UploadFiles.title');
         },
         tabs() {
             return [
                 {
-                    title: 'Media',
+                    title: this.$t('@Media.media.components.UploadFiles.mediaTabTitle'),
                     content: {
                         component: () => import('@Media/components/Grids/AddMediaGrid'),
                         props: {
@@ -188,7 +184,7 @@ export default {
                     },
                 },
                 {
-                    title: 'Upload files',
+                    title: this.$t('@Media.media.components.UploadFiles.uploadFilesTabTitle'),
                     content: {
                         component: () => import('@Media/components/Tabs/UploadFileTab'),
                         listeners: {},
@@ -238,9 +234,6 @@ export default {
         },
         onCloseModal() {
             this.isModalVisible = false;
-        },
-        onSelectSetting(option) {
-            option.action();
         },
     },
 };

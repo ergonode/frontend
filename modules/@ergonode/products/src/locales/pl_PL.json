@@ -100,6 +100,22 @@
           "getInheritedProductRequest": "Dziedziczony produkt nie został pobrany",
           "getProductRequest": "Produkt nie został pobrany"
         }
+      },
+      "store": {
+        "action": {
+          "skuRequiredLabel": "Sku jest wymagane",
+          "segmentRequiredLabel": "Reguły segmentujące są wymagane",
+          "addBySKUCancel": "Dodawnaie produktu po sku zostało przerwane",
+          "addBySKUToCollectionCancel": "Dodawnaie produktu po sku do kolekcji zostało przerwane",
+          "addFromSegmentCancel": "Dodawanie produktu z segmentu zostało przerwane",
+          "createCancel": "Tworzenie produktu zostało przerwane",
+          "updateCancel": "Aktualizowanie produktu zostało przerwane",
+          "updateDraftCancel": "Aktualizowanie draftu produktu zostało przerwane",
+          "applyDraftCancel": "Aplikowanie draftu produktu zostało przerwane",
+          "deleteCancel": "Usuwanie produktu zostało przerwane",
+          "deleteChildrenCancel": "Usuwanie dziecka produktu zostało przerwane",
+          "deleteDraftCancel": "Usuwanie draftu produktu zostało przerwane"
+        }
       }
     },
     "productExtend": {

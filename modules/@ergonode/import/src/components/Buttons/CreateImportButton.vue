@@ -4,7 +4,7 @@
  */
 <template>
     <Button
-        title="IMPORT NOW"
+        :title="$t('@Import.import.components.CreateImportButton.title')"
         :size="smallSize"
         :theme="secondaryTheme"
         :disabled="!isAllowedToUpdate"

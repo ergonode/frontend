@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="Scheduler"
+        :title="$t('@Channels.channel.components.SchedulerForm.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
@@ -18,13 +18,13 @@
             <FormSection>
                 <Toggler
                     :value="isActive"
-                    label="Enable scheduler"
+                    :label="$t('@Channels.channel.components.SchedulerForm.activeLabel')"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[activeFieldKey]"
                     @input="setIsActiveValue" />
                 <Divider />
             </FormSection>
-            <FormSection title="Start date and time">
+            <FormSection :title="$t('@Channels.channel.components.SchedulerForm.timeRangeSectionTitle')">
                 <DatePicker
                     :value="date"
                     :placeholder="format"
@@ -33,18 +33,18 @@
                     :error-messages="errors[startFieldKey]"
                     disabled-past
                     required
-                    label="Start date"
+                    :label="$t('@Channels.channel.components.SchedulerForm.startDateLabel')"
                     @input="setDateChange" />
                 <TextField
                     :value="time"
                     :disabled="!isAllowedToUpdate || !isActive"
                     :input="timeInputType"
                     required
-                    label="Start time"
+                    :label="$t('@Channels.channel.components.SchedulerForm.startTimeLabel')"
                     @input="setTimeChange" />
                 <Divider />
             </FormSection>
-            <FormSubsection title="Recurence time">
+            <FormSubsection :title="$t('@Channels.channel.components.SchedulerForm.recurrenceTimeSectionTitle')">
                 <Paragraph
                     class="scheduler-form-paragraph"
                     :title="formParagraphTitle" />
@@ -55,7 +55,7 @@
                     :disabled="!isAllowedToUpdate || !isActive"
                     :error-messages="errors[hourFieldKey]"
                     required
-                    label="Hours"
+                    :label="$t('@Channels.channel.components.SchedulerForm.hoursLabel')"
                     v-mask="'#########'"
                     @input="setHourChange" />
                 <TextField
@@ -63,7 +63,7 @@
                     :disabled="!isAllowedToUpdate || !isActive"
                     :error-messages="errors[minuteFieldKey]"
                     required
-                    label="Minutes"
+                    :label="$t('@Channels.channel.components.SchedulerForm.minutesLabel')"
                     v-mask="minuteMask"
                     @input="setMinuteChange" />
             </FormSection>
@@ -78,11 +78,11 @@
                             :width="20"
                             :height="20" />
                     </template>
-                    <template #recurence>
-                        <b>{{ recurenceInfo || 'one time' }}</b>
+                    <template #recurrence>
+                        <b v-text="recurrenceInfo" />
                     </template>
                     <template #dateTime>
-                        <b>{{ dataTime }}</b>.
+                        <b v-text="dataTime" />
                     </template>
                 </Paragraph>
             </FormSection>
@@ -204,15 +204,35 @@ export default {
 
             return start ? formatDate(parseISO(start), DEFAULT_DATE_TIME_FORMAT) : null;
         },
-        recurenceInfo() {
+        recurrenceInfo() {
+            if (this.timeInfo) {
+                return this.timeInfo;
+            }
+
+            return this.$t('@Channels.channel.components.SchedulerForm.oneTimeRecurrenceInfo');
+        },
+        timeInfo() {
             const {
                 hour,
                 minute,
             } = this.schedulerConfiguration;
-            const tmpHour = hour ? `${hour} h` : '';
-            const tmpMinute = minute ? `${minute} min` : '';
 
-            return !tmpHour && !tmpMinute ? null : `${tmpHour} ${tmpMinute}`;
+            let tmpHour = '';
+            let tmpMinute = '';
+
+            if (hour) {
+                tmpHour = `${hour} h`;
+            }
+
+            if (minute) {
+                tmpMinute = `${minute} min`;
+            }
+
+            if (!tmpHour && !tmpMinute) {
+                return null;
+            }
+
+            return `${tmpHour} ${tmpMinute}`;
         },
         isInformation() {
             const {
@@ -245,14 +265,14 @@ export default {
             return 'minute';
         },
         formParagraphTitle() {
-            return 'Time interval that determines how often the process will be executed.';
+            return this.$t('@Channels.channel.components.SchedulerForm.paragraphTitle');
         },
         formParagraphInformation() {
-            if (!this.recurenceInfo) {
-                return 'Export will run [[recurence]] on [[dateTime]]';
+            if (this.timeInfo) {
+                return this.$t('@Channels.channel.components.SchedulerForm.paragraphTimeInfo');
             }
 
-            return 'Exports will start every [[recurence]] starting on [[dateTime]]';
+            return this.$t('@Channels.channel.components.SchedulerForm.paragraphInfo');
         },
     },
     watch: {

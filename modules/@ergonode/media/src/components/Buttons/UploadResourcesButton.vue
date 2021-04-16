@@ -4,7 +4,7 @@
  */
 <template>
     <Button
-        title="UPLOAD FILES"
+        :title="$t('@Media.media.components.UploadResourcesButton.title')"
         :size="smallSize"
         :theme="secondaryTheme"
         :disabled="!isAllowedToCreate"
@@ -14,7 +14,7 @@
         </template>
         <ModalTabBar
             v-if="isModalVisible"
-            title="Add resources"
+            :title="$t('@Media.media.components.UploadResourcesButton.modalTitle')"
             :items="modalTabs"
             @close="onUploadedData" />
     </Button>
@@ -59,7 +59,7 @@ export default {
         modalTabs() {
             return [
                 {
-                    title: 'Upload files',
+                    title: this.$t('@Media.media.components.UploadResourcesButton.modalTabTitle'),
                     content: {
                         component: () => import('@Media/components/Tabs/UploadFileTab'),
                         listeners: {},

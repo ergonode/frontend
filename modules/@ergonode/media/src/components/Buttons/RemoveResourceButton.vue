@@ -6,7 +6,7 @@
     <Button
         :theme="secondaryTheme"
         :size="smallSize"
-        title="REMOVE RESOURCE"
+        :title="$t('@Media.media.components.RemoveResourceButton.title')"
         :disabled="!isAllowedToDelete"
         @click.native="onRemove">
         <template #prepend="{ color }">
@@ -62,8 +62,8 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this resource?',
-                applyTitle: 'YES, REMOVE',
+                title: this.$t('@Media.media.components.RemoveResourceButton.confirmTitle'),
+                applyTitle: this.$t('@Media._.deleteConfirm'),
                 action: () => this.removeResource({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
@@ -73,7 +73,7 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Resource removed',
+                message: this.$t('@Media.media.components.RemoveResourceButton.successMessage'),
             });
             this.$router.push({
                 name: ROUTE_NAME.MEDIA_GRID,
@@ -82,7 +82,7 @@ export default {
         onRemoveError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Resource hasn`t been deleted',
+                message: this.$t('@Media.media.components.RemoveResourceButton.errorMessage'),
             });
         },
     },

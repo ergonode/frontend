@@ -4,12 +4,12 @@
  */
 <template>
     <ModalForm
-        title="Create import profile"
+        :title="$t('@Import.import.components.CreateImportProfileModalForm.title')"
         @close="onClose">
         <template #body>
             <ImportProfileForm
-                :submit-title="$t('core.buttons.create')"
-                :proceed-title="$t('core.buttons.proceed')"
+                :submit-title="$t('@Import._.create')"
+                :proceed-title="$t('@Import._.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :scope="scope"
@@ -25,9 +25,6 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    THEME,
-} from '@Core/defaults/theme';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import ImportProfileForm from '@Import/components/Forms/ImportProfileForm';
 import {
@@ -59,11 +56,6 @@ export default {
             isSubmitting: false,
             isProceeding: false,
         };
-    },
-    computed: {
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
     },
     methods: {
         ...mapActions('import', [
@@ -107,7 +99,7 @@ export default {
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Import profile created',
+                message: this.$t('@Import.import.components.CreateImportProfileModalForm.successMessage'),
             });
 
             this.isSubmitting = false;

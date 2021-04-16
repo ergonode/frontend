@@ -41,8 +41,8 @@
             </template>
             <template #noDataPlaceholder>
                 <GridNoDataPlaceholder
-                    :title="$t('media.grid.placeholderTitle')"
-                    :subtitle="$t('media.grid.placeholderSubtitle')" />
+                    :title="$t('@Media.media._.noMedia')"
+                    :subtitle="$t('@Media.media._.createFirst')" />
             </template>
             <template #appendFooter>
                 <Component
@@ -89,10 +89,6 @@ import {
 import {
     MEDIA_TYPE,
 } from '@Media/defaults';
-import {
-    GRAPHITE,
-    GREEN,
-} from '@UI/assets/scss/_js-variables/colors.scss';
 import Button from '@UI/components/Button/Button';
 import Grid from '@UI/components/Grid/Grid';
 import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
@@ -139,7 +135,6 @@ export default {
     data() {
         return {
             searchValue: null,
-            isSearchFocused: false,
             isPrefetchingData: true,
             filterValues: {},
             rows: [],
@@ -158,11 +153,6 @@ export default {
         },
         smallSize() {
             return SIZE.SMALL;
-        },
-        searchIconFillColor() {
-            return this.isSearchFocused
-                ? GREEN
-                : GRAPHITE;
         },
         collectionCellBinding() {
             return {
@@ -187,7 +177,7 @@ export default {
                         columns.push({
                             id: 'esa_attached',
                             type: 'BOOL',
-                            label: 'Attached',
+                            label: this.$t('@Media.media.components.AddMediaGrid.attachLabel'),
                             visible: true,
                             editable: true,
                             deletable: false,
@@ -316,13 +306,13 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Grid data haven’t been fetched properly',
+                message: this.$t('@Media.media.components.AddMediaGrid.errorGetMessage'),
             });
         },
         onRemoveRow() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Resource removed',
+                message: this.$t('@Media.media.components.AddMediaGrid.successRemoveMessage'),
             });
             this.onFetchData();
         },
@@ -387,17 +377,14 @@ export default {
 
                 this.$addAlert({
                     type: ALERT_TYPE.SUCCESS,
-                    message: 'Resources have been updated',
+                    message: this.$t('@Media.media.components.AddMediaGrid.successUpdateMessage'),
                 });
             } else {
                 this.$addAlert({
                     type: ALERT_TYPE.INFO,
-                    message: 'No changes have been made',
+                    message: this.$t('@Media.media.components.AddMediaGrid.infoMessage'),
                 });
             }
-        },
-        onSearchFocus(isFocused) {
-            this.isSearchFocused = isFocused;
         },
         onSearch(value) {
             this.searchValue = value;

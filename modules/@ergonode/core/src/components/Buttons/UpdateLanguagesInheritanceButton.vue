@@ -9,7 +9,7 @@
         <template #default="{ hasValueToSave }">
             <Button
                 data-cy="submit"
-                :title="$t('core.buttons.submit')"
+                :title="$t('@Core._.buttons.submit')"
                 :floating="floating"
                 :disabled="!isAllowedToUpdate"
                 @click.native="onSubmit">

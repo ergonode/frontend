@@ -82,7 +82,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'Channel hasn`t been fetched properly',
+                    message: app.i18n.t('@Channels.channel.pages.id.getRequest'),
                 });
             },
         });
@@ -127,7 +127,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.name} - Channel - Ergonode`,
+            title: `${this.name} - ${this.$t('@Channels.channel._.headTitle')}`,
         };
     },
 };
