@@ -4,59 +4,53 @@
  */
 <template>
     <div class="horizontal-routing-tab-bar">
-        <template v-if="isTabVisible">
-            <div
-                data-cy="tab-bar__items"
-                ref="items"
-                class="horizontal-routing-tab-bar__items">
-                <template v-for="(item, index) in items">
-                    <slot
-                        name="item"
+        <HorizontalTabBarItems
+            v-if="isTabVisible"
+            :items="items"
+            :selected-index="selectedIndex">
+            <template #item="{ index, item }">
+                <slot
+                    name="item"
+                    :index="index"
+                    :item="item">
+                    <HorizontalRoutingTabBarItem
+                        :key="index"
                         :index="index"
-                        :item="item">
-                        <HorizontalRoutingTabBarItem
-                            :key="index"
-                            :index="index"
-                            :item="item"
-                            :selected-index="selectedTabIndex"
-                            :change-values="changeValues[item.scope]"
-                            :errors="errors[item.scope]"
-                            @select="onSelectTabBarItem" />
-                    </slot>
-                </template>
-            </div>
-            <ClientOnly>
-                <TabBarItemSlider
-                    :items-reference="$refs.items"
-                    :selected-index="selectedTabIndex" />
-            </ClientOnly>
-        </template>
-        <div class="horizontal-routing-tab-bar__content">
+                        :item="item"
+                        :selected-index="selectedIndex"
+                        :change-values="changeValues[item.scope]"
+                        :errors="errors[item.scope]"
+                        @select="onSelectTabBarItem" />
+                </slot>
+            </template>
+        </HorizontalTabBarItems>
+        <HorizontalTabBarContent v-if="items.length">
             <slot
                 name="content"
-                v-if="items.length"
-                :item="items[selectedTabIndex]"
-                :change-values="changeValues[items[selectedTabIndex].scope]"
-                :errors="errors[items[selectedTabIndex].scope]">
-                <HorizontalRoutingTabBarContent
-                    :scope="items[selectedTabIndex].scope"
-                    :change-values="changeValues[items[selectedTabIndex].scope]"
-                    :errors="errors[items[selectedTabIndex].scope]" />
+                :item="items[selectedIndex]"
+                :change-values="changeValues[items[selectedIndex].scope]"
+                :errors="errors[items[selectedIndex].scope]">
+                <NuxtChild
+                    :key="$route.name"
+                    keep-alive
+                    :scope="items[selectedIndex].scope"
+                    :change-values="changeValues[items[selectedIndex].scope]"
+                    :errors="errors[items[selectedIndex].scope]" />
             </slot>
-        </div>
+        </HorizontalTabBarContent>
     </div>
 </template>
 
 <script>
-import HorizontalRoutingTabBarContent from '@UI/components/TabBar/Routing/HorizontalRoutingTabBarContent';
+import HorizontalTabBarContent from '@UI/components/TabBar/HorizontalTabBarContent';
+import HorizontalTabBarItems from '@UI/components/TabBar/HorizontalTabBarItems';
 import HorizontalRoutingTabBarItem from '@UI/components/TabBar/Routing/HorizontalRoutingTabBarItem';
-import TabBarItemSlider from '@UI/components/TabBar/TabBarItemSlider';
 
 export default {
     name: 'HorizontalRoutingTabBar',
     components: {
-        TabBarItemSlider,
-        HorizontalRoutingTabBarContent,
+        HorizontalTabBarContent,
+        HorizontalTabBarItems,
         HorizontalRoutingTabBarItem,
     },
     props: {
@@ -85,14 +79,22 @@ export default {
     data() {
         return {
             childrenQueries: {},
-            selectedTabIndex: this.items.findIndex(
-                item => item.route.name === this.$route.name,
-            ),
+            selectedIndex: -1,
         };
     },
     computed: {
         isTabVisible() {
             return this.items.length > 1;
+        },
+    },
+    watch: {
+        $route: {
+            immediate: true,
+            handler() {
+                this.selectedIndex = this.items.findIndex(
+                    item => item.route.name === this.$route.name,
+                );
+            },
         },
     },
     methods: {
@@ -108,7 +110,6 @@ export default {
             this.childrenQueries[this.$route.name] = {
                 ...this.$route.query,
             };
-            this.selectedTabIndex = index;
             this.$router.push(route);
         },
     },
@@ -121,21 +122,5 @@ export default {
         display: flex;
         flex: 1;
         flex-direction: column;
-
-        &__items {
-            position: relative;
-            display: flex;
-            height: 40px;
-            flex-shrink: 0;
-            background-image: linear-gradient($WHITESMOKE, $WHITE);
-            overflow: auto;
-        }
-
-        &__content {
-            display: flex;
-            border-top: $BORDER_1_GREY;
-            height: 100%;
-            background-color: $WHITE;
-        }
     }
 </style>

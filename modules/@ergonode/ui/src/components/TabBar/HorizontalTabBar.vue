@@ -4,10 +4,10 @@
  */
 <template>
     <div class="horizontal-tab-bar">
-        <div
-            ref="items"
-            class="horizontal-tab-bar__items">
-            <template v-for="(item, index) in items">
+        <HorizontalTabBarItems
+            :items="items"
+            :selected-index="selectedIndex">
+            <template #item="{ index, item }">
                 <slot
                     name="item"
                     :index="index"
@@ -19,32 +19,32 @@
                         @select="onSelectTabBarItem" />
                 </slot>
             </template>
-            <slot name="appendItems" />
-        </div>
-        <ClientOnly>
-            <TabBarItemSlider
-                :items-reference="$refs.items"
-                :selected-index="selectedTabIndex" />
-        </ClientOnly>
-        <slot
-            name="content"
-            v-if="items.length"
-            :item="items[selectedTabIndex].content">
-            <HorizontalTabBarContent v-bind="{ ...items[selectedTabIndex].content }" />
-        </slot>
+        </HorizontalTabBarItems>
+        <HorizontalTabBarContent v-if="items.length">
+            <KeepAlive>
+                <slot
+                    name="content"
+                    :item="items[selectedIndex].content">
+                    <Component
+                        :is="items[selectedIndex].content.component"
+                        v-bind="{ ...items[selectedIndex].content.props || {} }"
+                        v-on="{ ...items[selectedIndex].content.listeners || {} }" />
+                </slot>
+            </KeepAlive>
+        </HorizontalTabBarContent>
     </div>
 </template>
 
 <script>
 import HorizontalTabBarContent from '@UI/components/TabBar/HorizontalTabBarContent';
 import HorizontalTabBarItem from '@UI/components/TabBar/HorizontalTabBarItem';
-import TabBarItemSlider from '@UI/components/TabBar/TabBarItemSlider';
+import HorizontalTabBarItems from '@UI/components/TabBar/HorizontalTabBarItems';
 
 export default {
     name: 'HorizontalTabBar',
     components: {
-        TabBarItemSlider,
         HorizontalTabBarContent,
+        HorizontalTabBarItems,
         HorizontalTabBarItem,
     },
     props: {
@@ -58,12 +58,12 @@ export default {
     },
     data() {
         return {
-            selectedTabIndex: 0,
+            selectedIndex: 0,
         };
     },
     methods: {
         onSelectTabBarItem(index) {
-            this.selectedTabIndex = index;
+            this.selectedIndex = index;
         },
     },
 };
@@ -75,15 +75,5 @@ export default {
         display: flex;
         flex: 1;
         flex-direction: column;
-
-        &__items {
-            position: relative;
-            display: flex;
-            height: 40px;
-            flex-shrink: 0;
-            background-image: linear-gradient($WHITESMOKE, $WHITE);
-            overflow: auto;
-            border-bottom: $BORDER_1_GREY;
-        }
     }
 </style>

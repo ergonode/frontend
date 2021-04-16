@@ -43,7 +43,7 @@
         "UploadFileTab": {
           "informationLabel": "Przeciągnij i upuść pliki",
           "logicOperator": "albo",
-          "browseTitle": "Przeglądaj plik",
+          "browseTitle": "Przeglądaj",
           "successMessage": "Plik dodany",
           "errorMessage": "Wewnętrzny błąd serwera"
         },

@@ -17,7 +17,7 @@
       "_": {
         "title": "Profile importowe",
         "headTitle": "Profile importowe - Ergonode",
-        "noTemplate": "Brak profili importowych",
+        "noImportProfile": "Brak profili importowych",
         "createFirst": "W systemie nie ma profili importowych, stwórz pierwszy."
       },
       "pages": {
