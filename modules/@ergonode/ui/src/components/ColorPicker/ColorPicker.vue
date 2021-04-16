@@ -31,7 +31,7 @@
                     @click.native="onApply" />
                 <Button
                     :size="tinySize"
-                    :title="$t('core.buttons.clear')"
+                    :title="$t('@Core._.buttons.clear')"
                     :theme="secondaryTheme"
                     @click.native="onClear" />
             </DropdownFooter>

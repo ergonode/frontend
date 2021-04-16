@@ -157,7 +157,7 @@ export default function ({
         if (!errorResponse || !errorResponse.response) {
             throw {
                 data: {
-                    message: app.i18n.t('core.errors.network'),
+                    message: app.i18n.t('@Core._.errors.network'),
                 },
             };
         }
@@ -174,18 +174,18 @@ export default function ({
 
         switch (true) {
         case regExp.errors.test(status):
-            msg = app.i18n.t('core.errors.internal');
+            msg = app.i18n.t('@Core._.errors.internal');
 
             removeCancelToken(errorResponse.config.cancelToken);
 
             break;
         case regExp.auth.test(status): {
             if (config.url.includes('login')) {
-                msg = app.i18n.t('core.errors.wrongCredentials');
+                msg = app.i18n.t('@Core._.errors.wrongCredentials');
                 break;
             }
 
-            msg = app.i18n.t('core.errors.nonAuthorized');
+            msg = app.i18n.t('@Core._.errors.nonAuthorized');
 
             const originalRequest = config;
 
@@ -240,7 +240,7 @@ export default function ({
             break;
         }
         case regExp.access.test(status):
-            msg = app.i18n.t('core.errors.accessDenied');
+            msg = app.i18n.t('@Core._.errors.accessDenied');
             error({
                 statusCode: 403,
                 message: msg,
@@ -254,10 +254,10 @@ export default function ({
             removeCancelToken(errorResponse.config.cancelToken);
 
             if (config.url.includes('multimedia')) {
-                msg = app.i18n.t('core.errors.mediaNotFound');
+                msg = app.i18n.t('@Core._.errors.mediaNotFound');
                 break;
             }
-            msg = app.i18n.t('core.errors.pageNotFound');
+            msg = app.i18n.t('@Core._.errors.pageNotFound');
             error({
                 statusCode: 404,
                 message: msg,
@@ -266,7 +266,7 @@ export default function ({
         default:
             removeCancelToken(errorResponse.config.cancelToken);
 
-            msg = message || app.i18n.t('core.errors.unsupportedMessage');
+            msg = message || app.i18n.t('@Core._.errors.unsupportedMessage');
         }
 
         store.dispatch('alert/addAlert', {
