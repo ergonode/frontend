@@ -4,12 +4,12 @@
  */
 <template>
     <ModalForm
-        title="Create channel"
+        :title="$t('@Channels.channel.components.CreateChannelModalForm.title')"
         @close="onClose">
         <template #body>
             <ChannelForm
-                :submit-title="$t('core.buttons.create')"
-                :proceed-title="$t('core.buttons.proceed')"
+                :submit-title="$t('@Channels._.create')"
+                :proceed-title="$t('@Channels._.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :scope="scope"
@@ -29,9 +29,6 @@ import {
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    THEME,
-} from '@Core/defaults/theme';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import ModalForm from '@UI/components/Modal/ModalForm';
 import {
@@ -59,11 +56,6 @@ export default {
             isSubmitting: false,
             isProceeding: false,
         };
-    },
-    computed: {
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
     },
     methods: {
         ...mapActions('channel', [
@@ -109,7 +101,7 @@ export default {
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Channel created',
+                message: this.$t('@Channels.channel.components.CreateChannelModalForm.successMessage'),
             });
 
             this.isSubmitting = false;

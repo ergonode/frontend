@@ -4,7 +4,7 @@
  */
 <template>
     <ModalGrid
-        title="Export details"
+        :title="$t('@Channels.channel.components.ExportDetailsModalGrid.title')"
         @close="onClose">
         <template #body>
             <ExportDetailsGrid
