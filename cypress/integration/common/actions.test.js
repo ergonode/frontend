@@ -36,6 +36,18 @@ MultiSteps([
 
 MultiSteps([
     When,
+    Then,
+    And,
+], 'On {string} element I click {string} button', (parent, id) => {
+    cy.get(`[data-cy=${parent}]`)
+        .find(`[data-cy=${id}]`)
+        .click({
+            multiple: true,
+        });
+});
+
+MultiSteps([
+    When,
     And,
 ], 'On {string} element I click button with {string} text', (id, text) => {
     cy.get(`[data-cy=${id}]`)
