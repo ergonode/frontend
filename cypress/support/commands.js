@@ -15,8 +15,6 @@ Cypress.Commands.add('apiRequest', ({
 });
 
 Cypress.Commands.add('login', (email, pass) => {
-    // cy.clearCookies();
-    // cy.clearCookie('token');
     cy.visit('');
     cy.intercept('POST', '**/login').as('postLogin');
     cy.intercept('GET', '**/profile').as('profile');
