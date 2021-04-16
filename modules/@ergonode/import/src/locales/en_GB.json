@@ -18,7 +18,7 @@
         "title": "Import profiles",
         "headTitle": "Import profiles - Ergonode",
         "noImportProfile": "No import profiles",
-        "createFirst": "There are no import profiles in the system, you can add the first one."
+        "createFirst": "There are no import profiles in the system, so you can add the first one."
       },
       "pages": {
         "id": {

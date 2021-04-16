@@ -19,7 +19,7 @@
         "title": "User roles",
         "headTitle": "User roles - Ergonode",
         "noRoles": "No user roles",
-        "createFirst": "There are no user roles in the system, you can add the first one."
+        "createFirst": "There are no user roles in the system, so you can add the first one."
       },
       "components": {
         "RolesGrid": {

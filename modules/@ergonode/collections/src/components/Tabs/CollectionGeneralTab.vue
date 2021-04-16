@@ -6,7 +6,7 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <CollectionForm
-                :submit-title="$t('core.buttons.submit')"
+                :submit-title="$t('@Collections._.submit')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="errors"
@@ -62,7 +62,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Collection has been updated',
+                message: this.$t('@Collections.collection.components.CollectionGeneralTab.successMessage'),
             });
 
             this.isSubmitting = false;

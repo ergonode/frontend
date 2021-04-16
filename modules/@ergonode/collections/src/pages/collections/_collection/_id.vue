@@ -74,7 +74,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'Collection hasn`t been fetched properly',
+                    message: this.$t('@Collections.collection.pages.id.getRequest'),
                 });
             },
         });
@@ -116,7 +116,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.code} - Collections - Ergonode`,
+            title: `${this.code} - ${this.$t('@Collections.collection._.headTitle')}`,
         };
     },
 };

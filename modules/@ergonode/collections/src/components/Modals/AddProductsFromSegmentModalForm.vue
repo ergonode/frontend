@@ -4,13 +4,13 @@
  */
 <template>
     <ModalForm
-        title="Add products from segment"
+        :title="$t('@Collections.collection.components.AddProductsFromSegmentModalForm.title')"
         @close="onClose">
         <template #body>
             <AddProductsFromSegmentForm
                 :segments="segments"
-                submit-title="ADD TO COLLECTION"
-                :proceed-title="$t('core.buttons.cancel')"
+                :submit-title="$t('@Collections.collection.components.AddProductsFromSegmentModalForm.formSubtitle')"
+                :proceed-title="$t('@Collections._.cancel')"
                 :is-submitting="isAdding"
                 :scope="scope"
                 :errors="scopeErrors"
@@ -26,9 +26,6 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    THEME,
-} from '@Core/defaults/theme';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import AddProductsFromSegmentForm from '@Segments/components/Forms/AddProductsFromSegmentForm';
 import ModalForm from '@UI/components/Modal/ModalForm';
@@ -50,11 +47,6 @@ export default {
             segments: [],
             isAdding: false,
         };
-    },
-    computed: {
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
     },
     methods: {
         ...mapActions('collection', [
@@ -84,7 +76,7 @@ export default {
         onSubmitSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Products have been added to collection',
+                message: this.$t('@Collections.collection.components.AddProductsFromSegmentModalForm.successMessage'),
             });
 
             this.isAdding = false;

@@ -1,6 +1,11 @@
 {
   "@Collections": {
     "_": {
+      "submit": "Save changes",
+      "create": "Create",
+      "proceed": "Create & Edit",
+      "cancel": "Cancel",
+      "deleteConfirm": "Yes, remove",
       "routes": {
         "title": "Collections",
         "group": "Products",
@@ -9,17 +14,99 @@
         "editProducts": "Products",
         "editCollections": "Collections"
       }
-    }
-  },
-  "collection": {
-    "form": {
-      "typeLabel": "Type",
-      "noCollectionTypeTitle": "No collection types",
-      "noCollectionTypeSubtitle": "There are no collections in the system, contact with system administrator."
     },
-    "grid": {
-      "placeholderTitle": "No collections",
-      "placeholderSubtitle": "There are no collections in the system, so you can add the first one."
+    "collection": {
+      "_": {
+        "title": "Collections",
+        "headTitle": "Collections - Ergonode",
+        "noCollection": "No collection",
+        "createFirst": "There are no collections in the system, so you can add the first one."
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Collection hasn't been fetched properly"
+        }
+      },
+      "store": {
+        "action": {
+          "skuRequiredLabel": "Sku is required",
+          "segmentRequiredLabel": "Segment rule is required",
+          "addProductBySku": "Adding product by skus to collection has been canceled",
+          "addProductFromSegment": "Adding products from segment to collection has been canceled",
+          "createCancel": "Creating collection has been canceled",
+          "updateCancel": "Updating collection has been canceled",
+          "updateVisibilityCancel": "Updating product visibility in collection has been canceled",
+          "deleteCancel": "Removing collection has been canceled"
+        }
+      },
+      "components": {
+        "CollectionTypesAutocomplete": {
+          "label": "Type"
+        },
+        "CollectionGeneralTab": {
+          "successMessage": "Collection has been updated"
+        },
+        "CreateCollectionModalForm": {
+          "title": "Create product collection",
+          "successMessage": "Collection created"
+        },
+        "AddProductsFromSegmentModalForm": {
+          "title": "Add products from segment",
+          "formSubtitle": "Add to collection",
+          "successMessage": "Products have been added to collection"
+        },
+        "AddProductsBySKUModalForm": {
+          "title": "Add products by SKU",
+          "formSubtitle": "Add to collection",
+          "successMessage": "Products have been added to collection"
+        },
+        "CollectionsGrid": {
+          "successMessage": "Collection removed",
+          "errorMessage": "Collections haven’t been fetched properly"
+        },
+        "CollectionProductsGrid": {
+          "successMessage": "Collection products haven’t been fetched properly"
+        },
+        "CollectionTranslationForm": {
+          "collectionNameLabel": "Collection name",
+          "descriptionLabel": "Description"
+        },
+        "CollectionForm": {
+          "title": "Options",
+          "nameLabel": "System name",
+          "nameHint": "System name must be unique"
+        },
+        "AddProductsBySKUForm": {
+          "skuLabel": "By SKU",
+          "skuHint": "Separate multiple SKU’s by using enter or comma, e.g. “SKU1, SKU2, SKU3”"
+        },
+        "UpdateCollectionTranslationButton": {
+          "successMessage": "Collection translations have been updated"
+        },
+        "RemoveCollectionButton": {
+          "title": "Remove collection",
+          "confirmTitle": "Are you sure you want to delete this collection?",
+          "successMessage": "Collection removed",
+          "errorMessage": "Collection hasn`t been deleted"
+        },
+        "CreateCollectionButton": {
+          "title": "New collection"
+        },
+        "AddProductsToCollectionButton": {
+          "title": "Add products"
+        }
+      }
+    },
+    "productExtend": {
+      "components": {
+        "ProductWithoutCollectionTabBarNoDataPlaceholder": {
+          "title": "Nothing to see here",
+          "subtitle": "This product has not been added to any collection."
+        },
+        "NavigateToCollectionsButton": {
+          "title": "Go to collections"
+        }
+      }
     }
   }
 }

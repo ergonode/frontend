@@ -152,7 +152,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating product visibility in collection has been canceled',
+                    message: this.app.i18n.t('@Collections.collection.store.action.updateVisibilityCancel'),
                 });
 
                 return;
@@ -226,7 +226,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating collection has been canceled',
+                    message: this.app.i18n.t('@Collections.collection.store.action.updateCancel'),
                 });
 
                 return;
@@ -290,7 +290,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Creating collection has been canceled',
+                    message: this.app.i18n.t('@Collections.collection.store.action.createCancel'),
                 });
 
                 return;
@@ -323,7 +323,7 @@ export default {
         try {
             if (!mappedSkus.length) {
                 errors.skus = [
-                    'Sku is required',
+                    this.app.i18n.t('@Collections.collection.store.action.skuRequiredLabel'),
                 ];
                 isAnyError = true;
             }
@@ -346,7 +346,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Adding product by skus to collection has been canceled',
+                    message: this.app.i18n.t('@Collections.collection.store.action.addProductBySku'),
                 });
 
                 return;
@@ -382,7 +382,7 @@ export default {
 
             if (!data.segments.length) {
                 errors.segments = [
-                    'Segment rule is required',
+                    this.app.i18n.t('@Collections.collection.store.action.segmentRequiredLabel'),
                 ];
                 isAnyError = true;
             }
@@ -404,7 +404,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Adding products from segment to collection has been canceled',
+                    message: this.app.i18n.t('@Collections.collection.store.action.addProductFromSegment'),
                 });
 
                 return;
@@ -452,7 +452,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Removing collection has been canceled',
+                    message: this.app.i18n.t('@Collections.collection.store.action.deleteCancel'),
                 });
 
                 return;

@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="Options"
+        :title="$t('@Collections.collection.components.CollectionForm.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
@@ -22,8 +22,8 @@
                     required
                     :error-messages="errors[codeFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    label="System name"
-                    hint="System name must be unique"
+                    :label="$t('@Collections.collection.components.CollectionForm.nameLabel')"
+                    :hint="$t('@Collections.collection.components.CollectionForm.nameHint')"
                     @input="setCodeValue" />
                 <CollectionTypesAutocomplete
                     :data-cy="dataCyGenerator(typeIdFieldKey)"
