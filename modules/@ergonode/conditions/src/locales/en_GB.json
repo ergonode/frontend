@@ -1,0 +1,12 @@
+{
+  "@Conditions": {
+    "_": {},
+    "condition": {
+      "components": {
+        "ConditionsSideBar": {
+          "title": "Conditions"
+        }
+      }
+    }
+  }
+}
