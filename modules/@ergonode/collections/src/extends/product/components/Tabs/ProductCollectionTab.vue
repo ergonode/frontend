@@ -20,18 +20,7 @@
                             </template>
                         </ExpandingCollection>
                     </ProductCollection>
-                    <TabBarNoDataPlaceholder
-                        v-else
-                        title="Nothing to see here"
-                        subtitle="This product has not been added to any collection.">
-                        <template #action>
-                            <Button
-                                title="GO TO COLLECTIONS"
-                                :size="smallSize"
-                                :disabled="!isAllowedToUpdate"
-                                @click.native="onNavigateToCollections" />
-                        </template>
-                    </TabBarNoDataPlaceholder>
+                    <ProductWithoutCollectionTabBarNoDataPlaceholder v-else />
                 </template>
             </div>
         </template>
@@ -39,20 +28,13 @@
 </template>
 
 <script>
-import PRIVILEGES from '@Collections/config/privileges';
-import {
-    ROUTE_NAME,
-} from '@Collections/config/routes';
 import ProductCollection from '@Collections/extends/product/components/Collection/ProductCollection';
 import ProductCollectionItem from '@Collections/extends/product/components/Collection/ProductCollectionItem';
 import ExpandingCollection from '@Collections/extends/product/components/ExpandingCollection/ExpandingCollection';
-import {
-    SIZE,
-} from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
+import ProductWithoutCollectionTabBarNoDataPlaceholder
+    from '@Collections/extends/product/components/Placeholders/ProductWithoutCollectionTabBarNoDataPlaceholder';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import Preloader from '@UI/components/Preloader/Preloader';
-import TabBarNoDataPlaceholder from '@UI/components/TabBar/TabBarNoDataPlaceholder';
 import {
     mapActions,
 } from 'vuex';
@@ -60,29 +42,18 @@ import {
 export default {
     name: 'ProductCollectionTab',
     components: {
+        ProductWithoutCollectionTabBarNoDataPlaceholder,
         Preloader,
         CenterViewTemplate,
         ProductCollection,
         ProductCollectionItem,
-        TabBarNoDataPlaceholder,
         ExpandingCollection,
-        Button,
     },
     data() {
         return {
             collections: [],
             isFetchingData: true,
         };
-    },
-    computed: {
-        isAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.PRODUCT_COLLECTION.update,
-            ]);
-        },
-        smallSize() {
-            return SIZE.SMALL;
-        },
     },
     async created() {
         let productCollections = [];
@@ -135,11 +106,6 @@ export default {
         ...mapActions('collection', [
             'getCollectionTypeOptions',
         ]),
-        onNavigateToCollections() {
-            this.$router.push({
-                name: ROUTE_NAME.COLLECTIONS_GRID,
-            });
-        },
         fetchCollectionItems({
             id, index,
         }) {

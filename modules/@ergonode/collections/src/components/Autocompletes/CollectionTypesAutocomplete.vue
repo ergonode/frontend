@@ -10,7 +10,7 @@
         :searchable="true"
         :multiselect="multiselect"
         :clearable="clearable"
-        :label="$t('collection.form.typeLabel')"
+        :label="$t('@Collections.collection.form.typeLabel')"
         :custom-fetch-event="collectionCreatedEventName"
         :error-messages="errorMessages"
         :disabled="disabled"
@@ -76,8 +76,8 @@ export default {
         },
         noDataPlaceholder() {
             return {
-                title: this.$t('collection.form.noCollectionTypeTitle'),
-                subtitle: this.$t('collection.form.noCollectionTypeSubtitle'),
+                title: this.$t('@Collections.collection.noCollection'),
+                subtitle: this.$t('@Collections.collection.createFirst'),
             };
         },
     },
