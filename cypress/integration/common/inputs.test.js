@@ -141,6 +141,23 @@ MultiSteps([
 MultiSteps([
     And,
     Then,
+], 'I choose {int} option from {string} color picker field', (optionNr, id) => {
+    cy.get(`[data-cy=${id}]`).click();
+    cy.get(`[data-cy=${id}-drop-down]`)
+        .should('be.visible')
+        .find('.color-picker-content > .color').as('elementList');
+    cy.get('@elementList').its('length').should('be.gt', 0);
+    cy.get('@elementList').eq(optionNr).as('selectedOption');
+    cy.get('@selectedOption').click({
+        force: true,
+    });
+    cy.get(`[data-cy=${id}-drop-down]`).find('button').contains('OK').click();
+    cy.get(`[data-cy=${id}-drop-down]`).should('be.not.visible');
+});
+
+MultiSteps([
+    And,
+    Then,
 ], 'I choose {int} option from {string} select field', (optionNr, id) => {
     cy.get(`[data-cy=${id}]`)
         .click();
