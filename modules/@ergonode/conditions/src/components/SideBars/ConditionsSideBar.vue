@@ -4,7 +4,7 @@
  */
 <template>
     <SideBar
-        title="Conditions"
+        :title="$t('@Conditions.condition.components.ConditionsSideBar.title')"
         :search-value="searchValue"
         :searchable="true"
         :items="conditions"

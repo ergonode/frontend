@@ -1,0 +1,13 @@
+{
+  "@Conditions": {
+    "_": {
+    },
+    "condition": {
+      "components": {
+        "ConditionsSideBar": {
+          "title": "Warunki"
+        }
+      }
+    }
+  }
+}
