@@ -1,7 +1,6 @@
 {
   "@Conditions": {
-    "_": {
-    },
+    "_": {},
     "condition": {
       "components": {
         "ConditionsSideBar": {
