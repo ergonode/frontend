@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="Options"
+        :title="$t('@Channels.channel.components.ChannelForm.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
@@ -19,7 +19,7 @@
                 <Select
                     :value="type"
                     required
-                    label="Channel type"
+                    :label="$t('@Channels.channel.components.ChannelForm.typeLabel')"
                     :disabled="isFetchingConfiguration || isDisabled || !isAllowedToUpdate"
                     :options="channelsOptions"
                     :error-messages="errors[typeFieldKey]"

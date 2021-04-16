@@ -6,7 +6,7 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <SchedulerForm
-                :submit-title="$t('core.buttons.submit')"
+                :submit-title="$t('@Channels._.submit')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="errors"
@@ -41,7 +41,7 @@ export default {
             onError: () => {
                 this.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'Scheduler configuration hasn`t been fetched properly',
+                    message: this.$t('@Channels.channel.components.ChannelSchedulerTab.errorMessage'),
                 });
             },
         });
@@ -72,7 +72,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Channel scheduler has been updated',
+                message: this.$t('@Channels.channel.components.ChannelSchedulerTab.successMessage'),
             });
 
             this.isSubmitting = false;

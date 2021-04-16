@@ -167,7 +167,7 @@ export default {
         onRemoveRow() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Channel history removed',
+                message: this.$t('@Channels.channel.components.ChannelHistoryGrid.successMessage'),
             });
             this.onFetchData();
         },
@@ -212,7 +212,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Channels haven’t been fetched properly',
+                message: this.$t('@Channels.channel.components.ChannelHistoryGrid.errorMessage'),
             });
         },
         onRemoveAllFilters() {

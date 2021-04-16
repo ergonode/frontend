@@ -4,7 +4,7 @@
  */
 <template>
     <Button
-        title="DOWNLOAD FILE"
+        :title="$t('@Channels.channel.components.DownloadExportFileButton.title')"
         :size="smallSize"
         :disabled="!isAllowedToUpdate"
         @click.native="onDownloadExportFile" />
