@@ -7,20 +7,20 @@ Feature: DELETE: Attributes
 
   @other
   Scenario: Delete attribute by grid button - give up
-    When On "grid" I can see row with "text_attribute2" value and columns data: "{'1': 'text_attribute2', '3': 'Text'"
-    * On "grid" I click on "delete" button for row with "text_attribute2" value
+    When On "grid" I can see row with "text_attribute" value and columns data: "{'1': 'text_attribute', '3': 'Text'}"
+    * On "grid" I click on "delete" button for row with "text_attribute" value
     * Element "modal" is visible
     * I close modal by button
     Then Element "modal" not exist
 
   @other
   Scenario: Delete attribute from edit page - give up
-    When On "grid" I can see row with "text_attribute2" value and columns data: "{'1': 'text_attribute2', '3': 'Text'}"
-    * On "grid" I click on "edit" button for row with "text_attribute2" value
+    When On "grid" I can see row with "text_attribute" value and columns data: "{'1': 'text_attribute', '3': 'Text'}"
+    * On "grid" I click on "edit" button for row with "text_attribute" value
     * I see "attributes/attribute/%UUID%/general" page
     * Element "attribute-code" is visible
     * Element "title-bar-header" is visible
-    * I can see "attribute-code" input with the "text_attribute2" term
+    * I can see "attribute-code" input with the "text_attribute" term
     * I can see "attribute-code" field as disabled
     * I click on "delete-attribute" button
     * I close modal
@@ -41,12 +41,6 @@ Feature: DELETE: Attributes
       | gallery_attribute      | Gallery      |
       | image_attribute        | Image        |
       | multiselect_attribute  | Multi select |
-      | numeric_attribute      | Numeric      |
-      | price_attribute        | Price        |
-      | select_attribute       | Select       |
-      | text_attribute         | Text         |
-      | textarea_attribute     | Textarea     |
-      | unit_attribute         | Unit         |
 
   @success
   Scenario Outline: Delete <type_txt> attribute from edit page - success
@@ -62,15 +56,10 @@ Feature: DELETE: Attributes
     Then I see "attributes/grid" page
 
     Examples:
-      | name                    | type_txt     |
-      | date_attribute2         | Date         |
-      | file_attribute2         | File         |
-      | gallery_attribute2      | Gallery      |
-      | image_attribute2        | Image        |
-      | multiselect_attribute2  | Multi select |
-      | numeric_attribute2      | Numeric      |
-      | price_attribute2        | Price        |
-      | select_attribute2       | Select       |
-      | text_attribute2         | Text         |
-      | textarea_attribute2     | Textarea     |
-      | unit_attribute2         | Unit         |
+      | name               | type_txt |
+      | numeric_attribute  | Numeric  |
+      | price_attribute    | Price    |
+      | select_attribute   | Select   |
+      | text_attribute     | Text     |
+      | textarea_attribute | Textarea |
+      | unit_attribute     | Unit     |

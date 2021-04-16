@@ -22,9 +22,9 @@ Feature: UPDATE: Attributes
       | textarea_attribute     | Textarea     | global    |
       | text_attribute         | Text         | global    |
       | numeric_attribute      | Numeric      | global    |
-      | price_attribute        | Price        | global    |
-      | date_attribute         | Date         | global    |
-      | unit_attribute         | Unit         | global    |
+      | price_attribute        | Price        | local     |
+      | date_attribute         | Date         | local     |
+      | unit_attribute         | Unit         | local     |
       | gallery_attribute      | Gallery      | global    |
       | image_attribute        | Image        | global    |
       | file_attribute         | File         | global    |
@@ -67,9 +67,9 @@ Feature: UPDATE: Attributes
 
     Examples:
       | name                | type_txt | scope | scope_old | scope_new |
-      | price_attribute     | Price    | 1     | global    | local     |
-      | date_attribute      | Date     | 1     | global    | local     |
-      | unit_attribute      | Unit     | 1     | global    | local     |
+      | price_attribute     | Price    | 0     | local     | global    |
+      | date_attribute      | Date     | 0     | local     | global    |
+      | unit_attribute      | Unit     | 0     | local     | global    |
 
   @success
   Scenario Outline: Update <type_txt> attribute with options - success
@@ -116,11 +116,8 @@ Feature: UPDATE: Attributes
     Examples:
       | name                | type_txt | scope_txt |
       | textarea_attribute  | Textarea | global    |
-      | textarea_attribute2 | Textarea | local     |
       | text_attribute      | Text     | global    |
-      | text_attribute2     | Text     | local     |
       | numeric_attribute   | Numeric  | global    |
-      | numeric_attribute2  | Numeric  | local     |
 
   @success
   Scenario Outline: Update <type_txt> attribute from edit page - success
@@ -143,17 +140,11 @@ Feature: UPDATE: Attributes
     Examples:
       | name                | type_txt | scope_txt |
       | price_attribute     | Price    | global    |
-      | price_attribute2    | Price    | local     |
       | date_attribute      | Date     | global    |
-      | date_attribute2     | Date     | local     |
       | unit_attribute      | Unit     | global    |
-      | unit_attribute2     | Unit     | local     |
       | gallery_attribute   | Gallery  | global    |
-      | gallery_attribute2  | Gallery  | local     |
       | image_attribute     | Image    | global    |
-      | image_attribute2    | Image    | local     |
       | file_attribute      | File     | global    |
-      | file_attribute2     | File     | local     |
 
   @success
   Scenario Outline: Update <type_txt> attribute from edit page - success
@@ -180,7 +171,5 @@ Feature: UPDATE: Attributes
 
     Examples:
       | name                   | type_txt     | scope_txt |
-      | select_attribute       | Select       | global    |
-      | select_attribute2      | Select       | local     |
-      | multiselect_attribute  | Multi select | global    |
-      | multiselect_attribute2 | Multi select | local     |
+      | select_attribute       | Select       | local     |
+      | multiselect_attribute  | Multi select | local     |

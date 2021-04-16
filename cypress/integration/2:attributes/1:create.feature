@@ -26,24 +26,18 @@ Feature: CREATE: Attributes
     Examples:
       | name                | type | type_txt | scope | scope_txt |
       | textarea_attribute  | 9    | Textarea | 0     | global    |
-      | textarea_attribute2 | 9    | Textarea | 1     | local     |
       | text_attribute      | 8    | Text     | 0     | global    |
-      | text_attribute2     | 8    | Text     | 1     | local     |
       | numeric_attribute   | 5    | Numeric  | 0     | global    |
-      | numeric_attribute2  | 5    | Numeric  | 1     | local     |
       | image_attribute     | 3    | Image    | 0     | global    |
-      | image_attribute2    | 3    | Image    | 1     | local     |
       | gallery_attribute   | 2    | Gallery  | 0     | global    |
-      | gallery_attribute2  | 2    | Gallery  | 1     | local     |
       | file_attribute      | 1    | File     | 0     | global    |
-      | file_attribute2     | 1    | File     | 1     | local     |
 
   @success
   Scenario Outline: Add <type_txt> attribute with params - success
     When I choose <type> option from "attribute-type" select field
     * I fill the "attribute-code" input with the "<name>" term
     * I choose <scope> option from "attribute-scope" select field
-    * I choose "[0,1]" options from "attribute-groups" multi select field
+    * I choose "[0]" options from "attribute-groups" multi select field
     * I choose <param> option from "attribute-params" select field
     Then I click on "proceed" button
     * I send a "POST" request and status code should be 201
@@ -54,19 +48,16 @@ Feature: CREATE: Attributes
 
     Examples:
       | name             | type | type_txt | scope | scope_txt | param |
-      | price_attribute  | 6    | Price    | 0     | global    | 0     |
-      | price_attribute2 | 6    | Price    | 1     | local     | 1     |
-      | date_attribute   | 0    | Date     | 0     | global    | 0     |
-      | date_attribute2  | 0    | Date     | 1     | local     | 1     |
-      | unit_attribute   | 10   | Unit     | 0     | global    | 0     |
-      | unit_attribute2  | 10   | Unit     | 1     | local     | 1     |
+      | price_attribute  | 6    | Price    | 1     | local     | 0     |
+      | date_attribute   | 0    | Date     | 1     | local     | 1     |
+      | unit_attribute   | 10   | Unit     | 1     | local     | 0     |
 
   @success
   Scenario Outline: Add <type_txt> attribute with options - success
     When I choose <type> option from "attribute-type" select field
     * I fill the "attribute-code" input with the "<name>" term
     * I choose <scope> option from "attribute-scope" select field
-    * I choose "[0,1]" options from "attribute-groups" multi select field
+    * I choose "[0]" options from "attribute-groups" multi select field
     * Element "attribute-add-options" is visible
     * On "attribute-add-options" element I click button with "ADD OPTION" text
     * I fill the "attribute-option-0" input with the "<option1>" term
@@ -80,9 +71,7 @@ Feature: CREATE: Attributes
   Examples:
     | name                   | type | type_txt     | scope | scope_txt | option1 | option2 |
     | select_attribute       | 7    | Select       | 0     | global    | o1      | o2      |
-    | select_attribute2      | 7    | Select       | 1     | local     | op1     | op2     |
     | multiselect_attribute  | 4    | Multi select | 0     | global    | opt1    | opt2    |
-    | multiselect_attribute2 | 4    | Multi select | 1     | local     | option1 | option2 |
 
   @error
   Scenario: Add attribute - duplication error

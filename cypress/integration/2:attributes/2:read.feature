@@ -9,7 +9,7 @@ Feature: READ: Attributes
   Scenario: Read attribute on grid - success
     When I can see "Attributes" text on "title-bar-header" element
     * On "grid" I can see row with "text_attribute" value and columns data: "{'1': 'text_attribute', '3': 'Text', '4': 'global'}"
-    * On "grid" I can see row with "price_attribute" value and columns data: "{'1': 'price_attribute', '3': 'Price', '4': 'global'}"
+    * On "grid" I can see row with "price_attribute" value and columns data: "{'1': 'price_attribute', '3': 'Price', '4': 'local'}"
     * On "grid" I can see row with "select_attribute" value and columns data: "{'1': 'select_attribute', '3': 'Select', '4': 'global'}"
 
   @success
@@ -104,7 +104,7 @@ Feature: READ: Attributes
 
   @success
   Scenario: Read price attribute general - success
-    When On "grid" I can see row with "price_attribute" value and columns data: "{'1': 'price_attribute', '3': 'Price', '4': 'global'}"
+    When On "grid" I can see row with "price_attribute" value and columns data: "{'1': 'price_attribute', '3': 'Price', '4': 'local'}"
     * On "grid" I click on "edit" button for row with "price_attribute" value
     * I see "attributes/attribute/%UUID%/general" page
     * Element "title-bar-header" is visible
@@ -113,7 +113,7 @@ Feature: READ: Attributes
     * I can see "attribute-type" field as disabled
     * I can see "attribute-code" input with the "price_attribute" term
     * I can see "attribute-code" field as disabled
-    * I can see "attribute-scope" select with the "global" term
+    * I can see "attribute-scope" select with the "local" term
     * I can see "attribute-scope" field as enabled
     * I can see "attribute-groups" select as not empty
     * I can see "attribute-groups" field as enabled
@@ -124,7 +124,7 @@ Feature: READ: Attributes
 
   @success
   Scenario: Read price attribute translation - success
-    When On "grid" I can see row with "price_attribute" value and columns data: "{'1': 'price_attribute', '3': 'Price', '4': 'global'}"
+    When On "grid" I can see row with "price_attribute" value and columns data: "{'1': 'price_attribute', '3': 'Price', '4': 'local'}"
     * On "grid" I click on "edit" button for row with "price_attribute" value
     * I see "attributes/attribute/%UUID%/general" page
     * I click tab with "Translations" text
