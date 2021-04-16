@@ -5,7 +5,7 @@
 <template>
     <Button
         data-cy="new-collection"
-        title="NEW COLLECTION"
+        :title="$t('@Collections.collection.components.CreateCollectionButton.title')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">

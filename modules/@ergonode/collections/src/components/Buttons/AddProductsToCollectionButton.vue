@@ -4,7 +4,7 @@
  */
 <template>
     <ActionButton
-        title="ADD PRODUCTS"
+        :title="$t('@Collections.collection.components.AddProductsToCollectionButton.title')"
         :theme="secondaryTheme"
         :disabled="!isAllowedToUpdate"
         :size="smallSize"

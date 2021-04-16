@@ -7,7 +7,7 @@
         data-cy="delete-collection"
         :theme="secondaryTheme"
         :size="smallSize"
-        title="REMOVE COLLECTION"
+        :title="$t('@Collections.collection.components.RemoveCollectionButton.title')"
         :disabled="!isAllowedToDelete"
         @click.native="onRemove">
         <template #prepend="{ color }">
@@ -63,8 +63,8 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this collection?',
-                applyTitle: 'YES, REMOVE',
+                title: this.$t('@Collections.collection.components.RemoveCollectionButton.confirmTitle'),
+                applyTitle: this.$t('@Collections._.deleteConfirm'),
                 action: () => this.removeCollection({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
@@ -74,7 +74,7 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product collection removed',
+                message: this.$t('@Collections.collection.components.RemoveCollectionButton.successMessage'),
             });
             this.$router.push({
                 name: ROUTE_NAME.COLLECTIONS_GRID,
@@ -83,7 +83,7 @@ export default {
         onRemoveError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Collection hasn`t been deleted',
+                message: this.$t('@Collections.collection.components.RemoveCollectionButton.errorMessage'),
             });
         },
     },

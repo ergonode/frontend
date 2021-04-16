@@ -13,6 +13,7 @@
         :filters="filterValues"
         :pagination="pagination"
         :extended-components="extendedGridComponents"
+        :collection-cell-binding="collectionCellBinding"
         :is-editable="isAllowedToUpdate"
         :is-prefetching-data="isPrefetchingData"
         :is-basic-filter="true"
@@ -220,7 +221,7 @@ export default {
         onRemoveRow() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Collection products removed',
+                message: this.$t('@Collections.collection.components.CollectionProductsGrid.successMessage'),
             });
             this.onFetchData();
         },
@@ -260,7 +261,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Collection products haven’t been fetched properly',
+                message: this.$t('@Collections.collection.components.CollectionProductsGrid.errorMessage'),
             });
         },
         onRemoveAllFilters() {

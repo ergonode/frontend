@@ -177,7 +177,7 @@ export default {
                         columns.push({
                             id: 'esa_attached',
                             type: 'BOOL',
-                            label: 'Attached',
+                            label: this.$t('@Media.media.components.AddMediaGrid.attachLabel'),
                             visible: true,
                             editable: true,
                             deletable: false,

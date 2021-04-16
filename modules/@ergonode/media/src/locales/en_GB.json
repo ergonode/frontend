@@ -20,7 +20,7 @@
         "title": "Media",
         "headTitle": "Media - Ergonode",
         "noMedia": "No media",
-        "createFirst": "There are no media in the system, you can add the first one."
+        "createFirst": "There are no media in the system, so you can add the first one."
       },
       "pages": {
         "id": {
@@ -74,6 +74,7 @@
           "errorMessage": "Media haven’t been fetched properly"
         },
         "AddMediaGrid": {
+          "attachLabel": "Attached",
           "successUpdateMessage": "Resources have been updated",
           "infoMessage": "No changes have been made",
           "successRemoveMessage": "Resource removed",

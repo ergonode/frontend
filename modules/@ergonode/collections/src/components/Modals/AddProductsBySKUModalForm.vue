@@ -4,13 +4,13 @@
  */
 <template>
     <ModalForm
-        title="Add products by SKU"
+        :title="$t('@Collections.collection.components.AddProductsBySKUModalForm.title')"
         @close="onClose">
         <template #body>
             <AddProductsBySKUForm
                 :product-skus="productSkus"
-                submit-title="ADD TO COLLECTION"
-                :proceed-title="$t('core.buttons.cancel')"
+                :submit-title="$t('@Collections.collection.components.AddProductsBySKUModalForm.formSubtitle')"
+                :proceed-title="$t('@Collections._.cancel')"
                 :is-submitting="isAdding"
                 :scope="scope"
                 :errors="scopeErrors"
@@ -27,9 +27,6 @@ import AddProductsBySKUForm from '@Collections/components/Forms/AddProductsBySKU
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    THEME,
-} from '@Core/defaults/theme';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import ModalForm from '@UI/components/Modal/ModalForm';
 import {
@@ -50,11 +47,6 @@ export default {
             productSkus: '',
             isAdding: false,
         };
-    },
-    computed: {
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
     },
     methods: {
         ...mapActions('collection', [
@@ -85,7 +77,7 @@ export default {
         onSubmitSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Products have been added to collection',
+                message: this.$t('@Collections.collection.components.AddProductsBySKUModalForm.successMessage'),
             });
 
             this.isAdding = false;

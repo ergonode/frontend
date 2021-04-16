@@ -20,7 +20,7 @@
         "title": "Zasoby",
         "headTitle": "Zasoby - Ergonode",
         "noMedia": "Brak zasobów",
-        "createFirst": "W systemie nie ma zasobów, dodajpierwszy."
+        "createFirst": "W systemie nie ma zasobów, dodaj pierwszy."
       },
       "pages": {
         "id": {
@@ -74,6 +74,7 @@
           "errorMessage": "Zasób nie został pobrany poprawnie"
         },
         "AddMediaGrid": {
+          "attachLabel": "Dodane",
           "successUpdateMessage": "Zasoby zostały zaktualizowane",
           "infoMessage": "Żadne zmiany nie zostały zrobione",
           "successRemoveMessage": "Zasób został usunięty",
