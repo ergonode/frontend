@@ -6,7 +6,7 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <UnitForm
-                :submit-title="$t('core.buttons.submit')"
+                :submit-title="$t('@Core._.buttons.submit')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="errors"

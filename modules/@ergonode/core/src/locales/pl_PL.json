@@ -1,6 +1,24 @@
 {
   "@Core": {
     "_": {
+      "buttons": {
+        "create": "Stwórz",
+        "proceed": "Stwórz & Edytuj",
+        "submit": "Zapisz zmiany",
+        "restore": "Przywróć",
+        "cancel": "Anuluj",
+        "clear": "Wyczyść"
+      },
+      "errors": {
+        "network": "Błąd sieci",
+        "internal": "Wewnętrzny błąd serwera",
+        "wrongCredentials": "Nie można uwierzytelnić użytkownika. Proszę zweryfikować dane uwierzytelniające",
+        "nonAuthorized": "Wymagane uwierzytelnienie",
+        "accessDenied": "Odmowa dostępu",
+        "mediaNotFound": "Nie znaleziono mediów",
+        "pageNotFound": "Nie znaleziono strony",
+        "unsupportedMessage": "Nieobsługiwany komunikat, prosimy o kontakt z pomocą techniczną w celu odtworzenia czynności."
+      },
       "routes": {
         "title": "Ustawienia",
         "group": "System",
@@ -18,26 +36,6 @@
           "logout": "WYLOGUJ"
         }
       }
-    }
-  },
-  "core": {
-    "buttons": {
-      "create": "Stwórz",
-      "proceed": "Stwórz & Edytuj",
-      "submit": "Zapisz zmiany",
-      "restore": "Przywróć",
-      "cancel": "Anuluj",
-      "clear": "Wyczyść"
-    },
-    "errors": {
-      "network": "Błąd sieci",
-      "internal": "Wewnętrzny błąd serwera",
-      "wrongCredentials": "Nie można uwierzytelnić użytkownika. Proszę zweryfikować dane uwierzytelniające",
-      "nonAuthorized": "Wymagane uwierzytelnienie",
-      "accessDenied": "Odmowa dostępu",
-      "mediaNotFound": "Nie znaleziono mediów",
-      "pageNotFound": "Nie znaleziono strony",
-      "unsupportedMessage": "Nieobsługiwany komunikat, prosimy o kontakt z pomocą techniczną w celu odtworzenia czynności."
     }
   }
 }
