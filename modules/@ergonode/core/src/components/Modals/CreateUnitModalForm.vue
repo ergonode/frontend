@@ -8,8 +8,8 @@
         @close="onClose">
         <template #body>
             <UnitForm
-                :submit-title="$t('core.buttons.create')"
-                :proceed-title="$t('core.buttons.proceed')"
+                :submit-title="$t('@Core._.buttons.create')"
+                :proceed-title="$t('@Core._.buttons.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :scope="scope"
