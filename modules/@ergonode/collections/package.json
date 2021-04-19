@@ -1,6 +1,6 @@
 {
   "name": "@ergonode/collections",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0",
   "author": "Team Ergonode <team@ergonode.com>",
   "description": "Ergonode collections module",
   "license": "OSL-3.0",
