@@ -56,6 +56,8 @@
           "successMessage": "Kanał został stworzony"
         },
         "ExportDetailsGrid": {
+          "placeholderTitle": "Brak szczegółów eksportu",
+          "placeholderSubtitle": "Eksport nie posiada żadnych szczegółów",
           "defaultExportFilename": "nie określone",
           "errorMessage": "Szczegóły eksportu nie zostały pobrane poprawnie"
         },
@@ -64,6 +66,8 @@
           "errorMessage": "Kanały nie zostały pobrane poprawnie"
         },
         "ChannelHistoryGrid": {
+          "placeholderTitle": "Brak historii exportów",
+          "placeholderSubtitle": "W systemie nie ma żadnego eksportu, dodaj pierwszy",
           "successMessage": "Historia kanału została usunięta",
           "errorMessage": "Kanały nie zostały pobrane poprawnie"
         },

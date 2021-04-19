@@ -9,7 +9,7 @@
                 <LanguageSelect
                     :value="selectedLanguages"
                     data-cy="translation-language-select"
-                    label="Translations"
+                    :label="$t('@Core.core.components.TranslationsTab.translationsSelectLabel')"
                     :size="smallSize"
                     :restricted-by-privileges="true"
                     :multiselect="true"

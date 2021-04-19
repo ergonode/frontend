@@ -56,6 +56,8 @@
           "successMessage": "Channel created"
         },
         "ExportDetailsGrid": {
+          "placeholderTitle": "No export details",
+          "placeholderSubtitle": "Export doesn`t have any details",
           "defaultExportFilename": "not specified",
           "errorMessage": "Export details haven’t been fetched properly"
         },
@@ -64,6 +66,8 @@
           "errorMessage": "Channels haven’t been fetched properly"
         },
         "ChannelHistoryGrid": {
+          "placeholderTitle": "No export history",
+          "placeholderSubtitle": "There is no export history, so you can create first one",
           "successMessage": "Channel history removed",
           "errorMessage": "Channels haven’t been fetched properly"
         },

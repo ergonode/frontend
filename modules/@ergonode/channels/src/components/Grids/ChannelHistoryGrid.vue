@@ -40,6 +40,15 @@
                 :key="index"
                 v-bind="bindingProps(footerItem)" />
         </template>
+        <template #noDataPlaceholder>
+            <GridNoDataPlaceholder
+                :title="$t('@Channels.channel.components.ChannelHistoryGrid.placeholderTitle')"
+                :subtitle="$t('@Import.channel.components.ChannelHistoryGrid.placeholderSubtitle')">
+                <template #action>
+                    <CreateExportButton />
+                </template>
+            </GridNoDataPlaceholder>
+        </template>
         <ExportDetailsModalGrid
             v-if="isExportDetailsModalVisible"
             :export-id="selectedRow.exportId"
@@ -49,6 +58,7 @@
 </template>
 
 <script>
+import CreateExportButton from '@Channels/components/Buttons/CreateExportButton';
 import PRIVILEGES from '@Channels/config/privileges';
 import {
     EXPORT_CREATED_EVENT_NAME,
@@ -71,11 +81,14 @@ import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
 import Grid from '@UI/components/Grid/Grid';
+import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'ChannelHistoryGrid',
     components: {
+        CreateExportButton,
         Grid,
+        GridNoDataPlaceholder,
         ExportDetailsModalGrid: () => import('@Channels/components/Modals/ExportDetailsModalGrid'),
     },
     mixins: [

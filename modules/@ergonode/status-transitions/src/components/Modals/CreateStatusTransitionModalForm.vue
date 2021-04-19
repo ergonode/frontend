@@ -4,7 +4,7 @@
  */
 <template>
     <ModalForm
-        title="Create status transition"
+        :title="$t('@Transitions.transition.components.CreateStatusTransitionModalForm.title')"
         @close="onClose">
         <template #body>
             <TransitionForm

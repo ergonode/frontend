@@ -37,12 +37,12 @@
                     },
                 })" />
             <ExpandNumericButton
-                title="BINDING ATTRIBUTES"
+                :title="$t('@Products.productExtend.components.AttachedProductVariantsGrid.bindingAttributesButtonTitle')"
                 :number="bindings.length"
                 :is-expanded="isBindingAttributesExpanded"
                 @click.native="onBindingAttributesExpand" />
             <AddProductVariantsButton
-                :title="$t('@Products._.addProducts')"
+                :title="$t('@Products._.addProducts.title')"
                 :theme="secondaryTheme">
                 <template #prepend="{ color }">
                     <IconAdd :fill-color="color" />

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form title="Information">
+    <Form :title="$t('@Media.media.components.ResourceInformationForm.title')">
         <template #body>
             <FormSection>
                 <Table :is-prefetching-data="isPrefetchingData">

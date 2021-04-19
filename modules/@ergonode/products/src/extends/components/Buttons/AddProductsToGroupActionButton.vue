@@ -4,7 +4,7 @@
  */
 <template>
     <ActionButton
-        :title="$t('@Products._.addProducts')"
+        :title="$t('@Products._.addProducts.title')"
         :theme="secondaryTheme"
         :disabled="!isAllowedToUpdate"
         :size="smallSize"
@@ -16,7 +16,7 @@
         </template>
         <Component
             v-if="selectedModal"
-            :is="modalComponent"
+            :is="selectedModalComponent"
             @close="onCloseModal"
             @submitted="onCreatedData" />
     </ActionButton>
@@ -28,9 +28,6 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Products/config/privileges';
-import {
-    ADD_PRODUCT,
-} from '@Products/defaults';
 import ActionButton from '@UI/components/ActionButton/ActionButton';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
@@ -53,42 +50,38 @@ export default {
             return THEME.SECONDARY;
         },
         addProductOptions() {
-            const options = Object.values(ADD_PRODUCT);
-
-            if (this.extendedComponents.length) {
-                this.extendedComponents.forEach((option) => {
-                    options.push(option.name);
-                });
-            }
-
-            return options;
+            return this.modalComponents.map(component => component.name);
         },
         extendedComponents() {
             return this.$getExtendSlot('@Products/components/Tabs/ProductGroupTab/addProductFrom') || [];
         },
-        modalComponent() {
-            let extendedOptions = [];
-
-            if (this.extendedComponents.length) {
-                extendedOptions = this.extendedComponents;
-            }
-            const modals = [
+        modalComponents() {
+            let modalComponents = [
                 {
                     component: () => import('@Products/extends/components/Modals/AddProductsBySKUModalForm'),
-                    name: ADD_PRODUCT.FROM_SKU,
+                    name: this.$t('@Products._.addProducts.fromSkuOption'),
                 },
                 {
                     component: () => import('@Products/extends/components/Modals/AddProductsFromSegmentModalForm'),
-                    name: ADD_PRODUCT.FROM_SEGMENT,
+                    name: this.$t('@Products._.addProducts.fromSegmentOption'),
                 },
                 {
                     component: () => import('@Products/extends/components/Modals/AddProductsToGroupModalGrid'),
-                    name: ADD_PRODUCT.FROM_LIST,
+                    name: this.$t('@Products._.addProducts.fromListOption'),
                 },
-                ...extendedOptions,
             ];
 
-            return modals.find(modal => modal.name === this.selectedModal).component;
+            if (this.extendedComponents.length) {
+                modalComponents = [
+                    ...modalComponents,
+                    ...this.extendedComponents,
+                ];
+            }
+
+            return modalComponents;
+        },
+        selectedModalComponent() {
+            return this.modalComponents.find(modal => modal.name === this.selectedModal).component;
         },
         isAllowedToUpdate() {
             return this.$hasAccess([

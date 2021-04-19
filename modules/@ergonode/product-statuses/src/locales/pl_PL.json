@@ -37,6 +37,7 @@
           "successMessage": "Status produktu został zaktualizowany"
         },
         "CreateProductStatusModalForm": {
+          "title": "Stwórz status produktu",
           "successMessage": "Status produktu został stworzony"
         },
         "ProductStatusesGrid": {
