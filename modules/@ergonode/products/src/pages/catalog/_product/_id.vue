@@ -166,7 +166,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.sku} - ${this.$t('@Products._.headTitle')}`,
+            title: `${this.sku} - ${this.$t('@Products.product._.headTitle')}`,
         };
     },
 };

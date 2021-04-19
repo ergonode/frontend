@@ -29,7 +29,7 @@
                         ...headerItem.props,
                     },
                 })" />
-            <div class="export-details-tiles">
+            <div class="import-details-tiles">
                 <Tile
                     v-for="(detail, index) in details"
                     :key="index"
@@ -37,28 +37,22 @@
                     :value="detail.value" />
             </div>
         </template>
-        <template #noDataPlaceholder>
-            <GridNoDataPlaceholder
-                :title="$t('@Channels.channel.components.ExportDetailsGrid.placeholderTitle')"
-                :subtitle="$t('@Channels.channel.components.ExportDetailsGrid.placeholderSubtitle')" />
-        </template>
         <template #appendFooter>
             <Component
                 v-for="(footerItem, index) in extendedFooter"
                 :is="footerItem.component"
                 :key="index"
                 v-bind="bindingProps(footerItem)" />
-            <DownloadExportFileButton
-                v-if="downloadLink"
-                :link="downloadLink"
-                :filename="exportFilename" />
+        </template>
+        <template #noDataPlaceholder>
+            <GridNoDataPlaceholder
+                :title="$t('@Import.import.components.ImportDetailsGrid.placeholderTitle')"
+                :subtitle="$t('@Import.import.components.ImportDetailsGrid.placeholderSubtitle')" />
         </template>
     </Grid>
 </template>
 
 <script>
-import DownloadExportFileButton from '@Channels/components/Buttons/DownloadExportFileButton';
-import PRIVILEGES from '@Channels/config/privileges';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -74,6 +68,7 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import PRIVILEGES from '@Import/config/privileges';
 import Grid from '@UI/components/Grid/Grid';
 import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 import Tile from '@UI/components/Tile/Tile';
@@ -82,16 +77,15 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'ExportDetailsGrid',
+    name: 'ImportDetailsGrid',
     components: {
         Tile,
         Grid,
         GridNoDataPlaceholder,
-        DownloadExportFileButton,
     },
     mixins: [
         extendPropsMixin({
-            extendedKey: '@Channels/components/Grids/ExportDetailsGrid/props',
+            extendedKey: '@Import/components/Grids/ImportDetailsGrid/props',
             extendedNames: [
                 'grid',
             ],
@@ -99,61 +93,60 @@ export default {
         extendedGridComponentsMixin,
     ],
     props: {
-        channelId: {
+        sourceId: {
             type: String,
             required: true,
         },
-        exportId: {
+        importId: {
             type: String,
             required: true,
         },
     },
+
     async fetch() {
         await Promise.all([
-            this.getExportDetails({
-                channelId: this.channelId,
-                exportId: this.exportId,
-                onSuccess: this.onGetExportDetailsSuccess,
+            this.getImportDetails({
+                sourceId: this.sourceId,
+                importId: this.importId,
+                onSuccess: (({
+                    details,
+                }) => {
+                    this.details = details;
+                }),
             }),
             this.onFetchData(),
         ]);
+
+        this.isPrefetchingData = false;
     },
     data() {
         return {
+            details: [],
             columns: [],
             rows: [],
-            filtered: 0,
             filterValues: {},
+            filtered: 0,
             isPrefetchingData: true,
-            details: [],
-            downloadLink: '',
             localParams: DEFAULT_GRID_FETCH_PARAMS(),
             pagination: DEFAULT_GRID_PAGINATION(),
         };
     },
     computed: {
         extendedActionHeader() {
-            return this.$getExtendSlot('@Channels/components/Grids/ExportDetailsGrid/actionHeader');
+            return this.$getExtendSlot('@Import/components/Grids/ImportDetailsGrid/actionHeader');
         },
         extendedFooter() {
-            return this.$getExtendSlot('@Channels/components/Grids/ExportDetailsGrid/footer');
-        },
-        exportFilename() {
-            if (this.details.length < 1) {
-                return this.$t('@Channels.channel.components.ExportDetailsGrid.defaultExportFilename');
-            }
-
-            return this.details[1].value;
+            return this.$getExtendSlot('@Import/components/Grids/ImportDetailsGrid/footer');
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
-                PRIVILEGES.CHANNEL.update,
+                PRIVILEGES.IMPORT.update,
             ]);
         },
     },
     methods: {
-        ...mapActions('channel', [
-            'getExportDetails',
+        ...mapActions('import', [
+            'getImportDetails',
         ]),
         onPaginationChange(pagination) {
             this.pagination = pagination;
@@ -162,31 +155,19 @@ export default {
 
             this.onFetchData();
         },
-        onGetExportDetailsSuccess({
-            details,
-            links,
-        }) {
-            this.details = details;
+        onFilterChange(filters) {
+            this.filterValues = filters;
+            this.pagination.page = 1;
+            this.localParams.filter = getParsedFilters(filters);
+            this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
-            if (links && links.attachment) {
-                this.downloadLink = links.attachment.href;
-            }
-
-            this.isPrefetchingData = false;
+            this.onFetchData();
         },
         onRemoveAllFilters() {
             this.filterValues = {};
             this.pagination.page = 1;
             this.localParams.filter = '';
             this.localParams.offset = 0;
-
-            this.onFetchData();
-        },
-        onFilterChange(filters) {
-            this.filterValues = filters;
-            this.pagination.page = 1;
-            this.localParams.filter = getParsedFilters(filters);
-            this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
             this.onFetchData();
         },
@@ -209,7 +190,7 @@ export default {
                 $route: this.$route,
                 $cookies: this.$userCookies,
                 $axios: this.$axios,
-                path: `channels/${this.channelId}/exports/${this.exportId}/errors`,
+                path: `sources/${this.sourceId}/imports/${this.importId}/errors`,
                 params,
                 onSuccess: this.onFetchGridDataSuccess,
                 onError: this.onFetchGridDataError,
@@ -218,7 +199,7 @@ export default {
         onFetchGridDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: this.$t('@Channels.channel.components.ExportDetailsGrid.errorMessage'),
+                message: this.$t('@Import.import.components.ImportDetailsGrid.errorMessage'),
             });
 
             this.isPrefetchingData = false;
@@ -247,7 +228,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .export-details-tiles {
+    .import-details-tiles {
         display: flex;
         flex-wrap: wrap;
 

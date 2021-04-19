@@ -6,7 +6,7 @@
     <button
         :class="classes"
         type="button"
-        aria-label="Add binding attributes"
+        :aria-label="$t('@Products.productExtend.components.AddBindingAttributes.title')"
         @click="onShowModal">
         <IconAdd />
         <span

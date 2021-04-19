@@ -10,20 +10,26 @@
         "editVariants": "Warianty",
         "editGroups": "Grupy"
       },
-      "title": "Katalog",
-      "headTitle": "Katalog - Ergonode",
-      "addProducts": "Dodaj produkty",
-      "addProductsFromList": "Dodaj produkty z listy",
-      "addProductsFromSegment": "Dodaj produkty z warunków segmentujących",
+      "addProducts": {
+        "title": "Dodaj produkty",
+        "fromListTitle": "Dodaj produkty z listy",
+        "fromListOption": "Wybierz z listy",
+        "fromSkuOption": "Dodaj po SKU",
+        "fromSegmentOption": "Dodaj z reguł segmentacji"
+      },
       "create": "STWÓRZ",
       "proceed": "STWÓRZ & EDYTUJ",
       "submit": "ZAPISZ ZMIANY",
       "restore": "PRZYWRÓC",
-      "cancel": "ANULUJ",
-      "noProduct": "Brak produktów",
-      "createFirst": "W systemie nie ma produktów, stwórz pierwszy."
+      "cancel": "ANULUJ"
     },
     "product": {
+      "_": {
+        "title": "Katalog",
+        "headTitle": "Katalog - Ergonode",
+        "noProduct": "Brak produktów",
+        "createFirst": "W systemie nie ma produktów, stwórz pierwszy."
+      },
       "components": {
         "UpdateProductTemplateButton": {
           "title": "Dodaj produkty po SKU",
@@ -56,6 +62,7 @@
           "errorMessage": "Nie można było przywrócić wartości produktu"
         },
         "CreateProductModalForm": {
+          "title": "Stwórz produkt",
           "successMessage": "Produkt został stworzony"
         },
         "ProductCompleteness": {
@@ -120,7 +127,14 @@
     },
     "productExtend": {
       "components": {
+        "AddProductsFromSegmentModalForm": {
+          "title": "Dodaj produkty z warunków segmentujących",
+          "submitTitle": "Dodaj do produktu",
+          "successMessage": "Produkty zostały dodane do produktu grupującego"
+        },
         "AddProductsBySKUModalForm": {
+          "title": "Dodaj produkty po SKU",
+          "submitTitle": "Dodaj do produktu grupującego",
           "successMessage": "Produkty zostały dodane do produktu grupującego"
         },
         "AddBindingAttributesModalForm": {
@@ -143,6 +157,7 @@
           "title": "Dodaj atrybuty dowiązujące"
         },
         "AttachedProductVariantsGrid": {
+          "bindingAttributesButtonTitle": "Atrybuty dowiązujące",
           "chooseVariants": "Wybierz warianty",
           "noProductVariants": "Brak wariantów produktowych",
           "addProductVariants": "Wybierz produkty, które wspólnie stworzą produkt z wariantami. Możesz wybrać między produktami, które posiadają wartości z dowiązanych atrybutów.",

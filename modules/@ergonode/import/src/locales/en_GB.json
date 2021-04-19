@@ -46,9 +46,13 @@
           "uploadLabel": "Upload file",
           "paragraphText": "It may take some time to upload, please be patient. Maybe this is a great time for coffee?"
         },
-        "ImportDetailsModalGrid": {
-          "title": "Import details",
+        "ImportDetailsGrid": {
+          "placeholderTitle": "No import details",
+          "placeholderSubtitle": "Import doesn`t have any details",
           "errorMessage": "Import details haven’t been fetched properly"
+        },
+        "ImportDetailsModalGrid": {
+          "title": "Import details"
         },
         "CreateImportProfileModalForm": {
           "title": "Create import profile",
@@ -59,6 +63,8 @@
           "errorMessage": "Import profiles haven’t been fetched properly"
         },
         "ImportProfileHistoryGrid": {
+          "placeholderTitle": "No imports history",
+          "placeholderSubtitle": "There is no import, so you can create first one",
           "successMessage": "Import profile history removed",
           "errorMessage": "Import profile history haven’t been fetched properly"
         },

@@ -40,6 +40,15 @@
                 :key="index"
                 v-bind="bindingProps(footerItem)" />
         </template>
+        <template #noDataPlaceholder>
+            <GridNoDataPlaceholder
+                :title="$t('@Import.import.components.ImportProfileHistoryGrid.placeholderTitle')"
+                :subtitle="$t('@Import.import.components.ImportProfileHistoryGrid.placeholderSubtitle')">
+                <template #action>
+                    <CreateImportButton />
+                </template>
+            </GridNoDataPlaceholder>
+        </template>
         <ImportDetailsModalGrid
             v-if="isImportDetailsModalVisible"
             :import-id="selectedRow.importId"
@@ -66,16 +75,20 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import CreateImportButton from '@Import/components/Buttons/CreateImportButton';
 import PRIVILEGES from '@Import/config/privileges';
 import {
     IMPORT_CREATED_EVENT_NAME,
 } from '@Import/defaults';
 import Grid from '@UI/components/Grid/Grid';
+import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'ImportProfileHistoryGrid',
     components: {
+        CreateImportButton,
         Grid,
+        GridNoDataPlaceholder,
         ImportDetailsModalGrid: () => import('@Import/components/Modals/ImportDetailsModalGrid'),
     },
     mixins: [
