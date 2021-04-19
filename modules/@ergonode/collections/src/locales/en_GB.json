@@ -13,6 +13,10 @@
         "editTranslation": "Translations",
         "editProducts": "Products",
         "editCollections": "Collections"
+      },
+      "addProducts": {
+        "fromSkuOption": "Add by SKU",
+        "fromSegmentOption": "Add from segment"
       }
     },
     "collection": {

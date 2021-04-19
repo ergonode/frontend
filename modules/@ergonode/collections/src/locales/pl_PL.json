@@ -13,14 +13,18 @@
         "editTranslation": "Tłumaczenia",
         "editProducts": "Produkty",
         "editCollections": "Kolekcje"
+      },
+      "addProducts": {
+        "fromSkuOption": "Dodaj po SKU",
+        "fromSegmentOption": "Dodaj z reguł segmentacji"
       }
     },
     "collection": {
       "_": {
         "title": "Kolekcje",
         "headTitle": "Kolekcje - Ergonode",
-        "noMedia": "Brak kolekcji",
-        "createFirst": "W systemie nie ma kolekcji, dodaj pierwszy."
+        "noCollection": "Brak kolekcji",
+        "createFirst": "W systemie nie ma kolekcji, dodaj pierwszą."
       },
       "pages": {
         "id": {
@@ -42,7 +46,7 @@
           "successMessage": "Kolekcja została zaktualizowana"
         },
         "CreateCollectionModalForm": {
-          "title": "Stwórz kolekcje produktową",
+          "title": "Stwórz kolekcję produktową",
           "successMessage": "Kolekcja została stworzona"
         },
         "AddProductsFromSegmentModalForm": {

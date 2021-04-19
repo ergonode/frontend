@@ -4,12 +4,12 @@
  */
 <template>
     <ModalForm
-        :title="$t('@Products._.addProductsFromSegment')"
+        :title="$t('@Products.productExtend.components.AddProductsFromSegmentModalForm.title')"
         @close="onClose">
         <template #body>
             <AddProductsFromSegmentForm
                 :segments="segments"
-                submit-title="ADD TO PRODUCT"
+                :submit-title="$t('@Products.productExtend.components.AddProductsFromSegmentModalForm.submitTitle')"
                 :proceed-title="$t('@Products._.cancel')"
                 :is-submitting="isAdding"
                 :scope="scope"
@@ -80,7 +80,7 @@ export default {
         onSubmitSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Products have been added to product group',
+                message: this.$t('@Products.productExtend.components.AddProductsFromSegmentModalForm.successMessage'),
             });
 
             this.isAdding = false;

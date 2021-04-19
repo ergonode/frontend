@@ -4,7 +4,7 @@
  */
 <template>
     <Button
-        :title="$t('@Products._.addProducts')"
+        :title="$t('@Products._.addProducts.title')"
         :disabled="!isAllowedToUpdate"
         :size="smallSize"
         @click.native="onShowModal">
