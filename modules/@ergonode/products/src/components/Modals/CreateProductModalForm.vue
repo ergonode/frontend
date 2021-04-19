@@ -4,7 +4,7 @@
  */
 <template>
     <ModalForm
-        title="Create product"
+        :title="$t('@Products.product.components.CreateProductModalForm.title')"
         @close="onClose">
         <template #body>
             <ProductForm

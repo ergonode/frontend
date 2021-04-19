@@ -35,6 +35,9 @@
         }
       },
       "components": {
+        "ResourceInformationForm": {
+          "title": "Informacja"
+        },
         "ResourceRelationsForm": {
           "title": "Relacje w produktach",
           "placeholderTitle": "Brak relacji w produktach",
@@ -43,7 +46,7 @@
         "UploadFileTab": {
           "informationLabel": "Przeciągnij i upuść pliki",
           "logicOperator": "albo",
-          "browseTitle": "Przeglądaj",
+          "browseTitle": "Przeglądaj pliki",
           "successMessage": "Plik dodany",
           "errorMessage": "Wewnętrzny błąd serwera"
         },
@@ -81,7 +84,7 @@
           "errorGetMessage": "Zasoby nie zostały pobrane poprawnie"
         },
         "ResourceTranslationForm": {
-          "altLabel": "ALternatywny tekst"
+          "altLabel": "Alternatywny tekst"
         },
         "ResourceForm": {
           "title": "Opcje",
@@ -104,6 +107,13 @@
         },
         "LinkRelationButton": {
           "errorMessage": "Nieznany typ relacji"
+        }
+      }
+    },
+    "productTemplateExtend": {
+      "components": {
+        "ProductTemplateFormUploadImage": {
+          "label": "Zdjęcie szablonu"
         }
       }
     }

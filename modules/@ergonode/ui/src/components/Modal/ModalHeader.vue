@@ -76,6 +76,7 @@ export default {
         &__title {
             color: $GRAPHITE_DARK;
             font: $FONT_SEMI_BOLD_20_24;
+            word-break: break-word;
         }
     }
 

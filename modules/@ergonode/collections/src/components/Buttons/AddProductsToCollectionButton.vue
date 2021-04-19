@@ -15,8 +15,8 @@
             <IconAdd :fill-color="color" />
         </template>
         <Component
-            v-if="selectedAppModalOption"
-            :is="modalComponent"
+            v-if="selectedModal"
+            :is="selectedModalComponent"
             @close="onCloseModal"
             @submitted="onCreatedData" />
     </ActionButton>
@@ -24,9 +24,6 @@
 
 <script>
 import PRIVILEGES from '@Collections/config/privileges';
-import {
-    ADD_PRODUCT,
-} from '@Collections/defaults';
 import {
     SIZE,
     THEME,
@@ -42,50 +39,45 @@ export default {
     },
     data() {
         return {
-            selectedAppModalOption: null,
+            selectedModal: null,
         };
     },
     computed: {
-        addProductOptions() {
-            const options = Object.values(ADD_PRODUCT);
-
-            if (this.extendedComponents.length) {
-                this.extendedComponents.forEach((option) => {
-                    options.push(option.name);
-                });
-            }
-
-            return options;
-        },
-        extendedComponents() {
-            return this.$getExtendSlot('@Collections/components/Tabs/CollectionProductsTab/addProductFrom');
-        },
-        modalComponent() {
-            let extendedOptions = [];
-
-            if (this.extendedComponents.length) {
-                extendedOptions = this.extendedComponents;
-            }
-
-            const modals = [
-                {
-                    component: () => import('@Collections/components/Modals/AddProductsBySKUModalForm'),
-                    name: ADD_PRODUCT.FROM_SKU,
-                },
-                {
-                    component: () => import('@Collections/components/Modals/AddProductsFromSegmentModalForm'),
-                    name: ADD_PRODUCT.FROM_SEGMENT,
-                },
-                ...extendedOptions,
-            ];
-
-            return modals.find(modal => modal.name === this.selectedAppModalOption).component;
-        },
         smallSize() {
             return SIZE.SMALL;
         },
         secondaryTheme() {
             return THEME.SECONDARY;
+        },
+        addProductOptions() {
+            return this.modalComponents.map(component => component.name);
+        },
+        extendedComponents() {
+            return this.$getExtendSlot('@Collections/components/Tabs/CollectionProductsTab/addProductFrom');
+        },
+        modalComponents() {
+            let modalComponents = [
+                {
+                    component: () => import('@Collections/components/Modals/AddProductsBySKUModalForm'),
+                    name: this.$t('@Collections._.addProducts.fromSkuOption'),
+                },
+                {
+                    component: () => import('@Collections/components/Modals/AddProductsFromSegmentModalForm'),
+                    name: this.$t('@Collections._.addProducts.fromSegmentOption'),
+                },
+            ];
+
+            if (this.extendedComponents.length) {
+                modalComponents = [
+                    ...modalComponents,
+                    ...this.extendedComponents,
+                ];
+            }
+
+            return modalComponents;
+        },
+        selectedModalComponent() {
+            return this.modalComponents.find(modal => modal.name === this.selectedModal).component;
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
@@ -95,13 +87,13 @@ export default {
     },
     methods: {
         onSelectAddProductOption(option) {
-            this.selectedAppModalOption = option;
+            this.selectedModal = option;
         },
         onCloseModal() {
-            this.selectedAppModalOption = null;
+            this.selectedModal = null;
         },
         onCreatedData() {
-            this.selectedAppModalOption = null;
+            this.selectedModal = null;
 
             this.$emit('added');
         },

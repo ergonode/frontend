@@ -8,12 +8,6 @@ import {
     YELLOW,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 
-export const ADD_PRODUCT = {
-    FROM_LIST: 'Select from list',
-    FROM_SKU: 'Add by SKU',
-    FROM_SEGMENT: 'Add from segment',
-};
-
 export const PRODUCT_TYPE = {
     WITH_VARIANTS: 'VARIABLE-PRODUCT',
     GROUPING: 'GROUPING-PRODUCT',

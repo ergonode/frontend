@@ -7,7 +7,7 @@
         :data-cy="dataCyGenerator('image')"
         :value="image"
         height="132px"
-        label="Template cover image"
+        :label="$t('@Media.productTemplateExtend.components.ProductTemplateFormUploadImage.label')"
         :disabled="disabled"
         @input="setImageValue" />
 </template>
