@@ -10,7 +10,7 @@
         :searchable="true"
         :multiselect="multiselect"
         :clearable="clearable"
-        :label="$t('@Collections.collection.form.typeLabel')"
+        :label="$t('@Collections.collection.components.CollectionTypesAutocomplete.label')"
         :custom-fetch-event="collectionCreatedEventName"
         :error-messages="errorMessages"
         :disabled="disabled"

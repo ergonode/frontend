@@ -17,7 +17,7 @@
       "_": {
         "title": "Profile importowe",
         "headTitle": "Profile importowe - Ergonode",
-        "noTemplate": "Brak profili importowych",
+        "noImportProfile": "Brak profili importowych",
         "createFirst": "W systemie nie ma profili importowych, stwórz pierwszy."
       },
       "pages": {
@@ -45,9 +45,13 @@
           "uploadLabel": "Dodaj plik",
           "paragraphText": "Dodawanie pliku może zająć trochę czasu, bądź cierpliwy. Może to jest dobry czas by pójść po kawę??"
         },
-        "ImportDetailsModalGrid": {
-          "title": "Szczegóły importu",
+        "ImportDetailsGrid": {
+          "placeholderTitle": "Brak szczegółów importu",
+          "placeholderSubtitle": "Import nie posiada żadnych szczegółów",
           "errorMessage": "Szczegóły importu nie zostały pobrane poprawnie"
+        },
+        "ImportDetailsModalGrid": {
+          "title": "Szczegóły importu"
         },
         "CreateImportProfileModalForm": {
           "title": "Stwórz profil importowy",
@@ -58,6 +62,8 @@
           "errorMessage": "Profile importowe nie zostały pobrane poprawnie"
         },
         "ImportProfileHistoryGrid": {
+          "placeholderTitle": "Brak historii importów",
+          "placeholderSubtitle": "W systemie nie ma żadnego importu, stwórz pierwszy",
           "successMessage": "Historia profilu importowego została usunięta",
           "errorMessage": "Historia profilu importowego nie została pobrana poprawnie"
         },

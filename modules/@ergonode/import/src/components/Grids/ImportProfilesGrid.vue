@@ -44,7 +44,7 @@
         </template>
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('@Import.import._.noImportProfiles')"
+                :title="$t('@Import.import._.noImportProfile')"
                 :subtitle="$t('@Import.import._.createFirst')">
                 <template #action>
                     <CreateImportProfileButton />

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## CHANGELOG FOR v1.0.0
+- performance [#820](https://github.com/ergonode/frontend/pull/820) Remove legacy modal injection (derpdead)
+- performance [#822](https://github.com/ergonode/frontend/pull/822) Add support for extended header and footer slots (derpdead)
+- performance [#828](https://github.com/ergonode/frontend/pull/828) Status transition translations (derpdead)
+- performance [#829](https://github.com/ergonode/frontend/pull/829) Segment translations (derpdead)
+- performance [#830](https://github.com/ergonode/frontend/pull/830) Product interface translations (derpdead)
+- performance [#831](https://github.com/ergonode/frontend/pull/831) Product template interface translations (derpdead)
+- performance [#832](https://github.com/ergonode/frontend/pull/832) Product statuses interface translations (derpdead)
+- performance [#833](https://github.com/ergonode/frontend/pull/833) Media interface translation (derpdead)
+- performance [#835](https://github.com/ergonode/frontend/pull/835) Import interface translations (derpdead)
+- performance [#836](https://github.com/ergonode/frontend/pull/836) Channel interface translation (derpdead)
+- performance [#837](https://github.com/ergonode/frontend/pull/837) Collection interace translation (derpdead)
+- performance [#838](https://github.com/ergonode/frontend/pull/838) Condition interface translation (derpdead)
+- performance [#839](https://github.com/ergonode/frontend/pull/839) Core interface translation (derpdead)
+- bugfix [#823](https://github.com/ergonode/frontend/pull/823) Add parsing for multiselect attribute (derpdead)
+- bugfix [#842](https://github.com/ergonode/frontend/pull/842) Horizontal tabbars resposivity (derpdead)
+- bugfix [#844](https://github.com/ergonode/frontend/pull/844) Interface translation fixes (derpdead)
+
 ## CHANGELOG FOR v1.0.0-rc.2
 - bugfix [#763](https://github.com/ergonode/frontend/pull/763) RTE better handling mouse events (derpdead)
 - bugfix [#764](https://github.com/ergonode/frontend/pull/764) Batch actions stabilisation (derpdead)

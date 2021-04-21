@@ -4,7 +4,7 @@
  */
 <template>
     <ModalGrid
-        :title="$t('@Products._.addProductsFromList')"
+        :title="$t('@Products._.addProducts.fromListTitle')"
         @close="onClose">
         <template #body>
             <ProductVariantsToAttachGrid

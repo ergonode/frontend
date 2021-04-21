@@ -13,14 +13,14 @@
                     <TextField
                         :data-cy="dataCyGenerator(nameKeyField)"
                         :value="translations.name[languageCode]"
-                        :label="$t('@Collections.collection.CollectionTranslationForm.collectionNameLabel')"
+                        :label="$t('@Collections.collection.components.CollectionTranslationForm.collectionNameLabel')"
                         :disabled="!isAllowedToUpdate || isReadOnly"
                         :error-messages="translationErrors[nameKeyField]"
                         @input="(value) => setTranslationPropertyValue(value, nameKeyField)" />
                     <TextArea
                         :data-cy="dataCyGenerator(descriptionKeyField)"
                         :value="translations.description[languageCode]"
-                        :label="$t('@Collections.collection.CollectionTranslationForm.descriptionLabel')"
+                        :label="$t('@Collections.collection.components.CollectionTranslationForm.descriptionLabel')"
                         resize="vertical"
                         height="150px"
                         :error-messages="translationErrors[descriptionKeyField]"

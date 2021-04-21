@@ -35,6 +35,9 @@
         }
       },
       "components": {
+        "ResourceInformationForm": {
+          "title": "Information"
+        },
         "ResourceRelationsForm": {
           "title": "Relations in products",
           "placeholderTitle": "No relations in products",
@@ -104,6 +107,13 @@
         },
         "LinkRelationButton": {
           "errorMessage": "Unknown relation type"
+        }
+      }
+    },
+    "productTemplateExtend": {
+      "components": {
+        "ProductTemplateFormUploadImage": {
+          "label": "Template cover image"
         }
       }
     }

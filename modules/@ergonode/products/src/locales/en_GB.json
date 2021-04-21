@@ -10,20 +10,26 @@
         "editVariants": "Variants",
         "editGroups": "Groups"
       },
-      "title": "Catalog",
-      "headTitle": "Catalog - Ergonode",
-      "addProducts": "Add products",
-      "addProductsFromList": "Add products from list",
-      "addProductsFromSegment": "Add products from segments",
+      "addProducts": {
+        "title": "Add products",
+        "fromListTitle": "Add products from list",
+        "fromListOption": "Select from list",
+        "fromSkuOption": "Add by SKU",
+        "fromSegmentOption": "Add from segment"
+      },
       "create": "CREATE",
       "proceed": "CREATE & EDIT",
       "submit": "SAVE CHANGES",
       "restore": "RESTORE",
-      "cancel": "CANCEL",
-      "noProduct": "No products",
-      "createFirst": "There are no product in the system, so you can add the first one."
+      "cancel": "CANCEL"
     },
     "product": {
+      "_": {
+        "title": "Catalog",
+        "headTitle": "Catalog - Ergonode",
+        "noProduct": "No products",
+        "createFirst": "There are no product in the system, so you can add the first one."
+      },
       "components": {
         "UpdateProductTemplateButton": {
           "successMessage": "Product has been updated"
@@ -54,6 +60,7 @@
           "errorMessage": "Couldn`t restore product value"
         },
         "CreateProductModalForm": {
+          "title": "Create product",
           "successMessage": "Product created"
         },
         "ProductCompleteness": {
@@ -114,9 +121,14 @@
     },
     "productExtend": {
       "components": {
+        "AddProductsFromSegmentModalForm": {
+          "title": "Add products from segments",
+          "submitTitle": "Add to product",
+          "successMessage": "Products have been added to product group"
+        },
         "AddProductsBySKUModalForm": {
           "title": "Add products by SKU",
-          "submitTitle": "ADD TO PRODUCT GROUP",
+          "submitTitle": "Add to product group",
           "successMessage": "Products have been added to product group"
         },
         "AddBindingAttributesModalForm": {
@@ -139,6 +151,7 @@
           "title": "Add binding attributes"
         },
         "AttachedProductVariantsGrid": {
+          "bindingAttributesButtonTitle": "Binding attributes",
           "chooseVariants": "Choose variants",
           "noProductVariants": "No product variants",
           "addProductVariants": "Choose products which together will create a product with variants. You can choose between products which contain selected binding attributes.",
