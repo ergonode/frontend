@@ -19,7 +19,6 @@ export const Icons = {
     IconTextArea: () => import('@Attributes/components/Icons/IconTextArea').then(m => m.default || m),
     IconText: () => import('@Attributes/components/Icons/IconText').then(m => m.default || m),
     IconDate: () => import('@Attributes/components/Icons/IconDate').then(m => m.default || m),
-    IconImage: () => import('@Attributes/components/Icons/IconImage').then(m => m.default || m),
     IconMultiSelect: () => import('@Attributes/components/Icons/IconMultiSelect').then(m => m.default || m),
     IconSelect: () => import('@Attributes/components/Icons/IconSelect').then(m => m.default || m),
     IconNumeric: () => import('@Attributes/components/Icons/IconNumeric').then(m => m.default || m),

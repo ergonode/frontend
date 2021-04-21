@@ -5,6 +5,7 @@
 
 import {
     Components,
+    Icons,
     Store,
 } from '@Media/config/imports';
 import {
@@ -14,6 +15,24 @@ import {
     getImage,
     setImage,
 } from '@Media/extends/productTemplate/methods';
+
+const AttributeIcons = {
+    [ATTRIBUTE_TYPES.IMAGE]: [
+        {
+            component: Icons.IconImage,
+        },
+    ],
+    [ATTRIBUTE_TYPES.GALLERY]: [
+        {
+            component: Icons.IconImage,
+        },
+    ],
+    [ATTRIBUTE_TYPES.FILE]: [
+        {
+            component: Icons.IconFile,
+        },
+    ],
+};
 
 export default {
     extendStore: {
@@ -53,6 +72,8 @@ export default {
                 },
             ],
         },
+        '@Attributes/extends/components/SideBars/AttributeSideBarElement/icons': AttributeIcons,
+        '@Templates/components/TemplateDesigner/ProductDesigner/AttributeElementContent/icons': AttributeIcons,
     },
     extendMethods: {
         '@Templates/store/productTemplate/action/createTemplate/__before': ({
