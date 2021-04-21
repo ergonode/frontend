@@ -12,11 +12,7 @@
             :href="`multimedia/${item.image}/download/default`"
             :value="item.image"
             :height="collectionImageHeight" />
-        <img
-            v-else
-            class="product-collection-item__placeholder"
-            :src="placeholderImage"
-            alt="template icon">
+        <DefaultImage v-else />
         <span
             class="product-collection-item__title"
             :title="item.description"
@@ -28,11 +24,13 @@
 import {
     COLLECTION_IMAGE_HEIGHT,
 } from '@Core/defaults/grid';
+import DefaultImage from '@UI/components/DefaultImage/DefaultImage';
 import LazyImage from '@UI/components/LazyImage/LazyImage';
 
 export default {
     name: 'ProductCollectionItem',
     components: {
+        DefaultImage,
         LazyImage,
     },
     props: {
@@ -42,9 +40,6 @@ export default {
         },
     },
     computed: {
-        placeholderImage() {
-            return require('@UI/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
-        },
         collectionImageHeight() {
             return COLLECTION_IMAGE_HEIGHT;
         },
@@ -72,14 +67,6 @@ export default {
             border-top: $BORDER_1_GREY;
             text-overflow: ellipsis;
             overflow: hidden;
-        }
-
-        &__placeholder {
-            justify-self: center;
-            align-self: center;
-            width: 100%;
-            height: 157px;
-            object-fit: none;
         }
     }
 </style>
