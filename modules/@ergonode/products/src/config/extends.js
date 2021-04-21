@@ -59,6 +59,7 @@ export default {
         },
         '@UI/components/Grid/Layout/Table/Cells/Data': {
             LABEL: Components.GridLabelDataCell,
+            PRODUCT_RELATION: Components.GridProductRelationDataCell,
         },
         '@UI/components/Grid/Layout/Table/Cells/Edit': {
             LABEL: Components.GridLabelEditCell,
