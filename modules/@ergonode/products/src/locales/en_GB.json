@@ -207,6 +207,14 @@
           "successMessage": "Products attachment have been updated"
         }
       }
+    },
+    "uiExtend": {
+      "components": {
+        "GridProductRelationDataCell": {
+          "singularLabel": "{info} relation",
+          "pluralLabel": "{info} relations"
+        }
+      }
     }
   }
 }

@@ -16,7 +16,7 @@ export const Tabs = {
 };
 
 export const Components = {
-    GridMediaAttachCollectionCell: () => import('@Media/components/Grid/Layout/Collection/Cells/GridMediaAttachCollectionCell').then(m => m.default || m),
+    GridMediaAttachCollectionCell: () => import('@Media/extends/ui/components/Grid/Layout/Collection/Cells/GridMediaAttachCollectionCell').then(m => m.default || m),
     ProductTemplateFormUploadImage: () => import('@Media/extends/productTemplate/components/Forms/ProductTemplateFormUploadImage').then(m => m.default || m),
     ProductTemplateFormFileField: () => import('@Media/extends/product/components/Forms/Field/ProductTemplateFormFileField').then(m => m.default || m),
     ProductTemplateFormGalleryField: () => import('@Media/extends/product/components/Forms/Field/ProductTemplateFormGalleryField').then(m => m.default || m),

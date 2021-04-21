@@ -210,6 +210,14 @@
           "successMessage": "Załącznik do produktów został zaktualizowany"
         }
       }
+    },
+    "uiExtend": {
+      "components": {
+        "GridProductRelationDataCell": {
+          "singularLabel": "{info} relacja",
+          "pluralLabel": "{info} relacje"
+        }
+      }
     }
   }
 }
