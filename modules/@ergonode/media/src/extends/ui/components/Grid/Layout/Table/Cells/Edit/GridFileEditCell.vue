@@ -10,6 +10,7 @@
                     v-model="localValue"
                     height="181px"
                     :disabled="disabled"
+                    :size="smallSize"
                     :multiple="true" />
             </GridImageEditContentCell>
         </GridSelectEditContentCell>
@@ -17,6 +18,9 @@
 </template>
 
 <script>
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import {
     arraysAreEqual,
 } from '@Core/models/arrayWrapper';
@@ -56,6 +60,9 @@ export default {
                 left: `${x}px`,
                 width: '304px',
             };
+        },
+        smallSize() {
+            return SIZE.SMALL;
         },
     },
     beforeDestroy() {
