@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <header class="title-bar">
+    <header
+        class="title-bar"
+        data-cy="title-bar">
         <TitleBarHeader :title="title">
             <template #prepend>
                 <slot name="prependHeader" />

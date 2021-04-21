@@ -14,7 +14,7 @@ export const checkGridRow = ({
         .as('grid');
     cy
         .get('@grid')
-        .contains(searchValue)
+        .contains(new RegExp(`^${searchValue}$`, 'g'))
         .parent()
         .as('row');
     cy
@@ -28,13 +28,17 @@ export const checkGridRow = ({
                     cy
                         .get('@grid')
                         .find(`.coordinates-${columnIndex}-${rowNr}`)
-                        .should('be.visible')
+                        .should('exist')
                         .as(`checkingCell${columnIndex}`);
                     if (parsedColumns[columnIndex] === 'true' || parsedColumns[columnIndex] === 'false') {
                         cy
                             .get(`@checkingCell${columnIndex}`)
                             .find('input')
                             .should('have.value', parsedColumns[columnIndex]);
+                    } else if (parsedColumns[columnIndex] === '') {
+                        cy
+                            .get(`@checkingCell${columnIndex}`)
+                            .should('have.value', '');
                     } else {
                         cy
                             .get(`@checkingCell${columnIndex}`)
@@ -53,7 +57,7 @@ export const noGridRow = ({
         .as('grid');
     cy
         .get('@grid')
-        .find('.grid-table-cell')
+        .find('.grid-table-cell > span')
         .should('not.have.value', searchValue);
 };
 
@@ -67,7 +71,7 @@ export const actionOnGrid = ({
     cy
         .get('@grid')
         .find('.grid-table-cell')
-        .contains(searchValue)
+        .contains(new RegExp(`^${searchValue}$`, 'g'))
         .parent()
         .as('row');
     cy
