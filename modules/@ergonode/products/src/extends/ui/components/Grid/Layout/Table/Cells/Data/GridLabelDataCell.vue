@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import GridLabelPresentationCell from '@Products/extends/ui/componnets/Grid/Layout/Table/Cells/Presentation/GridLabelPresentationCell';
+import GridLabelPresentationCell from '@Products/extends/ui/components/Grid/Layout/Table/Cells/Presentation/GridLabelPresentationCell';
 import GridSuffixPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
 import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 import gridDataCellMixin from '@UI/mixins/grid/gridDataCellMixin';

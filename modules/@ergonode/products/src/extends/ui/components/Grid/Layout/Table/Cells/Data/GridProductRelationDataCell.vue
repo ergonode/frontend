@@ -41,7 +41,7 @@ export default {
     ],
     computed: {
         cellData() {
-            if (this.isDraft && !arraysAreEqual(this.data.value, this.draft)) {
+            if (this.isDraft && !arraysAreEqual(this.data.value || [], this.draft)) {
                 return {
                     value: this.draft,
                     isDraft: true,
@@ -54,13 +54,13 @@ export default {
             };
         },
         presentationValue() {
+            if (!this.cellData.value || !this.cellData.value.length) {
+                return '';
+            }
+
             const {
                 length,
             } = this.cellData.value;
-
-            if (!length) {
-                return '';
-            }
 
             if (length === 1) {
                 return this.$t('@Products.uiExtend.components.GridProductRelationDataCell.singularLabel', {

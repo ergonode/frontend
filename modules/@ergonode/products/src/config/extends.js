@@ -73,6 +73,7 @@ export default {
         },
         '@UI/components/Grid/Layout/Table/Cells/Edit': {
             LABEL: Components.GridLabelEditCell,
+            PRODUCT_RELATION: Components.GridProductRelationEditCell,
         },
         '@Attributes/extends/components/SideBars/AttributeSideBarElement/icons': AttributeIcons,
         '@Templates/components/TemplateDesigner/ProductDesigner/AttributeElementContent/icons': AttributeIcons,
