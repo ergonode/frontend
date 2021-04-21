@@ -7,6 +7,7 @@
         <div
             v-if="isMounted"
             ref="modalOverlay"
+            data-cy="modal-overlay"
             class="modal-overlay"
             @mousedown="onMouseDown"
             @mouseup="onMouseUp">

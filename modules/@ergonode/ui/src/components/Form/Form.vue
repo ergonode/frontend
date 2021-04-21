@@ -18,7 +18,9 @@
                         v-text="title" />
                 </slot>
                 <template v-if="hasError">
-                    <section class="form__errors">
+                    <section
+                        class="form__errors"
+                        data-cy="form-errors">
                         <IconError :fill-color="redColor" />
                         <div class="errors-list">
                             <h3 class="errors-list__header">
