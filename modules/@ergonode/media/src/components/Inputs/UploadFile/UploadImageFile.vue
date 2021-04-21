@@ -9,30 +9,27 @@
         :disabled="disabled">
         <template #activator>
             <InputController>
-                <div
-                    v-if="isValue"
-                    class="upload-image-file">
-                    <div class="fixed-container">
-                        <div
-                            class="upload-image-file__image"
-                            v-if="!multiple">
+                <div :class="classes">
+                    <template v-if="isValue">
+                        <div class="fixed-container">
                             <LazyImage
+                                v-if="!multiple"
                                 :href="`multimedia/${value}/download/default`"
                                 :value="value"
                                 :object-fit="objectFit" />
+                            <ImageCarousel
+                                v-else
+                                :image-ids="value"
+                                href="multimedia/[[ID]]/download/default"
+                                :current-index="currentIndex"
+                                @current="onCurrentIndexChange" />
                         </div>
-                        <ImageCarousel
-                            v-else
-                            :image-ids="value"
-                            href="multimedia/[[ID]]/download/default"
-                            :current-index="currentIndex"
-                            @current="onCurrentIndexChange" />
                         <div
                             v-if="!disabled"
-                            class="upload-image-file__image-settings">
-                            <ActionIconButton
+                            class="upload-image-file__settings">
+                            <ActionFab
                                 :size="smallSize"
-                                :theme="secondaryPlainTheme"
+                                :theme="secondaryTheme"
                                 :options="settingsOptions"
                                 @input="onSelectSetting">
                                 <template #icon="{ color }">
@@ -45,14 +42,11 @@
                                             :title="option.text" />
                                     </ListElementDescription>
                                 </template>
-                            </ActionIconButton>
+                            </ActionFab>
                         </div>
-                    </div>
-                </div>
-                <div
-                    class="centering-container"
-                    v-else-if="!disabled">
+                    </template>
                     <Button
+                        v-else-if="!disabled"
                         :title="title"
                         :size="smallSize"
                         :theme="secondaryTheme"
@@ -64,9 +58,11 @@
                 </div>
                 <InputLabel
                     v-if="label"
-                    :style="{ top: 0 }"
+                    :style="{
+                        top: '10px',
+                        left: '12px',
+                    }"
                     :required="required"
-                    :size="size"
                     :floating="true"
                     :disabled="disabled"
                     :label="label" />
@@ -106,11 +102,14 @@ export default {
         LazyImage: () => import('@UI/components/LazyImage/LazyImage'),
         ImageCarousel: () => import('@UI/components/ImageCarousel/ImageCarousel'),
         ModalMediaTabBar: () => import('@Media/components/Modal/ModalMediaTabBar'),
-        ActionIconButton: () => import('@UI/components/ActionIconButton/ActionIconButton'),
+        ActionFab: () => import('@UI/components/ActionFab/ActionFab'),
         ListElementDescription: () => import('@UI/components/List/ListElementDescription'),
         ListElementTitle: () => import('@UI/components/List/ListElementTitle'),
     },
     props: {
+        /**
+         * The value of the component
+         */
         value: {
             type: [
                 String,
@@ -118,6 +117,9 @@ export default {
             ],
             default: '',
         },
+        /**
+         * The size of the component
+         */
         size: {
             type: String,
             default: SIZE.REGULAR,
@@ -126,14 +128,23 @@ export default {
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
         },
+        /**
+         * Determines image objectFit property
+         */
         objectFit: {
             type: String,
             default: 'none',
         },
+        /**
+         * The height of the component
+         */
         height: {
             type: String,
             default: 'unset',
         },
+        /**
+         * The label is a text caption or description for the component
+         */
         label: {
             type: String,
             default: '',
@@ -145,10 +156,16 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if the given field is disabled
+         */
         disabled: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if the given uploader might have more than one value
+         */
         multiple: {
             type: Boolean,
             default: false,
@@ -161,11 +178,14 @@ export default {
         };
     },
     computed: {
+        classes() {
+            return [
+                'upload-image-file',
+                `upload-image-file--${this.size}`,
+            ];
+        },
         secondaryTheme() {
             return THEME.SECONDARY;
-        },
-        secondaryPlainTheme() {
-            return THEME.SECONDARY_PLAIN;
         },
         smallSize() {
             return SIZE.SMALL;
@@ -308,40 +328,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .centering-container {
+    .upload-image-file {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         width: 100%;
+        height: 100%;
+
+        &__settings {
+            position: absolute;
+            background-color: $WHITE;
+            border-radius: 50%;
+        }
+
+        &--small &__settings {
+            top: 16px;
+            right: 16px;
+        }
+
+        &--regular &__settings {
+            top: 20px;
+            right: 20px;
+        }
     }
 
     .fixed-container {
         position: relative;
         flex: 1 1 auto;
-        height: 0;
-        margin: 4px 0;
-        overflow: hidden;
-    }
-
-    .upload-image-file {
-        display: flex;
-        flex-direction: column;
         width: 100%;
-        height: 100%;
-
-        &__image-settings {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background-color: $WHITE;
-            border-radius: 50%;
-        }
-
-        &__image {
-            position: relative;
-            display: flex;
-            flex: 1;
-            height: 100%;
-        }
+        height: 0;
+        overflow: hidden;
     }
 </style>

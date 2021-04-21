@@ -3,60 +3,58 @@
  * See LICENSE for license details.
  */
 <template>
-    <IntersectionObserver @intersect="onIntersect">
-        <Grid
-            :columns="columnsWithAttachColumn"
-            :data-count="filtered"
-            :drafts="drafts"
-            :pagination="pagination"
-            :filters="filterValues"
-            :rows="rowsWithAttachValues"
-            :collection-cell-binding="collectionCellBinding"
-            :extended-components="extendedGridComponents"
-            :is-editable="isAllowedToUpdate"
-            :is-prefetching-data="isPrefetchingData"
-            :is-basic-filter="true"
-            :is-header-visible="true"
-            :is-collection-layout="true"
-            @edit-row="onEditRow"
-            @preview-row="onEditRow"
-            @cell-value="onCellValueChange"
-            @delete-row="onRemoveRow"
-            @pagination="onPaginationChange"
-            @sort-column="onColumnSortChange"
-            @remove-all-filters="onRemoveAllFilters"
-            @filter="onFilterChange"
-            v-bind="extendedProps['grid']">
-            <template #actionsHeader="actionsHeaderProps">
-                <Component
-                    v-for="(headerItem, index) in extendedActionHeader"
-                    :is="headerItem.component"
-                    :key="index"
-                    v-bind="bindingProps({
-                        props: {
-                            ...actionsHeaderProps,
-                            ...headerItem.props,
-                        },
-                    })" />
-            </template>
-            <template #noDataPlaceholder>
-                <GridNoDataPlaceholder
-                    :title="$t('@Media.media._.noMedia')"
-                    :subtitle="$t('@Media.media._.createFirst')" />
-            </template>
-            <template #appendFooter>
-                <Component
-                    v-for="(footerItem, index) in extendedFooter"
-                    :is="footerItem.component"
-                    :key="index"
-                    v-bind="bindingProps(footerItem)" />
-                <Button
-                    :title="$t('@Media._.submit')"
-                    :size="smallSize"
-                    @click.native="onSaveMedia" />
-            </template>
-        </Grid>
-    </IntersectionObserver>
+    <Grid
+        :columns="columnsWithAttachColumn"
+        :data-count="filtered"
+        :drafts="drafts"
+        :pagination="pagination"
+        :filters="filterValues"
+        :rows="rowsWithAttachValues"
+        :collection-cell-binding="collectionCellBinding"
+        :extended-components="extendedGridComponents"
+        :is-editable="isAllowedToUpdate"
+        :is-prefetching-data="isPrefetchingData"
+        :is-basic-filter="true"
+        :is-header-visible="true"
+        :is-collection-layout="true"
+        @edit-row="onEditRow"
+        @preview-row="onEditRow"
+        @cell-value="onCellValueChange"
+        @delete-row="onRemoveRow"
+        @pagination="onPaginationChange"
+        @sort-column="onColumnSortChange"
+        @remove-all-filters="onRemoveAllFilters"
+        @filter="onFilterChange"
+        v-bind="extendedProps['grid']">
+        <template #actionsHeader="actionsHeaderProps">
+            <Component
+                v-for="(headerItem, index) in extendedActionHeader"
+                :is="headerItem.component"
+                :key="index"
+                v-bind="bindingProps({
+                    props: {
+                        ...actionsHeaderProps,
+                        ...headerItem.props,
+                    },
+                })" />
+        </template>
+        <template #noDataPlaceholder>
+            <GridNoDataPlaceholder
+                :title="$t('@Products.product._.noProduct')"
+                :subtitle="$t('@Products.product._.createFirst')" />
+        </template>
+        <template #appendFooter>
+            <Component
+                v-for="(footerItem, index) in extendedFooter"
+                :is="footerItem.component"
+                :key="index"
+                v-bind="bindingProps(footerItem)" />
+            <Button
+                :title="$t('@Products._.submit')"
+                :size="smallSize"
+                @click.native="onSaveRelations" />
+        </template>
+    </Grid>
 </template>
 
 <script>
@@ -67,9 +65,6 @@ import {
     DEFAULT_GRID_FETCH_PARAMS,
     DEFAULT_GRID_PAGINATION,
 } from '@Core/defaults/grid';
-import {
-    FILTER_OPERATOR,
-} from '@Core/defaults/operators';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -82,13 +77,10 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
-import PRIVILEGES from '@Media/config/privileges';
+import PRIVILEGES from '@Products/config/privileges';
 import {
     ROUTE_NAME,
-} from '@Media/config/routes';
-import {
-    MEDIA_TYPE,
-} from '@Media/defaults';
+} from '@Products/config/routes';
 import Button from '@UI/components/Button/Button';
 import Grid from '@UI/components/Grid/Grid';
 import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
@@ -98,7 +90,7 @@ import {
 } from 'debounce';
 
 export default {
-    name: 'AddMediaGrid',
+    name: 'AddProductRelationsGrid',
     components: {
         Grid,
         GridNoDataPlaceholder,
@@ -107,7 +99,7 @@ export default {
     },
     mixins: [
         extendPropsMixin({
-            extendedKey: '@Media/components/Grids/AddMediaGrid/props',
+            extendedKey: '@Products/components/Grids/AddProductRelationsGrid/props',
             extendedNames: [
                 'grid',
             ],
@@ -116,14 +108,6 @@ export default {
         extendedGridComponentsMixin,
     ],
     props: {
-        multiple: {
-            type: Boolean,
-            default: false,
-        },
-        type: {
-            type: String,
-            default: MEDIA_TYPE.IMAGE,
-        },
         value: {
             type: [
                 String,
@@ -131,6 +115,11 @@ export default {
             ],
             default: '',
         },
+    },
+    async fetch() {
+        await this.onFetchData();
+
+        this.isPrefetchingData = false;
     },
     data() {
         return {
@@ -146,19 +135,19 @@ export default {
     },
     computed: {
         extendedActionHeader() {
-            return this.$getExtendSlot('@Media/components/Grids/AddMediaGrid/actionHeader');
+            return this.$getExtendSlot('@Products/components/Grids/AddProductRelationsGrid/actionHeader');
         },
         extendedFooter() {
-            return this.$getExtendSlot('@Media/components/Grids/AddMediaGrid/footer');
+            return this.$getExtendSlot('@Products/components/Grids/AddProductRelationsGrid/footer');
         },
         smallSize() {
             return SIZE.SMALL;
         },
         collectionCellBinding() {
             return {
-                imageColumn: 'image',
-                descriptionColumn: 'name',
-                type: 'MEDIA_ATTACH',
+                imageColumn: 'esa_default_image',
+                descriptionColumn: 'esa_default_label',
+                type: 'PRODUCT_ATTACH',
                 additionalColumns: [
                     'esa_attached',
                 ],
@@ -172,20 +161,18 @@ export default {
             const columns = [];
 
             for (let i = 0; i < this.columns.length; i += 1) {
-                if (this.columns[i].id !== 'type') {
-                    if (i === 3) {
-                        columns.push({
-                            id: 'esa_attached',
-                            type: 'BOOL',
-                            label: this.$t('@Media.media.components.AddMediaGrid.attachLabel'),
-                            visible: true,
-                            editable: true,
-                            deletable: false,
-                            parameters: [],
-                        });
-                    } else {
-                        columns.push(this.columns[i]);
-                    }
+                columns.push(this.columns[i]);
+
+                if (this.columns[i].id === 'sku') {
+                    columns.push({
+                        id: 'esa_attached',
+                        type: 'BOOL',
+                        label: this.$t('@Products.product.components.AddProductRelationsGrid.attachLabel'),
+                        visible: true,
+                        editable: true,
+                        deletable: false,
+                        parameters: [],
+                    });
                 }
             }
 
@@ -209,7 +196,7 @@ export default {
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
-                PRIVILEGES.MULTIMEDIA.update,
+                PRIVILEGES.PRODUCT.update,
             ]);
         },
     },
@@ -220,15 +207,6 @@ export default {
         delete this.onDebounceSearch;
     },
     methods: {
-        async onIntersect(isIntersecting) {
-            if (isIntersecting) {
-                this.isPrefetchingData = true;
-
-                await this.onFetchData();
-
-                this.isPrefetchingData = false;
-            }
-        },
         onPaginationChange(pagination) {
             this.pagination = pagination;
             this.localParams.limit = pagination.itemsPerPage;
@@ -269,10 +247,8 @@ export default {
                 offset,
                 limit,
                 extended: true,
-                filter: [
-                    filter,
-                    `type=${FILTER_OPERATOR.EQUAL}${this.type}`,
-                ].join(';'),
+                filter,
+                columns: 'index,sku,_links,esa_default_image,esa_default_label',
             };
 
             if (Object.keys(sortOrder).length) {
@@ -288,7 +264,7 @@ export default {
                 $route: this.$route,
                 $cookies: this.$userCookies,
                 $axios: this.$axios,
-                path: 'multimedia',
+                path: 'products',
                 params,
                 onSuccess: this.onFetchDataSuccess,
                 onError: this.onFetchDataError,
@@ -306,38 +282,32 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: this.$t('@Media.media.components.AddMediaGrid.errorGetMessage'),
+                message: this.$t('@Products.product.components.AddProductRelationsGrid.errorGetMessage'),
             });
         },
         onRemoveRow() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('@Media.media.components.AddMediaGrid.successRemoveMessage'),
+                message: this.$t('@Products.product.components.AddProductRelationsGrid.successRemoveMessage'),
             });
             this.onFetchData();
         },
         onCellValueChange(cellValues) {
-            const drafts = this.multiple
-                ? {
-                    ...this.drafts,
-                }
-                : {};
+            const drafts = {
+                ...this.drafts,
+            };
 
             cellValues.forEach(({
                 rowId,
                 columnId,
                 value,
             }) => {
-                if (!this.multiple && this.value) {
-                    drafts[`${this.value}/${columnId}`] = false;
-                }
-
                 drafts[`${rowId}/${columnId}`] = value;
             });
 
             this.setDrafts(drafts);
         },
-        onSaveMedia() {
+        onSaveRelations() {
             const value = [];
             const toRemove = [];
 
@@ -364,25 +334,21 @@ export default {
             this.setDrafts();
 
             if (value.length || toRemove.length) {
-                if (this.multiple) {
-                    const mappedValue = [
-                        ...this.value.filter(id => !toRemove.some(removeId => removeId === id)),
-                        ...value,
-                    ];
+                const mappedValue = [
+                    ...this.value.filter(id => !toRemove.some(removeId => removeId === id)),
+                    ...value,
+                ];
 
-                    this.$emit('input', mappedValue);
-                } else if (value.length) {
-                    this.$emit('input', value.join(''));
-                }
+                this.$emit('input', mappedValue);
 
                 this.$addAlert({
                     type: ALERT_TYPE.SUCCESS,
-                    message: this.$t('@Media.media.components.AddMediaGrid.successUpdateMessage'),
+                    message: this.$t('@Products.product.components.AddProductRelationsGrid.successUpdateMessage'),
                 });
             } else {
                 this.$addAlert({
                     type: ALERT_TYPE.INFO,
-                    message: this.$t('@Media.media.components.AddMediaGrid.infoMessage'),
+                    message: this.$t('@Products.product.components.AddProductRelationsGrid.infoMessage'),
                 });
             }
         },
@@ -393,7 +359,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: ROUTE_NAME.MEDIA_RESOURCE_EDIT_GENERAL,
+                name: ROUTE_NAME.PRODUCT_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },
