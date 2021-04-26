@@ -11,6 +11,8 @@
             :value="fieldData"
             :label="label"
             :size="imageSize"
+            :attribute-id="properties.attribute_id"
+            :product-id="id"
             :required="properties.required"
             :disabled="disabled"
             height="100%"
@@ -24,6 +26,9 @@ import {
 } from '@Core/defaults/theme';
 import ProductTemplateFormField from '@Media/extends/product/components/Forms/Field/ProductTemplateFormField';
 import UploadProductRelations from '@Products/components/Inputs/UploadProductRelations';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ProductTemplateFormProductRelationField',
@@ -70,6 +75,9 @@ export default {
         },
     },
     computed: {
+        ...mapState('product', [
+            'id',
+        ]),
         fieldData() {
             if (typeof this.changedValues[this.fieldKey] !== 'undefined') {
                 return this.changedValues[this.fieldKey];

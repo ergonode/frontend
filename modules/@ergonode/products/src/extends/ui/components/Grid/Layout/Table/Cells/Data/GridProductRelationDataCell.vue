@@ -73,5 +73,23 @@ export default {
             });
         },
     },
+    methods: {
+        onEditCell() {
+            this.$emit('edit-cell', {
+                type: this.column.type,
+                props: {
+                    bounds: this.$el.getBoundingClientRect(),
+                    value: this.cellData.value,
+                    row: this.rowIndex,
+                    column: this.columnIndex,
+                    disabled: this.isLocked,
+                    rowId: this.rowId,
+                    columnId: this.column.id,
+                    attributeId: this.column.element_id,
+                    errorMessages: this.errorMessages,
+                },
+            });
+        },
+    },
 };
 </script>

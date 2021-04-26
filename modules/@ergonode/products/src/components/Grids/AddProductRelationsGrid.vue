@@ -9,6 +9,7 @@
         :drafts="drafts"
         :pagination="pagination"
         :filters="filterValues"
+        :sort-order="localParams.sortOrder"
         :rows="rowsWithAttachValues"
         :collection-cell-binding="collectionCellBinding"
         :extended-components="extendedGridComponents"
@@ -115,6 +116,14 @@ export default {
             ],
             default: '',
         },
+        attributeId: {
+            type: String,
+            default: '',
+        },
+        productId: {
+            type: String,
+            default: '',
+        },
     },
     async fetch() {
         await this.onFetchData();
@@ -149,13 +158,32 @@ export default {
                 descriptionColumn: 'esa_default_label',
                 type: 'PRODUCT_ATTACH',
                 additionalColumns: [
-                    'esa_attached',
+                    'attached',
                 ],
             };
         },
         columnsWithAttachColumn() {
-            if (!this.columns.length) {
-                return [];
+            if (this.isDirectRelation) {
+                return this.columns.map((column) => {
+                    if (column.id === 'attached') {
+                        return {
+                            ...column,
+                            filter: {
+                                type: 'SELECT',
+                                options: {
+                                    false: {
+                                        label: this.$t('@Products.product.components.AddProductRelationsGrid.notAttachedLabel'),
+                                    },
+                                    true: {
+                                        label: this.$t('@Products.product.components.AddProductRelationsGrid.attachedLabel'),
+                                    },
+                                },
+                            },
+                        };
+                    }
+
+                    return column;
+                });
             }
 
             const columns = [];
@@ -165,7 +193,7 @@ export default {
 
                 if (this.columns[i].id === 'sku') {
                     columns.push({
-                        id: 'esa_attached',
+                        id: 'attached',
                         type: 'BOOL',
                         label: this.$t('@Products.product.components.AddProductRelationsGrid.attachLabel'),
                         visible: true,
@@ -184,7 +212,7 @@ export default {
             ];
 
             for (let i = 0; i < this.rows.length; i += 1) {
-                rows[i].esa_attached = {
+                rows[i].attached = {
                     value:
                         Array.isArray(this.value)
                             ? this.value.some(id => id === this.rows[i].id.value)
@@ -193,6 +221,9 @@ export default {
             }
 
             return rows;
+        },
+        isDirectRelation() {
+            return this.attributeId !== '' && this.productId !== '';
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
@@ -237,34 +268,20 @@ export default {
         },
         async onFetchData() {
             const {
-                offset,
-                limit,
-                filter,
-                sortOrder,
+                sortOrder = {}, ...rest
             } = this.localParams;
 
             const params = {
-                offset,
-                limit,
-                extended: true,
-                filter,
+                ...rest,
+                ...sortOrder,
                 columns: 'index,sku,_links,esa_default_image,esa_default_label',
             };
-
-            if (Object.keys(sortOrder).length) {
-                const {
-                    index: colSortID, orderState,
-                } = sortOrder;
-
-                params.field = colSortID;
-                params.order = orderState;
-            }
 
             await getGridData({
                 $route: this.$route,
                 $cookies: this.$userCookies,
                 $axios: this.$axios,
-                path: 'products',
+                path: this.isDirectRelation ? `products/${this.productId}/related/${this.attributeId}` : 'products',
                 params,
                 onSuccess: this.onFetchDataSuccess,
                 onError: this.onFetchDataError,
@@ -327,7 +344,7 @@ export default {
                 }) => id.value === rowId);
 
                 if (row) {
-                    row.esa_attached.value = this.drafts[key];
+                    row.attached.value = this.drafts[key];
                 }
             });
 

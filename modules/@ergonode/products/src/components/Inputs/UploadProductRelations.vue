@@ -62,6 +62,8 @@
         <AddProductRelationsModalGrid
             v-if="isModalVisible"
             :value="value"
+            :attribute-id="attributeId"
+            :product-id="productId"
             @input="onValueChange"
             @close="onCloseModal" />
     </InputSolidStyle>
@@ -94,6 +96,14 @@ export default {
         ListElementTitle: () => import('@UI/components/List/ListElementTitle'),
     },
     props: {
+        attributeId: {
+            type: String,
+            default: '',
+        },
+        productId: {
+            type: String,
+            default: '',
+        },
         /**
          * The value of the component
          */

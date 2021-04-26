@@ -39,7 +39,9 @@
           "successUpdateMessage": "Product relations have been updated",
           "infoMessage": "No changes have been made",
           "successRemoveMessage": "Product relation removed",
-          "errorGetMessage": "Product relations haven’t been fetched properly"
+          "errorGetMessage": "Product relations haven’t been fetched properly",
+          "attachedLabel": "Attached",
+          "notAttachedLabel": "Not attached"
         },
         "UploadProductRelations": {
           "title": "Add relations",
