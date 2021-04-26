@@ -10,7 +10,9 @@
                     v-model="localValue"
                     height="181px"
                     :size="smallSize"
-                    :disabled="disabled" />
+                    :disabled="disabled"
+                    :attribute-id="attributeId"
+                    :product-id="rowId" />
             </GridImageEditContentCell>
         </GridSelectEditContentCell>
     </GridEditNavigationCell>
@@ -45,6 +47,10 @@ export default {
         value: {
             type: Array,
             default: () => [],
+        },
+        attributeId: {
+            type: String,
+            required: true,
         },
     },
     data() {

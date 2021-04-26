@@ -39,7 +39,9 @@
           "successUpdateMessage": "Relacje produktowe zostały zaktualizowane",
           "infoMessage": "Żadne zmiany nie zostały zrobione",
           "successRemoveMessage": "Relacja z produktem został usunięta",
-          "errorGetMessage": "Relacje produktowe nie zostały pobrane poprawnie"
+          "errorGetMessage": "Relacje produktowe nie zostały pobrane poprawnie",
+          "attachedLabel": "Przypięte",
+          "notAttachedLabel": "Odpięte"
         },
         "UploadProductRelations": {
           "title": "Dodaj relacje",

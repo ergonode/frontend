@@ -144,7 +144,8 @@ export default {
                 const productId = this.value[this.fetchingDataIndex];
 
                 if (typeof this.products[productId] === 'undefined'
-                    && !this.fetchingProductIndexes[this.fetchingDataIndex]) {
+                    && !this.fetchingProductIndexes[this.fetchingDataIndex]
+                    && productId) {
                     this.fetchingProductIndexes[this.fetchingDataIndex] = true;
 
                     const fetchingIndex = this.fetchingDataIndex;
