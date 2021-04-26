@@ -17,6 +17,7 @@
         <template #body>
             <FormSection>
                 <TextField
+                    :data-cy="dataCyGenerator(nameFieldKey)"
                     :value="name"
                     required
                     :label="$t('@Roles.role.components.UserRoleForm.nameLabel')"
@@ -25,6 +26,7 @@
                     :disabled="!isAllowedToUpdate"
                     @input="setNameValue" />
                 <TextArea
+                    :data-cy="dataCyGenerator(descriptionFieldKey)"
                     :value="description"
                     :label="$t('@Roles.role.components.UserRoleForm.descLabel')"
                     resize="none"
@@ -137,6 +139,9 @@ export default {
                 fieldKey: this.descriptionFieldKey,
                 value,
             });
+        },
+        dataCyGenerator(key) {
+            return `role-${key}`;
         },
     },
 };
