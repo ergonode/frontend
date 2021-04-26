@@ -72,6 +72,9 @@
           "label": "Szablon produktowy"
         }
       }
+    },
+    "productTemplateExtend": {
+      "widgetsVerticalTabTitle": "Widżety"
     }
   }
 }
