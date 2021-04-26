@@ -7,7 +7,7 @@
       "cancel": "Anuluj",
       "clear": "Wyczyść",
       "deleteConfirm": "Tak, usuń",
-      "notAssigned": "Nie przypisane",
+      "notAssigned": "Nieprzypisane",
       "routes": {
         "title": "Kategorie",
         "group": "Struktura produktu",
@@ -30,7 +30,7 @@
         },
         "RemoveCategoryButton": {
           "removeButton": "Usuń kategorie",
-          "deleteTitle": "Czy jesteś pewien, że chcesz usunąć tą kategorię?",
+          "deleteTitle": "Czy jesteś pewien, że chcesz usunąć t kategorię?",
           "deleteSuccess": "Kategoria usunięta",
           "deleteRequest": "Kategoria nie została usunięta"
         },

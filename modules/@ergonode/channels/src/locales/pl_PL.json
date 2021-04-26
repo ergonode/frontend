@@ -100,7 +100,7 @@
         },
         "CreateExportButton": {
           "title": "Eksportuj teraz",
-          "confirmTitle": "Czy jesteś pewiem, że chcesz rozpocząć eksport?",
+          "confirmTitle": "Czy jesteś pewien, że chcesz rozpocząć eksport?",
           "successMessage": "Eksport został zakończony"
         },
         "CreateChannelButton": {
