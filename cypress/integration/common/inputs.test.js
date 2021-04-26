@@ -11,6 +11,9 @@ import {
 import {
     MultiSteps,
 } from '../../models';
+import {
+    editOnGrid,
+} from '../../models/navigation';
 
 MultiSteps([
     When,
@@ -18,6 +21,17 @@ MultiSteps([
 ], 'I fill the {string} input with the {string} term', (id, term) => {
     cy.get(`[data-cy=${id}]`)
         .find('input')
+        .clear()
+        .type(term)
+        .should('have.value', term);
+});
+
+MultiSteps([
+    When,
+    Then,
+], 'I fill the {string} textarea with the {string} term', (id, term) => {
+    cy.get(`[data-cy=${id}]`)
+        .find('textarea')
         .clear()
         .type(term)
         .should('have.value', term);
@@ -218,4 +232,16 @@ MultiSteps([
         .click();
     cy.get(`[data-cy=${id}-drop-down]`)
         .should('be.not.visible');
+});
+
+MultiSteps([
+    And,
+    Then,
+    When,
+], 'On {string} I edit {string} fields for row with {string} value', (gridId, columns, searchValue) => {
+    editOnGrid({
+        gridId,
+        searchValue,
+        columns,
+    });
 });

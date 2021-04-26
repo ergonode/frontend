@@ -4,6 +4,7 @@
  */
 <template>
     <Button
+        data-cy="new-role"
         :title="$t('@Roles.role.components.CreateRoleButton.addButton')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
