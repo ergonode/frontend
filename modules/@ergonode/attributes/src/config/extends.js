@@ -157,7 +157,7 @@ export default {
             $this,
         }) => [
             {
-                title: $this.$t('@Attributes.attributeExtend.components.AttributesVerticalTab.title'),
+                title: $this.app.i18n.t('@Attributes.attributeExtend.components.AttributesVerticalTab.title'),
                 component: Components.AttributesVerticalTab,
                 icon: Icons.IconAttributes,
                 props: {
@@ -170,12 +170,12 @@ export default {
             $this,
         }) => [
             {
-                title: $this.$t('@Attributes.attributeExtend.components.AttributesVerticalTab.title'),
+                title: $this.app.i18n.t('@Attributes.attributeExtend.components.AttributesVerticalTab.title'),
                 component: Components.AttributesVerticalTab,
                 icon: Icons.IconAttributes,
             },
             {
-                title: $this.$t('@Attributes.attributeExtend.components.SystemAttributesVerticalTab.title'),
+                title: $this.app.i18n.t('@Attributes.attributeExtend.components.SystemAttributesVerticalTab.title'),
                 component: Components.SystemAttributesVerticalTab,
                 icon: Icons.IconSettings,
             },
