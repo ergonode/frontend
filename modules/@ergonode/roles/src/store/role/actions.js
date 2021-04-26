@@ -86,7 +86,7 @@ export default {
         },
         {
             scope,
-            drafts,
+            drafts = {},
             onSuccess = () => {},
             onError = () => {},
         },
