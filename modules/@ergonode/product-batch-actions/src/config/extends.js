@@ -26,7 +26,7 @@ export default {
             $this,
         }) => [
             {
-                title: $this.$t('@ProductBatchActions.productBatchAction._.title'),
+                title: $this.app.i18n.t('@ProductBatchActions.productBatchAction._.title'),
                 component: Components.AttributesVerticalTab,
                 icon: Icons.IconAttributes,
                 props,
