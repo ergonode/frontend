@@ -14,7 +14,7 @@
           "getRequest": "Komentarze nie zostały pobrane prawidłowo"
         },
         "CommentPresentation": {
-          "deleteTitle": "Czy jesteś pewny że chcesz usunąć ten komentarz?",
+          "deleteTitle": "Czy jesteś pewien, że chcesz usunąć ten komentarz?",
           "deleteSuccess": "Komentarz usunięty",
           "createdInfo": "Stworzony {date}",
           "editedInfo": "Edytowany {date}"

@@ -77,7 +77,7 @@
         },
         "AddProductsBySKUForm": {
           "skuLabel": "Po SKU",
-          "skuHint": "Oddziel wiele SKU uzywając nowej lini albo przecinka np. “SKU1, SKU2, SKU3”"
+          "skuHint": "Oddziel wiele SKU używając nowej lini, albo przecinka np. “SKU1, SKU2, SKU3”"
         },
         "UpdateCollectionTranslationButton": {
           "successMessage": "Tłumaczenia kolekcji zostały zaktualizowane"

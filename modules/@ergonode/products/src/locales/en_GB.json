@@ -92,8 +92,12 @@
           "errorAlert": "Product hasn't been deleted"
         },
         "RestoreProductAttributesModalForm": {
+          "title": "Restore parent value",
           "formValidation": "Please mark attributes to restore",
           "successAlert": "Attributes {info} have been restored"
+        },
+        "ProductTemplateTab": {
+          "editLanguageSelectLabel": "Edit language"
         }
       },
       "pages": {

@@ -9,7 +9,7 @@
                 <div class="view-template-header__section">
                     <LanguageTreeSelect
                         :style="{ flex: '0 0 192px' }"
-                        label="Edit language"
+                        :label="$t('@Products.product.components.ProductTemplateTab.editLanguageSelectLabel')"
                         :value="languageCode"
                         @input="onSelectLanguage" />
                     <ReadOnlyBadge v-if="isReadOnlyLanguage" />

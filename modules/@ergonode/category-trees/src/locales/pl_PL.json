@@ -6,7 +6,7 @@
       "proceed": "Stwórz & Edytuj",
       "cancel": "Anuluj",
       "deleteConfirm": "Tak, usuń",
-      "notAssigned": "Nie przypisane",
+      "notAssigned": "Nieprzypisane",
       "routes": {
         "title": "Drzewa kategorii",
         "group": "Struktura produktu",
@@ -30,7 +30,7 @@
         },
         "RemoveCategoryTreeButton": {
           "removeButton": "Usuń drzewo kategorii",
-          "deleteTitle": "Czy jesteś pewny że chcesz usunąć to drzewo?",
+          "deleteTitle": "Czy jesteś pewien, że chcesz usunąć to drzewo?",
           "deleteSuccess": "Drzewo kategorii usunięte",
           "deleteRequest": "Drzewo kategorii nie zostało usunięte"
         },

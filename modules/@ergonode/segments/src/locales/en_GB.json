@@ -34,6 +34,9 @@
         }
       },
       "components": {
+        "ConditionDesignerTab": {
+          "conditionsTabTitle": "Conditions"
+        },
         "CreateSegmentModalForm": {
           "title": "Create segment",
           "successMessage": "Segment created"

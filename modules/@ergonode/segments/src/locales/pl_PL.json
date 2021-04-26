@@ -34,6 +34,9 @@
         }
       },
       "components": {
+        "ConditionDesignerTab": {
+          "conditionsTabTitle": "Warunki"
+        },
         "CreateSegmentModalForm": {
           "title": "Stwórz segment",
           "successMessage": "Segment został stworzony"
@@ -70,7 +73,7 @@
           "successMessage": "Tłumaczenia segmentu zostały zaktualizowane"
         },
         "SegmentsAutocomplete": {
-          "label": "Z reguł segmnentacji"
+          "label": "Z reguł segmentacji"
         },
         "SegmentGeneralTab": {
           "successMessage": "Segment został zaktualizowany"
