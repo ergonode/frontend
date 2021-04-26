@@ -6,7 +6,7 @@
       "proceed": "Stwórz & Edytuj",
       "cancel": "Anuluj",
       "deleteConfirm": "Tak, usuń",
-      "notAssigned": "Nie przypisane",
+      "notAssigned": "Nieprzypisane",
       "routes": {
         "title": "Użytkownicy",
         "group": "System",
@@ -40,7 +40,7 @@
         "UserForm": {
           "title": "Opcje",
           "emailLabel": "Email",
-          "nameLabel": "Imie",
+          "nameLabel": "Imię",
           "lastNameLabel": "Nazwisko",
           "passwordLabel": "Hasło",
           "passwordRepeatLabel": "Powtórz hasło",
