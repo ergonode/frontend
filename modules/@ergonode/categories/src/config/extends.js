@@ -33,7 +33,7 @@ export default {
             $this,
         }) => [
             {
-                title: $this.$t('@Categories.category._.title'),
+                title: $this.app.i18n.t('@Categories.category._.title'),
                 component: Components.CategoriesVerticalTab,
                 icon: Icons.IconTree,
                 props: {
