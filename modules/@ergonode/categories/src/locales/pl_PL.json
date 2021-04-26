@@ -30,7 +30,7 @@
         },
         "RemoveCategoryButton": {
           "removeButton": "Usuń kategorie",
-          "deleteTitle": "Czy jesteś pewien, że chcesz usunąć t kategorię?",
+          "deleteTitle": "Czy jesteś pewien, że chcesz usunąć tą kategorię?",
           "deleteSuccess": "Kategoria usunięta",
           "deleteRequest": "Kategoria nie została usunięta"
         },
