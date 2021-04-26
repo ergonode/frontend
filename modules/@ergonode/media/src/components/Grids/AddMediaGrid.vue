@@ -11,6 +11,7 @@
             :pagination="pagination"
             :filters="filterValues"
             :rows="rowsWithAttachValues"
+            :sort-order="localParams.sortOrder"
             :collection-cell-binding="collectionCellBinding"
             :extended-components="extendedGridComponents"
             :is-editable="isAllowedToUpdate"
@@ -259,30 +260,19 @@ export default {
         },
         async onFetchData() {
             const {
-                offset,
-                limit,
+                sortOrder = {},
                 filter,
-                sortOrder,
+                ...rest
             } = this.localParams;
 
             const params = {
-                offset,
-                limit,
-                extended: true,
+                ...rest,
+                ...sortOrder,
                 filter: [
                     filter,
                     `type=${FILTER_OPERATOR.EQUAL}${this.type}`,
                 ].join(';'),
             };
-
-            if (Object.keys(sortOrder).length) {
-                const {
-                    index: colSortID, orderState,
-                } = sortOrder;
-
-                params.field = colSortID;
-                params.order = orderState;
-            }
 
             await getGridData({
                 $route: this.$route,
