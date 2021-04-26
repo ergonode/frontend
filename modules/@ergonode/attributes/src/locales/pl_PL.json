@@ -6,7 +6,7 @@
       "proceed": "Stwórz & Edytuj",
       "cancel": "Anuluj",
       "deleteConfirm": "Tak, usuń",
-      "notAssigned": "Nie przypisane",
+      "notAssigned": "Nieprzypisane",
       "routes": {
         "title": "Atrybuty",
         "group": "Struktura produktu",
@@ -40,8 +40,8 @@
         },
         "RemoveAttributeButton": {
           "removeButton": "Usuń atrybut",
-          "deleteTitle": "Czy jesteś pewny że chcesz usunąć ten atrybut?",
-          "deleteSuccess": "Atrybut usuniety",
+          "deleteTitle": "Czy jesteś pewien, że chcesz usunąć ten atrybut?",
+          "deleteSuccess": "Atrybut usunity",
           "deleteRequest": "Atrybut nie został usunięty"
         },
         "UpdateAttributeTranslationButton": {
@@ -49,7 +49,7 @@
         },
         "AttributesGrid": {
           "getRequest": "Atrybuty nie zostały pobrane prawidłowo",
-          "deleteSuccess": "Atrybut usuniety"
+          "deleteSuccess": "Atrybut usunięty"
         },
         "CreateAttributeModalForm": {
           "create": "Stwórz atrybut",
@@ -92,7 +92,7 @@
           "placeholderLabel": "Placeholder"
         },
         "AttributesVerticalTab": {
-          "title": "Atrubuty produktu"
+          "title": "Atrybuty produktu"
         },
         "SystemAttributesVerticalTab": {
           "title": "Atrybuty systemowe"
@@ -111,7 +111,7 @@
       "components": {
         "ProductTemplateFormPresentation": {
           "title": "Prezentacja produktu",
-          "defaultLabel": "Domyślna atrybut etykiety",
+          "defaultLabel": "Domyślny atrybut etykiety",
           "defaultImage": "Domyślny atrybut obrazu",
           "noLabelTitle": "Brak atrybutu takstowego",
           "noLabelSubtitle": "W systemie nie ma żadnych atrybutów tekstowych, więc można utworzyć pierwszy.",

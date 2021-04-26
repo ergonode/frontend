@@ -98,8 +98,12 @@
           "errorAlert": "Produkt nie został usunięty"
         },
         "RestoreProductAttributesModalForm": {
+          "title": "Przywróć wartość rodzica",
           "formValidation": "Proszę oznacz atrybuty do przywrócenia",
           "successAlert": "Atrybuty {info} zostały przywrócone"
+        },
+        "ProductTemplateTab": {
+          "editLanguageSelectLabel": "Edytuj język"
         }
       },
       "pages": {
@@ -165,7 +169,7 @@
         },
         "ProductVariantsToAttachGrid": {
           "noProducts": "Brak produktów do dowiązania",
-          "changeBindingAttributes": "Brak produktów prostych, które pasują do kreteriów dowiązujących jako wariant, rozwiaż ponowne wybranie atrybudów, po których będą dowiązane produktu, albo uzupełnij brakujące wartości w produktach.",
+          "changeBindingAttributes": "Brak produktów prostych, które pasują do kryteriów dowiązujących jako wariant, rozważ ponowne wybranie atrybudów, po których będą dowiązane produkty, albo uzupełnij brakujące wartości w produktach.",
           "getRequest": "Warianty produktowe nie zostały pobrane",
           "attachedLabel": "Przypięte",
           "notAttachedLabel": "Odpięte"

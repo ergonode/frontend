@@ -24,7 +24,7 @@
         },
         "RemoveStatusTransitionButton": {
           "title": "Usuń tranzycję",
-          "confirmTitle": "Czy jesteś pewny że chcesz usunąć tą tranzycję?",
+          "confirmTitle": "Czy jesteś pewien, że chcesz usunąć tą tranzycję?",
           "successMessage": "Tranzycja usunięta",
           "errorMessage": "Tranzycja nie została usunięta"
         },

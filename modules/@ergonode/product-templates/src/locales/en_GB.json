@@ -72,6 +72,9 @@
           "label": "Product template"
         }
       }
+    },
+    "productTemplateExtend": {
+      "widgetsVerticalTabTitle": "Widgets"
     }
   }
 }

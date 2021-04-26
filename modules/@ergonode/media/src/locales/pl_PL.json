@@ -41,7 +41,7 @@
         "ResourceRelationsForm": {
           "title": "Relacje w produktach",
           "placeholderTitle": "Brak relacji w produktach",
-          "placeholderSubtitle": "Tutaj możesz zobaczyć informację dotyczące relacji w produktach."
+          "placeholderSubtitle": "Tutaj możesz zobaczyć informacje dotyczące relacji w produktach."
         },
         "UploadFileTab": {
           "informationLabel": "Przeciągnij i upuść pliki",
