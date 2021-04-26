@@ -3,6 +3,30 @@
  * See LICENSE for license details.
  */
 
+export const openPage = ({
+    page, requestName,
+}) => {
+    cy.visit(`/${page}`);
+    cy
+        .url()
+        .should('include', `/${page}`);
+    cy
+        .wait(`@${requestName}_GET`)
+        .its('response.statusCode')
+        .should('eq', 200);
+};
+
+export const sendRequest = ({
+    requestName, reqType, status,
+}) => {
+    cy
+        .wait(`@${requestName}_${reqType}`)
+        .then((xhr) => {
+            expect(xhr.request.method).to.equal(reqType);
+            expect(xhr.response.statusCode).to.equal(status);
+        });
+};
+
 export const checkGridRow = ({
     gridId, searchValue, columns,
 }) => {
@@ -15,7 +39,7 @@ export const checkGridRow = ({
     cy
         .get('@grid')
         .contains(new RegExp(`^${searchValue}$`, 'g'))
-        .parent()
+        .parents('.grid-table-cell')
         .as('row');
     cy
         .get('@row')
@@ -30,16 +54,25 @@ export const checkGridRow = ({
                         .find(`.coordinates-${columnIndex}-${rowNr}`)
                         .should('exist')
                         .as(`checkingCell${columnIndex}`);
-                    if (parsedColumns[columnIndex] === 'true' || parsedColumns[columnIndex] === 'false') {
+
+                    switch (parsedColumns[columnIndex]) {
+                    case true:
+                        cy
+                            .get(`@checkingCell${columnIndex}`)
+                            .find('input');
+                        break;
+                    case false:
                         cy
                             .get(`@checkingCell${columnIndex}`)
                             .find('input')
-                            .should('have.value', parsedColumns[columnIndex]);
-                    } else if (parsedColumns[columnIndex] === '') {
+                            .should('be.not.checked');
+                        break;
+                    case '':
                         cy
                             .get(`@checkingCell${columnIndex}`)
                             .should('have.value', '');
-                    } else {
+                        break;
+                    default:
                         cy
                             .get(`@checkingCell${columnIndex}`)
                             .contains(parsedColumns[columnIndex]);
@@ -72,7 +105,7 @@ export const actionOnGrid = ({
         .get('@grid')
         .find('.grid-table-cell')
         .contains(new RegExp(`^${searchValue}$`, 'g'))
-        .parent()
+        .parents('.grid-table-cell')
         .as('row');
     cy
         .get('@row')
@@ -86,6 +119,58 @@ export const actionOnGrid = ({
                 .get('@action')
                 .click({
                     force: true,
+                });
+        });
+};
+export const editOnGrid = ({
+    gridId, searchValue, columns,
+}) => {
+    const parsedColumns = JSON.parse(columns.replace(/'/g, '"'));
+
+    cy
+        .get(`[data-cy=${gridId}]`)
+        .should('be.visible')
+        .as('grid');
+    cy
+        .get('@grid')
+        .find('.grid-table-cell')
+        .contains(new RegExp(`^${searchValue}$`, 'g'))
+        .parents('.grid-table-cell')
+        .as('row');
+    cy
+        .get('@row')
+        .then((c) => {
+            const rowNr = c.attr('row');
+
+            cy
+                .wrap(Object.keys(parsedColumns))
+                .each((columnIndex) => {
+                    cy
+                        .get('@grid')
+                        .find(`.coordinates-${columnIndex}-${rowNr}`)
+                        .should('exist')
+                        .as(`checkingCell${columnIndex}`);
+                    switch (parsedColumns[columnIndex]) {
+                    case true:
+                        cy
+                            .get(`@checkingCell${columnIndex}`)
+                            .find('.checkbox')
+                            .click();
+                        break;
+                    case false:
+                        cy
+                            .get(`@checkingCell${columnIndex}`)
+                            .find('.checkbox')
+                            .click();
+                        break;
+                    default:
+                        cy
+                            .get(`@checkingCell${columnIndex}`)
+                            .find('input')
+                            .clear()
+                            .type(parsedColumns[columnIndex])
+                            .should('have.value', parsedColumns[columnIndex]);
+                    }
                 });
         });
 };

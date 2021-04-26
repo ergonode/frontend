@@ -4,6 +4,7 @@
  */
 <template>
     <Button
+        data-cy="delete-role"
         :theme="secondaryTheme"
         :size="smallSize"
         :title="$t('@Roles.role.components.RemoveRoleButton.removeButton')"
