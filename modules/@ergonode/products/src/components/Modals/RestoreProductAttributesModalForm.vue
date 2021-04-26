@@ -4,7 +4,7 @@
  */
 <template>
     <ModalForm
-        title="Restore parent value"
+        :title="$t('@Products.product.components.RestoreProductAttributesModalForm.title')"
         @close="onClose">
         <template #body>
             <RestoreForm

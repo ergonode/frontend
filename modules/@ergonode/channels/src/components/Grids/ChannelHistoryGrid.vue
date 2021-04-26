@@ -43,7 +43,7 @@
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
                 :title="$t('@Channels.channel.components.ChannelHistoryGrid.placeholderTitle')"
-                :subtitle="$t('@Import.channel.components.ChannelHistoryGrid.placeholderSubtitle')">
+                :subtitle="$t('@Channels.channel.components.ChannelHistoryGrid.placeholderSubtitle')">
                 <template #action>
                     <CreateExportButton />
                 </template>

@@ -36,10 +36,11 @@ export default {
             template: ROUTE_NAME.PRODUCT_TEMPLATE_EDIT_GENERAL,
         }),
         '@Templates/components/Tabs/TemplateDesignerTab/verticalTabs': ({
+            $this,
             props,
         }) => [
             {
-                title: 'Widgets',
+                title: $this.app.i18n.t('@Templates.productTemplateExtend.methods.widgetsVerticalTabTitle'),
                 component: Components.WidgetsVerticalTab,
                 icon: Icons.IconWidget,
                 props,

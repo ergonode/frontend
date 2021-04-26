@@ -10,10 +10,11 @@ import {
 export default {
     extendMethods: {
         '@Transitions/components/Tabs/ConditionDesignerTab/verticalTabs': ({
+            $this,
             props,
         }) => [
             {
-                title: 'Conditions',
+                title: $this.app.i18n.t('@Conditions.transitionExtend.methods.verticalTabTitle'),
                 component: Components.ConditionsVerticalTab,
                 icon: Icons.IconCategory,
                 props: {
