@@ -29,7 +29,7 @@
           "addButton": "Nowa kategoria"
         },
         "RemoveCategoryButton": {
-          "removeButton": "Usuń kategorie",
+          "removeButton": "Usuń kategorię",
           "deleteTitle": "Czy jesteś pewien, że chcesz usunąć tą kategorię?",
           "deleteSuccess": "Kategoria usunięta",
           "deleteRequest": "Kategoria nie została usunięta"

@@ -4,7 +4,7 @@
  */
 <template>
     <ModalForm
-        title="New unit"
+        :title="$t('@Core.core.components.CreateUnitModalForm.title')"
         @close="onClose">
         <template #body>
             <UnitForm
@@ -106,7 +106,7 @@ export default {
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Unit created',
+                message: this.$t('@Core.core.components.CreateUnitModalForm.successMessage'),
             });
 
             this.isSubmitting = false;
@@ -121,7 +121,7 @@ export default {
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Unit created',
+                message: this.$t('@Core.core.components.CreateUnitModalForm.successMessage'),
             });
 
             this.isProceeding = false;

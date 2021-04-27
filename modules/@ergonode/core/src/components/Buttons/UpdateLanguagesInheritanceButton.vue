@@ -113,7 +113,7 @@ export default {
             } else {
                 this.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Language inheritance tree cannot be saved without any language',
+                    message: this.$t('@Core.core.components.UpdateLanguagesInheritanceButton.warningMessage'),
                 });
             }
         },
@@ -134,7 +134,7 @@ export default {
         onGetUserSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Languages tree has been updated',
+                message: this.$t('@Core.core.components.UpdateLanguagesInheritanceButton.successMessage'),
             });
             this.isSubmitting = false;
 
