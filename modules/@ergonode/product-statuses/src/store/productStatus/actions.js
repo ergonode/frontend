@@ -127,16 +127,16 @@ export default {
     }) {
         try {
             const {
-                code,
+                id,
             } = state;
 
             const {
-                default_status: defaultStatus,
+                default_id: defaultStatus,
             } = await getDefault({
                 $axios: this.app.$axios,
             });
 
-            if (defaultStatus === code) {
+            if (defaultStatus === id) {
                 commit('__SET_STATE', {
                     key: 'isDefaultStatus',
                     value: true,
