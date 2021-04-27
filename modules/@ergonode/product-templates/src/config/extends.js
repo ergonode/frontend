@@ -40,7 +40,7 @@ export default {
             props,
         }) => [
             {
-                title: $this.app.i18n.t('@Templates.productTemplateExtend.methods.widgetsVerticalTabTitle'),
+                title: $this.$t('@Templates.productTemplateExtend.methods.widgetsVerticalTabTitle'),
                 component: Components.WidgetsVerticalTab,
                 icon: Icons.IconWidget,
                 props,

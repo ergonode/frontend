@@ -19,7 +19,7 @@ export default {
             $this,
         }) => [
             {
-                title: $this.app.i18n.t('@Categories.category._.title'),
+                title: $this.$t('@Categories.category._.title'),
                 component: Components.CategoryTreesVerticalTab,
                 icon: Icons.IconTree,
             },
