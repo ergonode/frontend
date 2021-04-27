@@ -40,9 +40,10 @@ export default {
     extendMethods: {
         '@Core/components/Tabs/LanguagesSettingsTab/verticalTabs': ({
             props,
+            $this,
         }) => [
             {
-                title: 'System languages',
+                title: $this.$t('@Core.core._.systemLanguagesTitle'),
                 component: Components.LanguagesVerticalTab,
                 icon: Icons.IconTranslate,
                 props,

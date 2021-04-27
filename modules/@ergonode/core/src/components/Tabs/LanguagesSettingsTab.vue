@@ -6,16 +6,7 @@
     <GridViewTemplate>
         <template #sidebar>
             <VerticalTabBar :items="verticalTabs">
-                <FadeTransition>
-                    <DropZone
-                        v-show="isDropZoneVisible"
-                        :hover-background-color="graphiteLightColor"
-                        title="REMOVE LANGUAGE">
-                        <template #icon="{ color }">
-                            <IconRemoveFilter :fill-color="color" />
-                        </template>
-                    </DropZone>
-                </FadeTransition>
+                <RemoveLanguageDropZone />
             </VerticalTabBar>
         </template>
         <template #grid>
@@ -33,33 +24,22 @@
 
 <script>
 import UpdateLanguagesInheritanceButton from '@Core/components/Buttons/UpdateLanguagesInheritanceButton';
+import RemoveLanguageDropZone from '@Core/components/DropZones/RemoveElementDropZone';
 import LanguageInheritanceTreeDesigner from '@Core/components/LanguageInheritanceTreeDesigner/LanguageInheritanceTreeDesigner';
 import PRIVILEGES from '@Core/config/privileges';
-import {
-    DRAGGED_ELEMENT,
-} from '@Core/defaults/grid';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
-import {
-    GRAPHITE_LIGHT,
-} from '@UI/assets/scss/_js-variables/colors.scss';
-import DropZone from '@UI/components/DropZone/DropZone';
-import IconRemoveFilter from '@UI/components/Icons/Actions/IconRemoveFilter';
 import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
 import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
     name: 'LanguagesSettingsTab',
     components: {
+        RemoveLanguageDropZone,
         UpdateLanguagesInheritanceButton,
         GridViewTemplate,
-        IconRemoveFilter,
-        DropZone,
-        FadeTransition,
         LanguageInheritanceTreeDesigner,
         VerticalTabBar,
     },
@@ -72,15 +52,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('draggable', [
-            'isElementDragging',
-        ]),
-        isDropZoneVisible() {
-            return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;
-        },
-        graphiteLightColor() {
-            return GRAPHITE_LIGHT;
-        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.SETTINGS.update,

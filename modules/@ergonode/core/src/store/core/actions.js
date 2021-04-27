@@ -86,7 +86,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating languages tree has been canceled',
+                    message: this.app.i18n.t('@Core.core.store.action.updateLanguageTreeCancel'),
                 });
 
                 return;

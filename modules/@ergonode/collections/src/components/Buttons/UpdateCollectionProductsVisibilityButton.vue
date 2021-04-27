@@ -89,7 +89,7 @@ export default {
         async onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product visibilities in collection have been updated',
+                message: this.$t('@Collections.collection.components.UpdateCollectionProductsVisibilityButton.successMessage'),
             });
 
             this.isSubmitting = false;

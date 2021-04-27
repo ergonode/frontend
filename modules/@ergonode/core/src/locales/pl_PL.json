@@ -31,7 +31,36 @@
       }
     },
     "core": {
+      "_": {
+        "systemLanguagesTitle": "Języki systemowe"
+      },
+      "store": {
+        "action": {
+          "updateLanguageTreeCancel": "Aktualizowanie drzewa językowego zostało przerwane"
+        }
+      },
       "components": {
+        "UnitForm": {
+          "title": "Opcje",
+          "nameLabel": "Nazwa jednostki",
+          "nameHint": "Nazwa jednostki musi być unikatowa",
+          "symbolLabel": "Symbol jednostki",
+          "symbolHint": "Symbol jednostki musi być unikatowy"
+        },
+        "CreateUnitModalForm": {
+          "title": "Nowa jednostka",
+          "successMessage": "Jednostka została stworzona"
+        },
+        "CreateUnitButton": {
+          "title": "Nowa jednostka"
+        },
+        "UpdateLanguagesInheritanceButton": {
+          "warningMessage": "Drzewo językowe nie może być zapisane bez żadnego języka",
+          "successMessage": "Drzewo językowe zostało zaktualizowane"
+        },
+        "RemoveLanguageDropZone": {
+          "title": "Usuń język"
+        },
         "ToolBarUserSelectContent": {
           "logout": "WYLOGUJ"
         },

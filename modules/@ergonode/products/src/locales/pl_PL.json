@@ -77,7 +77,7 @@
           "alertSuccess": "Produkty zostały zaktualizowane"
         },
         "RestoreForm": {
-          "modalTitle": "Wybierz atrybuty, których wartości chcesz przywrócić z {from} do wartości dziedziczonej w ({to})"
+          "modalTitle": "Wybierz atrybuty, których wartości chcesz przywrócić z {from} do wartości dziedziczonej w {to}"
         },
         "ProductWorkflowActionButton": {
           "confirmTitle": "Czy jesteś pewien zmiany statusu na {info}?",
@@ -169,7 +169,7 @@
         },
         "ProductVariantsToAttachGrid": {
           "noProducts": "Brak produktów do dowiązania",
-          "changeBindingAttributes": "Brak produktów prostych, które pasują do kryteriów dowiązujących jako wariant, rozważ ponowne wybranie atrybudów, po których będą dowiązane produkty, albo uzupełnij brakujące wartości w produktach.",
+          "changeBindingAttributes": "Brak produktów prostych, które pasują do kryteriów dowiązujących jako wariant, rozważ ponowne wybranie atrybutów, po których będą dowiązane produkty, albo uzupełnij brakujące wartości w produktach.",
           "getRequest": "Warianty produktowe nie zostały pobrane",
           "attachedLabel": "Przypięte",
           "notAttachedLabel": "Odpięte"

@@ -75,7 +75,7 @@
           "alertSuccess": "Products have been updated"
         },
         "RestoreForm": {
-          "modalTitle": "Select attributes which values you want to restore from {from} to parent translation ({to})"
+          "modalTitle": "Select attributes which values you want to restore from {from} to parent translation {to}"
         },
         "ProductWorkflowActionButton": {
           "confirmTitle": "Are you sure you want to change status to {info}?",

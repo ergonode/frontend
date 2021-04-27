@@ -5,7 +5,7 @@
 <template>
     <Button
         data-cy="new-unit"
-        title="NEW UNIT"
+        :title="$t('@Core.core.components.CreateUnitButton.title')"
         :theme="secondaryTheme"
         :disabled="!isAllowedToCreate"
         :size="smallSize"

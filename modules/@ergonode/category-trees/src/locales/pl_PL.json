@@ -57,7 +57,7 @@
           "createSuccess": "Drzewo kategorii stworzone"
         },
         "CategoryTreeDesignerTab": {
-          "dropZoneTitle": "USUŃ KATERGORIE"
+          "dropZoneTitle": "Usuń kategorię"
         },
         "CategoryTreeGeneralTab": {
           "updateSuccess": "Drzewo kategorii zostało uaktualnione"
