@@ -2,6 +2,9 @@
  * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import {
+    escapeStringRegexp,
+} from './index';
 
 export const openPage = ({
     page, requestName,
@@ -38,7 +41,7 @@ export const checkGridRow = ({
         .as('grid');
     cy
         .get('@grid')
-        .contains(new RegExp(`^${searchValue}$`, 'g'))
+        .contains(new RegExp(`^${escapeStringRegexp(searchValue)}$`, 'g'))
         .parents('.grid-table-cell')
         .as('row');
     cy
@@ -104,7 +107,7 @@ export const actionOnGrid = ({
     cy
         .get('@grid')
         .find('.grid-table-cell')
-        .contains(new RegExp(`^${searchValue}$`, 'g'))
+        .contains(new RegExp(`^${escapeStringRegexp(searchValue)}$`, 'g'))
         .parents('.grid-table-cell')
         .as('row');
     cy
@@ -122,6 +125,31 @@ export const actionOnGrid = ({
                 });
         });
 };
+
+export const noActionOnGrid = ({
+    gridId, action, searchValue,
+}) => {
+    cy
+        .get(`[data-cy=${gridId}]`)
+        .should('be.visible')
+        .as('grid');
+    cy
+        .get('@grid')
+        .find('.grid-table-cell')
+        .contains(new RegExp(`^${escapeStringRegexp(searchValue)}$`, 'g'))
+        .parents('.grid-table-cell')
+        .as('row');
+    cy
+        .get('@row')
+        .then((c) => {
+            const rowNr = c.attr('row');
+
+            cy
+                .get(`[data-cy=action-${action}-${rowNr}]`)
+                .should('not.exist');
+        });
+};
+
 export const editOnGrid = ({
     gridId, searchValue, columns,
 }) => {
@@ -134,7 +162,7 @@ export const editOnGrid = ({
     cy
         .get('@grid')
         .find('.grid-table-cell')
-        .contains(new RegExp(`^${searchValue}$`, 'g'))
+        .contains(new RegExp(`^${escapeStringRegexp(searchValue)}$`, 'g'))
         .parents('.grid-table-cell')
         .as('row');
     cy

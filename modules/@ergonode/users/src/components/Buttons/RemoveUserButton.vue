@@ -4,6 +4,7 @@
  */
 <template>
     <Button
+        data-cy="delete-user"
         :theme="secondaryTheme"
         :size="smallSize"
         :title="$t('@Users.user.components.RemoveUserButton.removeButton')"

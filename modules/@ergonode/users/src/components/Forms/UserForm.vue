@@ -17,6 +17,7 @@
         <template #body>
             <FormSection>
                 <TextField
+                    :data-cy="dataCyGenerator(emailFieldKey)"
                     :value="email"
                     required
                     :label="$t('@Users.user.components.UserForm.emailLabel')"
@@ -24,6 +25,7 @@
                     :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setEmailValue" />
                 <TextField
+                    :data-cy="dataCyGenerator(firstNameFieldKey)"
                     :value="firstName"
                     required
                     :label="$t('@Users.user.components.UserForm.nameLabel')"
@@ -31,6 +33,7 @@
                     :disabled="!isAllowedToUpdate"
                     @input="setFirstNameValue" />
                 <TextField
+                    :data-cy="dataCyGenerator(lastNameFieldKey)"
                     :value="lastName"
                     required
                     :label="$t('@Users.user.components.UserForm.lastNameLabel')"
@@ -38,6 +41,7 @@
                     :disabled="!isAllowedToUpdate"
                     @input="setLastNameValue" />
                 <TextField
+                    :data-cy="dataCyGenerator(passwordFieldKey)"
                     :value="password"
                     required
                     :label="$t('@Users.user.components.UserForm.passwordLabel')"
@@ -46,6 +50,7 @@
                     :disabled="!isAllowedToUpdate"
                     @input="setPasswordValue" />
                 <TextField
+                    :data-cy="dataCyGenerator(passwordRepeatFieldKey)"
                     :value="passwordRepeat"
                     required
                     :label="$t('@Users.user.components.UserForm.passwordRepeatLabel')"
@@ -54,11 +59,13 @@
                     :disabled="!isAllowedToUpdate"
                     @input="setPasswordRepeatValue" />
                 <Toggler
+                    :data-cy="dataCyGenerator(isActiveFieldKey)"
                     :value="isActive"
                     :disabled="!isAllowedToUpdate"
                     :label="$t('@Users.user.components.UserForm.activeLabel')"
                     @input="setStatusValue" />
                 <LanguageSelect
+                    :data-cy="dataCyGenerator(languageFieldKey)"
                     :value="languageCode"
                     required
                     :label="$t('@Users.user.components.UserForm.languageLabel')"
@@ -153,7 +160,7 @@ export default {
             return 'passwordRepeat';
         },
         languageFieldKey() {
-            return 'languageCode';
+            return 'language';
         },
         isActiveFieldKey() {
             return 'isActive';
@@ -236,7 +243,7 @@ export default {
         },
         setLanguageValue(value) {
             this.__setState({
-                key: this.languageFieldKey,
+                key: 'languageCode',
                 value,
             });
 
@@ -257,6 +264,9 @@ export default {
                 fieldKey: this.isActiveFieldKey,
                 value,
             });
+        },
+        dataCyGenerator(key) {
+            return `user-${key}`;
         },
     },
 };

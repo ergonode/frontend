@@ -13,6 +13,7 @@ import {
 } from '../../models';
 import {
     actionOnGrid,
+    noActionOnGrid,
 } from '../../models/navigation';
 
 MultiSteps([
@@ -118,6 +119,17 @@ MultiSteps([
     Then,
 ], 'On {string} I click on {string} button for row with {string} value', (gridId, action, searchValue) => {
     actionOnGrid({
+        gridId,
+        action,
+        searchValue,
+    });
+});
+
+MultiSteps([
+    And,
+    Then,
+], 'On {string} for a row with value {string}, there is no {string} button', (gridId, searchValue, action) => {
+    noActionOnGrid({
         gridId,
         action,
         searchValue,
