@@ -36,6 +36,9 @@ import {
     TYPES,
 } from '@Attributes/defaults';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
+import {
+    ATTRIBUTE_TYPES,
+} from '@Media/defaults';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import {
     mapActions,
@@ -75,7 +78,7 @@ export default {
         autocompleteDefaultImageParams() {
             return {
                 system: false,
-                type: TYPES.IMAGE,
+                type: ATTRIBUTE_TYPES.IMAGE,
             };
         },
         autocompleteDefaultLabelParams() {

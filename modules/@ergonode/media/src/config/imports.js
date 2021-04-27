@@ -29,6 +29,7 @@ export const Components = {
 export const Icons = {
     Media: () => import('@Media/components/Icons/IconMedia').then(m => m.default || m),
     IconImage: () => import('@Media/components/Icons/IconImage').then(m => m.default || m),
+    IconGallery: () => import('@Media/components/Icons/IconGallery').then(m => m.default || m),
     IconFile: () => import('@UI/components/Icons/Others/IconFile').then(m => m.default || m),
 };
 
