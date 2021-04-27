@@ -14,7 +14,7 @@ export default {
             props,
         }) => [
             {
-                title: $this.app.i18n.t('@Conditions.transitionExtend.methods.verticalTabTitle'),
+                title: $this.$t('@Conditions.transitionExtend.methods.verticalTabTitle'),
                 component: Components.ConditionsVerticalTab,
                 icon: Icons.IconCategory,
                 props: {
