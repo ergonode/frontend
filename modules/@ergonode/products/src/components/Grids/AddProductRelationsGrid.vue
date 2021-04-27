@@ -271,17 +271,25 @@ export default {
                 sortOrder = {}, ...rest
             } = this.localParams;
 
+            let path = 'products';
+            let columns = 'sku,esa_template,esa_default_image,esa_default_label,_links';
+
+            if (this.isDirectRelation) {
+                path = `products/${this.productId}/related/${this.attributeId}`;
+                columns = 'sku,attached,template_id,default_image,default_label,_links';
+            }
+
             const params = {
                 ...rest,
                 ...sortOrder,
-                columns: 'index,sku,_links,esa_default_image,esa_default_label',
+                columns,
             };
 
             await getGridData({
                 $route: this.$route,
                 $cookies: this.$userCookies,
                 $axios: this.$axios,
-                path: this.isDirectRelation ? `products/${this.productId}/related/${this.attributeId}` : 'products',
+                path,
                 params,
                 onSuccess: this.onFetchDataSuccess,
                 onError: this.onFetchDataError,
