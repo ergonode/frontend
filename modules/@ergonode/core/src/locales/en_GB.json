@@ -31,7 +31,36 @@
       }
     },
     "core": {
+      "_": {
+        "systemLanguagesTitle": "System languages"
+      },
+      "store": {
+        "action": {
+          "updateLanguageTreeCancel": "Updating language tree has been canceled"
+        }
+      },
       "components": {
+        "UnitForm": {
+          "title": "Options",
+          "nameLabel": "Unit name",
+          "nameHint": "Unit name must be unique",
+          "symbolLabel": "Unit symbol",
+          "symbolHint": "Unit symbol must be unique"
+        },
+        "CreateUnitModalForm": {
+          "title": "New unit",
+          "successMessage": "Unit created"
+        },
+        "CreateUnitButton": {
+          "title": "New unit"
+        },
+        "UpdateLanguagesInheritanceButton": {
+          "warningMessage": "Language inheritance tree cannot be saved without any language",
+          "successMessage": "Languages tree has been updated"
+        },
+        "RemoveLanguageDropZone": {
+          "title": "Remove language"
+        },
         "ToolBarUserSelectContent": {
           "logout": "LOG OUT"
         },
