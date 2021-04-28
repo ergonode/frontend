@@ -9,6 +9,7 @@ import {
 } from 'cypress-cucumber-preprocessor/steps';
 
 import {
+    escapeStringRegexp,
     MultiSteps,
 } from '../../models';
 import {
@@ -53,6 +54,21 @@ MultiSteps([
     cy.get(`[data-cy=${id}]`)
         .find('input')
         .should('have.value', term);
+});
+
+MultiSteps([
+    When,
+    Then,
+], 'I can see {string} checkbox with the {string} value', (id, value) => {
+    if (value === 'false') {
+        cy.get(`[data-cy=${id}]`)
+            .find('input')
+            .should('be.not.checked');
+    } else if (value === 'true') {
+        cy.get(`[data-cy=${id}]`)
+            .find('input')
+            .should('be.checked');
+    }
 });
 
 MultiSteps([
@@ -191,9 +207,11 @@ MultiSteps([
         });
     cy.get('@selectedOption')
         .then(($option) => {
-            const optionValue = new RegExp($option.text()
-                .trim()
-                .replace('#', ''));
+            const optionValue = new RegExp(
+                escapeStringRegexp($option.text()
+                    .trim()
+                    .replace('#', '')),
+            );
 
             cy.get(`[data-cy=${id}-value] span`)
                 .contains(optionValue);
