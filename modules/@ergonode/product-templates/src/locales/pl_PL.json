@@ -74,7 +74,9 @@
       }
     },
     "productTemplateExtend": {
-      "widgetsVerticalTabTitle": "Widżety"
+      "methods": {
+        "widgetsVerticalTabTitle": "Widżety"
+      }
     }
   }
 }

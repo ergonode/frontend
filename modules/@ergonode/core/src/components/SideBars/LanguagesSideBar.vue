@@ -4,7 +4,7 @@
  */
 <template>
     <SideBar
-        title="System languages"
+        :title="$t('@Core.core._.systemLanguagesTitle')"
         :items="filteredLanguages"
         :searchable="true"
         :search-value="searchValue"
