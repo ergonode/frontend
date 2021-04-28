@@ -71,11 +71,6 @@ const AttributeIcons = {
             component: Icons.IconPrice,
         },
     ],
-    [TYPES.IMAGE]: [
-        {
-            component: Icons.IconImage,
-        },
-    ],
 };
 const getTypeConfiguration = ({
     $this, type,
