@@ -272,11 +272,11 @@ export default {
             } = this.localParams;
 
             let path = 'products';
-            let columns = 'sku,esa_template,esa_default_image,esa_default_label,_links';
+            let columns = 'sku,esa_template,esa_default_label,esa_default_image,_links';
 
             if (this.isDirectRelation) {
                 path = `products/${this.productId}/related/${this.attributeId}`;
-                columns = 'sku,attached,template_id,default_image,default_label,_links';
+                columns = 'sku,attached,template_id,default_label,default_image,_links';
             }
 
             const params = {
