@@ -4,6 +4,7 @@
  */
 <template>
     <RolesAutocomplete
+        :data-cy="dataCyGenerator(roleFieldKey)"
         :value="role"
         :required="true"
         :disabled="disabled"
@@ -59,6 +60,9 @@ export default {
                 fieldKey: this.roleFieldKey,
                 value,
             });
+        },
+        dataCyGenerator(key) {
+            return `user-${key}`;
         },
     },
 };
