@@ -4,6 +4,7 @@
  */
 <template>
     <Button
+        data-cy="new-user"
         :title="$t('@Users.user.components.CreateUserButton.addButton')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
