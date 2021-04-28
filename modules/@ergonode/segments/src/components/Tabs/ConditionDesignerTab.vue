@@ -56,7 +56,7 @@ export default {
         verticalTabs() {
             return [
                 {
-                    title: this.$t('@Segments.segment.components.ConditionDesignerTab.title'),
+                    title: this.$t('@Segments.segment.components.ConditionDesignerTab.conditionsTabTitle'),
                     component: () => import('@Conditions/components/VerticalTabs/ConditionsVerticalTab'),
                     icon: () => import('@Categories/components/Icons/IconCategory'),
                     props: {

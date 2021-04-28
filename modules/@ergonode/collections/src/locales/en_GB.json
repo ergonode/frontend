@@ -44,6 +44,9 @@
         }
       },
       "components": {
+        "UpdateCollectionProductsVisibilityButton": {
+          "successMessage": "Product visibilities in collection have been updated"
+        },
         "CollectionTypesAutocomplete": {
           "label": "Type"
         },
