@@ -15,22 +15,20 @@ Feature: CREATE: Collection
   @success
   Scenario Outline: Add collection - success
     When I fill the "collection-code" input with the "<name>" term
-    * I choose <type> option from "collection-typeId" select field
+    * I choose "<type_txt>" option from "collection-typeId" select field
     * I click on "submit" button
     * I send a "POST" request and status code should be 201
     * I open "collections/grid" page
     Then On "grid" I can see row with "<name>" value and columns data: "{'0': '<name>', '1': '<type_txt>', '2': '', '3': ''}"
 
     Examples:
-      | name                  | type | type_txt   |
-      | up_sale_collection    | 0    | Up-sell    |
-      | cross_sell_collection | 1    | Cross-sell |
-      | other_collection      | 2    | Other      |
+      | name                  | type_txt   |
+      | up_sale_collection    | Up-sell    |
 
   @success
   Scenario: Add collection and go to edit - success
     When I fill the "collection-code" input with the "collection_code" term
-    * I choose 0 option from "collection-typeId" select field
+    * I choose "Up-sell" option from "collection-typeId" select field
     * I click on "proceed" button
     * I send a "POST" request and status code should be 201
     * I see "collections/collection/%UUID%/general" page
@@ -41,7 +39,7 @@ Feature: CREATE: Collection
   @error
   Scenario: Add collection - duplication error
     When I fill the "collection-code" input with the "collection_code" term
-    * I choose 0 option from "collection-typeId" select field
+    * I choose "Up-sell" option from "collection-typeId" select field
     * I click on "submit" button
     * I send a "POST" request and status code should be 400
     * I see a form validation error that says "['The product collection code collection_code is not unique.']"
@@ -50,10 +48,10 @@ Feature: CREATE: Collection
   @error
   Scenario: Add collection - validation error (too long string)
     When I fill the "collection-code" input with the "status_status_status_status_status_status_status_status_status_status_status_status_status_status_status_status_" term
-    * I choose 0 option from "collection-typeId" select field
+    * I choose "Up-sell" option from "collection-typeId" select field
     * I click on "submit" button
     * I send a "POST" request and status code should be 400
-    * I see a form validation error that says "['System name is too long. It should contain 100 characters or less.']"
+    * I see a form validation error that says "['System name is too long. It should contain 64 characters or less.']"
     Then I close modal
 
   @error
@@ -66,7 +64,7 @@ Feature: CREATE: Collection
   @error
   Scenario: Add collection - validation error (misc string)
     When I fill the "collection-code" input with the "@#$%()" term
-    * I choose 0 option from "collection-typeId" select field
+    * I choose "Up-sell" option from "collection-typeId" select field
     * I click on "submit" button
     * I send a "POST" request and status code should be 400
     * I see a form validation error that says "['Product collection System Name can have only letters, digits or underscore symbol']"
