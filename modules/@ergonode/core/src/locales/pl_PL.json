@@ -32,6 +32,7 @@
     },
     "core": {
       "_": {
+        "settingsTitle": "Ustawienia",
         "systemLanguagesTitle": "Języki systemowe"
       },
       "store": {
