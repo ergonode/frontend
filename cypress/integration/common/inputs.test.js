@@ -9,7 +9,6 @@ import {
 } from 'cypress-cucumber-preprocessor/steps';
 
 import {
-    escapeStringRegexp,
     MultiSteps,
 } from '../../models';
 import {
@@ -188,7 +187,7 @@ MultiSteps([
 MultiSteps([
     And,
     Then,
-], 'I choose {int} option from {string} select field', (optionNr, id) => {
+], 'I choose {string} option from {string} select field', (optionString, id) => {
     cy.get(`[data-cy=${id}]`)
         .click();
     cy.get(`[data-cy=${id}-drop-down]`)
@@ -199,23 +198,18 @@ MultiSteps([
         .its('length')
         .should('be.gt', 0);
     cy.get('@elementList')
-        .eq(optionNr)
-        .as('selectedOption');
+        .each(($option) => {
+            if ($option.text().trim() === optionString) {
+                expect($option.text().trim()).equal(optionString);
+                cy.wrap($option).as('selectedOption');
+            }
+        });
     cy.get('@selectedOption')
         .click({
             force: true,
         });
-    cy.get('@selectedOption')
-        .then(($option) => {
-            const optionValue = new RegExp(
-                escapeStringRegexp($option.text()
-                    .trim()
-                    .replace('#', '')),
-            );
-
-            cy.get(`[data-cy=${id}-value] span`)
-                .contains(optionValue);
-        });
+    cy.get(`[data-cy=${id}-value] span`)
+        .contains(optionString);
     cy.get(`[data-cy=${id}-drop-down]`)
         .should('be.not.visible');
 });
