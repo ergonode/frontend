@@ -9,8 +9,6 @@ Feature: READ: Collection
   Scenario: Read collections on grid - success
     When I can see "Collections" text on "title-bar-header" element
     * On "grid" I can see row with "up_sale_collection" value and columns data: "{'0': 'up_sale_collection', '1': 'Up-sell', '2': '', '3': ''}"
-    * On "grid" I can see row with "cross_sell_collection" value and columns data: "{'0': 'cross_sell_collection', '1': 'Cross-sell', '2': '', '3': ''}"
-    * On "grid" I can see row with "other_collection" value and columns data: "{'0': 'other_collection', '1': 'Other', '2': '', '3': ''}"
 
   @success
   Scenario: Read collection general - success

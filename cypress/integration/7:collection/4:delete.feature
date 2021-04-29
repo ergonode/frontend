@@ -15,12 +15,12 @@ Feature: DELETE: Collection
 
   @other
   Scenario: Delete collection from edit page - give up
-    When On "grid" I can see row with "other_collection" value and columns data: "{'0': 'other_collection', '1': 'Other'}"
-    * On "grid" I click on "edit" button for row with "other_collection" value
+    When On "grid" I can see row with "collection_code" value and columns data: "{'0': 'collection_code', '1': 'Other'}"
+    * On "grid" I click on "edit" button for row with "collection_code" value
     * I see "collections/collection/%UUID%/general" page
     * Element "collection-code" is visible
     * Element "title-bar-header" is visible
-    * I can see "collection-code" input with the "other_collection" term
+    * I can see "collection-code" input with the "collection_code" term
     * I can see "collection-code" field as disabled
     * I click on "delete-collection" button
     * I close modal
@@ -36,12 +36,12 @@ Feature: DELETE: Collection
 
   @success
   Scenario: Delete collection from edit page - success
-    When On "grid" I can see row with "other_collection" value and columns data: "{'0': 'other_collection', '1': 'Other'}"
-    * On "grid" I click on "edit" button for row with "other_collection" value
+    When On "grid" I can see row with "up_sale_collection" value and columns data: "{'0': 'up_sale_collection', '1': 'Up-sell'}"
+    * On "grid" I click on "edit" button for row with "up_sale_collection" value
     * I see "collections/collection/%UUID%/general" page
     * Element "collection-code" is visible
     * Element "title-bar-header" is visible
-    * I can see "collection-code" input with the "other_collection" term
+    * I can see "collection-code" input with the "up_sale_collection" term
     * I can see "collection-code" field as disabled
     * I click on "delete-collection" button
     * I confirm modal

@@ -8,12 +8,12 @@ Feature: READ: Segments
   @success
   Scenario: Read segments on grid - success
     When I can see "Segments" text on "title-bar-header" element
-    * On "grid" I can see row with "segment_code" value and columns data: "{'0': 'segment_code', '1': '',  '2': '',  '3': 'new',  '4': '0'}"
-    * On "grid" I can see row with "segment_code2" value and columns data: "{'0': 'segment_code2', '1': '',  '2': '',  '3': 'new',  '4': '0'}"
+    * On "grid" I can see row with "segment_code" value and columns data: "{'0': 'segment_code', '1': '',  '2': '',  '4': '0'}"
+    * On "grid" I can see row with "segment_code2" value and columns data: "{'0': 'segment_code2', '1': '',  '2': '',  '4': '0'}"
 
   @success
   Scenario: Read category general - success
-    When On "grid" I can see row with "segment_code" value and columns data: "{'0': 'segment_code', '1': '',  '2': '',  '3': 'new',  '4': '0'}"
+    When On "grid" I can see row with "segment_code" value and columns data: "{'0': 'segment_code', '1': '',  '2': '',  '4': '0'}"
     * On "grid" I click on "edit" button for row with "segment_code" value
     * I see "segments/segment/%UUID%/general" page
     * Element "title-bar-header" is visible
@@ -26,7 +26,7 @@ Feature: READ: Segments
 
   @success
   Scenario: Read segment translation - success
-    When On "grid" I can see row with "segment_code" value and columns data: "{'0': 'segment_code', '1': '',  '2': '',  '3': 'new',  '4': '0'}"
+    When On "grid" I can see row with "segment_code" value and columns data: "{'0': 'segment_code', '1': '',  '2': '',  '4': '0'}"
     * On "grid" I click on "edit" button for row with "segment_code" value
     * I see "segments/segment/%UUID%/general" page
     * I click tab with "Translations" text

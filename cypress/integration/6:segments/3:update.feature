@@ -8,7 +8,7 @@ Feature: UPDATE: Segment
   # FIXME: Add too long string validation
   # @error
   # Scenario: Update segment from edit page - validation error (too long string)
-  #   When On "grid" I can see row with "segment_code" value and columns data: "{'0': 'segment_code', '1': '',  '2': '',  '3': 'new',  '4': '0'}"
+  #   When On "grid" I can see row with "segment_code" value and columns data: "{'0': 'segment_code', '1': '',  '2': '',  '4': '0'}"
   #   * On "grid" I click on "edit" button for row with "segment_code" value
   #   * I see "segments/segment/%UUID%/general" page
   #   * I click tab with "Translations" text
@@ -20,7 +20,7 @@ Feature: UPDATE: Segment
 
   @success
   Scenario: Update segment from edit page - success
-    When On "grid" I can see row with "segment_code" value and columns data: "{'0': 'segment_code', '1': '',  '2': '',  '3': 'new',  '4': '0'}"
+    When On "grid" I can see row with "segment_code" value and columns data: "{'0': 'segment_code', '1': '',  '2': '',  '4': '0'}"
     * On "grid" I click on "edit" button for row with "segment_code" value
     * I see "segments/segment/%UUID%/general" page
     * I click tab with "Translations" text
@@ -34,4 +34,4 @@ Feature: UPDATE: Segment
     * I send a "PUT" request and status code should be 204
     * I click back arrow
     * I see "segments/grid" page
-    Then On "grid" I can see row with "segment_code" value and columns data: "{'0': 'segment_code', '1': 'segment_EN',  '2': 'segment_desc_EN',  '3': 'new',  '4': '0'}"
+    Then On "grid" I can see row with "segment_code" value and columns data: "{'0': 'segment_code', '1': 'segment_EN',  '2': 'segment_desc_EN',  '4': '0'}"
