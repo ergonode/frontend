@@ -19,8 +19,8 @@ Feature: CREATE: User
     * I fill the "user-lastName" input with the "Email" term
     * I fill the "user-password" input with the "UserEmail123" term
     * I fill the "user-passwordRepeat" input with the "UserEmail123" term
-    * I choose 0 option from "user-language" select field
-    * I choose 0 option from "user-role" select field
+    * I choose "Arabic (Egypt)" option from "user-language" select field
+    * I choose "Admin" option from "user-role" select field
     * I click on "submit" button
     * I send a "POST" request and status code should be 201
     * I open "users/grid" page
@@ -33,8 +33,8 @@ Feature: CREATE: User
     * I fill the "user-lastName" input with the "Email2" term
     * I fill the "user-password" input with the "UserEmail123" term
     * I fill the "user-passwordRepeat" input with the "UserEmail123" term
-    * I choose 1 option from "user-language" select field
-    * I choose 0 option from "user-role" select field
+    * I choose "Arabic (Egypt)" option from "user-language" select field
+    * I choose "Admin" option from "user-role" select field
     * I click on "proceed" button
     * I send a "POST" request and status code should be 201
     * I see "users/user/%UUID%/general" page
@@ -50,7 +50,7 @@ Feature: CREATE: User
     * I can see "user-password" field as enabled
     * I can see "user-passwordRepeat" input with the "" term
     * I can see "user-passwordRepeat" field as enabled
-    * I can see "user-language" select with the "Arabic (United Arab Emirates)" term
+    * I can see "user-language" select with the "Arabic (Egypt)" term
     * I can see "user-language" field as enabled
     * I can see "user-role" select with the "Admin" term
     * I can see "user-role" field as enabled
@@ -64,8 +64,8 @@ Feature: CREATE: User
     * I fill the "user-lastName" input with the "Ergo" term
     * I fill the "user-password" input with the "UserEmail123" term
     * I fill the "user-passwordRepeat" input with the "UserEmail123" term
-    * I choose 1 option from "user-language" select field
-    * I choose 0 option from "user-role" select field
+    * I choose "Arabic (Egypt)" option from "user-language" select field
+    * I choose "Admin" option from "user-role" select field
     * I click on "submit" button
     * I send a "POST" request and status code should be 400
     * I see a form validation error that says "['User admin@ergonode.com already exists.']"
@@ -78,8 +78,8 @@ Feature: CREATE: User
     * I fill the "user-lastName" input with the "Ergo" term
     * I fill the "user-password" input with the "UserEmail123" term
     * I fill the "user-passwordRepeat" input with the "UserEmail123" term
-    * I choose 1 option from "user-language" select field
-    * I choose 0 option from "user-role" select field
+    * I choose "Arabic (Egypt)" option from "user-language" select field
+    * I choose "Admin" option from "user-role" select field
     * I click on "submit" button
     * I send a "POST" request and status code should be 400
     * I see a form validation error that says "['This value is not a valid email address., User email is too short. It should have at least 5 characters.']"

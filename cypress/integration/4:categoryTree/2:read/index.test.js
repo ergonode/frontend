@@ -11,6 +11,10 @@ import {
 import {
     MultiSteps,
 } from '../../../models/index';
+import {
+    openPage,
+    sendRequest,
+} from '../../../models/navigation';
 
 const requestName = 'categoryTreeRequest';
 const url = /trees/;
@@ -37,24 +41,19 @@ MultiSteps([
     Given,
     And,
 ], 'I open {string} page', (page) => {
-    cy.visit(`/${page}`);
-    cy
-        .url()
-        .should('include', `/${page}`);
-    cy
-        .wait(`@${requestName}_GET`)
-        .its('response.statusCode')
-        .should('eq', 200);
+    openPage({
+        page,
+        requestName,
+    });
 });
 
 MultiSteps([
     Then,
     And,
 ], 'I send a {string} request and status code should be {int}', (reqType, status) => {
-    cy
-        .wait(`@${requestName}_${reqType}`)
-        .then((xhr) => {
-            expect(xhr.request.method).to.equal(reqType);
-            expect(xhr.response.statusCode).to.equal(status);
-        });
+    sendRequest({
+        requestName,
+        reqType,
+        status,
+    });
 });

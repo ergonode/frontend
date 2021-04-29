@@ -36,7 +36,7 @@ Feature: UPDATE: Attributes
     When On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_old>'}"
     * On "grid" I click on "edit" button for row with "<name>" value
     * I see "attributes/attribute/%UUID%/general" page
-    * I choose <scope> option from "attribute-scope" select field
+    * I choose "<scope_new>" option from "attribute-scope" select field
     * I choose "[0,1]" options from "attribute-groups" multi select field
     Then I click on "submit" button
     * I send a "PUT" request and status code should be 204
@@ -44,39 +44,39 @@ Feature: UPDATE: Attributes
     Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_new>'}"
 
     Examples:
-      | name                | type_txt | scope | scope_old | scope_new |
-      | textarea_attribute  | Textarea | 1     | global    | local     |
-      | text_attribute      | Text     | 1     | global    | local     |
-      | numeric_attribute   | Numeric  | 1     | global    | local     |
-      | image_attribute     | Image    | 1     | global    | local     |
-      | gallery_attribute   | Gallery  | 1     | global    | local     |
-      | file_attribute      | File     | 1     | global    | local     |
+      | name                | type_txt | scope_old | scope_new |
+      | textarea_attribute  | Textarea | global    | local     |
+      | text_attribute      | Text     | global    | local     |
+      | numeric_attribute   | Numeric  | global    | local     |
+      | image_attribute     | Image    | global    | local     |
+      | gallery_attribute   | Gallery  | global    | local     |
+      | file_attribute      | File     | global    | local     |
 
   @success
   Scenario Outline: Update <type_txt> attribute - success
     When On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_old>'}"
     * On "grid" I click on "edit" button for row with "<name>" value
     * I see "attributes/attribute/%UUID%/general" page
-    * I choose <scope> option from "attribute-scope" select field
+    * I choose "<scope_new>" option from "attribute-scope" select field
     * I choose "[0,1]" options from "attribute-groups" multi select field
-    * I choose 3 option from "attribute-params" select field
+    * I choose "<param>" option from "attribute-params" select field
     Then I click on "submit" button
     * I send a "PUT" request and status code should be 204
     * I open "attributes/grid" page
     Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_new>'}"
 
     Examples:
-      | name                | type_txt | scope | scope_old | scope_new |
-      | price_attribute     | Price    | 0     | local     | global    |
-      | date_attribute      | Date     | 0     | local     | global    |
-      | unit_attribute      | Unit     | 0     | local     | global    |
+      | name                | type_txt | param     | scope_old | scope_new |
+      | price_attribute     | Price    | US Dollar | local     | global    |
+      | date_attribute      | Date     | 99-01-31  | local     | global    |
+      | unit_attribute      | Unit     | Watt      | local     | global    |
 
   @success
   Scenario Outline: Update <type_txt> attribute with options - success
     When On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_old>'}"
     * On "grid" I click on "edit" button for row with "<name>" value
     * I see "attributes/attribute/%UUID%/general" page
-    * I choose <scope> option from "attribute-scope" select field
+    * I choose "<scope_new>" option from "attribute-scope" select field
     * I choose "[0]" options from "attribute-groups" multi select field
     * Element "attribute-add-options" is visible
     * I fill the "attribute-option-0" input with the "<option1>" term
@@ -89,9 +89,9 @@ Feature: UPDATE: Attributes
     Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_new>'}"
 
   Examples:
-    | name                  | type_txt     | scope | scope_old | scope_new | option1  | option2  |
-    | select_attribute      | Select       | 1     | global    | local     | o1_new   | o2_new   |
-    | multiselect_attribute | Multi select | 1     | global    | local     | opt1_new | opt2_new |
+    | name                  | type_txt     | scope_old | scope_new | option1  | option2  |
+    | select_attribute      | Select       | global    | local     | o1_new   | o2_new   |
+    | multiselect_attribute | Multi select | global    | local     | opt1_new | opt2_new |
 
   @success
   Scenario Outline: Update <type_txt> attribute from edit page - success

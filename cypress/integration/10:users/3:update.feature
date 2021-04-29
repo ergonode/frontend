@@ -25,7 +25,7 @@ Feature: UPDATE: User
     * I fill the "user-lastName" input with the "Bravo" term
     * I fill the "user-password" input with the "UserEmail123" term
     * I fill the "user-passwordRepeat" input with the "UserEmail123" term
-    * I choose 1 option from "user-language" select field
+    * I choose "Arabic (Egypt)" option from "user-language" select field
     Then I click on "submit" button
     * I send a "PUT" request and status code should be 204
     * I click back arrow

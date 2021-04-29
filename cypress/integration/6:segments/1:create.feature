@@ -18,7 +18,7 @@ Feature: CREATE: Segment
     * I click on "submit" button
     * I send a "POST" request and status code should be 201
     * I open "segments/grid" page
-    Then On "grid" I can see row with "segment_code" value and columns data: "{'0': 'segment_code', '1': '',  '2': '',  '3': 'new',  '4': '0'}"
+    Then On "grid" I can see row with "segment_code" value and columns data: "{'0': 'segment_code', '1': '',  '2': '',  '4': '0'}"
 
   @success
   Scenario: Add segment and go to edit - success
