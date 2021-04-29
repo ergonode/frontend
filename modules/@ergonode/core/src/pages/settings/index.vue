@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar
-            title="Settings"
+            :title="$t('@Core.core._.settingsTitle')"
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <template
