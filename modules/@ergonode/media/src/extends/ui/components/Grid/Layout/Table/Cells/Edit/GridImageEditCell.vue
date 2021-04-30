@@ -10,6 +10,7 @@
                     v-model="localValue"
                     :disabled="disabled"
                     object-fit="contain"
+                    :size="smallSize"
                     :height="`${cellHeight}px`" />
             </GridImageEditContentCell>
         </GridSelectEditContentCell>
@@ -17,6 +18,9 @@
 </template>
 
 <script>
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 import GridImageEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridImageEditContentCell';
 import GridSelectEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
@@ -60,6 +64,9 @@ export default {
                 left: `${x}px`,
                 width: '304px',
             };
+        },
+        smallSize() {
+            return SIZE.SMALL;
         },
     },
     beforeDestroy() {

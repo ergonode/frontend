@@ -6,14 +6,15 @@
     <ProductTemplateFormField
         :size="size"
         :position="position">
-        <UploadImageFile
+        <UploadProductRelations
             :style="{ height: '100%' }"
             :value="fieldData"
             :label="label"
             :size="imageSize"
+            :attribute-id="properties.attribute_id"
+            :product-id="id"
             :required="properties.required"
             :disabled="disabled"
-            object-fit="contain"
             height="100%"
             @input="onValueChange" />
     </ProductTemplateFormField>
@@ -23,13 +24,16 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 import ProductTemplateFormField from '@Media/extends/product/components/Forms/Field/ProductTemplateFormField';
+import UploadProductRelations from '@Products/components/Inputs/UploadProductRelations';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
-    name: 'ProductTemplateFormImageField',
+    name: 'ProductTemplateFormProductRelationField',
     components: {
-        UploadImageFile,
+        UploadProductRelations,
         ProductTemplateFormField,
     },
     props: {
@@ -71,6 +75,9 @@ export default {
         },
     },
     computed: {
+        ...mapState('product', [
+            'id',
+        ]),
         fieldData() {
             if (typeof this.changedValues[this.fieldKey] !== 'undefined') {
                 return this.changedValues[this.fieldKey];
@@ -80,7 +87,7 @@ export default {
                 attribute_code,
             } = this.properties;
 
-            return this.drafts[this.languageCode][attribute_code] || null;
+            return this.drafts[this.languageCode][attribute_code] || [];
         },
         parameter() {
             if (!this.properties.parameters) return null;

@@ -13,47 +13,64 @@
         :copyable="isCopyable"
         :selected="isSelected"
         @edit="onEditCell">
-        <template v-if="cellData.value">
-            <GridLabelPresentationCell
-                :value="cellData.value"
-                :options="options"
-                :suffix="data.suffix" />
+        <template v-if="presentationValue">
+            <GridPresentationCell :value="presentationValue" />
             <GridSuffixPresentationCell
                 v-if="data.suffix"
                 :suffix="data.suffix" />
-            <IconArrowDropdown
-                v-if="!isLocked"
-                view-box="0 0 24 24"
-                :width="32" />
         </template>
     </GridTableCell>
 </template>
 
 <script>
-import GridLabelPresentationCell from '@Products/extends/components/Grid/Layout/Table/Cells/Presentation/GridLabelPresentationCell';
+import {
+    arraysAreEqual,
+} from '@Core/models/arrayWrapper';
+import GridPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
 import GridSuffixPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
-import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 import gridDataCellMixin from '@UI/mixins/grid/gridDataCellMixin';
 
 export default {
-    name: 'GridLabelDataCell',
+    name: 'GridProductRelationDataCell',
     components: {
-        GridLabelPresentationCell,
+        GridPresentationCell,
         GridSuffixPresentationCell,
-        IconArrowDropdown,
     },
     mixins: [
         gridDataCellMixin,
     ],
     computed: {
-        options() {
-            if (this.column.filter
-                && this.column.filter.options
-                && !Array.isArray(this.column.filter.options)) {
-                return this.column.filter.options;
+        cellData() {
+            if (this.isDraft && !arraysAreEqual(this.data.value || [], this.draft)) {
+                return {
+                    value: this.draft,
+                    isDraft: true,
+                };
             }
 
-            return {};
+            return {
+                value: this.data.value,
+                isDraft: false,
+            };
+        },
+        presentationValue() {
+            if (!this.cellData.value || !this.cellData.value.length) {
+                return '';
+            }
+
+            const {
+                length,
+            } = this.cellData.value;
+
+            if (length === 1) {
+                return this.$t('@Products.uiExtend.components.GridProductRelationDataCell.singularLabel', {
+                    info: length,
+                });
+            }
+
+            return this.$t('@Products.uiExtend.components.GridProductRelationDataCell.pluralLabel', {
+                info: length,
+            });
         },
     },
     methods: {
@@ -66,11 +83,10 @@ export default {
                     row: this.rowIndex,
                     column: this.columnIndex,
                     disabled: this.isLocked,
-                    colors: this.options,
                     rowId: this.rowId,
                     columnId: this.column.id,
+                    attributeId: this.column.element_id,
                     errorMessages: this.errorMessages,
-                    languageCode: this.column.language,
                 },
             });
         },

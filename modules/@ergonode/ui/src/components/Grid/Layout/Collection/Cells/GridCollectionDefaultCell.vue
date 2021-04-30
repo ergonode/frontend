@@ -15,11 +15,7 @@
             :value="data.image"
             :object-fit="objectFit"
             :height="collectionImageHeight" />
-        <img
-            v-else
-            class="grid-collection-default-cell__placeholder"
-            :src="placeholderImage"
-            alt="template icon">
+        <DefaultImage v-else />
         <div
             class="grid-collection-default-cell__fixed-title-content"
             :title="data.description">
@@ -37,11 +33,13 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
+import DefaultImage from '@UI/components/DefaultImage/DefaultImage';
 import LazyImage from '@UI/components/LazyImage/LazyImage';
 
 export default {
     name: 'GridCollectionDefaultCell',
     components: {
+        DefaultImage,
         LazyImage,
     },
     props: {
@@ -73,9 +71,6 @@ export default {
         };
     },
     computed: {
-        placeholderImage() {
-            return require('@UI/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
-        },
         secondaryTheme() {
             return THEME.SECONDARY;
         },
@@ -120,14 +115,6 @@ export default {
         box-sizing: border-box;
         background-color: $WHITE;
         cursor: pointer;
-
-        &__placeholder {
-            justify-self: center;
-            align-self: center;
-            width: 100%;
-            height: 157px;
-            object-fit: none;
-        }
 
         &__fixed-title-content {
             display: flex;
