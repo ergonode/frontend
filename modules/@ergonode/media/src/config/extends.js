@@ -24,7 +24,7 @@ const AttributeIcons = {
     ],
     [ATTRIBUTE_TYPES.GALLERY]: [
         {
-            component: Icons.IconImage,
+            component: Icons.IconGallery,
         },
     ],
     [ATTRIBUTE_TYPES.FILE]: [

@@ -31,6 +31,23 @@
         "createFirst": "There are no product in the system, so you can add the first one."
       },
       "components": {
+        "AddProductRelationsModalGrid": {
+          "title": "Add relations"
+        },
+        "AddProductRelationsGrid": {
+          "attachLabel": "Attached",
+          "successUpdateMessage": "Product relations have been updated",
+          "infoMessage": "No changes have been made",
+          "successRemoveMessage": "Product relation removed",
+          "errorGetMessage": "Product relations haven’t been fetched properly",
+          "attachedLabel": "Attached",
+          "notAttachedLabel": "Not attached"
+        },
+        "UploadProductRelations": {
+          "title": "Add relations",
+          "addRelationOption": "Add next relation",
+          "removeRelationOption": "Remove this relation"
+        },
         "UpdateProductTemplateButton": {
           "successMessage": "Product has been updated"
         },
@@ -194,6 +211,14 @@
         },
         "UpdateProductsAttachmentButton": {
           "successMessage": "Products attachment have been updated"
+        }
+      }
+    },
+    "uiExtend": {
+      "components": {
+        "GridProductRelationDataCell": {
+          "singularLabel": "{info} relation",
+          "pluralLabel": "{info} relations"
         }
       }
     }

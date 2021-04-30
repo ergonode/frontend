@@ -54,9 +54,11 @@
                 </div>
                 <InputLabel
                     v-if="label"
-                    :style="{ top: 0 }"
+                    :style="{
+                        top: '10px',
+                        left: '12px',
+                    }"
                     :required="required"
-                    :size="size"
                     :floating="true"
                     :disabled="disabled"
                     :label="label" />
@@ -113,10 +115,16 @@ export default {
         List: () => import('@UI/components/List/List'),
     },
     props: {
+        /**
+         * The value of the component
+         */
         value: {
             type: Array,
             default: () => [],
         },
+        /**
+         * The size of the component
+         */
         size: {
             type: String,
             default: SIZE.REGULAR,
@@ -125,10 +133,16 @@ export default {
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
         },
+        /**
+         * The height of the component
+         */
         height: {
             type: String,
             default: 'unset',
         },
+        /**
+         * The label is a text caption or description for the component
+         */
         label: {
             type: String,
             default: '',
@@ -140,6 +154,9 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if the given field is disabled
+         */
         disabled: {
             type: Boolean,
             default: false,

@@ -6,12 +6,13 @@
     <GridEditNavigationCell @edit="onEditCell">
         <GridSelectEditContentCell :style="positionStyle">
             <GridImageEditContentCell>
-                <UploadImageFile
+                <UploadProductRelations
                     v-model="localValue"
                     height="181px"
-                    :disabled="disabled"
                     :size="smallSize"
-                    :multiple="true" />
+                    :disabled="disabled"
+                    :attribute-id="attributeId"
+                    :product-id="rowId" />
             </GridImageEditContentCell>
         </GridSelectEditContentCell>
     </GridEditNavigationCell>
@@ -24,15 +25,15 @@ import {
 import {
     arraysAreEqual,
 } from '@Core/models/arrayWrapper';
-import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
+import UploadProductRelations from '@Products/components/Inputs/UploadProductRelations';
 import GridImageEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridImageEditContentCell';
 import GridSelectEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
 import gridEditCellMixin from '@UI/mixins/grid/gridEditCellMixin';
 
 export default {
-    name: 'GridGalleryEditCell',
+    name: 'GridProductRelationEditCell',
     components: {
-        UploadImageFile,
+        UploadProductRelations,
         GridSelectEditContentCell,
         GridImageEditContentCell,
     },
@@ -47,6 +48,15 @@ export default {
             type: Array,
             default: () => [],
         },
+        attributeId: {
+            type: String,
+            required: true,
+        },
+    },
+    data() {
+        return {
+            localValue: this.value || [],
+        };
     },
     computed: {
         positionStyle() {
@@ -66,7 +76,7 @@ export default {
         },
     },
     beforeDestroy() {
-        if (!this.disabled && !arraysAreEqual(this.localValue, this.value)) {
+        if (!this.disabled && !arraysAreEqual(this.localValue, this.value || [])) {
             this.$emit('cell-value', [
                 {
                     value: this.localValue,

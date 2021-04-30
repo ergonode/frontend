@@ -19,8 +19,8 @@ export const Icons = {
 };
 
 export const Components = {
-    GridPrivilegeNameHintDataCell: () => import('@Roles/components/Grid/Layout/Table/Cells/Data/GridPrivilegeNameHintDataCell').then(m => m.default || m),
-    GridPrivilegeRowCheckColumn: () => import('@Roles/components/Grid/Layout/Table/Columns/GridPrivilegeRowCheckColumn').then(m => m.default || m),
+    GridPrivilegeNameHintDataCell: () => import('@Roles/extends/ui/components/Grid/Layout/Table/Cells/Data/GridPrivilegeNameHintDataCell').then(m => m.default || m),
+    GridPrivilegeRowCheckColumn: () => import('@Roles/extends/ui/components/Grid/Layout/Table/Columns/GridPrivilegeRowCheckColumn').then(m => m.default || m),
     UserFormRole: () => import('@Roles/extends/user/components/Forms/UserFormRole').then(m => m.default || m),
     TransitionFormRole: () => import('@Roles/extends/transition/components/Forms/TransitionFormRole').then(m => m.default || m),
 };
