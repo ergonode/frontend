@@ -15,11 +15,7 @@
             :value="data.image"
             :object-fit="objectFit"
             :height="collectionImageHeight" />
-        <img
-            v-else
-            class="collection-cell__placeholder"
-            :src="placeholderImage"
-            alt="template icon">
+        <DefaultImage v-else />
         <div
             class="collection-cell__fixed-title-content"
             :title="data.description">
@@ -38,12 +34,14 @@
 import {
     COLLECTION_IMAGE_HEIGHT,
 } from '@Core/defaults/grid';
+import DefaultImage from '@UI/components/DefaultImage/DefaultImage';
 import LazyImage from '@UI/components/LazyImage/LazyImage';
 import Toggler from '@UI/components/Toggler/Toggler';
 
 export default {
     name: 'GridProductAttachCollectionCell',
     components: {
+        DefaultImage,
         LazyImage,
         Toggler,
     },
@@ -78,9 +76,6 @@ export default {
             }
 
             return this.data.attached;
-        },
-        placeholderImage() {
-            return require('@UI/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
         },
         collectionImageHeight() {
             return COLLECTION_IMAGE_HEIGHT;
@@ -126,14 +121,6 @@ export default {
         box-sizing: border-box;
         background-color: $WHITE;
         cursor: pointer;
-
-        &__placeholder {
-            justify-self: center;
-            align-self: center;
-            width: 100%;
-            height: 157px;
-            object-fit: none;
-        }
 
         &__fixed-title-content {
             display: flex;

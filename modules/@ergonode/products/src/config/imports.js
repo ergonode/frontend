@@ -18,12 +18,15 @@ export const Tabs = {
 
 export const Icons = {
     Product: () => import('@Products/components/Icons/IconProduct').then(m => m.default || m),
+    IconRelation: () => import('@Products/components/Icons/IconRelation').then(m => m.default || m),
 };
 
 export const Components = {
-    GridProductAttachCollectionCell: () => import('@Products/extends/components/Grid/Layout/Collection/Cells/GridProductAttachCollectionCell').then(m => m.default || m),
-    GridLabelDataCell: () => import('@Products/extends/components/Grid/Layout/Table/Cells/Data/GridLabelDataCell').then(m => m.default || m),
-    GridLabelEditCell: () => import('@Products/extends/components/Grid/Layout/Table/Cells/Edit/GridLabelEditCell').then(m => m.default || m),
+    GridProductAttachCollectionCell: () => import('@Products/extends/ui/components/Grid/Layout/Collection/Cells/GridProductAttachCollectionCell').then(m => m.default || m),
+    GridProductRelationDataCell: () => import('@Products/extends/ui/components/Grid/Layout/Table/Cells/Data/GridProductRelationDataCell').then(m => m.default || m),
+    GridLabelDataCell: () => import('@Products/extends/ui/components/Grid/Layout/Table/Cells/Data/GridLabelDataCell').then(m => m.default || m),
+    GridLabelEditCell: () => import('@Products/extends/ui/components/Grid/Layout/Table/Cells/Edit/GridLabelEditCell').then(m => m.default || m),
+    GridProductRelationEditCell: () => import('@Products/extends/ui/components/Grid/Layout/Table/Cells/Edit/GridProductRelationEditCell').then(m => m.default || m),
 };
 
 export const Store = {

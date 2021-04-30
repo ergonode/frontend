@@ -10,6 +10,7 @@
             :style="{ height: '100%' }"
             :value="fieldData"
             :label="label"
+            :size="imageSize"
             :required="properties.required"
             :disabled="disabled"
             :multiple="true"
@@ -19,6 +20,9 @@
 </template>
 
 <script>
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 import ProductTemplateFormField from '@Media/extends/product/components/Forms/Field/ProductTemplateFormField';
 
@@ -89,6 +93,13 @@ export default {
         },
         fieldKey() {
             return `${this.properties.attribute_code}/${this.languageCode}`;
+        },
+        imageSize() {
+            if (this.size.height < 3) {
+                return SIZE.SMALL;
+            }
+
+            return SIZE.REGULAR;
         },
     },
     methods: {

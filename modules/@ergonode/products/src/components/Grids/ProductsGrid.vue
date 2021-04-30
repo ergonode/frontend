@@ -555,6 +555,8 @@ export default {
             };
         },
         async onProductsUpdated() {
+            await this.onFetchData();
+
             const rows = [];
 
             Object.keys(this.drafts).forEach((row) => {
@@ -562,8 +564,6 @@ export default {
                     rows.push(row);
                 }
             });
-
-            await this.onFetchData();
 
             this.removeDrafts(rows);
         },

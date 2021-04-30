@@ -21,6 +21,6 @@ export const Icons = {
 };
 
 export const Components = {
-    GridLanguageRowCheckColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridLanguageRowCheckColumn').then(m => m.default || m),
-    GridLanguageNameHintDataCell: () => import('@Users/components/Grid/Layout/Table/Cells/Data//GridLanguageNameHintDataCell').then(m => m.default || m),
+    GridLanguageRowCheckColumn: () => import('@Users/extends/ui/components/Grid/Layout/Table/Columns/GridLanguageRowCheckColumn').then(m => m.default || m),
+    GridLanguageNameHintDataCell: () => import('@Users/extends/ui/components/Grid/Layout/Table/Cells/Data//GridLanguageNameHintDataCell').then(m => m.default || m),
 };

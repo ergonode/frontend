@@ -8,6 +8,10 @@ import {
     YELLOW,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 
+export const ATTRIBUTE_TYPES = {
+    PRODUCT_RELATION: 'PRODUCT_RELATION',
+};
+
 export const PRODUCT_TYPE = {
     WITH_VARIANTS: 'VARIABLE-PRODUCT',
     GROUPING: 'GROUPING-PRODUCT',

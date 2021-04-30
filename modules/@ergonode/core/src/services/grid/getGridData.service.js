@@ -31,7 +31,7 @@ export const getGridData = async ({
 
         const {
             collection,
-            columns,
+            columns = [],
             info: {
                 filtered,
             },
@@ -39,7 +39,7 @@ export const getGridData = async ({
 
         const sortedColumns = getSortedColumnsByIDs(columns, params.columns);
 
-        if (!$cookies.get(`GRID_CONFIG:${$route.name}`)) {
+        if (columns.length > 0 && !$cookies.get(`GRID_CONFIG:${$route.name}`)) {
             $cookies.set(
                 `GRID_CONFIG:${$route.name}`,
                 sortedColumns
