@@ -1,0 +1,72 @@
+{
+  "@Workflow": {
+    "_": {
+      "submit": "Save changes",
+      "create": "Create",
+      "proceed": "Create & Edit",
+      "cancel": "Cancel",
+      "deleteConfirm": "Yes, remove",
+      "routes": {
+        "title": "Statuses & transitions",
+        "group": "Workflow",
+        "editOption": "Options",
+        "editTranslations": "Translations"
+      }
+    },
+    "statusTransition": {
+      "_": {
+        "title": "Statuses & transitions",
+        "headTitle": "Statuses & transitions - Ergonode"
+      },
+      "pages": {
+        "id": {
+          "getRequest": "Product status hasn't been fetched properly"
+        }
+      },
+      "store": {
+        "action": {
+          "createCancel": "Creating product status has been canceled",
+          "updateCancel": "Updating product status has been canceled",
+          "deleteCancel": "Removing product status has been canceled"
+        }
+      },
+      "components": {
+        "UpdateTransitionsButton": {
+          "successMessage": "Status transitions have been updated"
+        },
+        "ProductStatusGeneralTab": {
+          "successMessage": "Product status has been updated"
+        },
+        "CreateProductStatusModalForm": {
+          "title": "Create product status",
+          "successMessage": "Product status created"
+        },
+        "ProductStatusForm": {
+          "title": "Options",
+          "nameLabel": "System name",
+          "nameHint": "System name must be unique",
+          "defaultStatusLabel": "Default status of new products",
+          "defaultStatusHint": "You may set only one status as a default",
+          "badgeLabel": "Badge color",
+          "badgeHint": "Badge color is needed for presentation purpose"
+        },
+        "ProductStatusTranslationForm": {
+          "nameLabel": "Status name",
+          "descriptionLabel": "Status description"
+        },
+        "CreateProductStatusButton": {
+          "title": "New status"
+        },
+        "RemoveProductStatusButton": {
+          "title": "Remove status",
+          "confirmTitle": "Are you sure you want to delete this product status?",
+          "successMessage": "Product status removed",
+          "errorMessage": "Product status hasn`t been deleted"
+        },
+        "UpdateProductStatusTranslationButton": {
+          "successMessage": "Product status translations have been updated"
+        }
+      }
+    }
+  }
+}
