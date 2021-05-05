@@ -3,77 +3,81 @@
  * See LICENSE for license details.
  */
 <template>
-    <Designer
-        :columns="columns"
-        :row-height="rowHeight"
-        :last-item-row="localItems.length">
-        <template #appendBody="{ layerStyle }">
-            <TreeDesignerDraggableLayer
-                :style="layerStyle"
-                :single-root="singleRoot"
-                :items="localItems"
-                :hidden-items="hiddenItems"
-                :children-length="childrenLength"
-                :disabled="disabled"
-                @update-items="onUpdateItems"
-                @update-item="onUpdateItem"
-                @insert-item="onInsertItem"
-                @add-item="onAddItem"
-                @remove-item="onRemoveItem"
-                @remove-items="onRemoveItems"
-                @shift-items="onShiftItems"
-                @expand-item="onExpandItem"
-                @drop-item="onDropItem">
-                <DesignerPlaceholderItem
-                    v-if="localItems.length === 0"
-                    :gap="gridGap"
-                    :row-height="rowHeight" />
-                <DesignerGhostItem
-                    v-if="ghostIndex !== -1"
-                    :row="ghostIndex.row"
-                    :column="ghostIndex.column"
-                    :gap="gridGap"
-                    :row-height="rowHeight" />
-                <template v-for="item in itemsWithoutGhost">
-                    <slot
-                        name="item"
-                        :item="item"
-                        :gap="gridGap"
-                        :children-length="childrenLength[item.id]"
+    <VerticalFixedScroll>
+        <div class="tree-designer">
+            <Designer
+                :columns="columns"
+                :row-height="rowHeight"
+                :last-item-row="localItems.length">
+                <template #appendBody="{ layerStyle }">
+                    <TreeDesignerDraggableLayer
+                        :style="layerStyle"
+                        :single-root="singleRoot"
+                        :items="localItems"
+                        :hidden-items="hiddenItems"
+                        :children-length="childrenLength"
                         :disabled="disabled"
-                        :is-expanded="typeof hiddenItems[item.id] === 'undefined'"
-                        :on-expand-item="onExpandItem"
-                        :on-remove-items="onRemoveItems">
-                        <TreeDesignerItem
-                            :key="item.id"
-                            :item="item"
+                        @update-items="onUpdateItems"
+                        @update-item="onUpdateItem"
+                        @insert-item="onInsertItem"
+                        @add-item="onAddItem"
+                        @remove-item="onRemoveItem"
+                        @remove-items="onRemoveItems"
+                        @shift-items="onShiftItems"
+                        @expand-item="onExpandItem"
+                        @drop-item="onDropItem">
+                        <DesignerPlaceholderItem
+                            v-if="localItems.length === 0"
                             :gap="gridGap"
-                            :children-length="childrenLength[item.id]"
-                            :disabled="disabled"
-                            :is-expanded="typeof hiddenItems[item.id] === 'undefined'"
-                            @expand-item="onExpandItem"
-                            @remove-item="onRemoveItems">
-                            <template #description>
-                                <slot
-                                    name="itemDescription"
+                            :row-height="rowHeight" />
+                        <DesignerGhostItem
+                            v-if="ghostIndex !== -1"
+                            :row="ghostIndex.row"
+                            :column="ghostIndex.column"
+                            :gap="gridGap"
+                            :row-height="rowHeight" />
+                        <template v-for="item in itemsWithoutGhost">
+                            <slot
+                                name="item"
+                                :item="item"
+                                :gap="gridGap"
+                                :children-length="childrenLength[item.id]"
+                                :disabled="disabled"
+                                :is-expanded="typeof hiddenItems[item.id] === 'undefined'"
+                                :on-expand-item="onExpandItem"
+                                :on-remove-items="onRemoveItems">
+                                <TreeDesignerItem
+                                    :key="item.id"
                                     :item="item"
-                                    :children-length="childrenLength[item.id]" />
-                            </template>
-                        </TreeDesignerItem>
-                    </slot>
+                                    :gap="gridGap"
+                                    :children-length="childrenLength[item.id]"
+                                    :disabled="disabled"
+                                    :is-expanded="typeof hiddenItems[item.id] === 'undefined'"
+                                    @expand-item="onExpandItem"
+                                    @remove-item="onRemoveItems">
+                                    <template #description>
+                                        <slot
+                                            name="itemDescription"
+                                            :item="item"
+                                            :children-length="childrenLength[item.id]" />
+                                    </template>
+                                </TreeDesignerItem>
+                            </slot>
+                        </template>
+                        <TreeDesignerConnectionLine
+                            v-for="item in connectionLines"
+                            :key="`${item.id}-line|${item.row}|${item.column}`"
+                            :items="localItems"
+                            :row="item.row"
+                            :column="item.column"
+                            :row-height="rowHeight"
+                            :gap="gridGap"
+                            :border-style="item.id === 'ghost_item' ? 'dashed' : 'solid'" />
+                    </TreeDesignerDraggableLayer>
                 </template>
-                <TreeDesignerConnectionLine
-                    v-for="item in connectionLines"
-                    :key="`${item.id}-line|${item.row}|${item.column}`"
-                    :items="localItems"
-                    :row="item.row"
-                    :column="item.column"
-                    :row-height="rowHeight"
-                    :gap="gridGap"
-                    :border-style="item.id === 'ghost_item' ? 'dashed' : 'solid'" />
-            </TreeDesignerDraggableLayer>
-        </template>
-    </Designer>
+            </Designer>
+        </div>
+    </VerticalFixedScroll>
 </template>
 
 <script>
@@ -91,6 +95,7 @@ import {
 import Designer from '@UI/components/Designer/Designer';
 import DesignerGhostItem from '@UI/components/Designer/DesignerGhostItem';
 import DesignerPlaceholderItem from '@UI/components/Designer/DesignerPlaceholderItem';
+import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
 import TreeDesignerConnectionLine from '@UI/components/TreeDesigner/TreeDesignerConnectionLine';
 import TreeDesignerDraggableLayer from '@UI/components/TreeDesigner/TreeDesignerDraggableLayer';
 import TreeDesignerItem from '@UI/components/TreeDesigner/TreeDesignerItem';
@@ -106,6 +111,7 @@ import {
 export default {
     name: 'TreeDesigner',
     components: {
+        VerticalFixedScroll,
         DesignerPlaceholderItem,
         Designer,
         TreeDesignerDraggableLayer,
@@ -366,3 +372,13 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .tree-designer {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        height: 100%;
+        padding: 24px 24px 0;
+    }
+</style>

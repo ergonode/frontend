@@ -99,6 +99,13 @@ export default {
             default: 0,
         },
         /**
+         * The width of each column
+         */
+        columnWidth: {
+            type: String,
+            default: '1fr',
+        },
+        /**
          * Determines the row height
          */
         rowHeight: {
@@ -124,7 +131,7 @@ export default {
         },
         layerStyle() {
             return {
-                gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
+                gridTemplateColumns: `repeat(${this.columns}, ${this.columnWidth})`,
                 gridTemplateRows: `repeat(${this.rows}, ${this.rowHeight}px)`,
             };
         },
@@ -166,11 +173,8 @@ export default {
     .designer {
         position: relative;
         display: flex;
-        flex: 1 1 auto;
+        flex: 1;
         flex-direction: column;
-        height: 0;
-        padding: 24px 24px 0;
-        box-sizing: border-box;
-        overflow: auto;
+        height: 100%;
     }
 </style>

@@ -48,7 +48,7 @@ export default [
             {
                 name: ROUTE_NAME.WORKFLOW_DESIGNER,
                 path: 'designer',
-                component: Tabs.StatusAndTransitionsTab,
+                component: Tabs.WorkflowDesignerTab,
                 meta: {
                     title: '',
                     breadcrumbs: [
