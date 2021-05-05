@@ -7,7 +7,7 @@ export const Pages = {
 };
 
 export const Tabs = {
-    StatusAndTransitionsTab: () => import('@Workflow/components/Tabs/StatusAndTransitionsTab').then(m => m.default || m),
+    WorkflowDesignerTab: () => import('@Workflow/components/Tabs/WorkflowDesignerTab').then(m => m.default || m),
     ProductStatusGeneralTab: () => import('@Workflow/components/Tabs/ProductStatusGeneralTab').then(m => m.default || m),
     ProductStatusTranslationsTab: () => import('@Workflow/components/Tabs/ProductStatusTranslationsTab').then(m => m.default || m),
 };
