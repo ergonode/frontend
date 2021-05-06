@@ -31,6 +31,9 @@
         }
       },
       "components": {
+        "WorkflowDesigner": {
+          "errorMessage": "Workflow haven’t been fetched properly"
+        },
         "UpdateTransitionsButton": {
           "successMessage": "Status transitions have been updated"
         },
