@@ -51,6 +51,7 @@ export default {
                     'template-designer-background-item--highlighted': this.highlightedElement,
                     'template-designer-background-item--top-border': !this.highlightedElement && this.isTopNeighbour,
                     'template-designer-background-item--right-border': this.highlightedElement && this.isRightNeighbour,
+                    'template-designer-background-item--last-column': this.column + 1 === this.columns,
                 },
             ];
         },
@@ -95,6 +96,10 @@ export default {
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         border-top: $BORDER_DASHED_GREY;
         border-left: $BORDER_DASHED_GREY;
+
+        &--last-column {
+            border-right: $BORDER_DASHED_GREY;
+        }
 
         &--highlighted {
             background-color: $GREEN_LIGHT;
