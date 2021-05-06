@@ -4,6 +4,7 @@
  */
 <template>
     <div class="designer-background-layer">
+        <slot />
         <template v-for="item in numberOfItems">
             <slot
                 name="item"
@@ -56,6 +57,5 @@ export default {
         display: grid;
         width: 100%;
         height: auto;
-        border-right: $BORDER_DASHED_GREY;
     }
 </style>
