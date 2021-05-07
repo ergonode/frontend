@@ -49,7 +49,7 @@ export default {
         },
         linkTo() {
             return {
-                name: ROUTE_NAME.STATUS_TRANSITION_EDIT_GENERAL,
+                name: ROUTE_NAME.WORKFLOW_STATUS_EDIT_GENERAL,
                 params: {
                     id: this.statusId,
                 },

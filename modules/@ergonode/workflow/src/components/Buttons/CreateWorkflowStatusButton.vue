@@ -5,14 +5,14 @@
 <template>
     <Button
         data-cy="new-status"
-        :title="$t('@Workflow.statusTransition.components.CreateProductStatusButton.title')"
+        :title="$t('@Workflow.workflow.components.CreateWorkflowStatusButton.title')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">
         <template #prepend="{ color }">
             <IconAdd :fill-color="color" />
         </template>
-        <CreateProductStatusModalForm
+        <CreateWorkflowStatusModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
             @created="onCreatedData" />
@@ -27,15 +27,15 @@ import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import PRIVILEGES from '@Workflow/config/privileges';
 import {
-    PRODUCT_STATUS_CREATED_EVENT_NAME,
+    WORKFLOW_STATUS_CREATED_EVENT_NAME,
 } from '@Workflow/defaults';
 
 export default {
-    name: 'CreateProductStatusButton',
+    name: 'CreateWorkflowStatusButton',
     components: {
         Button,
         IconAdd,
-        CreateProductStatusModalForm: () => import('@Workflow/components/Modals/CreateProductStatusModalForm'),
+        CreateWorkflowStatusModalForm: () => import('@Workflow/components/Modals/CreateWorkflowStatusModalForm'),
     },
     data() {
         return {
@@ -62,7 +62,7 @@ export default {
         onCreatedData() {
             this.onCloseModal();
 
-            const event = new CustomEvent(PRODUCT_STATUS_CREATED_EVENT_NAME);
+            const event = new CustomEvent(WORKFLOW_STATUS_CREATED_EVENT_NAME);
 
             document.documentElement.dispatchEvent(event);
         },

@@ -7,7 +7,7 @@
         <div class="workflow-designer-header-layer-cell__title">
             <WorkflowStatusBadge
                 :color="status.color"
-                :default="status.is_default" />
+                :default-status="status.is_default" />
             {{ title }}
         </div>
         <WorkflowDesignerEditStatusLink :status-id="status.id" />

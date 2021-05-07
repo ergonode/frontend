@@ -5,7 +5,7 @@
 <template>
     <TranslationsTab>
         <template #default="{ languageCodes }">
-            <ProductStatusTranslationForm
+            <WorkflowStatusTranslationForm
                 v-for="languageCode in languageCodes"
                 :key="languageCode"
                 :scope="scope"
@@ -14,7 +14,7 @@
                 :language-code="languageCode" />
         </template>
         <template #saveButton>
-            <UpdateProductStatusTranslationButton
+            <UpdateWorkflowStatusTranslationButton
                 :scope="scope"
                 :change-values="changeValues"
                 :errors="errors" />
@@ -25,15 +25,15 @@
 <script>
 import TranslationsTab from '@Core/components/Tabs/TranslationsTab';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
-import UpdateProductStatusTranslationButton from '@Workflow/components/Buttons/UpdateProductStatusTranslationButton';
-import ProductStatusTranslationForm from '@Workflow/components/Forms/ProductStatusTranslationForm';
+import UpdateWorkflowStatusTranslationButton from '@Workflow/components/Buttons/UpdateWorkflowStatusTranslationButton';
+import WorkflowStatusTranslationForm from '@Workflow/components/Forms/WorkflowStatusTranslationForm';
 
 export default {
-    name: 'ProductStatusTranslationsTab',
+    name: 'WorkflowStatusTranslationsTab',
     components: {
-        UpdateProductStatusTranslationButton,
+        UpdateWorkflowStatusTranslationButton,
         TranslationsTab,
-        ProductStatusTranslationForm,
+        WorkflowStatusTranslationForm,
     },
     mixins: [
         tabFeedbackMixin,

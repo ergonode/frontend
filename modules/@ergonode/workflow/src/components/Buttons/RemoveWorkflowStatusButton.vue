@@ -7,7 +7,7 @@
         data-cy="delete-status"
         :theme="secondaryTheme"
         :size="smallSize"
-        :title="$t('@Workflow.statusTransition.components.RemoveProductStatusButton.title')"
+        :title="$t('@Workflow.workflow.components.RemoveWorkflowStatusButton.title')"
         :disabled="!isAllowedToDelete"
         @click.native="onRemove">
         <template #prepend="{ color }">
@@ -39,7 +39,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'RemoveProductStatusButton',
+    name: 'RemoveWorkflowStatusButton',
     components: {
         Button,
         IconDelete,
@@ -58,15 +58,15 @@ export default {
         },
     },
     methods: {
-        ...mapActions('productStatus', [
-            'removeProductStatus',
+        ...mapActions('workflow', [
+            'removeStatus',
         ]),
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: this.$t('@Workflow.statusTransition.components.RemoveProductStatusButton.confirmTitle'),
+                title: this.$t('@Workflow.workflow.components.RemoveWorkflowStatusButton.confirmTitle'),
                 applyTitle: this.$t('@Workflow._.deleteConfirm'),
-                action: () => this.removeProductStatus({
+                action: () => this.removeStatus({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
                 }),
@@ -75,7 +75,7 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('@Workflow.statusTransition.components.RemoveProductStatusButton.successMessage'),
+                message: this.$t('@Workflow.workflow.components.RemoveWorkflowStatusButton.successMessage'),
             });
             this.$router.push({
                 name: ROUTE_NAME.WORKFLOW_DESIGNER,
@@ -84,7 +84,7 @@ export default {
         onRemoveError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: this.$t('@Workflow.statusTransition.components.RemoveProductStatusButton.errorMessage'),
+                message: this.$t('@Workflow.workflow.components.RemoveWorkflowStatusButton.errorMessage'),
             });
         },
     },

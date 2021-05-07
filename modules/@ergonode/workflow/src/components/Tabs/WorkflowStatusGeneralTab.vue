@@ -5,7 +5,7 @@
 <template>
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
-            <ProductStatusForm
+            <WorkflowStatusForm
                 :submit-title="$t('@Workflow._.submit')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
@@ -22,15 +22,15 @@ import {
 } from '@Core/defaults/alerts';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
-import ProductStatusForm from '@Workflow/components/Forms/ProductStatusForm';
+import WorkflowStatusForm from '@Workflow/components/Forms/WorkflowStatusForm';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
-    name: 'ProductStatusGeneralTab',
+    name: 'WorkflowStatusGeneralTab',
     components: {
-        ProductStatusForm,
+        WorkflowStatusForm,
         CenterViewTemplate,
     },
     mixins: [
@@ -42,8 +42,8 @@ export default {
         };
     },
     methods: {
-        ...mapActions('productStatus', [
-            'updateProductStatus',
+        ...mapActions('workflow', [
+            'updateStatus',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -52,7 +52,7 @@ export default {
             this.isSubmitting = true;
 
             this.removeScopeErrors(this.scope);
-            this.updateProductStatus({
+            this.updateStatus({
                 scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
@@ -61,7 +61,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('@Workflow.statusTransition.components.ProductStatusGeneralTab.successMessage'),
+                message: this.$t('@Workflow.workflow.components.WorkflowStatusGeneralTab.successMessage'),
             });
 
             this.isSubmitting = false;
