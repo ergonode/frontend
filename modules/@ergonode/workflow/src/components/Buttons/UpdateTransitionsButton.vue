@@ -72,7 +72,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('@Workflow.statusTransition.components.UpdateTransitionsButton.successMessage'),
+                message: this.$t('@Workflow.workflow.components.UpdateTransitionsButton.successMessage'),
             });
 
             this.isSubmitting = false;

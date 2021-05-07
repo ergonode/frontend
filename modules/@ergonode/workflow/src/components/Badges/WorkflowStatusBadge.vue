@@ -17,7 +17,7 @@ export default {
             required: true,
             validator: value => /^#([A-Fa-f0-9]{6})$/.test(value),
         },
-        default: {
+        defaultStatus: {
             type: Boolean,
             default: false,
         },
@@ -32,7 +32,7 @@ export default {
             return [
                 'workflow-status-badge',
                 {
-                    'workflow-status-badge--default': this.default,
+                    'workflow-status-badge--default': this.defaultStatus,
                 },
             ];
         },

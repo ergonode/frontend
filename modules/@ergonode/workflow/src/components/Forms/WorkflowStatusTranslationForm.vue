@@ -13,14 +13,14 @@
                     <TextField
                         :data-cy="dataCyGenerator(nameKeyField)"
                         :value="translations.name[languageCode]"
-                        :label="$t('@Workflow.statusTransition.components.ProductStatusTranslationForm.nameLabel')"
+                        :label="$t('@Workflow.workflow.components.WorkflowStatusTranslationForm.nameLabel')"
                         :error-messages="translationErrors[nameKeyField]"
                         :disabled="!isAllowedToUpdate || isReadOnly"
                         @input="(value) => setTranslationPropertyValue(value, nameKeyField)" />
                     <TextArea
                         :data-cy="dataCyGenerator(descriptionKeyField)"
                         :value="translations.description[languageCode]"
-                        :label="$t('@Workflow.statusTransition.components.ProductStatusTranslationForm.descriptionLabel')"
+                        :label="$t('@Workflow.workflow.components.WorkflowStatusTranslationForm.descriptionLabel')"
                         resize="none"
                         height="150px"
                         :error-messages="translationErrors[descriptionKeyField]"
@@ -48,7 +48,7 @@ import TextField from '@UI/components/TextField/TextField';
 import PRIVILEGES from '@Workflow/config/privileges';
 
 export default {
-    name: 'ProductStatusTranslationForm',
+    name: 'WorkflowStatusTranslationForm',
     components: {
         TextField,
         TextArea,
@@ -64,7 +64,7 @@ export default {
         },
         extendedForm() {
             return this.$extendedForm({
-                key: '@Workflow/components/Forms/ProductStatusTranslationForm',
+                key: '@Workflow/components/Forms/WorkflowStatusTranslationForm',
             });
         },
         descriptionKeyField() {

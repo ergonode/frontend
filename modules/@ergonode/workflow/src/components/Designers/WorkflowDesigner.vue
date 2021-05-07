@@ -76,6 +76,9 @@ import HorizontalFixedScroll from '@UI/components/Layout/Scroll/HorizontalFixedS
 import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
 import Preloader from '@UI/components/Preloader/Preloader';
 import {
+    WORKFLOW_STATUS_CREATED_EVENT_NAME,
+} from '@Workflow/defaults';
+import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -109,10 +112,30 @@ export default {
             'transitions',
         ]),
     },
+    mounted() {
+        document.documentElement.addEventListener(
+            WORKFLOW_STATUS_CREATED_EVENT_NAME,
+            this.onWorkflowStatusCreated,
+        );
+    },
+    beforeDestroy() {
+        document.documentElement.removeEventListener(
+            WORKFLOW_STATUS_CREATED_EVENT_NAME,
+            this.onWorkflowStatusCreated,
+        );
+    },
     methods: {
         ...mapActions('workflow', [
             'getWorkflow',
         ]),
+        onWorkflowStatusCreated() {
+            this.isFetchingData = true;
+
+            this.getWorkflow({
+                onSuccess: this.onFetchDataSuccess,
+                onError: this.onFetchDataError,
+            });
+        },
         onFetchDataSuccess() {
             this.isFetchingData = false;
         },

@@ -41,7 +41,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'UpdateProductStatusTranslationButton',
+    name: 'UpdateWorkflowStatusTranslationButton',
     components: {
         FeedbackProvider,
         Button,
@@ -64,8 +64,8 @@ export default {
         },
     },
     methods: {
-        ...mapActions('productStatus', [
-            'updateProductStatus',
+        ...mapActions('workflow', [
+            'updateStatus',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -74,7 +74,7 @@ export default {
             this.isSubmitting = true;
 
             this.removeScopeErrors(this.scope);
-            this.updateProductStatus({
+            this.updateStatus({
                 scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
@@ -83,7 +83,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('@Workflow.statusTransition.components.UpdateProductStatusTranslationButton.successMessage'),
+                message: this.$t('@Workflow.workflow.components.UpdateWorkflowStatusTranslationButton.successMessage'),
             });
 
             this.isSubmitting = false;

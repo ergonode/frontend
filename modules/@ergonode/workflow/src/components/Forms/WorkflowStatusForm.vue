@@ -4,7 +4,7 @@ sw/*
  */
 <template>
     <Form
-        :title="$t('@Workflow.statusTransition.components.ProductStatusForm.title')"
+        :title="$t('@Workflow.workflow.components.WorkflowStatusForm.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
@@ -18,35 +18,45 @@ sw/*
             <FormSection>
                 <TextField
                     :data-cy="dataCyGenerator(codeFieldKey)"
-                    :value="code"
+                    :value="status.code"
                     required
                     :error-messages="errors[codeFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :label="$t('@Workflow.statusTransition.components.ProductStatusForm.nameLabel')"
-                    :hint="$t('@Workflow.statusTransition.components.ProductStatusForm.nameHint')"
-                    @input="setCodeValue" />
-                <CheckBox
-                    :value="isDefaultStatus"
-                    :label="$t('@Workflow.statusTransition.components.ProductStatusForm.defaultStatusLabel')"
-                    :disabled="!isAllowedToUpdate"
-                    @input="setStatusAsDefaultValue">
-                    <template #append>
-                        <InfoHint :hint="$t('@Workflow.statusTransition.components.ProductStatusForm.defaultStatusHint')" />
-                    </template>
-                </CheckBox>
+                    :label="$t('@Workflow.workflow.components.WorkflowStatusForm.nameLabel')"
+                    :hint="$t('@Workflow.workflow.components.WorkflowStatusForm.nameHint')"
+                    @input="onCodeValueChange" />
                 <ColorPicker
                     :data-cy="dataCyGenerator(colorFieldKey)"
-                    :value="color"
+                    :value="status.color"
                     required
                     :error-messages="errors[colorFieldKey]"
                     clearable
                     :dismissible="false"
                     :options="colorOptions"
                     :fixed-content="false"
-                    :label="$t('@Workflow.statusTransition.components.ProductStatusForm.badgeLabel')"
-                    :hint="$t('@Workflow.statusTransition.components.ProductStatusForm.badgeHint')"
+                    :label="$t('@Workflow.workflow.components.WorkflowStatusForm.badgeLabel')"
                     :disabled="!isAllowedToUpdate"
-                    @input="setColorValue" />
+                    @input="onColorValueChange">
+                    <template #value>
+                        <ColorPickerInputValue
+                            v-if="status.color"
+                            :value="status.color"
+                            :default-status="status.isDefaultStatus" />
+                    </template>
+                </ColorPicker>
+                <Toggler
+                    :value="status.isDefaultStatus"
+                    :label="$t('@Workflow.workflow.components.WorkflowStatusForm.defaultStatusLabel')"
+                    :disabled="!isAllowedToUpdate"
+                    @input="onDefaultStatusValueChange">
+                    <template #append>
+                        <InfoHint :hint="$t('@Workflow.workflow.components.WorkflowStatusForm.defaultStatusHint')" />
+                    </template>
+                </Toggler>
+                <WorkflowStatusPreview
+                    :color="status.color"
+                    :default-status="status.isDefaultStatus"
+                    :label="status.code" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
                         :is="field.component"
@@ -64,12 +74,14 @@ import {
 } from '@Core/defaults/colors';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import CheckBox from '@UI/components/CheckBox/CheckBox';
+import ColorPickerInputValue from '@Modules/@ergonode/workflow/src/components/Inputs/ColorPickerInputValue';
+import WorkflowStatusPreview from '@Modules/@ergonode/workflow/src/components/Inputs/WorkflowStatusPreview';
 import ColorPicker from '@UI/components/ColorPicker/ColorPicker';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import InfoHint from '@UI/components/Hints/InfoHint';
 import TextField from '@UI/components/TextField/TextField';
+import Toggler from '@UI/components/Toggler/Toggler';
 import PRIVILEGES from '@Workflow/config/privileges';
 import {
     mapActions,
@@ -77,13 +89,15 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'ProductStatusForm',
+    name: 'WorkflowStatusForm',
     components: {
+        WorkflowStatusPreview,
+        ColorPickerInputValue,
         Form,
         FormSection,
         TextField,
         ColorPicker,
-        CheckBox,
+        Toggler,
         InfoHint,
     },
     mixins: [
@@ -91,15 +105,12 @@ export default {
         formFeedbackMixin,
     ],
     computed: {
-        ...mapState('productStatus', [
-            'id',
-            'code',
-            'color',
-            'isDefaultStatus',
+        ...mapState('workflow', [
+            'status',
         ]),
         extendedForm() {
             return this.$extendedForm({
-                key: '@Workflow/components/Forms/ProductStatusForm',
+                key: '@Workflow/components/Forms/WorkflowStatusForm',
             });
         },
         isAllowedToUpdate() {
@@ -110,7 +121,7 @@ export default {
             ]));
         },
         isDisabled() {
-            return Boolean(this.id);
+            return Boolean(this.status.id);
         },
         colorOptions() {
             return COLORS;
@@ -121,9 +132,12 @@ export default {
         colorFieldKey() {
             return 'color';
         },
+        defaultStatusFieldKey() {
+            return 'isDefaultStatus';
+        },
     },
     methods: {
-        ...mapActions('productStatus', [
+        ...mapActions('workflow', [
             '__setState',
         ]),
         bindingProps({
@@ -137,10 +151,13 @@ export default {
                 ...props,
             };
         },
-        setCodeValue(value) {
+        onCodeValueChange(value) {
             this.__setState({
-                key: this.codeFieldKey,
-                value,
+                key: 'status',
+                value: {
+                    ...this.status,
+                    code: value,
+                },
             });
             this.onScopeValueChange({
                 scope: this.scope,
@@ -148,10 +165,13 @@ export default {
                 value,
             });
         },
-        setColorValue(value) {
+        onColorValueChange(value) {
             this.__setState({
-                key: this.colorFieldKey,
-                value,
+                key: 'status',
+                value: {
+                    ...this.status,
+                    color: value,
+                },
             });
             this.onScopeValueChange({
                 scope: this.scope,
@@ -159,14 +179,17 @@ export default {
                 value,
             });
         },
-        setStatusAsDefaultValue(value) {
+        onDefaultStatusValueChange(value) {
             this.__setState({
-                key: 'isDefaultStatus',
-                value,
+                key: 'status',
+                value: {
+                    ...this.status,
+                    isDefaultStatus: value,
+                },
             });
             this.onScopeValueChange({
                 scope: this.scope,
-                fieldKey: 'isDefaultStatus',
+                fieldKey: this.defaultStatusFieldKey,
                 value,
             });
         },
