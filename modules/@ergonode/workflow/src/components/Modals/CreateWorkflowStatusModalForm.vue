@@ -4,10 +4,10 @@
  */
 <template>
     <ModalForm
-        :title="$t('@Workflow.statusTransition.components.CreateProductStatusModalForm.title')"
+        :title="$t('@Workflow.workflow.components.CreateWorkflowStatusModalForm.title')"
         @close="onClose">
         <template #body>
-            <ProductStatusForm
+            <WorkflowStatusForm
                 :submit-title="$t('@Workflow._.create')"
                 :proceed-title="$t('@Workflow._.proceed')"
                 :is-submitting="isSubmitting"
@@ -27,19 +27,20 @@ import {
 } from '@Core/defaults/alerts';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import ModalForm from '@UI/components/Modal/ModalForm';
-import ProductStatusForm from '@Workflow/components/Forms/ProductStatusForm';
+import WorkflowStatusForm from '@Workflow/components/Forms/WorkflowStatusForm';
 import {
     ROUTE_NAME,
 } from '@Workflow/config/routes';
+import state from '@Workflow/store/workflow/state';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
-    name: 'CreateProductStatusModalForm',
+    name: 'CreateWorkflowStatusModalForm',
     components: {
         ModalForm,
-        ProductStatusForm,
+        WorkflowStatusForm,
     },
     mixins: [
         modalFeedbackMixin,
@@ -51,12 +52,15 @@ export default {
         };
     },
     methods: {
-        ...mapActions('productStatus', [
-            'createProductStatus',
-            '__clearStorage',
+        ...mapActions('workflow', [
+            'createStatus',
+            '__setState',
         ]),
         onClose() {
-            this.__clearStorage();
+            this.__setState({
+                key: 'status',
+                value: state().status,
+            });
             this.removeScopeData(this.scope);
 
             this.$emit('close');
@@ -68,7 +72,7 @@ export default {
             this.isSubmitting = true;
 
             this.removeScopeErrors(this.scope);
-            this.createProductStatus({
+            this.createStatus({
                 scope: this.scope,
                 onSuccess: this.onCreateSuccess,
                 onError: this.onCreateError,
@@ -82,7 +86,7 @@ export default {
             this.isProceeding = true;
 
             this.removeScopeErrors(this.scope);
-            this.createProductStatus({
+            this.createStatus({
                 scope: this.scope,
                 onSuccess: this.onProceedSuccess,
                 onError: this.onCreateError,
@@ -91,7 +95,7 @@ export default {
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('@Workflow.statusTransition.components.CreateProductStatusModalForm.successMessage'),
+                message: this.$t('@Workflow.workflow.components.CreateWorkflowStatusModalForm.successMessage'),
             });
 
             this.isSubmitting = false;
@@ -104,7 +108,7 @@ export default {
 
             this.onClose();
             this.$router.push({
-                name: ROUTE_NAME.STATUS_TRANSITION_EDIT_GENERAL,
+                name: ROUTE_NAME.WORKFLOW_STATUS_EDIT_GENERAL,
                 params: {
                     id,
                 },

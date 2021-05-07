@@ -16,16 +16,16 @@ export const GROUP = {
 export const ROUTE_NAME = {
     WORKFLOW: 'workflow',
     WORKFLOW_DESIGNER: 'workflow-designer',
-    STATUS_TRANSITION_EDIT: 'product-status-id',
-    STATUS_TRANSITION_EDIT_GENERAL: 'product-status-id-general',
-    STATUS_TRANSITION_EDIT_TRANSLATIONS: 'product-status-id-translation',
+    WORKFLOW_STATUS_EDIT: 'workflow-status-id',
+    WORKFLOW_STATUS_EDIT_GENERAL: 'workflow-status-id-general',
+    WORKFLOW_STATUS_EDIT_TRANSLATIONS: 'workflow-status-id-translation',
 };
 
 export default [
     {
         name: ROUTE_NAME.WORKFLOW,
         path: '/workflow',
-        component: Pages.StatusTransitions,
+        component: Pages.WorkflowStatusTransitions,
         redirect: {
             name: ROUTE_NAME.WORKFLOW_DESIGNER,
         },
@@ -55,6 +55,57 @@ export default [
                         {
                             title: GROUP.title,
                             icon: Icons.Flow,
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+        ],
+    },
+    {
+        name: ROUTE_NAME.WORKFLOW_STATUS_EDIT,
+        path: '/workflow/status/:id',
+        component: Pages.WorkflowStatusEdit,
+        redirect: {
+            name: ROUTE_NAME.WORKFLOW_STATUS_EDIT_GENERAL,
+        },
+        meta: {
+            isMenu: false,
+        },
+        children: [
+            {
+                name: ROUTE_NAME.WORKFLOW_STATUS_EDIT_GENERAL,
+                path: 'general',
+                component: Tabs.WorkflowStatusGeneralTab,
+                meta: {
+                    title: '@Workflow._.routes.editOption',
+                    breadcrumbs: [
+                        {
+                            title: GROUP.title,
+                            icon: Icons.Flow,
+                        },
+                        {
+                            title: '@Workflow._.routes.title',
+                            routeName: ROUTE_NAME.WORKFLOW_DESIGNER,
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+            {
+                name: ROUTE_NAME.WORKFLOW_STATUS_EDIT_TRANSLATIONS,
+                path: 'translations',
+                component: Tabs.WorkflowStatusTranslationsTab,
+                meta: {
+                    title: '@Workflow._.routes.editTranslations',
+                    breadcrumbs: [
+                        {
+                            title: GROUP.title,
+                            icon: Icons.Flow,
+                        },
+                        {
+                            title: '@Workflow._.routes.title',
+                            routeName: ROUTE_NAME.WORKFLOW_DESIGNER,
                         },
                     ],
                     privileges: [],

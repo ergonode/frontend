@@ -8,9 +8,11 @@
         v-bind="$attrs"
         v-on="$listeners">
         <template #value>
-            <span
-                :style="{ color: $attrs.value }"
-                v-text="$attrs.value" />
+            <slot name="value">
+                <span
+                    :style="{ color: $attrs.value }"
+                    v-text="$attrs.value" />
+            </slot>
         </template>
         <template
             #dropdown="{

@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar
-            :title="$t('@Workflow.statusTransition._.title')"
+            :title="$t('@Workflow.workflow._.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <template
@@ -15,7 +15,7 @@
                         :key="index"
                         v-bind="bindingProps(actionItem)" />
                 </template>
-                <CreateProductStatusButton />
+                <CreateWorkflowStatusButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -30,13 +30,13 @@ import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@UI/components/TitleBar/TitleBar';
-import CreateProductStatusButton from '@Workflow/components/Buttons/CreateProductStatusButton';
+import CreateWorkflowStatusButton from '@Workflow/components/Buttons/CreateWorkflowStatusButton';
 import PRIVILEGES from '@Workflow/config/privileges';
 
 export default {
-    name: 'StatusTransitions',
+    name: 'WorkflowStatusTransitions',
     components: {
-        CreateProductStatusButton,
+        CreateWorkflowStatusButton,
         TitleBar,
         Page,
         HorizontalRoutingTabBar,
@@ -65,7 +65,7 @@ export default {
     },
     head() {
         return {
-            title: this.$t('@Workflow.statusTransition._.headTitle'),
+            title: this.$t('@Workflow.workflow._.headTitle'),
         };
     },
 };

@@ -13,21 +13,21 @@
         "editTranslations": "Tłumaczenia"
       }
     },
-    "statusTransition": {
+    "workflow": {
       "_": {
         "title": "Statusy & przejścia",
         "headTitle": "Statusy & przejścia - Ergonode"
       },
       "pages": {
         "id": {
-          "getRequest": "Status produktu nie została pobrana poprawnie"
+          "getRequest": "Status nie została pobrana poprawnie"
         }
       },
       "store": {
         "action": {
-          "createCancel": "Tworzenie statusu produktu zostało przerwane",
-          "updateCancel": "Aktualizacja statusu produktu została przerwana",
-          "deleteCancel": "Usuwanie statusu produktu zostało przerwane"
+          "createCancel": "Tworzenie statusu zostało przerwane",
+          "updateCancel": "Aktualizacja statusu została przerwana",
+          "deleteCancel": "Usuwanie statusu zostało przerwane"
         }
       },
       "components": {
@@ -37,37 +37,36 @@
         "UpdateTransitionsButton": {
           "successMessage": "Przejścia statusów zostały zaktualizowane"
         },
-        "ProductStatusGeneralTab": {
-          "successMessage": "Status produktu został zaktualizowany"
+        "WorkflowStatusGeneralTab": {
+          "successMessage": "Status został zaktualizowany"
         },
-        "CreateProductStatusModalForm": {
-          "title": "Stwórz status produktu",
-          "successMessage": "Status produktu został stworzony"
+        "CreateWorkflowStatusModalForm": {
+          "title": "Stwórz nowy status",
+          "successMessage": "Status został stworzony"
         },
-        "ProductStatusForm": {
+        "WorkflowStatusForm": {
           "title": "Opcje",
           "nameLabel": "Nazwa systemowa",
           "nameHint": "Nazwa systemowa musi być unikatowa",
           "defaultStatusLabel": "Domyślny status nowych produktów",
           "defaultStatusHint": "Możesz ustawić tylko jeden domyślny status dla produktów",
-          "badgeLabel": "Kolor znacznika",
-          "badgeHint": "Kolor znacznika jest wymagany w celach prezentacyjnych"
+          "badgeLabel": "Kolor"
         },
-        "ProductStatusTranslationForm": {
+        "WorkflowStatusTranslationForm": {
           "nameLabel": "Nazwa statusu",
           "descriptionLabel": "Opis statusu"
         },
-        "CreateProductStatusButton": {
+        "CreateWorkflowStatusButton": {
           "title": "Nowy status"
         },
-        "RemoveProductStatusButton": {
+        "RemoveWorkflowStatusButton": {
           "title": "Usuń status",
           "confirmTitle": "Czy jesteś pewien, że chcesz usunąć ten status produktu?",
-          "successMessage": "Status produktu został usunięty",
-          "errorMessage": "Status produktu nie został usunięty"
+          "successMessage": "Status został usunięty",
+          "errorMessage": "Status nie został usunięty"
         },
-        "UpdateProductStatusTranslationButton": {
-          "successMessage": "Tłumaczenia statusu produktowego zostały zaktualizowane"
+        "UpdateWorkflowStatusTranslationButton": {
+          "successMessage": "Tłumaczenia statusu zostały zaktualizowane"
         }
       }
     }

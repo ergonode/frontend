@@ -3,6 +3,12 @@
  * See LICENSE for license details.
  */
 export default () => ({
+    status: {
+        id: '',
+        code: '',
+        color: '',
+        isDefaultStatus: false,
+    },
     statuses: [],
     transitions: [],
 });

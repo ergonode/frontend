@@ -8,6 +8,8 @@ export const getStatuses = ({
 }) => $axios.$get('status', {
     params: {
         limit: 99999,
+        field: 'is_default',
+        order: 'DESC',
     },
 });
 
@@ -18,3 +20,33 @@ export const getTransitions = ({
         limit: 99999,
     },
 });
+
+export const getStatus = ({
+    $axios,
+    id,
+}) => $axios.$get(`status/${id}`);
+
+export const getDefaultStatus = ({
+    $axios,
+}) => $axios.$get('workflow/default');
+
+export const removeStatus = ({
+    $axios,
+    id,
+}) => $axios.$delete(`status/${id}`);
+
+export const createStatus = ({
+    $axios,
+    data,
+}) => $axios.$post('status', data);
+
+export const updateStatus = ({
+    $axios,
+    id,
+    data,
+}) => $axios.$put(`status/${id}`, data);
+
+export const updateDefaultStatus = ({
+    $axios,
+    id,
+}) => $axios.$put(`workflow/default/status/${id}/default`);
