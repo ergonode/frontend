@@ -25,8 +25,8 @@
 import {
     ORIENTATION,
 } from '@Core/defaults/layout';
-import CreateWorkflowStatusButton from '@Modules/@ergonode/workflow/src/components/Buttons/CreateWorkflowStatusButton';
 import Placeholder from '@UI/components/Placeholder/Placeholder';
+import CreateWorkflowStatusButton from '@Workflow/components/Buttons/CreateWorkflowStatusButton';
 
 export default {
     name: 'WorkflowDesignerDefaultStatusPlaceholder',

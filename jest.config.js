@@ -22,6 +22,7 @@ module.exports = {
         '@Templates/(.*)$': '<rootDir>/modules/@ergonode/product-templates/src/$1',
         '@Attributes/(.*)$': '<rootDir>/modules/@ergonode/attributes/src/$1',
         '@Notifications/(.*)$': '<rootDir>/modules/@ergonode/notifications/src/$1',
+        '@Workflow/(.*)$': '<rootDir>/modules/@ergonode/workflow/src/$1',
     },
     transform: {
         '^.+\\.(js|jsx)?$': 'babel-jest',
