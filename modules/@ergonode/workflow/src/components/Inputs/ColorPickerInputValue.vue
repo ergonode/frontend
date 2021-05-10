@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import WorkflowStatusBadge from '@Modules/@ergonode/workflow/src/components/Badges/WorkflowStatusBadge';
+import WorkflowStatusBadge from '@Workflow/components/Badges/WorkflowStatusBadge';
 
 export default {
     name: 'ColorPickerInputValue',

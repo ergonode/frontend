@@ -19,9 +19,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import WorkflowStatusBadge from '@Modules/@ergonode/workflow/src/components/Badges/WorkflowStatusBadge';
+import WorkflowStatusBadge from '@Workflow/components/Badges/WorkflowStatusBadge';
 import WorkflowDesignerEditStatusLink
-    from '@Modules/@ergonode/workflow/src/components/Designers/WorkflowDesignerEditStatusLink';
+    from '@Workflow/components/Designers/WorkflowDesignerEditStatusLink';
 
 export default {
     name: 'WorkflowDesignerHeaderLayerCell',
