@@ -11,6 +11,7 @@
                     <div class="workflow-designer__container">
                         <div class="workflow-designer__space-container">
                             <div class="workflow-designer__extender" />
+                            <WorkflowDesignerDefaultStatusPlaceholder v-if="isPlaceholderVisible" />
                             <Designer
                                 :columns="statuses.length"
                                 column-width="minmax(144px, max-content)">
@@ -53,6 +54,7 @@
                                     </DesignerDraggableLayer>
                                 </template>
                             </Designer>
+                            <WorkflowDesignerIllustrationPlaceholder v-if="isPlaceholderVisible" />
                             <div class="workflow-designer__extender" />
                         </div>
                     </div>
@@ -66,8 +68,12 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import WorkflowDesignerDefaultStatusPlaceholder
+    from '@Modules/@ergonode/workflow/src/components/Designers/WorkflowDesignerDefaultStatusPlaceholder';
 import WorkflowDesignerHeaderLayerCell
     from '@Modules/@ergonode/workflow/src/components/Designers/WorkflowDesignerHeaderLayerCell';
+import WorkflowDesignerIllustrationPlaceholder
+    from '@Modules/@ergonode/workflow/src/components/Designers/WorkflowDesignerIllustrationPlaceholder';
 import Designer from '@UI/components/Designer/Designer';
 import DesignerBackgroundItem from '@UI/components/Designer/DesignerBackgroundItem';
 import DesignerBackgroundLayer from '@UI/components/Designer/DesignerBackgroundLayer';
@@ -86,6 +92,8 @@ import {
 export default {
     name: 'WorkflowDesigner',
     components: {
+        WorkflowDesignerDefaultStatusPlaceholder,
+        WorkflowDesignerIllustrationPlaceholder,
         DesignerBackgroundLayer,
         DesignerBackgroundItem,
         WorkflowDesignerHeaderLayerCell,
@@ -111,6 +119,9 @@ export default {
             'statuses',
             'transitions',
         ]),
+        isPlaceholderVisible() {
+            return this.statuses.length < 2;
+        },
     },
     mounted() {
         document.documentElement.addEventListener(
