@@ -9,6 +9,7 @@
         <div class="placeholder__description">
             <PlaceholderTitle
                 v-if="title"
+                :size="size"
                 :title="title" />
             <PlaceholderSubtitle
                 v-if="subtitle"
