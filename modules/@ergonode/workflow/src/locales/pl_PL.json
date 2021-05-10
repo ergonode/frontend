@@ -31,6 +31,10 @@
         }
       },
       "components": {
+        "WorkflowDesignerDefaultStatusPlaceholder": {
+          "title": "To jest domyślny status",
+          "subtitle": "Stwórz kolejny by móc dodać przejście."
+        },
         "WorkflowDesigner": {
           "errorMessage": "Statusy i ich przejdzie nie zostały pobrany poprawnie"
         },
