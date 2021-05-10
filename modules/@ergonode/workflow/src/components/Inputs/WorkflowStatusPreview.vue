@@ -31,10 +31,10 @@
 </template>
 
 <script>
-import WorkflowStatusBadge from '@Modules/@ergonode/workflow/src/components/Badges/WorkflowStatusBadge';
 import InputController from '@UI/components/Input/InputController';
 import InputLabel from '@UI/components/Input/InputLabel';
 import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
+import WorkflowStatusBadge from '@Workflow/components/Badges/WorkflowStatusBadge';
 
 export default {
     name: 'WorkflowStatusPreview',

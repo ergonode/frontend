@@ -32,7 +32,7 @@
                                             v-for="column in columns"
                                             :key="column" />
                                         <template #item="{ row, column }">
-                                            <DesignerBackgroundItem
+                                            <WorkflowDesignerBackgroundItem
                                                 :key="`${column} | ${row}`"
                                                 :column="column"
                                                 :row="row"
@@ -68,19 +68,20 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import WorkflowDesignerDefaultStatusPlaceholder
-    from '@Modules/@ergonode/workflow/src/components/Designers/WorkflowDesignerDefaultStatusPlaceholder';
-import WorkflowDesignerHeaderLayerCell
-    from '@Modules/@ergonode/workflow/src/components/Designers/WorkflowDesignerHeaderLayerCell';
-import WorkflowDesignerIllustrationPlaceholder
-    from '@Modules/@ergonode/workflow/src/components/Designers/WorkflowDesignerIllustrationPlaceholder';
 import Designer from '@UI/components/Designer/Designer';
-import DesignerBackgroundItem from '@UI/components/Designer/DesignerBackgroundItem';
 import DesignerBackgroundLayer from '@UI/components/Designer/DesignerBackgroundLayer';
 import DesignerDraggableLayer from '@UI/components/Designer/DesignerDraggableLayer';
 import HorizontalFixedScroll from '@UI/components/Layout/Scroll/HorizontalFixedScroll';
 import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
 import Preloader from '@UI/components/Preloader/Preloader';
+import WorkflowDesignerBackgroundItem
+    from '@Workflow/components/Designers/WorkflowDesignerBackgroundItem';
+import WorkflowDesignerDefaultStatusPlaceholder
+    from '@Workflow/components/Designers/WorkflowDesignerDefaultStatusPlaceholder';
+import WorkflowDesignerHeaderLayerCell
+    from '@Workflow/components/Designers/WorkflowDesignerHeaderLayerCell';
+import WorkflowDesignerIllustrationPlaceholder
+    from '@Workflow/components/Designers/WorkflowDesignerIllustrationPlaceholder';
 import {
     WORKFLOW_STATUS_CREATED_EVENT_NAME,
 } from '@Workflow/defaults';
@@ -92,10 +93,10 @@ import {
 export default {
     name: 'WorkflowDesigner',
     components: {
+        WorkflowDesignerBackgroundItem,
         WorkflowDesignerDefaultStatusPlaceholder,
         WorkflowDesignerIllustrationPlaceholder,
         DesignerBackgroundLayer,
-        DesignerBackgroundItem,
         WorkflowDesignerHeaderLayerCell,
         Preloader,
         Designer,

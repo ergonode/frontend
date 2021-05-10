@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import UpdateTransitionsButton from '@Modules/@ergonode/workflow/src/components/Buttons/UpdateTransitionsButton';
-import WorkflowDesigner from '@Modules/@ergonode/workflow/src/components/Designers/WorkflowDesigner';
+import UpdateTransitionsButton from '@Workflow/components/Buttons/UpdateTransitionsButton';
+import WorkflowDesigner from '@Workflow/components/Designers/WorkflowDesigner';
 
 export default {
     name: 'WorkflowDesignerTab',

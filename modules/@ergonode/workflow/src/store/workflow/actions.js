@@ -15,7 +15,7 @@ import {
     removeStatus,
     updateDefaultStatus,
     updateStatus,
-} from '@Modules/@ergonode/workflow/src/services';
+} from '@Workflow/services';
 
 export default {
     async getWorkflow({
