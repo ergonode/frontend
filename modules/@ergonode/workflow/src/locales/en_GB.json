@@ -31,6 +31,10 @@
         }
       },
       "components": {
+        "WorkflowDesignerDefaultStatusPlaceholder": {
+          "title": "This is product default status",
+          "subtitle": "Create another status to add transitions."
+        },
         "WorkflowDesigner": {
           "errorMessage": "Workflow haven’t been fetched properly"
         },

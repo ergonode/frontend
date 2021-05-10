@@ -64,6 +64,7 @@ export default {
 <style lang="scss" scoped>
     .workflow-status-preview {
         display: flex;
+        flex: 1;
         justify-content: center;
         align-items: center;
 
