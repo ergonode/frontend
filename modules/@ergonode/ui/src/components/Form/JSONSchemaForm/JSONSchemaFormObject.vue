@@ -10,6 +10,7 @@
             :is="element.component"
             :value="value[element.key]"
             :schema="element.props"
+            :required="schema.required"
             :errors="errors[element.key]"
             @input="onValueChange" />
     </FormSection>
@@ -40,6 +41,20 @@ export default {
         schema: {
             type: Object,
             required: true,
+        },
+        /**
+         * The map of widgets components
+         */
+        widgets: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
+         * The list of required fields
+         */
+        required: {
+            type: Array,
+            default: () => [],
         },
         /**
          * The validation errors
@@ -73,17 +88,21 @@ export default {
             for (let i = 0; i < length; i += 1) {
                 const key = this.fieldsKeys[i];
                 const {
-                    type, ...rest
+                    type,
+                    widget,
+                    ...rest
                 } = this.schema.properties[key];
 
                 components.push({
                     key,
                     props: {
-                        isRequired: this.schema.required.indexOf(key) !== -1,
                         disabled: this.schema.disabled,
+                        required: this.schema.required,
                         ...rest,
                     },
-                    component: () => import(`@UI/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(type)}`),
+                    component: widget && this.widgets[widget]
+                        ? this.widgets[widget]
+                        : () => import(`@UI/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(type)}`),
                 });
             }
 
@@ -93,6 +112,7 @@ export default {
             key, value,
         }) {
             this.localValue[key] = value;
+
             this.$emit('input', {
                 key: this.$vnode.key,
                 value: this.localValue,

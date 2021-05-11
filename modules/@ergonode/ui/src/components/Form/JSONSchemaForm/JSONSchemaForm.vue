@@ -14,6 +14,8 @@
                 :value="model[element.key]"
                 :is="element.component"
                 :schema="element.props"
+                :required="schema.required"
+                :widgets="widgets"
                 :errors="errors[element.key]"
                 @input="onValueChange" />
         </template>
@@ -41,6 +43,13 @@ export default {
                 properties: {},
                 required: [],
             }),
+        },
+        /**
+         * The map of widgets components
+         */
+        widgets: {
+            type: Object,
+            default: () => ({}),
         },
         /**
          * The validation errors
@@ -93,18 +102,20 @@ export default {
             for (let i = 0; i < length; i += 1) {
                 const key = this.fieldsKeys[i];
                 const {
-                    type, ...rest
+                    type,
+                    widget,
+                    ...rest
                 } = this.schema.properties[key];
 
                 components.push({
                     key,
                     props: {
-                        isRequired: this.schema.required
-                            && this.schema.required.indexOf(key) !== -1,
                         disabled: this.disabled,
                         ...rest,
                     },
-                    component: () => import(`@UI/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(type)}`),
+                    component: widget && this.widgets[widget]
+                        ? this.widgets[widget]
+                        : () => import(`@UI/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(type)}`),
                 });
             }
 

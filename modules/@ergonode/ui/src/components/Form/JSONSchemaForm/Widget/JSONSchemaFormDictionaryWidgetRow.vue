@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="row-widget">
+    <div
+        class="json-schema-form-dictionary-widget-row"
+        :style="styles">
         <Fab
             :theme="secondaryTheme"
             :disabled="disabled"
@@ -12,19 +14,15 @@
                 <IconDelete :fill-color="color" />
             </template>
         </Fab>
-        <div
-            class="row-widget__item"
-            :style="gridTemplateColumns">
-            <Component
-                v-for="element in rowComponents"
-                :key="element.key"
-                :is="element.component"
-                :value="value[element.key]"
-                :schema="element.props"
-                :required="schema.required"
-                :errors="errors[element.key]"
-                @input="onValueChange" />
-        </div>
+        <Component
+            v-for="element in rowComponents"
+            :key="element.key"
+            :is="element.component"
+            :value="value[element.key]"
+            :schema="element.props"
+            :required="schema.required"
+            :errors="errors[element.key]"
+            @input="onValueChange" />
     </div>
 </template>
 
@@ -41,7 +39,7 @@ import JSONSchemaFormTableRowArrowWidget from '@UI/components/Form/JSONSchemaFor
 import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 
 export default {
-    name: 'JSONSchemaFormTableRowWidget',
+    name: 'JSONSchemaFormDictionaryWidgetRow',
     components: {
         Fab,
         IconDelete,
@@ -90,15 +88,15 @@ export default {
         };
     },
     computed: {
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
-        gridTemplateColumns() {
-            const gridTemplateColumns = this.rowComponents.map((component, index) => (index % 2 === 0 ? '1fr' : 'max-content')).join(' ');
+        styles() {
+            const gridTemplateColumns = `max-content ${this.rowComponents.map((component, index) => (index % 2 === 0 ? '1fr' : 'max-content')).join(' ')}`;
 
             return {
                 gridTemplateColumns,
             };
+        },
+        secondaryTheme() {
+            return THEME.SECONDARY;
         },
         fieldsKeys() {
             return Object.keys(this.schema.properties);
@@ -161,20 +159,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .row-widget {
-        display: flex;
-
-        & > .fab {
-            margin-right: 4px;
-        }
-
-        &__item {
-            display: grid;
-            flex: 1;
-            align-items: center;
-            grid-auto-flow: column;
-            grid-template-columns: max-content;
-            grid-column-gap: 4px;
-        }
+    .json-schema-form-dictionary-widget-row {
+        display: grid;
+        grid-column-gap: 4px;
+        align-items: center;
+        grid-auto-flow: column;
     }
 </style>

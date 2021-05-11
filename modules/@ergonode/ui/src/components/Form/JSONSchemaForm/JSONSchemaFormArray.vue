@@ -7,6 +7,7 @@
         :is="arrayComponent"
         :value="value"
         :schema="schema"
+        :required="isRequired"
         :errors="errors"
         @input="onValueChange" />
 </template>
@@ -38,6 +39,20 @@ export default {
             default: () => [],
         },
         /**
+         * The map of widgets components
+         */
+        widgets: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
+         * The list of required fields
+         */
+        required: {
+            type: Array,
+            default: () => [],
+        },
+        /**
          * The validation errors
          */
         errors: {
@@ -50,8 +65,18 @@ export default {
             arrayComponent: null,
         };
     },
+    computed: {
+        fieldsKeys() {
+            return Object.keys(this.schema.properties);
+        },
+        isRequired() {
+            return this.required.indexOf(this.$vnode.key) !== -1;
+        },
+    },
     created() {
-        this.arrayComponent = () => import(`@UI/components/Form/JSONSchemaForm/JSONSchemaFormArray${toCapitalize(this.schema.items.type)}`);
+        this.arrayComponent = this.widgets[this.schema.widget]
+            ? this.widgets[this.schema.widget]
+            : () => import(`@UI/components/Form/JSONSchemaForm/JSONSchemaFormArray${toCapitalize(this.schema.items.type)}`);
     },
     methods: {
         onValueChange(value) {
