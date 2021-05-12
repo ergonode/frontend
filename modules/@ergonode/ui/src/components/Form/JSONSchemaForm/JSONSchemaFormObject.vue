@@ -13,6 +13,13 @@
             :required="schema.required"
             :errors="errors[element.key]"
             @input="onValueChange" />
+        <JSONSchemaOneOf
+            v-if="schema.oneOf"
+            :one-of="schema.oneOf"
+            :value="value"
+            :required="required"
+            :errors="errors"
+            @input="onValueChange" />
     </FormSection>
 </template>
 
@@ -26,6 +33,7 @@ export default {
     name: 'JSONSchemaFormObject',
     components: {
         FormSection,
+        JSONSchemaOneOf: () => import('@UI/components/Form/JSONSchemaForm/JSONSchemaOneOf'),
     },
     props: {
         /**
@@ -67,18 +75,23 @@ export default {
     data() {
         return {
             objectComponents: [],
+            fieldKeys: [],
             localValue: this.value,
         };
     },
-    computed: {
-        fieldsKeys() {
-            return Object.keys(this.schema.properties);
+    watch: {
+        schema: {
+            immediate: true,
+            handler() {
+                this.fieldsKeys = this.getFieldKeys();
+                this.objectComponents = this.getComponents();
+            },
         },
     },
-    created() {
-        this.objectComponents = this.getComponents();
-    },
     methods: {
+        getFieldKeys() {
+            return this.schema.properties ? Object.keys(this.schema.properties) : [];
+        },
         getComponents() {
             const {
                 length,
@@ -109,9 +122,14 @@ export default {
             return components;
         },
         onValueChange({
-            key, value,
+            key,
+            value,
         }) {
-            this.localValue[key] = value;
+            if (key) {
+                this.localValue[key] = value;
+            } else {
+                this.localValue = value;
+            }
 
             this.$emit('input', {
                 key: this.$vnode.key,

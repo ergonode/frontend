@@ -62,23 +62,30 @@ export default {
     },
     data() {
         return {
+            fieldKeys: [],
             arrayComponent: null,
         };
     },
     computed: {
-        fieldsKeys() {
-            return Object.keys(this.schema.properties);
-        },
         isRequired() {
             return this.required.indexOf(this.$vnode.key) !== -1;
         },
     },
-    created() {
-        this.arrayComponent = this.widgets[this.schema.widget]
-            ? this.widgets[this.schema.widget]
-            : () => import(`@UI/components/Form/JSONSchemaForm/JSONSchemaFormArray${toCapitalize(this.schema.items.type)}`);
+    watch: {
+        schema: {
+            immediate: true,
+            handler() {
+                this.fieldsKeys = this.getFieldKeys();
+                this.arrayComponent = this.widgets[this.schema.widget]
+                    ? this.widgets[this.schema.widget]
+                    : () => import(`@UI/components/Form/JSONSchemaForm/JSONSchemaFormArray${toCapitalize(this.schema.items.type)}`);
+            },
+        },
     },
     methods: {
+        getFieldKeys() {
+            return this.schema.properties ? Object.keys(this.schema.properties) : [];
+        },
         onValueChange(value) {
             this.$emit('input', {
                 key: this.$vnode.key,

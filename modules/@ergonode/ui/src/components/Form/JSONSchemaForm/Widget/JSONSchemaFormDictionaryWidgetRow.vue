@@ -85,6 +85,7 @@ export default {
     data() {
         return {
             rowComponents: [],
+            fieldKeys: [],
         };
     },
     computed: {
@@ -98,14 +99,20 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        fieldsKeys() {
-            return Object.keys(this.schema.properties);
+    },
+    watch: {
+        schema: {
+            immediate: true,
+            handler() {
+                this.fieldsKeys = this.getFieldKeys();
+                this.rowComponents = this.getComponents();
+            },
         },
     },
-    created() {
-        this.rowComponents = this.getComponents();
-    },
     methods: {
+        getFieldKeys() {
+            return this.schema.properties ? Object.keys(this.schema.properties) : [];
+        },
         getComponents() {
             const {
                 length,
