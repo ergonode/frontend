@@ -5,19 +5,19 @@
 <template>
     <div class="workflow-designer-tab">
         <WorkflowDesigner />
-        <UpdateTransitionsButton />
+        <CreateWorkflowTransitionsButton />
     </div>
 </template>
 
 <script>
-import UpdateTransitionsButton from '@Workflow/components/Buttons/UpdateTransitionsButton';
+import CreateWorkflowTransitionsButton from '@Workflow/components/Buttons/CreateWorkflowTransitionsButton';
 import WorkflowDesigner from '@Workflow/components/Designers/WorkflowDesigner';
 
 export default {
     name: 'WorkflowDesignerTab',
     components: {
         WorkflowDesigner,
-        UpdateTransitionsButton,
+        CreateWorkflowTransitionsButton,
     },
 };
 </script>

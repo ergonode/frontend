@@ -36,9 +36,12 @@ import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import IconSync from '@UI/components/Icons/Feedback/IconSync';
 import PRIVILEGES from '@Workflow/config/privileges';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
-    name: 'UpdateTransitionsButton',
+    name: 'UpdateWorkflowTranslationButton',
     components: {
         FeedbackProvider,
         Button,
@@ -61,6 +64,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions('workflow', [
+            'updateStatus',
+        ]),
         onSubmit() {
             if (this.isSubmitting) {
                 return;
@@ -68,11 +74,16 @@ export default {
             this.isSubmitting = true;
 
             this.removeScopeErrors(this.scope);
+            this.updateStatus({
+                scope: this.scope,
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
+            });
         },
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('@Workflow.workflow.components.UpdateTransitionsButton.successMessage'),
+                message: this.$t('@Workflow.workflow.components.UpdateWorkflowTranslationButton.successMessage'),
             });
 
             this.isSubmitting = false;
