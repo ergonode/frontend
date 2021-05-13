@@ -8,7 +8,7 @@
         :size="schema.size"
         :label="schema.title"
         :disabled="schema.disabled"
-        :required="schema.isRequired"
+        :required="required"
         :hint="schema.description"
         :error-messages="errorMessages"
         @input="onValueChange" />
@@ -36,6 +36,13 @@ export default {
         value: {
             type: String,
             default: '',
+        },
+        /**
+         * Determines if the given field is required
+         */
+        required: {
+            type: Boolean,
+            default: false,
         },
         /**
          * The error messages are messages which comes from validation process
