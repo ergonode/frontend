@@ -90,7 +90,8 @@ export default {
     },
     computed: {
         styles() {
-            const gridTemplateColumns = `max-content ${this.rowComponents.map((component, index) => (index % 2 === 0 ? '1fr' : 'max-content')).join(' ')}`;
+            const rowComponentsColumnsTemplate = this.rowComponents.map((component, index) => (index % 2 === 0 ? '1fr' : 'max-content')).join(' ');
+            const gridTemplateColumns = `max-content ${rowComponentsColumnsTemplate}`;
 
             return {
                 gridTemplateColumns,
