@@ -37,6 +37,7 @@
                         v-if="schema"
                         :value="configuration"
                         :schema="schema"
+                        :widgets="schemaWidgets"
                         :errors="errors"
                         :disabled="!isAllowedToUpdate"
                         @input="setConfigurationValue" />
@@ -114,6 +115,11 @@ export default {
             }
 
             return this.schemas[this.type];
+        },
+        schemaWidgets() {
+            return {
+                dictionary: () => import('@UI/components/Form/JSONSchemaForm/Widget/JSONSchemaFormDictionaryWidget'),
+            };
         },
         isAllowedToUpdate() {
             return this.$hasAccess([

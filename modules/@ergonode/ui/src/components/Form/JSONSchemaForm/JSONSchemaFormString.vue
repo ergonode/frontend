@@ -7,6 +7,7 @@
         :is="stringComponent"
         :value="value"
         :schema="schema"
+        :required="isRequired"
         :error-messages="errors"
         @input="onValueChange" />
 </template>
@@ -21,6 +22,13 @@ export default {
         schema: {
             type: Object,
             required: true,
+        },
+        /**
+         * The list of required fields
+         */
+        required: {
+            type: Array,
+            default: () => [],
         },
         /**
          * The validation errors
@@ -41,6 +49,11 @@ export default {
         return {
             stringComponent: null,
         };
+    },
+    computed: {
+        isRequired() {
+            return this.required.indexOf(this.$vnode.key) !== -1;
+        },
     },
     created() {
         const {
