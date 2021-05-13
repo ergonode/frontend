@@ -14,7 +14,7 @@
                 :language-code="languageCode" />
         </template>
         <template #saveButton>
-            <UpdateWorkflowStatusTranslationButton
+            <UpdateWorkflowTranslationButton
                 :scope="scope"
                 :change-values="changeValues"
                 :errors="errors" />
@@ -25,13 +25,13 @@
 <script>
 import TranslationsTab from '@Core/components/Tabs/TranslationsTab';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
-import UpdateWorkflowStatusTranslationButton from '@Workflow/components/Buttons/UpdateWorkflowStatusTranslationButton';
+import UpdateWorkflowTranslationButton from '@Workflow/components/Buttons/UpdateWorkflowTranslationButton';
 import WorkflowStatusTranslationForm from '@Workflow/components/Forms/WorkflowStatusTranslationForm';
 
 export default {
     name: 'WorkflowStatusTranslationsTab',
     components: {
-        UpdateWorkflowStatusTranslationButton,
+        UpdateWorkflowTranslationButton,
         TranslationsTab,
         WorkflowStatusTranslationForm,
     },

@@ -19,6 +19,9 @@ export const ROUTE_NAME = {
     WORKFLOW_STATUS_EDIT: 'workflow-status-id',
     WORKFLOW_STATUS_EDIT_GENERAL: 'workflow-status-id-general',
     WORKFLOW_STATUS_EDIT_TRANSLATIONS: 'workflow-status-id-translation',
+    WORKFLOW_TRANSITION_EDIT: 'workflow-transition-id',
+    WORKFLOW_TRANSITION_EDIT_GENERAL: 'workflow-transition-id-general',
+    WORKFLOW_TRANSITION_EDIT_CONDITIONS: 'workflow-transition-id-conditions',
 };
 
 export default [
@@ -98,6 +101,57 @@ export default [
                 component: Tabs.WorkflowStatusTranslationsTab,
                 meta: {
                     title: '@Workflow._.routes.editTranslations',
+                    breadcrumbs: [
+                        {
+                            title: GROUP.title,
+                            icon: Icons.Flow,
+                        },
+                        {
+                            title: '@Workflow._.routes.title',
+                            routeName: ROUTE_NAME.WORKFLOW_DESIGNER,
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+        ],
+    },
+    {
+        name: ROUTE_NAME.WORKFLOW_TRANSITION_EDIT,
+        path: '/workflow/transition/:id',
+        component: Pages.WorkflowTransitionEdit,
+        redirect: {
+            name: ROUTE_NAME.WORKFLOW_TRANSITION_EDIT_GENERAL,
+        },
+        meta: {
+            isMenu: false,
+        },
+        children: [
+            {
+                name: ROUTE_NAME.WORKFLOW_TRANSITION_EDIT_GENERAL,
+                path: 'general',
+                component: Tabs.WorkflowTransitionGeneralTab,
+                meta: {
+                    title: '@Workflow._.routes.editOption',
+                    breadcrumbs: [
+                        {
+                            title: GROUP.title,
+                            icon: Icons.Flow,
+                        },
+                        {
+                            title: '@Workflow._.routes.title',
+                            routeName: ROUTE_NAME.WORKFLOW_DESIGNER,
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+            {
+                name: ROUTE_NAME.WORKFLOW_TRANSITION_EDIT_CONDITIONS,
+                path: 'conditions',
+                component: Tabs.WorkflowTransitionConditionDesignerTab,
+                meta: {
+                    title: '@Workflow._.routes.editConditions',
                     breadcrumbs: [
                         {
                             title: GROUP.title,

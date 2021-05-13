@@ -4,3 +4,4 @@
  */
 
 export const WORKFLOW_STATUS_CREATED_EVENT_NAME = 'workflow-status-created';
+export const WORKFLOW_TRANSITION_CREATED_EVENT_NAME = 'workflow-transition-created';

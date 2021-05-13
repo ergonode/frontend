@@ -10,7 +10,8 @@
         "title": "Statuses & transitions",
         "group": "Workflow",
         "editOption": "Options",
-        "editTranslations": "Translations"
+        "editTranslations": "Translations",
+        "editConditions": "Conditions"
       }
     },
     "workflow": {
@@ -20,17 +21,49 @@
       },
       "pages": {
         "id": {
-          "getRequest": "Status hasn't been fetched properly"
+          "getStatusRequest": "Status hasn't been fetched properly",
+          "getTransitionRequest": "Transition hasn't been fetched properly"
         }
       },
       "store": {
         "action": {
           "createStatusCancel": "Creating status has been canceled",
           "updateStatusCancel": "Updating status has been canceled",
-          "deleteStatusCancel": "Removing status has been canceled"
+          "deleteStatusCancel": "Removing status has been canceled",
+          "createTransitionsCancel": "Creating transitions has been canceled",
+          "createTransitionCancel": "Creating transition has been canceled",
+          "updateTransitionCancel": "Updating transition has been canceled",
+          "deleteTransitionCancel": "Removing transition has been canceled"
         }
       },
       "components": {
+        "RemoveWorkflowTransitionButton": {
+          "title": "REMOVE TRANSITION",
+          "confirmTitle": "Are you sure you want to delete this transition?",
+          "successMessage": "Transition removed",
+          "errorMessage": "Transition hasn`t been deleted"
+        },
+        "UpdateWorkflowTransitionConditionDesignerButton": {
+          "successMessage": "Transition conditions have been updated"
+        },
+        "WorkflowTransitionForm": {
+          "title": "Status change",
+          "fromLabel": "From",
+          "toLabel": "to"
+        },
+        "RemoveTransitionConditionDropZone": {
+          "title": "REMOVE CONDITION"
+        },
+        "WorkflowTransitionGeneralTab": {
+          "successMessage": "Transition has been updated"
+        },
+        "CreateWorkflowTransitionButton": {
+          "title": "NEW TRANSITION"
+        },
+        "CreateWorkflowTransitionModalForm": {
+          "title": "Create new transition",
+          "successMessage": "Transition created"
+        },
         "WorkflowDesignerDefaultStatusPlaceholder": {
           "title": "This is product default status",
           "subtitle": "Create another status to add transitions."
@@ -38,8 +71,8 @@
         "WorkflowDesigner": {
           "errorMessage": "Workflow haven’t been fetched properly"
         },
-        "UpdateTransitionsButton": {
-          "successMessage": "Status transitions have been updated"
+        "CreateWorkflowTransitionsButton": {
+          "successMessage": "Transitions have been created"
         },
         "WorkflowStatusGeneralTab": {
           "successMessage": "Status has been updated"
@@ -69,7 +102,7 @@
           "successMessage": "Status removed",
           "errorMessage": "Status hasn`t been deleted"
         },
-        "UpdateWorkflowStatusTranslationButton": {
+        "UpdateWorkflowTranslationButton": {
           "successMessage": "Status translations have been updated"
         }
       }

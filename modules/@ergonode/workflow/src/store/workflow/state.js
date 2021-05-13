@@ -9,6 +9,11 @@ export default () => ({
         color: '',
         isDefaultStatus: false,
     },
+    transition: {
+        source: '',
+        destination: '',
+        conditionSetId: '',
+    },
     statuses: [],
     transitions: [],
 });

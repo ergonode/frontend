@@ -4,55 +4,107 @@
  */
 
 import {
+    removeSet,
+} from '@Conditions/services';
+import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
+    isObject,
+} from '@Core/models/objectWrapper';
+import {
     createStatus,
+    createTransition,
     getDefaultStatus,
     getStatus,
     getStatuses,
+    getTransition,
     getTransitions,
     removeStatus,
+    removeTransition,
     updateDefaultStatus,
     updateStatus,
+    updateTransition,
 } from '@Workflow/services';
 
 export default {
-    async getWorkflow({
+    async getStatuses({
         commit,
     }, {
         onSuccess = () => {},
         onError = () => {},
     }) {
         try {
-            const [
-                statusesResponse,
-                transitionsResponse,
-            ] = await Promise.all([
-                getStatuses({
-                    $axios: this.app.$axios,
-                }),
-                getTransitions({
-                    $axios: this.app.$axios,
-                }),
-            ]);
+            const {
+                columns,
+                collection,
+            } = await getStatuses({
+                $axios: this.app.$axios,
+            });
 
-            const statusColumn = statusesResponse.columns.find(column => column.id === 'status');
+            const statusColumn = columns.find(column => column.id === 'status');
 
             commit('__SET_STATE', {
                 key: 'statuses',
-                value: statusesResponse.collection.map(status => ({
+                value: collection.map(status => ({
                     ...status,
                     color: statusColumn.filter.options[status.id].color,
                 })),
             });
+
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
+    },
+    async getTransitions({
+        commit,
+    }, {
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const {
+                collection,
+            } = await getTransitions({
+                $axios: this.app.$axios,
+            });
+
             commit('__SET_STATE', {
                 key: 'transitions',
-                value: transitionsResponse.collection,
+                value: collection,
             });
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
+    },
+    async getWorkflow({
+        dispatch,
+    }, {
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            await Promise.all(
+                [
+                    dispatch('getStatuses', {}),
+                    dispatch('getTransitions', {}),
+                ],
+            );
+
+            onSuccess();
+        } catch (e) {
+            console.log(e);
             if (this.app.$axios.isCancel(e)) {
                 return;
             }
@@ -353,6 +405,328 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 return;
             }
+            onError(e);
+        }
+    },
+    async getTransition(
+        {
+            state,
+            rootState,
+            commit,
+            dispatch,
+        },
+        {
+            id,
+            onError = () => {},
+        },
+    ) {
+        try {
+            const {
+                language: userLanguageCode,
+            } = rootState.authentication.user;
+            const {
+                statuses,
+            } = state;
+            const [
+                source,
+                destination,
+            ] = id.split('--');
+
+            // EXTENDED BEFORE METHOD
+            await this.$getExtendMethod('@Workflow/store/workflow/action/getTransition/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
+
+            const data = await getTransition({
+                $axios: this.app.$axios,
+                source,
+                destination,
+            });
+            const {
+                condition_set_id: conditionSetId,
+            } = data;
+
+            const regex = /%20/g;
+
+            const sourceOption = statuses.find(
+                status => status.id === source.replace(regex, ' '),
+            );
+            const destinationOption = statuses.find(
+                status => status.id === destination.replace(regex, ' '),
+            );
+
+            commit('__SET_STATE', {
+                key: 'transition',
+                value: {
+                    source: {
+                        id: sourceOption.id,
+                        key: sourceOption.code,
+                        value: sourceOption.name,
+                        hint: sourceOption.name
+                            ? `#${sourceOption.code} ${userLanguageCode}`
+                            : '',
+                    },
+                    destination: {
+                        id: destinationOption.id,
+                        key: destinationOption.code,
+                        value: destinationOption.name,
+                        hint: destinationOption.name
+                            ? `#${destinationOption.code} ${userLanguageCode}`
+                            : '',
+                    },
+                    conditionSetId,
+                },
+            });
+
+            if (conditionSetId) {
+                await dispatch('condition/getConditionSet', {
+                    id: conditionSetId,
+                }, {
+                    root: true,
+                });
+            }
+            // EXTENDED AFTER METHOD
+            await this.$getExtendMethod('@Workflow/store/workflow/action/getTransition/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
+    },
+    async updateTransition(
+        {
+            state,
+        },
+        {
+            scope,
+            onSuccess = () => {},
+            onError = () => {},
+        },
+    ) {
+        try {
+            const {
+                source,
+                destination,
+                conditionSetId,
+            } = state.workflow;
+            let data = {};
+
+            if (conditionSetId) {
+                data.condition_set = conditionSetId;
+            }
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$getExtendMethod('@Workflow/store/workflow/action/updateTransition/__before', {
+                $this: this,
+                data: {
+                    source,
+                    destination,
+                    ...data,
+                },
+            });
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+            // EXTENDED BEFORE METHOD
+
+            await updateTransition({
+                $axios: this.app.$axios,
+                source: source.id,
+                destination: destination.id,
+                data,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$getExtendMethod('@Workflow/store/workflow/action/updateTransition/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: this.app.i18n.t('@Workflow.workflow.store.action.updateTransitionCancel'),
+                });
+
+                return;
+            }
+
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
+    },
+    async createTransition(
+        {
+            state,
+        },
+        {
+            scope,
+            onSuccess = () => {},
+            onError = () => {},
+        },
+    ) {
+        try {
+            const {
+                source,
+                destination,
+            } = state.workflow;
+            let data = {
+                source: isObject(source) ? source.id : null,
+                destination: isObject(destination) ? destination.id : null,
+            };
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$getExtendMethod('@Workflow/store/workflow/action/createTransition/__before', {
+                $this: this,
+                data,
+            });
+            extendedData.forEach((extended) => {
+                data = {
+                    ...data,
+                    ...extended,
+                };
+            });
+            // EXTENDED BEFORE METHOD
+
+            const {
+                id,
+            } = await createTransition({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$getExtendMethod('@Workflow/store/workflow/action/createTransition/__after', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
+
+            onSuccess(id);
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: this.app.i18n.t('@Workflow.workflow.store.action.createTransitionCancel'),
+                });
+
+                return;
+            }
+
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
+    },
+    async createTransitions(
+        {},
+        {
+            transitions,
+            scope,
+            onSuccess = () => {},
+            onError = () => {},
+        },
+    ) {
+        try {
+            const requests = transitions.map(transition => createTransition({
+                $axios: this.app.$axios,
+                data: {
+                    source: transition.source,
+                    destination: transition.destination,
+                },
+            }));
+
+            await Promise.all(requests);
+
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: this.app.i18n.t('@Workflow.workflow.store.action.createTransitionsCancel'),
+                });
+
+                return;
+            }
+
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
+    },
+    async removeTransition({
+        state,
+    }, {
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const {
+                source,
+                destination,
+                conditionSetId,
+            } = state.workflow;
+
+            // EXTENDED BEFORE METHOD
+            await this.$getExtendMethod('@Workflow/store/workflow/action/removeTransition/__before', {
+                $this: this,
+                data: {
+                    source,
+                    destination,
+                },
+            });
+            // EXTENDED BEFORE METHOD
+
+            await removeTransition({
+                $axios: this.app.$axios,
+                source: source.id,
+                destination: destination.id,
+            });
+
+            if (conditionSetId) {
+                await removeSet({
+                    $axios: this.app.$axios,
+                    id: conditionSetId,
+                });
+            }
+            // EXTENDED AFTER METHOD
+            await this.$getExtendMethod('@Workflow/store/workflow/action/removeTransition/__after', {
+                $this: this,
+            });
+            // EXTENDED AFTER METHOD
+
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: this.app.i18n.t('@Workflow.workflow.store.action.deleteTransitionCancel'),
+                });
+
+                return;
+            }
+
             onError(e);
         }
     },
