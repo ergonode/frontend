@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar
-            :title="status.code"
+            :title="title"
             :is-read-only="isReadOnly">
             <template #prependHeader>
                 <NavigateBackFab :previous-route="previousRoute" />
@@ -18,7 +18,7 @@
                         :key="index"
                         v-bind="bindingProps(actionItem)" />
                 </template>
-                <RemoveWorkflowStatusButton />
+                <RemoveWorkflowTransitionButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -30,7 +30,6 @@
 </template>
 
 <script>
-
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -40,7 +39,7 @@ import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@UI/components/TitleBar/TitleBar';
-import RemoveWorkflowStatusButton from '@Workflow/components/Buttons/RemoveWorkflowStatusButton';
+import RemoveWorkflowTransitionButton from '@Workflow/components/Buttons/RemoveWorkflowTransitionButton';
 import PRIVILEGES from '@Workflow/config/privileges';
 import state from '@Workflow/store/workflow/state';
 import {
@@ -49,67 +48,74 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'WorkflowStatusEdit',
+    name: 'WorkflowTransitionEdit',
     components: {
         Page,
         TitleBar,
         HorizontalRoutingTabBar,
-        RemoveWorkflowStatusButton,
+        RemoveWorkflowTransitionButton,
     },
     mixins: [
         asyncTabsMixin,
         beforeRouteEnterMixin,
         beforeRouteLeaveMixin,
     ],
-    validate({
-        params,
-    }) {
-        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
-    },
     async fetch({
         app,
         store,
         params,
     }) {
-        await store.dispatch('workflow/getStatus', {
+        await store.dispatch('workflow/getStatuses', {});
+        await store.dispatch('workflow/getTransition', {
             id: params.id,
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: app.i18n.t('@Workflow.workflow.pages.id.getStatusRequest'),
+                    message: app.i18n.t('@Workflow.workflow.pages.id.getTransitionRequest'),
                 });
             },
         });
-        await store.dispatch('workflow/getDefaultStatus', {});
     },
     computed: {
         ...mapState('workflow', [
-            'status',
+            'transition',
         ]),
+        title() {
+            return `${this.transition.source.value} -> ${this.transition.destination.value}`;
+        },
         extendedMainAction() {
-            return this.$getExtendSlot('@Workflow/pages/workflow/_status/mainAction');
+            return this.$getExtendSlot('@Workflow/pages/workflow/_transition/mainAction');
         },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.WORKFLOW.namespace);
         },
     },
     beforeDestroy() {
+        const {
+            transition,
+            statuses,
+        } = state();
+
         this.__setState({
-            key: 'status',
-            value: state().status,
+            key: 'transition',
+            value: transition,
         });
-        this.__clearTranslationsStorage();
+        this.__setState({
+            key: 'statuses',
+            value: statuses,
+        });
+        this.__clearConditionStorage();
         this.__clearFeedbackStorage();
     },
     methods: {
         ...mapActions('workflow', [
             '__setState',
         ]),
+        ...mapActions('condition', {
+            __clearConditionStorage: '__clearStorage',
+        }),
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
-        }),
-        ...mapActions('tab', {
-            __clearTranslationsStorage: '__clearStorage',
         }),
         bindingProps({
             props = {},
@@ -122,7 +128,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.status.code} - ${this.$t('@Workflow.workflow._.headTitle')}`,
+            title: `${this.title} - ${this.$t('@Workflow.workflow._.headTitle')}`,
         };
     },
 };

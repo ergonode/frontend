@@ -50,6 +50,14 @@ export default {
                 },
             ],
         },
+        '@Workflow/components/Forms/WorkflowTransitionForm': {
+            __ALL: [
+                {
+                    component: Components.TransitionFormRole,
+                    order: 10,
+                },
+            ],
+        },
         '@UI/components/Grid/Layout/Table/Cells/Data': {
             PRIVILEGE_NAME_HINT: Components.GridPrivilegeNameHintDataCell,
         },
