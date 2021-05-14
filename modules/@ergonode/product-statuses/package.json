@@ -1,6 +1,6 @@
 {
   "name": "@ergonode/product-statuses",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Team Ergonode <team@ergonode.com>",
   "description": "Ergonode product statuses module",
   "license": "OSL-3.0",

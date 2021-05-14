@@ -1,6 +1,6 @@
 {
   "name": "@ergonode/batch-actions",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Team Ergonode <team@ergonode.com>",
   "description": "Ergonode batch actions module",
   "license": "OSL-3.0",
