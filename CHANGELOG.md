@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## CHANGELOG FOR v1.0.1
+- bugfix [#853](https://github.com/ergonode/frontend/pull/853) Polish interface translations improvement (derpdead)
+- bugfix [#857](https://github.com/ergonode/frontend/pull/857) Add a default property value for method updateRole (bleto)
+- bugfix [#859](https://github.com/ergonode/frontend/issues/859) AddMediaGrid is not sortable (derpdead)
+- bugfix [#862](https://github.com/ergonode/frontend/pull/862) Interface translations template crash (derpdead)
+- bugfix [#866](https://github.com/ergonode/frontend/pull/866) Incorrect method call - i18n (derpdead)
+- bugfix [#867](https://github.com/ergonode/frontend/issues/867) Missing polish interface translations (derpdead)
+- bugfix [#872](https://github.com/ergonode/frontend/issues/872) Default status for new product is not set (derpdead)
+
 ## CHANGELOG FOR v1.0.0
 - performance [#820](https://github.com/ergonode/frontend/pull/820) Remove legacy modal injection (derpdead)
 - performance [#822](https://github.com/ergonode/frontend/pull/822) Add support for extended header and footer slots (derpdead)
