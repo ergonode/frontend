@@ -3,10 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormSubsection>
+    <FormSubsection :required="required">
         <Select
             :value="selectedOption"
             :options="options"
+            :error-messages="errorMessages"
             @input="onVariationValueChange" />
         <Component
             v-for="element in oneOfComponents[selectedOption]"
@@ -14,12 +15,15 @@
             :is="element.component"
             :schema="element.props"
             :value="value[element.key]"
-            :errors="errors[element.key]"
+            :errors="errors"
             @input="onValueChange" />
     </FormSubsection>
 </template>
 
 <script>
+import {
+    isEmpty,
+} from '@Core/models/objectWrapper';
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
@@ -48,6 +52,13 @@ export default {
             default: () => [],
         },
         /**
+         * Determines if the given field is required
+         */
+        required: {
+            type: Boolean,
+            default: false,
+        },
+        /**
          * The validation errors
          */
         errors: {
@@ -66,6 +77,18 @@ export default {
         options() {
             return this.oneOf.map((option, index) => option.title || `Option ${index + 1}`);
         },
+        errorMessages() {
+            let errorMessage = '';
+            const selectedFields = this.fieldsKeys[this.selectedOption] || [];
+
+            Object.keys(this.errors).forEach((errorKey) => {
+                if (selectedFields.includes(errorKey)) {
+                    errorMessage = this.errors[errorKey];
+                }
+            });
+
+            return errorMessage;
+        },
     },
     watch: {
         schema: {
@@ -83,6 +106,19 @@ export default {
                 });
             },
         },
+    },
+    created() {
+        if (!isEmpty(this.value)) {
+            const selectedOptionKey = Object.keys(this.value).find(key => this.value[key].length);
+
+            if (selectedOptionKey) {
+                Object.keys(this.fieldsKeys).forEach((fieldTitle) => {
+                    if (this.fieldsKeys[fieldTitle].includes(selectedOptionKey)) {
+                        this.selectedOption = fieldTitle;
+                    }
+                });
+            }
+        }
     },
     methods: {
         getComponents({
