@@ -17,7 +17,7 @@
             v-if="schema.oneOf"
             :one-of="schema.oneOf"
             :value="value"
-            :required="required"
+            :required="isRequired"
             :errors="errors"
             @input="onValueChange" />
     </FormSection>
@@ -78,6 +78,11 @@ export default {
             fieldKeys: [],
             localValue: this.value,
         };
+    },
+    computed: {
+        isRequired() {
+            return this.required.indexOf(this.$vnode.key) !== -1;
+        },
     },
     watch: {
         schema: {
