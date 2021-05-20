@@ -27,6 +27,10 @@ export default {
             type: Array,
             default: () => [],
         },
+        excludeRows: {
+            type: Array,
+            default: () => [],
+        },
         hasRightBorder: {
             type: Boolean,
             default: false,
@@ -39,6 +43,7 @@ export default {
                 {
                     'workflow-designer-background-item--right-border': this.hasRightBorder,
                     'workflow-designer-background-item--highlighted': this.isHighlighted,
+                    'workflow-designer-background-item--start-position': this.isStartPosition,
                     'workflow-designer-background-item--top-border-highlighted': this.isHighlightedTop,
                     'workflow-designer-background-item--left-border-highlighted': this.isHighlightedLeft,
                 },
@@ -47,6 +52,9 @@ export default {
         // TODO: Change it with Vuex state value when edit / create transition is done
         creatingTransitionRow() {
             return 1;
+        },
+        isStartPosition() {
+            return !this.excludeRows.includes(this.row);
         },
         isHighlighted() {
             return this.row === this.creatingTransitionRow
