@@ -57,7 +57,7 @@ export function getMappedRowPositions(layoutElements) {
     }), {});
 }
 
-export function getExcludeRows(layoutElements) {
+export function getRows(layoutElements) {
     return layoutElements.reduce((acc, current) => [
         ...acc,
         current.row,

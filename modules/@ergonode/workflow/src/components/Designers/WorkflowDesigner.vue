@@ -176,10 +176,10 @@ import {
     ROW_HEIGHT,
 } from '@Workflow/defaults/designer';
 import {
-    getExcludeRows,
     getMappedLayoutElements,
     getMappedRowPositions,
     getObstacleColumns,
+    getRows,
     getValidColumnsToAddTransition,
 } from '@Workflow/models/workflowDesigner';
 import {
@@ -273,7 +273,7 @@ export default {
     watch: {
         layoutElements: {
             handler(elements) {
-                this.excludeRows = getExcludeRows(elements);
+                this.excludeRows = getRows(elements);
             },
         },
     },
