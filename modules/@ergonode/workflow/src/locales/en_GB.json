@@ -43,6 +43,13 @@
           "successMessage": "Transition removed",
           "errorMessage": "Transition hasn`t been deleted"
         },
+        "RemoveWorkflowTransitionFab": {
+          "title": "REMOVE TRANSITION",
+          "confirmTitle": "Are you sure you want to delete this transition?"
+        },
+        "UpdateWorkflowTransitionFab": {
+          "title": "UPDATE TRANSITION"
+        },
         "UpdateWorkflowTransitionConditionDesignerButton": {
           "successMessage": "Transition conditions have been updated"
         },
@@ -69,7 +76,8 @@
           "subtitle": "Create another status to add transitions."
         },
         "WorkflowDesigner": {
-          "errorMessage": "Workflow haven’t been fetched properly"
+          "errorMessage": "Workflow haven’t been fetched properly",
+          "warningMessage": "No possible combinations for this status"
         },
         "CreateWorkflowTransitionsButton": {
           "successMessage": "Transitions have been created"

@@ -5,29 +5,29 @@
 
 export const transitions = [
     {
-        from: 1,
+        from: 0,
+        to: 2,
+    },
+    {
+        from: 0,
         to: 3,
     },
     {
-        from: 1,
-        to: 4,
-    },
-    {
-        from: 1,
-        to: 2,
+        from: 0,
+        to: 1,
     },
 ];
 
 export const obstacleColumns = [
-    1,
-    3,
-    4,
+    0,
     2,
+    3,
+    1,
 ];
 
 export const validColumns = [
+    0,
     1,
     2,
     3,
-    4,
 ];

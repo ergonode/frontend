@@ -10,7 +10,9 @@
                 :default-status="status.is_default" />
             {{ title }}
         </div>
-        <WorkflowDesignerEditStatusLink :status-id="status.id" />
+        <WorkflowDesignerEditStatusLink
+            v-if="isAllowedToUpdate"
+            :status-id="status.id" />
     </div>
 </template>
 
@@ -22,6 +24,7 @@ import {
 import WorkflowStatusBadge from '@Workflow/components/Badges/WorkflowStatusBadge';
 import WorkflowDesignerEditStatusLink
     from '@Workflow/components/Designers/WorkflowDesignerEditStatusLink';
+import PRIVILEGES from '@Workflow/config/privileges';
 
 export default {
     name: 'WorkflowDesignerHeaderLayerCell',
@@ -40,6 +43,11 @@ export default {
         },
     },
     computed: {
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.WORKFLOW.update,
+            ]);
+        },
         classes() {
             return [
                 'workflow-designer-header-layer-cell',

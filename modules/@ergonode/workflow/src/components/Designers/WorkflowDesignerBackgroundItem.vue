@@ -23,7 +23,11 @@ export default {
             type: Number,
             default: 0,
         },
-        obstacleColumns: {
+        editedRow: {
+            type: Number,
+            default: -1,
+        },
+        validColumns: {
             type: Array,
             default: () => [],
         },
@@ -49,24 +53,20 @@ export default {
                 },
             ];
         },
-        // TODO: Change it with Vuex state value when edit / create transition is done
-        creatingTransitionRow() {
-            return 1;
-        },
         isStartPosition() {
             return !this.excludeRows.includes(this.row);
         },
         isHighlighted() {
-            return this.row === this.creatingTransitionRow
-                && this.obstacleColumns.includes(this.column + 1);
+            return this.row === this.editedRow
+                && this.validColumns.includes(this.column);
         },
         isHighlightedTop() {
-            return this.row === this.creatingTransitionRow + 1
-                && this.obstacleColumns.includes(this.column + 1);
+            return this.row === this.editedRow + 1
+                && this.validColumns.includes(this.column);
         },
         isHighlightedLeft() {
-            return this.row === this.creatingTransitionRow
-                && this.obstacleColumns.includes(this.column);
+            return this.row === this.editedRow
+                && this.validColumns.includes(this.column - 1);
         },
     },
 };

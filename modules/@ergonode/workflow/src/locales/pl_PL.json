@@ -43,6 +43,13 @@
           "successMessage": "Przejście zostało usunięte usunięta",
           "errorMessage": "Przejście nie została usunięte"
         },
+        "RemoveWorkflowTransitionFab": {
+          "title": "USUŃ PRZEJŚCIE",
+          "confirmTitle": "Czy jesteś pewien, że chcesz usunąć to przejście?"
+        },
+        "UpdateWorkflowTransitionFab": {
+          "title": "UAKTUALNIJ PRZEJŚCIE"
+        },
         "UpdateWorkflowTransitionConditionDesignerButton": {
           "successMessage": "Warunki przejścia zostały zaktualizowane"
         },
@@ -69,7 +76,8 @@
           "subtitle": "Stwórz kolejny by móc dodać przejście."
         },
         "WorkflowDesigner": {
-          "errorMessage": "Statusy i ich przejdzie nie zostały pobrany poprawnie"
+          "errorMessage": "Statusy i ich przejdzie nie zostały pobrany poprawnie",
+          "warningMessage": "Brak możliwych kombinacji dla tego statusu"
         },
         "CreateWorkflowTransitionsButton": {
           "successMessage": "Przejścia zostały utworzone"

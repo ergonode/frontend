@@ -104,7 +104,6 @@ export default {
 
             onSuccess();
         } catch (e) {
-            console.log(e);
             if (this.app.$axios.isCancel(e)) {
                 return;
             }

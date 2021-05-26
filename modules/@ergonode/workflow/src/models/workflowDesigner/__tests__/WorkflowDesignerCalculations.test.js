@@ -14,13 +14,13 @@ import {
 } from '@Workflow/models/workflowDesigner/__tests__/__mocks__';
 
 // Considering designer example
-//     1   2   3   4
+//     0   1   2   3
 //    ---------------
-// 1 | x |   | x |   | => From 1 to 3
+// 1 | x |   | x |   | => From 0 to 2
 //    ---------------
-// 2 | x |   |   | x | => From 1 to 4
+// 2 | x |   |   | x | => From 0 to 3
 //    ---------------
-// 3 | x | x |   |   | => From 1 to 2
+// 3 | x | x |   |   | => From 0 to 1
 //    ---------------
 // 4 | x |   |   |   |
 //    ---------------
@@ -37,7 +37,7 @@ describe('getObstacleColumns', () => {
 
     it('Based on designer with transitions get the all obstacles for new transition starting at column 1 and row 4', () => {
         const result = getObstacleColumns({
-            from: 1,
+            from: 0,
             transitions,
         });
 
