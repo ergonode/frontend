@@ -206,6 +206,20 @@ export default {
         VerticalFixedScroll,
         HorizontalFixedScroll,
     },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     async fetch() {
         this.getWorkflow({
             onSuccess: this.onFetchDataSuccess,
@@ -254,7 +268,7 @@ export default {
                 row,
             } = layoutElement;
 
-            return row;
+            return row + 1;
         },
         ghostButtonBounds() {
             const {
@@ -303,6 +317,9 @@ export default {
         ...mapActions('workflow', [
             'getWorkflow',
         ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         isOutOfBounds(event) {
             const {
                 xPos,
@@ -347,6 +364,12 @@ export default {
                 this.layoutElements,
                 this.rowIndex(id),
             );
+            this.$emit('layoutElements', this.layoutElements);
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'workflowDesigner',
+                value: true,
+            });
         },
         onRemoveStartPointer(row) {
             if (this.isRowEdited(row)) {
@@ -378,11 +401,6 @@ export default {
                 rowsPositions,
             });
             this.isFetchingData = false;
-
-            this.$cookies.set(
-                WORKFLOW_DESIGNER_ROWS,
-                getMappedRowPositions(this.layoutElements),
-            );
         },
         onFetchDataError() {
             this.$addAlert({
@@ -443,7 +461,12 @@ export default {
                     to: column,
                     row,
                 };
-                console.log(this.layoutElements);
+                this.$emit('layoutElements', this.layoutElements);
+                this.onScopeValueChange({
+                    scope: this.scope,
+                    fieldKey: 'workflowDesigner',
+                    value: true,
+                });
                 this.$cookies.set(
                     WORKFLOW_DESIGNER_ROWS,
                     getMappedRowPositions(this.layoutElements),

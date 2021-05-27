@@ -63,3 +63,25 @@ export function getRows(layoutElements) {
         current.row,
     ], []);
 }
+
+export function getMappedTransitions({
+    layoutElements, transitions,
+}) {
+    return layoutElements.map((element) => {
+        const [
+            source,
+            destination,
+        ] = element.id.split('--');
+        const currentTransition = transitions.find(
+            transition => transition.source === source
+            && transition.destination === destination,
+        );
+
+        return {
+            source,
+            destination,
+            roles: currentTransition ? currentTransition.roles : [],
+            condition_set: currentTransition ? currentTransition.condition_set_id : null,
+        };
+    });
+}

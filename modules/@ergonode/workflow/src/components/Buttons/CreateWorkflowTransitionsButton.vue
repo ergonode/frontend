@@ -71,7 +71,7 @@ export default {
     },
     methods: {
         ...mapActions('workflow', [
-            'createTransitions',
+            'updateTransitions',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -79,7 +79,7 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.createTransitions({
+            this.updateTransitions({
                 scope: this.scope,
                 transitions: this.transitions,
                 onSuccess: this.onCreateSuccess,

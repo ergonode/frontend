@@ -30,7 +30,7 @@
           "createStatusCancel": "Creating status has been canceled",
           "updateStatusCancel": "Updating status has been canceled",
           "deleteStatusCancel": "Removing status has been canceled",
-          "createTransitionsCancel": "Creating transitions has been canceled",
+          "updateTransitionsCancel": "Updating transitions has been canceled",
           "createTransitionCancel": "Creating transition has been canceled",
           "updateTransitionCancel": "Updating transition has been canceled",
           "deleteTransitionCancel": "Removing transition has been canceled"
@@ -66,10 +66,6 @@
         },
         "CreateWorkflowTransitionButton": {
           "title": "NEW TRANSITION"
-        },
-        "CreateWorkflowTransitionModalForm": {
-          "title": "Create new transition",
-          "successMessage": "Transition created"
         },
         "WorkflowDesignerDefaultStatusPlaceholder": {
           "title": "This is product default status",

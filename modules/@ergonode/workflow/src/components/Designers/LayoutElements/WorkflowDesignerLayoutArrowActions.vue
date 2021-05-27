@@ -8,6 +8,13 @@
             :transition-id="elementId" />
         <RemoveWorkflowTransitionFab
             @remove-transition="onRemoveTransition" />
+        <template
+            v-for="(actionItem, index) in extendedArrowAction">
+            <Component
+                :is="actionItem.component"
+                :key="index"
+                v-bind="bindingProps(actionItem)" />
+        </template>
     </div>
 </template>
 <script>
@@ -15,6 +22,7 @@ import RemoveWorkflowTransitionFab
     from '@Workflow/components/Buttons/RemoveWorkflowTransitionFab';
 import UpdateWorkflowTransitionFab
     from '@Workflow/components/Buttons/UpdateWorkflowTransitionFab';
+import PRIVILEGES from '@Workflow/config/privileges';
 
 export default {
     name: 'WorkflowDesignerLayoutArrow',
@@ -33,6 +41,9 @@ export default {
         },
     },
     computed: {
+        extendedArrowAction() {
+            return this.$getExtendSlot('@Workflow/components/Designer/WorkflowDesignerLayoutArrow/arrowActions');
+        },
         classes() {
             return [
                 'workflow-designer-layout-arrow-actions',
@@ -45,6 +56,14 @@ export default {
     methods: {
         onRemoveTransition() {
             this.$emit('remove-transition', this.elementId);
+        },
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.WORKFLOW,
+                ...props,
+            };
         },
     },
 };

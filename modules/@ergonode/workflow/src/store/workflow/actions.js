@@ -10,11 +10,7 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
-    isObject,
-} from '@Core/models/objectWrapper';
-import {
     createStatus,
-    createTransition,
     getDefaultStatus,
     getStatus,
     getStatuses,
@@ -25,6 +21,7 @@ import {
     updateDefaultStatus,
     updateStatus,
     updateTransition,
+    updateTransitions,
 } from '@Workflow/services';
 
 export default {
@@ -464,7 +461,7 @@ export default {
                     source: {
                         id: sourceOption.id,
                         key: sourceOption.code,
-                        value: sourceOption.name,
+                        value: sourceOption.name || `#${sourceOption.code}`,
                         hint: sourceOption.name
                             ? `#${sourceOption.code} ${userLanguageCode}`
                             : '',
@@ -472,7 +469,7 @@ export default {
                     destination: {
                         id: destinationOption.id,
                         key: destinationOption.code,
-                        value: destinationOption.name,
+                        value: destinationOption.name || `#${destinationOption.code}`,
                         hint: destinationOption.name
                             ? `#${destinationOption.code} ${userLanguageCode}`
                             : '',
@@ -517,7 +514,7 @@ export default {
                 source,
                 destination,
                 conditionSetId,
-            } = state.workflow;
+            } = state.transition;
             let data = {};
 
             if (conditionSetId) {
@@ -571,74 +568,10 @@ export default {
             });
         }
     },
-    async createTransition(
+    async updateTransitions(
         {
             state,
         },
-        {
-            scope,
-            onSuccess = () => {},
-            onError = () => {},
-        },
-    ) {
-        try {
-            const {
-                source,
-                destination,
-            } = state.workflow;
-            let data = {
-                source: isObject(source) ? source.id : null,
-                destination: isObject(destination) ? destination.id : null,
-            };
-            // EXTENDED BEFORE METHOD
-            const extendedData = await this.$getExtendMethod('@Workflow/store/workflow/action/createTransition/__before', {
-                $this: this,
-                data,
-            });
-            extendedData.forEach((extended) => {
-                data = {
-                    ...data,
-                    ...extended,
-                };
-            });
-            // EXTENDED BEFORE METHOD
-
-            const {
-                id,
-            } = await createTransition({
-                $axios: this.app.$axios,
-                data,
-            });
-
-            // EXTENDED AFTER METHOD
-            await this.$getExtendMethod('@Workflow/store/workflow/action/createTransition/__after', {
-                $this: this,
-                data: {
-                    id,
-                    ...data,
-                },
-            });
-            // EXTENDED AFTER METHOD
-
-            onSuccess(id);
-        } catch (e) {
-            if (this.app.$axios.isCancel(e)) {
-                this.app.$addAlert({
-                    type: ALERT_TYPE.WARNING,
-                    message: this.app.i18n.t('@Workflow.workflow.store.action.createTransitionCancel'),
-                });
-
-                return;
-            }
-
-            onError({
-                errors: e.data.errors,
-                scope,
-            });
-        }
-    },
-    async createTransitions(
-        {},
         {
             transitions,
             scope,
@@ -647,22 +580,42 @@ export default {
         },
     ) {
         try {
-            const requests = transitions.map(transition => createTransition({
-                $axios: this.app.$axios,
-                data: {
-                    source: transition.source,
-                    destination: transition.destination,
-                },
-            }));
+            let data = {
+                statuses: state.statuses.map(status => status.id),
+                transitions,
+            };
 
-            await Promise.all(requests);
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$getExtendMethod('@Workflow/store/workflow/action/updateTransitions/__before', {
+                $this: this,
+                data,
+            });
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+            // EXTENDED BEFORE METHOD
+
+            await updateTransitions({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$getExtendMethod('@Workflow/store/workflow/action/updateTransitions/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
 
             onSuccess();
         } catch (e) {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: this.app.i18n.t('@Workflow.workflow.store.action.createTransitionsCancel'),
+                    message: this.app.i18n.t('@Workflow.workflow.store.action.updateTransitionsCancel'),
                 });
 
                 return;
@@ -685,7 +638,7 @@ export default {
                 source,
                 destination,
                 conditionSetId,
-            } = state.workflow;
+            } = state.transition;
 
             // EXTENDED BEFORE METHOD
             await this.$getExtendMethod('@Workflow/store/workflow/action/removeTransition/__before', {

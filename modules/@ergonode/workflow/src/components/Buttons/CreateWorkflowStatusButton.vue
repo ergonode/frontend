@@ -23,6 +23,7 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import PRIVILEGES from '@Workflow/config/privileges';
@@ -37,6 +38,9 @@ export default {
         IconAdd,
         CreateWorkflowStatusModalForm: () => import('@Workflow/components/Modals/CreateWorkflowStatusModalForm'),
     },
+    mixins: [
+        beforeRouteLeaveMixin,
+    ],
     data() {
         return {
             isModalVisible: false,
@@ -54,7 +58,9 @@ export default {
     },
     methods: {
         onShowModal() {
-            this.isModalVisible = true;
+            this.confirmLeaving(() => {
+                this.isModalVisible = true;
+            });
         },
         onCloseModal() {
             this.isModalVisible = false;
