@@ -6,6 +6,7 @@
 import {
     getMappedLayoutElements,
     getMappedRowPositions,
+    getMappedTransitions,
     getObstacleColumns,
     getRows,
     getValidColumnsToAddTransition,
@@ -15,6 +16,7 @@ import {
     obstacleColumns,
     statuses,
     transitions,
+    transitionsToSend,
     validColumns,
     validRow,
     validRowPositions,
@@ -126,5 +128,17 @@ describe('getMappedLayoutElements', () => {
 
         expect(result.length).toEqual(0);
         expect(result).toEqual([]);
+    });
+});
+
+describe('getMappedTransitions', () => {
+    it('Based on layout element get transition to send', () => {
+        const result = getMappedTransitions({
+            transitions: [],
+            layoutElements,
+        });
+
+        expect(result.length).toEqual(3);
+        expect(result).toEqual(transitionsToSend);
     });
 });

@@ -13,6 +13,7 @@
                             <div class="workflow-designer__extender" />
                             <WorkflowDesignerDefaultStatusPlaceholder v-if="isPlaceholderVisible" />
                             <Designer
+                                data-cy="workflow-designer"
                                 :columns="statuses.length"
                                 :column-width="columnWidth"
                                 :row-height="rowHeight"

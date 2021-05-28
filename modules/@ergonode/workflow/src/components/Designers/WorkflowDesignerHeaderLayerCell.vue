@@ -8,10 +8,11 @@
             <WorkflowStatusBadge
                 :color="status.color"
                 :default-status="status.is_default" />
-            {{ title }}
+            <span v-text="title" />
         </div>
         <WorkflowDesignerEditStatusLink
             v-if="isAllowedToUpdate"
+            data-cy="status-column-edit"
             :status-id="status.id" />
     </div>
 </template>
