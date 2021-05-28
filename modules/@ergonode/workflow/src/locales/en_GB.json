@@ -30,7 +30,7 @@
           "createStatusCancel": "Creating status has been canceled",
           "updateStatusCancel": "Updating status has been canceled",
           "deleteStatusCancel": "Removing status has been canceled",
-          "createTransitionsCancel": "Creating transitions has been canceled",
+          "updateTransitionsCancel": "Updating transitions has been canceled",
           "createTransitionCancel": "Creating transition has been canceled",
           "updateTransitionCancel": "Updating transition has been canceled",
           "deleteTransitionCancel": "Removing transition has been canceled"
@@ -42,6 +42,13 @@
           "confirmTitle": "Are you sure you want to delete this transition?",
           "successMessage": "Transition removed",
           "errorMessage": "Transition hasn`t been deleted"
+        },
+        "RemoveWorkflowTransitionFab": {
+          "title": "REMOVE TRANSITION",
+          "confirmTitle": "Are you sure you want to delete this transition?"
+        },
+        "UpdateWorkflowTransitionFab": {
+          "title": "UPDATE TRANSITION"
         },
         "UpdateWorkflowTransitionConditionDesignerButton": {
           "successMessage": "Transition conditions have been updated"
@@ -60,16 +67,13 @@
         "CreateWorkflowTransitionButton": {
           "title": "NEW TRANSITION"
         },
-        "CreateWorkflowTransitionModalForm": {
-          "title": "Create new transition",
-          "successMessage": "Transition created"
-        },
         "WorkflowDesignerDefaultStatusPlaceholder": {
           "title": "This is product default status",
           "subtitle": "Create another status to add transitions."
         },
         "WorkflowDesigner": {
-          "errorMessage": "Workflow haven’t been fetched properly"
+          "errorMessage": "Workflow haven’t been fetched properly",
+          "warningMessage": "No possible combinations for this status"
         },
         "CreateWorkflowTransitionsButton": {
           "successMessage": "Transitions have been created"

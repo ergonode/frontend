@@ -64,10 +64,10 @@ export const updateTransition = ({
     data,
 }) => $axios.$put(`workflow/default/transitions/${source}/${destination}`, data);
 
-export const createTransition = ({
+export const updateTransitions = ({
     $axios,
     data,
-}) => $axios.$post('workflow/default/transitions', data);
+}) => $axios.$put('workflow/default', data);
 
 export const removeTransition = ({
     $axios,

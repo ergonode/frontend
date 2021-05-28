@@ -92,7 +92,20 @@ export default {
                 data,
             });
         },
+        '@Workflow/store/workflow/action/getTransition/__after': ({
+            $this, data,
+        }) => {
+            setTransition({
+                $this,
+                data,
+            });
+        },
         '@Transitions/store/statusTransition/action/updateStatusTransition/__before': ({
+            $this,
+        }) => getTransition({
+            $this,
+        }),
+        '@Workflow/store/workflow/action/updateTransition/__before': ({
             $this,
         }) => getTransition({
             $this,

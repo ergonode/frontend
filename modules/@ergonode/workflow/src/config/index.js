@@ -7,6 +7,7 @@ export default {
     order: 90,
     relations: [
         '@ergonode/core',
+        '@ergonode/conditions',
     ],
     aliases: {
         '@Workflow': '/',

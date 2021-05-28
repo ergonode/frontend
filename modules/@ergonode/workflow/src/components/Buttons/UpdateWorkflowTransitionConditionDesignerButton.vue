@@ -9,7 +9,7 @@
         <template #default="{ hasValueToSave }">
             <Button
                 data-cy="submit"
-                :title="$t('@Transitions._.submit')"
+                :title="$t('@Workflow._.submit')"
                 :floating="saveChangesButtonFloatingStyle"
                 :disabled="!isAllowedToUpdate"
                 @click.native="onSubmit">
@@ -31,7 +31,6 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
-import PRIVILEGES from '@Transitions/config/privileges';
 import {
     Z_INDEX_LVL_2,
 } from '@UI/assets/scss/_js-variables/indexes.scss';
@@ -39,6 +38,7 @@ import Button from '@UI/components/Button/Button';
 import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import IconSync from '@UI/components/Icons/Feedback/IconSync';
+import PRIVILEGES from '@Workflow/config/privileges';
 import {
     mapActions,
     mapState,
@@ -78,9 +78,9 @@ export default {
         },
     },
     methods: {
-        ...mapActions('statusTransition', [
+        ...mapActions('workflow', [
             '__setState',
-            'updateStatusTransition',
+            'updateTransition',
         ]),
         ...mapActions('condition', [
             'createConditionSet',
@@ -94,7 +94,7 @@ export default {
 
             this.removeScopeErrors(this.scope);
 
-            if (!this.workflow.conditionSetId) {
+            if (!this.transition.conditionSetId) {
                 this.createConditionSet({
                     scope: this.scope,
                     onSuccess: this.onUpdateSuccess,
@@ -117,13 +117,13 @@ export default {
                 },
             });
 
-            await this.updateStatusTransition({
+            await this.updateTransition({
                 scope: this.scope,
             });
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('@Transitions.transition.components.UpdateWorkflowTransitionConditionDesignerButton.successMessage'),
+                message: this.$t('@Workflow.workflow.components.CreateWorkflowTransitionsButton.successMessage'),
             });
 
             this.isSubmitting = false;

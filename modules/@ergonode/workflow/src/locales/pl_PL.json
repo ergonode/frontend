@@ -30,7 +30,7 @@
           "createStatusCancel": "Tworzenie statusu zostało przerwane",
           "updateStatusCancel": "Aktualizacja statusu została przerwana",
           "deleteStatusCancel": "Usuwanie statusu zostało przerwane",
-          "createTransitionsCancel": "Tworzenie przejść zostało przerwane",
+          "updateTransitionsCancel": "Aktualizacja przejść została przerwana",
           "createTransitionCancel": "Tworzenie przejścia zostało przerwane",
           "updateTransitionCancel": "Aktualizacja przejścia została przerwana",
           "deleteTransitionCancel": "Usuwanie przejścia zostało przerwane"
@@ -42,6 +42,13 @@
           "confirmTitle": "Czy jesteś pewien, że chcesz usunąć to przejście?",
           "successMessage": "Przejście zostało usunięte usunięta",
           "errorMessage": "Przejście nie została usunięte"
+        },
+        "RemoveWorkflowTransitionFab": {
+          "title": "USUŃ PRZEJŚCIE",
+          "confirmTitle": "Czy jesteś pewien, że chcesz usunąć to przejście?"
+        },
+        "UpdateWorkflowTransitionFab": {
+          "title": "UAKTUALNIJ PRZEJŚCIE"
         },
         "UpdateWorkflowTransitionConditionDesignerButton": {
           "successMessage": "Warunki przejścia zostały zaktualizowane"
@@ -60,16 +67,13 @@
         "CreateWorkflowTransitionButton": {
           "title": "NOWE PRZEJŚCIE"
         },
-        "CreateWorkflowTransitionModalForm": {
-          "title": "Stwórz nowe przejście",
-          "successMessage": "Przejście zostało stworzone"
-        },
         "WorkflowDesignerDefaultStatusPlaceholder": {
           "title": "To jest domyślny status",
           "subtitle": "Stwórz kolejny by móc dodać przejście."
         },
         "WorkflowDesigner": {
-          "errorMessage": "Statusy i ich przejdzie nie zostały pobrany poprawnie"
+          "errorMessage": "Statusy i ich przejdzie nie zostały pobrany poprawnie",
+          "warningMessage": "Brak możliwych kombinacji dla tego statusu"
         },
         "CreateWorkflowTransitionsButton": {
           "successMessage": "Przejścia zostały utworzone"
