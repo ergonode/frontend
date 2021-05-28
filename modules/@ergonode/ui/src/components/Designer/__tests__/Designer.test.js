@@ -56,8 +56,8 @@ describe('Designer/DesignerBackgroundLayer', () => {
                 },
             });
 
-            expect(wrapper.vm.rows).toEqual(15);
-            expect(wrapper.emitted().rows[0][0]).toEqual(15);
+            expect(wrapper.vm.rows).toEqual(14);
+            expect(wrapper.emitted().rows[0][0]).toEqual(14);
         });
 
         it('Added additional row', async () => {

@@ -4,20 +4,56 @@
  */
 <template>
     <div class="workflow-designer-tab">
-        <WorkflowDesigner />
-        <CreateWorkflowTransitionsButton />
+        <WorkflowDesigner
+            :scope="scope"
+            :errors="errors"
+            :changed-values="changeValues"
+            @layoutElements="layoutElementsMapper" />
+        <CreateWorkflowTransitionsButton
+            :scope="scope"
+            :errors="errors"
+            :changed-values="changeValues"
+            :transitions="mappedTransitions" />
     </div>
 </template>
 
 <script>
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import CreateWorkflowTransitionsButton from '@Workflow/components/Buttons/CreateWorkflowTransitionsButton';
 import WorkflowDesigner from '@Workflow/components/Designers/WorkflowDesigner';
+import {
+    getMappedTransitions,
+} from '@Workflow/models/workflowDesigner';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'WorkflowDesignerTab',
     components: {
         WorkflowDesigner,
         CreateWorkflowTransitionsButton,
+    },
+    mixins: [
+        tabFeedbackMixin,
+    ],
+    data() {
+        return {
+            mappedTransitions: [],
+        };
+    },
+    computed: {
+        ...mapState('workflow', [
+            'transitions',
+        ]),
+    },
+    methods: {
+        layoutElementsMapper(layoutElements) {
+            this.mappedTransitions = getMappedTransitions({
+                layoutElements,
+                transitions: this.transitions,
+            });
+        },
     },
 };
 </script>

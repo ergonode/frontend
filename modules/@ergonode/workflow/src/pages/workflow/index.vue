@@ -20,7 +20,9 @@
         </TitleBar>
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
-            :items="asyncTabs" />
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors" />
     </Page>
 </template>
 
@@ -32,6 +34,9 @@ import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRou
 import TitleBar from '@UI/components/TitleBar/TitleBar';
 import CreateWorkflowStatusButton from '@Workflow/components/Buttons/CreateWorkflowStatusButton';
 import PRIVILEGES from '@Workflow/config/privileges';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'WorkflowStatusTransitions',
@@ -53,7 +58,13 @@ export default {
             return this.$isReadOnly(PRIVILEGES.WORKFLOW.namespace);
         },
     },
+    beforeDestroy() {
+        this.__clearFeedbackStorage();
+    },
     methods: {
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
         bindingProps({
             props = {},
         }) {

@@ -4,23 +4,30 @@
  */
 
 import {
+    getMappedLayoutElements,
+    getMappedRowPositions,
     getObstacleColumns,
+    getRows,
     getValidColumnsToAddTransition,
 } from '@Workflow/models/workflowDesigner';
 import {
+    layoutElements,
     obstacleColumns,
+    statuses,
     transitions,
     validColumns,
+    validRow,
+    validRowPositions,
 } from '@Workflow/models/workflowDesigner/__tests__/__mocks__';
 
 // Considering designer example
-//     1   2   3   4
+//     0   1   2   3
 //    ---------------
-// 1 | x |   | x |   | => From 1 to 3
+// 1 | x |   | x |   | => From 0 to 2
 //    ---------------
-// 2 | x |   |   | x | => From 1 to 4
+// 2 | x |   |   | x | => From 0 to 3
 //    ---------------
-// 3 | x | x |   |   | => From 1 to 2
+// 3 | x | x |   |   | => From 0 to 1
 //    ---------------
 // 4 | x |   |   |   |
 //    ---------------
@@ -37,8 +44,8 @@ describe('getObstacleColumns', () => {
 
     it('Based on designer with transitions get the all obstacles for new transition starting at column 1 and row 4', () => {
         const result = getObstacleColumns({
-            from: 1,
-            transitions,
+            from: 0,
+            transitions: layoutElements,
         });
 
         expect(result.length).toEqual(4);
@@ -64,5 +71,60 @@ describe('getValidColumnsToAddTransition', () => {
         });
 
         expect(result.length).toEqual(0);
+    });
+});
+
+describe('getMappedRowPositions', () => {
+    it('Based on designer transitions get all valid row positions', () => {
+        const result = getMappedRowPositions(layoutElements);
+
+        expect(Object.keys(result).length).toEqual(3);
+        expect(result).toEqual(validRowPositions);
+    });
+
+    it('Based on empty designer transitions get empty row position', () => {
+        const result = getMappedRowPositions([]);
+
+        expect(Object.keys(result).length).toEqual(0);
+        expect(result).toEqual({});
+    });
+});
+
+describe('getRows', () => {
+    it('Based on designer transitions get all valid row', () => {
+        const result = getRows(layoutElements);
+
+        expect(result.length).toEqual(3);
+        expect(result).toEqual(validRow);
+    });
+
+    it('Based on empty designer transitions get empty row', () => {
+        const result = getRows([]);
+
+        expect(result.length).toEqual(0);
+        expect(result).toEqual([]);
+    });
+});
+
+describe('getMappedLayoutElements', () => {
+    it('Based on transitions get layout element', () => {
+        const result = getMappedLayoutElements({
+            transitions,
+            statuses,
+            rowsPositions: null,
+        });
+
+        expect(result.length).toEqual(3);
+        expect(result).toEqual(layoutElements);
+    });
+    it('Based on transitions get empty layout element', () => {
+        const result = getMappedLayoutElements({
+            transitions: [],
+            statuses,
+            rowsPositions: null,
+        });
+
+        expect(result.length).toEqual(0);
+        expect(result).toEqual([]);
     });
 });
