@@ -7,12 +7,12 @@
         <WorkflowDesigner
             :scope="scope"
             :errors="errors"
-            :changed-values="changeValues"
+            :change-values="changeValues"
             @layoutElements="layoutElementsMapper" />
         <CreateWorkflowTransitionsButton
             :scope="scope"
             :errors="errors"
-            :changed-values="changeValues"
+            :change-values="changeValues"
             :transitions="mappedTransitions" />
     </div>
 </template>
