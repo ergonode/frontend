@@ -70,8 +70,6 @@ export default {
 
 <style lang="scss" scoped>
     .workflow-designer-layout-arrow {
-        $self: &;
-
         position: absolute;
         z-index: $Z_INDEX_LVL_3;
         justify-self: center;
