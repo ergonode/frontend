@@ -491,6 +491,7 @@ export default {
                     id: attributeId,
                     languageCode,
                     value,
+                    productId: id,
                 },
                 {
                     root: true,
@@ -708,6 +709,7 @@ export default {
         }
     },
     async validateProduct({
+        state,
         dispatch,
         rootState,
     }, {
@@ -724,6 +726,7 @@ export default {
                     id: elementId,
                     languageCode,
                     value,
+                    productId: state.id || fieldKey.split('/')[0],
                 },
                 {
                     root: true,
