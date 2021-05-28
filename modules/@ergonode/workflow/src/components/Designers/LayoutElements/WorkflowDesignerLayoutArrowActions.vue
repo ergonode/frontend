@@ -5,6 +5,7 @@
 <template>
     <div :class="classes">
         <UpdateWorkflowTransitionFab
+            v-if="!hasChange"
             :transition-id="elementId" />
         <RemoveWorkflowTransitionFab
             @remove-transition="onRemoveTransition" />
@@ -23,6 +24,9 @@ import RemoveWorkflowTransitionFab
 import UpdateWorkflowTransitionFab
     from '@Workflow/components/Buttons/UpdateWorkflowTransitionFab';
 import PRIVILEGES from '@Workflow/config/privileges';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'WorkflowDesignerLayoutArrow',
@@ -41,6 +45,18 @@ export default {
         },
     },
     computed: {
+        ...mapState('feedback', [
+            'errors',
+            'changeValues',
+        ]),
+        hasChange() {
+            const changeValuesKeys = Object.keys(this.changeValues);
+            const hasChange = changeValuesKeys.length > 0
+                && changeValuesKeys.some(key => Object.keys(this.changeValues[key]).length > 0
+                    && !this.changeValues[key].saved);
+
+            return hasChange;
+        },
         extendedArrowAction() {
             return this.$getExtendSlot('@Workflow/components/Designer/WorkflowDesignerLayoutArrow/arrowActions');
         },
@@ -62,6 +78,7 @@ export default {
         }) {
             return {
                 privileges: PRIVILEGES.WORKFLOW,
+                hasChange: this.hasChange,
                 ...props,
             };
         },
