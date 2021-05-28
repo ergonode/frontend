@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="workflow-designer">
+    <div
+        class="workflow-designer"
+        @click="onClickOutside">
         <Preloader v-if="isFetchingData" />
         <VerticalFixedScroll v-else>
             <div class="workflow-designer__container">
@@ -401,6 +403,7 @@ export default {
                 statuses: this.statuses,
                 rowsPositions,
             });
+            this.$emit('layoutElements', this.layoutElements);
             this.isFetchingData = false;
         },
         onFetchDataError() {
@@ -538,6 +541,17 @@ export default {
         onMouseLeave(event) {
             if (this.isOutOfBounds(event) && this.ghostIndex !== null) {
                 this.ghostIndex = null;
+            }
+        },
+        onClickOutside(event) {
+            if (this.isOutOfBounds(event) && this.editedRow !== -1) {
+                this.ghostIndex = null;
+                this.editedRow = -1;
+                this.validColumns = [];
+                this.layoutElements = removeValueAtIndex(
+                    this.layoutElements,
+                    this.rowIndex(EDITED_ROW_ID),
+                );
             }
         },
         onRowMouseEnter(row) {
