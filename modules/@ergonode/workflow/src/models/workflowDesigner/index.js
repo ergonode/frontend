@@ -33,6 +33,11 @@ export function getMappedLayoutElements({
     statuses,
     rowsPositions,
 }) {
+    let rowValues = rowsPositions;
+    if (rowsPositions && rowsPositions.length !== transitions.length) {
+        rowValues = null;
+    }
+
     return transitions.reduce((acc, current, index) => {
         const tmpArray = acc;
         const transitionId = `${current.source}--${current.destination}`;
@@ -43,7 +48,7 @@ export function getMappedLayoutElements({
             id: transitionId,
             from,
             to,
-            row: rowsPositions ? rowsPositions[transitionId] : index,
+            row: rowValues ? rowValues[transitionId] : index,
         });
 
         return tmpArray;
