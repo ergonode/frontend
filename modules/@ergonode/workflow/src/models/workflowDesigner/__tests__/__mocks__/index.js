@@ -17,6 +17,26 @@ export const transitions = [
         destination: 1,
     },
 ];
+export const transitionsToSend = [
+    {
+        source: '0',
+        destination: '2',
+        roles: [],
+        condition_set: null,
+    },
+    {
+        source: '0',
+        destination: '3',
+        roles: [],
+        condition_set: null,
+    },
+    {
+        source: '0',
+        destination: '1',
+        roles: [],
+        condition_set: null,
+    },
+];
 export const statuses = [
     {
         id: 0,
