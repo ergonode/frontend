@@ -342,6 +342,7 @@ export default {
         id,
         languageCode,
         value,
+        productId = null,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -353,6 +354,7 @@ export default {
                 data: {
                     value,
                 },
+                productId,
             });
 
             onSuccess(id);
