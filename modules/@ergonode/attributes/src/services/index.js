@@ -52,9 +52,14 @@ export const validateValue = ({
     id,
     languageCode,
     data,
-}) => $axios.$post(`${languageCode}/attribute/${id}/validate`, data, {
-    withLanguage: false,
-});
+    productId = null,
+}) => {
+    const validationParam = productId ? `?aggregateId=${productId}` : '';
+
+    return $axios.$post(`${languageCode}/attribute/${id}/validate${validationParam}`, data, {
+        withLanguage: false,
+    });
+};
 
 export const remove = ({
     $axios,
