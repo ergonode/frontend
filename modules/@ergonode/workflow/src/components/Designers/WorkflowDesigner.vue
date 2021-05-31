@@ -378,6 +378,7 @@ export default {
             if (this.isRowEdited(row)) {
                 this.editedRow = -1;
                 this.validColumns = [];
+                this.mouseXPosition = 0;
                 this.layoutElements = removeValueAtIndex(
                     this.layoutElements,
                     this.rowIndex(EDITED_ROW_ID),
@@ -548,6 +549,7 @@ export default {
                 this.ghostIndex = null;
                 this.editedRow = -1;
                 this.validColumns = [];
+                this.mouseXPosition = 0;
                 this.layoutElements = removeValueAtIndex(
                     this.layoutElements,
                     this.rowIndex(EDITED_ROW_ID),
