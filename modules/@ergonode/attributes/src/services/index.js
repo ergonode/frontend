@@ -55,7 +55,6 @@ export const validateValue = ({
     productId = null,
 }) => {
     const validationParam = productId
-        && productId !== 'undefined'
         && typeof productId !== 'undefined'
         ? `?aggregateId=${productId}` : '';
 
