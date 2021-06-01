@@ -34,14 +34,13 @@
         "AddProductRelationsModalGrid": {
           "title": "Add relations"
         },
+        "AddProductRelationsButton": {
+          "successMessage": "Product relations have been updated",
+          "infoMessage": "No changes have been made"
+        },
         "AddProductRelationsGrid": {
-          "attachLabel": "Attached",
-          "successUpdateMessage": "Product relations have been updated",
-          "infoMessage": "No changes have been made",
           "successRemoveMessage": "Product relation removed",
-          "errorGetMessage": "Product relations haven’t been fetched properly",
-          "attachedLabel": "Attached",
-          "notAttachedLabel": "Not attached"
+          "errorGetMessage": "Product relations haven’t been fetched properly"
         },
         "UploadProductRelations": {
           "title": "Add relations",

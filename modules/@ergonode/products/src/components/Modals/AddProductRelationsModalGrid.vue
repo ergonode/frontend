@@ -9,7 +9,6 @@
         <template #body>
             <AddProductRelationsGrid
                 :value="value"
-                :attribute-id="attributeId"
                 :product-id="productId"
                 :scope="scope"
                 :change-values="changeValues"
@@ -37,10 +36,6 @@ export default {
         value: {
             type: Array,
             default: () => [],
-        },
-        attributeId: {
-            type: String,
-            default: '',
         },
         productId: {
             type: String,

@@ -11,7 +11,6 @@
             :value="fieldData"
             :label="label"
             :size="imageSize"
-            :attribute-id="properties.attribute_id"
             :product-id="id"
             :required="properties.required"
             :disabled="disabled"
