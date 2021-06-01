@@ -39,6 +39,15 @@ export default {
     mixins: [
         gridDataCellMixin,
     ],
+    props: {
+        errorMessages: {
+            type: [
+                Object,
+                String,
+            ],
+            default: '',
+        },
+    },
     computed: {
         cellData() {
             if (this.isDraft && !arraysAreEqual(this.data.value || [], this.draft)) {
