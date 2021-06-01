@@ -727,6 +727,9 @@ export default {
                     languageCode,
                     value,
                     productId: state.id || fieldKey.split('/')[0],
+                    onError: (errors) => {
+                        throw errors;
+                    },
                 },
                 {
                     root: true,
