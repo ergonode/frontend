@@ -720,15 +720,13 @@ export default {
         scope,
     }) {
         try {
-            const productId = state.id || fieldKey.split('/')[0];
-
             await dispatch(
                 'attribute/validateAttributeValue',
                 {
                     id: elementId,
                     languageCode,
                     value,
-                    productId: productId || null,
+                    productId: state.id || fieldKey.split('/')[0],
                     onError: (errors) => {
                         throw errors;
                     },
