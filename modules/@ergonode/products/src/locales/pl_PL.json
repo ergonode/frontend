@@ -35,6 +35,10 @@
           "title": "Dodaj relacje"
         },
         "AddProductRelationsButton": {
+          "title": "Dodaj zaznaczone",
+          "confirmErrorApplyTitle": "Tak, wyczyść",
+          "confirmErrorTitle": "Wybrano {info} relacji produktowych. Tylko 100 relacji może być dodane",
+          "confirmErrorSubtitle": "Czy chciałbyś wyczyścić zaznaczenie?",
           "successMessage": "Relacje produktowe zostały zaktualizowane",
           "infoMessage": "Żadne zmiany nie zostały zrobione"
         },

@@ -35,6 +35,10 @@
           "title": "Add relations"
         },
         "AddProductRelationsButton": {
+          "title": "Add selected",
+          "confirmErrorApplyTitle": "Yes, clear",
+          "confirmErrorTitle": "Selected {info} product relations. Only 100 relations might be added",
+          "confirmErrorSubtitle": "Would you like to clear selection?",
           "successMessage": "Product relations have been updated",
           "infoMessage": "No changes have been made"
         },

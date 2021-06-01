@@ -47,6 +47,7 @@
                 selectedRows,
                 excludedFromSelectionRows,
                 selectedRowsCount,
+                isSelectedAll,
                 onClearSelectedRows,
             }">
             <Component
@@ -55,9 +56,11 @@
                 :key="index"
                 v-bind="bindingProps(footerItem)" />
             <AddProductRelationsButton
+                :query="filterQuery"
                 :selected-rows="selectedRows"
                 :excluded-from-selection-rows="excludedFromSelectionRows"
                 :selected-rows-count="selectedRowsCount"
+                :is-selected-all="isSelectedAll"
                 :on-clear-selected-rows="onClearSelectedRows" />
         </template>
     </Grid>
@@ -155,6 +158,9 @@ export default {
                 ],
             };
         },
+        filterQuery() {
+            return getParsedFilters(this.filterValues);
+        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
@@ -178,7 +184,7 @@ export default {
         onFilterChange(filters) {
             this.filterValues = filters;
             this.pagination.page = 1;
-            this.localParams.filter = getParsedFilters(filters);
+            this.localParams.filter = this.filterQuery;
             this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
             this.onFetchData();

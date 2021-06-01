@@ -24,6 +24,7 @@
                     :selected-rows="selectedRows"
                     :excluded-from-selection-rows="excludedFromSelectionRows"
                     :selected-rows-count="selectedRowsCount"
+                    :is-selected-all="isSelectedAll"
                     :on-clear-selected-rows="onClearSelectedRows" />
             </template>
             <template #configuration>
@@ -117,6 +118,7 @@
                     :selected-rows="selectedRows"
                     :excluded-from-selection-rows="excludedFromSelectionRows"
                     :selected-rows-count="selectedRowsCount"
+                    :is-selected-all="isSelectedAll"
                     :on-clear-selected-rows="onClearSelectedRows" />
             </slot>
         </GridFooter>
