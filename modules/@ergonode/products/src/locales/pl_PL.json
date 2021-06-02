@@ -39,6 +39,7 @@
           "confirmErrorApplyTitle": "Tak, wyczyść",
           "confirmErrorTitle": "Wybrano {info} relacji produktowych. Tylko 100 relacji może być dodane",
           "confirmErrorSubtitle": "Czy chciałbyś wyczyścić zaznaczenie?",
+          "errorMessage": "Relacje produktowe nie mogły zostać pobrane",
           "successMessage": "Relacje produktowe zostały zaktualizowane",
           "infoMessage": "Żadne zmiany nie zostały zrobione"
         },

@@ -56,12 +56,14 @@
                 :key="index"
                 v-bind="bindingProps(footerItem)" />
             <AddProductRelationsButton
-                :query="filterQuery"
+                :data-count="filtered"
+                :filter="filterQuery"
                 :selected-rows="selectedRows"
                 :excluded-from-selection-rows="excludedFromSelectionRows"
                 :selected-rows-count="selectedRowsCount"
                 :is-selected-all="isSelectedAll"
-                :on-clear-selected-rows="onClearSelectedRows" />
+                :on-clear-selected-rows="onClearSelectedRows"
+                @add="onAddProductRelations" />
         </template>
     </Grid>
 </template>
@@ -174,6 +176,12 @@ export default {
         delete this.onDebounceSearch;
     },
     methods: {
+        onAddProductRelations(relations) {
+            this.$emit('input', [
+                ...this.value,
+                ...relations,
+            ]);
+        },
         onPaginationChange(pagination) {
             this.pagination = pagination;
             this.localParams.limit = pagination.itemsPerPage;
@@ -207,24 +215,19 @@ export default {
                 sortOrder = {}, ...rest
             } = this.localParams;
 
-            const path = 'products';
-            const columns = 'sku,esa_template,esa_default_label,esa_default_image,_links';
-
             // TODO:
             // Filter based: Get all products except this.productId and this.value
-
-            const params = {
-                ...rest,
-                ...sortOrder,
-                columns,
-            };
 
             await getGridData({
                 $route: this.$route,
                 $cookies: this.$userCookies,
                 $axios: this.$axios,
-                path,
-                params,
+                path: 'products',
+                params: {
+                    ...rest,
+                    ...sortOrder,
+                    columns: 'sku,esa_template,esa_default_label,esa_default_image,_links',
+                },
                 onSuccess: this.onFetchDataSuccess,
                 onError: this.onFetchDataError,
             });

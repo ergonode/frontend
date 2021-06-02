@@ -20,12 +20,6 @@
 
 <script>
 import {
-    getFilter,
-} from '@BatchActions/models/batchActionMapper';
-import {
-    getCount,
-} from '@BatchActions/services';
-import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
@@ -35,8 +29,8 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import {
-    BATCH_ACTION_TYPE,
-} from '@ProductBatchActions/defaults';
+    getGridData,
+} from '@Core/services/grid/getGridData.service';
 import Button from '@UI/components/Button/Button';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import IconSync from '@UI/components/Icons/Feedback/IconSync';
@@ -49,7 +43,11 @@ export default {
         IconSync,
     },
     props: {
-        query: {
+        dataCount: {
+            type: Number,
+            default: 0,
+        },
+        filter: {
             type: String,
             default: '',
         },
@@ -99,47 +97,63 @@ export default {
     },
     methods: {
         async onAddRelations() {
-            this.isSubmitting = true;
+            const selectedAllCount = this.isSelectedAll
+                ? this.dataCount - this.excludedFromSelectionRowsIds.length
+                : this.selectedRowsIds.length;
 
-            // TODO think about relation with Batch actions
-
-            const {
-                count,
-            } = await getCount({
-                $axios: this.$axios,
-                payload: {
-                    filter: getFilter({
-                        ids: this.selectedRowsIds,
-                        excludedIds: this.excludedFromSelectionRowsIds,
-                        query: this.query,
-                    }),
-                    type: BATCH_ACTION_TYPE.UPDATE_PRODUCTS,
-                },
-            });
-
-            this.isSubmitting = false;
-
-            if (count > 100) {
+            if (selectedAllCount > 100) {
                 this.$confirm({
                     type: MODAL_TYPE.DESTRUCTIVE,
                     title: this.$t('@Products.product.components.AddProductRelationsButton.confirmErrorTitle', {
-                        info: count,
+                        info: selectedAllCount,
                     }),
                     subtitle: this.$t('@Products.product.components.AddProductRelationsButton.confirmErrorSubtitle'),
                     applyTitle: this.$t('@Products.product.components.AddProductRelationsButton.confirmErrorApplyTitle'),
                     action: this.onClearSelectedRows,
                 });
-            } else if (count === 0) {
+            } else if (selectedAllCount === 0) {
                 this.$addAlert({
                     type: ALERT_TYPE.INFO,
                     message: this.$t('@Products.product.components.AddProductRelationsButton.infoMessage'),
                 });
             } else {
-                this.$addAlert({
-                    type: ALERT_TYPE.SUCCESS,
-                    message: this.$t('@Products.product.components.AddProductRelationsButton.successMessage'),
+                this.isSubmitting = true;
+
+                await getGridData({
+                    $route: this.$route,
+                    $cookies: this.$userCookies,
+                    $axios: this.$axios,
+                    path: 'products',
+                    params: {
+                        limit: selectedAllCount,
+                        offset: 0,
+                        extended: false,
+                        view: 'list',
+                    },
+                    onSuccess: this.onFetchDataSuccess,
+                    onError: this.onFetchDataError,
                 });
             }
+        },
+        onFetchDataSuccess({
+            rows,
+        }) {
+            this.$emit('add', rows.map(row => row.id.value));
+
+            this.isSubmitting = false;
+
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: this.$t('@Products.product.components.AddProductRelationsButton.successMessage'),
+            });
+        },
+        onFetchDataError() {
+            this.isSubmitting = false;
+
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: this.$t('@Products.product.components.AddProductRelationsButton.errorMessage'),
+            });
         },
     },
 };
