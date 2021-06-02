@@ -4,23 +4,21 @@
  */
 <template>
     <Grid
-        :columns="columnsWithAttachColumn"
+        :columns="columns"
         :data-count="filtered"
-        :drafts="drafts"
         :pagination="pagination"
         :filters="filterValues"
         :sort-order="localParams.sortOrder"
-        :rows="rowsWithAttachValues"
+        :rows="rows"
         :collection-cell-binding="collectionCellBinding"
         :extended-components="extendedGridComponents"
         :is-editable="isAllowedToUpdate"
         :is-prefetching-data="isPrefetchingData"
+        :is-select-column="true"
         :is-basic-filter="true"
         :is-header-visible="true"
-        :is-collection-layout="true"
         @edit-row="onEditRow"
         @preview-row="onEditRow"
-        @cell-value="onCellValueChange"
         @delete-row="onRemoveRow"
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
@@ -44,16 +42,28 @@
                 :title="$t('@Products.product._.noProduct')"
                 :subtitle="$t('@Products.product._.createFirst')" />
         </template>
-        <template #appendFooter>
+        <template
+            #appendFooter="{
+                selectedRows,
+                excludedFromSelectionRows,
+                selectedRowsCount,
+                isSelectedAll,
+                onClearSelectedRows,
+            }">
             <Component
                 v-for="(footerItem, index) in extendedFooter"
                 :is="footerItem.component"
                 :key="index"
                 v-bind="bindingProps(footerItem)" />
-            <Button
-                :title="$t('@Products._.submit')"
-                :size="smallSize"
-                @click.native="onSaveRelations" />
+            <AddProductRelationsButton
+                :data-count="filtered"
+                :filter="filterQuery"
+                :selected-rows="selectedRows"
+                :excluded-from-selection-rows="excludedFromSelectionRows"
+                :selected-rows-count="selectedRowsCount"
+                :is-selected-all="isSelectedAll"
+                :on-clear-selected-rows="onClearSelectedRows"
+                @add="onAddProductRelations" />
         </template>
     </Grid>
 </template>
@@ -66,23 +76,19 @@ import {
     DEFAULT_GRID_FETCH_PARAMS,
     DEFAULT_GRID_PAGINATION,
 } from '@Core/defaults/grid';
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
-import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
     getParsedFilters,
 } from '@Core/models/mappers/gridDataMapper';
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import AddProductRelationsButton from '@Products/components/Buttons/AddProductRelationsButton';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     ROUTE_NAME,
 } from '@Products/config/routes';
-import Button from '@UI/components/Button/Button';
 import Grid from '@UI/components/Grid/Grid';
 import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
@@ -93,9 +99,9 @@ import {
 export default {
     name: 'AddProductRelationsGrid',
     components: {
+        AddProductRelationsButton,
         Grid,
         GridNoDataPlaceholder,
-        Button,
         IntersectionObserver,
     },
     mixins: [
@@ -105,7 +111,6 @@ export default {
                 'grid',
             ],
         }),
-        gridDraftMixin,
         extendedGridComponentsMixin,
     ],
     props: {
@@ -114,10 +119,6 @@ export default {
                 String,
                 Array,
             ],
-            default: '',
-        },
-        attributeId: {
-            type: String,
             default: '',
         },
         productId: {
@@ -149,9 +150,6 @@ export default {
         extendedFooter() {
             return this.$getExtendSlot('@Products/components/Grids/AddProductRelationsGrid/footer');
         },
-        smallSize() {
-            return SIZE.SMALL;
-        },
         collectionCellBinding() {
             return {
                 imageColumn: 'esa_default_image',
@@ -162,68 +160,8 @@ export default {
                 ],
             };
         },
-        columnsWithAttachColumn() {
-            if (this.isDirectRelation) {
-                return this.columns.map((column) => {
-                    if (column.id === 'attached') {
-                        return {
-                            ...column,
-                            filter: {
-                                type: 'SELECT',
-                                options: {
-                                    false: {
-                                        label: this.$t('@Products.product.components.AddProductRelationsGrid.notAttachedLabel'),
-                                    },
-                                    true: {
-                                        label: this.$t('@Products.product.components.AddProductRelationsGrid.attachedLabel'),
-                                    },
-                                },
-                            },
-                        };
-                    }
-
-                    return column;
-                });
-            }
-
-            const columns = [];
-
-            for (let i = 0; i < this.columns.length; i += 1) {
-                columns.push(this.columns[i]);
-
-                if (this.columns[i].id === 'sku') {
-                    columns.push({
-                        id: 'attached',
-                        type: 'BOOL',
-                        label: this.$t('@Products.product.components.AddProductRelationsGrid.attachLabel'),
-                        visible: true,
-                        editable: true,
-                        deletable: false,
-                        parameters: [],
-                    });
-                }
-            }
-
-            return columns;
-        },
-        rowsWithAttachValues() {
-            const rows = [
-                ...this.rows,
-            ];
-
-            for (let i = 0; i < this.rows.length; i += 1) {
-                rows[i].attached = {
-                    value:
-                        Array.isArray(this.value)
-                            ? this.value.some(id => id === this.rows[i].id.value)
-                            : this.value === this.rows[i].id.value,
-                };
-            }
-
-            return rows;
-        },
-        isDirectRelation() {
-            return this.attributeId !== '' && this.productId !== '';
+        filterQuery() {
+            return getParsedFilters(this.filterValues);
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
@@ -238,6 +176,12 @@ export default {
         delete this.onDebounceSearch;
     },
     methods: {
+        onAddProductRelations(relations) {
+            this.$emit('input', [
+                ...this.value,
+                ...relations,
+            ]);
+        },
         onPaginationChange(pagination) {
             this.pagination = pagination;
             this.localParams.limit = pagination.itemsPerPage;
@@ -248,7 +192,7 @@ export default {
         onFilterChange(filters) {
             this.filterValues = filters;
             this.pagination.page = 1;
-            this.localParams.filter = getParsedFilters(filters);
+            this.localParams.filter = this.filterQuery;
             this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
             this.onFetchData();
@@ -271,26 +215,19 @@ export default {
                 sortOrder = {}, ...rest
             } = this.localParams;
 
-            let path = 'products';
-            let columns = 'sku,esa_template,esa_default_label,esa_default_image,_links';
-
-            if (this.isDirectRelation) {
-                path = `products/${this.productId}/related/${this.attributeId}`;
-                columns = 'sku,attached,template_id,default_label,default_image,_links';
-            }
-
-            const params = {
-                ...rest,
-                ...sortOrder,
-                columns,
-            };
+            // TODO:
+            // Filter based: Get all products except this.productId and this.value
 
             await getGridData({
                 $route: this.$route,
                 $cookies: this.$userCookies,
                 $axios: this.$axios,
-                path,
-                params,
+                path: 'products',
+                params: {
+                    ...rest,
+                    ...sortOrder,
+                    columns: 'sku,esa_template,esa_default_label,esa_default_image,_links',
+                },
                 onSuccess: this.onFetchDataSuccess,
                 onError: this.onFetchDataError,
             });
@@ -316,66 +253,6 @@ export default {
                 message: this.$t('@Products.product.components.AddProductRelationsGrid.successRemoveMessage'),
             });
             this.onFetchData();
-        },
-        onCellValueChange(cellValues) {
-            const drafts = {
-                ...this.drafts,
-            };
-
-            cellValues.forEach(({
-                rowId,
-                columnId,
-                value,
-            }) => {
-                drafts[`${rowId}/${columnId}`] = value;
-            });
-
-            this.setDrafts(drafts);
-        },
-        onSaveRelations() {
-            const value = [];
-            const toRemove = [];
-
-            Object.keys(this.drafts).forEach((key) => {
-                const [
-                    rowId,
-                ] = key.split('/');
-
-                if (this.drafts[key]) {
-                    value.push(rowId);
-                } else {
-                    toRemove.push(rowId);
-                }
-
-                const row = this.rows.find(({
-                    id,
-                }) => id.value === rowId);
-
-                if (row) {
-                    row.attached.value = this.drafts[key];
-                }
-            });
-
-            this.setDrafts();
-
-            if (value.length || toRemove.length) {
-                const mappedValue = [
-                    ...this.value.filter(id => !toRemove.some(removeId => removeId === id)),
-                    ...value,
-                ];
-
-                this.$emit('input', mappedValue);
-
-                this.$addAlert({
-                    type: ALERT_TYPE.SUCCESS,
-                    message: this.$t('@Products.product.components.AddProductRelationsGrid.successUpdateMessage'),
-                });
-            } else {
-                this.$addAlert({
-                    type: ALERT_TYPE.INFO,
-                    message: this.$t('@Products.product.components.AddProductRelationsGrid.infoMessage'),
-                });
-            }
         },
         onSearch(value) {
             this.searchValue = value;

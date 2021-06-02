@@ -11,7 +11,6 @@
                     height="181px"
                     :size="smallSize"
                     :disabled="disabled"
-                    :attribute-id="attributeId"
                     :product-id="rowId" />
             </GridImageEditContentCell>
         </GridSelectEditContentCell>
@@ -47,10 +46,6 @@ export default {
         value: {
             type: Array,
             default: () => [],
-        },
-        attributeId: {
-            type: String,
-            required: true,
         },
     },
     data() {

@@ -24,6 +24,7 @@
                     :selected-rows="selectedRows"
                     :excluded-from-selection-rows="excludedFromSelectionRows"
                     :selected-rows-count="selectedRowsCount"
+                    :is-selected-all="isSelectedAll"
                     :on-clear-selected-rows="onClearSelectedRows" />
             </template>
             <template #configuration>
@@ -112,7 +113,13 @@
                     :value="pagination.page"
                     :max-page="maxPage"
                     @input="onPageChange" />
-                <slot name="appendFooter" />
+                <slot
+                    name="appendFooter"
+                    :selected-rows="selectedRows"
+                    :excluded-from-selection-rows="excludedFromSelectionRows"
+                    :selected-rows-count="selectedRowsCount"
+                    :is-selected-all="isSelectedAll"
+                    :on-clear-selected-rows="onClearSelectedRows" />
             </slot>
         </GridFooter>
         <slot />

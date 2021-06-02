@@ -34,14 +34,18 @@
         "AddProductRelationsModalGrid": {
           "title": "Add relations"
         },
+        "AddProductRelationsButton": {
+          "title": "Add selected",
+          "confirmErrorApplyTitle": "Yes, clear",
+          "confirmErrorTitle": "Selected {info} product relations. Only 100 relations might be added",
+          "confirmErrorSubtitle": "Would you like to clear selection?",
+          "errorMessage": "Product relations couldn't be fetched",
+          "successMessage": "Product relations have been updated",
+          "infoMessage": "No changes have been made"
+        },
         "AddProductRelationsGrid": {
-          "attachLabel": "Attached",
-          "successUpdateMessage": "Product relations have been updated",
-          "infoMessage": "No changes have been made",
           "successRemoveMessage": "Product relation removed",
-          "errorGetMessage": "Product relations haven’t been fetched properly",
-          "attachedLabel": "Attached",
-          "notAttachedLabel": "Not attached"
+          "errorGetMessage": "Product relations haven’t been fetched properly"
         },
         "UploadProductRelations": {
           "title": "Add relations",
