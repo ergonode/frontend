@@ -89,7 +89,6 @@ MultiSteps([
         .as('grid');
     cy
         .get('@grid')
-        .find('.workflow-designer-header-layer-cell')
         .find('.workflow-designer-header-layer-cell__title span')
         .contains(new RegExp(`${escapeStringRegexp(searchValue)}$`, 'g'));
 });
