@@ -29,8 +29,8 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import {
-    getGridData,
-} from '@Core/services/grid/getGridData.service';
+    postGridData,
+} from '@Core/services/grid/postGridData.service';
 import Button from '@UI/components/Button/Button';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import IconSync from '@UI/components/Icons/Feedback/IconSync';
@@ -47,9 +47,9 @@ export default {
             type: Number,
             default: 0,
         },
-        filter: {
-            type: String,
-            default: '',
+        filters: {
+            type: Array,
+            default: () => [],
         },
         selectedRows: {
             type: Object,
@@ -116,18 +116,21 @@ export default {
                     type: ALERT_TYPE.INFO,
                     message: this.$t('@Products.product.components.AddProductRelationsButton.infoMessage'),
                 });
+            } else if (this.selectedRowsIds.length) {
+                this.$emit('add', this.selectedRowsIds);
             } else {
                 this.isSubmitting = true;
 
-                await getGridData({
+                await postGridData({
                     $route: this.$route,
                     $cookies: this.$userCookies,
                     $axios: this.$axios,
-                    path: 'products',
-                    params: {
+                    path: 'products/grid',
+                    data: {
                         limit: selectedAllCount,
                         offset: 0,
                         extended: false,
+                        filters: this.filters,
                         view: 'list',
                     },
                     onSuccess: this.onFetchDataSuccess,
@@ -138,7 +141,13 @@ export default {
         onFetchDataSuccess({
             rows,
         }) {
-            this.$emit('add', rows.map(row => row.id.value));
+            this.$emit(
+                'add',
+                rows
+                    .filter(row => !this.excludedFromSelectionRowsIds
+                        .some(excludedRowId => excludedRowId === row.id))
+                    .map(row => row.id),
+            );
 
             this.isSubmitting = false;
 

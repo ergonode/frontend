@@ -7,7 +7,7 @@
         :columns="columns"
         :data-count="filtered"
         :pagination="pagination"
-        :filters="filterValues"
+        :filters="localParams.filters"
         :sort-order="localParams.sortOrder"
         :rows="rows"
         :collection-cell-binding="collectionCellBinding"
@@ -57,7 +57,7 @@
                 v-bind="bindingProps(footerItem)" />
             <AddProductRelationsButton
                 :data-count="filtered"
-                :filter="filterQuery"
+                :filters="filters"
                 :selected-rows="selectedRows"
                 :excluded-from-selection-rows="excludedFromSelectionRows"
                 :selected-rows-count="selectedRowsCount"
@@ -73,17 +73,17 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
-    DEFAULT_GRID_FETCH_PARAMS,
     DEFAULT_GRID_PAGINATION,
+    DEFAULT_POST_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
-    getParsedFilters,
+    getParsedFiltersList,
 } from '@Core/models/mappers/gridDataMapper';
 import {
-    getGridData,
-} from '@Core/services/grid/getGridData.service';
+    postGridData,
+} from '@Core/services/grid/postGridData.service';
 import AddProductRelationsButton from '@Products/components/Buttons/AddProductRelationsButton';
 import PRIVILEGES from '@Products/config/privileges';
 import {
@@ -95,6 +95,9 @@ import IntersectionObserver from '@UI/components/Observers/IntersectionObserver'
 import {
     debounce,
 } from 'debounce';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'AddProductRelationsGrid',
@@ -135,15 +138,17 @@ export default {
         return {
             searchValue: null,
             isPrefetchingData: true,
-            filterValues: {},
             rows: [],
             columns: [],
             filtered: 0,
-            localParams: DEFAULT_GRID_FETCH_PARAMS(),
+            localParams: DEFAULT_POST_GRID_FETCH_PARAMS(),
             pagination: DEFAULT_GRID_PAGINATION(),
         };
     },
     computed: {
+        ...mapState('authentication', [
+            'user',
+        ]),
         extendedActionHeader() {
             return this.$getExtendSlot('@Products/components/Grids/AddProductRelationsGrid/actionHeader');
         },
@@ -160,8 +165,8 @@ export default {
                 ],
             };
         },
-        filterQuery() {
-            return getParsedFilters(this.filterValues);
+        filters() {
+            return getParsedFiltersList(this.localParams.filters);
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
@@ -190,17 +195,15 @@ export default {
             this.onFetchData();
         },
         onFilterChange(filters) {
-            this.filterValues = filters;
             this.pagination.page = 1;
-            this.localParams.filter = this.filterQuery;
+            this.localParams.filters = filters;
             this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
             this.onFetchData();
         },
         onRemoveAllFilters() {
-            this.filterValues = {};
             this.pagination.page = 1;
-            this.localParams.filter = '';
+            this.localParams.filters = [];
             this.localParams.offset = 0;
 
             this.onFetchData();
@@ -212,21 +215,44 @@ export default {
         },
         async onFetchData() {
             const {
-                sortOrder = {}, ...rest
+                sortOrder = {},
+                ...rest
             } = this.localParams;
-
+            const {
+                language,
+            } = this.user;
             // TODO:
             // Filter based: Get all products except this.productId and this.value
-
-            await getGridData({
+            await postGridData({
                 $route: this.$route,
                 $cookies: this.$userCookies,
                 $axios: this.$axios,
-                path: 'products',
-                params: {
+                path: 'products/grid',
+                data: {
                     ...rest,
                     ...sortOrder,
-                    columns: 'sku,esa_template,esa_default_label,esa_default_image,_links',
+                    filters: this.filters,
+                    columns: [
+                        {
+                            name: 'sku',
+                        },
+                        {
+                            name: 'esa_template',
+                            language,
+                        },
+                        {
+                            name: 'esa_default_label',
+                            language,
+                        },
+                        {
+                            name: 'esa_default_image',
+                            language,
+                        },
+                        {
+                            name: '_links',
+                            language,
+                        },
+                    ],
                 },
                 onSuccess: this.onFetchDataSuccess,
                 onError: this.onFetchDataError,
@@ -272,7 +298,7 @@ export default {
         }) {
             return {
                 disabled: !this.isAllowedToUpdate,
-                query: getParsedFilters(this.localParams.filter),
+                filters: this.filters,
                 ...props,
             };
         },

@@ -45,6 +45,8 @@ export default {
     methods: {
         onValueChange(value) {
             this.$emit('input', value);
+
+            this.onClose();
         },
         onClose() {
             this.$emit('close');
