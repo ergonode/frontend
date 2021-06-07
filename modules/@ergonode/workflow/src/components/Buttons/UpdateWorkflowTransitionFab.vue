@@ -4,6 +4,7 @@
  */
 <template>
     <NuxtLink
+        data-cy="transition-action-edit"
         :to="linkTo">
         <Fab
             :theme="secondaryTheme"

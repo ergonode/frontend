@@ -4,6 +4,7 @@
  */
 <template>
     <Fab
+        data-cy="transition-action-remove"
         :theme="secondaryTheme"
         :size="tinySize"
         :disabled="!isAllowedToDelete"
