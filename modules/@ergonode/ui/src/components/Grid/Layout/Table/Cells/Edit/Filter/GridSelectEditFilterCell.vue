@@ -97,14 +97,18 @@ export default {
     beforeDestroy() {
         if ((this.localValue && this.localValue.id !== this.value[FILTER_OPERATOR.EQUAL])
             || (!this.localValue && this.value[FILTER_OPERATOR.EQUAL])) {
-            this.$emit('filter-value', {
-                value: {
-                    [FILTER_OPERATOR.EQUAL]: this.localValue.id || this.localValue,
-                },
-                columnId: this.columnId,
-                row: this.row,
-                column: this.column,
-            });
+            if (!this.localValue) {
+                this.$emit('filter-clear', this.columnId);
+            } else {
+                this.$emit('filter-value', {
+                    value: {
+                        [FILTER_OPERATOR.EQUAL]: this.localValue.id || this.localValue,
+                    },
+                    columnId: this.columnId,
+                    row: this.row,
+                    column: this.column,
+                });
+            }
         }
     },
     methods: {

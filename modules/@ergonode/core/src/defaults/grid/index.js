@@ -95,6 +95,14 @@ export const DEFAULT_GRID_FETCH_PARAMS = () => ({
     sortOrder: {},
 });
 
+export const DEFAULT_POST_GRID_FETCH_PARAMS = () => ({
+    extended: true,
+    offset: 0,
+    limit: DATA_LIMIT,
+    filters: [],
+    sortOrder: {},
+});
+
 export const DEFAULT_GRID_PAGINATION = () => ({
     page: DEFAULT_PAGE,
     itemsPerPage: DATA_LIMIT,
