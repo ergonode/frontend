@@ -5,6 +5,7 @@
 <template>
     <FormSection :title="$t('@Roles.transition.components.TransitionFormRole.sectionTitle')">
         <RolesAutocomplete
+            :data-cy="dataCyGenerator(roleFieldKey)"
             :value="roles"
             :clearable="true"
             :multiselect="true"
@@ -60,6 +61,9 @@ export default {
                 fieldKey: 'roles',
                 value,
             });
+        },
+        dataCyGenerator(key) {
+            return `transition-${key}`;
         },
     },
 };

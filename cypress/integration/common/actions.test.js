@@ -32,9 +32,7 @@ MultiSteps([
     And,
 ], 'I click on {string} button', (id) => {
     cy.get(`[data-cy=${id}]`)
-        .click({
-            multiple: true,
-        });
+        .click();
 });
 
 MultiSteps([

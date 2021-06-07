@@ -52,7 +52,7 @@ export default {
     ],
     computed: {
         extendedMainAction() {
-            return this.$getExtendSlot('@Workflow/pages/status-transition/mainAction');
+            return this.$getExtendSlot('@Workflow/pages/workflow/mainAction');
         },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.WORKFLOW.namespace);

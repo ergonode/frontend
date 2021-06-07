@@ -4,6 +4,7 @@
  */
 <template>
     <Button
+        data-cy="delete-transition"
         :theme="secondaryTheme"
         :size="smallSize"
         :title="$t('@Workflow.workflow.components.RemoveWorkflowTransitionButton.title')"

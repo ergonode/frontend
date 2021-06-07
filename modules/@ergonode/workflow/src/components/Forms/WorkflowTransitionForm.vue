@@ -17,6 +17,7 @@
         <template #body>
             <FormSection>
                 <TranslationSelect
+                    :data-cy="dataCyGenerator(sourceFieldKey)"
                     :value="transition.source"
                     :required="true"
                     :label="$t('@Workflow.workflow.components.WorkflowTransitionForm.fromLabel')"
@@ -25,6 +26,7 @@
                     :error-messages="errors[sourceFieldKey]"
                     @input="onSourceValueChange" />
                 <TranslationSelect
+                    :data-cy="dataCyGenerator(destinationFieldKey)"
                     :value="transition.destination"
                     :required="true"
                     :label="$t('@Workflow.workflow.components.WorkflowTransitionForm.toLabel')"
@@ -159,6 +161,9 @@ export default {
                 fieldKey: this.destinationFieldKey,
                 value,
             });
+        },
+        dataCyGenerator(key) {
+            return `transition-${key}`;
         },
     },
 };

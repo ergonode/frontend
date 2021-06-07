@@ -5,6 +5,7 @@
 <template>
     <div
         class="workflow-designer-layout-element"
+        :data-cy="elementLayoutID"
         :style="elementStyles">
         <div
             class="workflow-designer-layout-element-pointers"
@@ -17,6 +18,10 @@
     </div>
 </template>
 <script>
+
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'WorkflowDesignerLayoutElement',
@@ -47,6 +52,22 @@ export default {
         };
     },
     computed: {
+        ...mapState('workflow', [
+            'statuses',
+        ]),
+        elementLayoutID() {
+            const {
+                row,
+                from = null,
+                to = null,
+            } = this.element;
+            const statusName = index => this.statuses[index].name || `#${this.statuses[index].code}`;
+
+            if (from !== null && to !== null) {
+                return `layout-element-row:${row + 1}-from:${statusName(from)}-to:${statusName(to)}`;
+            }
+            return '';
+        },
         elementStyles() {
             const {
                 row,
