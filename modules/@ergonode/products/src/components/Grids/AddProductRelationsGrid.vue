@@ -182,10 +182,6 @@ export default {
     },
     methods: {
         onAddProductRelations(relations) {
-            console.log([
-                ...this.value,
-                ...relations,
-            ]);
             this.$emit('input', [
                 ...this.value,
                 ...relations,
