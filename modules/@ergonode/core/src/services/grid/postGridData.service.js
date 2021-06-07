@@ -24,22 +24,21 @@ export const postGridData = async ({
             },
         } = await $axios.$post(path, data);
 
-        // const sortedColumns = getSortedColumnsByIDs(columns, data.columns);
-        //
-        // if (columns.length > 0 && !$cookies.get(`GRID_CONFIG:${$route.name}`)) {
-        //     $cookies.set(
-        //         `GRID_CONFIG:${$route.name}`,
-        //         sortedColumns
-        //             .map(({
-        //                 id,
-        //             }) => id)
-        //             .join(','),
-        //     );
-        // }
+        const sortedColumns = getSortedColumnsByIDs(columns, data.columns);
+
+        if (columns.length > 0 && !$cookies.get(`GRID_CONFIG:${$route.name}`)) {
+            $cookies.set(
+                `GRID_CONFIG:${$route.name}`,
+                sortedColumns
+                    .map(({
+                        id,
+                    }) => id)
+                    .join(','),
+            );
+        }
 
         onSuccess({
-            columns,
-            // columns: sortedColumns,
+            columns: sortedColumns,
             rows: collection,
             filtered,
         });
