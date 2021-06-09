@@ -232,7 +232,7 @@ export default {
     }) {
         try {
             const {
-                id, conditionSetId,
+                id,
             } = state;
             // EXTENDED BEFORE METHOD
             await this.$getExtendMethod('@Segments/store/segment/action/removeSegment/__before', {
@@ -247,10 +247,6 @@ export default {
                 $axios: this.app.$axios,
                 id,
             });
-
-            if (conditionSetId) {
-                this.app.$axios.$delete(`conditionsets/${conditionSetId}`);
-            }
 
             // EXTENDED AFTER METHOD
             await this.$getExtendMethod('@Segments/store/segment/action/removeSegment/__after', {
