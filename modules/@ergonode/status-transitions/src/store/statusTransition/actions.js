@@ -242,7 +242,6 @@ export default {
             const {
                 source,
                 destination,
-                conditionSetId,
             } = state;
 
             // EXTENDED BEFORE METHOD
@@ -261,9 +260,6 @@ export default {
                 destination: destination.id,
             });
 
-            if (conditionSetId) {
-                await this.app.$axios.$delete(`conditionsets/${conditionSetId}`);
-            }
             // EXTENDED AFTER METHOD
             await this.$getExtendMethod('@Transitions/store/statusTransition/action/removeStatusTransition/__after', {
                 $this: this,
