@@ -44,6 +44,7 @@
           "infoMessage": "Żadne zmiany nie zostały zrobione"
         },
         "AddProductRelationsGrid": {
+          "filtersButtonTitle": "FILTRY",
           "successRemoveMessage": "Relacja z produktem został usunięta",
           "errorGetMessage": "Relacje produktowe nie zostały pobrane poprawnie"
         },

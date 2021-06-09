@@ -175,6 +175,20 @@ export default {
                 icon: Icons.IconSettings,
             },
         ],
+        '@Products/components/Modals/AddProductRelationsModalGrid/verticalTabs': ({
+            $this,
+        }) => [
+            {
+                title: $this.$t('@Attributes.attributeExtend.components.AttributesVerticalTab.title'),
+                component: Components.AttributesVerticalTab,
+                icon: Icons.IconAttributes,
+            },
+            {
+                title: $this.$t('@Attributes.attributeExtend.components.SystemAttributesVerticalTab.title'),
+                component: Components.SystemAttributesVerticalTab,
+                icon: Icons.IconSettings,
+            },
+        ],
         '@Attributes/store/attribute/action/createAttribute/__before': ({
             $this, type,
         }) => {

@@ -12,7 +12,9 @@
                     <slot name="prependHeader" />
                 </template>
             </ModalHeader>
-            <slot name="body" />
+            <div class="modal-grid__body">
+                <slot name="body" />
+            </div>
         </div>
     </ModalOverlay>
 </template>
@@ -64,5 +66,10 @@ export default {
         height: 80%;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_6_DP;
+
+        &__body {
+            display: flex;
+            flex: 1;
+        }
     }
 </style>

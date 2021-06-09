@@ -125,7 +125,6 @@ export default {
     },
     computed: {
         ...mapState('draggable', [
-            'isElementDragging',
             'draggedElement',
         ]),
         classes() {

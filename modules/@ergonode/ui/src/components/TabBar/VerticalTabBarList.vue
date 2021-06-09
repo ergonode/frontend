@@ -23,7 +23,7 @@ export default {
         display: flex;
         flex: 1;
         flex-direction: column;
-        width: 275px;
+        width: 248px;
         box-sizing: border-box;
 
         &__container {
