@@ -4,9 +4,6 @@
  */
 
 import {
-    removeSet,
-} from '@Conditions/services';
-import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
@@ -637,7 +634,6 @@ export default {
             const {
                 source,
                 destination,
-                conditionSetId,
             } = state.transition;
 
             // EXTENDED BEFORE METHOD
@@ -656,12 +652,6 @@ export default {
                 destination: destination.id,
             });
 
-            if (conditionSetId) {
-                await removeSet({
-                    $axios: this.app.$axios,
-                    id: conditionSetId,
-                });
-            }
             // EXTENDED AFTER METHOD
             await this.$getExtendMethod('@Workflow/store/workflow/action/removeTransition/__after', {
                 $this: this,
