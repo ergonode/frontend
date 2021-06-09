@@ -30,8 +30,3 @@ export const updateSet = ({
     id,
     data,
 }) => $axios.$put(`conditionsets/${id}`, data);
-
-export const removeSet = ({
-    $axios,
-    id,
-}) => $axios.$delete(`conditionsets/${id}`);
