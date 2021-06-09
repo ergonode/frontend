@@ -122,6 +122,15 @@ describe('arrayWrapper/arraysAreEqual', () => {
         expect(areEqual).toEqual(true);
     });
 
+    it('Arguments are not arrays', () => {
+        const arr1 = 0;
+        const arr2 = undefined;
+
+        const areEqual = arraysAreEqual(arr1, arr2);
+
+        expect(areEqual).toEqual(false);
+    });
+
     it('Arrays are not equal', () => {
         let arr1 = [
             1,

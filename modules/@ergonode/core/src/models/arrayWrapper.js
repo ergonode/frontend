@@ -225,6 +225,8 @@ export function dfsSearch(
  * @returns {boolean}
  */
 export function arraysAreEqual(arr1, arr2) {
+    if (!Array.isArray(arr1) || !Array.isArray(arr2)) return false;
+
     const {
         length: arr1Length,
     } = arr1;
