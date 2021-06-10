@@ -4,7 +4,9 @@
  */
 <template>
     <div class="category-trees-vertical-tab">
-        <CategoryTreesSideBar />
+        <CategoryTreesSideBar
+            :value="value"
+            :on-value-change="onValueChange" />
         <CreateCategoryFab :floating="{ bottom: '16px', right: '16px' }" />
     </div>
 </template>
@@ -18,6 +20,16 @@ export default {
     components: {
         CategoryTreesSideBar,
         CreateCategoryFab,
+    },
+    props: {
+        value: {
+            type: Object,
+            default: () => ({}),
+        },
+        onValueChange: {
+            type: Function,
+            default: () => {},
+        },
     },
 };
 </script>

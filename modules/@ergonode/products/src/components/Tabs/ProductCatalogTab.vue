@@ -19,7 +19,14 @@
 </template>
 
 <script>
+import {
+    DEFAULT_PAGE,
+} from '@Core/defaults/grid';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
+import {
+    getMappedFilters,
+    getParsedFilters,
+} from '@Core/models/mappers/gridDataMapper';
 import ProductsGrid from '@Products/components/Grids/ProductsGrid';
 import RemoveFilterAndColumnDropZone from '@UI/components/Grid/DropZone/RemoveFilterAndColumnDropZone';
 import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
@@ -38,15 +45,46 @@ export default {
     ],
     data() {
         return {
+            filters: getMappedFilters(this.$route.query.advancedFilter),
             verticalTabs: [],
         };
     },
-    async mounted() {
-        const extendedVerticalTabs = await this.$getExtendMethod('@Products/components/Tabs/ProductCatalogTab/verticalTabs', {
-            $this: this,
-        });
+    watch: {
+        $route(from, to) {
+            if (from.name !== to.name) {
+                return;
+            }
 
-        this.verticalTabs = [].concat(...extendedVerticalTabs);
+            this.filters = getMappedFilters(this.$route.query.advancedFilter);
+
+            this.setVerticalTabs();
+        },
+    },
+    mounted() {
+        this.setVerticalTabs();
+    },
+    methods: {
+        async setVerticalTabs() {
+            const extendedVerticalTabs = await this.$getExtendMethod('@Products/components/Tabs/ProductCatalogTab/verticalTabs', {
+                $this: this,
+            });
+
+            this.verticalTabs = [].concat(...extendedVerticalTabs);
+        },
+        onFiltersChange(filters) {
+            this.filters = filters;
+
+            this.$router.replace({
+                query: {
+                    ...this.$route.query,
+                    advancedFilter: getParsedFilters({
+                        ...getMappedFilters(this.$route.query.advancedFilter),
+                        ...this.filters,
+                    }),
+                    page: DEFAULT_PAGE,
+                },
+            });
+        },
     },
 };
 </script>

@@ -50,6 +50,7 @@
         <template #appendHeader>
             <ProductAdvancedFilters
                 v-show="isFiltersExpanded"
+                :value="advancedFilterValues"
                 :filters="advancedFilters"
                 :extended-filters="extendedAdvancedFilters"
                 @remove="onAdvancedFilterRemove"
@@ -57,7 +58,7 @@
                 @input="onAdvancedFilterChange" />
         </template>
         <template #noDataPlaceholder>
-            <ProductsGridNoDataPlaceholder />
+            <ProductsGridNoDataPlaceholder v-if="!isAnyFilter && filtered === 0" />
         </template>
         <template
             #appendFooter="{
@@ -156,6 +157,10 @@ export default {
             ],
             default: '',
         },
+        advancedFilterValues: {
+            type: Object,
+            default: () => ({}),
+        },
         productId: {
             type: String,
             default: '',
@@ -172,7 +177,6 @@ export default {
             isPrefetchingData: true,
             isFiltersExpanded: false,
             advancedFilters: [],
-            advancedFilterValues: {},
             rows: [],
             columns: [],
             filtered: 0,
@@ -221,6 +225,11 @@ export default {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ]);
+        },
+    },
+    watch: {
+        advancedFilterValues() {
+            this.onFetchData();
         },
     },
     created() {
@@ -397,9 +406,7 @@ export default {
                 id,
             }) => id !== filter.id);
 
-            if (typeof this.advancedFilterValues[filter.id] !== 'undefined') {
-                this.onFetchData();
-            }
+            this.$emit('remove-filter', filter.id);
         },
         onAdvancedFilterRemoveAll() {
             this.advancedFilters.forEach(({
@@ -414,16 +421,10 @@ export default {
 
             this.advancedFilters = [];
 
-            if (Object.keys(this.advancedFilterValues).length > 0) {
-                this.advancedFilterValues = {};
-
-                this.onFetchData();
-            }
+            this.$emit('remove-all-filters');
         },
         onAdvancedFilterChange(filters) {
-            this.advancedFilterValues = filters;
-
-            this.onFetchData();
+            this.$emit('change-filter', filters);
         },
         onEditRow(args) {
             const lastIndex = args.length - 1;
