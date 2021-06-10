@@ -275,8 +275,9 @@ export default {
             });
 
             this.values = removeObjectProperty(this.values, `${item.id}|${item.languageCode}`);
-            this.attributes = removeObjectProperty(this.attributes, item.id);
-            this.formItems = this.formItems.filter(formItem => formItem.id !== item.id);
+            this.formItems = this.formItems.filter(({
+                id, languageCode,
+            }) => !(languageCode === item.languageCode && id === item.id));
         },
         onApplyProductsUpdateBatchAction() {
             this.onApply();
