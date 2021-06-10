@@ -95,6 +95,9 @@ import {
     DEFAULT_GRID_PAGINATION,
     DEFAULT_POST_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
+import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
 import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
@@ -307,8 +310,22 @@ export default {
             const {
                 language,
             } = this.user;
-            // TODO:
-            // Filter based: Get all products except this.productId and this.value
+
+            const {
+                filters,
+            } = this;
+
+            if (this.productId) {
+                filters.push({
+                    column: 'id',
+                    operator: FILTER_OPERATOR.NOT_EQUAL,
+                    value: [
+                        this.productId,
+                        ...this.value,
+                    ].join(','),
+                });
+            }
+
             await postGridData({
                 $route: this.$route,
                 $cookies: this.$userCookies,
@@ -317,7 +334,7 @@ export default {
                 data: {
                     ...rest,
                     ...sortOrder,
-                    filters: this.filters,
+                    filters,
                     columns: [
                         {
                             name: 'sku',
