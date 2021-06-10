@@ -274,12 +274,10 @@ export default {
                 elementId: `${item.id}|${item.code}`,
             });
 
-            const indexToRemove = this.formItems.findIndex(({
-                id, languageCode,
-            }) => languageCode === item.languageCode && id === item.id);
-
             this.values = removeObjectProperty(this.values, `${item.id}|${item.languageCode}`);
-            this.formItems = this.formItems.filter((formItem, index) => index !== indexToRemove);
+            this.formItems = this.formItems.filter(({
+                id, languageCode,
+            }) => !(languageCode === item.languageCode && id === item.id));
         },
         onApplyProductsUpdateBatchAction() {
             this.onApply();
