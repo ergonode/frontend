@@ -39,7 +39,7 @@
                 </ResizeObserver>
                 <InputLabel
                     v-if="label"
-                    :style="{ top: 0 }"
+                    :style="{ top: '10px' }"
                     :for="associatedLabel"
                     :required="required"
                     :size="size"

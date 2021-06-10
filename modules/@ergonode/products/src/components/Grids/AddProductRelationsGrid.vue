@@ -36,11 +36,28 @@
                         ...headerItem.props,
                     },
                 })" />
+            <ExpandNumericButton
+                :title="$t('@Products.product.components.AddProductRelationsGrid.filtersButtonTitle')"
+                :number="advancedFilters.length"
+                :is-expanded="isFiltersExpanded"
+                @click.native="onFiltersExpand" />
+        </template>
+        <template #prependHeader>
+            <AddFilterDropZone
+                :filters="advancedFilters"
+                @drop="onDropFilter" />
+        </template>
+        <template #appendHeader>
+            <ProductAdvancedFilters
+                v-show="isFiltersExpanded"
+                :filters="advancedFilters"
+                :extended-filters="extendedAdvancedFilters"
+                @remove="onAdvancedFilterRemove"
+                @remove-all="onAdvancedFilterRemoveAll"
+                @input="onAdvancedFilterChange" />
         </template>
         <template #noDataPlaceholder>
-            <GridNoDataPlaceholder
-                :title="$t('@Products.product._.noProduct')"
-                :subtitle="$t('@Products.product._.createFirst')" />
+            <ProductsGridNoDataPlaceholder />
         </template>
         <template
             #appendFooter="{
@@ -69,6 +86,7 @@
 </template>
 
 <script>
+import ExpandNumericButton from '@Core/components/Buttons/ExpandNumericButton';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -82,13 +100,22 @@ import {
     getParsedFiltersList,
 } from '@Core/models/mappers/gridDataMapper';
 import {
+    getDisabledElement,
+} from '@Core/models/mappers/sideBarDataMapper';
+import {
+    getAdvancedFiltersData,
+} from '@Core/services/grid/getGridData.service';
+import {
     postGridData,
 } from '@Core/services/grid/postGridData.service';
+import ProductAdvancedFilters from '@Products/components/AdvancedFilters/ProductAdvancedFilters';
 import AddProductRelationsButton from '@Products/components/Buttons/AddProductRelationsButton';
+import ProductsGridNoDataPlaceholder from '@Products/components/Placeholders/ProductsGridNoDataPlaceholder';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     ROUTE_NAME,
 } from '@Products/config/routes';
+import AddFilterDropZone from '@UI/components/Grid/DropZone/AddFilterDropZone';
 import Grid from '@UI/components/Grid/Grid';
 import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
@@ -96,12 +123,17 @@ import {
     debounce,
 } from 'debounce';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
 export default {
     name: 'AddProductRelationsGrid',
     components: {
+        ProductAdvancedFilters,
+        ProductsGridNoDataPlaceholder,
+        AddFilterDropZone,
+        ExpandNumericButton,
         AddProductRelationsButton,
         Grid,
         GridNoDataPlaceholder,
@@ -138,6 +170,9 @@ export default {
         return {
             searchValue: null,
             isPrefetchingData: true,
+            isFiltersExpanded: false,
+            advancedFilters: [],
+            advancedFilterValues: {},
             rows: [],
             columns: [],
             filtered: 0,
@@ -149,11 +184,17 @@ export default {
         ...mapState('authentication', [
             'user',
         ]),
+        ...mapState('list', [
+            'disabledElements',
+        ]),
         extendedActionHeader() {
             return this.$getExtendSlot('@Products/components/Grids/AddProductRelationsGrid/actionHeader');
         },
         extendedFooter() {
             return this.$getExtendSlot('@Products/components/Grids/AddProductRelationsGrid/footer');
+        },
+        extendedAdvancedFilters() {
+            return this.$getExtendSlot('@Products/components/Grids/AddProductRelationsGrid/advancedFilters');
         },
         collectionCellBinding() {
             return {
@@ -166,7 +207,15 @@ export default {
             };
         },
         filters() {
-            return getParsedFiltersList(this.localParams.filters);
+            return [
+                ...getParsedFiltersList(this.localParams.filters),
+                ...getParsedFiltersList(this.advancedFilterValues),
+            ];
+        },
+        isAnyFilter() {
+            return this.filtered === 0
+                && (Object.keys(this.localParams.filters).length > 0
+                    || Object.keys(this.advancedFilterValues).length > 0);
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
@@ -181,6 +230,13 @@ export default {
         delete this.onDebounceSearch;
     },
     methods: {
+        ...mapActions('list', [
+            'removeDisabledElement',
+            'setDisabledElement',
+        ]),
+        onFiltersExpand() {
+            this.isFiltersExpanded = !this.isFiltersExpanded;
+        },
         onAddProductRelations(relations) {
             this.$emit('input', [
                 ...this.value,
@@ -203,7 +259,7 @@ export default {
         },
         onRemoveAllFilters() {
             this.pagination.page = 1;
-            this.localParams.filters = [];
+            this.localParams.filters = {};
             this.localParams.offset = 0;
 
             this.onFetchData();
@@ -212,6 +268,27 @@ export default {
             this.localParams.sortOrder = sortOrder;
 
             this.onFetchData();
+        },
+        async onDropFilter(filterId) {
+            const filterCode = filterId.split('/')[1];
+            const params = {
+                limit: 0,
+                offset: 0,
+                columns: filterCode,
+            };
+
+            await getAdvancedFiltersData({
+                $route: this.$route,
+                $cookies: this.$userCookies,
+                $axios: this.$axios,
+                $addAlert: this.$addAlert,
+                path: 'products',
+                params,
+                onSuccess: payload => this.onGetAdvancedFilterSuccess({
+                    ...payload,
+                    filterCode,
+                }),
+            });
         },
         async onFetchData() {
             const {
@@ -273,6 +350,31 @@ export default {
                 message: this.$t('@Products.product.components.AddProductRelationsGrid.errorGetMessage'),
             });
         },
+        onGetAdvancedFilterSuccess({
+            advancedFilters,
+            filterCode,
+        }) {
+            if (advancedFilters.length) {
+                const filter = advancedFilters.find(({
+                    id,
+                }) => id === filterCode);
+
+                if (filter.attributeId) {
+                    this.setDisabledElement(getDisabledElement({
+                        languageCode: filter.languageCode,
+                        elementId: filter.attributeId,
+                        disabledElements: this.disabledElements,
+                    }));
+                }
+
+                this.advancedFilters.unshift(filter);
+            } else {
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: this.$t('@Products.product.components.ProductsGrid.noFilterErrorMessage'),
+                });
+            }
+        },
         onRemoveRow() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
@@ -283,6 +385,46 @@ export default {
         onSearch(value) {
             this.searchValue = value;
         },
+        onAdvancedFilterRemove({
+            filter,
+        }) {
+            this.disableListElement({
+                languageCode: filter.languageCode,
+                attributeId: filter.attributeId,
+            });
+
+            this.advancedFilters = this.advancedFilters.filter(({
+                id,
+            }) => id !== filter.id);
+
+            if (typeof this.advancedFilterValues[filter.id] !== 'undefined') {
+                this.onFetchData();
+            }
+        },
+        onAdvancedFilterRemoveAll() {
+            this.advancedFilters.forEach(({
+                attributeId,
+                languageCode,
+            }) => {
+                this.disableListElement({
+                    languageCode,
+                    attributeId,
+                });
+            });
+
+            this.advancedFilters = [];
+
+            if (Object.keys(this.advancedFilterValues).length > 0) {
+                this.advancedFilterValues = {};
+
+                this.onFetchData();
+            }
+        },
+        onAdvancedFilterChange(filters) {
+            this.advancedFilterValues = filters;
+
+            this.onFetchData();
+        },
         onEditRow(args) {
             const lastIndex = args.length - 1;
 
@@ -292,6 +434,23 @@ export default {
                     id: args[lastIndex],
                 },
             });
+        },
+        disableListElement({
+            languageCode,
+            attributeId,
+        }) {
+            if (this.disabledElements[languageCode][attributeId]) {
+                this.setDisabledElement({
+                    languageCode,
+                    elementId: attributeId,
+                    disabled: false,
+                });
+            } else {
+                this.removeDisabledElement({
+                    languageCode,
+                    elementId: attributeId,
+                });
+            }
         },
         bindingProps({
             props = {},

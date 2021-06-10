@@ -7,6 +7,7 @@
         :title="$t('@Products.product.components.AddProductRelationsModalGrid.title')"
         @close="onClose">
         <template #body>
+            <VerticalTabBar :items="verticalTabs" />
             <AddProductRelationsGrid
                 :value="value"
                 :product-id="productId"
@@ -22,10 +23,12 @@
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import AddProductRelationsGrid from '@Products/components/Grids/AddProductRelationsGrid';
 import ModalGrid from '@UI/components/Modal/ModalGrid';
+import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 
 export default {
     name: 'AddProductRelationsModalGrid',
     components: {
+        VerticalTabBar,
         ModalGrid,
         AddProductRelationsGrid,
     },
@@ -41,6 +44,18 @@ export default {
             type: String,
             default: '',
         },
+    },
+    data() {
+        return {
+            verticalTabs: [],
+        };
+    },
+    async mounted() {
+        const extendedVerticalTabs = await this.$getExtendMethod('@Products/components/Modals/AddProductRelationsModalGrid/verticalTabs', {
+            $this: this,
+        });
+
+        this.verticalTabs = [].concat(...extendedVerticalTabs);
     },
     methods: {
         onValueChange(value) {

@@ -44,6 +44,7 @@
           "infoMessage": "No changes have been made"
         },
         "AddProductRelationsGrid": {
+          "filtersButtonTitle": "FILTERS",
           "successRemoveMessage": "Product relation removed",
           "errorGetMessage": "Product relations haven’t been fetched properly"
         },

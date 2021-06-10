@@ -54,28 +54,18 @@
                 @drop="onDropFilter" />
         </template>
         <template #appendHeader>
-            <div
+            <ProductAdvancedFilters
                 v-show="isFiltersExpanded"
-                class="products-advanced-filters">
-                <AdvancedFilters
-                    :value="advancedFilterValues"
-                    :filters="advancedFilters"
-                    :extended-filters="extendedAdvancedFilters"
-                    @swap="onAdvancedFilterPositionChange"
-                    @remove="onAdvancedFilterRemove"
-                    @remove-all="onAdvancedFilterRemoveAll"
-                    @input="onAdvancedFilterChange" />
-            </div>
+                :value="advancedFilterValues"
+                :filters="advancedFilters"
+                :extended-filters="extendedAdvancedFilters"
+                @swap="onAdvancedFilterPositionChange"
+                @remove="onAdvancedFilterRemove"
+                @remove-all="onAdvancedFilterRemoveAll"
+                @input="onAdvancedFilterChange" />
         </template>
         <template #noDataPlaceholder>
-            <GridNoDataPlaceholder
-                v-if="!isAnyFilter && filtered === 0"
-                :title="$t('@Products.product._.noProduct')"
-                :subtitle="$t('@Products.product._.createFirst')">
-                <template #action>
-                    <CreateProductButton />
-                </template>
-            </GridNoDataPlaceholder>
+            <ProductsGridNoDataPlaceholder v-if="!isAnyFilter && filtered === 0" />
             <GridNoResultsPlaceholder
                 v-else
                 @clear="onRemoveAllFilters" />
@@ -120,11 +110,16 @@ import {
     getParsedFilters,
 } from '@Core/models/mappers/gridDataMapper';
 import {
+    getDisabledElement,
+    getDisabledElements,
+} from '@Core/models/mappers/sideBarDataMapper';
+import {
     getAdvancedFiltersData,
     getGridData,
 } from '@Core/services/grid/getGridData.service';
-import CreateProductButton from '@Products/components/Buttons/CreateProductButton';
+import ProductAdvancedFilters from '@Products/components/AdvancedFilters/ProductAdvancedFilters';
 import UpdateProductsButton from '@Products/components/Buttons/UpdateProductsButton';
+import ProductsGridNoDataPlaceholder from '@Products/components/Placeholders/ProductsGridNoDataPlaceholder';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     ROUTE_NAME,
@@ -137,7 +132,6 @@ import Button from '@UI/components/Button/Button';
 import AddFilterDropZone from '@UI/components/Grid/DropZone/AddFilterDropZone';
 import RemoveFilterAndColumnDropZone from '@UI/components/Grid/DropZone/RemoveFilterAndColumnDropZone';
 import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 import GridNoResultsPlaceholder from '@UI/components/Grid/GridNoResultsPlaceholder';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
@@ -149,9 +143,9 @@ import {
 export default {
     name: 'ProductsGrid',
     components: {
-        CreateProductButton,
+        ProductsGridNoDataPlaceholder,
+        ProductAdvancedFilters,
         Grid,
-        GridNoDataPlaceholder,
         GridNoResultsPlaceholder,
         AddFilterDropZone,
         RemoveFilterAndColumnDropZone,
@@ -198,9 +192,12 @@ export default {
 
         await Promise.all(requests);
 
-        this.setDisabledElements(this.getDisabledElements({
-            columns: this.columns,
-            filters: this.advancedFilters,
+        this.setDisabledElements(getDisabledElements({
+            elements: [
+                ...this.columns,
+                ...this.advancedFilters,
+            ],
+            defaultLanguageCode: this.userLanguageCode,
         }));
 
         this.isPrefetchingData = false;
@@ -242,16 +239,16 @@ export default {
         extendedAdvancedFilters() {
             return this.$getExtendSlot('@Products/components/Grids/ProductsGrid/advancedFilters');
         },
-        isAnyFilter() {
-            return this.filtered === 0
-                && (Object.keys(this.filterValues).length > 0
-                    || Object.keys(this.advancedFilterValues).length > 0);
-        },
         collectionCellBinding() {
             return {
                 imageColumn: 'esa_default_image',
                 descriptionColumn: 'esa_default_label',
             };
+        },
+        isAnyFilter() {
+            return this.filtered === 0
+                && (Object.keys(this.filterValues).length > 0
+                    || Object.keys(this.advancedFilterValues).length > 0);
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
@@ -327,9 +324,9 @@ export default {
                 }) => id === columnCode);
 
                 if (column && column.element_id) {
-                    this.setDisabledElement(this.getDisabledListElement({
+                    this.setDisabledElement(getDisabledElement({
                         languageCode: column.language,
-                        attributeId: column.element_id,
+                        elementId: column.element_id,
                         disabledElements: this.disabledElements,
                     }));
                 }
@@ -515,34 +512,6 @@ export default {
                 },
             });
         },
-        getDisabledElements({
-            columns,
-            filters,
-        }) {
-            const disabledElements = {};
-
-            [
-                ...columns,
-                ...filters,
-            ].forEach((element) => {
-                const attributeId = element.attributeId || element.element_id;
-
-                if (attributeId) {
-                    const languageCode = element.language || this.userLanguageCode;
-
-                    if (typeof disabledElements[languageCode] === 'undefined') {
-                        disabledElements[languageCode] = {};
-                    }
-
-                    disabledElements[languageCode][attributeId] = Boolean(
-                        disabledElements[languageCode]
-                        && typeof disabledElements[languageCode][attributeId] !== 'undefined',
-                    );
-                }
-            });
-
-            return disabledElements;
-        },
         bindingProps({
             props = {},
         }) {
@@ -630,9 +599,9 @@ export default {
                 }) => id === filterCode);
 
                 if (filter.attributeId) {
-                    this.setDisabledElement(this.getDisabledListElement({
+                    this.setDisabledElement(getDisabledElement({
                         languageCode: filter.languageCode,
-                        attributeId: filter.attributeId,
+                        elementId: filter.attributeId,
                         disabledElements: this.disabledElements,
                     }));
                 }
@@ -674,18 +643,6 @@ export default {
                     elementId: attributeId,
                 });
             }
-        },
-        getDisabledListElement({
-            languageCode,
-            attributeId,
-            disabledElements,
-        }) {
-            return {
-                languageCode,
-                elementId: attributeId,
-                disabled: Boolean(disabledElements[languageCode]
-                    && typeof disabledElements[languageCode][attributeId] !== 'undefined'),
-            };
         },
         async onCellValueChange(cellValues) {
             const cachedElementIds = {};
@@ -819,9 +776,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .products-advanced-filters {
-        margin-left: 16px;
-    }
-</style>
