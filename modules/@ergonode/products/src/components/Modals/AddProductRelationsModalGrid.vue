@@ -7,14 +7,20 @@
         :title="$t('@Products.product.components.AddProductRelationsModalGrid.title')"
         @close="onClose">
         <template #body>
-            <VerticalTabBar :items="verticalTabs" />
+            <VerticalTabBar :items="verticalTabs">
+                <RemoveFilterAndColumnDropZone />
+            </VerticalTabBar>
             <AddProductRelationsGrid
                 :value="value"
+                :advanced-filter-values="advancedFilterValues"
                 :product-id="productId"
                 :scope="scope"
                 :change-values="changeValues"
                 :errors="errors"
-                @input="onValueChange" />
+                @input="onValueChange"
+                @change-filter="onFiltersChange"
+                @remove-filter="onRemoveFilter"
+                @remove-all-filters="onRemoveAllFilters" />
         </template>
     </ModalGrid>
 </template>
@@ -22,6 +28,7 @@
 <script>
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import AddProductRelationsGrid from '@Products/components/Grids/AddProductRelationsGrid';
+import RemoveFilterAndColumnDropZone from '@UI/components/Grid/DropZone/RemoveFilterAndColumnDropZone';
 import ModalGrid from '@UI/components/Modal/ModalGrid';
 import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 
@@ -31,6 +38,7 @@ export default {
         VerticalTabBar,
         ModalGrid,
         AddProductRelationsGrid,
+        RemoveFilterAndColumnDropZone,
     },
     mixins: [
         modalFeedbackMixin,
@@ -47,17 +55,36 @@ export default {
     },
     data() {
         return {
+            advancedFilterValues: {},
             verticalTabs: [],
         };
     },
-    async mounted() {
-        const extendedVerticalTabs = await this.$getExtendMethod('@Products/components/Modals/AddProductRelationsModalGrid/verticalTabs', {
-            $this: this,
-        });
-
-        this.verticalTabs = [].concat(...extendedVerticalTabs);
+    mounted() {
+        this.setVerticalTabs();
     },
     methods: {
+        async setVerticalTabs() {
+            const extendedVerticalTabs = await this.$getExtendMethod('@Products/components/Modals/AddProductRelationsModalGrid/verticalTabs', {
+                $this: this,
+            });
+
+            this.verticalTabs = [].concat(...extendedVerticalTabs);
+        },
+        onRemoveFilter(id) {
+            delete this.advancedFilterValues[id];
+
+            this.setVerticalTabs();
+        },
+        onRemoveAllFilters() {
+            this.advancedFilterValues = {};
+
+            this.setVerticalTabs();
+        },
+        onFiltersChange(filters) {
+            this.advancedFilterValues = filters;
+
+            this.setVerticalTabs();
+        },
         onValueChange(value) {
             this.$emit('input', value);
 
