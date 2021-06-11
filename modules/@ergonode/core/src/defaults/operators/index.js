@@ -6,4 +6,5 @@ export const FILTER_OPERATOR = {
     GREATER_OR_EQUAL: '>=',
     SMALLER_OR_EQUAL: '<=',
     EQUAL: '=',
+    NOT_EQUAL: '!=',
 };
