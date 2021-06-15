@@ -18,6 +18,7 @@
         :is-basic-filter="true"
         :is-header-visible="true"
         :is-collection-layout="true"
+        :is-action-column="false"
         @edit-row="onEditRow"
         @preview-row="onEditRow"
         @cell-value="onCellValueChange"
