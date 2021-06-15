@@ -12,6 +12,7 @@
         <template #item="{ item }">
             <LanguageSideBarElement
                 :item="item"
+                :dragging-element-type="draggingElementType"
                 :language-code="userLanguageCode"
                 :disabled="disabled" />
         </template>
@@ -20,6 +21,9 @@
 
 <script>
 import LanguageSideBarElement from '@Core/components/SideBars/LanguageSideBarElement';
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 import SideBar from '@UI/components/SideBar/SideBar';
 import {
     mapState,
@@ -35,6 +39,13 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * Type of the place from where element is dragging
+         */
+        draggingElementType: {
+            type: String,
+            default: DRAGGED_ELEMENT.LIST,
         },
     },
     data() {

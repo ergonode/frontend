@@ -6,6 +6,7 @@
     <div class="attributes-vertical-tab">
         <AttributesSideBar
             :disabled="disabled"
+            :dragging-element-type="draggingElementType"
             :is-select-language="isSelectLanguage" />
         <CreateAttributeFab :floating="{ bottom: '16px', right: '16px' }" />
     </div>
@@ -14,6 +15,9 @@
 <script>
 import CreateAttributeFab from '@Attributes/components/Buttons/CreateAttributeFab';
 import AttributesSideBar from '@Attributes/extends/attribute/components/SideBars/AttributesSideBar';
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 
 export default {
     name: 'AttributesVerticalTab',
@@ -29,6 +33,13 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * Type of the place from where element is dragging
+         */
+        draggingElementType: {
+            type: String,
+            default: DRAGGED_ELEMENT.LIST,
         },
     },
 };

@@ -60,6 +60,13 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * Type of the place from where element is dragging
+         */
+        draggingElementType: {
+            type: String,
+            default: DRAGGED_ELEMENT.LIST,
+        },
     },
     computed: {
         ...mapState('list', [
@@ -78,7 +85,7 @@ export default {
         onDragStart() {
             this.__setState({
                 key: 'isElementDragging',
-                value: DRAGGED_ELEMENT.LIST,
+                value: this.draggingElementType,
             });
             this.__setState({
                 key: 'draggedElement',

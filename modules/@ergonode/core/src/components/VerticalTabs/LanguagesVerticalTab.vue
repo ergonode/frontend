@@ -4,12 +4,17 @@
  */
 <template>
     <div class="languages-vertical-tab">
-        <LanguagesSideBar :disabled="disabled" />
+        <LanguagesSideBar
+            :disabled="disabled"
+            :dragging-element-type="draggingElementType" />
     </div>
 </template>
 
 <script>
 import LanguagesSideBar from '@Core/components/SideBars/LanguagesSideBar';
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 
 export default {
     name: 'LanguagesVerticalTab',
@@ -20,6 +25,13 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * Type of the place from where element is dragging
+         */
+        draggingElementType: {
+            type: String,
+            default: DRAGGED_ELEMENT.LIST,
         },
     },
 };

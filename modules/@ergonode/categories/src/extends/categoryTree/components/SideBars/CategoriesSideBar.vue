@@ -24,6 +24,7 @@
         <template #item="{ item }">
             <CategorySideBarElement
                 :item="item"
+                :dragging-element-type="draggingElementType"
                 :language-code="languageCode"
                 :disabled="disabled" />
         </template>
@@ -36,6 +37,9 @@ import {
     CATEGORY_CREATED_EVENT_NAME,
 } from '@Categories/defaults/attributes';
 import CategorySideBarElement from '@Categories/extends/categoryTree/components/SideBars/CategorySideBarElement';
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 import {
     deepClone,
 } from '@Core/models/objectWrapper';
@@ -68,6 +72,13 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * Type of the place from where element is dragging
+         */
+        draggingElementType: {
+            type: String,
+            default: DRAGGED_ELEMENT.LIST,
         },
     },
     async fetch() {

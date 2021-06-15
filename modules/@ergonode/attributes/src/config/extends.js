@@ -11,6 +11,7 @@ import {
     ROUTE_NAME,
 } from '@Attributes/config/routes';
 import {
+    DRAGGED_ELEMENT,
     TYPES,
 } from '@Attributes/defaults';
 import {
@@ -182,6 +183,9 @@ export default {
                 title: $this.$t('@Attributes.attributeExtend.components.AttributesVerticalTab.title'),
                 component: Components.AttributesVerticalTab,
                 icon: Icons.IconAttributes,
+                props: {
+                    draggingElementType: DRAGGED_ELEMENT.RELATION_ATTRIBUTE,
+                },
             },
             {
                 title: $this.$t('@Attributes.attributeExtend.components.SystemAttributesVerticalTab.title'),

@@ -11,6 +11,7 @@
         :sort-order="localParams.sortOrder"
         :rows="rows"
         :collection-cell-binding="collectionCellBinding"
+        :dragging-element-type="relationElementType"
         :extended-components="extendedGridComponents"
         :is-editable="isAllowedToUpdate"
         :is-prefetching-data="isPrefetchingData"
@@ -20,6 +21,9 @@
         @edit-row="onEditRow"
         @preview-row="onEditRow"
         @delete-row="onRemoveRow"
+        @drop-column="onDropColumn"
+        @remove-column="onRemoveColumn"
+        @swap-columns="onSwapColumns"
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @remove-all-filters="onRemoveAllFilters"
@@ -45,6 +49,7 @@
         <template #prependHeader>
             <AddFilterDropZone
                 :filters="advancedFilters"
+                :dragging-element-type="relationElementType"
                 @drop="onDropFilter" />
         </template>
         <template #appendHeader>
@@ -87,6 +92,9 @@
 </template>
 
 <script>
+import {
+    DRAGGED_ELEMENT,
+} from '@Attributes/defaults';
 import ExpandNumericButton from '@Core/components/Buttons/ExpandNumericButton';
 import {
     ALERT_TYPE,
@@ -100,6 +108,10 @@ import {
 } from '@Core/defaults/operators';
 import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
+import {
+    insertValueAtIndex,
+    swapItemPosition,
+} from '@Core/models/arrayWrapper';
 import {
     getParsedFiltersList,
 } from '@Core/models/mappers/gridDataMapper';
@@ -170,6 +182,32 @@ export default {
         },
     },
     async fetch() {
+        const {
+            language,
+        } = this.user;
+
+        this.columnModels = [
+            {
+                name: 'sku',
+            },
+            {
+                name: 'esa_template',
+                language,
+            },
+            {
+                name: 'esa_default_label',
+                language,
+            },
+            {
+                name: 'esa_default_image',
+                language,
+            },
+            {
+                name: '_links',
+                language,
+            },
+        ];
+
         await this.onFetchData();
 
         this.isPrefetchingData = false;
@@ -180,6 +218,7 @@ export default {
             isPrefetchingData: true,
             isFiltersExpanded: false,
             advancedFilters: [],
+            columnModels: [],
             rows: [],
             columns: [],
             filtered: 0,
@@ -202,6 +241,9 @@ export default {
         },
         extendedAdvancedFilters() {
             return this.$getExtendSlot('@Products/components/Grids/AddProductRelationsGrid/advancedFilters');
+        },
+        relationElementType() {
+            return DRAGGED_ELEMENT.RELATION_ATTRIBUTE;
         },
         collectionCellBinding() {
             return {
@@ -307,9 +349,6 @@ export default {
                 sortOrder = {},
                 ...rest
             } = this.localParams;
-            const {
-                language,
-            } = this.user;
 
             const {
                 filters,
@@ -335,27 +374,7 @@ export default {
                     ...rest,
                     ...sortOrder,
                     filters,
-                    columns: [
-                        {
-                            name: 'sku',
-                        },
-                        {
-                            name: 'esa_template',
-                            language,
-                        },
-                        {
-                            name: 'esa_default_label',
-                            language,
-                        },
-                        {
-                            name: 'esa_default_image',
-                            language,
-                        },
-                        {
-                            name: '_links',
-                            language,
-                        },
-                    ],
+                    columns: this.columnModels,
                 },
                 onSuccess: this.onFetchDataSuccess,
                 onError: this.onFetchDataError,
@@ -406,6 +425,77 @@ export default {
                 type: ALERT_TYPE.SUCCESS,
                 message: this.$t('@Products.product.components.AddProductRelationsGrid.successRemoveMessage'),
             });
+            this.onFetchData();
+        },
+        async onDropColumn(payload) {
+            const columnCode = payload.split('/')[1];
+            const {
+                language,
+            } = this.user;
+
+            this.columnModels = insertValueAtIndex(this.columnModels,
+                {
+                    name: columnCode.split(':')[0],
+                    language,
+                }, 0);
+
+            await this.onFetchData();
+
+            const column = this.columns.find(({
+                id,
+            }) => id === columnCode);
+
+            if (column && column.element_id) {
+                this.setDisabledElement(getDisabledElement({
+                    languageCode: column.language,
+                    elementId: column.element_id,
+                    disabledElements: this.disabledElements,
+                }));
+            }
+        },
+        onSwapColumns({
+            from,
+            to,
+        }) {
+            this.columnModels = swapItemPosition(this.columnModels, from, to);
+        },
+        onRemoveColumn({
+            index,
+            column,
+        }) {
+            const {
+                id,
+                element_id,
+            } = column;
+
+            if (element_id) {
+                const {
+                    language: languageCode = this.user.language,
+                } = column;
+
+                if (this.disabledElements[languageCode][element_id]) {
+                    this.setDisabledElement({
+                        languageCode,
+                        elementId: element_id,
+                        disabled: false,
+                    });
+                } else {
+                    this.removeDisabledElement({
+                        languageCode,
+                        elementId: element_id,
+                    });
+                }
+            }
+
+            delete this.localParams.filters[id];
+
+            this.localParams = {
+                ...this.localParams,
+            };
+
+            this.columnModels.splice(index, 1);
+            this.columns.splice(index, 1);
+
             this.onFetchData();
         },
         onSearch(value) {

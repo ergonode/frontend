@@ -15,6 +15,7 @@
         <template #item="{ item }">
             <ConditionSideBarElement
                 :item="item"
+                :dragging-element-type="draggingElementType"
                 :disabled="disabled" />
         </template>
     </SideBar>
@@ -22,6 +23,9 @@
 
 <script>
 import ConditionSideBarElement from '@Conditions/components/SideBars/ConditionSideBarElement';
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 import Preloader from '@UI/components/Preloader/Preloader';
 import SideBar from '@UI/components/SideBar/SideBar';
 import {
@@ -43,6 +47,13 @@ export default {
         group: {
             type: String,
             required: true,
+        },
+        /**
+         * Type of the place from where element is dragging
+         */
+        draggingElementType: {
+            type: String,
+            default: DRAGGED_ELEMENT.LIST,
         },
     },
     async fetch() {

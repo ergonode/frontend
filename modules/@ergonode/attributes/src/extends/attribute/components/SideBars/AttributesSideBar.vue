@@ -39,12 +39,14 @@
             <AttributeSideBarGroupElement
                 v-if="item.rootId === null"
                 :group="item"
+                :dragging-element-type="draggingElementType"
                 :is-prefetching-data="isPrefetchingGroupData[item.id]"
                 @click.native="onExpandGroup({ item, onExpand })" />
             <AttributeSideBarElement
                 v-else
                 :item="item"
                 :language-code="languageCode"
+                :dragging-element-type="draggingElementType"
                 :disabled="disabled" />
         </template>
     </SideBar>
@@ -58,6 +60,9 @@ import {
 import AttributeSideBarElement from '@Attributes/extends/attribute/components/SideBars/AttributeSideBarElement';
 import AttributeSideBarGroupElement from '@Attributes/extends/attribute/components/SideBars/AttributeSideBarGroupElement';
 import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 import {
     UNASSIGNED_GROUP_ID,
 } from '@Core/defaults/list';
@@ -101,6 +106,13 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * Type of the place from where element is dragging
+         */
+        draggingElementType: {
+            type: String,
+            default: DRAGGED_ELEMENT.LIST,
         },
     },
     async fetch() {

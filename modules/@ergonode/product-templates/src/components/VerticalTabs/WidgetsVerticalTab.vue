@@ -4,11 +4,16 @@
  */
 <template>
     <div class="widgets-vertical-tab">
-        <WidgetsSideBar :disabled="disabled" />
+        <WidgetsSideBar
+            :disabled="disabled"
+            :dragging-element-type="draggingElementType" />
     </div>
 </template>
 
 <script>
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 import WidgetsSideBar from '@Templates/components/SideBars/WidgetsSideBar';
 
 export default {
@@ -20,6 +25,13 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * Type of the place from where element is dragging
+         */
+        draggingElementType: {
+            type: String,
+            default: DRAGGED_ELEMENT.LIST,
         },
     },
 };
