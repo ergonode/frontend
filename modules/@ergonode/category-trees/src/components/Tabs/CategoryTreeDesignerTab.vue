@@ -48,6 +48,7 @@ import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
 import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -65,12 +66,32 @@ export default {
     mixins: [
         tabFeedbackMixin,
     ],
+    fetch() {
+        const disabledElements = {
+            [this.user.language]: {},
+        };
+
+        for (let i = this.tree.length - 1; i > -1; i -= 1) {
+            disabledElements[this.user.language][this.tree[i].id] = true;
+        }
+
+        this.setDisabledScopeElements({
+            scope: this.scope,
+            disabledElements,
+        });
+    },
     data() {
         return {
             verticalTabs: [],
         };
     },
     computed: {
+        ...mapState('categoryTree', [
+            'tree',
+        ]),
+        ...mapState('authentication', [
+            'user',
+        ]),
         ...mapState('draggable', [
             'isElementDragging',
         ]),
@@ -95,6 +116,11 @@ export default {
         });
 
         this.verticalTabs = [].concat(...extendedVerticalTabs);
+    },
+    methods: {
+        ...mapActions('list', [
+            'setDisabledScopeElements',
+        ]),
     },
 };
 </script>

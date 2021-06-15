@@ -62,9 +62,12 @@ export default {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
-        store, params,
+        store,
+        params,
     }) {
-        await store.dispatch('productTemplate/getTemplate', params);
+        await store.dispatch('productTemplate/getTemplate', {
+            id: params.id,
+        });
     },
     computed: {
         ...mapState('productTemplate', [

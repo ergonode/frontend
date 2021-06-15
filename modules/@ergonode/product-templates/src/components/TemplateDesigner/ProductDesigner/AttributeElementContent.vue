@@ -189,7 +189,10 @@ export default {
                 });
                 break;
             case 'Remove':
-                this.removeLayoutElementAtIndex(this.index);
+                this.removeLayoutElementAtIndex({
+                    index: this.index,
+                    scope: this.scope,
+                });
 
                 this.onScopeValueChange({
                     scope: this.scope,

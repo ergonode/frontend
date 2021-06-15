@@ -29,7 +29,10 @@ export default {
                 title: $this.$t('@ProductBatchActions.productBatchAction._.title'),
                 component: Components.AttributesVerticalTab,
                 icon: Icons.IconAttributes,
-                props,
+                props: {
+                    scope: $this.scope,
+                    ...props,
+                },
             },
         ],
         '@Products/components/Grids/ProductsGrid/props': () => ({

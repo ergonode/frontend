@@ -14,6 +14,7 @@
         </template>
         <template #item="{ item }">
             <ConditionSideBarElement
+                :scope="scope"
                 :item="item"
                 :dragging-element-type="draggingElementType"
                 :disabled="disabled" />
@@ -40,6 +41,10 @@ export default {
         SideBar,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         disabled: {
             type: Boolean,
             default: false,

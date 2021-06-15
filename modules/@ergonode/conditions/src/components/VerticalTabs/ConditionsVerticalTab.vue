@@ -5,6 +5,7 @@
 <template>
     <div class="conditions-vertical-tab">
         <ConditionsSideBar
+            :scope="scope"
             :disabled="disabled"
             :dragging-element-type="draggingElementType"
             :group="group" />
@@ -23,6 +24,10 @@ export default {
         ConditionsSideBar,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         disabled: {
             type: Boolean,
             default: false,

@@ -5,6 +5,7 @@
 <template>
     <div class="widgets-vertical-tab">
         <WidgetsSideBar
+            :scope="scope"
             :disabled="disabled"
             :dragging-element-type="draggingElementType" />
     </div>
@@ -22,6 +23,10 @@ export default {
         WidgetsSideBar,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         disabled: {
             type: Boolean,
             default: false,

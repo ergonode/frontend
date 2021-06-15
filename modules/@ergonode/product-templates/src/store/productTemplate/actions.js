@@ -36,8 +36,6 @@ export default {
     async getTemplate(
         {
             commit,
-            dispatch,
-            rootState,
         },
         {
             id,
@@ -46,12 +44,6 @@ export default {
         },
     ) {
         try {
-            const {
-                user: {
-                    language: languageCode,
-                },
-            } = rootState.authentication;
-
             // EXTENDED BEFORE METHOD
             await this.$getExtendMethod('@Templates/store/productTemplate/action/getTemplate/__before', {
                 $this: this,
@@ -106,16 +98,6 @@ export default {
                 elementDescriptions,
                 templateTypes.collection,
             );
-
-            for (let i = layoutElements.length - 1; i > -1; i -= 1) {
-                dispatch('list/setDisabledElement', {
-                    languageCode,
-                    elementId: layoutElements[i].id,
-                    disabled: true,
-                }, {
-                    root: true,
-                });
-            }
 
             commit('__SET_STATE', {
                 key: 'layoutElements',
@@ -211,6 +193,7 @@ export default {
     }, {
         draggableId,
         position,
+        scope,
     }) {
         const [
             id,
@@ -232,10 +215,11 @@ export default {
             position,
         });
 
-        dispatch('list/setDisabledElement', {
+        dispatch('list/setDisabledScopeElement', {
             languageCode,
             elementId: attribute.id,
             disabled: true,
+            scope,
         }, {
             root: true,
         });
@@ -264,8 +248,14 @@ export default {
         commit(types.UPDATE_LAYOUT_ELEMENT_AT_INDEX, payload);
     },
     removeLayoutElementAtIndex: ({
-        commit, dispatch, state, rootState,
-    }, index) => {
+        commit,
+        dispatch,
+        state,
+        rootState,
+    }, {
+        index,
+        scope,
+    }) => {
         const {
             layoutElements,
         } = state;
@@ -275,6 +265,7 @@ export default {
         dispatch('list/removeDisabledElement', {
             languageCode: user.language,
             elementId: layoutElements[index].id,
+            scope,
         }, {
             root: true,
         });

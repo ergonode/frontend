@@ -44,6 +44,7 @@
                 @click.native="onExpandGroup({ item, onExpand })" />
             <AttributeSideBarElement
                 v-else
+                :scope="scope"
                 :item="item"
                 :language-code="languageCode"
                 :dragging-element-type="draggingElementType"
@@ -99,6 +100,10 @@ export default {
         AttributeSideBarElement,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         isSelectLanguage: {
             type: Boolean,
             default: true,
@@ -161,7 +166,7 @@ export default {
         );
     },
     beforeDestroy() {
-        this.setDisabledElements({});
+        this.removeDisabledScopeElements(this.scope);
 
         document.documentElement.removeEventListener(
             ATTRIBUTE_CREATED_EVENT_NAME,
@@ -170,7 +175,7 @@ export default {
     },
     methods: {
         ...mapActions('list', [
-            'setDisabledElements',
+            'removeDisabledScopeElements',
         ]),
         async onAttributeCreated() {
             await this.getAttributesForLanguage({

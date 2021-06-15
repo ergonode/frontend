@@ -80,7 +80,7 @@ export default {
         ]),
         ...mapActions('list', [
             'removeDisabledElement',
-            'setDisabledElement',
+            'setDisabledScopeElement',
         ]),
         itemSubtitle(childrenLength) {
             return childrenLength
@@ -92,6 +92,7 @@ export default {
                 this.removeDisabledElement({
                     languageCode: this.languageCode,
                     elementId: id,
+                    scope: this.scope,
                 });
             });
 
@@ -104,10 +105,11 @@ export default {
         onAddItem({
             id,
         }) {
-            this.setDisabledElement({
+            this.setDisabledScopeElement({
                 languageCode: this.languageCode,
                 elementId: id,
                 disabled: true,
+                scope: this.scope,
             });
         },
         onValueChange(value) {

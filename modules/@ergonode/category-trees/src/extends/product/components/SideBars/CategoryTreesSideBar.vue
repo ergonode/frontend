@@ -95,6 +95,10 @@ export default {
         TreeAccordionItem,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         value: {
             type: Object,
             default: () => ({}),

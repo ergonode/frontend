@@ -165,6 +165,10 @@ export default {
         extendedGridComponentsMixin,
     ],
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         value: {
             type: [
                 String,
@@ -286,7 +290,7 @@ export default {
     methods: {
         ...mapActions('list', [
             'removeDisabledElement',
-            'setDisabledElement',
+            'setDisabledScopeElement',
         ]),
         onFiltersExpand() {
             this.isFiltersExpanded = !this.isFiltersExpanded;
@@ -405,10 +409,11 @@ export default {
                 }) => id === filterCode);
 
                 if (filter.attributeId) {
-                    this.setDisabledElement(getDisabledElement({
+                    this.setDisabledScopeElement(getDisabledElement({
                         languageCode: filter.languageCode,
                         elementId: filter.attributeId,
                         disabledElements: this.disabledElements,
+                        scope: this.scope,
                     }));
                 }
 
@@ -446,10 +451,11 @@ export default {
             }) => id === columnCode);
 
             if (column && column.element_id) {
-                this.setDisabledElement(getDisabledElement({
+                this.setDisabledScopeElement(getDisabledElement({
                     languageCode: column.language,
                     elementId: column.element_id,
                     disabledElements: this.disabledElements,
+                    scope: this.scope,
                 }));
             }
         },
@@ -473,16 +479,18 @@ export default {
                     language: languageCode = this.user.language,
                 } = column;
 
-                if (this.disabledElements[languageCode][element_id]) {
-                    this.setDisabledElement({
+                if (this.disabledElements[this.scope][languageCode][element_id]) {
+                    this.setDisabledScopeElement({
                         languageCode,
                         elementId: element_id,
                         disabled: false,
+                        scope: this.scope,
                     });
                 } else {
                     this.removeDisabledElement({
                         languageCode,
                         elementId: element_id,
+                        scope: this.scope,
                     });
                 }
             }
@@ -494,7 +502,6 @@ export default {
             };
 
             this.columnModels.splice(index, 1);
-            this.columns.splice(index, 1);
 
             this.onFetchData();
         },
@@ -547,16 +554,18 @@ export default {
             languageCode,
             attributeId,
         }) {
-            if (this.disabledElements[languageCode][attributeId]) {
-                this.setDisabledElement({
+            if (this.disabledElements[this.scope][languageCode][attributeId]) {
+                this.setDisabledScopeElement({
                     languageCode,
                     elementId: attributeId,
                     disabled: false,
+                    scope: this.scope,
                 });
             } else {
                 this.removeDisabledElement({
                     languageCode,
                     elementId: attributeId,
+                    scope: this.scope,
                 });
             }
         },

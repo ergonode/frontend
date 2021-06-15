@@ -192,13 +192,16 @@ export default {
 
         await Promise.all(requests);
 
-        this.setDisabledElements(getDisabledElements({
-            elements: [
-                ...this.columns,
-                ...this.advancedFilters,
-            ],
-            defaultLanguageCode: this.userLanguageCode,
-        }));
+        this.setDisabledScopeElements({
+            scope: this.scope,
+            disabledElements: getDisabledElements({
+                elements: [
+                    ...this.columns,
+                    ...this.advancedFilters,
+                ],
+                defaultLanguageCode: this.userLanguageCode,
+            }),
+        });
 
         this.isPrefetchingData = false;
     },
@@ -300,8 +303,8 @@ export default {
         ]),
         ...mapActions('list', [
             'removeDisabledElement',
-            'setDisabledElement',
-            'setDisabledElements',
+            'setDisabledScopeElement',
+            'setDisabledScopeElements',
         ]),
         onProductCreated() {
             this.onFetchData();
@@ -324,10 +327,11 @@ export default {
                 }) => id === columnCode);
 
                 if (column && column.element_id) {
-                    this.setDisabledElement(getDisabledElement({
+                    this.setDisabledScopeElement(getDisabledElement({
                         languageCode: column.language,
                         elementId: column.element_id,
                         disabledElements: this.disabledElements,
+                        scope: this.scope,
                     }));
                 }
             } catch {
@@ -363,16 +367,18 @@ export default {
                     language: languageCode = this.userLanguageCode,
                 } = column;
 
-                if (this.disabledElements[languageCode][element_id]) {
-                    this.setDisabledElement({
+                if (this.disabledElements[this.scope][languageCode][element_id]) {
+                    this.setDisabledScopeElement({
                         languageCode,
                         elementId: element_id,
                         disabled: false,
+                        scope: this.scope,
                     });
                 } else {
                     this.removeDisabledElement({
                         languageCode,
                         elementId: element_id,
+                        scope: this.scope,
                     });
                 }
             }
@@ -599,10 +605,11 @@ export default {
                 }) => id === filterCode);
 
                 if (filter.attributeId) {
-                    this.setDisabledElement(getDisabledElement({
+                    this.setDisabledScopeElement(getDisabledElement({
                         languageCode: filter.languageCode,
                         elementId: filter.attributeId,
                         disabledElements: this.disabledElements,
+                        scope: this.scope,
                     }));
                 }
 
@@ -631,16 +638,18 @@ export default {
             languageCode,
             attributeId,
         }) {
-            if (this.disabledElements[languageCode][attributeId]) {
-                this.setDisabledElement({
+            if (this.disabledElements[this.scope][languageCode][attributeId]) {
+                this.setDisabledScopeElement({
                     languageCode,
                     elementId: attributeId,
                     disabled: false,
+                    scope: this.scope,
                 });
             } else {
                 this.removeDisabledElement({
                     languageCode,
                     elementId: attributeId,
+                    scope: this.scope,
                 });
             }
         },

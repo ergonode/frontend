@@ -157,6 +157,7 @@ export default {
                 component: Components.AttributesVerticalTab,
                 icon: Icons.IconAttributes,
                 props: {
+                    scope: $this.scope,
                     isSelectLanguage: false,
                     ...props,
                 },
@@ -169,11 +170,17 @@ export default {
                 title: $this.$t('@Attributes.attributeExtend.components.AttributesVerticalTab.title'),
                 component: Components.AttributesVerticalTab,
                 icon: Icons.IconAttributes,
+                props: {
+                    scope: $this.scope,
+                },
             },
             {
                 title: $this.$t('@Attributes.attributeExtend.components.SystemAttributesVerticalTab.title'),
                 component: Components.SystemAttributesVerticalTab,
                 icon: Icons.IconSettings,
+                props: {
+                    scope: $this.scope,
+                },
             },
         ],
         '@Products/components/Modals/AddProductRelationsModalGrid/verticalTabs': ({
@@ -184,6 +191,7 @@ export default {
                 component: Components.AttributesVerticalTab,
                 icon: Icons.IconAttributes,
                 props: {
+                    scope: $this.scope,
                     draggingElementType: DRAGGED_ELEMENT.RELATION_ATTRIBUTE,
                 },
             },
@@ -191,6 +199,9 @@ export default {
                 title: $this.$t('@Attributes.attributeExtend.components.SystemAttributesVerticalTab.title'),
                 component: Components.SystemAttributesVerticalTab,
                 icon: Icons.IconSettings,
+                props: {
+                    scope: $this.scope,
+                },
             },
         ],
         '@Attributes/store/attribute/action/createAttribute/__before': ({

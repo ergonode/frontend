@@ -194,7 +194,7 @@ export default {
     },
     methods: {
         ...mapActions('list', [
-            'setDisabledElement',
+            'setDisabledScopeElement',
         ]),
         onClickSort() {
             let order = SORTING_ORDER.ASC;

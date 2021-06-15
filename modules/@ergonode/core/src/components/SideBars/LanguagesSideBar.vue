@@ -11,6 +11,7 @@
         @search="onSearch">
         <template #item="{ item }">
             <LanguageSideBarElement
+                :scope="scope"
                 :item="item"
                 :dragging-element-type="draggingElementType"
                 :language-code="userLanguageCode"
@@ -36,6 +37,10 @@ export default {
         SideBar,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         disabled: {
             type: Boolean,
             default: false,

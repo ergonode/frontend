@@ -5,6 +5,7 @@
 <template>
     <div class="categories-vertical-tab">
         <CategoriesSideBar
+            :scope="scope"
             :disabled="disabled"
             :dragging-element-type="draggingElementType"
             :is-select-language="isSelectLanguage" />
@@ -26,6 +27,10 @@ export default {
         CreateCategoryFab,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         isSelectLanguage: {
             type: Boolean,
             default: true,

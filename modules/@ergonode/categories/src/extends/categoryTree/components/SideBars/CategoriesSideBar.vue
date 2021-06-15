@@ -23,6 +23,7 @@
         </template>
         <template #item="{ item }">
             <CategorySideBarElement
+                :scope="scope"
                 :item="item"
                 :dragging-element-type="draggingElementType"
                 :language-code="languageCode"
@@ -40,6 +41,9 @@ import CategorySideBarElement from '@Categories/extends/categoryTree/components/
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
+import {
+    scope,
+} from '@Core/models/mappers/__tests__/__mocks__';
 import {
     deepClone,
 } from '@Core/models/objectWrapper';
@@ -65,6 +69,10 @@ export default {
         SideBar,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         isSelectLanguage: {
             type: Boolean,
             default: true,
@@ -113,7 +121,7 @@ export default {
         );
     },
     beforeDestroy() {
-        this.setDisabledElements({});
+        this.removeDisabledScopeElements(this.scope);
 
         document.documentElement.removeEventListener(
             CATEGORY_CREATED_EVENT_NAME,
@@ -122,7 +130,7 @@ export default {
     },
     methods: {
         ...mapActions('list', [
-            'setDisabledElements',
+            'removeDisabledScopeElements',
         ]),
         async onCategoryCreated() {
             await this.getItems();

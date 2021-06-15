@@ -37,6 +37,10 @@ export default {
         ListDraggableElement,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         item: {
             type: Object,
             required: true,

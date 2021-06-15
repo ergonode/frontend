@@ -74,10 +74,11 @@ export default {
     },
     created() {
         this.inheritedLanguagesTree.forEach((node) => {
-            this.setDisabledElement({
+            this.setDisabledScopeElement({
                 languageCode: this.languageCode,
                 elementId: node.id,
                 disabled: true,
+                scope: this.scope,
             });
         });
     },
@@ -90,13 +91,14 @@ export default {
         ]),
         ...mapActions('list', [
             'removeDisabledElement',
-            'setDisabledElement',
+            'setDisabledScopeElement',
         ]),
         onRemoveItems(ids) {
             ids.forEach((id) => {
                 this.removeDisabledElement({
                     languageCode: this.languageCode,
                     elementId: id,
+                    scope: this.scope,
                 });
             });
 
@@ -107,10 +109,11 @@ export default {
             });
         },
         onAddItem(item) {
-            this.setDisabledElement({
+            this.setDisabledScopeElement({
                 languageCode: this.languageCode,
                 elementId: item.id,
                 disabled: true,
+                scope: this.scope,
             });
         },
         onValueChange(value) {

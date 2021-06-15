@@ -44,6 +44,10 @@ export default {
         IconFontSize,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         item: {
             type: Object,
             required: true,

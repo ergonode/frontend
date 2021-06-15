@@ -58,6 +58,10 @@ export default {
         ListDraggableElement,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         item: {
             type: Object,
             required: true,
@@ -72,8 +76,9 @@ export default {
             'disabledElements',
         ]),
         isDisabled() {
-            return this.disabledElements[this.languageCode]
-                && this.disabledElements[this.languageCode][`${this.item.id}|${this.item.code}`];
+            return this.disabledElements[this.scope]
+                && this.disabledElements[this.scope][this.languageCode]
+                && this.disabledElements[this.scope][this.languageCode][`${this.item.id}|${this.item.code}`];
         },
         iconFillColor() {
             return this.isDisabled ? GREY : GRAPHITE;

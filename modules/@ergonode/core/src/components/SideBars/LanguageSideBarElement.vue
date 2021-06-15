@@ -39,6 +39,10 @@ export default {
         ListElementHint,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         /**
          * Item data model
          */
@@ -74,8 +78,9 @@ export default {
         ]),
         isDisabled() {
             return this.disabled
-                || (this.disabledElements[this.languageCode]
-                    && this.disabledElements[this.languageCode][this.item.id]);
+                || (this.disabledElements[this.scope]
+                    && this.disabledElements[this.scope][this.languageCode]
+                    && this.disabledElements[this.scope][this.languageCode][this.item.id]);
         },
     },
     methods: {

@@ -141,6 +141,7 @@ export default {
             this.removeDisabledElement({
                 languageCode: item.languageCode,
                 elementId: `${item.id}|${item.code}`,
+                scope: this.scope,
             });
         });
 
@@ -148,7 +149,7 @@ export default {
     },
     methods: {
         ...mapActions('list', [
-            'setDisabledElement',
+            'setDisabledScopeElement',
             'removeDisabledElement',
         ]),
         ...mapActions('attribute', [
@@ -244,10 +245,11 @@ export default {
                     };
                 }
 
-                this.setDisabledElement({
+                this.setDisabledScopeElement({
                     languageCode: item.languageCode,
                     elementId: `${item.id}|${item.code}`,
                     disabled: true,
+                    scope: this.scope,
                 });
             } catch (e) {
                 if (!this.app.$axios.isCancel(e)) {
@@ -264,6 +266,7 @@ export default {
             this.removeDisabledElement({
                 languageCode: item.languageCode,
                 elementId: `${item.id}|${item.code}`,
+                scope: this.scope,
             });
 
             this.formItems = this.formItems.filter(formItem => formItem.id !== item.id);

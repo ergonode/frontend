@@ -5,6 +5,7 @@
 <template>
     <div class="languages-vertical-tab">
         <LanguagesSideBar
+            :scope="scope"
             :disabled="disabled"
             :dragging-element-type="draggingElementType" />
     </div>
@@ -22,6 +23,10 @@ export default {
         LanguagesSideBar,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         disabled: {
             type: Boolean,
             default: false,
