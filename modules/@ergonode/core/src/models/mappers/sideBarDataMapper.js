@@ -15,8 +15,7 @@ export function getDisabledElementState({
 export function getDisabledElement({
     languageCode,
     elementId,
-    scope = 'default',
-    disabledElements,
+    disabledElements = {},
 }) {
     return {
         languageCode,
@@ -24,9 +23,8 @@ export function getDisabledElement({
         disabled: getDisabledElementState({
             languageCode,
             elementId,
-            disabledElements: disabledElements[scope],
+            disabledElements,
         }),
-        scope,
     };
 }
 

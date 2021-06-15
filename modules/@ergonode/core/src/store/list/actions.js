@@ -12,24 +12,22 @@ export default {
         commit,
     }, {
         scope = 'default',
-        languageCode,
-        ...rest
+        disabledElement,
     }) => {
         if (typeof state.disabledElements[scope] === 'undefined') {
             commit(types.SET_DISABLED_ELEMENT_SCOPE, scope);
         }
 
-        if (typeof state.disabledElements[scope][languageCode] === 'undefined') {
+        if (typeof state.disabledElements[scope][disabledElement.languageCode] === 'undefined') {
             commit(types.SET_DISABLED_ELEMENT_SCOPE_LANGUAGE, {
                 scope,
-                languageCode,
+                languageCode: disabledElement.languageCode,
             });
         }
 
         commit(types.SET_DISABLED_SCOPE_ELEMENT, {
             scope,
-            languageCode,
-            ...rest,
+            ...disabledElement,
         });
     },
     setDisabledScopeElements: ({

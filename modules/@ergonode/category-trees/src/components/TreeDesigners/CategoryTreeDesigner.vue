@@ -106,10 +106,12 @@ export default {
             id,
         }) {
             this.setDisabledScopeElement({
-                languageCode: this.languageCode,
-                elementId: id,
-                disabled: true,
                 scope: this.scope,
+                disabledElement: {
+                    languageCode: this.languageCode,
+                    elementId: id,
+                    disabled: true,
+                },
             });
         },
         onValueChange(value) {

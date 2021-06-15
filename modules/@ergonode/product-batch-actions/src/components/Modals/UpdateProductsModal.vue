@@ -246,10 +246,12 @@ export default {
                 }
 
                 this.setDisabledScopeElement({
-                    languageCode: item.languageCode,
-                    elementId: `${item.id}|${item.code}`,
-                    disabled: true,
                     scope: this.scope,
+                    disabledElement: {
+                        languageCode: item.languageCode,
+                        elementId: `${item.id}|${item.code}`,
+                        disabled: true,
+                    },
                 });
             } catch (e) {
                 if (!this.app.$axios.isCancel(e)) {

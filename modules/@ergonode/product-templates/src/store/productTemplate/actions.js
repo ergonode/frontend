@@ -216,9 +216,11 @@ export default {
         });
 
         dispatch('list/setDisabledScopeElement', {
-            languageCode,
-            elementId: attribute.id,
-            disabled: true,
+            disabledElement: {
+                languageCode,
+                elementId: attribute.id,
+                disabled: true,
+            },
             scope,
         }, {
             root: true,

@@ -75,10 +75,12 @@ export default {
     created() {
         this.inheritedLanguagesTree.forEach((node) => {
             this.setDisabledScopeElement({
-                languageCode: this.languageCode,
-                elementId: node.id,
-                disabled: true,
                 scope: this.scope,
+                disabledElement: {
+                    languageCode: this.languageCode,
+                    elementId: node.id,
+                    disabled: true,
+                },
             });
         });
     },
@@ -110,10 +112,12 @@ export default {
         },
         onAddItem(item) {
             this.setDisabledScopeElement({
-                languageCode: this.languageCode,
-                elementId: item.id,
-                disabled: true,
                 scope: this.scope,
+                disabledElement: {
+                    languageCode: this.languageCode,
+                    elementId: item.id,
+                    disabled: true,
+                },
             });
         },
         onValueChange(value) {

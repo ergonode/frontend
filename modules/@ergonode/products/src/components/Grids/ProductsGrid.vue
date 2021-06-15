@@ -327,12 +327,14 @@ export default {
                 }) => id === columnCode);
 
                 if (column && column.element_id) {
-                    this.setDisabledScopeElement(getDisabledElement({
-                        languageCode: column.language,
-                        elementId: column.element_id,
-                        disabledElements: this.disabledElements,
+                    this.setDisabledScopeElement({
+                        disabledElement: getDisabledElement({
+                            languageCode: column.language,
+                            elementId: column.element_id,
+                            disabledElements: this.disabledElements[this.scope],
+                        }),
                         scope: this.scope,
-                    }));
+                    });
                 }
             } catch {
                 removeCookieAtIndex({
@@ -369,10 +371,12 @@ export default {
 
                 if (this.disabledElements[this.scope][languageCode][element_id]) {
                     this.setDisabledScopeElement({
-                        languageCode,
-                        elementId: element_id,
-                        disabled: false,
                         scope: this.scope,
+                        disabledElement: {
+                            languageCode,
+                            elementId: element_id,
+                            disabled: false,
+                        },
                     });
                 } else {
                     this.removeDisabledElement({
@@ -605,12 +609,14 @@ export default {
                 }) => id === filterCode);
 
                 if (filter.attributeId) {
-                    this.setDisabledScopeElement(getDisabledElement({
-                        languageCode: filter.languageCode,
-                        elementId: filter.attributeId,
-                        disabledElements: this.disabledElements,
+                    this.setDisabledScopeElement({
+                        disabledElement: getDisabledElement({
+                            languageCode: filter.languageCode,
+                            elementId: filter.attributeId,
+                            disabledElements: this.disabledElements[this.scope],
+                        }),
                         scope: this.scope,
-                    }));
+                    });
                 }
 
                 this.advancedFilters.unshift(filter);
@@ -640,10 +646,12 @@ export default {
         }) {
             if (this.disabledElements[this.scope][languageCode][attributeId]) {
                 this.setDisabledScopeElement({
-                    languageCode,
-                    elementId: attributeId,
-                    disabled: false,
                     scope: this.scope,
+                    disabledElement: {
+                        languageCode,
+                        elementId: attributeId,
+                        disabled: false,
+                    },
                 });
             } else {
                 this.removeDisabledElement({
