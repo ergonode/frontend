@@ -301,7 +301,12 @@ export default {
             filtered,
         }) {
             this.columns = columns;
-            this.rows = rows;
+            this.rows = rows.map(({
+                // eslint-disable-next-line no-unused-vars
+                _links, ...rest
+            }) => ({
+                ...rest,
+            }));
             this.filtered = filtered;
         },
         onFetchDataError() {
