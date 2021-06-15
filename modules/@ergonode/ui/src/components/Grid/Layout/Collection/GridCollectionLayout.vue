@@ -108,6 +108,13 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determinate if action column is visible
+         */
+        isActionColumn: {
+            type: Boolean,
+            default: true,
+        },
     },
     computed: {
         classes() {
@@ -150,7 +157,7 @@ export default {
                         image: row[imageColumn] ? row[imageColumn].value : '',
                         description: row[descriptionColumn] ? row[descriptionColumn].value : '',
                         type,
-                        actions: row._links ? row._links.value : '',
+                        actions: this.isActionColumn && row._links ? row._links.value : '',
                         ...additionalData,
                     };
                 });
