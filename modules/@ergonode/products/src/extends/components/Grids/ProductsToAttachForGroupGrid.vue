@@ -18,6 +18,7 @@
         :is-editable="true"
         :is-header-visible="true"
         :is-basic-filter="true"
+        :is-action-column="false"
         @cell-value="onCellValueChange"
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
@@ -257,12 +258,7 @@ export default {
                     editable: false,
                 };
             });
-            this.rows = rows.map(({
-                // eslint-disable-next-line no-unused-vars
-                _links, ...rest
-            }) => ({
-                ...rest,
-            }));
+            this.rows = rows;
             this.filtered = filtered;
 
             this.isPrefetchingData = false;

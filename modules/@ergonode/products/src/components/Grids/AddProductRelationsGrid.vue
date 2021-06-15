@@ -18,6 +18,7 @@
         :is-basic-filter="true"
         :is-header-visible="true"
         :is-collection-layout="true"
+        :is-action-column="false"
         @edit-row="onEditRow"
         @preview-row="onEditRow"
         @cell-value="onCellValueChange"
@@ -301,12 +302,7 @@ export default {
             filtered,
         }) {
             this.columns = columns;
-            this.rows = rows.map(({
-                // eslint-disable-next-line no-unused-vars
-                _links, ...rest
-            }) => ({
-                ...rest,
-            }));
+            this.rows = rows;
             this.filtered = filtered;
         },
         onFetchDataError() {
