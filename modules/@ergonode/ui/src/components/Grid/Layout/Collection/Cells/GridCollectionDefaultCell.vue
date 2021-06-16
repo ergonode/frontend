@@ -3,9 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        class="grid-collection-default-cell"
-        @click="onClick">
+    <div :class="classes">
         <!-- TODO: Change relation to `multimedia` href.
              INFO: Secure relationship does not break the application.
         -->
@@ -23,6 +21,40 @@
                 class="grid-collection-default-cell__title"
                 v-text="data.description" />
         </div>
+        <GridCollectionCellActionsPanel>
+            <template #prepend>
+                <CheckBox
+                    v-if="isSelectColumn"
+                    class="grid-collection-default-cell__select"
+                    :value="selected"
+                    @input="onSelect" />
+            </template>
+            <template #append>
+                <Fab
+                    v-if="data.actions.get"
+                    class="grid-collection-default-cell__action"
+                    :theme="secondaryTheme"
+                    @click.native="onEdit">
+                    <template #icon="{ color }">
+                        <IconEdit
+                            v-if="data.actions.edit"
+                            :fill-color="color" />
+                        <IconPreview
+                            v-else
+                            :fill-color="color" />
+                    </template>
+                </Fab>
+                <Fab
+                    v-if="data.actions.delete"
+                    class="grid-collection-default-cell__action"
+                    :theme="secondaryTheme"
+                    @click.native="onDelete">
+                    <template #icon="{ color }">
+                        <IconDelete :fill-color="color" />
+                    </template>
+                </Fab>
+            </template>
+        </GridCollectionCellActionsPanel>
     </div>
 </template>
 
@@ -31,14 +63,29 @@ import {
     COLLECTION_IMAGE_HEIGHT,
 } from '@Core/defaults/grid';
 import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
+import {
     THEME,
 } from '@Core/defaults/theme';
+import CheckBox from '@UI/components/CheckBox/CheckBox';
 import DefaultImage from '@UI/components/DefaultImage/DefaultImage';
+import Fab from '@UI/components/Fab/Fab';
+import GridCollectionCellActionsPanel from '@UI/components/Grid/Layout/Collection/Cells/GridCollectionCellActionsPanel';
+import IconDelete from '@UI/components/Icons/Actions/IconDelete';
+import IconEdit from '@UI/components/Icons/Actions/IconEdit';
+import IconPreview from '@UI/components/Icons/Actions/IconPreview';
 import LazyImage from '@UI/components/LazyImage/LazyImage';
 
 export default {
     name: 'GridCollectionDefaultCell',
     components: {
+        GridCollectionCellActionsPanel,
+        IconPreview,
+        IconDelete,
+        IconEdit,
+        Fab,
+        CheckBox,
         DefaultImage,
         LazyImage,
     },
@@ -64,6 +111,20 @@ export default {
             type: String,
             default: '',
         },
+        /**
+         * Determines if component is selected
+         */
+        selected: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * Determines if selecting row column is visible
+         */
+        isSelectColumn: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
@@ -71,6 +132,14 @@ export default {
         };
     },
     computed: {
+        classes() {
+            return [
+                'grid-collection-default-cell',
+                {
+                    'grid-collection-default-cell--selected': this.selected,
+                },
+            ];
+        },
         secondaryTheme() {
             return THEME.SECONDARY;
         },
@@ -79,25 +148,50 @@ export default {
         },
     },
     methods: {
-        onClick(event) {
-            if (this.data.actions.edit && this.data.actions.get) {
-                const args = this.data.actions.edit.href.split('/');
-
-                this.$emit('row-action', {
-                    key: 'edit',
-                    value: args,
+        onSelect() {
+            if (!this.disabled) {
+                this.$emit('select', {
+                    row: this.data.id,
+                    selected: !this.selected,
                 });
-            } else if (this.data.actions.get) {
-                const args = this.data.actions.get.href.split('/');
-
-                this.$emit('row-action', {
-                    key: 'preview',
-                    value: args,
-                });
-            } else {
-                event.preventDefault();
-                event.stopPropagation();
             }
+        },
+        onEdit() {
+            const args = this.data.actions.edit.href.split('/');
+
+            this.$emit('row-action', {
+                key: 'edit',
+                value: args,
+            });
+        },
+        onPreview() {
+
+        },
+        onDelete() {
+            // TODO: Migrate it to Core and propagate action outside
+            this.$confirm({
+                type: MODAL_TYPE.DESTRUCTIVE,
+                title: 'Are you sure you want to remove this row?',
+                applyTitle: 'YES, REMOVE',
+                action: async () => {
+                    try {
+                        await this.$axios.$delete(this.data.actions.delete.href, {
+                            baseURL: '',
+                        });
+
+                        this.$emit('row-action', {
+                            key: 'delete',
+                            value: this.data.id,
+                        });
+                    } catch (e) {
+                        if (this.$axios.isCancel(e)) {
+                            return;
+                        }
+
+                        this.$emit('error');
+                    }
+                },
+            });
         },
     },
 };
@@ -114,7 +208,7 @@ export default {
         border: $BORDER_1_GREY;
         box-sizing: border-box;
         background-color: $WHITE;
-        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
 
         &__fixed-title-content {
             display: flex;
@@ -132,9 +226,29 @@ export default {
             overflow: hidden;
         }
 
+        &__action {
+            background-color: $WHITE;
+            opacity: 0;
+        }
+
+        &__action, &__select {
+            transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+            will-change: opacity;
+        }
+
+        &:not(&--selected) {
+            #{$cell}__select {
+                opacity: 0;
+            }
+        }
+
         &:hover {
             border-color: transparent;
             box-shadow: $ELEVATOR_2_DP;
+
+            #{$cell}__action, #{$cell}__select {
+                opacity: 1;
+            }
         }
     }
 </style>
