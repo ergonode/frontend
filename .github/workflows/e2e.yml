@@ -1,0 +1,89 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    env:
+      APP_ENV: prod
+      APP_DEBUG: false
+      DATABASE_URL: pgsql://ergonode:123@localhost:5432/ergonode_test?serverVersion=10&charset=utf8
+      USE_ASYNC_BUS: true
+      LEAVE_TEST_TAG_ATTRS: true
+      API_BASE_URL: http://localhost:8000/api/v1/
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          coverage: none
+          extensions: imagick
+
+      - name: Set up PostgreSQL
+        uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: 10
+          postgresql user: ergonode
+          postgresql password: 123
+
+      - name: Set up RabbitMQ
+        uses: getong/rabbitmq-action@v1.2
+        with:
+          rabbitmq version: 'latest'
+          host port: 5672
+          rabbitmq user: 'guest'
+          rabbitmq password: 'guest'
+          rabbitmq vhost: '/'
+
+      - name: PHP version
+        run: php -v
+
+      - name: Clone Backend
+        uses: actions/checkout@master
+        with:
+          repository: ergonode/backend
+          path: backend
+
+      - name: Run backend
+        run: |
+          cd backend
+          composer install
+          openssl genrsa -aes256 -passout pass:1234 -out "config/jwt/private.pem" 4096
+          openssl rsa -pubout -in "config/jwt/private.pem" -passin pass:1234 -out "config/jwt/public.pem"
+          ./bin/phing database:create
+          ./bin/phing database:migrate
+          ./bin/phing database:fixture:e2e
+          wget https://get.symfony.com/cli/installer -O - | bash
+          ~/.symfony/bin/symfony server:start -d --no-tls --port=8000
+          cd ..
+
+      - name: Test backend
+        run: wget localhost:8000/api/doc
+
+      - name: Run frontend
+        run: |
+          npm install
+          npm run modules:all
+          npm run build
+          ./node_modules/.bin/pm2 start npm -- start
+
+      - name: Test frontend
+        run: wget --retry-connrefused --waitretry=1 localhost:3000
+
+      - name: Run E2E tests
+        run: npm run cypress:run
+
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: artifacts
+          path: |
+            ./backend/var/log
