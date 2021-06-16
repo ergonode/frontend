@@ -37,6 +37,7 @@ export default {
                 component: Components.CategoriesVerticalTab,
                 icon: Icons.IconTree,
                 props: {
+                    scope: $this.scope,
                     isSelectLanguage: false,
                     ...props,
                 },

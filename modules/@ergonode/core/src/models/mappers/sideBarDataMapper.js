@@ -6,7 +6,7 @@
 export function getDisabledElementState({
     languageCode,
     elementId,
-    disabledElements,
+    disabledElements = {},
 }) {
     return Boolean(disabledElements[languageCode]
         && typeof disabledElements[languageCode][elementId] !== 'undefined');
@@ -15,7 +15,7 @@ export function getDisabledElementState({
 export function getDisabledElement({
     languageCode,
     elementId,
-    disabledElements,
+    disabledElements = {},
 }) {
     return {
         languageCode,

@@ -86,7 +86,6 @@ export default {
         {
             commit,
             dispatch,
-            rootState,
         },
         {
             id,
@@ -117,10 +116,6 @@ export default {
             ]);
 
             const {
-                language: userLanguageCode,
-            } = rootState.authentication.user;
-
-            const {
                 code,
                 name = '',
                 categories,
@@ -143,14 +138,6 @@ export default {
                 childrenId: 'category_id',
                 reducer,
             });
-
-            tree.forEach(element => dispatch('list/setDisabledElement', {
-                languageCode: userLanguageCode,
-                elementId: element.id,
-                disabled: true,
-            }, {
-                root: true,
-            }));
 
             commit('__SET_STATE', {
                 key: 'tree',

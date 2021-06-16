@@ -43,6 +43,10 @@ export default {
         ListElementHint,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         item: {
             type: Object,
             required: true,
@@ -54,6 +58,13 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * Type of the place from where element is dragging
+         */
+        draggingElementType: {
+            type: String,
+            default: DRAGGED_ELEMENT.LIST,
         },
     },
     computed: {
@@ -80,8 +91,9 @@ export default {
         },
         isDisabled() {
             return this.disabled
-                || (this.disabledElements[this.languageCode]
-                    && this.disabledElements[this.languageCode][this.item.id]);
+                || (this.disabledElements[this.scope]
+                    && this.disabledElements[this.scope][this.languageCode]
+                    && this.disabledElements[this.scope][this.languageCode][this.item.id]);
         },
     },
     methods: {
@@ -91,7 +103,7 @@ export default {
         onDragStart() {
             this.__setState({
                 key: 'isElementDragging',
-                value: DRAGGED_ELEMENT.LIST,
+                value: this.draggingElementType,
             });
             this.__setState({
                 key: 'draggedElement',

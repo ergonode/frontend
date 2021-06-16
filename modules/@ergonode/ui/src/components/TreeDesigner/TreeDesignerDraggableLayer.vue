@@ -91,9 +91,6 @@ export default {
         ...mapActions('draggable', [
             '__setState',
         ]),
-        ...mapActions('list', [
-            'setDisabledElement',
-        ]),
         onDragStart(event) {
             const backgroundItem = getBackgroundItem({
                 pageX: event.pageX,

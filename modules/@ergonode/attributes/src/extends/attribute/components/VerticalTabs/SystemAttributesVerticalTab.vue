@@ -5,6 +5,7 @@
 <template>
     <div class="system-attributes-vertical-tab">
         <SystemAttributesSideBar
+            :scope="scope"
             :disabled="disabled"
             :is-select-language="isSelectLanguage" />
     </div>
@@ -19,6 +20,10 @@ export default {
         SystemAttributesSideBar,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         isSelectLanguage: {
             type: Boolean,
             default: true,

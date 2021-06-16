@@ -192,13 +192,16 @@ export default {
 
         await Promise.all(requests);
 
-        this.setDisabledElements(getDisabledElements({
-            elements: [
-                ...this.columns,
-                ...this.advancedFilters,
-            ],
-            defaultLanguageCode: this.userLanguageCode,
-        }));
+        this.setDisabledScopeElements({
+            scope: this.scope,
+            disabledElements: getDisabledElements({
+                elements: [
+                    ...this.columns,
+                    ...this.advancedFilters,
+                ],
+                defaultLanguageCode: this.userLanguageCode,
+            }),
+        });
 
         this.isPrefetchingData = false;
     },
@@ -299,9 +302,9 @@ export default {
             'validateProduct',
         ]),
         ...mapActions('list', [
-            'removeDisabledElement',
-            'setDisabledElement',
-            'setDisabledElements',
+            'removeDisabledScopeElement',
+            'setDisabledScopeElement',
+            'setDisabledScopeElements',
         ]),
         onProductCreated() {
             this.onFetchData();
@@ -324,11 +327,14 @@ export default {
                 }) => id === columnCode);
 
                 if (column && column.element_id) {
-                    this.setDisabledElement(getDisabledElement({
-                        languageCode: column.language,
-                        elementId: column.element_id,
-                        disabledElements: this.disabledElements,
-                    }));
+                    this.setDisabledScopeElement({
+                        disabledElement: getDisabledElement({
+                            languageCode: column.language,
+                            elementId: column.element_id,
+                            disabledElements: this.disabledElements[this.scope],
+                        }),
+                        scope: this.scope,
+                    });
                 }
             } catch {
                 removeCookieAtIndex({
@@ -363,16 +369,20 @@ export default {
                     language: languageCode = this.userLanguageCode,
                 } = column;
 
-                if (this.disabledElements[languageCode][element_id]) {
-                    this.setDisabledElement({
-                        languageCode,
-                        elementId: element_id,
-                        disabled: false,
+                if (this.disabledElements[this.scope][languageCode][element_id]) {
+                    this.setDisabledScopeElement({
+                        scope: this.scope,
+                        disabledElement: {
+                            languageCode,
+                            elementId: element_id,
+                            disabled: false,
+                        },
                     });
                 } else {
-                    this.removeDisabledElement({
+                    this.removeDisabledScopeElement({
                         languageCode,
                         elementId: element_id,
+                        scope: this.scope,
                     });
                 }
             }
@@ -599,11 +609,14 @@ export default {
                 }) => id === filterCode);
 
                 if (filter.attributeId) {
-                    this.setDisabledElement(getDisabledElement({
-                        languageCode: filter.languageCode,
-                        elementId: filter.attributeId,
-                        disabledElements: this.disabledElements,
-                    }));
+                    this.setDisabledScopeElement({
+                        disabledElement: getDisabledElement({
+                            languageCode: filter.languageCode,
+                            elementId: filter.attributeId,
+                            disabledElements: this.disabledElements[this.scope],
+                        }),
+                        scope: this.scope,
+                    });
                 }
 
                 this.advancedFilters.unshift(filter);
@@ -631,16 +644,20 @@ export default {
             languageCode,
             attributeId,
         }) {
-            if (this.disabledElements[languageCode][attributeId]) {
-                this.setDisabledElement({
-                    languageCode,
-                    elementId: attributeId,
-                    disabled: false,
+            if (this.disabledElements[this.scope][languageCode][attributeId]) {
+                this.setDisabledScopeElement({
+                    scope: this.scope,
+                    disabledElement: {
+                        languageCode,
+                        elementId: attributeId,
+                        disabled: false,
+                    },
                 });
             } else {
-                this.removeDisabledElement({
+                this.removeDisabledScopeElement({
                     languageCode,
                     elementId: attributeId,
+                    scope: this.scope,
                 });
             }
         },

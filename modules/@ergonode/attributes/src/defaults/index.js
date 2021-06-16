@@ -31,6 +31,10 @@ export const SCOPE = {
     LOCAL: 'local',
 };
 
+export const DRAGGED_ELEMENT = {
+    RELATION_ATTRIBUTE: 'RELATION_ATTRIBUTE',
+};
+
 export const ATTRIBUTE_GROUP_CREATED_EVENT_NAME = 'attribute-group-created';
 
 export const ATTRIBUTE_CREATED_EVENT_NAME = 'attribute-created';

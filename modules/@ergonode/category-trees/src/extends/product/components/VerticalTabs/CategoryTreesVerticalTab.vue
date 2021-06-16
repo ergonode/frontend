@@ -5,6 +5,7 @@
 <template>
     <div class="category-trees-vertical-tab">
         <CategoryTreesSideBar
+            :scope="scope"
             :value="value"
             :on-value-change="onValueChange" />
         <CreateCategoryFab :floating="{ bottom: '16px', right: '16px' }" />
@@ -22,6 +23,10 @@ export default {
         CreateCategoryFab,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         value: {
             type: Object,
             default: () => ({}),

@@ -5,7 +5,9 @@
 <template>
     <div class="categories-vertical-tab">
         <CategoriesSideBar
+            :scope="scope"
             :disabled="disabled"
+            :dragging-element-type="draggingElementType"
             :is-select-language="isSelectLanguage" />
         <CreateCategoryFab :floating="{ bottom: '16px', right: '16px' }" />
     </div>
@@ -14,6 +16,9 @@
 <script>
 import CreateCategoryFab from '@Categories/components/Buttons/CreateCategoryFab';
 import CategoriesSideBar from '@Categories/extends/categoryTree/components/SideBars/CategoriesSideBar';
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 
 export default {
     name: 'CategoriesVerticalTab',
@@ -22,6 +27,10 @@ export default {
         CreateCategoryFab,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         isSelectLanguage: {
             type: Boolean,
             default: true,
@@ -29,6 +38,13 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * Type of the place from where element is dragging
+         */
+        draggingElementType: {
+            type: String,
+            default: DRAGGED_ELEMENT.LIST,
         },
     },
 };

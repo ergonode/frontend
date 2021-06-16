@@ -23,6 +23,7 @@ export default {
                 component: Components.CategoryTreesVerticalTab,
                 icon: Icons.IconTree,
                 props: {
+                    scope: $this.scope,
                     value: $this.filters,
                     onValueChange: $this.onFiltersChange,
                 },
@@ -36,6 +37,7 @@ export default {
                 component: Components.CategoryTreesVerticalTab,
                 icon: Icons.IconTree,
                 props: {
+                    scope: $this.scope,
                     value: $this.advancedFilterValues,
                     onValueChange: $this.onFiltersChange,
                 },

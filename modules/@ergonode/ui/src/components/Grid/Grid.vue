@@ -35,11 +35,11 @@
             </template>
         </GridHeader>
         <GridBody
-            :disabled="isListElementDragging && isColumnExist"
+            :disabled="isElementDraggingToAdd && isColumnExist"
             :is-border="isHeaderVisible">
             <slot name="body">
                 <AddGridColumnDropZone
-                    :column-exist="isColumnExist"
+                    :is-visible="isElementDraggingToAdd && !isColumnExist"
                     @drop="onDropColumn" />
                 <KeepAlive>
                     <GridTableLayout
@@ -240,6 +240,13 @@ export default {
             required: true,
         },
         /**
+         * Type of the place from where element is dragging
+         */
+        draggingElementType: {
+            type: String,
+            default: DRAGGED_ELEMENT.LIST,
+        },
+        /**
          * Determines if data is loaded asynchronously
          */
         isPrefetchingData: {
@@ -377,8 +384,8 @@ export default {
         isAnyFilter() {
             return Object.keys(this.filters).length > 0;
         },
-        isListElementDragging() {
-            return this.isElementDragging === DRAGGED_ELEMENT.LIST;
+        isElementDraggingToAdd() {
+            return this.isElementDragging === this.draggingElementType;
         },
         isColumnExist() {
             return this.columns.some(

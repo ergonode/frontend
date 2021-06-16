@@ -27,6 +27,7 @@
         </template>
         <template #item="{ item }">
             <AttributeSideBarElement
+                :scope="scope"
                 :item="item"
                 :language-code="languageCode"
                 :disabled="disabled" />
@@ -62,6 +63,10 @@ export default {
         LanguageTreeSelect,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         isSelectLanguage: {
             type: Boolean,
             default: true,

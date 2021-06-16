@@ -138,9 +138,10 @@ export default {
     },
     beforeDestroy() {
         this.formItems.forEach((item) => {
-            this.removeDisabledElement({
+            this.removeDisabledScopeElement({
                 languageCode: item.languageCode,
                 elementId: `${item.id}|${item.code}`,
+                scope: this.scope,
             });
         });
 
@@ -148,8 +149,8 @@ export default {
     },
     methods: {
         ...mapActions('list', [
-            'setDisabledElement',
-            'removeDisabledElement',
+            'setDisabledScopeElement',
+            'removeDisabledScopeElement',
         ]),
         ...mapActions('attribute', [
             'validateAttributeValue',
@@ -244,10 +245,13 @@ export default {
                     };
                 }
 
-                this.setDisabledElement({
-                    languageCode: item.languageCode,
-                    elementId: `${item.id}|${item.code}`,
-                    disabled: true,
+                this.setDisabledScopeElement({
+                    scope: this.scope,
+                    disabledElement: {
+                        languageCode: item.languageCode,
+                        elementId: `${item.id}|${item.code}`,
+                        disabled: true,
+                    },
                 });
             } catch (e) {
                 if (!this.app.$axios.isCancel(e)) {
@@ -261,9 +265,10 @@ export default {
             }
         },
         onRemoveItem(item) {
-            this.removeDisabledElement({
+            this.removeDisabledScopeElement({
                 languageCode: item.languageCode,
                 elementId: `${item.id}|${item.code}`,
+                scope: this.scope,
             });
 
             this.formItems = this.formItems.filter(formItem => formItem.id !== item.id);

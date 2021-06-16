@@ -37,6 +37,7 @@
                 @click.native="onExpandGroup({ item, onExpand })" />
             <AttributeSideBarElement
                 v-else
+                :scope="scope"
                 :item="item"
                 :language-code="languageCode" />
         </template>
@@ -83,6 +84,10 @@ export default {
         AttributeSideBarElement,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         filter: {
             type: [
                 Object,

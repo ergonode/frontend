@@ -18,6 +18,7 @@ export default {
                 component: Components.ConditionsVerticalTab,
                 icon: Icons.IconCategory,
                 props: {
+                    scope: $this.scope,
                     group: 'workflow',
                     ...props,
                 },

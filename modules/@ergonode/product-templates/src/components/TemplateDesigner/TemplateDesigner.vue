@@ -41,11 +41,13 @@
                     <template #content>
                         <AttributeElementContent
                             v-if="element.type !== sectionType"
+                            :scope="scope"
                             :element="element"
                             :disabled="!isAllowedToUpdate"
                             :index="index" />
                         <SectionElementContent
                             v-else
+                            :scope="scope"
                             :element="element"
                             :index="index"
                             :disabled="!isAllowedToUpdate"
@@ -326,6 +328,7 @@ export default {
                 this.addListElementToLayout({
                     position,
                     draggableId,
+                    scope: this.scope,
                 });
             }
 
@@ -347,7 +350,10 @@ export default {
             this.sectionIndex = null;
         },
         onRemoveLayoutElement(index) {
-            this.removeLayoutElementAtIndex(index);
+            this.removeLayoutElementAtIndex({
+                index,
+                scope: this.scope,
+            });
 
             this.onScopeValueChange({
                 scope: this.scope,

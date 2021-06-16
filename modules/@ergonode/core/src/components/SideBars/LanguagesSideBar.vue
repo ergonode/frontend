@@ -11,7 +11,9 @@
         @search="onSearch">
         <template #item="{ item }">
             <LanguageSideBarElement
+                :scope="scope"
                 :item="item"
+                :dragging-element-type="draggingElementType"
                 :language-code="userLanguageCode"
                 :disabled="disabled" />
         </template>
@@ -20,6 +22,9 @@
 
 <script>
 import LanguageSideBarElement from '@Core/components/SideBars/LanguageSideBarElement';
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 import SideBar from '@UI/components/SideBar/SideBar';
 import {
     mapState,
@@ -32,9 +37,20 @@ export default {
         SideBar,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         disabled: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * Type of the place from where element is dragging
+         */
+        draggingElementType: {
+            type: String,
+            default: DRAGGED_ELEMENT.LIST,
         },
     },
     data() {

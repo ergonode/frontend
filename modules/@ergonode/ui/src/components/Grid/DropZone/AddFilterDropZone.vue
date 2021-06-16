@@ -38,9 +38,19 @@ export default {
         IconAddFilter,
     },
     props: {
+        /**
+         * List of filters
+         */
         filters: {
             type: Array,
             default: () => [],
+        },
+        /**
+         * Type of the place from where element is dragging
+         */
+        draggingElementType: {
+            type: String,
+            default: DRAGGED_ELEMENT.LIST,
         },
     },
     computed: {
@@ -52,7 +62,7 @@ export default {
             return ORIENTATION.HORIZONTAL;
         },
         isDropZoneVisible() {
-            return this.isElementDragging === DRAGGED_ELEMENT.LIST
+            return this.isElementDragging === this.draggingElementType
                 && !this.filters.some(
                     filter => filter.id === this.draggedElement,
                 );
