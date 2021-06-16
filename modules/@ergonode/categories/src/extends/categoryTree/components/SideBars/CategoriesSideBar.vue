@@ -42,9 +42,6 @@ import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
 import {
-    scope,
-} from '@Core/models/mappers/__tests__/__mocks__';
-import {
     deepClone,
 } from '@Core/models/objectWrapper';
 import {
