@@ -289,7 +289,7 @@ export default {
     },
     methods: {
         ...mapActions('list', [
-            'removeDisabledElement',
+            'removeDisabledScopeElement',
             'setDisabledScopeElement',
         ]),
         onFiltersExpand() {
@@ -493,7 +493,7 @@ export default {
                         },
                     });
                 } else {
-                    this.removeDisabledElement({
+                    this.removeDisabledScopeElement({
                         languageCode,
                         elementId: element_id,
                         scope: this.scope,
@@ -570,7 +570,7 @@ export default {
                     },
                 });
             } else {
-                this.removeDisabledElement({
+                this.removeDisabledScopeElement({
                     languageCode,
                     elementId: attributeId,
                     scope: this.scope,

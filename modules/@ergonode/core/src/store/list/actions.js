@@ -42,6 +42,11 @@ export default {
             [scope]: disabledElements,
         });
     },
+    removeDisabledScopeElement: ({
+        commit,
+    }, payload) => {
+        commit(types.REMOVE_DISABLED_SCOPE_ELEMENT, payload);
+    },
     removeDisabledScopeElements: ({
         commit,
     }, payload) => {
@@ -69,6 +74,6 @@ export default {
     removeDisabledElement: ({
         commit,
     }, payload) => {
-        commit(types.REMOVE_DISABLED_SCOPE_ELEMENT, payload);
+        commit(types.REMOVE_DISABLED_ELEMENT, payload);
     },
 };

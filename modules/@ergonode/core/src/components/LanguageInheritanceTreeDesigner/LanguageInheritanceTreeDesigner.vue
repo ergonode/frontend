@@ -92,12 +92,12 @@ export default {
             'onScopeValueChange',
         ]),
         ...mapActions('list', [
-            'removeDisabledElement',
+            'removeDisabledScopeElement',
             'setDisabledScopeElement',
         ]),
         onRemoveItems(ids) {
             ids.forEach((id) => {
-                this.removeDisabledElement({
+                this.removeDisabledScopeElement({
                     languageCode: this.languageCode,
                     elementId: id,
                     scope: this.scope,

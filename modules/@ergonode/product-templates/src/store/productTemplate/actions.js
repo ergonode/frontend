@@ -264,7 +264,7 @@ export default {
         const {
             user,
         } = rootState.authentication;
-        dispatch('list/removeDisabledElement', {
+        dispatch('list/removeDisabledScopeElement', {
             languageCode: user.language,
             elementId: layoutElements[index].id,
             scope,

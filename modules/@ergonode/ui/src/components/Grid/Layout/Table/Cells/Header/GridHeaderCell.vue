@@ -57,7 +57,6 @@ import GridTitleHeaderCell from '@UI/components/Grid/Layout/Table/Cells/Header/G
 import IconArrowSort from '@UI/components/Icons/Arrows/IconArrowSort';
 import IconDots from '@UI/components/Icons/Others/IconDots';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
@@ -193,9 +192,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('list', [
-            'setDisabledScopeElement',
-        ]),
         onClickSort() {
             let order = SORTING_ORDER.ASC;
 

@@ -138,7 +138,7 @@ export default {
     },
     beforeDestroy() {
         this.formItems.forEach((item) => {
-            this.removeDisabledElement({
+            this.removeDisabledScopeElement({
                 languageCode: item.languageCode,
                 elementId: `${item.id}|${item.code}`,
                 scope: this.scope,
@@ -150,7 +150,7 @@ export default {
     methods: {
         ...mapActions('list', [
             'setDisabledScopeElement',
-            'removeDisabledElement',
+            'removeDisabledScopeElement',
         ]),
         ...mapActions('attribute', [
             'validateAttributeValue',
@@ -265,7 +265,7 @@ export default {
             }
         },
         onRemoveItem(item) {
-            this.removeDisabledElement({
+            this.removeDisabledScopeElement({
                 languageCode: item.languageCode,
                 elementId: `${item.id}|${item.code}`,
                 scope: this.scope,
