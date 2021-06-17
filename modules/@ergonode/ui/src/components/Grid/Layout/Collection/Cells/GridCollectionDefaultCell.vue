@@ -173,9 +173,6 @@ export default {
                 });
             }
         },
-        onPreview() {
-
-        },
         onDelete() {
             // TODO: Migrate it to Core and propagate action outside
             this.$confirm({
