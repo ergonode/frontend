@@ -157,12 +157,21 @@ export default {
             }
         },
         onEdit() {
-            const args = this.data.actions.edit.href.split('/');
+            if (this.data.actions.edit) {
+                const args = this.data.actions.edit.href.split('/');
 
-            this.$emit('row-action', {
-                key: 'edit',
-                value: args,
-            });
+                this.$emit('row-action', {
+                    key: 'edit',
+                    value: args,
+                });
+            } else {
+                const args = this.data.actions.get.href.split('/');
+
+                this.$emit('row-action', {
+                    key: 'preview',
+                    value: args,
+                });
+            }
         },
         onPreview() {
 

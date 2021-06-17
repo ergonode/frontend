@@ -563,7 +563,6 @@ export default {
             this.$emit('cell-value', value);
         },
         onRowAction(payload) {
-            console.log(payload);
             this.$emit('row-action', payload);
         },
         async initializeColumns() {
