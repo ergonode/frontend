@@ -5,22 +5,40 @@
 <template>
     <div :class="classes">
         <Preloader v-if="isPrefetchingData || !isLayoutResolved" />
-        <div
-            v-else
-            :style="gridTemplateColumns"
-            class="grid-collection-layout__body">
-            <GridCollectionCell
-                v-for="(element, index) in data"
-                :key="index"
-                :data="element"
-                :drafts="drafts"
-                :object-fit="objectFit"
-                :locked="!isEditable"
-                :extended-data-cell="extendedComponents.dataCells
-                    && extendedComponents.dataCells[element.type]"
-                @row-action="onRowAction"
-                @cell-value="onCellValueChange" />
-        </div>
+        <template v-else>
+            <div class="grid-collection-layout__header">
+                <GridSelectCollectionHeaderCell
+                    v-if="isSelectColumn"
+                    :row-ids="rowIds"
+                    :excluded-from-selection-rows="excludedFromSelectionRows"
+                    :selected-rows="selectedRows"
+                    :is-selected-all="isSelectedAll"
+                    @rows-select="onRowsSelect"
+                    @excluded-rows-select="onExcludedRowsSelect"
+                    @select-all="onSelectAllRows" />
+            </div>
+            <div
+                :style="gridTemplateColumns"
+                class="grid-collection-layout__body">
+                <GridCollectionCell
+                    v-for="(element, index) in data"
+                    :key="index"
+                    :data="element"
+                    :drafts="drafts"
+                    :object-fit="objectFit"
+                    :locked="!isEditable"
+                    :selected-rows="selectedRows"
+                    :excluded-from-selection-rows="excludedFromSelectionRows"
+                    :extended-data-cell="extendedComponents.dataCells
+                        && extendedComponents.dataCells[element.type]"
+                    :is-selected-all="isSelectedAll"
+                    :is-select-column="isSelectColumn"
+                    @rows-select="onRowsSelect"
+                    @excluded-rows-select="onExcludedRowsSelect"
+                    @row-action="onRowAction"
+                    @cell-value="onCellValueChange" />
+            </div>
+        </template>
     </div>
 </template>
 
@@ -29,11 +47,14 @@ import {
     GRID_LAYOUT,
 } from '@Core/defaults/grid';
 import GridCollectionCell from '@UI/components/Grid/Layout/Collection/Cells/GridCollectionCell';
+import GridSelectCollectionHeaderCell
+    from '@UI/components/Grid/Layout/Collection/Cells/Header/GridSelectCollectionHeaderCell';
 import Preloader from '@UI/components/Preloader/Preloader';
 
 export default {
     name: 'GridCollectionLayout',
     components: {
+        GridSelectCollectionHeaderCell,
         Preloader,
         GridCollectionCell,
     },
@@ -56,6 +77,20 @@ export default {
          * The drafts are unsaved changes, cached changed data at given time
          */
         drafts: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
+         * The map of selected rows
+         */
+        selectedRows: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
+         * The map of rows excluded from selection
+         */
+        excludedFromSelectionRows: {
             type: Object,
             default: () => ({}),
         },
@@ -86,6 +121,20 @@ export default {
         extendedComponents: {
             type: Object,
             default: () => ({}),
+        },
+        /**
+         * Determines if selecting row column is visible
+         */
+        isSelectColumn: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * Determines if every row should be selected
+         */
+        isSelectedAll: {
+            type: Boolean,
+            default: false,
         },
         /**
          * Determines if data is loaded asynchronously
@@ -169,6 +218,15 @@ export default {
         onCellValueChange(payload) {
             this.$emit('cell-value', payload);
         },
+        onRowsSelect(payload) {
+            this.$emit('rows-select', payload);
+        },
+        onExcludedRowsSelect(excludedFromSelectionRows) {
+            this.$emit('excluded-rows-select', excludedFromSelectionRows);
+        },
+        onSelectAllRows(isSelected) {
+            this.$emit('select-all', isSelected);
+        },
     },
 };
 </script>
@@ -185,9 +243,15 @@ export default {
             grid-template-rows: 190px;
             grid-gap: 24px;
             height: 0;
-            padding: 24px;
+            padding: 20px 24px 24px;
             box-sizing: border-box;
             overflow: auto;
+        }
+
+        &__header {
+            display: flex;
+            align-items: center;
+            padding: 20px 20px 0;
         }
 
         &--placeholder {

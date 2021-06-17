@@ -84,11 +84,18 @@
                         :columns-number="collectionLayoutConfig.columnsNumber"
                         :object-fit="collectionLayoutConfig.scaling"
                         :extended-components="extendedComponents[gridLayout.COLLECTION]"
+                        :selected-rows="selectedRows"
+                        :excluded-from-selection-rows="excludedFromSelectionRows"
+                        :is-selected-all="isSelectedAll"
+                        :is-select-column="isSelectColumn"
                         :is-editable="isEditable"
                         :is-prefetching-data="isPrefetchingData"
                         :is-layout-resolved="isLayoutResolved[layout]"
                         @row-action="onRowAction"
                         @cell-value="onCellValueChange"
+                        @rows-select="onRowsSelect"
+                        @excluded-rows-select="onExcludedRowsSelect"
+                        @select-all="onSelectAllRows"
                         @resolved="onResolvedLayout" />
                 </KeepAlive>
                 <slot

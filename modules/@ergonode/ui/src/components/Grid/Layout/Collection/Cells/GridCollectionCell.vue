@@ -9,6 +9,9 @@
         :drafts="drafts"
         :object-fit="objectFit"
         :locked="locked"
+        :selected="selectedRowState"
+        :is-select-column="isSelectColumn"
+        @select="onSelectRow"
         @row-action="onRowAction"
         @cell-value="onCellValueChange" />
 </template>
@@ -53,6 +56,34 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * The map of selected rows
+         */
+        selectedRows: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
+         * The map of rows excluded from selection
+         */
+        excludedFromSelectionRows: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
+         * Determines if every row should be selected
+         */
+        isSelectedAll: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * Determines if selecting row column is visible
+         */
+        isSelectColumn: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         collectionCellComponent() {
@@ -62,8 +93,32 @@ export default {
 
             return () => import('@UI/components/Grid/Layout/Collection/Cells/GridCollectionDefaultCell');
         },
+        selectedRowState() {
+            return this.selectedRows[this.data.id]
+                || (this.isSelectedAll && !this.excludedFromSelectionRows[this.data.id]);
+        },
     },
     methods: {
+        onSelectRow({
+            row,
+            selected,
+        }) {
+            if (this.isSelectedAll) {
+                this.$emit('excluded-rows-select', {
+                    isExcluded: !selected,
+                    rowIds: [
+                        row,
+                    ],
+                });
+            } else {
+                this.$emit('rows-select', {
+                    isSelected: selected,
+                    rowIds: [
+                        row,
+                    ],
+                });
+            }
+        },
         onRowAction(payload) {
             this.$emit('row-action', payload);
         },
