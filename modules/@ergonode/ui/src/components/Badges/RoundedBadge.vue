@@ -20,6 +20,7 @@ export default {
 <style lang="scss" scoped>
     .rounded-badge {
         display: flex;
+        flex: 0 0 auto;
         justify-content: center;
         align-items: center;
         min-width: 16px;
