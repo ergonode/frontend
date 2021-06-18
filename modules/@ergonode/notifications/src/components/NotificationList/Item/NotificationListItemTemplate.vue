@@ -70,6 +70,7 @@ export default {
     },
     data() {
         return {
+
             isMenuFocused: false,
             isHovered: false,
         };
