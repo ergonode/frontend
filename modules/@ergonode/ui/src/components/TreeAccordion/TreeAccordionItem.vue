@@ -22,7 +22,7 @@
                     :value="selected"
                     :disabled="item.disabled" />
             </div>
-            <ListElementDescription>
+            <ListElementDescription word-break="none">
                 <ListElementTitle
                     :size="size"
                     :title="item.label || item.code" />

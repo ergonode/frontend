@@ -57,8 +57,6 @@ export default {
 <style lang="scss" scoped>
     .list-element {
         display: flex;
-        align-items: center;
-        box-sizing: border-box;
         cursor: pointer;
 
         &--regular {

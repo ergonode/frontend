@@ -8,10 +8,13 @@
             <slot name="header" />
         </div>
         <slot />
-        <GridColumnResizer
-            v-if="resizeable"
-            @width-change="onUpdateWidth"
-            @resize="onResize" />
+        <ClientOnly v-if="resizeable">
+            <GridColumnResizer
+                :position="resizerPosition"
+                :parent-reference="$el"
+                @width-change="onUpdateWidth"
+                @resize="onResize" />
+        </ClientOnly>
     </div>
 </template>
 <script>
@@ -48,6 +51,12 @@ export default {
             return [
                 'grid-column',
             ];
+        },
+        resizerPosition() {
+            return {
+                top: '0',
+                right: '1.25px',
+            };
         },
     },
     methods: {
