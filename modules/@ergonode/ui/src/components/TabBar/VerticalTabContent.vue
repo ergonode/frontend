@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="vertical-tab-bar-content">
+    <div
+        :style="styles"
+        class="vertical-tab-bar-content">
         <div class="vertical-tab-bar-content__container">
             <KeepAlive>
                 <Component
@@ -11,12 +13,25 @@
                     v-bind="item.props" />
             </KeepAlive>
         </div>
+        <ClientOnly>
+            <Resizer
+                :parent-reference="$el"
+                :min-width="minWidth"
+                @width-change="onWidthChange" />
+        </ClientOnly>
     </div>
 </template>
 
 <script>
+import GridColumnResizer from '@UI/components/Grid/Layout/Table/Columns/Resizer/GridColumnResizer';
+import Resizer from '@UI/components/Resizer/Resizer';
+
 export default {
     name: 'VerticalTabContent',
+    components: {
+        Resizer,
+        GridColumnResizer,
+    },
     props: {
         /**
          * Item data model
@@ -24,6 +39,26 @@ export default {
         item: {
             type: Object,
             required: true,
+        },
+    },
+    data() {
+        return {
+            currentWidth: '275px',
+        };
+    },
+    computed: {
+        styles() {
+            return {
+                width: this.currentWidth,
+            };
+        },
+        minWidth() {
+            return 275;
+        },
+    },
+    methods: {
+        onWidthChange(width) {
+            this.currentWidth = width;
         },
     },
 };
@@ -35,7 +70,6 @@ export default {
         display: flex;
         flex: 1;
         flex-direction: column;
-        width: 275px;
         box-sizing: border-box;
 
         &__container {
