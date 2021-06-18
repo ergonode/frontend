@@ -20,7 +20,6 @@
             </SideBarStickyHeader>
         </template>
         <template #body>
-            <div>DUPA</div>
             <slot name="body">
                 <slot
                     v-if="isSearchPlaceholderVisible"
