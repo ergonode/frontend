@@ -50,6 +50,14 @@ export default {
                 },
             ],
         },
+        '@Workflow/components/Forms/WorkflowTransitionForm': {
+            __ALL: [
+                {
+                    component: Components.TransitionFormRole,
+                    order: 10,
+                },
+            ],
+        },
         '@UI/components/Grid/Layout/Table/Cells/Data': {
             PRIVILEGE_NAME_HINT: Components.GridPrivilegeNameHintDataCell,
         },
@@ -84,7 +92,20 @@ export default {
                 data,
             });
         },
+        '@Workflow/store/workflow/action/getTransition/__after': ({
+            $this, data,
+        }) => {
+            setTransition({
+                $this,
+                data,
+            });
+        },
         '@Transitions/store/statusTransition/action/updateStatusTransition/__before': ({
+            $this,
+        }) => getTransition({
+            $this,
+        }),
+        '@Workflow/store/workflow/action/updateTransition/__before': ({
             $this,
         }) => getTransition({
             $this,

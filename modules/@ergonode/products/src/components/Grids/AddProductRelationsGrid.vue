@@ -18,6 +18,8 @@
         :is-select-column="true"
         :is-basic-filter="true"
         :is-header-visible="true"
+        :is-collection-layout="true"
+        :is-action-column="false"
         @edit-row="onEditRow"
         @preview-row="onEditRow"
         @delete-row="onRemoveRow"
@@ -64,6 +66,9 @@
         </template>
         <template #noDataPlaceholder>
             <ProductsGridNoDataPlaceholder v-if="!isAnyFilter && filtered === 0" />
+            <GridNoResultsPlaceholder
+                v-else
+                @clear="onRemoveAllFilters" />
         </template>
         <template
             #appendFooter="{
@@ -134,6 +139,7 @@ import {
 import AddFilterDropZone from '@UI/components/Grid/DropZone/AddFilterDropZone';
 import Grid from '@UI/components/Grid/Grid';
 import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
+import GridNoResultsPlaceholder from '@UI/components/Grid/GridNoResultsPlaceholder';
 import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import {
     debounce,
@@ -154,6 +160,7 @@ export default {
         Grid,
         GridNoDataPlaceholder,
         IntersectionObserver,
+        GridNoResultsPlaceholder,
     },
     mixins: [
         extendPropsMixin({
@@ -251,12 +258,8 @@ export default {
         },
         collectionCellBinding() {
             return {
-                imageColumn: 'esa_default_image',
-                descriptionColumn: 'esa_default_label',
-                type: 'PRODUCT_ATTACH',
-                additionalColumns: [
-                    'attached',
-                ],
+                imageColumn: `esa_default_image:${this.user.language}`,
+                descriptionColumn: `esa_default_label:${this.user.language}`,
             };
         },
         filters() {
@@ -320,7 +323,7 @@ export default {
             this.localParams.filters = {};
             this.localParams.offset = 0;
 
-            this.onFetchData();
+            this.$emit('change-filter', {});
         },
         onColumnSortChange(sortOrder) {
             this.localParams.sortOrder = sortOrder;

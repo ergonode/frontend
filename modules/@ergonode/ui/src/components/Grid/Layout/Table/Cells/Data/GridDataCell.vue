@@ -54,7 +54,10 @@ export default {
          * The error messages are messages which comes from validation process
          */
         errorMessages: {
-            type: String,
+            type: [
+                Object,
+                String,
+            ],
             default: '',
         },
         /**

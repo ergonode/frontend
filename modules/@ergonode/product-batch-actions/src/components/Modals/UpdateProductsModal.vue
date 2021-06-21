@@ -60,6 +60,9 @@ import {
 } from '@Core/defaults/alerts';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import {
+    removeObjectProperty,
+} from '@Core/models/objectWrapper';
+import {
     capitalizeAndConcatenationArray,
 } from '@Core/models/stringWrapper';
 import UpdateProductsButton
@@ -271,7 +274,10 @@ export default {
                 scope: this.scope,
             });
 
-            this.formItems = this.formItems.filter(formItem => formItem.id !== item.id);
+            this.values = removeObjectProperty(this.values, `${item.id}|${item.languageCode}`);
+            this.formItems = this.formItems.filter(({
+                id, languageCode,
+            }) => !(languageCode === item.languageCode && id === item.id));
         },
         onApplyProductsUpdateBatchAction() {
             this.onApply();

@@ -17,9 +17,9 @@ describe('TitleBar/TitleBarBreadcrumb', () => {
             localVue,
             propsData: {
                 breadcrumb: {
-                    title: 'Categories',
-                    icon: 'Category',
-                    path: '/categories',
+                    title: 'Dashboard',
+                    icon: 'Dashboard',
+                    path: '/dashboard',
                 },
 
             },

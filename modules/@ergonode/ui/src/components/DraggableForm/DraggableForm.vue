@@ -26,7 +26,7 @@
                 <DraggableFormPlaceholderItem v-if="isPlaceholderItemVisible" />
                 <DraggableFormItem
                     v-for="(item, index) in localItems"
-                    :key="item.id"
+                    :key="`${item.id}|${item.languageCode}`"
                     :index="index"
                     :item="item"
                     @remove-item="onRemoveItem"

@@ -3,69 +3,73 @@
  * See LICENSE for license details.
  */
 <template>
-    <Designer
-        :columns="columns"
-        :last-item-row="lastItemRow"
-        @rows="onRowsChange">
-        <template #backgroundItem="{ row, column }">
-            <TemplateDesignerBackgroundItem
-                :key="`${column} | ${row}`"
-                :highlighting-positions="highlightedPositions"
+    <VerticalFixedScroll>
+        <div class="template-designer">
+            <Designer
                 :columns="columns"
-                :column="column"
-                :row="row" />
-        </template>
-        <template #appendBody="{ rows, layerStyle }">
-            <DesignerDraggableLayer
-                ref="designerDraggableLayer"
-                :style="layerStyle"
-                @dragover.native="onDragOver"
-                @dragleave.native="onDragLeave"
-                @drop.native="onDrop">
-                <DesignerPlaceholderItem
-                    v-if="!layoutElements.length && !highlightedPositions.length"
-                    :width="1" />
-                <DesignerGhostItem
-                    v-if="ghostIndex !== -1"
-                    v-bind="{ ...ghostItemBounds }" />
-                <LayoutElement
-                    v-for="(element, index) in layoutElements"
-                    :key="`${element.row}/${element.column}`"
-                    :index="index"
-                    :element="element"
-                    :layout-width="columns"
-                    :layout-height="rows"
-                    :disabled="!isAllowedToUpdate"
-                    @highlighted-position-change="onHighlightedPositionsChange"
-                    @remove="onRemoveLayoutElement">
-                    <template #content>
-                        <AttributeElementContent
-                            v-if="element.type !== sectionType"
-                            :scope="scope"
-                            :element="element"
-                            :disabled="!isAllowedToUpdate"
-                            :index="index" />
-                        <SectionElementContent
-                            v-else
-                            :scope="scope"
-                            :element="element"
+                :last-item-row="lastItemRow"
+                @rows="onRowsChange">
+                <template #backgroundItem="{ row, column }">
+                    <TemplateDesignerBackgroundItem
+                        :key="`${column} | ${row}`"
+                        :highlighting-positions="highlightedPositions"
+                        :columns="columns"
+                        :column="column"
+                        :row="row" />
+                </template>
+                <template #appendBody="{ rows, layerStyle }">
+                    <DesignerDraggableLayer
+                        ref="designerDraggableLayer"
+                        :style="layerStyle"
+                        @dragover.native="onDragOver"
+                        @dragleave.native="onDragLeave"
+                        @drop.native="onDrop">
+                        <DesignerPlaceholderItem
+                            v-if="!layoutElements.length && !highlightedPositions.length"
+                            :width="1" />
+                        <DesignerGhostItem
+                            v-if="ghostIndex !== -1"
+                            v-bind="{ ...ghostItemBounds }" />
+                        <LayoutElement
+                            v-for="(element, index) in layoutElements"
+                            :key="`${element.row}/${element.column}`"
                             :index="index"
+                            :element="element"
+                            :layout-width="columns"
+                            :layout-height="rows"
                             :disabled="!isAllowedToUpdate"
-                            @edit-title="onEditSectionTitle" />
-                    </template>
-                </LayoutElement>
-            </DesignerDraggableLayer>
-            <SectionTemplateModalForm
-                v-if="isSectionAdded"
-                :index="sectionIndex"
-                :scope="scope"
-                :errors="errors"
-                :change-values="changeValues"
-                :position="sectionPosition"
-                :element="sectionElement"
-                @close="onCloseSectionModal" />
-        </template>
-    </Designer>
+                            @highlighted-position-change="onHighlightedPositionsChange"
+                            @remove="onRemoveLayoutElement">
+                            <template #content>
+                                <AttributeElementContent
+                                    v-if="element.type !== sectionType"
+                                    :scope="scope"
+                                    :element="element"
+                                    :disabled="!isAllowedToUpdate"
+                                    :index="index" />
+                                <SectionElementContent
+                                    v-else
+                                    :scope="scope"
+                                    :element="element"
+                                    :index="index"
+                                    :disabled="!isAllowedToUpdate"
+                                    @edit-title="onEditSectionTitle" />
+                            </template>
+                        </LayoutElement>
+                    </DesignerDraggableLayer>
+                    <SectionTemplateModalForm
+                        v-if="isSectionAdded"
+                        :index="sectionIndex"
+                        :scope="scope"
+                        :errors="errors"
+                        :change-values="changeValues"
+                        :position="sectionPosition"
+                        :element="sectionElement"
+                        @close="onCloseSectionModal" />
+                </template>
+            </Designer>
+        </div>
+    </VerticalFixedScroll>
 </template>
 
 <script>
@@ -96,6 +100,7 @@ import Designer from '@UI/components/Designer/Designer';
 import DesignerDraggableLayer from '@UI/components/Designer/DesignerDraggableLayer';
 import DesignerGhostItem from '@UI/components/Designer/DesignerGhostItem';
 import DesignerPlaceholderItem from '@UI/components/Designer/DesignerPlaceholderItem';
+import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
 import {
     getBackgroundItem,
 } from '@UI/models/designer/intex';
@@ -111,6 +116,7 @@ import {
 export default {
     name: 'TemplateDesigner',
     components: {
+        VerticalFixedScroll,
         Designer,
         DesignerDraggableLayer,
         DesignerGhostItem,
@@ -372,3 +378,13 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .template-designer {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        height: 100%;
+        padding: 24px 24px 0;
+    }
+</style>

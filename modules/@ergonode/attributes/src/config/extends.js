@@ -201,6 +201,7 @@ export default {
                 icon: Icons.IconSettings,
                 props: {
                     scope: $this.scope,
+                    draggingElementType: DRAGGED_ELEMENT.RELATION_ATTRIBUTE,
                 },
             },
         ],

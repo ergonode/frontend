@@ -312,6 +312,13 @@ export default {
             default: false,
         },
         /**
+         * Determinate if action column is visible
+         */
+        isActionColumn: {
+            type: Boolean,
+            default: true,
+        },
+        /**
          * The data model of sorted column
          */
         sortOrder: {
@@ -566,7 +573,7 @@ export default {
             this.$emit('row-action', payload);
         },
         async initializeColumns() {
-            const actionColumns = this.getActionColumns();
+            const actionColumns = this.isActionColumn ? this.getActionColumns() : [];
             const orderedColumns = [];
             const columnWidths = [];
             const {

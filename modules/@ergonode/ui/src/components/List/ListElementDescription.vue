@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template functional>
-    <div class="list-element-description">
+    <div
+        :style="{ wordBreak: props.wordBreak }"
+        class="list-element-description">
         <slot />
     </div>
 </template>
@@ -12,6 +14,12 @@
 
 export default {
     name: 'ListElementDescription',
+    props: {
+        wordBreak: {
+            type: String,
+            default: 'break-word',
+        },
+    },
 };
 </script>
 
@@ -22,6 +30,5 @@ export default {
         flex-direction: column;
         justify-content: center;
         margin: 4px;
-        word-break: break-word;
     }
 </style>

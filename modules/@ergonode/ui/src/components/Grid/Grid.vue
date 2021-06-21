@@ -63,6 +63,7 @@
                         :is-select-column="isSelectColumn"
                         :is-basic-filter="isBasicFilter"
                         :is-selected-all="isSelectedAll"
+                        :is-action-column="isActionColumn"
                         @sort-column="onSortColumn"
                         @filter="onFilterChange"
                         @cell-value="onCellValueChange"
@@ -91,6 +92,7 @@
                         :is-editable="isEditable"
                         :is-prefetching-data="isPrefetchingData"
                         :is-layout-resolved="isLayoutResolved[layout]"
+                        :is-action-column="isActionColumn"
                         @row-action="onRowAction"
                         @cell-value="onCellValueChange"
                         @rows-select="onRowsSelect"
@@ -273,6 +275,13 @@ export default {
         isBorder: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * Determinate if action column is visible
+         */
+        isActionColumn: {
+            type: Boolean,
+            default: true,
         },
         /**
          * Determinate if the component is being able to edit
