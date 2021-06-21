@@ -5,40 +5,47 @@
 <template>
     <ResizeObserver @resize="onResize">
         <div class="designer">
-            <DesignerBody>
-                <slot
-                    name="prependBody"
-                    :rows="rows"
-                    :columns="columns"
-                    :layer-style="layerStyle" />
-                <slot
-                    name="backgroundBody"
-                    :rows="rows"
-                    :columns="columns"
-                    :layer-style="layerStyle">
-                    <DesignerBackgroundLayer
-                        :style="layerStyle"
+            <DesignerLayers>
+                <template #prependLayer>
+                    <slot
+                        name="prependBody"
+                        :rows="rows"
                         :columns="columns"
-                        :rows="rows">
-                        <template #item="{ row, column }">
-                            <slot
-                                name="backgroundItem"
-                                :row="row"
-                                :column="column">
-                                <DesignerBackgroundItem
-                                    :key="`${column} | ${row}`"
-                                    :column="column"
-                                    :row="row" />
-                            </slot>
-                        </template>
-                    </DesignerBackgroundLayer>
-                </slot>
-                <slot
-                    name="appendBody"
-                    :rows="rows"
-                    :columns="columns"
-                    :layer-style="layerStyle" />
-            </DesignerBody>
+                        :layer-style="layerStyle" />
+                </template>
+                <template #backgroundLayer>
+                    <slot
+                        name="backgroundBody"
+                        :rows="rows"
+                        :columns="columns"
+                        :layer-style="layerStyle">
+                        <DesignerBackgroundLayer
+                            :style="layerStyle"
+                            :columns="columns"
+                            :rows="rows">
+                            <template #item="{ row, column }">
+                                <slot
+                                    name="backgroundItem"
+                                    :row="row"
+                                    :column="column">
+                                    <DesignerBackgroundItem
+                                        :key="`${column} | ${row}`"
+                                        :column="column"
+                                        :row="row"
+                                        :has-right-border="column + 1 === columns" />
+                                </slot>
+                            </template>
+                        </DesignerBackgroundLayer>
+                    </slot>
+                </template>
+                <template #draggableLayer>
+                    <slot
+                        name="appendBody"
+                        :rows="rows"
+                        :columns="columns"
+                        :layer-style="layerStyle" />
+                </template>
+            </DesignerLayers>
             <DesignerFooter ref="footer">
                 <Button
                     title="ADD ROW"
@@ -62,8 +69,8 @@ import {
 import Button from '@UI/components/Button/Button';
 import DesignerBackgroundItem from '@UI/components/Designer/DesignerBackgroundItem';
 import DesignerBackgroundLayer from '@UI/components/Designer/DesignerBackgroundLayer';
-import DesignerBody from '@UI/components/Designer/DesignerBody';
 import DesignerFooter from '@UI/components/Designer/DesignerFooter';
+import DesignerLayers from '@UI/components/Designer/DesignerLayers';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import ResizeObserver from '@UI/components/Observers/ResizeObserver';
 import {
@@ -76,7 +83,7 @@ export default {
     name: 'Designer',
     components: {
         DesignerBackgroundItem,
-        DesignerBody,
+        DesignerLayers,
         DesignerBackgroundLayer,
         DesignerFooter,
         Button,
@@ -97,6 +104,13 @@ export default {
         lastItemRow: {
             type: Number,
             default: 0,
+        },
+        /**
+         * The width of each column
+         */
+        columnWidth: {
+            type: String,
+            default: '1fr',
         },
         /**
          * Determines the row height
@@ -124,7 +138,7 @@ export default {
         },
         layerStyle() {
             return {
-                gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
+                gridTemplateColumns: `repeat(${this.columns}, ${this.columnWidth})`,
                 gridTemplateRows: `repeat(${this.rows}, ${this.rowHeight}px)`,
             };
         },
@@ -139,7 +153,11 @@ export default {
             const {
                 height,
             } = entry.contentRect;
-            const maxRow = Math.ceil((height - this.footerHeight) / this.rowHeight);
+
+            const maxRow = Math.max(
+                1,
+                Math.ceil((height - this.footerHeight) / this.rowHeight) - 1,
+            );
 
             this.setRows(maxRow);
         },
@@ -166,11 +184,8 @@ export default {
     .designer {
         position: relative;
         display: flex;
-        flex: 1 1 auto;
+        flex: 1;
         flex-direction: column;
-        height: 0;
-        padding: 24px 24px 0;
-        box-sizing: border-box;
-        overflow: auto;
+        height: 100%;
     }
 </style>
