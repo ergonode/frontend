@@ -17,17 +17,6 @@
                         :key="index"
                         v-bind="bindingProps(actionItem)" />
                 </template>
-                <button
-                    @click="() => {
-                        $router.push({
-                            params: {
-                                id: '3a62c100-76af-50a9-9e35-452abd1cbfb2',
-                            },
-                            name: 'product-id-general',
-                        })
-                    }">
-                    Go to product
-                </button>
                 <RemoveProductButton />
             </template>
         </TitleBar>
