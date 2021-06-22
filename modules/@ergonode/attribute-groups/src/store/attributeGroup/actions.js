@@ -109,6 +109,8 @@ export default {
                 name,
             };
 
+            dispatch('__clearStorage');
+
             commit('__SET_STATE', {
                 key: 'id',
                 value: id,

@@ -22,6 +22,7 @@ export default {
     async getUser(
         {
             commit,
+            dispatch,
         },
         {
             id,
@@ -53,6 +54,8 @@ export default {
                 is_active = false,
                 language_privileges_collection = null,
             } = data;
+
+            dispatch('__clearStorage');
 
             commit('__SET_STATE', {
                 key: 'id',

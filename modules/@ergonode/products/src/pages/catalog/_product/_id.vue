@@ -17,6 +17,17 @@
                         :key="index"
                         v-bind="bindingProps(actionItem)" />
                 </template>
+                <button
+                    @click="() => {
+                        $router.push({
+                            params: {
+                                id: '3a62c100-76af-50a9-9e35-452abd1cbfb2',
+                            },
+                            name: 'product-id-general',
+                        })
+                    }">
+                    Go to product
+                </button>
                 <RemoveProductButton />
             </template>
         </TitleBar>
@@ -50,7 +61,6 @@ import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
@@ -144,17 +154,7 @@ export default {
             },
         },
     },
-    beforeDestroy() {
-        this.__clearStorage();
-        this.__clearFeedbackStorage();
-    },
     methods: {
-        ...mapActions('product', [
-            '__clearStorage',
-        ]),
-        ...mapActions('feedback', {
-            __clearFeedbackStorage: '__clearStorage',
-        }),
         bindingProps({
             props = {},
         }) {

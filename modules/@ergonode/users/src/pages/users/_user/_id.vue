@@ -40,7 +40,6 @@ import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRou
 import TitleBar from '@UI/components/TitleBar/TitleBar';
 import PRIVILEGES from '@Users/config/privileges';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
@@ -91,17 +90,7 @@ export default {
             return this.$isReadOnly(PRIVILEGES.USER.namespace);
         },
     },
-    beforeDestroy() {
-        this.__clearStorage();
-        this.__clearFeedbackStorage();
-    },
     methods: {
-        ...mapActions('user', [
-            '__clearStorage',
-        ]),
-        ...mapActions('feedback', {
-            __clearFeedbackStorage: '__clearStorage',
-        }),
         bindingProps({
             props = {},
         }) {

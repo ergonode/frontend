@@ -43,6 +43,8 @@ export default {
                 alt: Array.isArray(alt) ? {} : alt,
             };
 
+            dispatch('__clearStorage');
+
             commit('__SET_STATE', {
                 key: 'id',
                 value: id,

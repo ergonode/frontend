@@ -89,6 +89,8 @@ export default {
                 description,
             };
 
+            dispatch('__clearStorage');
+
             commit('__SET_STATE', {
                 key: 'id',
                 value: id,

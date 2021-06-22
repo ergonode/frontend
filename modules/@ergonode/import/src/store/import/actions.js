@@ -24,7 +24,9 @@ import {
 export default {
     async getImportProfile(
         {
-            commit, rootState,
+            commit,
+            rootState,
+            dispatch,
         },
         {
             id,
@@ -53,6 +55,8 @@ export default {
                 type,
                 ...rest
             } = data;
+
+            dispatch('__clearStorage');
 
             commit('__SET_STATE', {
                 key: 'id',

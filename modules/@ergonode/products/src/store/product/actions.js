@@ -82,6 +82,7 @@ export default {
     async getProduct({
         commit,
         rootState,
+        dispatch,
     }, {
         id,
         onError = () => {},
@@ -104,6 +105,8 @@ export default {
                 $axios: this.app.$axios,
                 id,
             });
+
+            dispatch('__clearStorage');
 
             const {
                 sku,

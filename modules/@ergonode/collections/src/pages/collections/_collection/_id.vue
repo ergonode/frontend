@@ -42,7 +42,6 @@ import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
@@ -90,21 +89,7 @@ export default {
             return this.$isReadOnly(PRIVILEGES.PRODUCT_COLLECTION.namespace);
         },
     },
-    beforeDestroy() {
-        this.__clearStorage();
-        this.__clearTranslationsStorage();
-        this.__clearFeedbackStorage();
-    },
     methods: {
-        ...mapActions('collection', [
-            '__clearStorage',
-        ]),
-        ...mapActions('feedback', {
-            __clearFeedbackStorage: '__clearStorage',
-        }),
-        ...mapActions('tab', {
-            __clearTranslationsStorage: '__clearStorage',
-        }),
         bindingProps({
             props = {},
         }) {

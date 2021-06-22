@@ -10,12 +10,14 @@ import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
 export default {
     beforeRouteLeave(to, from, next) {
         this.confirmLeaving(() => {
+            this.__clearFeedbackStorage();
             this.$clearCancelTokens([
                 AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
             ]);
@@ -30,6 +32,9 @@ export default {
         ]),
     },
     methods: {
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
         confirmLeaving(callback) {
             const changeValuesKeys = Object.keys(this.changeValues);
             const hasError = Object.keys(this.errors).length > 0;

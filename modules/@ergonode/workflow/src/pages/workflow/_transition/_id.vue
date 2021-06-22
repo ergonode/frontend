@@ -41,7 +41,6 @@ import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRou
 import TitleBar from '@UI/components/TitleBar/TitleBar';
 import RemoveWorkflowTransitionButton from '@Workflow/components/Buttons/RemoveWorkflowTransitionButton';
 import PRIVILEGES from '@Workflow/config/privileges';
-import state from '@Workflow/store/workflow/state';
 import {
     mapActions,
     mapState,
@@ -90,33 +89,10 @@ export default {
             return this.$isReadOnly(PRIVILEGES.WORKFLOW.namespace);
         },
     },
-    beforeDestroy() {
-        const {
-            transition,
-            statuses,
-        } = state();
-
-        this.__setState({
-            key: 'transition',
-            value: transition,
-        });
-        this.__setState({
-            key: 'statuses',
-            value: statuses,
-        });
-        this.__clearConditionStorage();
-        this.__clearFeedbackStorage();
-    },
     methods: {
         ...mapActions('workflow', [
             '__setState',
         ]),
-        ...mapActions('condition', {
-            __clearConditionStorage: '__clearStorage',
-        }),
-        ...mapActions('feedback', {
-            __clearFeedbackStorage: '__clearStorage',
-        }),
         bindingProps({
             props = {},
         }) {
