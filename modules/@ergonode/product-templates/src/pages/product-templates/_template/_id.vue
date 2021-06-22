@@ -32,6 +32,7 @@
 <script>
 import beforeRouteEnterMixin from '@Core/mixins/route/beforeRouteEnterMixin';
 import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import beforeRouteUpdateMixin from '@Core/mixins/route/beforeRouteUpdateMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import RemoveProductTemplateButton from '@Templates/components/Buttons/RemoveProductTemplateButton';
 import PRIVILEGES from '@Templates/config/privileges';
@@ -54,6 +55,7 @@ export default {
         asyncTabsMixin,
         beforeRouteEnterMixin,
         beforeRouteLeaveMixin,
+        beforeRouteUpdateMixin(),
     ],
     validate({
         params,

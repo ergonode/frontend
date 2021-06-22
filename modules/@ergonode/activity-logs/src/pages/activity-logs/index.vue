@@ -39,8 +39,8 @@ export default {
         Page,
     },
     mixins: [
-        beforeRouteLeaveMixin,
         asyncTabsMixin,
+        beforeRouteLeaveMixin,
     ],
     computed: {
         extendedMainAction() {

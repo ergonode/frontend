@@ -37,6 +37,7 @@ import {
 } from '@Core/defaults/theme';
 import beforeRouteEnterMixin from '@Core/mixins/route/beforeRouteEnterMixin';
 import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import beforeRouteUpdateMixin from '@Core/mixins/route/beforeRouteUpdateMixin';
 import {
     getNestedTabRoutes,
 } from '@Core/models/navigation/tabs';
@@ -65,6 +66,7 @@ export default {
     mixins: [
         beforeRouteEnterMixin,
         beforeRouteLeaveMixin,
+        beforeRouteUpdateMixin(),
     ],
     validate({
         params,

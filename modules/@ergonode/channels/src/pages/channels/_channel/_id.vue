@@ -39,6 +39,7 @@ import {
 } from '@Core/defaults/alerts';
 import beforeRouteEnterMixin from '@Core/mixins/route/beforeRouteEnterMixin';
 import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import beforeRouteUpdateMixin from '@Core/mixins/route/beforeRouteUpdateMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
@@ -60,6 +61,7 @@ export default {
         asyncTabsMixin,
         beforeRouteEnterMixin,
         beforeRouteLeaveMixin,
+        beforeRouteUpdateMixin(),
     ],
     validate({
         params,

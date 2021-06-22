@@ -35,6 +35,7 @@ import {
 } from '@Core/defaults/alerts';
 import beforeRouteEnterMixin from '@Core/mixins/route/beforeRouteEnterMixin';
 import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import beforeRouteUpdateMixin from '@Core/mixins/route/beforeRouteUpdateMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import RemoveResourceButton from '@Media/components/Buttons/RemoveResourceButton';
 import PRIVILEGES from '@Media/config/privileges';
@@ -57,6 +58,7 @@ export default {
         asyncTabsMixin,
         beforeRouteEnterMixin,
         beforeRouteLeaveMixin,
+        beforeRouteUpdateMixin(),
     ],
     asyncData({
         app,
