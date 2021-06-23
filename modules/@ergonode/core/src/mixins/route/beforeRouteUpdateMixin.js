@@ -4,34 +4,65 @@
  */
 
 import {
+    AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
+} from '@Core/defaults/axios';
+import confirmLeaveModalMixin from '@Core/mixins/feedback/confirmLeaveModalMixin';
+import {
+    arraysAreEqual,
+} from '@Core/models/arrayWrapper';
+import {
     mapActions,
 } from 'vuex';
 
-export default (paramKeys = [
-    'id',
-]) => ({
+export default {
     beforeRouteUpdate(to, from, next) {
-        let key = '';
-        let i = 0;
+        const toParamKeys = Object.keys(to.params);
+        const fromParamKeys = Object.keys(from.params);
+        const areParamsEqual = arraysAreEqual(toParamKeys, fromParamKeys);
 
-        let hasChangedRoute = false;
+        if (areParamsEqual) {
+            let key = '';
+            let i = 0;
+            let hasChangedRoute = false;
 
-        while ((i < paramKeys.length) && (key === '' || !hasChangedRoute)) {
-            key = paramKeys[i];
+            while ((i < toParamKeys.length) && (key === '' || !hasChangedRoute)) {
+                key = toParamKeys[i];
 
-            hasChangedRoute = to.params[key] !== from.params[key];
-            i += 1;
+                hasChangedRoute = to.params[key] !== from.params[key];
+                i += 1;
+            }
+
+            if (hasChangedRoute) {
+                this.confirmModal({
+                    confirmCallback: () => {
+                        this.__clearFeedbackStorage();
+                        this.$clearCancelTokens([
+                            AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
+                        ]);
+
+                        next();
+                    },
+                    proceedCallback: () => {
+                        this.$clearCancelTokens([
+                            AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
+                        ]);
+
+                        next();
+                    },
+                });
+            } else {
+                next();
+            }
+        } else {
+            next();
         }
-
-        if (hasChangedRoute) {
-            this.__clearFeedbackStorage();
-        }
-
-        next();
     },
+    mixins: [
+        confirmLeaveModalMixin,
+    ],
     methods: {
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
         }),
     },
-});
+};

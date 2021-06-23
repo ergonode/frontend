@@ -61,7 +61,7 @@ export default {
         asyncTabsMixin,
         beforeRouteEnterMixin,
         beforeRouteLeaveMixin,
-        beforeRouteUpdateMixin(),
+        beforeRouteUpdateMixin,
     ],
     validate({
         params,

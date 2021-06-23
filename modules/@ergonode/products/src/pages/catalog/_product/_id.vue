@@ -66,7 +66,7 @@ export default {
     mixins: [
         beforeRouteEnterMixin,
         beforeRouteLeaveMixin,
-        beforeRouteUpdateMixin(),
+        beforeRouteUpdateMixin,
     ],
     validate({
         params,
