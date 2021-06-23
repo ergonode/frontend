@@ -9,7 +9,6 @@ export default {
         NavigateBackFab,
     },
     beforeRouteEnter(to, from, next) {
-        console.log('before enter');
         next((vm) => {
             if (from.name) {
                 // eslint-disable-next-line no-param-reassign

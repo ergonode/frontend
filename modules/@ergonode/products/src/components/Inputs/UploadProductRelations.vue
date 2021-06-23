@@ -73,6 +73,7 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import confirmLeaveModalMixin from '@Core/mixins/feedback/confirmLeaveModalMixin';
 import {
     ROUTE_NAME,
 } from '@Products/config/routes';
@@ -97,6 +98,9 @@ export default {
         ListElementDescription: () => import('@UI/components/List/ListElementDescription'),
         ListElementTitle: () => import('@UI/components/List/ListElementTitle'),
     },
+    mixins: [
+        confirmLeaveModalMixin,
+    ],
     props: {
         productId: {
             type: String,
@@ -207,10 +211,14 @@ export default {
             this.$emit('input', value);
         },
         onNavigateToRelation() {
-            this.$router.push({
-                name: ROUTE_NAME.PRODUCT_EDIT_GENERAL,
-                params: {
-                    id: this.value[this.currentIndex],
+            this.confirmModal({
+                confirmCallback: () => {
+                    this.$router.push({
+                        name: ROUTE_NAME.PRODUCT_EDIT_GENERAL,
+                        params: {
+                            id: this.value[this.currentIndex],
+                        },
+                    });
                 },
             });
         },

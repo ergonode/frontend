@@ -34,7 +34,6 @@ export default {
                     title: this.$t('@Core.core.mixins.confirmLeaveModalMixin.confirmTitle'),
                     applyTitle: this.$t('@Core.core.mixins.confirmLeaveModalMixin.confirmApplyTitle'),
                     action: () => {
-                        console.log('confirmed');
                         confirmCallback();
                     },
                 });
