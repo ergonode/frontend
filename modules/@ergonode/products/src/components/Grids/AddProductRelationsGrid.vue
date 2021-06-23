@@ -86,6 +86,7 @@
             <AddProductRelationsButton
                 :data-count="filtered"
                 :filters="filters"
+                :value="value"
                 :selected-rows="selectedRows"
                 :excluded-from-selection-rows="excludedFromSelectionRows"
                 :selected-rows-count="selectedRowsCount"
