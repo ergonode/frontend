@@ -211,15 +211,18 @@ export default {
             this.$emit('input', value);
         },
         onNavigateToRelation() {
+            const callback = () => {
+                this.$router.push({
+                    name: ROUTE_NAME.PRODUCT_EDIT_GENERAL,
+                    params: {
+                        id: this.value[this.currentIndex],
+                    },
+                });
+            };
+
             this.confirmModal({
-                confirmCallback: () => {
-                    this.$router.push({
-                        name: ROUTE_NAME.PRODUCT_EDIT_GENERAL,
-                        params: {
-                            id: this.value[this.currentIndex],
-                        },
-                    });
-                },
+                confirmCallback: callback,
+                proceedCallback: callback,
             });
         },
         onCloseModal() {
