@@ -4,6 +4,10 @@
  */
 
 import {
+    AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
+} from '@Core/defaults/axios';
+import confirmLeaveModalMixin from '@Core/mixins/feedback/confirmLeaveModalMixin';
+import {
     mapActions,
 } from 'vuex';
 
@@ -24,11 +28,30 @@ export default (paramKeys = [
         }
 
         if (hasChangedRoute) {
-            this.__clearFeedbackStorage();
-        }
+            this.confirmModal({
+                confirmCallback: () => {
+                    this.__clearFeedbackStorage();
+                    this.$clearCancelTokens([
+                        AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
+                    ]);
 
-        next();
+                    next();
+                },
+                proceedCallback: () => {
+                    this.$clearCancelTokens([
+                        AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
+                    ]);
+
+                    next();
+                },
+            });
+        } else {
+            next();
+        }
     },
+    mixins: [
+        confirmLeaveModalMixin,
+    ],
     methods: {
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
