@@ -78,6 +78,7 @@ export default {
         store,
         params,
     }) {
+        console.log('calling');
         const {
             id,
         } = params;

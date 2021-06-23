@@ -16,6 +16,7 @@ import {
 
 export default {
     beforeRouteUpdate(to, from, next) {
+        console.log('before update');
         const toParamKeys = Object.keys(to.params);
         const fromParamKeys = Object.keys(from.params);
         const areParamsEqual = arraysAreEqual(toParamKeys, fromParamKeys);
@@ -51,9 +52,11 @@ export default {
                     },
                 });
             } else {
+                console.log('next1');
                 next();
             }
         } else {
+            console.log('next2');
             next();
         }
     },

@@ -73,6 +73,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import {
+    ROUTE_NAME,
+} from '@Products/config/routes';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import InputController from '@UI/components/Input/InputController';
@@ -171,6 +174,10 @@ export default {
                     text: this.$t('@Products.product.components.UploadProductRelations.removeRelationOption'),
                     action: this.onRemoveRelation,
                 },
+                {
+                    text: this.$t('@Products.product.components.UploadProductRelations.navigateToRelationOption'),
+                    action: this.onNavigateToRelation,
+                },
             ];
         },
         products() {
@@ -198,6 +205,14 @@ export default {
             }
 
             this.$emit('input', value);
+        },
+        onNavigateToRelation() {
+            this.$router.push({
+                name: ROUTE_NAME.PRODUCT_EDIT_GENERAL,
+                params: {
+                    id: this.value[this.currentIndex],
+                },
+            });
         },
         onCloseModal() {
             this.isModalVisible = false;

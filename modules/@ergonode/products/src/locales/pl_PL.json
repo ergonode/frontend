@@ -51,7 +51,8 @@
         "UploadProductRelations": {
           "title": "Dodaj relacje",
           "addRelationOption": "Dodaj kolejną relacje",
-          "removeRelationOption": "Usuń tą relacje"
+          "removeRelationOption": "Usuń tą relacje",
+          "navigateToRelationOption": "Idź do tej relacji"
         },
         "UpdateProductTemplateButton": {
           "title": "Dodaj produkty po SKU",
