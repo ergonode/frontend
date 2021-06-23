@@ -39,6 +39,7 @@
                     :value="time"
                     :disabled="!isAllowedToUpdate || !isActive"
                     :input="timeInputType"
+                    :error-messages="errors[startFieldKey]"
                     required
                     :label="$t('@Channels.channel.components.SchedulerForm.startTimeLabel')"
                     @input="setTimeChange" />
@@ -326,25 +327,27 @@ export default {
             });
         },
         setTimeChange(value) {
-            const {
-                start,
-            } = this.schedulerConfiguration;
-            const strDate = `${formatDate(start ? parseISO(start) : new Date(), DEFAULT_FORMAT)} ${value}`;
-            const date = formatISO(parseDate(strDate, DEFAULT_DATE_TIME_FORMAT, new Date()));
+            if (value) {
+                const {
+                    start,
+                } = this.schedulerConfiguration;
+                const strDate = `${formatDate(start ? parseISO(start) : new Date(), DEFAULT_FORMAT)} ${value}`;
+                const date = formatISO(parseDate(strDate, DEFAULT_DATE_TIME_FORMAT, new Date()));
 
-            this.__setState({
-                key: 'scheduler',
-                value: JSON.stringify({
-                    ...this.schedulerConfiguration,
-                    start: date,
-                }),
-            });
+                this.__setState({
+                    key: 'scheduler',
+                    value: JSON.stringify({
+                        ...this.schedulerConfiguration,
+                        start: date,
+                    }),
+                });
 
-            this.onScopeValueChange({
-                scope: this.scope,
-                fieldKey: 'time',
-                value: date,
-            });
+                this.onScopeValueChange({
+                    scope: this.scope,
+                    fieldKey: 'time',
+                    value: date,
+                });
+            }
         },
         setHourChange(value) {
             const tmpScheduler = {
