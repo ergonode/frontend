@@ -10,22 +10,13 @@
         <!-- TODO: Change relation to `multimedia` href.
             INFO: Secure relationship does not break the application.
         -->
-        <template v-for="(id, index) in value">
-            <div
-                :class="[
-                    'product-carousel__image', currentIndex === index && fetchingDataIndex !== index
-                        ? 'visible'
-                        : 'non-visible'
-                ]"
-                :key="id">
-                <LazyImage
-                    v-if="products[id] && products[id].esa_default_image"
-                    :href="`multimedia/${products[id].esa_default_image}/download/default`"
-                    :value="products[id].esa_default_image"
-                    object-fit="contain" />
-                <DefaultImage v-else />
-            </div>
-        </template>
+        <ProductCarouselImage
+            v-for="(id, index) in value"
+            :index="index"
+            :product="products[id]"
+            :fetching-data-index="fetchingDataIndex"
+            :current-index="currentIndex"
+            :key="id" />
         <span
             class="product-carousel__pagination"
             v-text="pagination" />
@@ -41,10 +32,11 @@
                         :fill-color="color" />
                 </template>
             </IconButton>
-            <span
+            <div
                 v-if="fetchingDataIndex === -1"
                 class="product-carousel__label"
-                v-text="products[value[currentIndex]].esa_default_label" />
+                v-text="productTitle"
+                @click="onNavigateToRelation" />
             <IconButton
                 :size="smallSize"
                 :theme="secondaryTheme"
@@ -68,24 +60,29 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import confirmLeaveModalMixin from '@Core/mixins/feedback/confirmLeaveModalMixin';
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
-import DefaultImage from '@UI/components/DefaultImage/DefaultImage';
+import ProductCarouselImage from '@Products/components/ProductCarousel/ProductCarouselImage';
+import {
+    ROUTE_NAME,
+} from '@Products/config/routes';
 import IconButton from '@UI/components/IconButton/IconButton';
 import IconArrowSingle from '@UI/components/Icons/Arrows/IconArrowSingle';
-import LazyImage from '@UI/components/LazyImage/LazyImage';
 import Preloader from '@UI/components/Preloader/Preloader';
 
 export default {
     name: 'ProductCarousel',
     components: {
+        ProductCarouselImage,
         Preloader,
-        LazyImage,
         IconArrowSingle,
         IconButton,
-        DefaultImage,
     },
+    mixins: [
+        confirmLeaveModalMixin,
+    ],
     props: {
         /**
          * Index of presented image
@@ -123,6 +120,9 @@ export default {
         },
         pagination() {
             return `${this.currentIndex + 1}/${this.value.length}`;
+        },
+        productTitle() {
+            return this.products[this.value[this.currentIndex]].esa_default_label;
         },
         fetchingDataIndex() {
             const productId = this.value[this.currentIndex];
@@ -173,6 +173,21 @@ export default {
         },
     },
     methods: {
+        onNavigateToRelation() {
+            const callback = () => {
+                this.$router.push({
+                    name: ROUTE_NAME.PRODUCT_EDIT_GENERAL,
+                    params: {
+                        id: this.value[this.currentIndex],
+                    },
+                });
+            };
+
+            this.confirmModal({
+                confirmCallback: callback,
+                proceedCallback: callback,
+            });
+        },
         onFetchDataSuccess({
             rows,
             fetchingIndex,
@@ -230,31 +245,22 @@ export default {
             border-radius: 999px;
         }
 
-        &__image {
-            display: flex;
-            flex: 1 1 auto;
-            justify-content: center;
-            height: 0;
-        }
-
-        &__label {
-            color: $GRAPHITE_DARK;
-            font: $FONT_MEDIUM_12_16;
-        }
-
         &__preloader {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
         }
-    }
 
-    .visible {
-        display: flex;
-    }
+        &__label {
+            text-decoration: none;
+            color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_12_16;
+            cursor: pointer;
 
-    .non-visible {
-        display: none;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
     }
 </style>

@@ -33,23 +33,12 @@ export default {
             }
 
             if (hasChangedRoute) {
-                this.confirmModal({
-                    confirmCallback: () => {
-                        this.__clearFeedbackStorage();
-                        this.$clearCancelTokens([
-                            AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
-                        ]);
+                this.__clearFeedbackStorage();
+                this.$clearCancelTokens([
+                    AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
+                ]);
 
-                        next();
-                    },
-                    proceedCallback: () => {
-                        this.$clearCancelTokens([
-                            AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
-                        ]);
-
-                        next();
-                    },
-                });
+                next();
             } else {
                 next();
             }
@@ -57,9 +46,6 @@ export default {
             next();
         }
     },
-    mixins: [
-        confirmLeaveModalMixin,
-    ],
     methods: {
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',

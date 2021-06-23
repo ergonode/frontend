@@ -73,6 +73,10 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import confirmLeaveModalMixin from '@Core/mixins/feedback/confirmLeaveModalMixin';
+import {
+    ROUTE_NAME,
+} from '@Products/config/routes';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import InputController from '@UI/components/Input/InputController';
@@ -94,6 +98,9 @@ export default {
         ListElementDescription: () => import('@UI/components/List/ListElementDescription'),
         ListElementTitle: () => import('@UI/components/List/ListElementTitle'),
     },
+    mixins: [
+        confirmLeaveModalMixin,
+    ],
     props: {
         productId: {
             type: String,
@@ -171,6 +178,10 @@ export default {
                     text: this.$t('@Products.product.components.UploadProductRelations.removeRelationOption'),
                     action: this.onRemoveRelation,
                 },
+                {
+                    text: this.$t('@Products.product.components.UploadProductRelations.navigateToRelationOption'),
+                    action: this.onNavigateToRelation,
+                },
             ];
         },
         products() {
@@ -198,6 +209,21 @@ export default {
             }
 
             this.$emit('input', value);
+        },
+        onNavigateToRelation() {
+            const callback = () => {
+                this.$router.push({
+                    name: ROUTE_NAME.PRODUCT_EDIT_GENERAL,
+                    params: {
+                        id: this.value[this.currentIndex],
+                    },
+                });
+            };
+
+            this.confirmModal({
+                confirmCallback: callback,
+                proceedCallback: callback,
+            });
         },
         onCloseModal() {
             this.isModalVisible = false;

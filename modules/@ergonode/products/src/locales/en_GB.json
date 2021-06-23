@@ -51,7 +51,8 @@
         "UploadProductRelations": {
           "title": "Add relations",
           "addRelationOption": "Add next relation",
-          "removeRelationOption": "Remove this relation"
+          "removeRelationOption": "Remove this relation",
+          "navigateToRelationOption": "Navigate to this relation"
         },
         "UpdateProductTemplateButton": {
           "successMessage": "Product has been updated"
