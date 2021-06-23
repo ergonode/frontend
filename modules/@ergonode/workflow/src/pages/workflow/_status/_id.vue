@@ -36,13 +36,13 @@ import {
 } from '@Core/defaults/alerts';
 import beforeRouteEnterMixin from '@Core/mixins/route/beforeRouteEnterMixin';
 import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import beforeRouteUpdateMixin from '@Core/mixins/route/beforeRouteUpdateMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@UI/components/TitleBar/TitleBar';
 import RemoveWorkflowStatusButton from '@Workflow/components/Buttons/RemoveWorkflowStatusButton';
 import PRIVILEGES from '@Workflow/config/privileges';
-import state from '@Workflow/store/workflow/state';
 import {
     mapActions,
     mapState,
@@ -60,6 +60,7 @@ export default {
         asyncTabsMixin,
         beforeRouteEnterMixin,
         beforeRouteLeaveMixin,
+        beforeRouteUpdateMixin,
     ],
     validate({
         params,
@@ -93,24 +94,10 @@ export default {
             return this.$isReadOnly(PRIVILEGES.WORKFLOW.namespace);
         },
     },
-    beforeDestroy() {
-        this.__setState({
-            key: 'status',
-            value: state().status,
-        });
-        this.__clearTranslationsStorage();
-        this.__clearFeedbackStorage();
-    },
     methods: {
         ...mapActions('workflow', [
             '__setState',
         ]),
-        ...mapActions('feedback', {
-            __clearFeedbackStorage: '__clearStorage',
-        }),
-        ...mapActions('tab', {
-            __clearTranslationsStorage: '__clearStorage',
-        }),
         bindingProps({
             props = {},
         }) {

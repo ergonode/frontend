@@ -47,6 +47,11 @@ export default {
                 description,
             };
 
+            dispatch('__clearStorage');
+            dispatch('condition/__clearStorage', {}, {
+                root: true,
+            });
+
             commit('__SET_STATE', {
                 key: 'id',
                 value: id,

@@ -115,6 +115,8 @@ export default {
                 }),
             ]);
 
+            dispatch('__clearStorage');
+
             const {
                 code,
                 name = '',

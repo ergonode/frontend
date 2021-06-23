@@ -6,49 +6,37 @@
 import {
     AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
 } from '@Core/defaults/axios';
+import confirmLeaveModalMixin from '@Core/mixins/feedback/confirmLeaveModalMixin';
 import {
-    MODAL_TYPE,
-} from '@Core/defaults/modals';
-import {
-    mapState,
+    mapActions,
 } from 'vuex';
 
 export default {
     beforeRouteLeave(to, from, next) {
-        this.confirmLeaving(() => {
-            this.$clearCancelTokens([
-                AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
-            ]);
+        this.confirmModal({
+            confirmCallback: () => {
+                this.__clearFeedbackStorage();
+                this.$clearCancelTokens([
+                    AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
+                ]);
 
-            next();
+                next();
+            },
+            proceedCallback: () => {
+                this.$clearCancelTokens([
+                    AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
+                ]);
+
+                next();
+            },
         });
     },
-    computed: {
-        ...mapState('feedback', [
-            'errors',
-            'changeValues',
-        ]),
-    },
+    mixins: [
+        confirmLeaveModalMixin,
+    ],
     methods: {
-        confirmLeaving(callback) {
-            const changeValuesKeys = Object.keys(this.changeValues);
-            const hasError = Object.keys(this.errors).length > 0;
-            const hasChange = changeValuesKeys.length > 0
-                && changeValuesKeys.some(key => Object.keys(this.changeValues[key]).length > 0
-                    && !this.changeValues[key].saved);
-
-            if (hasError || hasChange) {
-                this.$confirm({
-                    type: MODAL_TYPE.POSITIVE,
-                    applyTitle: 'YES, I\'M SURE',
-                    title: 'Are you sure you want to leave page without saving the data?',
-                    action: () => {
-                        callback();
-                    },
-                });
-            } else {
-                callback();
-            }
-        },
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
     },
 };

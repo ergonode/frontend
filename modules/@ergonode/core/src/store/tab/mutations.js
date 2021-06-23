@@ -13,10 +13,7 @@ export const types = {
 };
 export default {
     [types.SET_TRANSLATIONS](state, translations) {
-        state.translations = {
-            ...state.translations,
-            ...translations,
-        };
+        state.translations = translations;
     },
     [types.SET_TRANSLATION_VALUE](state, {
         languageCode, propertyName, value,

@@ -75,6 +75,8 @@ export default {
                 elements = [],
             } = template;
 
+            dispatch('__clearStorage');
+
             commit('__SET_STATE', {
                 key: 'types',
                 value: templateTypes.collection,

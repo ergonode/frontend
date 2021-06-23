@@ -40,6 +40,12 @@
           "updateLanguageTreeCancel": "Updating language tree has been canceled"
         }
       },
+      "mixins": {
+        "confirmLeaveModalMixin": {
+          "confirmTitle": "Are you sure you want to leave page without saving the data?",
+          "confirmApplyTitle": "YES, I'M SURE"
+        }
+      },
       "components": {
         "UnitForm": {
           "title": "Options",

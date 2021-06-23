@@ -32,9 +32,6 @@ import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import UpdateWorkflowTransitionConditionDesignerButton
     from '@Workflow/components/Buttons/UpdateWorkflowTransitionConditionDesignerButton';
 import RemoveTransitionConditionDropZone from '@Workflow/components/DropZones/RemoveTransitionConditionDropZone';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'WorkflowTransitionConditionDesignerTab',
@@ -69,14 +66,6 @@ export default {
         });
 
         this.verticalTabs = [].concat(...extendedVerticalTabs);
-    },
-    beforeDestroy() {
-        this.__clearConditionStorage();
-    },
-    methods: {
-        ...mapActions('condition', {
-            __clearConditionStorage: '__clearStorage',
-        }),
     },
 };
 </script>

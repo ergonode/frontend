@@ -68,6 +68,7 @@ export default {
         onClose() {
             this.__clearStorage();
             this.removeScopeData(this.scope);
+
             this.$emit('close');
         },
         onSubmit() {

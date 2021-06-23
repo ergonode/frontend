@@ -452,6 +452,10 @@ export default {
                 status => status.id === destination.replace(regex, ' '),
             );
 
+            dispatch('condition/__clearStorage', {}, {
+                root: true,
+            });
+
             commit('__SET_STATE', {
                 key: 'transition',
                 value: {

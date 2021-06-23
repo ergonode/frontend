@@ -23,7 +23,7 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import confirmLeaveModalMixin from '@Core/mixins/feedback/confirmLeaveModalMixin';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import PRIVILEGES from '@Workflow/config/privileges';
@@ -39,7 +39,7 @@ export default {
         CreateWorkflowStatusModalForm: () => import('@Workflow/components/Modals/CreateWorkflowStatusModalForm'),
     },
     mixins: [
-        beforeRouteLeaveMixin,
+        confirmLeaveModalMixin,
     ],
     data() {
         return {
@@ -58,8 +58,13 @@ export default {
     },
     methods: {
         onShowModal() {
-            this.confirmLeaving(() => {
+            const showModal = () => {
                 this.isModalVisible = true;
+            };
+
+            this.confirmModal({
+                confirmCallback: showModal,
+                proceedCallback: showModal,
             });
         },
         onCloseModal() {
