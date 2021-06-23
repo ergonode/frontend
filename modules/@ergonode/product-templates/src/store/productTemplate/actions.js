@@ -36,6 +36,7 @@ export default {
     async getTemplate(
         {
             commit,
+            dispatch,
         },
         {
             id,
