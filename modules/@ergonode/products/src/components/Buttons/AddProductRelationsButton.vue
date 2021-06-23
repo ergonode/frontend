@@ -47,6 +47,10 @@ export default {
             type: Number,
             default: 0,
         },
+        value: {
+            type: Array,
+            default: () => [],
+        },
         filters: {
             type: Array,
             default: () => [],
@@ -97,9 +101,9 @@ export default {
     },
     methods: {
         async onAddRelations() {
-            const selectedAllCount = this.isSelectedAll
+            const selectedAllCount = (this.isSelectedAll
                 ? this.dataCount - this.excludedFromSelectionRowsIds.length
-                : this.selectedRowsIds.length;
+                : this.selectedRowsIds.length) + this.value.length;
 
             if (selectedAllCount > 100) {
                 this.$confirm({

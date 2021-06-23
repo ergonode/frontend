@@ -53,15 +53,12 @@ export default {
                 value,
                 languageCode: this.languageCode,
             });
-        },
-        onFocus(isFocused) {
-            if (!isFocused) {
-                this.$emit('blur', {
-                    key: this.attribute.id,
-                    value: this.value,
-                    languageCode: this.languageCode,
-                });
-            }
+
+            this.$emit('blur', {
+                key: this.attribute.id,
+                value,
+                languageCode: this.languageCode,
+            });
         },
     },
 };
