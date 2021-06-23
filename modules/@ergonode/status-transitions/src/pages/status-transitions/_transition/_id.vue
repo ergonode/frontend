@@ -58,7 +58,7 @@ export default {
         asyncTabsMixin,
         beforeRouteEnterMixin,
         beforeRouteLeaveMixin,
-        beforeRouteUpdateMixin(),
+        beforeRouteUpdateMixin,
     ],
     async fetch({
         app,

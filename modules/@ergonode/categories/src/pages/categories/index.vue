@@ -45,7 +45,7 @@ export default {
     mixins: [
         asyncTabsMixin,
         beforeRouteLeaveMixin,
-        beforeRouteUpdateMixin(),
+        beforeRouteUpdateMixin,
     ],
     computed: {
         extendedMainAction() {

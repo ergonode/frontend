@@ -31,8 +31,8 @@ export default {
             })) {
                 this.$confirm({
                     type: MODAL_TYPE.POSITIVE,
-                    title: 'Are you sure you want to leave page without saving the data?',
-                    applyTitle: 'YES, I\'M SURE',
+                    title: this.$t('@Core.core.mixins.confirmLeaveModalMixin.confirmTitle'),
+                    applyTitle: this.$t('@Core.core.mixins.confirmLeaveModalMixin.confirmApplyTitle'),
                     action: () => {
                         confirmCallback();
                     },

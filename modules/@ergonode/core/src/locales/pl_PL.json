@@ -40,6 +40,12 @@
           "updateLanguageTreeCancel": "Aktualizowanie drzewa językowego zostało przerwane"
         }
       },
+      "mixins": {
+        "confirmLeaveModalMixin": {
+          "confirmTitle": "Czy jesteś pewien/pewna, że chcesz opuścić stronę bez zapisu danych?",
+          "confirmApplyTitle": "TAK, JESTEM PEWIEN/PEWNA"
+        }
+      },
       "components": {
         "UnitForm": {
           "title": "Opcje",
