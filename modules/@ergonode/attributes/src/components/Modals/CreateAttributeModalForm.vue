@@ -48,6 +48,8 @@ export default {
         modalFeedbackMixin,
     ],
     async fetch() {
+        this.__clearStorage();
+
         await this.getInitialDictionaries({
             keys: [
                 'attrTypes',

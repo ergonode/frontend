@@ -45,6 +45,12 @@ export default {
     mixins: [
         modalFeedbackMixin,
     ],
+    fetch() {
+        this.__setState({
+            key: 'status',
+            value: state().status,
+        });
+    },
     data() {
         return {
             isSubmitting: false,
