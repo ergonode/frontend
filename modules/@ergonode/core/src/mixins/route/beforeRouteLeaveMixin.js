@@ -13,22 +13,18 @@ import {
 
 export default {
     beforeRouteLeave(to, from, next) {
+        const callback = () => {
+            this.__clearFeedbackStorage();
+            this.$clearCancelTokens([
+                AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
+            ]);
+
+            next();
+        };
+
         this.confirmModal({
-            confirmCallback: () => {
-                this.__clearFeedbackStorage();
-                this.$clearCancelTokens([
-                    AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
-                ]);
-
-                next();
-            },
-            proceedCallback: () => {
-                this.$clearCancelTokens([
-                    AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
-                ]);
-
-                next();
-            },
+            confirmCallback: callback,
+            proceedCallback: callback,
         });
     },
     mixins: [
