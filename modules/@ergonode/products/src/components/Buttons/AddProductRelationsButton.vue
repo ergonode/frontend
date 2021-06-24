@@ -101,15 +101,15 @@ export default {
     },
     methods: {
         async onAddRelations() {
-            const selectedAllCount = (this.isSelectedAll
+            const selectedAllCount = this.isSelectedAll
                 ? this.dataCount - this.excludedFromSelectionRowsIds.length
-                : this.selectedRowsIds.length) + this.value.length;
+                : this.selectedRowsIds.length;
 
-            if (selectedAllCount > 100) {
+            if (selectedAllCount + this.value.length > 100) {
                 this.$confirm({
                     type: MODAL_TYPE.DESTRUCTIVE,
                     title: this.$t('@Products.product.components.AddProductRelationsButton.confirmErrorTitle', {
-                        info: selectedAllCount,
+                        info: selectedAllCount + this.value.length,
                     }),
                     subtitle: this.$t('@Products.product.components.AddProductRelationsButton.confirmErrorSubtitle'),
                     applyTitle: this.$t('@Products.product.components.AddProductRelationsButton.confirmErrorApplyTitle'),

@@ -264,10 +264,23 @@ export default {
             };
         },
         filters() {
-            return [
+            const filters = [
                 ...getParsedFiltersList(this.localParams.filters),
                 ...getParsedFiltersList(this.advancedFilterValues),
             ];
+
+            if (this.productId) {
+                filters.push({
+                    column: 'id',
+                    operator: FILTER_OPERATOR.NOT_EQUAL,
+                    value: [
+                        this.productId,
+                        ...this.value,
+                    ].join(','),
+                });
+            }
+
+            return filters;
         },
         isAnyFilter() {
             return this.filtered === 0
@@ -300,6 +313,7 @@ export default {
             this.isFiltersExpanded = !this.isFiltersExpanded;
         },
         onAddProductRelations(relations) {
+            console.log(relations);
             this.$emit('input', [
                 ...this.value,
                 ...relations,
@@ -358,21 +372,6 @@ export default {
                 ...rest
             } = this.localParams;
 
-            const {
-                filters,
-            } = this;
-
-            if (this.productId) {
-                filters.push({
-                    column: 'id',
-                    operator: FILTER_OPERATOR.NOT_EQUAL,
-                    value: [
-                        this.productId,
-                        ...this.value,
-                    ].join(','),
-                });
-            }
-
             await postGridData({
                 $route: this.$route,
                 $cookies: this.$userCookies,
@@ -381,7 +380,7 @@ export default {
                 data: {
                     ...rest,
                     ...sortOrder,
-                    filters,
+                    filters: this.filters,
                     columns: this.columnModels,
                 },
                 onSuccess: this.onFetchDataSuccess,
