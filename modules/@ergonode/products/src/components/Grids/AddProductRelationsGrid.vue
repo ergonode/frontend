@@ -313,7 +313,6 @@ export default {
             this.isFiltersExpanded = !this.isFiltersExpanded;
         },
         onAddProductRelations(relations) {
-            console.log(relations);
             this.$emit('input', [
                 ...this.value,
                 ...relations,
