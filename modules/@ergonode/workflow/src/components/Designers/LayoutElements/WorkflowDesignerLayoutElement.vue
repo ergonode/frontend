@@ -57,14 +57,13 @@ export default {
         ]),
         elementLayoutID() {
             const {
-                row,
                 from = null,
                 to = null,
             } = this.element;
             const statusName = index => this.statuses[index].name || `#${this.statuses[index].code}`;
 
             if (from !== null && to !== null) {
-                return `layout-element-row:${row + 1}-from:${statusName(from)}-to:${statusName(to)}`;
+                return `layout-element-row:from:${statusName(from)}-to:${statusName(to)}`;
             }
             return '';
         },

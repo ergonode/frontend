@@ -9,6 +9,7 @@ import {
 } from 'cypress-cucumber-preprocessor/steps';
 
 import {
+    escapeStringRegexp,
     MultiSteps,
 } from '../../models';
 import {
@@ -144,4 +145,69 @@ MultiSteps([
         action,
         searchValue,
     });
+});
+
+// WORKFLOW ACTIONS
+MultiSteps([
+    And,
+    Then,
+    When,
+], 'On {string} I click on {string} button for column with {string} value', (gridId, action, searchValue) => {
+    cy
+        .get(`[data-cy=${gridId}]`)
+        .should('be.visible')
+        .as('grid');
+    cy
+        .get('@grid')
+        .find('.workflow-designer-header-layer-cell')
+        .find('.workflow-designer-header-layer-cell__title span')
+        .contains(new RegExp(`${escapeStringRegexp(searchValue)}$`, 'g'))
+        .parents('.workflow-designer-header-layer-cell')
+        .find(`[data-cy=status-column-${action}]`)
+        .click();
+});
+
+MultiSteps([
+    And,
+    Then,
+    When,
+], 'On {string} I can see column with {string} value', (gridId, searchValue) => {
+    cy
+        .get(`[data-cy=${gridId}]`)
+        .should('be.visible')
+        .as('grid');
+    cy
+        .get('@grid')
+        .find('.workflow-designer-header-layer-cell__title span')
+        .contains(new RegExp(`${escapeStringRegexp(searchValue)}$`, 'g'));
+});
+
+MultiSteps([
+    And,
+    Then,
+    When,
+], 'On {string} I can see the transition from {string} to {string}', (gridId, from, to) => {
+    cy
+        .get(`[data-cy=${gridId}]`)
+        .should('be.visible')
+        .as('grid');
+    cy
+        .get('@grid')
+        .get(`[data-cy="layout-element-row:from:${from}-to:${to}"]`);
+});
+
+MultiSteps([
+    And,
+    Then,
+    When,
+], 'On {string} I click on the {string} button for the transition from {string} to {string}', (gridId, action, from, to) => {
+    cy
+        .get(`[data-cy=${gridId}]`)
+        .should('be.visible')
+        .as('grid');
+    cy
+        .get('@grid')
+        .get(`[data-cy="layout-element-row:from:${from}-to:${to}"]`)
+        .find(`[data-cy="transition-action-${action}"]`)
+        .click();
 });

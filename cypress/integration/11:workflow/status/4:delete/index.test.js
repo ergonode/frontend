@@ -5,18 +5,11 @@
 import {
     And,
     Given,
-    Then,
-    When,
 } from 'cypress-cucumber-preprocessor/steps';
 
 import {
-    escapeStringRegexp,
     MultiSteps,
 } from '../../../../models/index';
-import {
-    openPage,
-    sendRequest,
-} from '../../../../models/navigation';
 
 const requestName = 'statusRequest';
 const requestWorkflowName = 'workflowRequest';
@@ -35,12 +28,6 @@ before(() => {
 beforeEach(() => {
     cy.intercept(
         {
-            method: 'DELETE',
-            url,
-        },
-    ).as(`${requestName}_DELETE`);
-    cy.intercept(
-        {
             method: 'GET',
             url,
         },
@@ -57,58 +44,12 @@ MultiSteps([
     Given,
     And,
 ], 'I open {string} page', (page) => {
-    openPage({
+    cy.openPage({
         page,
-        requestName,
+        requestAlias: `@${requestName}_GET`,
     });
-    cy
-        .wait(`@${requestWorkflowName}_GET`)
-        .its('response.statusCode')
-        .should('eq', 200);
-});
-
-MultiSteps([
-    Then,
-    And,
-], 'I send a {string} request and status code should be {int}', (reqType, status) => {
-    sendRequest({
-        requestName,
-        reqType,
-        status,
+    cy.checkRequest({
+        requestAlias: `@${requestWorkflowName}_GET`,
+        statusCode: 200,
     });
-});
-
-MultiSteps([
-    And,
-    Then,
-    When,
-], 'On {string} I can see column with {string} value', (gridId, searchValue) => {
-    cy
-        .get(`[data-cy=${gridId}]`)
-        .should('be.visible')
-        .as('grid');
-    cy
-        .get('@grid')
-        .find('.workflow-designer-header-layer-cell')
-        .find('.workflow-designer-header-layer-cell__title span')
-        .contains(new RegExp(`${escapeStringRegexp(searchValue)}$`, 'g'));
-});
-
-MultiSteps([
-    And,
-    Then,
-    When,
-], 'On {string} I click on {string} button for column with {string} value', (gridId, action, searchValue) => {
-    cy
-        .get(`[data-cy=${gridId}]`)
-        .should('be.visible')
-        .as('grid');
-    cy
-        .get('@grid')
-        .find('.workflow-designer-header-layer-cell')
-        .find('.workflow-designer-header-layer-cell__title span')
-        .contains(new RegExp(`${escapeStringRegexp(searchValue)}$`, 'g'))
-        .parents('.workflow-designer-header-layer-cell')
-        .find(`[data-cy=status-column-${action}]`)
-        .click();
 });
