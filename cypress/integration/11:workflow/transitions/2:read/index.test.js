@@ -52,10 +52,9 @@ MultiSteps([
 ], 'I open {string} page', (page) => {
     cy.openPage({
         page,
-        requestAlias: `@${requestName}_GET`,
-    });
-    cy.checkRequest({
-        requestAlias: `@${requestWorkflowName}_GET`,
-        statusCode: 200,
+        requestAliases: [
+            `@${requestName}_GET`,
+            `@${requestWorkflowName}_GET`,
+        ],
     });
 });

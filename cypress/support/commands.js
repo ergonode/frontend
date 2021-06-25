@@ -109,14 +109,18 @@ Cypress.Commands.add('sendRequest', ({
 });
 
 Cypress.Commands.add('openPage', ({
-    page, requestAlias,
+    page, requestAliases = [],
 }) => {
     cy.visit(`/${page}`);
     cy
         .url()
         .should('include', `/${page}`);
-    cy.checkRequest({
-        requestAlias,
-        statusCode: 200,
-    });
+
+    cy.wrap(requestAliases)
+        .each((requestAlias) => {
+            cy.checkRequest({
+                requestAlias,
+                statusCode: 200,
+            });
+        });
 });

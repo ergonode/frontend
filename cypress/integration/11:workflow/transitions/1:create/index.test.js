@@ -54,11 +54,10 @@ MultiSteps([
 ], 'I open {string} page', (page) => {
     cy.openPage({
         page,
-        requestAlias: `@${requestName}_GET`,
-    });
-    cy.checkRequest({
-        requestAlias: `@${requestWorkflowName}_GET`,
-        statusCode: 200,
+        requestAliases: [
+            `@${requestName}_GET`,
+            `@${requestWorkflowName}_GET`,
+        ],
     });
 });
 
@@ -85,12 +84,12 @@ MultiSteps([
             cy
                 .get('@grid')
                 .find('.workflow-designer-background-item')
+                .as('gridItem');
+
+            cy.get('@gridItem')
                 .get(`[row=${rowId - 1}][column=${fromIndex}]`)
                 .realHover()
-                .realClick();
-            cy
-                .get('@grid')
-                .find('.workflow-designer-background-item')
+                .realClick()
                 .get(`[row=${rowId - 1}][column=${toIndex}]`)
                 .realHover()
                 .realClick();

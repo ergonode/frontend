@@ -159,7 +159,6 @@ MultiSteps([
         .as('grid');
     cy
         .get('@grid')
-        .find('.workflow-designer-header-layer-cell')
         .find('.workflow-designer-header-layer-cell__title span')
         .contains(new RegExp(`${escapeStringRegexp(searchValue)}$`, 'g'))
         .parents('.workflow-designer-header-layer-cell')
@@ -193,7 +192,7 @@ MultiSteps([
         .as('grid');
     cy
         .get('@grid')
-        .get(`[data-cy="layout-element-row:from:${from}-to:${to}"]`);
+        .find(`[data-cy="layout-element-row:from:${from}-to:${to}"]`);
 });
 
 MultiSteps([
@@ -207,7 +206,7 @@ MultiSteps([
         .as('grid');
     cy
         .get('@grid')
-        .get(`[data-cy="layout-element-row:from:${from}-to:${to}"]`)
+        .find(`[data-cy="layout-element-row:from:${from}-to:${to}"]`)
         .find(`[data-cy="transition-action-${action}"]`)
         .click();
 });
