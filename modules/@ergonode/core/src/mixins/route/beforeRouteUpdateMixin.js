@@ -6,7 +6,6 @@
 import {
     AXIOS_CANCEL_TOKEN_DEFAULT_KEY,
 } from '@Core/defaults/axios';
-import confirmLeaveModalMixin from '@Core/mixins/feedback/confirmLeaveModalMixin';
 import {
     arraysAreEqual,
 } from '@Core/models/arrayWrapper';
