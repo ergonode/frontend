@@ -39,6 +39,7 @@ export default {
                 props: {
                     scope: $this.scope,
                     value: $this.advancedFilterValues,
+                    isAddingEnabled: false,
                     onValueChange: $this.onFiltersChange,
                 },
             },
