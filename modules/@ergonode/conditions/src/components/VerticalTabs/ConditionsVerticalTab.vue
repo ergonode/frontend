@@ -5,13 +5,18 @@
 <template>
     <div class="conditions-vertical-tab">
         <ConditionsSideBar
+            :scope="scope"
             :disabled="disabled"
+            :dragging-element-type="draggingElementType"
             :group="group" />
     </div>
 </template>
 
 <script>
 import ConditionsSideBar from '@Conditions/components/SideBars/ConditionsSideBar';
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 
 export default {
     name: 'ConditionsVerticalTab',
@@ -19,6 +24,10 @@ export default {
         ConditionsSideBar,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         disabled: {
             type: Boolean,
             default: false,
@@ -26,6 +35,13 @@ export default {
         group: {
             type: String,
             required: true,
+        },
+        /**
+         * Type of the place from where element is dragging
+         */
+        draggingElementType: {
+            type: String,
+            default: DRAGGED_ELEMENT.LIST,
         },
     },
 };

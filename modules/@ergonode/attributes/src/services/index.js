@@ -55,8 +55,8 @@ export const validateValue = ({
     productId = null,
 }) => {
     const validationParam = productId
-        && typeof productId !== 'undefined'
-        ? `?aggregateId=${productId}` : '';
+        ? `?aggregateId=${productId}`
+        : '';
 
     return $axios.$post(`${languageCode}/attribute/${id}/validate${validationParam}`, data, {
         withLanguage: false,

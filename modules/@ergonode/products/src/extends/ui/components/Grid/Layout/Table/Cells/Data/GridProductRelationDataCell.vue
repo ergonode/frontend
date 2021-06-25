@@ -94,7 +94,6 @@ export default {
                     disabled: this.isLocked,
                     rowId: this.rowId,
                     columnId: this.column.id,
-                    attributeId: this.column.element_id,
                     errorMessages: this.errorMessages,
                 },
             });

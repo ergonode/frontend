@@ -35,13 +35,13 @@ import {
 } from '@Core/defaults/alerts';
 import beforeRouteEnterMixin from '@Core/mixins/route/beforeRouteEnterMixin';
 import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import beforeRouteUpdateMixin from '@Core/mixins/route/beforeRouteUpdateMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@UI/components/TitleBar/TitleBar';
 import RemoveWorkflowTransitionButton from '@Workflow/components/Buttons/RemoveWorkflowTransitionButton';
 import PRIVILEGES from '@Workflow/config/privileges';
-import state from '@Workflow/store/workflow/state';
 import {
     mapActions,
     mapState,
@@ -59,6 +59,7 @@ export default {
         asyncTabsMixin,
         beforeRouteEnterMixin,
         beforeRouteLeaveMixin,
+        beforeRouteUpdateMixin,
     ],
     async fetch({
         app,
@@ -90,33 +91,10 @@ export default {
             return this.$isReadOnly(PRIVILEGES.WORKFLOW.namespace);
         },
     },
-    beforeDestroy() {
-        const {
-            transition,
-            statuses,
-        } = state();
-
-        this.__setState({
-            key: 'transition',
-            value: transition,
-        });
-        this.__setState({
-            key: 'statuses',
-            value: statuses,
-        });
-        this.__clearConditionStorage();
-        this.__clearFeedbackStorage();
-    },
     methods: {
         ...mapActions('workflow', [
             '__setState',
         ]),
-        ...mapActions('condition', {
-            __clearConditionStorage: '__clearStorage',
-        }),
-        ...mapActions('feedback', {
-            __clearFeedbackStorage: '__clearStorage',
-        }),
         bindingProps({
             props = {},
         }) {

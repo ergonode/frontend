@@ -63,6 +63,11 @@ export default {
                 status => status.id === destination.replace(regex, ' '),
             );
 
+            dispatch('__clearStorage');
+            dispatch('condition/__clearStorage', {}, {
+                root: true,
+            });
+
             commit('__SET_STATE', {
                 key: 'source',
                 value: sourceOption,

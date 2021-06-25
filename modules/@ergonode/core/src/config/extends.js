@@ -46,7 +46,10 @@ export default {
                 title: $this.$t('@Core.core._.systemLanguagesTitle'),
                 component: Components.LanguagesVerticalTab,
                 icon: Icons.IconTranslate,
-                props,
+                props: {
+                    scope: $this.scope,
+                    ...props,
+                },
             },
         ],
     },

@@ -23,13 +23,16 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import confirmLeaveModalMixin from '@Core/mixins/feedback/confirmLeaveModalMixin';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import PRIVILEGES from '@Workflow/config/privileges';
 import {
     WORKFLOW_STATUS_CREATED_EVENT_NAME,
 } from '@Workflow/defaults';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'CreateWorkflowStatusButton',
@@ -39,7 +42,7 @@ export default {
         CreateWorkflowStatusModalForm: () => import('@Workflow/components/Modals/CreateWorkflowStatusModalForm'),
     },
     mixins: [
-        beforeRouteLeaveMixin,
+        confirmLeaveModalMixin,
     ],
     data() {
         return {
@@ -57,9 +60,19 @@ export default {
         },
     },
     methods: {
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
         onShowModal() {
-            this.confirmLeaving(() => {
-                this.isModalVisible = true;
+            this.confirmModal({
+                confirmCallback: () => {
+                    this.__clearFeedbackStorage();
+
+                    this.isModalVisible = true;
+                },
+                proceedCallback: () => {
+                    this.isModalVisible = true;
+                },
             });
         },
         onCloseModal() {

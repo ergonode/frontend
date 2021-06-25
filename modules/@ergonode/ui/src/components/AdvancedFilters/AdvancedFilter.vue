@@ -206,7 +206,7 @@ export default {
             '__setState',
         ]),
         ...mapActions('list', [
-            'setDisabledElement',
+            'setDisabledScopeElement',
         ]),
         onDragStart(event) {
             addElementCopyToDocumentBody({

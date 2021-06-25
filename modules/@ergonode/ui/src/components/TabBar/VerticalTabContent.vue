@@ -43,7 +43,7 @@ export default {
     },
     data() {
         return {
-            currentWidth: '275px',
+            currentWidth: '248px',
         };
     },
     computed: {
@@ -53,7 +53,7 @@ export default {
             };
         },
         minWidth() {
-            return 275;
+            return 248;
         },
     },
     methods: {

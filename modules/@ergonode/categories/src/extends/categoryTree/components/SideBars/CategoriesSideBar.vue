@@ -23,7 +23,9 @@
         </template>
         <template #item="{ item }">
             <CategorySideBarElement
+                :scope="scope"
                 :item="item"
+                :dragging-element-type="draggingElementType"
                 :language-code="languageCode"
                 :disabled="disabled" />
         </template>
@@ -36,6 +38,9 @@ import {
     CATEGORY_CREATED_EVENT_NAME,
 } from '@Categories/defaults/attributes';
 import CategorySideBarElement from '@Categories/extends/categoryTree/components/SideBars/CategorySideBarElement';
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 import {
     deepClone,
 } from '@Core/models/objectWrapper';
@@ -61,6 +66,10 @@ export default {
         SideBar,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         isSelectLanguage: {
             type: Boolean,
             default: true,
@@ -68,6 +77,13 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * Type of the place from where element is dragging
+         */
+        draggingElementType: {
+            type: String,
+            default: DRAGGED_ELEMENT.LIST,
         },
     },
     async fetch() {
@@ -102,7 +118,7 @@ export default {
         );
     },
     beforeDestroy() {
-        this.setDisabledElements({});
+        this.removeDisabledScopeElements(this.scope);
 
         document.documentElement.removeEventListener(
             CATEGORY_CREATED_EVENT_NAME,
@@ -111,7 +127,7 @@ export default {
     },
     methods: {
         ...mapActions('list', [
-            'setDisabledElements',
+            'removeDisabledScopeElements',
         ]),
         async onCategoryCreated() {
             await this.getItems();

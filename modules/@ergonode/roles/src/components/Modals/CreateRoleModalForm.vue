@@ -48,6 +48,9 @@ export default {
     mixins: [
         modalFeedbackMixin,
     ],
+    fetch() {
+        this.__clearStorage();
+    },
     data() {
         return {
             isSubmitting: false,

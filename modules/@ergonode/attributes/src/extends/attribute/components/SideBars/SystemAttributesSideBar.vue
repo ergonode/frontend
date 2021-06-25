@@ -27,8 +27,10 @@
         </template>
         <template #item="{ item }">
             <AttributeSideBarElement
+                :scope="scope"
                 :item="item"
                 :language-code="languageCode"
+                :dragging-element-type="draggingElementType"
                 :disabled="disabled" />
         </template>
     </SideBar>
@@ -37,6 +39,9 @@
 <script>
 import AttributeSideBarElement from '@Attributes/extends/attribute/components/SideBars/AttributeSideBarElement';
 import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 import {
     deepClone,
 } from '@Core/models/objectWrapper';
@@ -62,6 +67,10 @@ export default {
         LanguageTreeSelect,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         isSelectLanguage: {
             type: Boolean,
             default: true,
@@ -69,6 +78,13 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * Type of the place from where element is dragging
+         */
+        draggingElementType: {
+            type: String,
+            default: DRAGGED_ELEMENT.LIST,
         },
     },
     async fetch() {

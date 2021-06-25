@@ -60,6 +60,7 @@
                         @sort="onSortColumn"
                         @edit-filter-cell="onEditFilterCell"
                         @filter-value="onFilterValueChange"
+                        @filter-clear="onFilterValueClear"
                         @cell-value="onCellValueChange"
                         @edit-cell="onEditCell"
                     />
@@ -90,6 +91,7 @@
                         @sort="onSortColumn"
                         @edit-filter-cell="onEditFilterCell"
                         @filter-value="onFilterValueChange"
+                        @filter-clear="onFilterValueClear"
                         @cell-value="onCellValueChange"
                         @edit-cell="onEditCell"
                     />
@@ -135,6 +137,7 @@
             ref="editCell"
             v-bind="editFilterCell.props"
             @filter-value="onFilterValueChange"
+            @filter-clear="onFilterValueClear"
             @dismiss="onDismissEditFilterCell" />
         <GridCellResizer
             v-if="cellResizer"
@@ -490,6 +493,15 @@ export default {
                 ...this.filters,
                 [columnId]: value,
             });
+        },
+        onFilterValueClear(columnId) {
+            const filters = {
+                ...this.filters,
+            };
+
+            delete filters[columnId];
+
+            this.$emit('filter', filters);
         },
         onRemoveColumn(index) {
             const fixedIndex = index - this.columnsOffset;

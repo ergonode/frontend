@@ -5,13 +5,18 @@
 <template>
     <div class="system-attributes-vertical-tab">
         <SystemAttributesSideBar
+            :scope="scope"
             :disabled="disabled"
+            :dragging-element-type="draggingElementType"
             :is-select-language="isSelectLanguage" />
     </div>
 </template>
 
 <script>
 import SystemAttributesSideBar from '@Attributes/extends/attribute/components/SideBars/SystemAttributesSideBar';
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 
 export default {
     name: 'SystemAttributesVerticalTab',
@@ -19,6 +24,10 @@ export default {
         SystemAttributesSideBar,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         isSelectLanguage: {
             type: Boolean,
             default: true,
@@ -26,6 +35,13 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * Type of the place from where element is dragging
+         */
+        draggingElementType: {
+            type: String,
+            default: DRAGGED_ELEMENT.LIST,
         },
     },
 };

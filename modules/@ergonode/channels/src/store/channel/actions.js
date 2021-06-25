@@ -162,6 +162,7 @@ export default {
     async getChannel(
         {
             commit,
+            dispatch,
             rootState,
         },
         {
@@ -192,6 +193,8 @@ export default {
                 type,
                 ...rest
             } = data;
+
+            dispatch('__clearStorage');
 
             commit('__SET_STATE', {
                 key: 'id',

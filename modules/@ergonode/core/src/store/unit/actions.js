@@ -16,6 +16,7 @@ export default {
     async getUnit(
         {
             commit,
+            dispatch,
         },
         {
             id,
@@ -40,6 +41,8 @@ export default {
                 name,
                 symbol,
             } = data;
+
+            dispatch('__clearStorage');
 
             commit('__SET_STATE', {
                 key: 'id',

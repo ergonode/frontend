@@ -12,7 +12,8 @@
         :language-code="languageCode"
         :data="filter"
         @edit-filter-cell="onEditFilterCell"
-        @filter-value="onFilterValueChange" />
+        @filter-value="onFilterValueChange"
+        @filter-clear="onFilterValueClear" />
 </template>
 
 <script>
@@ -81,6 +82,9 @@ export default {
         },
         onFilterValueChange(payload) {
             this.$emit('filter-value', payload);
+        },
+        onFilterValueClear(payload) {
+            this.$emit('filter-clear', payload);
         },
     },
 };

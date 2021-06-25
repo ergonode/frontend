@@ -71,7 +71,7 @@ export default {
     async beforeDestroy() {
         if (!this.changeValues.saved) {
             await this.getLanguageTree({});
-            this.setDisabledElements({});
+            this.removeDisabledScopeElements(this.scope);
         }
     },
     methods: {
@@ -79,7 +79,7 @@ export default {
             'getLanguageTree',
         ]),
         ...mapActions('list', [
-            'setDisabledElements',
+            'removeDisabledScopeElements',
         ]),
     },
 };

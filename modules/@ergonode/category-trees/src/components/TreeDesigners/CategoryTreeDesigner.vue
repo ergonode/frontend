@@ -79,8 +79,8 @@ export default {
             'onScopeValueChange',
         ]),
         ...mapActions('list', [
-            'removeDisabledElement',
-            'setDisabledElement',
+            'removeDisabledScopeElement',
+            'setDisabledScopeElement',
         ]),
         itemSubtitle(childrenLength) {
             return childrenLength
@@ -89,9 +89,10 @@ export default {
         },
         onRemoveItems(ids) {
             ids.forEach((id) => {
-                this.removeDisabledElement({
+                this.removeDisabledScopeElement({
                     languageCode: this.languageCode,
                     elementId: id,
+                    scope: this.scope,
                 });
             });
 
@@ -104,10 +105,13 @@ export default {
         onAddItem({
             id,
         }) {
-            this.setDisabledElement({
-                languageCode: this.languageCode,
-                elementId: id,
-                disabled: true,
+            this.setDisabledScopeElement({
+                scope: this.scope,
+                disabledElement: {
+                    languageCode: this.languageCode,
+                    elementId: id,
+                    disabled: true,
+                },
             });
         },
         onValueChange(value) {

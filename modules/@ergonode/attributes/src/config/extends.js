@@ -11,6 +11,7 @@ import {
     ROUTE_NAME,
 } from '@Attributes/config/routes';
 import {
+    DRAGGED_ELEMENT,
     TYPES,
 } from '@Attributes/defaults';
 import {
@@ -156,6 +157,7 @@ export default {
                 component: Components.AttributesVerticalTab,
                 icon: Icons.IconAttributes,
                 props: {
+                    scope: $this.scope,
                     isSelectLanguage: false,
                     ...props,
                 },
@@ -168,11 +170,40 @@ export default {
                 title: $this.$t('@Attributes.attributeExtend.components.AttributesVerticalTab.title'),
                 component: Components.AttributesVerticalTab,
                 icon: Icons.IconAttributes,
+                props: {
+                    scope: $this.scope,
+                },
             },
             {
                 title: $this.$t('@Attributes.attributeExtend.components.SystemAttributesVerticalTab.title'),
                 component: Components.SystemAttributesVerticalTab,
                 icon: Icons.IconSettings,
+                props: {
+                    scope: $this.scope,
+                },
+            },
+        ],
+        '@Products/components/Modals/AddProductRelationsModalGrid/verticalTabs': ({
+            $this,
+        }) => [
+            {
+                title: $this.$t('@Attributes.attributeExtend.components.AttributesVerticalTab.title'),
+                component: Components.AttributesVerticalTab,
+                icon: Icons.IconAttributes,
+                props: {
+                    scope: $this.scope,
+                    isAddingEnabled: false,
+                    draggingElementType: DRAGGED_ELEMENT.RELATION_ATTRIBUTE,
+                },
+            },
+            {
+                title: $this.$t('@Attributes.attributeExtend.components.SystemAttributesVerticalTab.title'),
+                component: Components.SystemAttributesVerticalTab,
+                icon: Icons.IconSettings,
+                props: {
+                    scope: $this.scope,
+                    draggingElementType: DRAGGED_ELEMENT.RELATION_ATTRIBUTE,
+                },
             },
         ],
         '@Attributes/store/attribute/action/createAttribute/__before': ({

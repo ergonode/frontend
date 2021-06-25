@@ -22,6 +22,26 @@ export default {
                 title: $this.$t('@Categories.category._.title'),
                 component: Components.CategoryTreesVerticalTab,
                 icon: Icons.IconTree,
+                props: {
+                    scope: $this.scope,
+                    value: $this.filters,
+                    onValueChange: $this.onFiltersChange,
+                },
+            },
+        ],
+        '@Products/components/Modals/AddProductRelationsModalGrid/verticalTabs': ({
+            $this,
+        }) => [
+            {
+                title: $this.$t('@Categories.category._.title'),
+                component: Components.CategoryTreesVerticalTab,
+                icon: Icons.IconTree,
+                props: {
+                    scope: $this.scope,
+                    value: $this.advancedFilterValues,
+                    isAddingEnabled: false,
+                    onValueChange: $this.onFiltersChange,
+                },
             },
         ],
     },

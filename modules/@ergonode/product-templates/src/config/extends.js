@@ -43,7 +43,10 @@ export default {
                 title: $this.$t('@Templates.productTemplateExtend.methods.widgetsVerticalTabTitle'),
                 component: Components.WidgetsVerticalTab,
                 icon: Icons.IconWidget,
-                props,
+                props: {
+                    scope: $this.scope,
+                    ...props,
+                },
             },
         ],
         '@Products/store/product/action/getProduct/__after': ({

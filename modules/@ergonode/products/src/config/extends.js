@@ -64,9 +64,6 @@ export default {
         },
     },
     extendComponents: {
-        '@UI/components/Grid/Layout/Collection/Cells': {
-            PRODUCT_ATTACH: Components.GridProductAttachCollectionCell,
-        },
         '@UI/components/Grid/Layout/Table/Cells/Data': {
             LABEL: Components.GridLabelDataCell,
             PRODUCT_RELATION: Components.GridProductRelationDataCell,

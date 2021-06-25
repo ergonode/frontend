@@ -55,18 +55,11 @@ import {
     getAutocomplete as getCategoriesAutocomplete,
 } from '@Categories/services';
 import {
-    DEFAULT_PAGE,
-} from '@Core/defaults/grid';
-import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
 import {
     dfsSearch,
 } from '@Core/models/arrayWrapper';
-import {
-    getMappedFilters,
-    getParsedFilters,
-} from '@Core/models/mappers/gridDataMapper';
 import {
     getUUID,
 } from '@Core/models/stringWrapper';
@@ -87,9 +80,6 @@ import {
     getSelectedNodes,
 } from '@UI/models/treeAccordion';
 import {
-    debounce,
-} from 'debounce';
-import {
     mapGetters,
 } from 'vuex';
 
@@ -103,6 +93,20 @@ export default {
         ListSearchHeader,
         Preloader,
         TreeAccordionItem,
+    },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        value: {
+            type: Object,
+            default: () => ({}),
+        },
+        onValueChange: {
+            type: Function,
+            default: () => {},
+        },
     },
     async fetch() {
         this.isPrefetchingData = true;
@@ -179,12 +183,21 @@ export default {
         },
     },
     watch: {
-        $route(from, to) {
-            if (from.name !== to.name) {
-                return;
-            }
+        value: {
+            immediate: true,
+            handler() {
+                const value = this.value[`esa_category:${this.defaultLanguageCode}`];
 
-            this.selectedCategories = this.getSelectedCategories();
+                const selectedCategories = {};
+
+                if (value) {
+                    value[FILTER_OPERATOR.EQUAL].forEach((categoryId) => {
+                        selectedCategories[categoryId] = true;
+                    });
+                }
+
+                this.selectedCategories = selectedCategories;
+            },
         },
     },
     mounted() {
@@ -193,13 +206,7 @@ export default {
             this.onCategoryCreated,
         );
     },
-    created() {
-        this.selectedCategories = this.getSelectedCategories();
-        this.onDebounceSelectedCategories = debounce(this.setSelectedCategories, 500);
-    },
     beforeDestroy() {
-        delete this.onDebounceSelectedCategories;
-
         document.documentElement.removeEventListener(
             CATEGORY_CREATED_EVENT_NAME,
             this.onCategoryCreated,
@@ -242,14 +249,28 @@ export default {
             return filterValues.some(value => searchValue.startsWith(value));
         },
         onSelectCategory(category) {
-            const isSelected = !this.selectedCategories[category.id];
+            let operatorValue = [];
 
-            this.selectedCategories = {
-                ...this.selectedCategories,
-                [category.id]: isSelected,
-            };
+            if (this.value[`esa_category:${this.defaultLanguageCode}`]) {
+                operatorValue = this.value[`esa_category:${this.defaultLanguageCode}`][FILTER_OPERATOR.EQUAL] || [];
 
-            this.onDebounceSelectedCategories();
+                const index = operatorValue.findIndex(categoryId => categoryId === category.id);
+
+                if (index === -1) {
+                    operatorValue.push(category.id);
+                } else {
+                    operatorValue.splice(index, 1);
+                }
+            } else {
+                operatorValue.push(category.id);
+            }
+
+            this.onValueChange({
+                ...this.value,
+                [`esa_category:${this.defaultLanguageCode}`]: {
+                    [FILTER_OPERATOR.EQUAL]: operatorValue,
+                },
+            });
         },
         async onExpandGroup({
             item,
@@ -263,54 +284,6 @@ export default {
         },
         async onSearch(value) {
             this.searchValue = value;
-        },
-        getSelectedCategories() {
-            const advancedFilters = getMappedFilters(this.$route.query.advancedFilter);
-            const categoryFilters = advancedFilters[`esa_category:${this.defaultLanguageCode}`];
-            const selectedCategories = {};
-
-            if (categoryFilters) {
-                categoryFilters[FILTER_OPERATOR.EQUAL].forEach((categoryId) => {
-                    selectedCategories[categoryId] = true;
-                });
-            }
-
-            return selectedCategories;
-        },
-        setSelectedCategories() {
-            const advancedFilters = getMappedFilters(this.$route.query.advancedFilter);
-            let categoryFilters = advancedFilters[`esa_category:${this.defaultLanguageCode}`];
-
-            const equalOperator = FILTER_OPERATOR.EQUAL;
-
-            Object.keys(this.selectedCategories).forEach((key) => {
-                if (this.selectedCategories[key]) {
-                    if (typeof categoryFilters === 'undefined') {
-                        categoryFilters = {
-                            [equalOperator]: [],
-                        };
-                    }
-
-                    if (!categoryFilters[equalOperator].some(categoryId => categoryId === key)) {
-                        categoryFilters[equalOperator].push(key);
-                    }
-                } else if (typeof categoryFilters !== 'undefined') {
-                    categoryFilters[equalOperator] = categoryFilters[equalOperator].filter(
-                        categoryId => categoryId !== key,
-                    );
-                }
-            });
-
-            this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    advancedFilter: getParsedFilters({
-                        ...advancedFilters,
-                        [`esa_category:${this.defaultLanguageCode}`]: categoryFilters,
-                    }),
-                    page: DEFAULT_PAGE,
-                },
-            });
         },
     },
 };

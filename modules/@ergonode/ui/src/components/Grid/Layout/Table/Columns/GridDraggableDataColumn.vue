@@ -35,7 +35,8 @@
                     :column-id="column.id"
                     :filter="column.filter"
                     @edit-filter-cell="onEditFilterCell"
-                    @filter-value="onFilterValueChange" />
+                    @filter-value="onFilterValueChange"
+                    @filter-clear="onFilterValueClear" />
                 <GridTableCell
                     v-else
                     :locked="true"
@@ -225,6 +226,9 @@ export default {
         },
         onFilterValueChange(payload) {
             this.$emit('filter-value', payload);
+        },
+        onFilterValueClear(payload) {
+            this.$emit('filter-clear', payload);
         },
         onCellValueChange(payload) {
             this.$emit('cell-value', payload);

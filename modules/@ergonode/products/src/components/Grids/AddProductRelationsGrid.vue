@@ -4,25 +4,28 @@
  */
 <template>
     <Grid
-        :columns="columnsWithAttachColumn"
+        :columns="columns"
         :data-count="filtered"
-        :drafts="drafts"
         :pagination="pagination"
-        :filters="filterValues"
+        :filters="localParams.filters"
         :sort-order="localParams.sortOrder"
-        :rows="rowsWithAttachValues"
+        :rows="rows"
         :collection-cell-binding="collectionCellBinding"
+        :dragging-element-type="relationElementType"
         :extended-components="extendedGridComponents"
         :is-editable="isAllowedToUpdate"
         :is-prefetching-data="isPrefetchingData"
+        :is-select-column="true"
         :is-basic-filter="true"
         :is-header-visible="true"
         :is-collection-layout="true"
         :is-action-column="false"
         @edit-row="onEditRow"
         @preview-row="onEditRow"
-        @cell-value="onCellValueChange"
         @delete-row="onRemoveRow"
+        @drop-column="onDropColumn"
+        @remove-column="onRemoveColumn"
+        @swap-columns="onSwapColumns"
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @remove-all-filters="onRemoveAllFilters"
@@ -39,65 +42,126 @@
                         ...headerItem.props,
                     },
                 })" />
+            <ExpandNumericButton
+                :title="$t('@Products.product.components.AddProductRelationsGrid.filtersButtonTitle')"
+                :number="advancedFilters.length"
+                :is-expanded="isFiltersExpanded"
+                @click.native="onFiltersExpand" />
+        </template>
+        <template #prependHeader>
+            <AddFilterDropZone
+                :filters="advancedFilters"
+                :dragging-element-type="relationElementType"
+                @drop="onDropFilter" />
+        </template>
+        <template #appendHeader>
+            <ProductAdvancedFilters
+                v-show="isFiltersExpanded"
+                :value="advancedFilterValues"
+                :filters="advancedFilters"
+                :extended-filters="extendedAdvancedFilters"
+                @remove="onAdvancedFilterRemove"
+                @remove-all="onAdvancedFilterRemoveAll"
+                @input="onAdvancedFilterChange" />
         </template>
         <template #noDataPlaceholder>
-            <GridNoDataPlaceholder
-                :title="$t('@Products.product._.noProduct')"
-                :subtitle="$t('@Products.product._.createFirst')" />
+            <ProductsGridNoDataPlaceholder v-if="!isAnyFilter && filtered === 0" />
+            <GridNoResultsPlaceholder
+                v-else
+                @clear="onRemoveAllFilters" />
         </template>
-        <template #appendFooter>
+        <template
+            #appendFooter="{
+                selectedRows,
+                excludedFromSelectionRows,
+                selectedRowsCount,
+                isSelectedAll,
+                onClearSelectedRows,
+            }">
             <Component
                 v-for="(footerItem, index) in extendedFooter"
                 :is="footerItem.component"
                 :key="index"
                 v-bind="bindingProps(footerItem)" />
-            <Button
-                :title="$t('@Products._.submit')"
-                :size="smallSize"
-                @click.native="onSaveRelations" />
+            <AddProductRelationsButton
+                :data-count="filtered"
+                :filters="filters"
+                :value="value"
+                :selected-rows="selectedRows"
+                :excluded-from-selection-rows="excludedFromSelectionRows"
+                :selected-rows-count="selectedRowsCount"
+                :is-selected-all="isSelectedAll"
+                :on-clear-selected-rows="onClearSelectedRows"
+                @add="onAddProductRelations" />
         </template>
     </Grid>
 </template>
 
 <script>
 import {
+    DRAGGED_ELEMENT,
+} from '@Attributes/defaults';
+import ExpandNumericButton from '@Core/components/Buttons/ExpandNumericButton';
+import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
-    DEFAULT_GRID_FETCH_PARAMS,
     DEFAULT_GRID_PAGINATION,
+    DEFAULT_POST_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 import {
-    SIZE,
-} from '@Core/defaults/theme';
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
 import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
-import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
-    getParsedFilters,
+    insertValueAtIndex,
+    swapItemPosition,
+} from '@Core/models/arrayWrapper';
+import {
+    getParsedFiltersList,
 } from '@Core/models/mappers/gridDataMapper';
 import {
-    getGridData,
+    getDisabledElement,
+} from '@Core/models/mappers/sideBarDataMapper';
+import {
+    getAdvancedFiltersData,
 } from '@Core/services/grid/getGridData.service';
+import {
+    postGridData,
+} from '@Core/services/grid/postGridData.service';
+import ProductAdvancedFilters from '@Products/components/AdvancedFilters/ProductAdvancedFilters';
+import AddProductRelationsButton from '@Products/components/Buttons/AddProductRelationsButton';
+import ProductsGridNoDataPlaceholder from '@Products/components/Placeholders/ProductsGridNoDataPlaceholder';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     ROUTE_NAME,
 } from '@Products/config/routes';
-import Button from '@UI/components/Button/Button';
+import AddFilterDropZone from '@UI/components/Grid/DropZone/AddFilterDropZone';
 import Grid from '@UI/components/Grid/Grid';
 import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
+import GridNoResultsPlaceholder from '@UI/components/Grid/GridNoResultsPlaceholder';
 import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import {
     debounce,
 } from 'debounce';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'AddProductRelationsGrid',
     components: {
+        ProductAdvancedFilters,
+        ProductsGridNoDataPlaceholder,
+        AddFilterDropZone,
+        ExpandNumericButton,
+        AddProductRelationsButton,
         Grid,
         GridNoDataPlaceholder,
-        Button,
         IntersectionObserver,
+        GridNoResultsPlaceholder,
     },
     mixins: [
         extendPropsMixin({
@@ -106,10 +170,13 @@ export default {
                 'grid',
             ],
         }),
-        gridDraftMixin,
         extendedGridComponentsMixin,
     ],
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         value: {
             type: [
                 String,
@@ -117,9 +184,9 @@ export default {
             ],
             default: '',
         },
-        attributeId: {
-            type: String,
-            default: '',
+        advancedFilterValues: {
+            type: Object,
+            default: () => ({}),
         },
         productId: {
             type: String,
@@ -127,6 +194,32 @@ export default {
         },
     },
     async fetch() {
+        const {
+            language,
+        } = this.user;
+
+        this.columnModels = [
+            {
+                name: 'sku',
+            },
+            {
+                name: 'esa_template',
+                language,
+            },
+            {
+                name: 'esa_default_label',
+                language,
+            },
+            {
+                name: 'esa_default_image',
+                language,
+            },
+            {
+                name: '_links',
+                language,
+            },
+        ];
+
         await this.onFetchData();
 
         this.isPrefetchingData = false;
@@ -135,101 +228,74 @@ export default {
         return {
             searchValue: null,
             isPrefetchingData: true,
-            filterValues: {},
+            isFiltersExpanded: false,
+            advancedFilters: [],
+            columnModels: [],
             rows: [],
             columns: [],
             filtered: 0,
-            localParams: DEFAULT_GRID_FETCH_PARAMS(),
+            localParams: DEFAULT_POST_GRID_FETCH_PARAMS(),
             pagination: DEFAULT_GRID_PAGINATION(),
         };
     },
     computed: {
+        ...mapState('authentication', [
+            'user',
+        ]),
+        ...mapState('list', [
+            'disabledElements',
+        ]),
         extendedActionHeader() {
             return this.$getExtendSlot('@Products/components/Grids/AddProductRelationsGrid/actionHeader');
         },
         extendedFooter() {
             return this.$getExtendSlot('@Products/components/Grids/AddProductRelationsGrid/footer');
         },
-        smallSize() {
-            return SIZE.SMALL;
+        extendedAdvancedFilters() {
+            return this.$getExtendSlot('@Products/components/Grids/AddProductRelationsGrid/advancedFilters');
+        },
+        relationElementType() {
+            return DRAGGED_ELEMENT.RELATION_ATTRIBUTE;
         },
         collectionCellBinding() {
             return {
-                imageColumn: 'esa_default_image',
-                descriptionColumn: 'esa_default_label',
-                type: 'PRODUCT_ATTACH',
-                additionalColumns: [
-                    'attached',
-                ],
+                imageColumn: `esa_default_image:${this.user.language}`,
+                descriptionColumn: `esa_default_label:${this.user.language}`,
             };
         },
-        columnsWithAttachColumn() {
-            if (this.isDirectRelation) {
-                return this.columns.map((column) => {
-                    if (column.id === 'attached') {
-                        return {
-                            ...column,
-                            filter: {
-                                type: 'SELECT',
-                                options: {
-                                    false: {
-                                        label: this.$t('@Products.product.components.AddProductRelationsGrid.notAttachedLabel'),
-                                    },
-                                    true: {
-                                        label: this.$t('@Products.product.components.AddProductRelationsGrid.attachedLabel'),
-                                    },
-                                },
-                            },
-                        };
-                    }
+        filters() {
+            const filters = [
+                ...getParsedFiltersList(this.localParams.filters),
+                ...getParsedFiltersList(this.advancedFilterValues),
+            ];
 
-                    return column;
+            if (this.productId) {
+                filters.push({
+                    column: 'id',
+                    operator: FILTER_OPERATOR.NOT_EQUAL,
+                    value: [
+                        this.productId,
+                        ...this.value,
+                    ].join(','),
                 });
             }
 
-            const columns = [];
-
-            for (let i = 0; i < this.columns.length; i += 1) {
-                columns.push(this.columns[i]);
-
-                if (this.columns[i].id === 'sku') {
-                    columns.push({
-                        id: 'attached',
-                        type: 'BOOL',
-                        label: this.$t('@Products.product.components.AddProductRelationsGrid.attachLabel'),
-                        visible: true,
-                        editable: true,
-                        deletable: false,
-                        parameters: [],
-                    });
-                }
-            }
-
-            return columns;
+            return filters;
         },
-        rowsWithAttachValues() {
-            const rows = [
-                ...this.rows,
-            ];
-
-            for (let i = 0; i < this.rows.length; i += 1) {
-                rows[i].attached = {
-                    value:
-                        Array.isArray(this.value)
-                            ? this.value.some(id => id === this.rows[i].id.value)
-                            : this.value === this.rows[i].id.value,
-                };
-            }
-
-            return rows;
-        },
-        isDirectRelation() {
-            return this.attributeId !== '' && this.productId !== '';
+        isAnyFilter() {
+            return this.filtered === 0
+                && (Object.keys(this.localParams.filters).length > 0
+                    || Object.keys(this.advancedFilterValues).length > 0);
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ]);
+        },
+    },
+    watch: {
+        advancedFilterValues() {
+            this.onFetchData();
         },
     },
     created() {
@@ -239,6 +305,19 @@ export default {
         delete this.onDebounceSearch;
     },
     methods: {
+        ...mapActions('list', [
+            'removeDisabledScopeElement',
+            'setDisabledScopeElement',
+        ]),
+        onFiltersExpand() {
+            this.isFiltersExpanded = !this.isFiltersExpanded;
+        },
+        onAddProductRelations(relations) {
+            this.$emit('input', [
+                ...this.value,
+                ...relations,
+            ]);
+        },
         onPaginationChange(pagination) {
             this.pagination = pagination;
             this.localParams.limit = pagination.itemsPerPage;
@@ -247,51 +326,62 @@ export default {
             this.onFetchData();
         },
         onFilterChange(filters) {
-            this.filterValues = filters;
             this.pagination.page = 1;
-            this.localParams.filter = getParsedFilters(filters);
+            this.localParams.filters = filters;
             this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
             this.onFetchData();
         },
         onRemoveAllFilters() {
-            this.filterValues = {};
             this.pagination.page = 1;
-            this.localParams.filter = '';
+            this.localParams.filters = {};
             this.localParams.offset = 0;
 
-            this.onFetchData();
+            this.$emit('change-filter', {});
         },
         onColumnSortChange(sortOrder) {
             this.localParams.sortOrder = sortOrder;
 
             this.onFetchData();
         },
-        async onFetchData() {
-            const {
-                sortOrder = {}, ...rest
-            } = this.localParams;
-
-            let path = 'products';
-            let columns = 'sku,esa_template,esa_default_label,esa_default_image,_links';
-
-            if (this.isDirectRelation) {
-                path = `products/${this.productId}/related/${this.attributeId}`;
-                columns = 'sku,attached,template_id,default_label,default_image,_links';
-            }
-
+        async onDropFilter(filterId) {
+            const filterCode = filterId.split('/')[1];
             const params = {
-                ...rest,
-                ...sortOrder,
-                columns,
+                limit: 0,
+                offset: 0,
+                columns: filterCode,
             };
 
-            await getGridData({
+            await getAdvancedFiltersData({
                 $route: this.$route,
                 $cookies: this.$userCookies,
                 $axios: this.$axios,
-                path,
+                $addAlert: this.$addAlert,
+                path: 'products',
                 params,
+                onSuccess: payload => this.onGetAdvancedFilterSuccess({
+                    ...payload,
+                    filterCode,
+                }),
+            });
+        },
+        async onFetchData() {
+            const {
+                sortOrder = {},
+                ...rest
+            } = this.localParams;
+
+            await postGridData({
+                $route: this.$route,
+                $cookies: this.$userCookies,
+                $axios: this.$axios,
+                path: 'products/grid',
+                data: {
+                    ...rest,
+                    ...sortOrder,
+                    filters: this.filters,
+                    columns: this.columnModels,
+                },
                 onSuccess: this.onFetchDataSuccess,
                 onError: this.onFetchDataError,
             });
@@ -311,6 +401,34 @@ export default {
                 message: this.$t('@Products.product.components.AddProductRelationsGrid.errorGetMessage'),
             });
         },
+        onGetAdvancedFilterSuccess({
+            advancedFilters,
+            filterCode,
+        }) {
+            if (advancedFilters.length) {
+                const filter = advancedFilters.find(({
+                    id,
+                }) => id === filterCode);
+
+                if (filter.attributeId) {
+                    this.setDisabledScopeElement({
+                        disabledElement: getDisabledElement({
+                            languageCode: filter.languageCode,
+                            elementId: filter.attributeId,
+                            disabledElements: this.disabledElements[this.scope],
+                        }),
+                        scope: this.scope,
+                    });
+                }
+
+                this.advancedFilters.unshift(filter);
+            } else {
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: this.$t('@Products.product.components.ProductsGrid.noFilterErrorMessage'),
+                });
+            }
+        },
         onRemoveRow() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
@@ -318,68 +436,117 @@ export default {
             });
             this.onFetchData();
         },
-        onCellValueChange(cellValues) {
-            const drafts = {
-                ...this.drafts,
-            };
+        async onDropColumn(payload) {
+            const columnCode = payload.split('/')[1];
+            const {
+                language,
+            } = this.user;
 
-            cellValues.forEach(({
-                rowId,
-                columnId,
-                value,
-            }) => {
-                drafts[`${rowId}/${columnId}`] = value;
-            });
+            this.columnModels = insertValueAtIndex(this.columnModels,
+                {
+                    name: columnCode.split(':')[0],
+                    language,
+                }, 0);
 
-            this.setDrafts(drafts);
-        },
-        onSaveRelations() {
-            const value = [];
-            const toRemove = [];
+            await this.onFetchData();
 
-            Object.keys(this.drafts).forEach((key) => {
-                const [
-                    rowId,
-                ] = key.split('/');
+            const column = this.columns.find(({
+                id,
+            }) => id === columnCode);
 
-                if (this.drafts[key]) {
-                    value.push(rowId);
-                } else {
-                    toRemove.push(rowId);
-                }
-
-                const row = this.rows.find(({
-                    id,
-                }) => id.value === rowId);
-
-                if (row) {
-                    row.attached.value = this.drafts[key];
-                }
-            });
-
-            this.setDrafts();
-
-            if (value.length || toRemove.length) {
-                const mappedValue = [
-                    ...this.value.filter(id => !toRemove.some(removeId => removeId === id)),
-                    ...value,
-                ];
-
-                this.$emit('input', mappedValue);
-
-                this.$addAlert({
-                    type: ALERT_TYPE.SUCCESS,
-                    message: this.$t('@Products.product.components.AddProductRelationsGrid.successUpdateMessage'),
-                });
-            } else {
-                this.$addAlert({
-                    type: ALERT_TYPE.INFO,
-                    message: this.$t('@Products.product.components.AddProductRelationsGrid.infoMessage'),
+            if (column && column.element_id) {
+                this.setDisabledScopeElement({
+                    disabledElement: getDisabledElement({
+                        languageCode: column.language,
+                        elementId: column.element_id,
+                        disabledElements: this.disabledElements[this.scope],
+                    }),
+                    scope: this.scope,
                 });
             }
         },
+        onSwapColumns({
+            from,
+            to,
+        }) {
+            this.columnModels = swapItemPosition(this.columnModels, from, to);
+        },
+        onRemoveColumn({
+            index,
+            column,
+        }) {
+            const {
+                id,
+                element_id,
+            } = column;
+
+            if (element_id) {
+                const {
+                    language: languageCode = this.user.language,
+                } = column;
+
+                if (this.disabledElements[this.scope][languageCode][element_id]) {
+                    this.setDisabledScopeElement({
+                        scope: this.scope,
+                        disabledElement: {
+                            languageCode,
+                            elementId: element_id,
+                            disabled: false,
+                        },
+                    });
+                } else {
+                    this.removeDisabledScopeElement({
+                        languageCode,
+                        elementId: element_id,
+                        scope: this.scope,
+                    });
+                }
+            }
+
+            delete this.localParams.filters[id];
+
+            this.localParams = {
+                ...this.localParams,
+            };
+
+            this.columnModels.splice(index, 1);
+
+            this.onFetchData();
+        },
         onSearch(value) {
             this.searchValue = value;
+        },
+        onAdvancedFilterRemove({
+            filter,
+        }) {
+            this.disableListElement({
+                languageCode: filter.languageCode,
+                attributeId: filter.attributeId,
+            });
+
+            this.advancedFilters = this.advancedFilters.filter(({
+                id,
+            }) => id !== filter.id);
+
+            this.$emit('remove-filter', filter.id);
+        },
+        onAdvancedFilterRemoveAll() {
+            this.advancedFilters.forEach(({
+                attributeId,
+                languageCode,
+            }) => {
+                this.disableListElement({
+                    languageCode,
+                    attributeId,
+                });
+            });
+
+            this.advancedFilters = [];
+
+            this.$emit('remove-all-filters');
+        },
+        onAdvancedFilterChange(filters) {
+            this.$emit('change-filter', filters);
         },
         onEditRow(args) {
             const lastIndex = args.length - 1;
@@ -391,12 +558,33 @@ export default {
                 },
             });
         },
+        disableListElement({
+            languageCode,
+            attributeId,
+        }) {
+            if (this.disabledElements[this.scope][languageCode][attributeId]) {
+                this.setDisabledScopeElement({
+                    scope: this.scope,
+                    disabledElement: {
+                        languageCode,
+                        elementId: attributeId,
+                        disabled: false,
+                    },
+                });
+            } else {
+                this.removeDisabledScopeElement({
+                    languageCode,
+                    elementId: attributeId,
+                    scope: this.scope,
+                });
+            }
+        },
         bindingProps({
             props = {},
         }) {
             return {
                 disabled: !this.isAllowedToUpdate,
-                query: getParsedFilters(this.localParams.filter),
+                filters: this.filters,
                 ...props,
             };
         },

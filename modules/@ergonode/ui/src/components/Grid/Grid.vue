@@ -24,6 +24,7 @@
                     :selected-rows="selectedRows"
                     :excluded-from-selection-rows="excludedFromSelectionRows"
                     :selected-rows-count="selectedRowsCount"
+                    :is-selected-all="isSelectedAll"
                     :on-clear-selected-rows="onClearSelectedRows" />
             </template>
             <template #configuration>
@@ -34,11 +35,11 @@
             </template>
         </GridHeader>
         <GridBody
-            :disabled="isListElementDragging && isColumnExist"
+            :disabled="isElementDraggingToAdd && isColumnExist"
             :is-border="isHeaderVisible">
             <slot name="body">
                 <AddGridColumnDropZone
-                    :column-exist="isColumnExist"
+                    :is-visible="isElementDraggingToAdd && !isColumnExist"
                     @drop="onDropColumn" />
                 <KeepAlive>
                     <GridTableLayout
@@ -84,12 +85,19 @@
                         :columns-number="collectionLayoutConfig.columnsNumber"
                         :object-fit="collectionLayoutConfig.scaling"
                         :extended-components="extendedComponents[gridLayout.COLLECTION]"
+                        :selected-rows="selectedRows"
+                        :excluded-from-selection-rows="excludedFromSelectionRows"
+                        :is-selected-all="isSelectedAll"
+                        :is-select-column="isSelectColumn"
                         :is-editable="isEditable"
                         :is-prefetching-data="isPrefetchingData"
                         :is-layout-resolved="isLayoutResolved[layout]"
                         :is-action-column="isActionColumn"
                         @row-action="onRowAction"
                         @cell-value="onCellValueChange"
+                        @rows-select="onRowsSelect"
+                        @excluded-rows-select="onExcludedRowsSelect"
+                        @select-all="onSelectAllRows"
                         @resolved="onResolvedLayout" />
                 </KeepAlive>
                 <slot
@@ -114,7 +122,13 @@
                     :value="pagination.page"
                     :max-page="maxPage"
                     @input="onPageChange" />
-                <slot name="appendFooter" />
+                <slot
+                    name="appendFooter"
+                    :selected-rows="selectedRows"
+                    :excluded-from-selection-rows="excludedFromSelectionRows"
+                    :selected-rows-count="selectedRowsCount"
+                    :is-selected-all="isSelectedAll"
+                    :on-clear-selected-rows="onClearSelectedRows" />
             </slot>
         </GridFooter>
         <slot />
@@ -233,6 +247,13 @@ export default {
         dataCount: {
             type: Number,
             required: true,
+        },
+        /**
+         * Type of the place from where element is dragging
+         */
+        draggingElementType: {
+            type: String,
+            default: DRAGGED_ELEMENT.LIST,
         },
         /**
          * Determines if data is loaded asynchronously
@@ -379,8 +400,8 @@ export default {
         isAnyFilter() {
             return Object.keys(this.filters).length > 0;
         },
-        isListElementDragging() {
-            return this.isElementDragging === DRAGGED_ELEMENT.LIST;
+        isElementDraggingToAdd() {
+            return this.isElementDragging === this.draggingElementType;
         },
         isColumnExist() {
             return this.columns.some(

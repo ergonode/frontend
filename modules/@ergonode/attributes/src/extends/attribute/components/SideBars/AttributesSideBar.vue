@@ -39,12 +39,15 @@
             <AttributeSideBarGroupElement
                 v-if="item.rootId === null"
                 :group="item"
+                :dragging-element-type="draggingElementType"
                 :is-prefetching-data="isPrefetchingGroupData[item.id]"
                 @click.native="onExpandGroup({ item, onExpand })" />
             <AttributeSideBarElement
                 v-else
+                :scope="scope"
                 :item="item"
                 :language-code="languageCode"
+                :dragging-element-type="draggingElementType"
                 :disabled="disabled" />
         </template>
     </SideBar>
@@ -58,6 +61,9 @@ import {
 import AttributeSideBarElement from '@Attributes/extends/attribute/components/SideBars/AttributeSideBarElement';
 import AttributeSideBarGroupElement from '@Attributes/extends/attribute/components/SideBars/AttributeSideBarGroupElement';
 import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 import {
     UNASSIGNED_GROUP_ID,
 } from '@Core/defaults/list';
@@ -94,6 +100,10 @@ export default {
         AttributeSideBarElement,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         isSelectLanguage: {
             type: Boolean,
             default: true,
@@ -101,6 +111,13 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * Type of the place from where element is dragging
+         */
+        draggingElementType: {
+            type: String,
+            default: DRAGGED_ELEMENT.LIST,
         },
     },
     async fetch() {
@@ -149,7 +166,7 @@ export default {
         );
     },
     beforeDestroy() {
-        this.setDisabledElements({});
+        this.removeDisabledScopeElements(this.scope);
 
         document.documentElement.removeEventListener(
             ATTRIBUTE_CREATED_EVENT_NAME,
@@ -158,7 +175,7 @@ export default {
     },
     methods: {
         ...mapActions('list', [
-            'setDisabledElements',
+            'removeDisabledScopeElements',
         ]),
         async onAttributeCreated() {
             await this.getAttributesForLanguage({

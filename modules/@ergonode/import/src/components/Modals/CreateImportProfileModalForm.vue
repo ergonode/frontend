@@ -45,6 +45,8 @@ export default {
         modalFeedbackMixin,
     ],
     async fetch() {
+        this.__clearStorage();
+
         await this.getInitialDictionaries({
             keys: [
                 'sources',
@@ -68,6 +70,7 @@ export default {
         onClose() {
             this.__clearStorage();
             this.removeScopeData(this.scope);
+
             this.$emit('close');
         },
         onSubmit() {

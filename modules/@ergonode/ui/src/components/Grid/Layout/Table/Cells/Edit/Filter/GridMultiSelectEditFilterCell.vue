@@ -98,14 +98,18 @@ export default {
         );
 
         if (!isEqual) {
-            this.$emit('filter-value', {
-                value: {
-                    [FILTER_OPERATOR.EQUAL]: optionIds,
-                },
-                columnId: this.columnId,
-                row: this.row,
-                column: this.column,
-            });
+            if (!this.localValue.length) {
+                this.$emit('filter-clear', this.columnId);
+            } else {
+                this.$emit('filter-value', {
+                    value: {
+                        [FILTER_OPERATOR.EQUAL]: optionIds,
+                    },
+                    columnId: this.columnId,
+                    row: this.row,
+                    column: this.column,
+                });
+            }
         }
     },
     methods: {
