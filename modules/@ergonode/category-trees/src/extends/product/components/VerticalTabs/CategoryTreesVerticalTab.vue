@@ -8,7 +8,9 @@
             :scope="scope"
             :value="value"
             :on-value-change="onValueChange" />
-        <CreateCategoryFab :floating="{ bottom: '16px', right: '16px' }" />
+        <CreateCategoryFab
+            v-if="isAddingEnabled"
+            :floating="{ bottom: '16px', right: '16px' }" />
     </div>
 </template>
 
@@ -30,6 +32,10 @@ export default {
         value: {
             type: Object,
             default: () => ({}),
+        },
+        isAddingEnabled: {
+            type: Boolean,
+            default: true,
         },
         onValueChange: {
             type: Function,

@@ -9,7 +9,9 @@
             :disabled="disabled"
             :dragging-element-type="draggingElementType"
             :is-select-language="isSelectLanguage" />
-        <CreateAttributeFab :floating="{ bottom: '16px', right: '16px' }" />
+        <CreateAttributeFab
+            v-if="isAddingEnabled"
+            :floating="{ bottom: '16px', right: '16px' }" />
     </div>
 </template>
 
@@ -32,6 +34,10 @@ export default {
             default: '',
         },
         isSelectLanguage: {
+            type: Boolean,
+            default: true,
+        },
+        isAddingEnabled: {
             type: Boolean,
             default: true,
         },

@@ -192,6 +192,7 @@ export default {
                 icon: Icons.IconAttributes,
                 props: {
                     scope: $this.scope,
+                    isAddingEnabled: false,
                     draggingElementType: DRAGGED_ELEMENT.RELATION_ATTRIBUTE,
                 },
             },
