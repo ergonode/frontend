@@ -92,6 +92,8 @@ export default {
             }
 
             this.$emit('submitted');
+
+            this.onClose();
         },
         onAddError(errors) {
             this.onError(errors);

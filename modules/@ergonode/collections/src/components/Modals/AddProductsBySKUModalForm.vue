@@ -83,6 +83,8 @@ export default {
             this.isAdding = false;
 
             this.$emit('submitted');
+
+            this.onClose();
         },
         onAddError(errors) {
             this.onError(errors);
