@@ -7,10 +7,9 @@
         observe-once
         @intersect="onIntersect">
         <img
-            ref="img"
             :style="styles"
             :class="classes"
-            :src="require('@UI/assets/images/placeholders/no_image.svg')"
+            :src="image"
             alt="Image loaded asynchronously">
     </IntersectionObserver>
 </template>
@@ -65,6 +64,7 @@ export default {
     },
     data() {
         return {
+            image: require('@UI/assets/images/placeholders/no_image.svg'),
             isLoading: true,
         };
     },
@@ -107,9 +107,7 @@ export default {
             }
         },
         onSuccess(response) {
-            if (this.$refs.img) {
-                this.$refs.img.src = getImageData(response);
-            }
+            this.image = getImageData(response);
 
             this.isLoading = false;
         },
@@ -118,9 +116,7 @@ export default {
                 return;
             }
 
-            if (this.$refs.img) {
-                this.$refs.img.src = require('@UI/assets/images/placeholders/image_error.svg'); // eslint-disable-line global-require, import/no-dynamic-require
-            }
+            this.image = require('@UI/assets/images/placeholders/image_error.svg'); // eslint-disable-line global-require, import/no-dynamic-require
 
             this.isLoading = false;
         },
