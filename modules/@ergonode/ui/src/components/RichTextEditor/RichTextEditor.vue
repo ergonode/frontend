@@ -3,68 +3,72 @@
  * See LICENSE for license details.
  */
 <template>
-    <Component
-        :is="styleComponent"
-        ref="activator"
-        :height="height"
-        :focused="isFocused"
-        :error="isError"
-        :data-cy="dataCy"
-        :disabled="disabled"
-        :alignment="alignment"
-        :size="size"
-        :details-label="informationLabel"
-        @mousedown="onMouseDown">
-        <template #activator>
-            <RichTextEditorMenuBubble
-                v-if="!disabled"
-                :editor="editor"
-                ref="menuBubble" />
-            <slot name="prepend" />
-            <InputController :size="size">
-                <ResizeObserver @resize="onResize">
-                    <div :class="classes">
-                        <VerticalFixedScroll>
-                            <EditorContent
-                                class="rich-text-editor__content"
-                                ref="editorContent"
-                                :editor="editor" />
-                        </VerticalFixedScroll>
-                        <RichTextEditorMenu
-                            v-if="isSolidType && isFocused"
-                            :type="type"
-                            :editor="editor"
-                            :editor-width="editorWidth" />
-                    </div>
-                </ResizeObserver>
-                <InputLabel
-                    v-if="label"
-                    :style="{ top: '10px' }"
-                    :for="associatedLabel"
-                    :required="required"
-                    :size="size"
-                    :floating="true"
-                    :focused="isFocused"
-                    :disabled="disabled"
-                    :error="isError"
-                    :label="label" />
-                <template #append>
-                    <slot name="append" />
-                    <ErrorHint
-                        v-if="isError"
-                        :hint="errorMessages" />
+    <InputUUIDProvider>
+        <template #default="{ uuid }">
+            <Component
+                :is="styleComponent"
+                ref="activator"
+                :height="height"
+                :focused="isFocused"
+                :error="isError"
+                :data-cy="dataCy"
+                :disabled="disabled"
+                :alignment="alignment"
+                :size="size"
+                :details-label="informationLabel"
+                @mousedown="onMouseDown">
+                <template #activator>
+                    <RichTextEditorMenuBubble
+                        v-if="!disabled"
+                        :editor="editor"
+                        ref="menuBubble" />
+                    <slot name="prepend" />
+                    <InputController :size="size">
+                        <ResizeObserver @resize="onResize">
+                            <div :class="classes">
+                                <VerticalFixedScroll>
+                                    <EditorContent
+                                        class="rich-text-editor__content"
+                                        ref="editorContent"
+                                        :editor="editor" />
+                                </VerticalFixedScroll>
+                                <RichTextEditorMenu
+                                    v-if="isSolidType && isFocused"
+                                    :type="type"
+                                    :editor="editor"
+                                    :editor-width="editorWidth" />
+                            </div>
+                        </ResizeObserver>
+                        <InputLabel
+                            v-if="label"
+                            :style="{ top: '10px' }"
+                            :for="uuid"
+                            :required="required"
+                            :size="size"
+                            :floating="true"
+                            :focused="isFocused"
+                            :disabled="disabled"
+                            :error="isError"
+                            :label="label" />
+                        <template #append>
+                            <slot name="append" />
+                            <ErrorHint
+                                v-if="isError"
+                                :hint="errorMessages" />
+                        </template>
+                    </InputController>
                 </template>
-            </InputController>
+                <RichTextEditorMenu
+                    v-if="!isSolidType"
+                    :type="type"
+                    :editor="editor"
+                    :editor-width="editorWidth" />
+                <template #details>
+                    <slot name="details" />
+                </template>
+            </Component>
         </template>
-        <RichTextEditorMenu
-            v-if="!isSolidType"
-            :type="type"
-            :editor="editor"
-            :editor-width="editorWidth" />
-        <template #details>
-            <slot name="details" />
-        </template>
-    </Component>
+    </InputUUIDProvider>
 </template>
 
 <script>
@@ -77,11 +81,11 @@ import InputController from '@UI/components/Input/InputController';
 import InputLabel from '@UI/components/Input/InputLabel';
 import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
 import InputUnderlineStyle from '@UI/components/Input/InputUnderlineStyle';
+import InputUUIDProvider from '@UI/components/Input/InputUUIDProvider';
 import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
 import ResizeObserver from '@UI/components/Observers/ResizeObserver';
 import RichTextEditorMenu from '@UI/components/RichTextEditor/Menu/RichTextEditorMenu';
 import RichTextEditorMenuBubble from '@UI/components/RichTextEditor/MenuBubble/RichTextEditorMenuBubble';
-import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
 import {
     Editor,
     EditorContent,
@@ -113,11 +117,9 @@ export default {
         EditorContent,
         VerticalFixedScroll,
         ResizeObserver,
+        InputUUIDProvider,
         ErrorHint: () => import('@UI/components/Hints/ErrorHint'),
     },
-    mixins: [
-        associatedLabelMixin,
-    ],
     props: {
         /**
          * Component value

@@ -3,38 +3,42 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="classes">
-        <input
-            :id="associatedLabel"
-            :value="value"
-            :disabled="disabled"
-            :checked="value"
-            type="checkbox"
-            @input="onValueChange">
-        <label :for="associatedLabel">
-            <div class="toggler__state-background">
-                <div class="toggler__state" />
+    <InputUUIDProvider>
+        <template #default="{ uuid }">
+            <div :class="classes">
+                <input
+                    :id="uuid"
+                    :value="value"
+                    :disabled="disabled"
+                    :checked="value"
+                    type="checkbox"
+                    @input="onValueChange">
+                <label :for="uuid">
+                    <div class="toggler__state-background">
+                        <div class="toggler__state" />
+                    </div>
+                    <span
+                        v-if="label"
+                        class="toggler__label"
+                        v-text="label" />
+                </label>
+                <slot name="append" />
             </div>
-            <span
-                v-if="label"
-                class="toggler__label"
-                v-text="label" />
-        </label>
-        <slot name="append" />
-    </div>
+        </template>
+    </InputUUIDProvider>
 </template>
 
 <script>
-import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
+import InputUUIDProvider from '@UI/components/Input/InputUUIDProvider';
 
 /**
  * `Toggler` is a default component to determinate true / false action.
  */
 export default {
     name: 'Toggler',
-    mixins: [
-        associatedLabelMixin,
-    ],
+    components: {
+        InputUUIDProvider,
+    },
     props: {
         /**
          * Component value

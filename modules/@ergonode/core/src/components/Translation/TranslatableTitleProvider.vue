@@ -12,13 +12,13 @@ export default {
         },
     },
     computed: {
-        transltion() {
+        translation() {
             return this.title.charAt(0) === '@' ? this.$t(this.title) : this.title;
         },
     },
     render() {
         return this.$scopedSlots.default({
-            translatableTitle: this.transltion,
+            translatableTitle: this.translation,
         });
     },
 };

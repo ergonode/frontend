@@ -4,39 +4,43 @@
  */
 
 <template>
-    <div :class="classes">
-        <input
-            :id="associatedLabel"
-            ref="checkbox"
-            type="checkbox"
-            :value="label"
-            :disabled="disabled"
-            v-model="checkValue">
-        <label :for="associatedLabel">
-            <svg
-                class="checkbox__box"
-                viewBox="0 0 14 10">
-                <path
-                    class="checkbox__mark"
-                    :d="markDrawingCommands" />
-            </svg>
-            <span
-                v-if="label"
-                class="checkbox__label"
-                v-text="label" />
-        </label>
-        <slot name="append" />
-    </div>
+    <InputUUIDProvider>
+        <template #default="{ uuid }">
+            <div :class="classes">
+                <input
+                    :id="uuid"
+                    ref="checkbox"
+                    type="checkbox"
+                    :value="label"
+                    :disabled="disabled"
+                    v-model="checkValue">
+                <label :for="uuid">
+                    <svg
+                        class="checkbox__box"
+                        viewBox="0 0 14 10">
+                        <path
+                            class="checkbox__mark"
+                            :d="markDrawingCommands" />
+                    </svg>
+                    <span
+                        v-if="label"
+                        class="checkbox__label"
+                        v-text="label" />
+                </label>
+                <slot name="append" />
+            </div>
+        </template>
+    </InputUUIDProvider>
 </template>
 
 <script>
-import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
+import InputUUIDProvider from '@UI/components/Input/InputUUIDProvider';
 
 export default {
     name: 'CheckBox',
-    mixins: [
-        associatedLabelMixin,
-    ],
+    components: {
+        InputUUIDProvider,
+    },
     props: {
         /**
          * Component value
