@@ -50,7 +50,10 @@ export default {
     },
     computed: {
         cellData() {
-            if (this.isDraft && !arraysAreEqual(this.data.value, this.draft)) {
+            const isEqualArray = arraysAreEqual(this.data.value, this.draft);
+            const isNotNull = this.data.value === null && this.draft === null;
+
+            if (this.isDraft && !isEqualArray && !isNotNull) {
                 return {
                     value: this.draft,
                     isDraft: true,
