@@ -24,7 +24,10 @@ export const postGridData = async ({
             },
         } = await $axios.$post(path, data);
 
-        const sortedColumns = getSortedColumnsByIDs(columns, data.columns);
+        const sortedColumns = getSortedColumnsByIDs(
+            columns,
+            data.columns.map(column => `${column.name}:${column.language}`),
+        );
 
         if (columns.length > 0 && !$cookies.get(`GRID_CONFIG:${$route.name}`)) {
             $cookies.set(
