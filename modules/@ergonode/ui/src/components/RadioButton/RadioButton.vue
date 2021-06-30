@@ -4,36 +4,40 @@
  */
 
 <template>
-    <div :class="classes">
-        <input
-            :id="associatedLabel"
-            v-model="radioValue"
-            type="radio"
-            :value="label"
-            :name="name">
-        <label :for="associatedLabel">
-            <div class="radio-button__content">
-                <div
-                    v-show="isSelected"
-                    class="radio-button__mark" />
+    <InputUUIDProvider>
+        <template #default="{ uuid }">
+            <div :class="classes">
+                <input
+                    :id="uuid"
+                    v-model="radioValue"
+                    type="radio"
+                    :value="label"
+                    :name="name">
+                <label :for="uuid">
+                    <div class="radio-button__content">
+                        <div
+                            v-show="isSelected"
+                            class="radio-button__mark" />
+                    </div>
+                    <span
+                        v-if="label"
+                        class="radio-button__label"
+                        v-text="label" />
+                </label>
+                <slot name="append" />
             </div>
-            <span
-                v-if="label"
-                class="radio-button__label"
-                v-text="label" />
-        </label>
-        <slot name="append" />
-    </div>
+        </template>
+    </InputUUIDProvider>
 </template>
 
 <script>
-import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
+import InputUUIDProvider from '@UI/components/Input/InputUUIDProvider';
 
 export default {
     name: 'RadioButton',
-    mixins: [
-        associatedLabelMixin,
-    ],
+    components: {
+        InputUUIDProvider,
+    },
     props: {
         /**
          * Component value

@@ -3,56 +3,60 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="upload-file-tab">
-        <div
-            :class="[
-                'upload-file-tab__activator',
-                { 'upload-file-tab__activator--hovered': isDraggedFileOver }
-            ]">
-            <input
-                :id="associatedLabel"
-                type="file"
-                ref="input"
-                multiple
-                @dragenter="onDragEnter"
-                @dragleave="onDragLeave"
-                @input="onUpload">
-            <label
-                class="upload-file-tab__label"
-                :for="associatedLabel">
-                <IconUploadCloudFile
-                    :fill-color="uploadCloudFileIconColor"
-                    view-box="0 0 48 32"
-                    width="48"
-                    height="32" />
-                <span
-                    class="information-label"
-                    v-text="$t('@Media.media.components.UploadFileTab.informationLabel')" />
-                <template v-if="!isDraggedFileOver">
-                    <span
-                        class="information-label-logic-operator"
-                        v-text="$t('@Media.media.components.UploadFileTab.logicOperator')" />
-                    <Button
-                        :size="smallSize"
-                        :title="$t('@Media.media.components.UploadFileTab.browseTitle')"
-                        @click.native="onBrowseFile" />
-                </template>
-            </label>
-        </div>
-        <div
-            class="upload-file-tab__uploading-panel"
-            v-show="files.length">
-            <ListScrollableContainer>
-                <UploadFileList>
-                    <UploadFileListLoadingElement :files="files" />
-                    <UploadFileListElement
-                        v-for="(file, index) in files"
-                        :key="index"
-                        :file="file" />
-                </UploadFileList>
-            </ListScrollableContainer>
-        </div>
-    </div>
+    <InputUUIDProvider>
+        <template #default="{ uuid }">
+            <div class="upload-file-tab">
+                <div
+                    :class="[
+                        'upload-file-tab__activator',
+                        { 'upload-file-tab__activator--hovered': isDraggedFileOver }
+                    ]">
+                    <input
+                        :id="uuid"
+                        type="file"
+                        ref="input"
+                        multiple
+                        @dragenter="onDragEnter"
+                        @dragleave="onDragLeave"
+                        @input="onUpload">
+                    <label
+                        class="upload-file-tab__label"
+                        :for="uuid">
+                        <IconUploadCloudFile
+                            :fill-color="uploadCloudFileIconColor"
+                            view-box="0 0 48 32"
+                            width="48"
+                            height="32" />
+                        <span
+                            class="information-label"
+                            v-text="$t('@Media.media.components.UploadFileTab.informationLabel')" />
+                        <template v-if="!isDraggedFileOver">
+                            <span
+                                class="information-label-logic-operator"
+                                v-text="$t('@Media.media.components.UploadFileTab.logicOperator')" />
+                            <Button
+                                :size="smallSize"
+                                :title="$t('@Media.media.components.UploadFileTab.browseTitle')"
+                                @click.native="onBrowseFile" />
+                        </template>
+                    </label>
+                </div>
+                <div
+                    class="upload-file-tab__uploading-panel"
+                    v-show="files.length">
+                    <ListScrollableContainer>
+                        <UploadFileList>
+                            <UploadFileListLoadingElement :files="files" />
+                            <UploadFileListElement
+                                v-for="(file, index) in files"
+                                :key="index"
+                                :file="file" />
+                        </UploadFileList>
+                    </ListScrollableContainer>
+                </div>
+            </div>
+        </template>
+    </InputUUIDProvider>
 </template>
 
 <script>
@@ -74,15 +78,16 @@ import {
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Button from '@UI/components/Button/Button';
 import IconUploadCloudFile from '@UI/components/Icons/Actions/IconUploadCloudFile';
+import InputUUIDProvider from '@UI/components/Input/InputUUIDProvider';
 import ListScrollableContainer from '@UI/components/List/ListScrollableContainer';
 import UploadFileList from '@UI/components/UploadFileList/UploadFileList';
 import UploadFileListElement from '@UI/components/UploadFileList/UploadFileListElement';
 import UploadFileListLoadingElement from '@UI/components/UploadFileList/UploadFileListLoadingElement';
-import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'UploadFileTab',
     components: {
+        InputUUIDProvider,
         IconUploadCloudFile,
         Button,
         UploadFileList,
@@ -90,9 +95,6 @@ export default {
         UploadFileListLoadingElement,
         ListScrollableContainer,
     },
-    mixins: [
-        associatedLabelMixin,
-    ],
     data() {
         return {
             files: [],

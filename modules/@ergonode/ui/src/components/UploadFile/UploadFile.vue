@@ -3,67 +3,71 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        :class="classes">
-        <fieldset
-            class="upload-file__activator"
-            :style="{ height: height }">
-            <legend
-                class="upload-file__label"
-                :for="associatedLabel"
-                v-text="label"
-                v-if="label" />
-            <input
-                v-if="!value"
-                type="file"
-                ref="input"
-                :accept="acceptFiles"
-                :disabled="disabled"
-                @input="onUpload">
+    <InputUUIDProvider>
+        <template #default="{ uuid }">
             <div
-                v-if="requestPending"
-                class="upload-file__loader">
-                <IconRefresh
-                    :height="32"
-                    :width="48"
-                    view-box="0 0 48 32" />
-                Uploading the file...
-            </div>
-            <div
-                v-else
-                class="upload-file__content">
-                <div
-                    class="upload-file__placeholder"
-                    v-if="!value">
-                    <IconUploadCloudFile
-                        :fill-color="greenColor"
-                        view-box="0 0 48 32"
-                        width="48"
-                        height="32" />
-                    <span class="upload-file__description">
-                        Drag the file here or browse
-                    </span>
-                </div>
-                <template v-else>
-                    <slot name="file" />
-                    <Fab
-                        v-if="!disabled"
-                        :style="{ backgroundColor: whiteColor }"
-                        :floating="{ top: '20px', right: '20px'}"
-                        :theme="destructiveTheme"
-                        @click.native="onRemove">
-                        <template #icon="{ color }">
-                            <IconDelete :fill-color="color" />
+                :class="classes">
+                <fieldset
+                    class="upload-file__activator"
+                    :style="{ height: height }">
+                    <legend
+                        class="upload-file__label"
+                        :for="uuid"
+                        v-text="label"
+                        v-if="label" />
+                    <input
+                        v-if="!value"
+                        type="file"
+                        ref="input"
+                        :accept="acceptFiles"
+                        :disabled="disabled"
+                        @input="onUpload">
+                    <div
+                        v-if="requestPending"
+                        class="upload-file__loader">
+                        <IconRefresh
+                            :height="32"
+                            :width="48"
+                            view-box="0 0 48 32" />
+                        Uploading the file...
+                    </div>
+                    <div
+                        v-else
+                        class="upload-file__content">
+                        <div
+                            class="upload-file__placeholder"
+                            v-if="!value">
+                            <IconUploadCloudFile
+                                :fill-color="greenColor"
+                                view-box="0 0 48 32"
+                                width="48"
+                                height="32" />
+                            <span class="upload-file__description">
+                                Drag the file here or browse
+                            </span>
+                        </div>
+                        <template v-else>
+                            <slot name="file" />
+                            <Fab
+                                v-if="!disabled"
+                                :style="{ backgroundColor: whiteColor }"
+                                :floating="{ top: '20px', right: '20px'}"
+                                :theme="destructiveTheme"
+                                @click.native="onRemove">
+                                <template #icon="{ color }">
+                                    <IconDelete :fill-color="color" />
+                                </template>
+                            </Fab>
                         </template>
-                    </Fab>
-                </template>
+                    </div>
+                </fieldset>
+                <span
+                    v-if="errorMessages"
+                    class="upload-file__error-label"
+                    v-text="errorMessages" />
             </div>
-        </fieldset>
-        <span
-            v-if="errorMessages"
-            class="upload-file__error-label"
-            v-text="errorMessages" />
-    </div>
+        </template>
+    </InputUUIDProvider>
 </template>
 
 <script>
@@ -79,7 +83,7 @@ import Fab from '@UI/components/Fab/Fab';
 import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 import IconRefresh from '@UI/components/Icons/Actions/IconRefresh';
 import IconUploadCloudFile from '@UI/components/Icons/Actions/IconUploadCloudFile';
-import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
+import InputUUIDProvider from '@UI/components/Input/InputUUIDProvider';
 
 export default {
     name: 'UploadFile',
@@ -88,10 +92,8 @@ export default {
         IconDelete,
         IconRefresh,
         IconUploadCloudFile,
+        InputUUIDProvider,
     },
-    mixins: [
-        associatedLabelMixin,
-    ],
     props: {
         label: {
             type: String,

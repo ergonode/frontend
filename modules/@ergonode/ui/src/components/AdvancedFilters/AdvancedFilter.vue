@@ -3,62 +3,66 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        :class="classes"
-        :draggable="!isFocused && draggable"
-        @dragover="onDragOver"
-        @dragstart="onDragStart"
-        @dragend="onDragEnd">
-        <div
-            ref="activator"
-            class="advanced-filter__activator"
-            @mousedown="onMouseDown"
-            @mouseup="onMouseUp">
-            <label
-                class="advanced-filter__label"
-                :for="associatedLabel"
-                v-text="title" />
-            <input
-                :id="associatedLabel"
-                ref="input"
-                class="advanced-filter__input"
-                readonly
-                :title="hint"
-                @focus="onFocus"
-                @blur="onBlur">
-            <div class="advanced-filter__details">
-                <span
-                    v-if="!value"
-                    class="advanced-filter__placeholder">
-                    Select...
-                </span>
-                <template v-else>
-                    <span
-                        class="advanced-filter__value"
-                        v-text="value" />
-                    <span
-                        v-if="parameters"
-                        class="advanced-filter__parameter"
-                        v-text="parameters" />
-                </template>
-                <IconArrowDropdown
-                    class="advanced-filter__icon"
-                    :state="arrowIconState"
-                    :fill-color="arrowIconFillColor" />
+    <InputUUIDProvider>
+        <template #default="{ uuid }">
+            <div
+                :class="classes"
+                :draggable="!isFocused && draggable"
+                @dragover="onDragOver"
+                @dragstart="onDragStart"
+                @dragend="onDragEnd">
+                <div
+                    ref="activator"
+                    class="advanced-filter__activator"
+                    @mousedown="onMouseDown"
+                    @mouseup="onMouseUp">
+                    <label
+                        class="advanced-filter__label"
+                        :for="uuid"
+                        v-text="title" />
+                    <input
+                        :id="uuid"
+                        ref="input"
+                        class="advanced-filter__input"
+                        readonly
+                        :title="hint"
+                        @focus="onFocus"
+                        @blur="onBlur">
+                    <div class="advanced-filter__details">
+                        <span
+                            v-if="!value"
+                            class="advanced-filter__placeholder">
+                            Select...
+                        </span>
+                        <template v-else>
+                            <span
+                                class="advanced-filter__value"
+                                v-text="value" />
+                            <span
+                                v-if="parameters"
+                                class="advanced-filter__parameter"
+                                v-text="parameters" />
+                        </template>
+                        <IconArrowDropdown
+                            class="advanced-filter__icon"
+                            :state="arrowIconState"
+                            :fill-color="arrowIconFillColor" />
+                    </div>
+                </div>
+                <AdvancedFilterDropdown
+                    v-if="isReadyToRender"
+                    ref="menu"
+                    :parent-reference="$refs.activator"
+                    :visible="isFocused"
+                    :fixed="fixedContent"
+                    @click-outside="onClickOutside">
+                    <slot
+                        name="dropdown"
+                        :on-apply="onApply" />
+                </AdvancedFilterDropdown>
             </div>
-        </div>
-        <AdvancedFilterDropdown
-            v-if="isReadyToRender"
-            ref="menu"
-            :parent-reference="$refs.activator"
-            :visible="isFocused"
-            :fixed="fixedContent"
-            @click-outside="onClickOutside">
-            <slot
-                name="dropdown"
-                :on-apply="onApply" />
-        </AdvancedFilterDropdown>
-    </div>
+        </template>
+    </InputUUIDProvider>
 </template>
 
 <script>
@@ -78,7 +82,7 @@ import {
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import AdvancedFilterDropdown from '@UI/components/AdvancedFilters/Dropdown/AdvancedFilterDropdown';
 import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
-import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
+import InputUUIDProvider from '@UI/components/Input/InputUUIDProvider';
 import {
     getDraggedColumnPositionState,
 } from '@UI/models/dragAndDrop/helpers';
@@ -92,10 +96,8 @@ export default {
     components: {
         AdvancedFilterDropdown,
         IconArrowDropdown,
+        InputUUIDProvider,
     },
-    mixins: [
-        associatedLabelMixin,
-    ],
     props: {
         /**
          * Index of given component at the loop

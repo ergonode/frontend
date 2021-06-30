@@ -3,68 +3,72 @@
  * See LICENSE for license details.
  */
 <template>
-    <Component
-        :is="styleComponent"
-        ref="activator"
-        :focused="isFocused"
-        :error="isError"
-        :data-cy="dataCy"
-        :disabled="disabled"
-        :alignment="alignment"
-        :size="size"
-        :height="height"
-        :details-label="informationLabel"
-        @mousedown="onMouseDown"
-        @mouseup="onMouseUp">
-        <template #activator>
-            <InputController
+    <InputUUIDProvider>
+        <template #default="{ uuid }">
+            <Component
+                :is="styleComponent"
                 ref="activator"
-                :size="size">
-                <!--
-                    @slot Prepend element - icon recommended
-                -->
-                <slot name="prepend" />
-                <input
-                    :id="associatedLabel"
-                    :class="classes"
-                    ref="input"
-                    v-bind="{ ...input }"
-                    :value="value"
-                    :placeholder="placeholderValue"
-                    autocomplete="on"
-                    :disabled="disabled"
-                    :aria-label="label || 'no description'"
-                    @input="onValueChange"
-                    @focus="onFocus"
-                    @blur="onBlur">
-                <InputLabel
-                    v-if="label"
-                    :for="associatedLabel"
-                    :required="required"
-                    :size="size"
-                    :floating="isFocused || !isEmpty"
-                    :focused="isFocused"
-                    :disabled="disabled"
-                    :error="isError"
-                    :label="label" />
-                <template #append>
-                    <!--
-                        @slot Append element - icon recommended
-                    -->
-                    <slot name="append" />
-                    <ErrorHint
-                        v-if="isError"
-                        :hint="errorMessages" />
+                :focused="isFocused"
+                :error="isError"
+                :data-cy="dataCy"
+                :disabled="disabled"
+                :alignment="alignment"
+                :size="size"
+                :height="height"
+                :details-label="informationLabel"
+                @mousedown="onMouseDown"
+                @mouseup="onMouseUp">
+                <template #activator>
+                    <InputController
+                        ref="activator"
+                        :size="size">
+                        <!--
+                            @slot Prepend element - icon recommended
+                        -->
+                        <slot name="prepend" />
+                        <input
+                            :id="uuid"
+                            :class="classes"
+                            ref="input"
+                            v-bind="{ ...input }"
+                            :value="value"
+                            :placeholder="placeholderValue"
+                            autocomplete="on"
+                            :disabled="disabled"
+                            :aria-label="label || 'no description'"
+                            @input="onValueChange"
+                            @focus="onFocus"
+                            @blur="onBlur">
+                        <InputLabel
+                            v-if="label"
+                            :for="uuid"
+                            :required="required"
+                            :size="size"
+                            :floating="isFocused || !isEmpty"
+                            :focused="isFocused"
+                            :disabled="disabled"
+                            :error="isError"
+                            :label="label" />
+                        <template #append>
+                            <!--
+                                @slot Append element - icon recommended
+                            -->
+                            <slot name="append" />
+                            <ErrorHint
+                                v-if="isError"
+                                :hint="errorMessages" />
+                        </template>
+                    </InputController>
                 </template>
-            </InputController>
+                <template #details>
+                    <!--
+                        @slot Details element - text recommended
+                    -->
+                    <slot name="details" />
+                </template>
+            </Component>
         </template>
-        <template #details>
-            <!--
-                @slot Details element - text recommended
-            -->
-            <slot name="details" />
-        </template>
-    </Component>
+    </InputUUIDProvider>
 </template>
 
 <script>
@@ -77,7 +81,8 @@ import InputController from '@UI/components/Input/InputController';
 import InputLabel from '@UI/components/Input/InputLabel';
 import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
 import InputUnderlineStyle from '@UI/components/Input/InputUnderlineStyle';
-import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
+import InputUUIDProvider from '@UI/components/Input/InputUUIDProvider';
+
 /**
  * `TextField` is a default text input component.
  *  It might be configured with `prepend` and `append` slots.
@@ -88,11 +93,9 @@ export default {
     components: {
         InputController,
         InputLabel,
+        InputUUIDProvider,
         ErrorHint: () => import('@UI/components/Hints/ErrorHint'),
     },
-    mixins: [
-        associatedLabelMixin,
-    ],
     props: {
         /**
          * The input HTML attributes
