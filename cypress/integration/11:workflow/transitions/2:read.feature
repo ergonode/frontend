@@ -13,15 +13,15 @@ Feature: READ: Status on workflow
 
   @success
   Scenario: Read transition - success
-    When On "workflow-designer" in row 1 I can see the transition from "Draft" to "New"
-    * On "workflow-designer" in row 1, I click on the "edit" button for the transition from "Draft" to "New"
+    When On "workflow-designer" I can see the transition from "New" to "Draft"
+    * On "workflow-designer" I click on the "edit" button for the transition from "New" to "Draft"
     * I see "workflow/transition/%UUID%/general" page
     * Element "title-bar-header" is visible
-    * I can see "Draft -> New" text on "title-bar-header" element
+    * I can see "New -> Draft" text on "title-bar-header" element
     * Element "transition-source" is visible
-    * I can see "transition-source" select with the "Draft" term
+    * I can see "transition-source" select with the "New" term
     * I can see "transition-source" field as disabled
-    * I can see "transition-destination" select with the "New" term
+    * I can see "transition-destination" select with the "Draft" term
     * I can see "transition-destination" field as disabled
     * I can see "transition-roleId" select with the "" term
     * I can see "transition-roleId" field as enabled

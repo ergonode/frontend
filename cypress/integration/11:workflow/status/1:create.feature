@@ -18,7 +18,6 @@ Feature: CREATE: Status on workflow
     * I choose 0 option from "status-color" color picker field
     * I click on "submit" button in "modal"
     * I send a "POST" request and status code should be 201
-    * I open "workflow/designer" page
     Then On "workflow-designer" I can see column with "status_code" value
 
   @success

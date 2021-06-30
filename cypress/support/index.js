@@ -19,6 +19,8 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands';
+// PLugin only for Chrome browser
+import 'cypress-real-events/support';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

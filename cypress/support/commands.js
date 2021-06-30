@@ -87,3 +87,40 @@ Cypress.on('uncaught:exception', (err) => {
     console.log(err);
     return false;
 });
+
+Cypress.Commands.add('checkRequest', ({
+    requestAlias, statusCode,
+}) => {
+    cy
+        .wait(requestAlias)
+        .its('response.statusCode')
+        .should('eq', statusCode);
+});
+
+Cypress.Commands.add('sendRequest', ({
+    requestName, reqType, status,
+}) => {
+    cy
+        .wait(`@${requestName}_${reqType}`)
+        .then((xhr) => {
+            expect(xhr.request.method).to.equal(reqType);
+            expect(xhr.response.statusCode).to.equal(status);
+        });
+});
+
+Cypress.Commands.add('openPage', ({
+    page, requestAliases = [],
+}) => {
+    cy.visit(`/${page}`);
+    cy
+        .url()
+        .should('include', `/${page}`);
+
+    cy.wrap(requestAliases)
+        .each((requestAlias) => {
+            cy.checkRequest({
+                requestAlias,
+                statusCode: 200,
+            });
+        });
+});

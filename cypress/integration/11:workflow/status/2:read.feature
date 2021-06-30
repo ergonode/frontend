@@ -38,7 +38,7 @@ Feature: READ: Status on workflow
     * I can see "status-description_en_GB" field as enabled
     * I can see "status-name_pl_PL" input with the "" term
     * I can see "status-name_pl_PL" field as enabled
-      * I can see "status-description_pl_PL" textarea with the "" term
+    * I can see "status-description_pl_PL" textarea with the "" term
     * I can see "status-description_pl_PL" field as enabled
     Then I click back arrow
     * I see "workflow/designer" page

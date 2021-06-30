@@ -10,13 +10,8 @@ import {
 } from 'cypress-cucumber-preprocessor/steps';
 
 import {
-    escapeStringRegexp,
     MultiSteps,
 } from '../../../../models/index';
-import {
-    openPage,
-    sendRequest,
-} from '../../../../models/navigation';
 
 const requestName = 'transitionRequest';
 const requestWorkflowName = 'workflowRequest';
@@ -57,24 +52,12 @@ MultiSteps([
     Given,
     And,
 ], 'I open {string} page', (page) => {
-    openPage({
+    cy.openPage({
         page,
-        requestName,
-    });
-    cy
-        .wait(`@${requestWorkflowName}_GET`)
-        .its('response.statusCode')
-        .should('eq', 200);
-});
-
-MultiSteps([
-    Then,
-    And,
-], 'I send a {string} request and status code should be {int}', (reqType, status) => {
-    sendRequest({
-        requestName,
-        reqType,
-        status,
+        requestAliases: [
+            `@${requestName}_GET`,
+            `@${requestWorkflowName}_GET`,
+        ],
     });
 });
 
@@ -82,13 +65,33 @@ MultiSteps([
     And,
     Then,
     When,
-], 'On {string} I can see column with {string} value', (gridId, searchValue) => {
+], 'On {string} in row {int} I create transition from {string} to {string}', (gridId, rowId, from, to) => {
+    const statuses = [];
     cy
         .get(`[data-cy=${gridId}]`)
         .should('be.visible')
         .as('grid');
+
     cy
         .get('@grid')
         .find('.workflow-designer-header-layer-cell__title span')
-        .contains(new RegExp(`${escapeStringRegexp(searchValue)}$`, 'g'));
+        .each(($el) => {
+            statuses.push($el.text().trim());
+        }).then(() => {
+            const fromIndex = statuses.findIndex(status => status === from);
+            const toIndex = statuses.findIndex(status => status === to);
+
+            cy
+                .get('@grid')
+                .find('.workflow-designer-background-item')
+                .as('gridItem');
+
+            cy.get('@gridItem')
+                .get(`[row=${rowId - 1}][column=${fromIndex}]`)
+                .realHover()
+                .realClick()
+                .get(`[row=${rowId - 1}][column=${toIndex}]`)
+                .realHover()
+                .realClick();
+        });
 });

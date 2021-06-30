@@ -7,8 +7,8 @@ Feature: UPDATE: Transition workflow
 
   @success
   Scenario: Update transition from edit page - success
-    When On "workflow-designer" in row 1 I can see the transition from "Draft" to "New"
-    * On "workflow-designer" in row 1, I click on the "edit" button for the transition from "Draft" to "New"
+    When On "workflow-designer" I can see the transition from "New" to "Draft"
+    * On "workflow-designer" I click on the "edit" button for the transition from "New" to "Draft"
     * I see "workflow/transition/%UUID%/general" page
     * I choose "[1]" option from "transition-roleId" multi select field
     Then I click on "submit" button
