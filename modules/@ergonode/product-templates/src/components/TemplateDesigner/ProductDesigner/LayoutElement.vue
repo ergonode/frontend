@@ -70,6 +70,10 @@ export default {
         IconResize,
     },
     props: {
+        scope: {
+            type: String,
+            required: true,
+        },
         index: {
             type: Number,
             required: true,
@@ -168,6 +172,10 @@ export default {
                 },
             });
             this.__setState({
+                key: 'draggedInScope',
+                value: this.scope,
+            });
+            this.__setState({
                 key: 'isElementDragging',
                 value: DRAGGED_ELEMENT.TEMPLATE,
             });
@@ -196,6 +204,10 @@ export default {
             this.__setState({
                 key: 'draggedElement',
                 value: null,
+            });
+            this.__setState({
+                key: 'draggedInScope',
+                value: '',
             });
             this.__setState({
                 key: 'isElementDragging',

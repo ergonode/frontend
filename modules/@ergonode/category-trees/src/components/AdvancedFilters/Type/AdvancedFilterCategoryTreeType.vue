@@ -4,6 +4,7 @@
  */
 <template>
     <AdvancedFilter
+        :scope="scope"
         :index="index"
         :value="parsedFilterValue"
         :title="filter.label"
@@ -76,6 +77,13 @@ export default {
         ListElementTitle,
     },
     props: {
+        /**
+         * Context scope
+         */
+        scope: {
+            type: String,
+            default: '',
+        },
         /**
          * Index of given component at the loop
          */

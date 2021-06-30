@@ -8,4 +8,5 @@ export default () => ({
     draggedElement: null,
     ghostIndex: -1,
     draggedElIndex: -1,
+    draggedInScope: '',
 });

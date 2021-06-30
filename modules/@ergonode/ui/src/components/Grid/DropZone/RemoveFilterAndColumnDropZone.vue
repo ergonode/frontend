@@ -38,10 +38,17 @@ export default {
         DropZone,
         FadeTransition,
     },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+    },
     computed: {
         ...mapState('draggable', [
             'isElementDragging',
             'draggedElement',
+            'draggedInScope',
         ]),
         graphiteLightColor() {
             return GRAPHITE_LIGHT;
@@ -65,9 +72,9 @@ export default {
                 : IconRemoveFilter;
         },
         isDropZoneVisible() {
-            if (this.draggedElement
-                && typeof this.draggedElement.deletable !== 'undefined'
-                && !this.draggedElement.deletable) {
+            if (
+                (this.draggedInScope !== this.scope)
+                || (this.draggedElement && typeof this.draggedElement.deletable !== 'undefined' && !this.draggedElement.deletable)) {
                 return false;
             }
 

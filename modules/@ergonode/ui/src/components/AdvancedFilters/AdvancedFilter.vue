@@ -98,6 +98,13 @@ export default {
     ],
     props: {
         /**
+         * Context scope
+         */
+        scope: {
+            type: String,
+            default: '',
+        },
+        /**
          * Index of given component at the loop
          */
         index: {
@@ -219,6 +226,10 @@ export default {
                 value: this.filterId,
             });
             this.__setState({
+                key: 'draggedInScope',
+                value: this.scope,
+            });
+            this.__setState({
                 key: 'isElementDragging',
                 value: DRAGGED_ELEMENT.FILTER,
             });
@@ -249,6 +260,10 @@ export default {
             this.__setState({
                 key: 'draggedElement',
                 value: null,
+            });
+            this.__setState({
+                key: 'draggedInScope',
+                value: '',
             });
             this.__setState({
                 key: 'ghostIndex',

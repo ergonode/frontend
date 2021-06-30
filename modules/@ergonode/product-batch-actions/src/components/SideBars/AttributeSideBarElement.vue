@@ -124,11 +124,19 @@ export default {
                     languageCode: this.languageCode,
                 },
             });
+            this.__setState({
+                key: 'draggedInScope',
+                value: this.scope,
+            });
         },
         onDragEnd() {
             this.__setState({
                 key: 'draggedElement',
                 value: null,
+            });
+            this.__setState({
+                key: 'draggedInScope',
+                value: '',
             });
         },
     },

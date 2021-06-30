@@ -4,6 +4,7 @@
  */
 <template>
     <AdvancedFilter
+        :scope="scope"
         :index="index"
         :value="filterValue"
         :hint="hint"
@@ -44,6 +45,13 @@ export default {
         SelectDropdownApplyFooter,
     },
     props: {
+        /**
+         * Context scope
+         */
+        scope: {
+            type: String,
+            default: '',
+        },
         /**
          * Index of given component at the loop
          */

@@ -68,6 +68,7 @@
                         v-else
                         :style="templateRows"
                         :key="column.id"
+                        :scope="scope"
                         :column-index="columnIndex + columnsOffset"
                         :column="column"
                         :rows="rows"
@@ -192,6 +193,13 @@ export default {
         gridResizerCellMixin,
     ],
     props: {
+        /**
+         * Context scope
+         */
+        scope: {
+            type: String,
+            default: '',
+        },
         /**
          * List of columns presented at Grid
          */

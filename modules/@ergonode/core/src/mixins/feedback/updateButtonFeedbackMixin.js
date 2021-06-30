@@ -10,7 +10,7 @@ import {
 export default {
     props: {
         /**
-         * Scope of context
+         * Context scope
          */
         scope: {
             type: String,

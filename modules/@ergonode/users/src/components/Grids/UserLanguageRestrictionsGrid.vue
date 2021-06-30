@@ -4,6 +4,7 @@
  */
 <template>
     <Grid
+        :scope="scope"
         :columns="columns"
         :rows="rows"
         :drafts="drafts"

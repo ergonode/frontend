@@ -60,6 +60,13 @@ export default {
     },
     props: {
         /**
+         * Context scope
+         */
+        scope: {
+            type: String,
+            default: '',
+        },
+        /**
          * List of rows presented at Grid
          */
         rows: {

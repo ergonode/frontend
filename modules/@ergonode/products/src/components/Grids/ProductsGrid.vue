@@ -4,6 +4,7 @@
  */
 <template>
     <Grid
+        :scope="scope"
         :columns="columns"
         :rows="rows"
         :drafts="drafts"
@@ -56,6 +57,7 @@
         <template #appendHeader>
             <ProductAdvancedFilters
                 v-show="isFiltersExpanded"
+                :scope="scope"
                 :value="advancedFilterValues"
                 :filters="advancedFilters"
                 :extended-filters="extendedAdvancedFilters"

@@ -6,7 +6,7 @@
     <GridViewTemplate>
         <template #sidebar>
             <VerticalTabBar :items="verticalTabs">
-                <RemoveFilterAndColumnDropZone />
+                <RemoveFilterAndColumnDropZone :scope="scope" />
             </VerticalTabBar>
         </template>
         <template #grid>

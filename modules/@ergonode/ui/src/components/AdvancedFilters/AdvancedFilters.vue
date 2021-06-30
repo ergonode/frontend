@@ -8,6 +8,7 @@
             v-for="(filter, index) in orderedFilters"
             :is="filterComponents[filter.type]"
             :key="filter.id"
+            :scope="scope"
             :index="index"
             :value="value[filter.id]"
             :filter="filter"
@@ -43,6 +44,13 @@ export default {
         AdvancedFiltersRemoveAllButton,
     },
     props: {
+        /**
+         * Context scope
+         */
+        scope: {
+            type: String,
+            default: '',
+        },
         /**
          * List of advanced filters
          */

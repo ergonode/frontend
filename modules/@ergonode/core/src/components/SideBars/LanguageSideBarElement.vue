@@ -100,6 +100,10 @@ export default {
                     name: this.item.name,
                 },
             });
+            this.__setState({
+                key: 'draggedInScope',
+                value: this.scope,
+            });
         },
         onDragEnd() {
             this.__setState({
@@ -109,6 +113,10 @@ export default {
             this.__setState({
                 key: 'draggedElement',
                 value: null,
+            });
+            this.__setState({
+                key: 'draggedInScope',
+                value: '',
             });
         },
     },
