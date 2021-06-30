@@ -354,6 +354,7 @@ export default {
     }
 
     .fixed-container {
+        display: flex;
         position: relative;
         flex: 1 1 auto;
         width: 100%;
