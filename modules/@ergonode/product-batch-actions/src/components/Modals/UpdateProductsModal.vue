@@ -16,6 +16,7 @@
                         <DraggableForm
                             :title="$t('@ProductBatchActions.productBatchAction.components.UpdateProductsModal.draggableFormTitle')"
                             :width="424"
+                            :scope="scope"
                             :items="formItems"
                             @add-item="onAddItem"
                             @remove-item="onRemoveItem">

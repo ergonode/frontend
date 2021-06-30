@@ -4,6 +4,7 @@
  */
 <template>
     <Grid
+        :scope="scope"
         :columns="columns"
         :data-count="filtered"
         :rows="rows"
@@ -100,6 +101,12 @@ export default {
         }),
         extendedGridComponentsMixin,
     ],
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+    },
     async fetch() {
         await this.onFetchData();
 

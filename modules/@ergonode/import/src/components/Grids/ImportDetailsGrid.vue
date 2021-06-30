@@ -4,6 +4,7 @@
  */
 <template>
     <Grid
+        :scope="scope"
         :columns="columns"
         :data-count="filtered"
         :rows="rows"
@@ -93,6 +94,10 @@ export default {
         extendedGridComponentsMixin,
     ],
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         sourceId: {
             type: String,
             required: true,

@@ -70,6 +70,13 @@ export default {
         IconButton,
     },
     props: {
+        /**
+         * Context scope
+         */
+        scope: {
+            type: String,
+            default: '',
+        },
         index: {
             type: Number,
             required: true,
@@ -135,6 +142,10 @@ export default {
                 value: this.index,
             });
             this.__setState({
+                key: 'draggedInScope',
+                value: this.scope,
+            });
+            this.__setState({
                 key: 'ghostIndex',
                 value: this.index,
             });
@@ -158,6 +169,10 @@ export default {
             this.__setState({
                 key: 'draggedElement',
                 value: null,
+            });
+            this.__setState({
+                key: 'draggedInScope',
+                value: '',
             });
             this.__setState({
                 key: 'draggedElIndex',

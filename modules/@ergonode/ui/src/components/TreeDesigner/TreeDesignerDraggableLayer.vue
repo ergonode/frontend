@@ -229,6 +229,10 @@ export default {
                 value: null,
             });
             this.__setState({
+                key: 'draggedInScope',
+                value: '',
+            });
+            this.__setState({
                 key: 'isElementDragging',
                 value: null,
             });

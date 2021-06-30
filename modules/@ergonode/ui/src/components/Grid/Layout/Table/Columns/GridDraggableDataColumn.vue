@@ -4,6 +4,7 @@
  */
 <template>
     <GridDraggableColumn
+        :scope="scope"
         :index="columnIndex"
         :column="column"
         :key="column.id"
@@ -83,6 +84,13 @@ export default {
         GridDraggableColumn,
     },
     props: {
+        /**
+         * Context scope
+         */
+        scope: {
+            type: String,
+            default: '',
+        },
         /**
          * Column index of given component at the loop
          */

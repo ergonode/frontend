@@ -8,7 +8,7 @@
         @close="onClose">
         <template #body>
             <VerticalTabBar :items="verticalTabs">
-                <RemoveFilterAndColumnDropZone />
+                <RemoveFilterAndColumnDropZone :scope="scope" />
             </VerticalTabBar>
             <AddProductRelationsGrid
                 :value="value"

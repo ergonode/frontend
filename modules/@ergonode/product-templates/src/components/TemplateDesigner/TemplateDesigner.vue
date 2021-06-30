@@ -33,6 +33,7 @@
                         <LayoutElement
                             v-for="(element, index) in layoutElements"
                             :key="`${element.row}/${element.column}`"
+                            :scope="scope"
                             :index="index"
                             :element="element"
                             :layout-width="columns"

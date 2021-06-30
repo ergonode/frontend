@@ -5,6 +5,7 @@
 <template>
     <IntersectionObserver @intersect="onIntersect">
         <Grid
+            :scope="scope"
             :columns="columnsWithAttachColumn"
             :data-count="filtered"
             :drafts="drafts"
@@ -117,6 +118,10 @@ export default {
         extendedGridComponentsMixin,
     ],
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         multiple: {
             type: Boolean,
             default: false,

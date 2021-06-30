@@ -44,6 +44,7 @@
                 <KeepAlive>
                     <GridTableLayout
                         v-if="isTableLayout"
+                        :scope="scope"
                         :columns="columns"
                         :rows="rows"
                         :row-ids="rowIds"
@@ -77,6 +78,7 @@
                         @resolved="onResolvedLayout" />
                     <GridCollectionLayout
                         v-else
+                        :scope="scope"
                         :rows="rows"
                         :row-ids="rowIds"
                         :collection-cell-binding="collectionCellBinding"
@@ -177,6 +179,13 @@ export default {
         GridPageSelector,
     },
     props: {
+        /**
+         * Context scope
+         */
+        scope: {
+            type: String,
+            default: '',
+        },
         /**
          * List of columns presented at Grid
          */

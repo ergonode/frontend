@@ -4,6 +4,7 @@
  */
 <template>
     <Grid
+        :scope="scope"
         :columns="columns"
         :data-count="filtered"
         :pagination="pagination"
@@ -57,6 +58,7 @@
         <template #appendHeader>
             <ProductAdvancedFilters
                 v-show="isFiltersExpanded"
+                :scope="scope"
                 :value="advancedFilterValues"
                 :filters="advancedFilters"
                 :extended-filters="extendedAdvancedFilters"

@@ -27,6 +27,7 @@
                 <DraggableFormItem
                     v-for="(item, index) in localItems"
                     :key="`${item.id}|${item.languageCode}`"
+                    :scope="scope"
                     :index="index"
                     :item="item"
                     @remove-item="onRemoveItem"
@@ -67,6 +68,13 @@ export default {
         DraggableFormItem,
     },
     props: {
+        /**
+         * Context scope
+         */
+        scope: {
+            type: String,
+            default: '',
+        },
         /**
          * List of form items
          */
@@ -208,6 +216,10 @@ export default {
                 this.__setState({
                     key: 'draggedElement',
                     value: null,
+                });
+                this.__setState({
+                    key: 'draggedInScope',
+                    value: '',
                 });
                 this.__setState({
                     key: 'ghostIndex',
