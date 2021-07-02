@@ -24,7 +24,6 @@
             <Fab
                 :size="tinySize"
                 :theme="secondaryTheme"
-                :disabled="currentIndex === 0"
                 @click.native="onPreviousImage">
                 <template #icon="{ color }">
                     <IconArrowSingle
@@ -40,7 +39,6 @@
             <Fab
                 :size="tinySize"
                 :theme="secondaryTheme"
-                :disabled="currentIndex === value.length - 1"
                 @click.native="onNextImage">
                 <template #icon="{ color }">
                     <IconArrowSingle
@@ -206,10 +204,14 @@ export default {
             this.fetchingProductIndexes[fetchingIndex] = false;
         },
         onPreviousImage() {
-            this.$emit('current', this.currentIndex - 1);
+            const previousIndex = this.currentIndex - 1;
+
+            this.$emit('current', previousIndex > 0 ? previousIndex : this.value.length - 1 - previousIndex);
         },
         onNextImage() {
-            this.$emit('current', this.currentIndex + 1);
+            const nextIndex = this.currentIndex + 1;
+
+            this.$emit('current', nextIndex === this.value.length - 1 ? 0 : nextIndex);
         },
     },
 };

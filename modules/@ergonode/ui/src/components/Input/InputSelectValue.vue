@@ -75,6 +75,7 @@ export default {
 <style lang="scss" scoped>
     .input-select-value {
         display: flex;
+        align-self: center;
         align-items: center;
         width: 100%;
         padding: 0 4px;

@@ -6,11 +6,14 @@
     <div :class="classes">
         <div
             class="input-solid-style__input"
+            ref="input"
             :style="inputStyle"
             @mousedown="onMouseDown"
             @mouseup="onMouseUp">
             <fieldset class="input-solid-style__border" />
-            <slot name="activator" />
+            <slot
+                name="activator"
+                :input-reference="$refs.input" />
         </div>
         <slot />
         <slot name="details">

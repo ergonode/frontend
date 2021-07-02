@@ -12,36 +12,35 @@
                 :details-label="informationLabel">
                 <template #activator>
                     <InputController>
-                        <InputImageController>
-                            <template v-if="!value">
-                                <InputUploadPlaceholder />
-                                <input
-                                    class="upload-file"
-                                    :id="uuid"
-                                    type="file"
-                                    ref="input"
-                                    :accept="acceptFiles"
-                                    :disabled="disabled"
-                                    @input="onUpload">
+                        <input
+                            v-if="!value"
+                            class="upload-file"
+                            :id="uuid"
+                            type="file"
+                            ref="input"
+                            :accept="acceptFiles"
+                            :disabled="disabled"
+                            @input="onUpload">
+                        <Fab
+                            v-else-if="!disabled"
+                            :floating="{
+                                top: '4px',
+                                right: '4px',
+                                backgroundColor: whiteColor,
+                            }"
+                            :theme="destructiveTheme"
+                            @click.native="onRemove">
+                            <template #icon="{ color }">
+                                <IconDelete :fill-color="color" />
                             </template>
+                        </Fab>
+                        <InputImageController>
+                            <InputUploadPlaceholder v-if="!value" />
                             <InputUploadSpinner v-else-if="requestPending" />
                             <div
                                 class="upload-file__content"
                                 v-else>
                                 <slot name="file" />
-                                <Fab
-                                    v-if="!disabled"
-                                    :floating="{
-                                        top: '4px',
-                                        right: '4px',
-                                        backgroundColor: whiteColor,
-                                    }"
-                                    :theme="destructiveTheme"
-                                    @click.native="onRemove">
-                                    <template #icon="{ color }">
-                                        <IconDelete :fill-color="color" />
-                                    </template>
-                                </Fab>
                             </div>
                         </InputImageController>
                         <InputLabel

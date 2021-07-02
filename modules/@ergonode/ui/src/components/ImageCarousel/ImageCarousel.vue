@@ -18,7 +18,6 @@
             <Fab
                 :style="{ backgroundColor: whiteColor }"
                 :theme="secondaryTheme"
-                :disabled="currentIndex < 1"
                 @click.native="onPreviousImage">
                 <template #icon="{ color }">
                     <IconArrowSingle
@@ -29,7 +28,6 @@
             <Fab
                 :style="{ backgroundColor: whiteColor }"
                 :theme="secondaryTheme"
-                :disabled="currentIndex === imageIds.length - 1"
                 @click.native="onNextImage">
                 <template #icon="{ color }">
                     <IconArrowSingle
@@ -111,10 +109,14 @@ export default {
     },
     methods: {
         onPreviousImage() {
-            this.$emit('current', this.currentIndex - 1);
+            const previousIndex = this.currentIndex - 1;
+
+            this.$emit('current', previousIndex > 0 ? previousIndex : this.imageIds.length - 1 - previousIndex);
         },
         onNextImage() {
-            this.$emit('current', this.currentIndex + 1);
+            const nextIndex = this.currentIndex + 1;
+
+            this.$emit('current', nextIndex === this.imageIds.length - 1 ? 0 : nextIndex);
         },
         hrefById(id) {
             const replacements = {

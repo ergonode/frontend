@@ -284,6 +284,7 @@ export default {
     .text-field {
         z-index: $Z_INDEX_LVL_2;
         flex: 1;
+        align-self: center;
         outline: none;
         width: 100%;
         max-width: 100%;

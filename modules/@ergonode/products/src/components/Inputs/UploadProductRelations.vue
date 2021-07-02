@@ -9,32 +9,35 @@
         :disabled="disabled">
         <template #activator>
             <InputController>
-                <div class="upload-product-relations">
+                <InputImageController>
                     <template v-if="isValue">
                         <ProductCarousel
                             :value="value"
                             :current-index="currentIndex"
                             @current="onCurrentIndexChange" />
-                        <div
+                        <ActionFab
                             v-if="!disabled"
-                            class="upload-product-relations__settings">
-                            <ActionFab
-                                :size="smallSize"
-                                :theme="secondaryTheme"
-                                :options="settingsOptions"
-                                @input="onSelectSetting">
-                                <template #icon="{ color }">
-                                    <IconDots :fill-color="color" />
-                                </template>
-                                <template #option="{ option }">
-                                    <ListElementDescription>
-                                        <ListElementTitle
-                                            :size="smallSize"
-                                            :title="option.text" />
-                                    </ListElementDescription>
-                                </template>
-                            </ActionFab>
-                        </div>
+                            :floating="{
+                                top: '4px',
+                                right: '4px',
+                                backgroundColor: whiteColor,
+                                borderRadius: '50%',
+                            }"
+                            :size="smallSize"
+                            :theme="secondaryTheme"
+                            :options="settingsOptions"
+                            @input="onSelectSetting">
+                            <template #icon="{ color }">
+                                <IconDots :fill-color="color" />
+                            </template>
+                            <template #option="{ option }">
+                                <ListElementDescription>
+                                    <ListElementTitle
+                                        :size="smallSize"
+                                        :title="option.text" />
+                                </ListElementDescription>
+                            </template>
+                        </ActionFab>
                     </template>
                     <Button
                         v-else-if="!disabled"
@@ -46,7 +49,7 @@
                             <IconAdd :fill-color="color" />
                         </template>
                     </Button>
-                </div>
+                </InputImageController>
                 <InputLabel
                     v-if="label"
                     :required="required"
@@ -73,9 +76,13 @@ import confirmLeaveModalMixin from '@Core/mixins/feedback/confirmLeaveModalMixin
 import {
     ROUTE_NAME,
 } from '@Products/config/routes';
+import {
+    WHITE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import InputController from '@UI/components/Input/InputController';
+import InputImageController from '@UI/components/Input/InputImageController';
 import InputLabel from '@UI/components/Input/InputLabel';
 import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
 
@@ -85,6 +92,7 @@ export default {
         InputController,
         InputSolidStyle,
         InputLabel,
+        InputImageController,
         Button,
         IconAdd,
         IconDots: () => import('@UI/components/Icons/Others/IconDots'),
@@ -161,6 +169,9 @@ export default {
         regularSize() {
             return SIZE.REGULAR;
         },
+        whiteColor() {
+            return WHITE;
+        },
         title() {
             return this.$t('@Products.product.components.UploadProductRelations.title');
         },
@@ -230,22 +241,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .upload-product-relations {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-
-        &__settings {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background-color: $WHITE;
-            border-radius: 50%;
-        }
-    }
-</style>
