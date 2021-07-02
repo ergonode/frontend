@@ -8,7 +8,6 @@
             <Component
                 :is="styleComponent"
                 ref="activator"
-                :height="height"
                 :focused="isFocused"
                 :error="isError"
                 :data-cy="dataCy"
@@ -19,7 +18,10 @@
                 @mousedown="onMouseDown"
                 @mouseup="onMouseUp">
                 <template #activator>
-                    <InputController :size="size">
+                    <InputController>
+                        <!--
+                            @slot Prepend element - icon recommended
+                        -->
                         <slot name="prepend" />
                         <textarea
                             :id="uuid"
@@ -35,7 +37,6 @@
                             @blur="onBlur" />
                         <InputLabel
                             v-if="label"
-                            :style="{ top: '10px' }"
                             :for="uuid"
                             :required="required"
                             :size="size"
@@ -44,15 +45,19 @@
                             :disabled="disabled"
                             :error="isError"
                             :label="label" />
-                        <template #append>
-                            <slot name="append" />
-                            <ErrorHint
-                                v-if="isError"
-                                :hint="errorMessages" />
-                        </template>
+                        <!--
+                            @slot Append element - icon recommended
+                        -->
+                        <slot name="append" />
+                        <ErrorHint
+                            v-if="isError"
+                            :hint="errorMessages" />
                     </InputController>
                 </template>
                 <template #details>
+                    <!--
+                        @slot Details element - text recommended
+                    -->
                     <slot name="details" />
                 </template>
             </Component>
@@ -209,6 +214,7 @@ export default {
         },
         styles() {
             return {
+                height: this.height,
                 resize: this.resize,
             };
         },
@@ -290,7 +296,8 @@ export default {
         min-width: 0;
         height: 100%;
         border: none;
-        padding: 0;
+        padding: 2px 4px;
+        margin: 0;
         background-color: transparent;
         color: $GRAPHITE_DARK;
 

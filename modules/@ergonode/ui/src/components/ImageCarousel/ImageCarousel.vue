@@ -11,36 +11,32 @@
             :value="id"
             :key="id"
             object-fit="contain" />
+        <span
+            class="image-carousel__pagination"
+            v-text="pagination" />
         <div class="image-carousel__panel">
-            <div
-                class="image-white-theme"
-                v-show="currentIndex > 0">
-                <Fab
-                    :theme="secondaryTheme"
-                    @click.native="onPreviousImage">
-                    <template #icon="{ color }">
-                        <IconArrowSingle
-                            :state="arrowLeft"
-                            :fill-color="color" />
-                    </template>
-                </Fab>
-            </div>
-            <span
-                class="image-carousel__pagination"
-                v-text="pagination" />
-            <div
-                class="image-white-theme"
-                v-show="currentIndex < imageIds.length - 1">
-                <Fab
-                    :theme="secondaryTheme"
-                    @click.native="onNextImage">
-                    <template #icon="{ color }">
-                        <IconArrowSingle
-                            :state="arrowRight"
-                            :fill-color="color" />
-                    </template>
-                </Fab>
-            </div>
+            <Fab
+                :style="{ backgroundColor: whiteColor }"
+                :theme="secondaryTheme"
+                :disabled="currentIndex < 1"
+                @click.native="onPreviousImage">
+                <template #icon="{ color }">
+                    <IconArrowSingle
+                        :state="arrowLeft"
+                        :fill-color="color" />
+                </template>
+            </Fab>
+            <Fab
+                :style="{ backgroundColor: whiteColor }"
+                :theme="secondaryTheme"
+                :disabled="currentIndex === imageIds.length - 1"
+                @click.native="onNextImage">
+                <template #icon="{ color }">
+                    <IconArrowSingle
+                        :state="arrowRight"
+                        :fill-color="color" />
+                </template>
+            </Fab>
         </div>
     </div>
 </template>
@@ -53,6 +49,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import {
+    WHITE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
 import Fab from '@UI/components/Fab/Fab';
 import IconArrowSingle from '@UI/components/Icons/Arrows/IconArrowSingle';
 import LazyImage from '@UI/components/LazyImage/LazyImage';
@@ -103,6 +102,9 @@ export default {
         arrowRight() {
             return ARROW.RIGHT;
         },
+        whiteColor() {
+            return WHITE;
+        },
         pagination() {
             return `${this.currentIndex + 1}/${this.imageIds.length}`;
         },
@@ -134,25 +136,24 @@ export default {
 
         &__panel {
             position: absolute;
-            left: 8px;
-            bottom: 8px;
-            display: grid;
-            grid-auto-flow: column;
-            column-gap: 8px;
+            left: 4px;
+            bottom: 4px;
+            right: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         &__pagination {
+            position: absolute;
+            top: 4px;
+            left: 4px;
             padding: 8px;
             background-color: $WHITE;
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_12_16;
             border-radius: 999px;
         }
-    }
-
-    .image-white-theme {
-        background-color: $WHITE;
-        border-radius: 50%;
     }
 
     .visible {

@@ -9,7 +9,7 @@
         :disabled="disabled">
         <template #activator>
             <InputController>
-                <div :class="classes">
+                <InputImageController>
                     <template v-if="isValue">
                         <div class="fixed-container">
                             <LazyImage
@@ -24,26 +24,29 @@
                                 :current-index="currentIndex"
                                 @current="onCurrentIndexChange" />
                         </div>
-                        <div
+                        <ActionFab
                             v-if="!disabled"
-                            class="upload-image-file__settings">
-                            <ActionFab
-                                :size="smallSize"
-                                :theme="secondaryTheme"
-                                :options="settingsOptions"
-                                @input="onSelectSetting">
-                                <template #icon="{ color }">
-                                    <IconDots :fill-color="color" />
-                                </template>
-                                <template #option="{ option }">
-                                    <ListElementDescription>
-                                        <ListElementTitle
-                                            :size="smallSize"
-                                            :title="option.text" />
-                                    </ListElementDescription>
-                                </template>
-                            </ActionFab>
-                        </div>
+                            :floating="{
+                                top: '4px',
+                                right: '4px',
+                                backgroundColor: whiteColor,
+                                borderRadius: '50%',
+                            }"
+                            :size="smallSize"
+                            :theme="secondaryTheme"
+                            :options="settingsOptions"
+                            @input="onSelectSetting">
+                            <template #icon="{ color }">
+                                <IconDots :fill-color="color" />
+                            </template>
+                            <template #option="{ option }">
+                                <ListElementDescription>
+                                    <ListElementTitle
+                                        :size="smallSize"
+                                        :title="option.text" />
+                                </ListElementDescription>
+                            </template>
+                        </ActionFab>
                     </template>
                     <Button
                         v-else-if="!disabled"
@@ -55,13 +58,9 @@
                             <IconAdd :fill-color="color" />
                         </template>
                     </Button>
-                </div>
+                </InputImageController>
                 <InputLabel
                     v-if="label"
-                    :style="{
-                        top: '10px',
-                        left: '12px',
-                    }"
                     :required="required"
                     :floating="true"
                     :disabled="disabled"
@@ -84,15 +83,20 @@ import PRIVILEGES from '@Media/config/privileges';
 import {
     MEDIA_TYPE,
 } from '@Media/defaults';
+import {
+    WHITE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import InputController from '@UI/components/Input/InputController';
+import InputImageController from '@UI/components/Input/InputImageController';
 import InputLabel from '@UI/components/Input/InputLabel';
 import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
 
 export default {
     name: 'UploadImageFile',
     components: {
+        InputImageController,
         InputController,
         InputSolidStyle,
         InputLabel,
@@ -178,17 +182,14 @@ export default {
         };
     },
     computed: {
-        classes() {
-            return [
-                'upload-image-file',
-                `upload-image-file--${this.size}`,
-            ];
-        },
         secondaryTheme() {
             return THEME.SECONDARY;
         },
         smallSize() {
             return SIZE.SMALL;
+        },
+        whiteColor() {
+            return WHITE;
         },
         title() {
             if (this.multiple) {
@@ -328,31 +329,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .upload-image-file {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-
-        &__settings {
-            position: absolute;
-            background-color: $WHITE;
-            border-radius: 50%;
-        }
-
-        &--small &__settings {
-            top: 16px;
-            right: 16px;
-        }
-
-        &--regular &__settings {
-            top: 20px;
-            right: 20px;
-        }
-    }
-
     .fixed-container {
         position: relative;
         display: flex;

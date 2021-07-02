@@ -77,6 +77,8 @@ export default {
         display: flex;
         align-items: center;
         width: 100%;
+        padding: 0 4px;
+        box-sizing: border-box;
         color: $GRAPHITE_DARK;
 
         & > span {

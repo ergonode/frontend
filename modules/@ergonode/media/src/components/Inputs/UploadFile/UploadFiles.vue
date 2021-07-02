@@ -9,10 +9,14 @@
         :disabled="disabled">
         <template #activator>
             <InputController>
-                <div class="upload-files">
+                <InputImageController>
                     <Preloader v-show="isPrefetchingData" />
-                    <VerticalFixedScroll v-if="!isPrefetchingData">
-                        <List v-if="isValue">
+                    <VerticalFixedScroll
+                        v-if="!isPrefetchingData && isValue"
+                        :style="{
+                            width: '100%',
+                        }">
+                        <List>
                             <ListElement
                                 v-for="file in value"
                                 :size="size"
@@ -36,28 +40,34 @@
                                     </IconButton>
                                 </ListElementAction>
                             </ListElement>
+                            <div
+                                v-if="!disabled"
+                                class="centering-container">
+                                <Button
+                                    :title="title"
+                                    :size="smallSize"
+                                    :theme="secondaryTheme"
+                                    @click.native="onShowModal">
+                                    <template #prepend="{ color }">
+                                        <IconAdd :fill-color="color" />
+                                    </template>
+                                </Button>
+                            </div>
                         </List>
-                        <div
-                            v-if="!disabled"
-                            class="centering-container">
-                            <Button
-                                :title="title"
-                                :size="smallSize"
-                                :theme="secondaryTheme"
-                                @click.native="onShowModal">
-                                <template #prepend="{ color }">
-                                    <IconAdd :fill-color="color" />
-                                </template>
-                            </Button>
-                        </div>
                     </VerticalFixedScroll>
-                </div>
+                    <Button
+                        v-if="!disabled && !isValue"
+                        :title="title"
+                        :size="smallSize"
+                        :theme="secondaryTheme"
+                        @click.native="onShowModal">
+                        <template #prepend="{ color }">
+                            <IconAdd :fill-color="color" />
+                        </template>
+                    </Button>
+                </InputImageController>
                 <InputLabel
                     v-if="label"
-                    :style="{
-                        top: '10px',
-                        left: '12px',
-                    }"
                     :required="required"
                     :floating="true"
                     :disabled="disabled"
@@ -88,6 +98,7 @@ import {
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import InputController from '@UI/components/Input/InputController';
+import InputImageController from '@UI/components/Input/InputImageController';
 import InputLabel from '@UI/components/Input/InputLabel';
 import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
 import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
@@ -96,6 +107,7 @@ import Preloader from '@UI/components/Preloader/Preloader';
 export default {
     name: 'UploadFiles',
     components: {
+        InputImageController,
         Preloader,
         InputController,
         Button,
@@ -257,13 +269,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .upload-files {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        height: 100%;
-    }
-
     .centering-container {
         display: flex;
         justify-content: center;

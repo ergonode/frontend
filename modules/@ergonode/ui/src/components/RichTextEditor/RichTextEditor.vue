@@ -22,6 +22,9 @@
                         v-if="!disabled"
                         :editor="editor"
                         ref="menuBubble" />
+                    <!--
+                        @slot Prepend element - icon recommended
+                    -->
                     <slot name="prepend" />
                     <InputController :size="size">
                         <ResizeObserver @resize="onResize">
@@ -41,7 +44,6 @@
                         </ResizeObserver>
                         <InputLabel
                             v-if="label"
-                            :style="{ top: '10px' }"
                             :for="uuid"
                             :required="required"
                             :size="size"
@@ -50,12 +52,13 @@
                             :disabled="disabled"
                             :error="isError"
                             :label="label" />
-                        <template #append>
-                            <slot name="append" />
-                            <ErrorHint
-                                v-if="isError"
-                                :hint="errorMessages" />
-                        </template>
+                        <!--
+                            @slot Append element - icon recommended
+                        -->
+                        <slot name="append" />
+                        <ErrorHint
+                            v-if="isError"
+                            :hint="errorMessages" />
                     </InputController>
                 </template>
                 <RichTextEditorMenu
@@ -64,6 +67,9 @@
                     :editor="editor"
                     :editor-width="editorWidth" />
                 <template #details>
+                    <!--
+                        @slot Details element - text recommended
+                    -->
                     <slot name="details" />
                 </template>
             </Component>
@@ -357,6 +363,7 @@ export default {
         flex: 1;
         flex-direction: column;
         height: 100%;
+        padding: 2px 4px;
         box-sizing: border-box;
 
         &--disabled {

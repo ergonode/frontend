@@ -20,8 +20,10 @@
                 @mousedown="onMouseDown"
                 @mouseup="onMouseUp">
                 <template #activator>
-                    <InputController
-                        :size="size">
+                    <InputController>
+                        <!--
+                            @slot Prepend element - icon recommended
+                        -->
                         <slot name="prepend" />
                         <InputSelectValue
                             :data-cy="`${dataCy}-value`"
@@ -54,13 +56,14 @@
                             :disabled="disabled"
                             :error="isError"
                             :label="label" />
-                        <template #append>
-                            <slot name="append" />
-                            <ErrorHint
-                                v-if="isError"
-                                :hint="errorMessages" />
-                            <IconArrowDropdown :state="dropDownState" />
-                        </template>
+                        <!--
+                            @slot Append element - icon recommended
+                        -->
+                        <slot name="append" />
+                        <ErrorHint
+                            v-if="isError"
+                            :hint="errorMessages" />
+                        <IconArrowDropdown :state="dropDownState" />
                     </InputController>
                 </template>
                 <SelectDropdown
@@ -109,6 +112,9 @@
                     </template>
                 </SelectDropdown>
                 <template #details>
+                    <!--
+                        @slot Details element - text recommended
+                    -->
                     <slot name="details" />
                 </template>
             </Component>

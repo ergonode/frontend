@@ -7,7 +7,6 @@
         <template #default="{ uuid }">
             <Component
                 :is="styleComponent"
-                ref="activator"
                 :focused="isFocused"
                 :error="isError"
                 :data-cy="dataCy"
@@ -19,9 +18,7 @@
                 @mousedown="onMouseDown"
                 @mouseup="onMouseUp">
                 <template #activator>
-                    <InputController
-                        ref="activator"
-                        :size="size">
+                    <InputController ref="activator">
                         <!--
                             @slot Prepend element - icon recommended
                         -->
@@ -49,15 +46,13 @@
                             :disabled="disabled"
                             :error="isError"
                             :label="label" />
-                        <template #append>
-                            <!--
-                                @slot Append element - icon recommended
-                            -->
-                            <slot name="append" />
-                            <ErrorHint
-                                v-if="isError"
-                                :hint="errorMessages" />
-                        </template>
+                        <!--
+                            @slot Append element - icon recommended
+                        -->
+                        <slot name="append" />
+                        <ErrorHint
+                            v-if="isError"
+                            :hint="errorMessages" />
                     </InputController>
                 </template>
                 <template #details>
@@ -294,7 +289,8 @@ export default {
         max-width: 100%;
         min-width: 0;
         border: none;
-        padding: 0;
+        padding: 0 4px;
+        margin: 0;
         background-color: transparent;
         box-shadow: none;
         color: $GRAPHITE_DARK;

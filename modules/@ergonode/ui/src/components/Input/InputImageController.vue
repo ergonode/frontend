@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="input-controller">
+    <div class="input-image-controller">
         <slot />
     </div>
 </template>
@@ -11,15 +11,18 @@
 <script>
 
 export default {
-    name: 'InputController',
+    name: 'InputImageController',
 };
 </script>
 
 <style lang="scss" scoped>
-    .input-controller {
-        z-index: $Z_INDEX_LVL_2;
+    .input-image-controller {
+        position: relative;
         display: flex;
-        flex: 1;
+        flex-direction: column;
+        justify-content: center;
         align-items: center;
+        width: 100%;
+        height: 100%;
     }
 </style>

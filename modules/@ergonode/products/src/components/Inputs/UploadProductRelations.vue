@@ -49,10 +49,6 @@
                 </div>
                 <InputLabel
                     v-if="label"
-                    :style="{
-                        top: '10px',
-                        left: '12px',
-                    }"
                     :required="required"
                     :floating="true"
                     :disabled="disabled"
@@ -251,13 +247,5 @@ export default {
             background-color: $WHITE;
             border-radius: 50%;
         }
-    }
-
-    .fixed-container {
-        position: relative;
-        flex: 1 1 auto;
-        width: 100%;
-        height: 0;
-        overflow: hidden;
     }
 </style>

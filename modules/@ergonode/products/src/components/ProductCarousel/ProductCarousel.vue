@@ -21,8 +21,8 @@
             class="product-carousel__pagination"
             v-text="pagination" />
         <div class="product-carousel__panel">
-            <IconButton
-                :size="smallSize"
+            <Fab
+                :size="tinySize"
                 :theme="secondaryTheme"
                 :disabled="currentIndex === 0"
                 @click.native="onPreviousImage">
@@ -31,14 +31,14 @@
                         :state="arrowLeft"
                         :fill-color="color" />
                 </template>
-            </IconButton>
+            </Fab>
             <div
                 v-if="fetchingDataIndex === -1"
                 class="product-carousel__label"
                 v-text="productTitle"
                 @click="onNavigateToRelation" />
-            <IconButton
-                :size="smallSize"
+            <Fab
+                :size="tinySize"
                 :theme="secondaryTheme"
                 :disabled="currentIndex === value.length - 1"
                 @click.native="onNextImage">
@@ -47,7 +47,7 @@
                         :state="arrowRight"
                         :fill-color="color" />
                 </template>
-            </IconButton>
+            </Fab>
         </div>
     </div>
 </template>
@@ -68,7 +68,7 @@ import ProductCarouselImage from '@Products/components/ProductCarousel/ProductCa
 import {
     ROUTE_NAME,
 } from '@Products/config/routes';
-import IconButton from '@UI/components/IconButton/IconButton';
+import Fab from '@UI/components/Fab/Fab';
 import IconArrowSingle from '@UI/components/Icons/Arrows/IconArrowSingle';
 import Preloader from '@UI/components/Preloader/Preloader';
 
@@ -78,7 +78,7 @@ export default {
         ProductCarouselImage,
         Preloader,
         IconArrowSingle,
-        IconButton,
+        Fab,
     },
     mixins: [
         confirmLeaveModalMixin,
@@ -109,8 +109,8 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        smallSize() {
-            return SIZE.SMALL;
+        tinySize() {
+            return SIZE.TINY;
         },
         arrowLeft() {
             return ARROW.LEFT;

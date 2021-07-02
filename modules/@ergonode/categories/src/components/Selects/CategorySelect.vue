@@ -7,7 +7,6 @@
         <template #activator>
             <InputController>
                 <InputLabel
-                    :style="{ top: 0 }"
                     :floating="true"
                     :disabled="!isAllowedToCreateCategory"
                     :label="label" />

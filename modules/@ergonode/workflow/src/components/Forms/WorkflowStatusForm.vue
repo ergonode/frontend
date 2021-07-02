@@ -37,10 +37,10 @@ sw/*
                     :label="$t('@Workflow.workflow.components.WorkflowStatusForm.badgeLabel')"
                     :disabled="!isAllowedToUpdate"
                     @input="onColorValueChange">
-                    <template #value>
-                        <ColorPickerInputValue
+                    <template #prepend>
+                        <WorkflowStatusBadge
                             v-if="status.color"
-                            :value="status.color"
+                            :color="status.color"
                             :default-status="status.isDefaultStatus" />
                     </template>
                 </ColorPicker>
@@ -74,13 +74,13 @@ import {
 } from '@Core/defaults/colors';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import WorkflowStatusBadge from '@Modules/@ergonode/workflow/src/components/Badges/WorkflowStatusBadge';
 import ColorPicker from '@UI/components/ColorPicker/ColorPicker';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import InfoHint from '@UI/components/Hints/InfoHint';
 import TextField from '@UI/components/TextField/TextField';
 import Toggler from '@UI/components/Toggler/Toggler';
-import ColorPickerInputValue from '@Workflow/components/Inputs/ColorPickerInputValue';
 import WorkflowStatusPreview from '@Workflow/components/Inputs/WorkflowStatusPreview';
 import PRIVILEGES from '@Workflow/config/privileges';
 import {
@@ -91,8 +91,8 @@ import {
 export default {
     name: 'WorkflowStatusForm',
     components: {
+        WorkflowStatusBadge,
         WorkflowStatusPreview,
-        ColorPickerInputValue,
         Form,
         FormSection,
         TextField,

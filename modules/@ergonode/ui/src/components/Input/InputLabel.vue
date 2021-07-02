@@ -93,8 +93,8 @@ export default {
     .input-label {
         position: absolute;
         z-index: $Z_INDEX_LVL_2;
-        padding: 0 2px;
-        margin: 0 -2px;
+        padding: 0 4px;
+        margin: 0 1px;
         background-color: $WHITE;
         transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         transform-origin: left;
@@ -105,10 +105,12 @@ export default {
             color;
 
         &--small {
+            top: 8px;
             font: $FONT_MEDIUM_12_16;
         }
 
         &--regular {
+            top: 10px;
             font: $FONT_MEDIUM_14_20;
         }
 

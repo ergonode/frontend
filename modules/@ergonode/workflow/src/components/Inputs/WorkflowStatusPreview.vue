@@ -9,10 +9,6 @@
         <template #activator>
             <InputController>
                 <InputLabel
-                    :style="{
-                        top: '10px',
-                        left: '12px',
-                    }"
                     :floating="true"
                     :disabled="true"
                     label="Status preview" />
@@ -71,7 +67,7 @@ export default {
         &__title {
             display: flex;
             align-items: center;
-            column-gap: 8px;
+            column-gap: 4px;
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_12_16;
         }
