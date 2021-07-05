@@ -94,6 +94,7 @@ export default {
             if (this.height) {
                 return {
                     flex: `0 0 ${this.height}`,
+                    height: this.height,
                 };
             }
 

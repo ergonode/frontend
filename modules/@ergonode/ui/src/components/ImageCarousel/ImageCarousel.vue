@@ -111,12 +111,12 @@ export default {
         onPreviousImage() {
             const previousIndex = this.currentIndex - 1;
 
-            this.$emit('current', previousIndex > 0 ? previousIndex : this.imageIds.length - 1 - previousIndex);
+            this.$emit('current', previousIndex > 0 ? previousIndex : this.imageIds.length - 1);
         },
         onNextImage() {
             const nextIndex = this.currentIndex + 1;
 
-            this.$emit('current', nextIndex === this.imageIds.length - 1 ? 0 : nextIndex);
+            this.$emit('current', nextIndex === this.imageIds.length ? 0 : nextIndex);
         },
         hrefById(id) {
             const replacements = {
