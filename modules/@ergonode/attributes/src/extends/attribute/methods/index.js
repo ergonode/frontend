@@ -257,8 +257,11 @@ export const setTranslation = ({
         placeholder = '',
     } = data;
 
-    $this.commit('tab/SET_TRANSLATIONS', {
+    $this.dispatch('tab/setTranslations', {
+        ...$this.state.tab.translations,
         placeholder,
+    }, {
+        root: true,
     });
 };
 
