@@ -6,11 +6,14 @@
     <div :class="classes">
         <div
             class="input-solid-style__input"
+            ref="input"
             :style="inputStyle"
             @mousedown="onMouseDown"
             @mouseup="onMouseUp">
-            <fieldset />
-            <slot name="activator" />
+            <fieldset class="input-solid-style__border" />
+            <slot
+                name="activator"
+                :input-reference="$refs.input" />
         </div>
         <slot />
         <slot name="details">
@@ -47,7 +50,7 @@ export default {
          */
         height: {
             type: String,
-            default: 'unset',
+            default: '',
         },
         /**
          * Alignment of selected value, might be centered or from left
@@ -88,9 +91,15 @@ export default {
     },
     computed: {
         inputStyle() {
+            if (this.height) {
+                return {
+                    flex: `0 0 ${this.height}`,
+                    height: this.height,
+                };
+            }
+
             return {
-                height: this.height,
-                flexBasis: this.height,
+                flex: 1,
             };
         },
         classes() {
@@ -134,7 +143,7 @@ export default {
             box-sizing: border-box;
         }
 
-        fieldset {
+        &__border {
             position: absolute;
             top: 0;
             left: 0;
@@ -169,7 +178,7 @@ export default {
 
         &--small {
             #{$solid}__input {
-                padding: 8px 4px 8px 8px;
+                padding: 4px;
             }
 
             #{$solid}__details-label {
@@ -180,7 +189,7 @@ export default {
 
         &--regular {
             #{$solid}__input {
-                padding: 10px 8px 10px 12px;
+                padding: 8px;
             }
 
             #{$solid}__details-label {
@@ -190,19 +199,19 @@ export default {
         }
 
         &:not(&--error):not(&--focused):hover {
-            fieldset {
+            #{$solid}__border {
                 border-color: $GREY_DARK;
             }
         }
 
         &--focused {
-            fieldset::after {
+            #{$solid}__border::after {
                 opacity: 1;
             }
         }
 
         &--error {
-            fieldset::after {
+            #{$solid}__border::after {
                 border-color: $RED;
                 opacity: 1;
             }
@@ -215,7 +224,7 @@ export default {
         &--disabled {
             cursor: not-allowed;
 
-            fieldset {
+            #{$solid}__border {
                 background-color: $WHITESMOKE;
             }
 

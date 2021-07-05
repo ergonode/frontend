@@ -5,94 +5,89 @@
 <template>
     <InputUUIDProvider>
         <template #default="{ uuid }">
-            <div
-                :class="classes">
-                <fieldset
-                    class="upload-file__activator"
-                    :style="{ height: height }">
-                    <legend
-                        class="upload-file__label"
-                        :for="uuid"
-                        v-text="label"
-                        v-if="label" />
-                    <input
-                        v-if="!value"
-                        type="file"
-                        ref="input"
-                        :accept="acceptFiles"
-                        :disabled="disabled"
-                        @input="onUpload">
-                    <div
-                        v-if="requestPending"
-                        class="upload-file__loader">
-                        <IconRefresh
-                            :height="32"
-                            :width="48"
-                            view-box="0 0 48 32" />
-                        Uploading the file...
-                    </div>
-                    <div
-                        v-else
-                        class="upload-file__content">
-                        <div
-                            class="upload-file__placeholder"
-                            v-if="!value">
-                            <IconUploadCloudFile
-                                :fill-color="greenColor"
-                                view-box="0 0 48 32"
-                                width="48"
-                                height="32" />
-                            <span class="upload-file__description">
-                                Drag the file here or browse
-                            </span>
-                        </div>
-                        <template v-else>
-                            <slot name="file" />
-                            <Fab
-                                v-if="!disabled"
-                                :style="{ backgroundColor: whiteColor }"
-                                :floating="{ top: '20px', right: '20px'}"
-                                :theme="destructiveTheme"
-                                @click.native="onRemove">
-                                <template #icon="{ color }">
-                                    <IconDelete :fill-color="color" />
-                                </template>
-                            </Fab>
-                        </template>
-                    </div>
-                </fieldset>
-                <span
-                    v-if="errorMessages"
-                    class="upload-file__error-label"
-                    v-text="errorMessages" />
-            </div>
+            <InputSolidStyle
+                :size="size"
+                :height="height"
+                :disabled="disabled"
+                :details-label="informationLabel">
+                <template #activator>
+                    <InputController>
+                        <input
+                            v-if="!value"
+                            class="upload-file"
+                            :id="uuid"
+                            type="file"
+                            ref="input"
+                            :accept="acceptFiles"
+                            :disabled="disabled"
+                            @input="onUpload">
+                        <Fab
+                            v-else-if="!disabled"
+                            :floating="{
+                                top: '4px',
+                                right: '4px',
+                                backgroundColor: whiteColor,
+                            }"
+                            :theme="destructiveTheme"
+                            @click.native="onRemove">
+                            <template #icon="{ color }">
+                                <IconDelete :fill-color="color" />
+                            </template>
+                        </Fab>
+                        <InputImageController>
+                            <InputUploadPlaceholder v-if="!value" />
+                            <InputUploadSpinner v-else-if="requestPending" />
+                            <div
+                                class="upload-file__content"
+                                v-else>
+                                <slot name="file" />
+                            </div>
+                        </InputImageController>
+                        <InputLabel
+                            v-if="label"
+                            :for="uuid"
+                            :required="required"
+                            :floating="true"
+                            :disabled="disabled"
+                            :label="label"
+                            :error="isError" />
+                    </InputController>
+                </template>
+            </InputSolidStyle>
         </template>
     </InputUUIDProvider>
 </template>
 
 <script>
 import {
+    SIZE,
     THEME,
 } from '@Core/defaults/theme';
 import {
-    GRAPHITE,
-    GREEN,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Fab from '@UI/components/Fab/Fab';
 import IconDelete from '@UI/components/Icons/Actions/IconDelete';
-import IconRefresh from '@UI/components/Icons/Actions/IconRefresh';
-import IconUploadCloudFile from '@UI/components/Icons/Actions/IconUploadCloudFile';
+import InputController from '@UI/components/Input/InputController';
+import InputImageController from '@UI/components/Input/InputImageController';
+import InputLabel from '@UI/components/Input/InputLabel';
+import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
+import InputUploadPlaceholder from '@UI/components/Input/InputUploadPlaceholder';
+import InputUploadSpinner from '@UI/components/Input/InputUploadSpinner';
 import InputUUIDProvider from '@UI/components/Input/InputUUIDProvider';
 
 export default {
     name: 'UploadFile',
     components: {
+        InputUploadPlaceholder,
+        InputUploadSpinner,
+        InputController,
+        InputImageController,
+        InputSolidStyle,
         Fab,
         IconDelete,
-        IconRefresh,
-        IconUploadCloudFile,
         InputUUIDProvider,
+        InputLabel,
     },
     props: {
         label: {
@@ -106,6 +101,17 @@ export default {
         acceptFiles: {
             type: String,
             required: true,
+        },
+        /**
+         * The size of the component
+         */
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
         },
         value: {
             type: Boolean,
@@ -130,48 +136,22 @@ export default {
             type: String,
             default: '136px',
         },
-        border: {
-            type: Boolean,
-            default: false,
-        },
-    },
-    data() {
-        return {
-            deleteIconFillColor: GRAPHITE,
-        };
     },
     computed: {
-        classes() {
-            return [
-                'upload-file',
-                {
-                    'upload-file--required': this.required,
-                    'upload-file--floating-label': Boolean(this.label),
-                    'upload-file--disabled': this.disabled,
-                    'upload-file--error': this.errorMessages !== '',
-                },
-            ];
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
         destructiveTheme() {
             return THEME.DESTRUCTIVE;
-        },
-        greenColor() {
-            return GREEN;
         },
         whiteColor() {
             return WHITE;
         },
+        informationLabel() {
+            return this.errorMessages || this.hint;
+        },
+        isError() {
+            return Boolean(this.errorMessages);
+        },
     },
     methods: {
-        onMouseEnter() {
-            this.deleteIconFillColor = GREEN;
-        },
-        onMouseLeave() {
-            this.deleteIconFillColor = GRAPHITE;
-        },
         onRemove() {
             this.$emit('remove');
         },
@@ -188,113 +168,21 @@ export default {
 
 <style lang="scss" scoped>
     .upload-file {
-        $upload: &;
+        position: absolute;
+        z-index: $Z_INDEX_LVL_1;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        outline: none;
+        opacity: 0;
+        cursor: pointer;
 
-        display: flex;
-        flex-direction: column;
-
-        &__activator {
-            position: relative;
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            height: 100%;
-            border: $BORDER_1_GREY;
-            padding: 12px;
-            box-sizing: border-box;
-            overflow: hidden;
-        }
-
-        &__loader {
+        &__content {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 18px 20px;
-            color: $GRAPHITE_DARK;
-            font: $FONT_MEDIUM_14_20;
-
-            & > svg {
-                margin-bottom: 16px;
-            }
-        }
-
-        input {
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            z-index: $Z_INDEX_LVL_1;
-            width: 100%;
-            height: 100%;
-            padding: 0;
-            margin: 0;
-            outline: none;
-            opacity: 0;
-        }
-
-        &__label {
-            margin-bottom: -6px;
-            background-color: $WHITE;
-            color: $GRAPHITE_LIGHT;
-        }
-
-        &__content:not(&--floating-label) {
-            height: 100%;
-        }
-
-        &__content, &__placeholder {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        &__placeholder {
-            width: 100%;
-            height: 100%;
-            border: $BORDER_DASHED_GREY;
-            box-sizing: border-box;
-        }
-
-        &__description {
-            margin-top: 16px;
-            color: $GRAPHITE_DARK;
-        }
-
-        &__error-label {
-            margin: 2px 0 0 12px;
-            color: $RED;
-        }
-
-        &__description, &__label, &__error-label {
-            font: $FONT_MEDIUM_12_16;
-        }
-
-        &--disabled {
-            #{$upload}__content, input {
-                background-color: $WHITESMOKE;
-                color: $GRAPHITE_LIGHT;
-            }
-        }
-
-        &--required {
-            #{$upload}__label::after {
-                position: absolute;
-                color: $RED;
-                content: "*";
-            }
-        }
-
-        &--error {
-            #{$upload}__activator {
-                border-color: $RED;
-            }
-
-            #{$upload}__label {
-                color: $RED;
-            }
         }
     }
 </style>

@@ -3,63 +3,29 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="product-carousel">
+    <Carousel
+        :current-index="currentIndex"
+        :items="value"
+        @current="onCurrentIndexChange">
         <Preloader
             v-show="isPreloaderVisible"
             class="product-carousel__preloader" />
-        <!-- TODO: Change relation to `multimedia` href.
-            INFO: Secure relationship does not break the application.
-        -->
-        <ProductCarouselImage
-            v-for="(id, index) in value"
-            :index="index"
-            :product="products[id]"
-            :fetching-data-index="fetchingDataIndex"
-            :current-index="currentIndex"
-            :key="id" />
-        <span
-            class="product-carousel__pagination"
-            v-text="pagination" />
-        <div class="product-carousel__panel">
-            <IconButton
-                :size="smallSize"
-                :theme="secondaryTheme"
-                :disabled="currentIndex === 0"
-                @click.native="onPreviousImage">
-                <template #icon="{ color }">
-                    <IconArrowSingle
-                        :state="arrowLeft"
-                        :fill-color="color" />
-                </template>
-            </IconButton>
+        <template #item="{ item }">
+            <ProductCarouselImage
+                v-if="fetchingDataIndex !== currentIndex"
+                :product="products[item]" />
+        </template>
+        <template #itemTitle>
             <div
                 v-if="fetchingDataIndex === -1"
                 class="product-carousel__label"
                 v-text="productTitle"
                 @click="onNavigateToRelation" />
-            <IconButton
-                :size="smallSize"
-                :theme="secondaryTheme"
-                :disabled="currentIndex === value.length - 1"
-                @click.native="onNextImage">
-                <template #icon="{ color }">
-                    <IconArrowSingle
-                        :state="arrowRight"
-                        :fill-color="color" />
-                </template>
-            </IconButton>
-        </div>
-    </div>
+        </template>
+    </Carousel>
 </template>
 
 <script>
-import {
-    ARROW,
-} from '@Core/defaults/icons';
-import {
-    SIZE,
-    THEME,
-} from '@Core/defaults/theme';
 import confirmLeaveModalMixin from '@Core/mixins/feedback/confirmLeaveModalMixin';
 import {
     getGridData,
@@ -68,17 +34,15 @@ import ProductCarouselImage from '@Products/components/ProductCarousel/ProductCa
 import {
     ROUTE_NAME,
 } from '@Products/config/routes';
-import IconButton from '@UI/components/IconButton/IconButton';
-import IconArrowSingle from '@UI/components/Icons/Arrows/IconArrowSingle';
+import Carousel from '@UI/components/Carousel/Carousel';
 import Preloader from '@UI/components/Preloader/Preloader';
 
 export default {
     name: 'ProductCarousel',
     components: {
+        Carousel,
         ProductCarouselImage,
         Preloader,
-        IconArrowSingle,
-        IconButton,
     },
     mixins: [
         confirmLeaveModalMixin,
@@ -106,21 +70,6 @@ export default {
         };
     },
     computed: {
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        arrowLeft() {
-            return ARROW.LEFT;
-        },
-        arrowRight() {
-            return ARROW.RIGHT;
-        },
-        pagination() {
-            return `${this.currentIndex + 1}/${this.value.length}`;
-        },
         productTitle() {
             return this.products[this.value[this.currentIndex]].esa_default_label;
         },
@@ -173,6 +122,9 @@ export default {
         },
     },
     methods: {
+        onCurrentIndexChange(index) {
+            this.$emit('current', index);
+        },
         onNavigateToRelation() {
             const callback = () => {
                 this.$router.push({
@@ -205,46 +157,12 @@ export default {
 
             this.fetchingProductIndexes[fetchingIndex] = false;
         },
-        onPreviousImage() {
-            this.$emit('current', this.currentIndex - 1);
-        },
-        onNextImage() {
-            this.$emit('current', this.currentIndex + 1);
-        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
     .product-carousel {
-        position: relative;
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        justify-content: flex-end;
-        width: 100%;
-        height: 100%;
-
-        &__panel {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: 4px;
-            box-sizing: border-box;
-        }
-
-        &__pagination {
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            padding: 8px;
-            background-color: $WHITE;
-            color: $GRAPHITE_DARK;
-            font: $FONT_MEDIUM_12_16;
-            border-radius: 999px;
-        }
-
         &__preloader {
             position: absolute;
             top: 50%;

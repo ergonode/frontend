@@ -7,12 +7,16 @@
     <Select
         v-bind="$attrs"
         v-on="$listeners">
+        <template #prepend>
+            <slot name="prepend" />
+        </template>
         <template #value>
             <slot name="value">
-                <span
-                    :style="{ color: $attrs.value }"
-                    v-text="$attrs.value" />
+                <span v-text="$attrs.value" />
             </slot>
+        </template>
+        <template #append>
+            <slot name="append" />
         </template>
         <template
             #dropdown="{

@@ -45,10 +45,6 @@
 
 <script>
 import {
-    SIZE,
-    THEME,
-} from '@Core/defaults/theme';
-import {
     GRAPHITE,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
@@ -84,12 +80,6 @@ export default {
     computed: {
         whiteColor() {
             return WHITE;
-        },
-        tinySize() {
-            return SIZE.TINY;
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
         },
         removeLinkFillColor() {
             return this.isHovered ? WHITE : GRAPHITE;

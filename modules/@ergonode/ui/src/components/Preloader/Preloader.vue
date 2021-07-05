@@ -11,20 +11,12 @@
 </template>
 
 <script>
-import {
-    GRAPHITE,
-} from '@UI/assets/scss/_js-variables/colors.scss';
 import IconLoader from '@UI/components/Icons/Feedback/IconLoader';
 
 export default {
     name: 'Preloader',
     components: {
         IconLoader,
-    },
-    computed: {
-        graphiteColor() {
-            return GRAPHITE;
-        },
     },
 };
 </script>

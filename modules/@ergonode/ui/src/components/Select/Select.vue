@@ -19,9 +19,11 @@
                 @keydown.native="onKeyDown"
                 @mousedown="onMouseDown"
                 @mouseup="onMouseUp">
-                <template #activator>
-                    <InputController
-                        :size="size">
+                <template #activator="{ inputReference }">
+                    <InputController>
+                        <!--
+                            @slot Prepend element - icon recommended
+                        -->
                         <slot name="prepend" />
                         <InputSelectValue
                             :data-cy="`${dataCy}-value`"
@@ -54,61 +56,65 @@
                             :disabled="disabled"
                             :error="isError"
                             :label="label" />
-                        <template #append>
-                            <slot name="append" />
-                            <ErrorHint
-                                v-if="isError"
-                                :hint="errorMessages" />
-                            <IconArrowDropdown :state="dropDownState" />
-                        </template>
+                        <!--
+                            @slot Append element - icon recommended
+                        -->
+                        <slot name="append" />
+                        <ErrorHint
+                            v-if="isError"
+                            :hint="errorMessages" />
+                        <IconArrowDropdown :state="dropDownState" />
                     </InputController>
+                    <SelectDropdown
+                        v-if="isReadyToRender"
+                        ref="menu"
+                        :value="value"
+                        :parent-reference="inputReference"
+                        :data-cy="`${dataCy}-drop-down`"
+                        :fixed="fixedContent"
+                        :size="size"
+                        :multiselect="multiselect"
+                        :clearable="clearable"
+                        :fixed-content="fixedContent"
+                        :searchable="searchable"
+                        :options="options"
+                        :search-value="searchValue"
+                        :is-visible="isFocused"
+                        @dismiss="onDismiss"
+                        @clear="onClear"
+                        @search="onSearch"
+                        @input="onSelectValue"
+                        @click-outside="onClickOutside">
+                        <template #body>
+                            <slot name="dropdownBody" />
+                        </template>
+                        <template #noDataPlaceholder>
+                            <slot name="noDataPlaceholder" />
+                        </template>
+                        <template #noResultsPlaceholder>
+                            <slot name="noResultsPlaceholder" />
+                        </template>
+                        <template #dropdown>
+                            <slot
+                                name="dropdown"
+                                :on-select-value="onSelectValue"
+                                :on-apply="onDismiss"
+                                :on-clear="onClear" />
+                        </template>
+                        <template #item="{ index, item, isSelected, isSmallSize }">
+                            <slot
+                                name="option"
+                                :option="item"
+                                :is-selected="isSelected"
+                                :is-small-size="isSmallSize"
+                                :index="index" />
+                        </template>
+                    </SelectDropdown>
                 </template>
-                <SelectDropdown
-                    v-if="isReadyToRender"
-                    ref="menu"
-                    :value="value"
-                    :parent-reference="$refs.activator"
-                    :data-cy="`${dataCy}-drop-down`"
-                    :fixed="fixedContent"
-                    :size="size"
-                    :multiselect="multiselect"
-                    :clearable="clearable"
-                    :fixed-content="fixedContent"
-                    :searchable="searchable"
-                    :options="options"
-                    :search-value="searchValue"
-                    :is-visible="isFocused"
-                    @dismiss="onDismiss"
-                    @clear="onClear"
-                    @search="onSearch"
-                    @input="onSelectValue"
-                    @click-outside="onClickOutside">
-                    <template #body>
-                        <slot name="dropdownBody" />
-                    </template>
-                    <template #noDataPlaceholder>
-                        <slot name="noDataPlaceholder" />
-                    </template>
-                    <template #noResultsPlaceholder>
-                        <slot name="noResultsPlaceholder" />
-                    </template>
-                    <template #dropdown>
-                        <slot
-                            name="dropdown"
-                            :on-select-value="onSelectValue"
-                            :on-apply="onDismiss"
-                            :on-clear="onClear" />
-                    </template>
-                    <template #item="{ index, item, isSelected, isSmallSize }">
-                        <slot
-                            name="option"
-                            :option="item"
-                            :is-selected="isSelected"
-                            :is-small-size="isSmallSize"
-                            :index="index" />
-                    </template>
-                </SelectDropdown>
                 <template #details>
+                    <!--
+                        @slot Details element - text recommended
+                    -->
                     <slot name="details" />
                 </template>
             </Component>
