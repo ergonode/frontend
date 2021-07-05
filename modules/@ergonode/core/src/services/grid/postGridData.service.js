@@ -26,7 +26,13 @@ export const postGridData = async ({
 
         const sortedColumns = getSortedColumnsByIDs(
             columns,
-            data.columns.map(column => `${column.name}:${column.language}`),
+            data.columns.map((column) => {
+                if (column.language) {
+                    return `${column.name}:${column.language}`;
+                }
+
+                return `${column.name}`;
+            }),
         );
 
         if (columns.length > 0 && !$cookies.get(`GRID_CONFIG:${$route.name}`)) {
