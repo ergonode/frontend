@@ -120,7 +120,13 @@ export default {
                         id: status_id,
                         color,
                         label: label || `#${code}`,
-                        value: `${value} products`,
+                        value: value === 1
+                            ? this.$t('@Dashboard.dashboard.components.StatusesWidget.productsCountSingularLabel', {
+                                info: value,
+                            })
+                            : this.$t('@Dashboard.dashboard.components.StatusesWidget.productsCountPluralLabel', {
+                                info: value,
+                            }),
                     };
                 });
 
