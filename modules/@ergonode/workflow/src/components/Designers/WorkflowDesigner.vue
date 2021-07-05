@@ -592,7 +592,7 @@ export default {
         &__space-container {
             display: flex;
             flex: 1;
-            padding: 24px 24px 24px 48px;
+            padding: 24px;
         }
 
         &__extender {
