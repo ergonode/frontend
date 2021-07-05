@@ -55,6 +55,28 @@ export function getMappedLayoutElements({
     }, []);
 }
 
+export function getMappedStatusPositions({
+    layoutElements, statuses,
+}) {
+    return layoutElements.reduce((acc, current) => {
+        const tmpArray = acc;
+        const [
+            source,
+            destination,
+        ] = current.id.split('--');
+        const from = statuses.findIndex(status => status.id === source);
+        const to = statuses.findIndex(status => status.id === destination);
+
+        tmpArray.push({
+            ...current,
+            from,
+            to,
+        });
+
+        return tmpArray;
+    }, []);
+}
+
 export function getMappedRowPositions(layoutElements) {
     return layoutElements.reduce((acc, current) => ({
         ...acc,

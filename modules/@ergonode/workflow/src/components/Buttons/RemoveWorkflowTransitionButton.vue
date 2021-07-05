@@ -64,7 +64,8 @@ export default {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
                 title: this.$t('@Workflow.workflow.components.RemoveWorkflowTransitionButton.confirmTitle'),
-                applyTitle: this.$t('@Workflow._.deleteConfirm'),
+                subtitle: this.$t('@Workflow.workflow.components.RemoveWorkflowTransitionButton.confirmSubtitle'),
+                applyTitle: this.$t('@Workflow.workflow.components.RemoveWorkflowTransitionButton.deleteConfirm'),
                 action: this.onRemoveTransition,
             });
         },

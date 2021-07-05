@@ -30,9 +30,6 @@ import PRIVILEGES from '@Workflow/config/privileges';
 import {
     WORKFLOW_STATUS_CREATED_EVENT_NAME,
 } from '@Workflow/defaults';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'CreateWorkflowStatusButton',
@@ -60,20 +57,8 @@ export default {
         },
     },
     methods: {
-        ...mapActions('feedback', {
-            __clearFeedbackStorage: '__clearStorage',
-        }),
         onShowModal() {
-            this.confirmModal({
-                confirmCallback: () => {
-                    this.__clearFeedbackStorage();
-
-                    this.isModalVisible = true;
-                },
-                proceedCallback: () => {
-                    this.isModalVisible = true;
-                },
-            });
+            this.isModalVisible = true;
         },
         onCloseModal() {
             this.isModalVisible = false;

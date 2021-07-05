@@ -39,13 +39,17 @@
       "components": {
         "RemoveWorkflowTransitionButton": {
           "title": "Usuń przejście",
-          "confirmTitle": "Czy jesteś pewien, że chcesz usunąć to przejście?",
+          "confirmTitle": "czy chcesz usunąć to przejście?",
+          "confirmSubtitle": "Przejście zostanie trwale usunięte z systemu.",
+          "deleteConfirm": "USUŃ PRZEJŚCIE",
           "successMessage": "Przejście zostało usunięte usunięta",
           "errorMessage": "Przejście nie została usunięte"
         },
         "RemoveWorkflowTransitionFab": {
           "title": "USUŃ PRZEJŚCIE",
-          "confirmTitle": "Czy jesteś pewien, że chcesz usunąć to przejście?"
+          "confirmTitle": "czy chcesz usunąć to przejście?",
+          "confirmSubtitle": "Przejście zostanie trwale usunięte z systemu.",
+          "deleteConfirm": "USUŃ PRZEJŚCIE"
         },
         "UpdateWorkflowTransitionFab": {
           "title": "UAKTUALNIJ PRZEJŚCIE"
