@@ -3,21 +3,25 @@
  * See LICENSE for license details.
  */
 <template>
-    <NuxtLink
-        :class="classes"
-        :to="linkTo"
-        @mouseenter.native="onMouseEnter"
-        @mouseleave.native="onMouseLeave">
-        <IconEdit :fill-color="iconFillColor" />
-    </NuxtLink>
+    <FadeTransition>
+        <NuxtLink
+            v-show="visible"
+            class="workflow-designer-edit-status-link"
+            :to="linkTo"
+            @mouseenter.native="onMouseEnter"
+            @mouseleave.native="onMouseLeave">
+            <IconEdit :fill-color="iconFillColor" />
+        </NuxtLink>
+    </FadeTransition>
 </template>
 
 <script>
 import {
+    GRAPHITE_LIGHT,
     GREEN,
-    GREY,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import IconEdit from '@UI/components/Icons/Actions/IconEdit';
+import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
     ROUTE_NAME,
 } from '@Workflow/config/routes';
@@ -26,11 +30,16 @@ export default {
     name: 'WorkflowDesignerEditStatusLink',
     components: {
         IconEdit,
+        FadeTransition,
     },
     props: {
         statusId: {
             type: String,
             required: true,
+        },
+        visible: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {
@@ -39,14 +48,6 @@ export default {
         };
     },
     computed: {
-        classes() {
-            return [
-                'workflow-designer-edit-status-link',
-                {
-                    'workflow-designer-edit-status-link--hovered': this.isHovered,
-                },
-            ];
-        },
         linkTo() {
             return {
                 name: ROUTE_NAME.WORKFLOW_STATUS_EDIT_GENERAL,
@@ -56,7 +57,7 @@ export default {
             };
         },
         iconFillColor() {
-            return this.isHovered ? GREEN : GREY;
+            return this.isHovered ? GREEN : GRAPHITE_LIGHT;
         },
     },
     methods: {
@@ -78,10 +79,5 @@ export default {
         height: 24px;
         transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         will-change: opacity;
-        opacity: 0;
-
-        &--hovered {
-            opacity: 1;
-        }
     }
 </style>
