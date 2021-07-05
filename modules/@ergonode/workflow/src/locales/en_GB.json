@@ -56,7 +56,7 @@
         "WorkflowTransitionForm": {
           "title": "Status change",
           "fromLabel": "From",
-          "toLabel": "to"
+          "toLabel": "To"
         },
         "RemoveTransitionConditionDropZone": {
           "title": "REMOVE CONDITION"
