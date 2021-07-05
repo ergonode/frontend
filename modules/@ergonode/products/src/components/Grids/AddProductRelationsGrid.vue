@@ -125,6 +125,7 @@ import {
 } from '@Core/models/mappers/gridDataMapper';
 import {
     getDisabledElement,
+    getDisabledElements,
 } from '@Core/models/mappers/sideBarDataMapper';
 import {
     getAdvancedFiltersData,
@@ -224,6 +225,14 @@ export default {
 
         await this.onFetchData();
 
+        this.setDisabledScopeElements({
+            scope: this.scope,
+            disabledElements: getDisabledElements({
+                elements: this.columns,
+                defaultLanguageCode: language,
+            }),
+        });
+
         this.isPrefetchingData = false;
     },
     data() {
@@ -310,6 +319,7 @@ export default {
         ...mapActions('list', [
             'removeDisabledScopeElement',
             'setDisabledScopeElement',
+            'setDisabledScopeElements',
         ]),
         onFiltersExpand() {
             this.isFiltersExpanded = !this.isFiltersExpanded;
