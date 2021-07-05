@@ -166,9 +166,6 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
-        regularSize() {
-            return SIZE.REGULAR;
-        },
         whiteColor() {
             return WHITE;
         },
@@ -190,9 +187,6 @@ export default {
                     action: this.onNavigateToRelation,
                 },
             ];
-        },
-        products() {
-            return [];
         },
         isValue() {
             return this.value.length > 0;

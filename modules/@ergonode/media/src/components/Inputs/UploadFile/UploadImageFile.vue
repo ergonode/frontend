@@ -11,19 +11,20 @@
             <InputController>
                 <InputImageController>
                     <template v-if="isValue">
-                        <div class="fixed-container">
+                        <div
+                            v-if="!multiple"
+                            class="fixed-container">
                             <LazyImage
-                                v-if="!multiple"
                                 :href="`multimedia/${value}/download/default`"
                                 :value="value"
                                 :object-fit="objectFit" />
-                            <ImageCarousel
-                                v-else
-                                :image-ids="value"
-                                href="multimedia/[[ID]]/download/default"
-                                :current-index="currentIndex"
-                                @current="onCurrentIndexChange" />
                         </div>
+                        <ImageCarousel
+                            v-else
+                            :image-ids="value"
+                            href="multimedia/[[ID]]/download/default"
+                            :current-index="currentIndex"
+                            @current="onCurrentIndexChange" />
                         <ActionFab
                             v-if="!disabled"
                             :floating="{

@@ -156,6 +156,7 @@ export default {
             height: 16px;
             border: $BORDER_1_GREY;
             box-sizing: border-box;
+            background-color: $WHITE;
         }
 
         &__mark {

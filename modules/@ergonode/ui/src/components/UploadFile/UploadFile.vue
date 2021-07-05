@@ -64,8 +64,6 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import {
-    GRAPHITE,
-    GREEN,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Fab from '@UI/components/Fab/Fab';
@@ -138,31 +136,8 @@ export default {
             type: String,
             default: '136px',
         },
-        border: {
-            type: Boolean,
-            default: false,
-        },
-    },
-    data() {
-        return {
-            deleteIconFillColor: GRAPHITE,
-        };
     },
     computed: {
-        classes() {
-            return [
-                'upload-file',
-                {
-                    'upload-file--required': this.required,
-                    'upload-file--floating-label': Boolean(this.label),
-                    'upload-file--disabled': this.disabled,
-                    'upload-file--error': this.errorMessages !== '',
-                },
-            ];
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
         destructiveTheme() {
             return THEME.DESTRUCTIVE;
         },
@@ -177,12 +152,6 @@ export default {
         },
     },
     methods: {
-        onMouseEnter() {
-            this.deleteIconFillColor = GREEN;
-        },
-        onMouseLeave() {
-            this.deleteIconFillColor = GRAPHITE;
-        },
         onRemove() {
             this.$emit('remove');
         },

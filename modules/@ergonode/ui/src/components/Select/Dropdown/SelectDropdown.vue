@@ -185,9 +185,6 @@ export default {
         onSearch(value) {
             this.$emit('search', value);
         },
-        onClearSearch() {
-            this.onSearch('');
-        },
         onValueChange(value) {
             this.$emit('input', value);
         },
