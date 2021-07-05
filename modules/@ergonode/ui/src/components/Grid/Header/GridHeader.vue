@@ -10,15 +10,16 @@
                 <slot name="actions" />
             </template>
             <template #configuration>
-                <GridTableLayoutActivator
-                    data-cy="grid-table-view"
-                    :is-selected="isSelectedTableLayout"
-                    @active="onLayoutActivate" />
-                <GridCollectionLayoutActivator
-                    v-if="isCollectionLayout"
-                    data-cy="grid-collection-view"
-                    :is-selected="isSelectedCollectionLayout"
-                    @active="onLayoutActivate" />
+                <template v-if="isCollectionLayout">
+                    <GridTableLayoutActivator
+                        data-cy="grid-table-view"
+                        :is-selected="isSelectedTableLayout"
+                        @active="onLayoutActivate" />
+                    <GridCollectionLayoutActivator
+                        data-cy="grid-collection-view"
+                        :is-selected="isSelectedCollectionLayout"
+                        @active="onLayoutActivate" />
+                </template>
                 <Fab
                     :theme="theme.SECONDARY"
                     @click.native="onShowModal">
