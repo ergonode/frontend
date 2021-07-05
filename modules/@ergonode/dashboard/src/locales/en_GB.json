@@ -43,6 +43,8 @@
         },
         "StatusesWidget": {
           "title": "Statuses",
+          "productsCountSingularLabel": "1 product",
+          "productsCountPluralLabel": "{info} products",
           "getRequest": "Product statuses haven’t been fetched properly"
         }
       }

@@ -43,6 +43,8 @@
         },
         "StatusesWidget": {
           "title": "Statusy",
+          "productsCountSingularLabel": "1 produkt",
+          "productsCountPluralLabel": "{info} produktów",
           "getRequest": "Statusy produktów nie zostały pobrane"
         }
       }
