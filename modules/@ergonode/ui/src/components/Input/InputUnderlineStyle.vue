@@ -6,10 +6,13 @@
     <div :class="classes">
         <div
             class="input-underline-style__input"
+            ref="input"
             :style="inputStyle"
             @mousedown="onMouseDown"
             @mouseup="onMouseUp">
-            <slot name="activator" />
+            <slot
+                name="activator"
+                :input-reference="$refs.input" />
         </div>
         <slot />
         <slot name="details">
@@ -28,7 +31,7 @@ import {
 } from '@Core/defaults/theme';
 
 export default {
-    name: 'InputSolidStyle',
+    name: 'InputUnderlineStyle',
     props: {
         /**
          * The size of the component

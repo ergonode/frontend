@@ -22,11 +22,11 @@
                         v-if="!disabled"
                         :editor="editor"
                         ref="menuBubble" />
-                    <!--
-                        @slot Prepend element - icon recommended
-                    -->
-                    <slot name="prepend" />
-                    <InputController :size="size">
+                    <InputController>
+                        <!--
+                            @slot Prepend element - icon recommended
+                        -->
+                        <slot name="prepend" />
                         <ResizeObserver @resize="onResize">
                             <div :class="classes">
                                 <VerticalFixedScroll>
