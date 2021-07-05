@@ -181,6 +181,7 @@ import {
 import {
     getMappedLayoutElements,
     getMappedRowPositions,
+    getMappedStatusPositions,
     getObstacleColumns,
     getRows,
     getValidColumnsToAddTransition,
@@ -319,6 +320,7 @@ export default {
     methods: {
         ...mapActions('workflow', [
             'getWorkflow',
+            'getStatuses',
         ]),
         ...mapActions('feedback', [
             'onScopeValueChange',
@@ -388,10 +390,18 @@ export default {
         onWorkflowStatusCreated() {
             this.isFetchingData = true;
 
-            this.getWorkflow({
-                onSuccess: this.onFetchDataSuccess,
+            this.getStatuses({
+                onSuccess: this.onFetchStatusSuccess,
                 onError: this.onFetchDataError,
             });
+        },
+        onFetchStatusSuccess() {
+            this.layoutElements = getMappedStatusPositions({
+                layoutElements: this.layoutElements,
+                statuses: this.statuses,
+            });
+
+            this.isFetchingData = false;
         },
         onFetchDataSuccess() {
             const rowsPositions = this.$cookies.get(WORKFLOW_DESIGNER_ROWS)
@@ -404,7 +414,7 @@ export default {
                 statuses: this.statuses,
                 rowsPositions,
             });
-            this.$emit('layoutElements', this.layoutElements);
+
             this.isFetchingData = false;
         },
         onFetchDataError() {
