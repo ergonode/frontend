@@ -487,7 +487,6 @@ export default {
             index,
             column,
         }) {
-            console.log(index);
             const {
                 id,
                 element_id,
