@@ -28,6 +28,7 @@ export default {
         display: flex;
         justify-content: flex-end;
         align-items: center;
+        height: 24px;
         color: $GRAPHITE_DARK;
         font: $FONT_MEDIUM_14_20;
         margin-right: 4px;

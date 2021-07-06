@@ -36,6 +36,8 @@
             </template>
             <UpdateProductTemplateButton
                 :scope="scope"
+                :errors="errors"
+                :change-values="changeValues"
                 :attributes="attributes"
                 :language-code="languageCode" />
         </CenterViewTemplate>
