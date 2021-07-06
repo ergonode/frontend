@@ -6,6 +6,7 @@
 import {
     getMappedLayoutElements,
     getMappedRowPositions,
+    getMappedStatusPositions,
     getMappedTransitions,
     getObstacleColumns,
     getRows,
@@ -140,5 +141,27 @@ describe('getMappedTransitions', () => {
 
         expect(result.length).toEqual(3);
         expect(result).toEqual(transitionsToSend);
+    });
+});
+
+describe('getMappedStatusPositions', () => {
+    it('Based on layout element get statuses to send - empty', () => {
+        const result = getMappedStatusPositions({
+            layoutElements: [],
+            statuses,
+        });
+
+        expect(result.length).toEqual(0);
+        expect(result).toEqual([]);
+    });
+
+    it('Based on layout element get statuses to send', () => {
+        const result = getMappedStatusPositions({
+            layoutElements,
+            statuses,
+        });
+
+        expect(result.length).toEqual(3);
+        expect(result).toEqual(layoutElements);
     });
 });

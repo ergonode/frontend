@@ -5,16 +5,16 @@
 
 export const transitions = [
     {
-        source: 0,
-        destination: 2,
+        source: '0',
+        destination: '2',
     },
     {
-        source: 0,
-        destination: 3,
+        source: '0',
+        destination: '3',
     },
     {
-        source: 0,
-        destination: 1,
+        source: '0',
+        destination: '1',
     },
 ];
 export const transitionsToSend = [
@@ -39,16 +39,16 @@ export const transitionsToSend = [
 ];
 export const statuses = [
     {
-        id: 0,
+        id: '0',
     },
     {
-        id: 1,
+        id: '1',
     },
     {
-        id: 2,
+        id: '2',
     },
     {
-        id: 3,
+        id: '3',
     },
 ];
 
