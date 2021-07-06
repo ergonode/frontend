@@ -3,7 +3,10 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="classes">
+    <div
+        :class="classes"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave">
         <div class="workflow-designer-header-layer-cell__title">
             <WorkflowStatusBadge
                 :color="status.color"
@@ -13,7 +16,8 @@
         <WorkflowDesignerEditStatusLink
             v-if="isAllowedToUpdate"
             data-cy="status-column-edit"
-            :status-id="status.id" />
+            :status-id="status.id"
+            :visible="isHovered" />
     </div>
 </template>
 
@@ -43,6 +47,11 @@ export default {
             default: false,
         },
     },
+    data() {
+        return {
+            isHovered: false,
+        };
+    },
     computed: {
         isAllowedToUpdate() {
             return this.$hasAccess([
@@ -65,6 +74,14 @@ export default {
         },
         secondaryTheme() {
             return THEME.SECONDARY;
+        },
+    },
+    methods: {
+        onMouseEnter() {
+            this.isHovered = true;
+        },
+        onMouseLeave() {
+            this.isHovered = false;
         },
     },
 };

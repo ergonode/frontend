@@ -8,19 +8,21 @@
         height="80px">
         <template #activator>
             <InputController>
+                <InputImageController>
+                    <div class="workflow-status-preview">
+                        <div class="workflow-status-preview__title">
+                            <WorkflowStatusBadge
+                                v-if="color"
+                                :color="color"
+                                :default-status="defaultStatus" />
+                            {{ label }}
+                        </div>
+                    </div>
+                </InputImageController>
                 <InputLabel
                     :floating="true"
                     :disabled="true"
                     label="Status preview" />
-                <div class="workflow-status-preview">
-                    <div class="workflow-status-preview__title">
-                        <WorkflowStatusBadge
-                            v-if="color"
-                            :color="color"
-                            :default-status="defaultStatus" />
-                        {{ label }}
-                    </div>
-                </div>
             </InputController>
         </template>
     </InputSolidStyle>
@@ -28,6 +30,7 @@
 
 <script>
 import InputController from '@UI/components/Input/InputController';
+import InputImageController from '@UI/components/Input/InputImageController';
 import InputLabel from '@UI/components/Input/InputLabel';
 import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
 import WorkflowStatusBadge from '@Workflow/components/Badges/WorkflowStatusBadge';
@@ -39,6 +42,7 @@ export default {
         InputSolidStyle,
         InputController,
         WorkflowStatusBadge,
+        InputImageController,
     },
     props: {
         color: {
