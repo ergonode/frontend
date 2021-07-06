@@ -77,7 +77,12 @@
         },
         "WorkflowDesigner": {
           "errorMessage": "Statusy i ich przejdzie nie zostały pobrany poprawnie",
-          "warningMessage": "Brak możliwych kombinacji dla tego statusu"
+          "warningMessage": "Brak możliwych kombinacji dla tego statusu",
+          "successMessage": "Przejścia zostały utworzone",
+          "confirmTitle": "Przed edycją tego przejścia należy zapisać zmiany",
+          "confirmSubtitle": "Aby edytować nowo utworzone przejście, należy najpierw zapisać przepływ pracy.",
+          "applyTitle": "ZAPISZ ZMIANY",
+          "cancelTitle": "NIE ZAPISUJ"
         },
         "CreateWorkflowTransitionsButton": {
           "successMessage": "Przejścia zostały utworzone"
@@ -106,7 +111,9 @@
         },
         "RemoveWorkflowStatusButton": {
           "title": "Usuń status",
-          "confirmTitle": "Czy jesteś pewien, że chcesz usunąć ten status produktu?",
+          "confirmTitle": "Do you want to delete this status?",
+          "confirmSubtitle": "Status will be permanently deleted from the system.",
+          "applyTitle": "DELETE STATUS",
           "successMessage": "Status został usunięty",
           "errorMessage": "Status nie został usunięty"
         },

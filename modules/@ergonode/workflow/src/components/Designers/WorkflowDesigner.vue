@@ -98,6 +98,7 @@
                                                             "
                                                             :element-id="element.id"
                                                             @remove-transition="onRemoveTransition"
+                                                            @submit-transition="onSubmitTransition"
                                                         />
                                                     </template>
                                                 </WorkflowDesignerLayoutArrow>
@@ -126,6 +127,10 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
+import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
 import {
     getMaxValueObject,
     removeValueAtIndex,
@@ -166,6 +171,9 @@ import WorkflowDesignerIllustrationPlaceholder
     from '@Workflow/components/Designers/WorkflowDesignerIllustrationPlaceholder';
 import PRIVILEGES from '@Workflow/config/privileges';
 import {
+    ROUTE_NAME,
+} from '@Workflow/config/routes';
+import {
     WORKFLOW_STATUS_CREATED_EVENT_NAME,
 } from '@Workflow/defaults';
 import {
@@ -182,6 +190,7 @@ import {
     getMappedLayoutElements,
     getMappedRowPositions,
     getMappedStatusPositions,
+    getMappedTransitions,
     getObstacleColumns,
     getRows,
     getValidColumnsToAddTransition,
@@ -210,6 +219,9 @@ export default {
         VerticalFixedScroll,
         HorizontalFixedScroll,
     },
+    mixins: [
+        updateButtonFeedbackMixin,
+    ],
     props: {
         scope: {
             type: String,
@@ -321,6 +333,7 @@ export default {
         ...mapActions('workflow', [
             'getWorkflow',
             'getStatuses',
+            'updateTransitions',
         ]),
         ...mapActions('feedback', [
             'onScopeValueChange',
@@ -376,6 +389,28 @@ export default {
                 value: true,
             });
         },
+        onSubmitTransition(id) {
+            this.$confirm({
+                type: MODAL_TYPE.POSITIVE,
+                title: this.$t('@Workflow.workflow.components.WorkflowDesigner.confirmTitle'),
+                subtitle: this.$t('@Workflow.workflow.components.WorkflowDesigner.confirmSubtitle'),
+                applyTitle: this.$t('@Workflow.workflow.components.WorkflowDesigner.applyTitle'),
+                cancelTitle: this.$t('@Workflow.workflow.components.WorkflowDesigner.cancelTitle'),
+                action: () => {
+                    this.updateTransitions({
+                        scope: this.scope,
+                        transitions: getMappedTransitions({
+                            layoutElements: this.layoutElements,
+                            transitions: this.transitions,
+                        }),
+                        onSuccess: this.onCreateSuccess(id),
+                        onError: this.onCreateError,
+                    });
+
+                    this.removeScopeErrors(this.scope);
+                },
+            });
+        },
         onRemoveStartPointer(row) {
             if (this.isRowEdited(row)) {
                 this.editedRow = -1;
@@ -386,6 +421,23 @@ export default {
                     this.rowIndex(EDITED_ROW_ID),
                 );
             }
+        },
+        onCreateSuccess(id) {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: this.$t('@Workflow.workflow.components.WorkflowDesigner.successMessage'),
+            });
+
+            this.markChangeValuesAsSaved(this.scope);
+            this.$router.push({
+                name: ROUTE_NAME.WORKFLOW_TRANSITION_EDIT_GENERAL,
+                params: {
+                    id,
+                },
+            });
+        },
+        onCreateError(errors) {
+            this.onError(errors);
         },
         onWorkflowStatusCreated() {
             this.isFetchingData = true;

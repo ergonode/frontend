@@ -4,9 +4,17 @@
  */
 <template>
     <div :class="classes">
+        <NuxtLink
+            v-if="transitionId"
+            data-cy="transition-action-edit"
+            :to="linkTo">
+            <UpdateWorkflowTransitionFab />
+        </NuxtLink>
         <UpdateWorkflowTransitionFab
-            v-if="!hasChange"
-            :transition-id="elementId" />
+            v-else
+            data-cy="transition-action-edit"
+            @click.native="onSubmitTransition"
+        />
         <RemoveWorkflowTransitionFab
             @remove-transition="onRemoveTransition" />
         <template
@@ -25,11 +33,14 @@ import UpdateWorkflowTransitionFab
     from '@Workflow/components/Buttons/UpdateWorkflowTransitionFab';
 import PRIVILEGES from '@Workflow/config/privileges';
 import {
+    ROUTE_NAME,
+} from '@Workflow/config/routes';
+import {
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'WorkflowDesignerLayoutArrow',
+    name: 'WorkflowDesignerLayoutArrowActions',
     components: {
         UpdateWorkflowTransitionFab,
         RemoveWorkflowTransitionFab,
@@ -45,17 +56,29 @@ export default {
         },
     },
     computed: {
-        ...mapState('feedback', [
-            'errors',
-            'changeValues',
+        ...mapState('workflow', [
+            'transitions',
         ]),
-        hasChange() {
-            const changeValuesKeys = Object.keys(this.changeValues);
-            const hasChange = changeValuesKeys.length > 0
-                && changeValuesKeys.some(key => Object.keys(this.changeValues[key]).length > 0
-                    && !this.changeValues[key].saved);
+        linkTo() {
+            return {
+                name: ROUTE_NAME.WORKFLOW_TRANSITION_EDIT_GENERAL,
+                params: {
+                    id: this.transitionId,
+                },
+            };
+        },
+        transitionId() {
+            const [
+                from,
+                to,
+            ] = this.elementId.split('--');
+            const hasId = this.transitions.find(
+                ({
+                    source, destination,
+                }) => source === from && destination === to,
+            );
 
-            return hasChange;
+            return hasId ? this.elementId : null;
         },
         extendedArrowAction() {
             return this.$getExtendSlot('@Workflow/components/Designer/WorkflowDesignerLayoutArrow/arrowActions');
@@ -72,6 +95,9 @@ export default {
     methods: {
         onRemoveTransition() {
             this.$emit('remove-transition', this.elementId);
+        },
+        onSubmitTransition() {
+            this.$emit('submit-transition', this.elementId);
         },
         bindingProps({
             props = {},
