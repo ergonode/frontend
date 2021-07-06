@@ -64,8 +64,8 @@
           "changeImageOptionTitle": "Zmień to zdjęcie",
           "downloadImageOptionTitle": "Pobierz to zdjęcie",
           "removeImageOptionTitle": "Usuń to zdjęcie",
-          "addImageToGalleryOptionTitle": "Dodaj to zdjęcie do galerii",
-          "detachFromGalleryOptionTitle": "Odeptnij to zdjęcie z galerii"
+          "addImageToGalleryOptionTitle": "Dodaj zdjęcie do galerii",
+          "detachFromGalleryOptionTitle": "Odepnij to zdjęcie z galerii"
         },
         "UploadFiles": {
           "title": "Dodaj pliki",

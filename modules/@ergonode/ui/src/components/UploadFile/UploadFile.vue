@@ -21,19 +21,6 @@
                             :accept="acceptFiles"
                             :disabled="disabled"
                             @input="onUpload">
-                        <Fab
-                            v-else-if="!disabled"
-                            :floating="{
-                                top: '4px',
-                                right: '4px',
-                                backgroundColor: whiteColor,
-                            }"
-                            :theme="destructiveTheme"
-                            @click.native="onRemove">
-                            <template #icon="{ color }">
-                                <IconDelete :fill-color="color" />
-                            </template>
-                        </Fab>
                         <InputImageController>
                             <InputUploadPlaceholder v-if="!value" />
                             <InputUploadSpinner v-else-if="requestPending" />
@@ -42,6 +29,19 @@
                                 v-else>
                                 <slot name="file" />
                             </div>
+                            <Fab
+                                v-if="!disabled && value"
+                                :floating="{
+                                    top: '4px',
+                                    right: '4px',
+                                    backgroundColor: whiteColor,
+                                }"
+                                :theme="destructiveTheme"
+                                @click.native="onRemove">
+                                <template #icon="{ color }">
+                                    <IconDelete :fill-color="color" />
+                                </template>
+                            </Fab>
                         </InputImageController>
                         <InputLabel
                             v-if="label"
@@ -180,9 +180,13 @@ export default {
 
         &__content {
             display: flex;
+            flex: 1 1 auto;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            width: 100%;
+            height: 0;
+            overflow: hidden;
         }
     }
 </style>

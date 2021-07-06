@@ -71,6 +71,7 @@ export default {
 
 <style lang="scss" scoped>
     .icon {
+        flex: 0 0 auto;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         will-change: transform;
     }
