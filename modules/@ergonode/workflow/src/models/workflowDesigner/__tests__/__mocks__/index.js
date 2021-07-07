@@ -17,6 +17,7 @@ export const transitions = [
         destination: '1',
     },
 ];
+
 export const transitionsToSend = [
     {
         source: '0',
@@ -37,6 +38,7 @@ export const transitionsToSend = [
         condition_set: null,
     },
 ];
+
 export const statuses = [
     {
         id: '0',
@@ -49,6 +51,45 @@ export const statuses = [
     },
     {
         id: '3',
+    },
+];
+
+export const extendedStatuses = [
+    {
+        id: '0',
+    },
+    {
+        id: '1',
+    },
+    {
+        id: '1111',
+    },
+    {
+        id: '2',
+    },
+    {
+        id: '3',
+    },
+];
+
+export const extendedLayoutElements = [
+    {
+        id: '0--2',
+        from: 0,
+        to: 3,
+        row: 0,
+    },
+    {
+        id: '0--3',
+        from: 0,
+        to: 4,
+        row: 1,
+    },
+    {
+        id: '0--1',
+        from: 0,
+        to: 1,
+        row: 2,
     },
 ];
 

@@ -13,6 +13,8 @@ import {
     getValidColumnsToAddTransition,
 } from '@Workflow/models/workflowDesigner';
 import {
+    extendedLayoutElements,
+    extendedStatuses,
     layoutElements,
     obstacleColumns,
     statuses,
@@ -145,7 +147,7 @@ describe('getMappedTransitions', () => {
 });
 
 describe('getMappedStatusPositions', () => {
-    it('Based on layout element get statuses to send - empty', () => {
+    it('Based on layout element and status get empty layout element', () => {
         const result = getMappedStatusPositions({
             layoutElements: [],
             statuses,
@@ -155,7 +157,7 @@ describe('getMappedStatusPositions', () => {
         expect(result).toEqual([]);
     });
 
-    it('Based on layout element get statuses to send', () => {
+    it('Based on layout element and status get that same item positions', () => {
         const result = getMappedStatusPositions({
             layoutElements,
             statuses,
@@ -163,5 +165,15 @@ describe('getMappedStatusPositions', () => {
 
         expect(result.length).toEqual(3);
         expect(result).toEqual(layoutElements);
+    });
+
+    it('Based on layout element and status get deferent item positions', () => {
+        const result = getMappedStatusPositions({
+            layoutElements,
+            statuses: extendedStatuses,
+        });
+
+        expect(result.length).toEqual(3);
+        expect(result).toEqual(extendedLayoutElements);
     });
 });
