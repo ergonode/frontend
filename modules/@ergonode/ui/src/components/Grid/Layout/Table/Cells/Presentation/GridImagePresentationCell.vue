@@ -10,6 +10,7 @@
         <LazyImage
             v-if="value"
             :href="`multimedia/${value}/download/default`"
+            object-fit="contain"
             :value="value" />
     </div>
 </template>
@@ -37,6 +38,7 @@ export default {
 <style lang="scss" scoped>
     .grid-image-presentation-cell {
         display: flex;
+        flex: 1;
         height: 100%;
         padding: 8px;
         box-sizing: border-box;

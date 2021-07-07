@@ -4,23 +4,25 @@
  */
 <template>
     <div
-        class="collection-cell"
+        class="grid-product-attach-collection-cell"
         @click="onClick">
         <!-- TODO: Change relation to `multimedia` href.
              INFO: Secure relationship does not break the application.
         -->
         <LazyImage
             v-if="data.image"
+            class="grid-product-attach-collection-cell__image"
             :href="`multimedia/${data.image}/download/default`"
             :value="data.image"
-            :object-fit="objectFit"
-            :height="collectionImageHeight" />
-        <DefaultImage v-else />
+            :object-fit="objectFit" />
+        <DefaultImage
+            v-else
+            class="grid-product-attach-collection-cell__default-image" />
         <div
-            class="collection-cell__fixed-title-content"
+            class="grid-product-attach-collection-cell__fixed-title-content"
             :title="data.description">
             <span
-                class="collection-cell__title"
+                class="grid-product-attach-collection-cell__title"
                 v-text="data.description" />
             <Toggler
                 :value="cellValue"
@@ -31,9 +33,6 @@
 </template>
 
 <script>
-import {
-    COLLECTION_IMAGE_HEIGHT,
-} from '@Core/defaults/grid';
 import DefaultImage from '@UI/components/DefaultImage/DefaultImage';
 import LazyImage from '@UI/components/LazyImage/LazyImage';
 import Toggler from '@UI/components/Toggler/Toggler';
@@ -77,9 +76,6 @@ export default {
 
             return this.data.attached;
         },
-        collectionImageHeight() {
-            return COLLECTION_IMAGE_HEIGHT;
-        },
     },
     methods: {
         onClick(event) {
@@ -110,13 +106,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .collection-cell {
-        $cell: &;
-
+    .grid-product-attach-collection-cell {
         position: relative;
         display: flex;
         flex-direction: column;
-        height: 190px;
         border: $BORDER_1_GREY;
         box-sizing: border-box;
         background-color: $WHITE;
@@ -138,6 +131,14 @@ export default {
             font: $FONT_MEDIUM_12_16;
             text-overflow: ellipsis;
             overflow: hidden;
+        }
+
+        &__image {
+            height: 0;
+        }
+
+        &__default-image, &__image {
+            flex: 1 1 auto;
         }
 
         &:hover {
