@@ -65,7 +65,8 @@ export default {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
                 title: this.$t('@Workflow.workflow.components.RemoveWorkflowStatusButton.confirmTitle'),
-                applyTitle: this.$t('@Workflow._.deleteConfirm'),
+                subtitle: this.$t('@Workflow.workflow.components.RemoveWorkflowStatusButton.confirmSubtitle'),
+                applyTitle: this.$t('@Workflow.workflow.components.RemoveWorkflowStatusButton.applyTitle'),
                 action: () => this.removeStatus({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
