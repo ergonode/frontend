@@ -22,6 +22,7 @@ export const Icons = {
 };
 
 export const Components = {
+    GridProductAttachCollectionCell: () => import('@Products/extends/ui/components/Grid/Layout/Collection/Cells/GridProductAttachCollectionCell').then(m => m.default || m),
     GridProductRelationDataCell: () => import('@Products/extends/ui/components/Grid/Layout/Table/Cells/Data/GridProductRelationDataCell').then(m => m.default || m),
     GridLabelDataCell: () => import('@Products/extends/ui/components/Grid/Layout/Table/Cells/Data/GridLabelDataCell').then(m => m.default || m),
     GridLabelEditCell: () => import('@Products/extends/ui/components/Grid/Layout/Table/Cells/Edit/GridLabelEditCell').then(m => m.default || m),

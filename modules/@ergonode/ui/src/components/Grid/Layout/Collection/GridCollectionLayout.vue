@@ -6,9 +6,10 @@
     <div :class="classes">
         <Preloader v-if="isPrefetchingData || !isLayoutResolved" />
         <template v-else>
-            <div class="grid-collection-layout__header">
+            <div
+                v-if="isSelectColumn"
+                class="grid-collection-layout__header">
                 <GridSelectCollectionHeaderCell
-                    v-if="isSelectColumn"
                     :row-ids="rowIds"
                     :excluded-from-selection-rows="excludedFromSelectionRows"
                     :selected-rows="selectedRows"
@@ -18,7 +19,7 @@
                     @select-all="onSelectAllRows" />
             </div>
             <div
-                :style="gridTemplateColumns"
+                :style="gridTemplate"
                 class="grid-collection-layout__body">
                 <GridCollectionCell
                     v-for="(element, index) in data"
@@ -38,6 +39,7 @@
                     @row-action="onRowAction"
                     @cell-value="onCellValueChange" />
             </div>
+            <div class="grid-collection-layout__footer" />
         </template>
     </div>
 </template>
@@ -181,9 +183,12 @@ export default {
                 },
             ];
         },
-        gridTemplateColumns() {
+        gridTemplate() {
+            const width = `${(10 - this.columnsNumber) * 50}px`;
+
             return {
-                gridTemplateColumns: `repeat(${this.columnsNumber}, 1fr)`,
+                gridTemplateColumns: `repeat(${this.columnsNumber}, minmax(130px, 1fr))`,
+                gridTemplateRows: `repeat(${Math.ceil(this.rowIds.length / this.columnsNumber)}, ${width})`,
             };
         },
         data() {
@@ -247,25 +252,31 @@ export default {
 
 <style lang="scss" scoped>
     .grid-collection-layout {
+        position: relative;
         display: flex;
         flex: 1;
         flex-direction: column;
+        overflow: auto;
 
         &__body {
             display: grid;
-            flex: 1 1 auto;
-            grid-template-rows: 190px;
             grid-gap: 24px;
-            height: 0;
-            padding: 20px 24px 24px;
+            padding: 24px 24px 0;
             box-sizing: border-box;
-            overflow: auto;
+        }
+
+        &__footer {
+            flex: 0 0 24px;
         }
 
         &__header {
+            position: sticky;
+            top: 0;
+            z-index: 1;
             display: flex;
             align-items: center;
-            padding: 20px 20px 0;
+            padding: 24px 24px 0;
+            background-color: $WHITE;
         }
 
         &--placeholder {

@@ -9,18 +9,17 @@
         -->
         <LazyImage
             v-if="data.image"
+            class="grid-collection-default-cell__image"
             :href="`multimedia/${data.image}/download/default`"
             :value="data.image"
-            :object-fit="objectFit"
-            :height="collectionImageHeight" />
-        <DefaultImage v-else />
-        <div
-            class="grid-collection-default-cell__fixed-title-content"
-            :title="data.description">
-            <span
-                class="grid-collection-default-cell__title"
-                v-text="data.description" />
-        </div>
+            :object-fit="objectFit" />
+        <DefaultImage
+            v-else
+            class="grid-collection-default-cell__default-image" />
+        <span
+            class="grid-collection-default-cell__title"
+            v-text="data.description"
+            :title="data.description" />
         <GridCollectionCellActionsPanel>
             <template #prepend>
                 <CheckBox
@@ -59,9 +58,6 @@
 </template>
 
 <script>
-import {
-    COLLECTION_IMAGE_HEIGHT,
-} from '@Core/defaults/grid';
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
@@ -143,9 +139,6 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        collectionImageHeight() {
-            return COLLECTION_IMAGE_HEIGHT;
-        },
     },
     methods: {
         onSelect() {
@@ -210,26 +203,31 @@ export default {
         position: relative;
         display: flex;
         flex-direction: column;
-        height: 190px;
+        align-items: center;
+        justify-items: center;
         border: $BORDER_1_GREY;
         box-sizing: border-box;
         background-color: $WHITE;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
 
-        &__fixed-title-content {
-            display: flex;
+        &__title {
+            width: 100%;
             height: 32px;
             padding: 8px;
             box-sizing: border-box;
-        }
-
-        &__title {
-            flex: 1 1 auto;
-            width: 0;
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_12_16;
             text-overflow: ellipsis;
+            white-space: nowrap;
             overflow: hidden;
+        }
+
+        &__image {
+            height: 0;
+        }
+
+        &__default-image, &__image {
+            flex: 1 1 auto;
         }
 
         &__action {

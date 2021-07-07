@@ -411,7 +411,7 @@ export default {
             };
         },
         headerRowsTemplate() {
-            return this.isBasicFilter ? `${ROW_HEIGHT.SMALL}px ${ROW_HEIGHT.SMALL}px` : `${ROW_HEIGHT.SMALL}px`;
+            return this.isBasicFilter ? `${ROW_HEIGHT.TINY}px ${ROW_HEIGHT.TINY}px` : `${ROW_HEIGHT.TINY}px`;
         },
         templateRows() {
             if (this.dataCount) {

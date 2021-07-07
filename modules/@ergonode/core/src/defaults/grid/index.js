@@ -31,9 +31,10 @@ export const PINNED_COLUMN_STATE = {
 };
 
 export const ROW_HEIGHT = {
-    SMALL: 32,
-    MEDIUM: 40,
-    LARGE: 80,
+    TINY: 32,
+    SMALL: 40,
+    MEDIUM: 64,
+    LARGE: 96,
 };
 
 export const IMAGE_SCALING = {

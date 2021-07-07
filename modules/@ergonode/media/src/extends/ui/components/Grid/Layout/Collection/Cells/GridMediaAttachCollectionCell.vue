@@ -4,20 +4,22 @@
  */
 <template>
     <div
-        class="collection-cell"
+        class="grid-media-attach-collection-cell"
         @click="onClick">
         <LazyImage
             v-if="data.image"
+            class="grid-media-attach-collection-cell__image"
             :href="`multimedia/${data.image}/download/default`"
             :value="data.image"
-            :object-fit="objectFit"
-            :height="collectionImageHeight" />
-        <DefaultImage v-else />
+            :object-fit="objectFit" />
+        <DefaultImage
+            v-else
+            class="grid-media-attach-collection-cell__default-image" />
         <div
-            class="collection-cell__fixed-title-content"
+            class="grid-media-attach-collection-cell__fixed-title-content"
             :title="data.description">
             <span
-                class="collection-cell__title"
+                class="grid-media-attach-collection-cell__title"
                 v-text="data.description" />
             <Toggler
                 :value="cellValue"
@@ -28,9 +30,6 @@
 </template>
 
 <script>
-import {
-    COLLECTION_IMAGE_HEIGHT,
-} from '@Core/defaults/grid';
 import DefaultImage from '@UI/components/DefaultImage/DefaultImage';
 import LazyImage from '@UI/components/LazyImage/LazyImage';
 import Toggler from '@UI/components/Toggler/Toggler';
@@ -71,9 +70,6 @@ export default {
 
             return this.data.esa_attached;
         },
-        collectionImageHeight() {
-            return COLLECTION_IMAGE_HEIGHT;
-        },
     },
     methods: {
         onClick(event) {
@@ -104,13 +100,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .collection-cell {
+    .grid-media-attach-collection-cell {
         $cell: &;
 
         position: relative;
         display: flex;
         flex-direction: column;
-        height: 190px;
         border: $BORDER_1_GREY;
         box-sizing: border-box;
         background-color: $WHITE;
@@ -132,6 +127,14 @@ export default {
             font: $FONT_MEDIUM_12_16;
             text-overflow: ellipsis;
             overflow: hidden;
+        }
+
+        &__image {
+            height: 0;
+        }
+
+        &__default-image, &__image {
+            flex: 1 1 auto;
         }
 
         &:hover {
