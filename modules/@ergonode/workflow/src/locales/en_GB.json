@@ -46,13 +46,13 @@
           "errorMessage": "Transition hasn`t been deleted"
         },
         "RemoveWorkflowTransitionFab": {
-          "title": "REMOVE TRANSITION",
+          "title": "Delete transition",
           "confirmTitle": "Do you want to delete this transition?",
           "confirmSubtitle": "Transition will be permanently deleted from the system.",
           "deleteConfirm": "DELETE TRANSITION"
         },
         "UpdateWorkflowTransitionFab": {
-          "title": "UPDATE TRANSITION"
+          "title": "Edit transition"
         },
         "UpdateWorkflowTransitionConditionDesignerButton": {
           "successMessage": "Transition conditions have been updated"
