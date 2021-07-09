@@ -5,7 +5,7 @@
 <template>
     <div class="user-welcome">
         <UserFabAvatar
-            :avatar-id="user.avatarId"
+            :avatar-id="avatarId"
             :user-id="user.id"
             :name="user.firstName"
             :size="extraLargeSize" />
@@ -38,6 +38,11 @@ export default {
         ...mapState('authentication', [
             'user',
         ]),
+        avatarId() {
+            return this.user.avatarFilename
+                ? this.user.avatarFilename.split('.')[0]
+                : '';
+        },
         extraLargeSize() {
             return SIZE.EXTRA_LARGE;
         },

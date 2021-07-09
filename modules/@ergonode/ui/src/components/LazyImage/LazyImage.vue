@@ -96,6 +96,8 @@ export default {
         },
         async getImage() {
             try {
+                this.isLoading = true;
+
                 const response = await this.$axios.$get(this.href, {
                     useCache: this.useCache,
                     responseType: 'arraybuffer',
