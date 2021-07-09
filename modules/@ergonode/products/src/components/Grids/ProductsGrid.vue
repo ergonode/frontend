@@ -198,7 +198,7 @@ export default {
             scope: this.scope,
             disabledElements: getDisabledElements({
                 elements: [
-                    ...this.columns,
+                    ...this.columns.filter(column => column.visible),
                     ...this.advancedFilters,
                 ],
                 defaultLanguageCode: this.userLanguageCode,
@@ -390,8 +390,7 @@ export default {
             }
 
             const isReplaceRequired = this.sortOrder.field === column.id
-                || typeof this.filterValues[column.id] !== 'undefined'
-                || typeof this.advancedFilterValues[column.id] !== 'undefined';
+                || typeof this.filterValues[column.id] !== 'undefined';
 
             removeCookieAtIndex({
                 cookies: this.$userCookies,
