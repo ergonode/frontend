@@ -2,15 +2,9 @@
  * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-@include fontFace("Regular", normal, 400);
-@include fontFace("Italic", italic, 400);
 @include fontFace("Medium", normal, 500);
 @include fontFace("MediumItalic", italic, 500);
 @include fontFace("SemiBold", normal, 600);
 @include fontFace("SemiBoldItalic", italic, 600);
 @include fontFace("Bold", normal, 700);
 @include fontFace("BoldItalic", italic, 700);
-@include fontFace("ExtraBold", normal, 800);
-@include fontFace("ExtraBoldItalic", italic, 800);
-@include fontFace("Black", normal, 900);
-@include fontFace("BlackItalic", italic, 900);
