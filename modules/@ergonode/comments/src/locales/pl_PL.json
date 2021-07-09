@@ -25,7 +25,7 @@
           "label": "Komentarz",
           "buttonEdit": "Zapisz komentarz",
           "buttonAdd": "Dodaj komentarz",
-          "messageEdit": "Komentarz zedytowany",
+          "messageEdit": "Komentarz zaktualizowany",
           "messageAdd": "Komentarz stworzony"
         }
       },

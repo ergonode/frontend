@@ -55,12 +55,12 @@
         "AddProductsFromSegmentModalForm": {
           "title": "Dodaj produkty z reguł segmentujących",
           "formSubtitle": "Dodaj do kolekcji",
-          "successMessage": "Prodkuty zostały dodane do kolekcji"
+          "successMessage": "Produkty zostały dodane do kolekcji"
         },
         "AddProductsBySKUModalForm": {
           "title": "Dodaj produkty po SKU",
           "formSubtitle": "Dodaj do kolekcji",
-          "successMessage": "Prodkuty zostały dodane do kolekcji"
+          "successMessage": "Produkty zostały dodane do kolekcji"
         },
         "CollectionsGrid": {
           "successMessage": "Kolekcja została usunięta",

@@ -29,7 +29,7 @@
           "nameLabel": "Nazwa systemowa",
           "nameHint": "Nazwa systemowa musi być unikalna",
           "scopeLabel": "Zakres",
-          "scopeHint": "Global oznacza że ta sama wartość atrybutu dla każdego języja, będzie odziedziczona po jezyku głownym. Wartości opcji mogą być tłumaczone, ale nie mogą być zmienione w szablonie produktu. "
+          "scopeHint": "Global oznacza że ta sama wartość atrybutu dla każdego języja, będzie odziedziczona po języku głównym. Wartości opcji mogą być tłumaczone, ale nie mogą być zmienione w szablonie produktu. "
         },
         "AttributeTranslationForm": {
           "nameLabel": "Nazwa atrybutu",
@@ -113,7 +113,7 @@
           "title": "Prezentacja produktu",
           "defaultLabel": "Domyślny atrybut etykiety",
           "defaultImage": "Domyślny atrybut obrazu",
-          "noLabelTitle": "Brak atrybutu takstowego",
+          "noLabelTitle": "Brak atrybutu tekstowego",
           "noLabelSubtitle": "W systemie nie ma żadnych atrybutów tekstowych, więc można utworzyć pierwszy.",
           "noImageTitle": "Brak atrybutu obrazu ",
           "noImageSubtitle": "W systemie nie ma żadnych atrybutów obrazu, więc można utworzyć pierwszy."
