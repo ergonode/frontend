@@ -100,6 +100,10 @@ export default {
         },
         onCreateError(errors) {
             this.onError(errors);
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: this.$t('@Workflow.workflow.components.CreateWorkflowTransitionsButton.errorMessage'),
+            });
 
             this.isSubmitting = false;
         },

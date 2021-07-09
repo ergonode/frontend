@@ -78,14 +78,16 @@
         "WorkflowDesigner": {
           "errorMessage": "Statusy i ich przejdzie nie zostały pobrany poprawnie",
           "warningMessage": "Brak możliwych kombinacji dla tego statusu",
-          "successMessage": "Przejścia zostały utworzone",
+          "updateSuccessMessage": "Przejścia zostały utworzone",
+          "updateErrorMessage": "Przejścia nie zostały utworzone",
           "confirmTitle": "Przed edycją tego przejścia należy zapisać zmiany",
           "confirmSubtitle": "Aby edytować nowo utworzone przejście, należy najpierw zapisać przepływ pracy.",
           "applyTitle": "ZAPISZ ZMIANY",
           "cancelTitle": "NIE ZAPISUJ"
         },
         "CreateWorkflowTransitionsButton": {
-          "successMessage": "Przejścia zostały utworzone"
+          "successMessage": "Przejścia zostały utworzone",
+          "errorMessage": "Przejścia nie zostały utworzone"
         },
         "WorkflowStatusGeneralTab": {
           "successMessage": "Status został zaktualizowany"

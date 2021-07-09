@@ -396,15 +396,19 @@ export default {
                 subtitle: this.$t('@Workflow.workflow.components.WorkflowDesigner.confirmSubtitle'),
                 applyTitle: this.$t('@Workflow.workflow.components.WorkflowDesigner.applyTitle'),
                 cancelTitle: this.$t('@Workflow.workflow.components.WorkflowDesigner.cancelTitle'),
-                action: () => {
-                    this.updateTransitions({
+                action: async () => {
+                    const transitions = getMappedTransitions({
+                        layoutElements: this.layoutElements,
+                        transitions: this.transitions,
+                    });
+
+                    await this.updateTransitions({
                         scope: this.scope,
-                        transitions: getMappedTransitions({
-                            layoutElements: this.layoutElements,
-                            transitions: this.transitions,
-                        }),
-                        onSuccess: this.onCreateSuccess(id),
-                        onError: this.onCreateError,
+                        transitions,
+                        onSuccess: () => {
+                            this.onUpdateSuccess(id);
+                        },
+                        onError: this.onUpdateError,
                     });
 
                     this.removeScopeErrors(this.scope);
@@ -422,10 +426,10 @@ export default {
                 );
             }
         },
-        onCreateSuccess(id) {
+        onUpdateSuccess(id) {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('@Workflow.workflow.components.WorkflowDesigner.successMessage'),
+                message: this.$t('@Workflow.workflow.components.WorkflowDesigner.updateSuccessMessage'),
             });
 
             this.markChangeValuesAsSaved(this.scope);
@@ -436,8 +440,12 @@ export default {
                 },
             });
         },
-        onCreateError(errors) {
+        onUpdateError(errors) {
             this.onError(errors);
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: this.$t('@Workflow.workflow.components.WorkflowDesigner.updateErrorMessage'),
+            });
         },
         onWorkflowStatusCreated() {
             this.isFetchingData = true;
