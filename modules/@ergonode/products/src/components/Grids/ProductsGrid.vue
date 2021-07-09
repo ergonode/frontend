@@ -390,8 +390,7 @@ export default {
             }
 
             const isReplaceRequired = this.sortOrder.field === column.id
-                || typeof this.filterValues[column.id] !== 'undefined'
-                || typeof this.advancedFilterValues[column.id] !== 'undefined';
+                || typeof this.filterValues[column.id] !== 'undefined';
 
             removeCookieAtIndex({
                 cookies: this.$userCookies,
