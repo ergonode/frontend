@@ -414,7 +414,7 @@ export default {
         },
         isColumnExist() {
             return this.columns.some(
-                column => column.id === this.draggedElement,
+                column => column.id === this.draggedElement && column.visible,
             );
         },
         isTableLayout() {

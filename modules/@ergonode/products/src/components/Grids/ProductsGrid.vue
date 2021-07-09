@@ -198,7 +198,7 @@ export default {
             scope: this.scope,
             disabledElements: getDisabledElements({
                 elements: [
-                    ...this.columns,
+                    ...this.columns.filter(column => column.visible),
                     ...this.advancedFilters,
                 ],
                 defaultLanguageCode: this.userLanguageCode,
