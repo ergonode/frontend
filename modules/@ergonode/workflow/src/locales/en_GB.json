@@ -78,14 +78,16 @@
         "WorkflowDesigner": {
           "errorMessage": "Workflow haven’t been fetched properly",
           "warningMessage": "No possible combinations for this status",
-          "successMessage": "Transitions have been created",
+          "updateSuccessMessage": "Transitions have been created",
+          "updateErrorMessage": "Transitions haven’t been created",
           "confirmTitle": "You must save changes before editing this transition",
           "confirmSubtitle": "To edit a newly created transition, you must first save the workflow.",
           "applyTitle": "SAVE CHANGES",
           "cancelTitle": "DON'T SAVE"
         },
         "CreateWorkflowTransitionsButton": {
-          "successMessage": "Transitions have been created"
+          "successMessage": "Transitions have been created",
+          "errorMessage": "Transitions haven’t been created"
         },
         "WorkflowStatusGeneralTab": {
           "successMessage": "Status has been updated"
