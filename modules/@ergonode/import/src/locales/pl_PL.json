@@ -33,7 +33,7 @@
           "errorsLabel": "Błędy",
           "createCancel": "Tworzenie profilu importowego zostało przerwane",
           "updateCancel": "Aktualizacja profilu importowego została przerwana",
-          "deleteCancel": "Usuwanie profilu improtowego zostało przerwane"
+          "deleteCancel": "Usuwanie profilu importowego zostało przerwane"
         }
       },
       "components": {
@@ -77,9 +77,9 @@
         },
         "RemoveImportButton": {
           "title": "Usuń profil importowy",
-          "confirmTitle": "Czy jesteś pewien, że chcesz usuąć ten profil importowy?",
-          "successMessage": "Profil improtowy został usunięty",
-          "errorMessage": "Profil improtowy nie został usunięty"
+          "confirmTitle": "Czy jesteś pewien, że chcesz usunąć ten profil importowy?",
+          "successMessage": "Profil importowy został usunięty",
+          "errorMessage": "Profil importowy nie został usunięty"
         },
         "CreateImportProfileButton": {
           "title": "Nowy profil importowy"

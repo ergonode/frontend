@@ -66,7 +66,7 @@
           "errorMessage": "Kanały nie zostały pobrane poprawnie"
         },
         "ChannelHistoryGrid": {
-          "placeholderTitle": "Brak historii exportów",
+          "placeholderTitle": "Brak historii eksportów",
           "placeholderSubtitle": "W systemie nie ma żadnego eksportu, dodaj pierwszy",
           "successMessage": "Historia kanału została usunięta",
           "errorMessage": "Kanały nie zostały pobrane poprawnie"
@@ -74,7 +74,7 @@
         "SchedulerForm": {
           "title": "Harmonogram",
           "activeLabel": "Włącz harmonogram",
-          "timeRangeSectionTitle": "Data i czas rozpoczęscia",
+          "timeRangeSectionTitle": "Data i czas rozpoczęcia",
           "startDateLabel": "Data rozpoczęcia",
           "startTimeLabel": "Czas rozpoczęcia",
           "recurrenceTimeSectionTitle": "Rekurencyjny czas",

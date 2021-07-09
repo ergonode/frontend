@@ -80,7 +80,7 @@
         },
         "RestoreAttributeParentConfirmModal": {
           "confirmTitle": "Czy chcesz przywrócić tłumaczenia dla języka nadrzędnego?",
-          "buttonTitle": "TAK, PRZYWRÓC",
+          "buttonTitle": "TAK, PRZYWRÓĆ",
           "successMessage": "Wartość produktu została przywrócona",
           "errorMessage": "Nie można było przywrócić wartości produktu"
         },
@@ -139,8 +139,8 @@
         "action": {
           "skuRequiredLabel": "Sku jest wymagane",
           "segmentRequiredLabel": "Reguły segmentujące są wymagane",
-          "addBySKUCancel": "Dodawnaie produktu po sku zostało przerwane",
-          "addBySKUToCollectionCancel": "Dodawnaie produktu po sku do kolekcji zostało przerwane",
+          "addBySKUCancel": "Dodawanie produktu po sku zostało przerwane",
+          "addBySKUToCollectionCancel": "Dodawanie produktu po sku do kolekcji zostało przerwane",
           "addFromSegmentCancel": "Dodawanie produktu z segmentu zostało przerwane",
           "createCancel": "Tworzenie produktu zostało przerwane",
           "updateCancel": "Aktualizowanie produktu zostało przerwane",
@@ -201,7 +201,7 @@
           "noProductsInGroup": "Brak produktów w grupie",
           "addProductToGroup": "Brak produktów w grupie, dodaj pierwszy.",
           "successMessage": "Produkt został usunięty z grupy",
-          "errorMessage": "Produkt należacy do grupy nie został pobrany poprawnie"
+          "errorMessage": "Produkt należący do grupy nie został pobrany poprawnie"
         },
         "ProductsToAttachForGroupGrid": {
           "noProducts": "Brak produktów",

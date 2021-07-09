@@ -20,7 +20,7 @@
       "_": {
         "title": "Użytkownicy",
         "headTitle": "Użytkownicy - Ergonode",
-        "noUsers": "Brak uzytkowników",
+        "noUsers": "Brak użytkowników",
         "createFirst": "Brak użytkowników w systemie, stwórz pierwszego."
       },
       "components": {
@@ -87,7 +87,7 @@
           "getRequest": "Logi aktywności użytkownika nie zostały pobrane poprawnie"
         },
         "UserAvatarTab": {
-          "updateAvatarSuccess": "Awatar użytkownika został zaktaulizowany"
+          "updateAvatarSuccess": "Awatar użytkownika został zaktualizowany"
         }
       },
       "store": {

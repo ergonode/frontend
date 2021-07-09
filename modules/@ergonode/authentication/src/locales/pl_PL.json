@@ -20,14 +20,14 @@
         },
         "NewPasswordForm": {
           "title": "Stwórz nowe hasło",
-          "info": "Twoje hasłow powinno zawierać:",
+          "info": "Twoje hasło powinno zawierać:",
           "field": "Hasło",
           "toggle": "Pokaż hasło",
           "button": "Ustaw hasło",
           "validationHasMinimumLength": "co najmniej {length} znaków,",
           "validationHasUppercase": "co najmniej 1 dużą literę (A-Z),",
           "validationHasLowercase": "co najmniej 1 małą literę (a-z),",
-          "validationHasDigital": "co njamniej 1 cyfrę (0-9).",
+          "validationHasDigital": "co najmniej 1 cyfrę (0-9).",
           "alertSuccess": "Hasło zostało uaktualnione"
         },
         "PasswordRecoveryCheckEmail": {
