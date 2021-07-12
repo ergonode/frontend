@@ -69,7 +69,7 @@ jobs:
 
       - name: Run frontend
         run: |
-          npm install
+          npm ci
           npm run modules:all
           npm run build
           ./node_modules/.bin/pm2 start npm -- start
