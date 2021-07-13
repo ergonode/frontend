@@ -7,18 +7,12 @@ Feature: CREATE: Role
     When I click on "new-role" button
     Then Element "modal" is visible
 
-  @other
-  Scenario: Close modal
-    When I close modal
-    Then Element "modal" not exist
-
   @success
   Scenario: Add role - success
     When I fill the "role-name" input with the "role_name" term
     * I fill the "role-description" textarea with the "role_description" term
     * I click on "submit" button
     * I send a "POST" request and status code should be 201
-    * I open "user-roles/grid" page
     Then On "grid" I can see row with "role_name" value and columns data: "{'0': 'role_name', '1': 'role_description', '2': '0'}"
 
   @success

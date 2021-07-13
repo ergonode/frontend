@@ -2,56 +2,49 @@
  * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-Cypress.Commands.add('apiRequest', ({
-    method, url, alias,
-}) => {
-    cy.server();
-    cy
-        .route({
-            method,
-            url: `**/${url}`,
-        })
-        .as(alias);
-});
-
 Cypress.Commands.add('login', (email, pass) => {
-    cy.visit('');
-    cy.intercept('POST', '**/login').as('postLogin');
-    cy.intercept('GET', '**/profile').as('profile');
-    cy.intercept('GET', '**/languages?limit=9999&offset=0&view=list&field=name&order=ASC').as('languages');
-    cy.intercept('GET', '**/language/tree').as('languageTree');
-    cy
-        .get('[data-cy=login-email]')
-        .find('input')
-        .type(email)
-        .should('have.value', email);
-    cy
-        .get('[data-cy=login-pass]')
-        .find('input')
-        .type(pass)
-        .should('have.value', pass);
-    cy
-        .get('[data-cy=submit]')
-        .click();
-    cy
-        .wait('@postLogin')
-        .its('response.statusCode')
-        .should('eq', 200);
-    cy
-        .wait('@profile')
-        .its('response.statusCode')
-        .should('eq', 200);
-    cy
-        .wait('@languages')
-        .its('response.statusCode')
-        .should('eq', 200);
-    cy
-        .wait('@languageTree')
-        .its('response.statusCode')
-        .should('eq', 200);
-    cy
-        .url()
-        .should('include', '/dashboard');
+    cy.getCookie('token')
+        .then((token) => {
+            if (!token) {
+                cy.visit('');
+                cy.intercept('POST', '**/login').as('postLogin');
+                cy.intercept('GET', '**/profile').as('profile');
+                cy.intercept('GET', '**/languages?limit=9999&offset=0&view=list&field=name&order=ASC').as('languages');
+                cy.intercept('GET', '**/language/tree').as('languageTree');
+                cy
+                    .get('[data-cy=login-email]')
+                    .find('input')
+                    .type(email)
+                    .should('have.value', email);
+                cy
+                    .get('[data-cy=login-pass]')
+                    .find('input')
+                    .type(pass)
+                    .should('have.value', pass);
+                cy
+                    .get('[data-cy=submit]')
+                    .click();
+                cy
+                    .wait('@postLogin')
+                    .its('response.statusCode')
+                    .should('eq', 200);
+                cy
+                    .wait('@profile')
+                    .its('response.statusCode')
+                    .should('eq', 200);
+                cy
+                    .wait('@languages')
+                    .its('response.statusCode')
+                    .should('eq', 200);
+                cy
+                    .wait('@languageTree')
+                    .its('response.statusCode')
+                    .should('eq', 200);
+                cy
+                    .url()
+                    .should('include', '/dashboard');
+            }
+        });
 });
 
 Cypress.Commands.add('logout', () => {

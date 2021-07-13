@@ -7,17 +7,11 @@ Feature: CREATE: Attribute groups
     When I click on "new-attribute-group" button
     Then Element "modal" is visible
 
-  @other
-  Scenario: Close modal
-    When I close modal
-    Then Element "modal" not exist
-
   @success
   Scenario Outline: Add attribute group - success
     When I fill the "attribute-group-code" input with the "<name>" term
     * I click on "submit" button
     * I send a "POST" request and status code should be 201
-    * I open "attribute-groups/grid" page
     Then On "grid" I can see row with "<name>" value and columns data: "{'0': '<name>', '2': '0'}"
 
     Examples:

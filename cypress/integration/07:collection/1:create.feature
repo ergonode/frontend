@@ -7,18 +7,12 @@ Feature: CREATE: Collection
     When I click on "new-collection" button
     Then Element "modal" is visible
 
-  @other
-  Scenario: Close modal
-    When I close modal
-    Then Element "modal" not exist
-
   @success
   Scenario Outline: Add collection - success
     When I fill the "collection-code" input with the "<name>" term
     * I choose "<type_txt>" option from "collection-typeId" select field
     * I click on "submit" button
     * I send a "POST" request and status code should be 201
-    * I open "collections/grid" page
     Then On "grid" I can see row with "<name>" value and columns data: "{'0': '<name>', '1': '<type_txt>', '2': '', '3': ''}"
 
     Examples:

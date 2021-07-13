@@ -20,12 +20,7 @@ const requestName = 'rolesRequest';
 const url = /roles/;
 
 before(() => {
-    cy.getCookie('token')
-        .then((token) => {
-            if (!token) {
-                cy.login(Cypress.env('adminEmail'), Cypress.env('adminPass'));
-            }
-        });
+    cy.login(Cypress.env('adminEmail'), Cypress.env('adminPass'));
 });
 
 beforeEach(() => {

@@ -7,11 +7,6 @@ Feature: CREATE: User
     When I click on "new-user" button
     Then Element "modal" is visible
 
-  @other
-  Scenario: Close modal
-    When I close modal
-    Then Element "modal" not exist
-
   @success
   Scenario: Add user - success
     When I fill the "user-email" input with the "user@email.com" term
@@ -23,7 +18,6 @@ Feature: CREATE: User
     * I choose "Admin" option from "user-role" select field
     * I click on "submit" button
     * I send a "POST" request and status code should be 201
-    * I open "users/grid" page
     Then On "grid" I can see row with "user@email.com" value and columns data: "{'0': 'user@email.com', '1': 'User', '2': 'Email'}"
 
   @success
