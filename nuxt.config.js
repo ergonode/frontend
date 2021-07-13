@@ -185,8 +185,6 @@ module.exports = {
         }) {
             const alias = config.resolve.alias || {};
 
-            alias['@Root'] = join(__dirname, './');
-            alias['@Modules'] = join(__dirname, '/modules');
             alias['@Vendor'] = join(__dirname, '/vendor');
 
             if (isDev) {
