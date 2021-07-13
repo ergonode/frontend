@@ -1,6 +1,6 @@
 {
   "name": "@ergonode/products-comments",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "Team Ergonode <team@ergonode.com>",
   "description": "Ergonode products-comments integration module",
   "license": "OSL-3.0",
