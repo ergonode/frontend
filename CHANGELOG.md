@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## CHANGELOG FOR v1.2.x
+
+#### 1.2.0
+tests [#969](https://github.com/ergonode/frontend/issues/969) Downgrade cypress, clean tests (derpdead)
+
 ## CHANGELOG FOR v1.1.x
 
 #### 1.1.0

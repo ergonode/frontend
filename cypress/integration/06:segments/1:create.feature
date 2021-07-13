@@ -7,17 +7,11 @@ Feature: CREATE: Segment
     When I click on "new-segment" button
     Then Element "modal" is visible
 
-  @other
-  Scenario: Close modal
-    When I close modal
-    Then Element "modal" not exist
-
   @success
   Scenario: Add segment - success
     When I fill the "segment-code" input with the "segment_code" term
     * I click on "submit" button
     * I send a "POST" request and status code should be 201
-    * I open "segments/grid" page
     Then On "grid" I can see row with "segment_code" value and columns data: "{'0': 'segment_code', '1': '',  '2': '',  '4': '0'}"
 
   @success

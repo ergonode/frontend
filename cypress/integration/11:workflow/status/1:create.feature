@@ -7,11 +7,6 @@ Feature: CREATE: Status on workflow
     When I click on "new-status" button
     Then Element "modal" is visible
 
-  @other
-  Scenario: Close modal
-    When I close modal
-    Then Element "modal" not exist
-
   @success
   Scenario: Add workflow status - success
     When I fill the "status-code" input with the "status_code" term

@@ -8,17 +8,11 @@ Feature: CREATE: Template
     When On "title-bar" element I click "new-template" button
     Then Element "modal" is visible
 
-  @other
-  Scenario: Close modal
-    When I close modal
-    Then Element "modal" not exist
-
   @success
   Scenario: Add template - success
     When I fill the "template-name" input with the "template_name" term
     * I click on "submit" button
     * I send a "POST" request and status code should be 201
-    * I open "product-templates" page
     * I set "table" view on the grid
     Then On "grid" I can see row with "template_name" value and columns data: "{'0': 'template_name'}"
 

@@ -7,17 +7,11 @@ Feature: CREATE: Category
     When I click on "new-category" button
     Then Element "modal" is visible
 
-  @other
-  Scenario: Close modal
-    When I close modal
-    Then Element "modal" not exist
-
   @success
   Scenario: Add category - success
     When I fill the "category-code" input with the "text_category" term
     * I click on "submit" button
     * I send a "POST" request and status code should be 201
-    * I open "categories/grid" page
     Then On "grid" I can see row with "text_category" value and columns data: "{'1': 'text_category', '3': '0'}"
 
   @success

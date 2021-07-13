@@ -7,17 +7,11 @@ Feature: CREATE: Category tree
     When I click on "new-category-tree" button
     Then Element "modal" is visible
 
-  @other
-  Scenario: Close modal
-    When I close modal
-    Then Element "modal" not exist
-
   @success
   Scenario: Add category tree - success
     When I fill the "category-tree-code" input with the "category_tree" term
     * I click on "submit" button
     * I send a "POST" request and status code should be 201
-    * I open "category-trees/grid" page
     Then On "grid" I can see row with "category_tree" value and columns data: "{'0': 'category_tree', '1': ''}"
 
   @success

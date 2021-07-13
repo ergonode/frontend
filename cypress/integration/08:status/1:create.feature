@@ -7,18 +7,12 @@ Feature: CREATE: Status
     When I click on "new-status" button
     Then Element "modal" is visible
 
-  @other
-  Scenario: Close modal
-    When I close modal
-    Then Element "modal" not exist
-
   @success
   Scenario: Add status - success
     When I fill the "status-code" input with the "status_code" term
     * I choose 0 option from "status-color" color picker field
     * I click on "submit" button
     * I send a "POST" request and status code should be 201
-    * I open "product-statuses/grid" page
     Then On "grid" I can see row with "status_code" value and columns data: "{'0': 'status_code', '2': '', '3': ''}"
 
   @success

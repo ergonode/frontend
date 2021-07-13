@@ -7,11 +7,6 @@ Feature: CREATE: Attributes
     When I click on "new-attribute" button
     Then Element "modal" is visible
 
-  @other
-  Scenario: Close modal
-    When I close modal
-    Then Element "modal" not exist
-
   @success
   Scenario Outline: Add <type_txt> attribute - success
     When I choose "<type_txt>" option from "attribute-type" select field
@@ -20,7 +15,6 @@ Feature: CREATE: Attributes
     * I choose "[0]" options from "attribute-groups" multi select field
     Then I click on "submit" button
     * I send a "POST" request and status code should be 201
-    * I open "attributes/grid" page
     Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_txt>'}"
 
     Examples:
@@ -65,7 +59,6 @@ Feature: CREATE: Attributes
     * I fill the "attribute-option-1" input with the "<option2>" term
     Then I click on "submit" button
     * I send a "POST" request and status code should be 201
-    * I open "attributes/grid" page
     Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_txt>'}"
 
   Examples:

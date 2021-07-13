@@ -22,12 +22,7 @@ const url = /^(?!.*options)(?=.*attributes).*/;
 const urlOpt = /attributes\/(.*?)\/options\/(.*?)/;
 
 before(() => {
-    cy.getCookie('token')
-        .then((token) => {
-            if (!token) {
-                cy.login(Cypress.env('adminEmail'), Cypress.env('adminPass'));
-            }
-        });
+    cy.login(Cypress.env('adminEmail'), Cypress.env('adminPass'));
 });
 
 beforeEach(() => {
