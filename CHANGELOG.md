@@ -3,7 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## CHANGELOG FOR v1.0.0
+## CHANGELOG FOR v1.1.x
+
+#### 1.1.0
+feature [#846](https://github.com/ergonode/frontend/issues/846) Relation attribute type (derpdead, bleto)
+feature [#882](https://github.com/ergonode/frontend/issues/882) Workflow module v2 (derpdead, bleto)
+feature [#900](https://github.com/ergonode/frontend/issues/900) Improve adding product relations (derpdead)
+feature [#920](https://github.com/ergonode/frontend/pull/920) Vertical tabbar resizing (derpdead, bleto)
+feature [#921](https://github.com/ergonode/frontend/pull/921) Resizing vertical tabbar (derpdead)
+feature [#943](https://github.com/ergonode/frontend/pull/943) Unifying input architecture (derpdead)
+bugfix [#891](https://github.com/ergonode/frontend/issues/891) Support for the relation attribute in the Shopware export channel (bleto)
+bugfix [#903](https://github.com/ergonode/frontend/issues/903) Removing an attribute from a batch action clears its values anyway (bleto)
+bugfix [#906](https://github.com/ergonode/frontend/issues/906) Remove condition set delete request (bleto)
+bugfix [#915](https://github.com/ergonode/frontend/issues/915) Removing the action column from the modal that adds relationships during batch editing (bleto)
+bugfix [#928](https://github.com/ergonode/frontend/issues/928) Missing Start time field validation (bleto)
+bugfix [#863](https://github.com/ergonode/frontend/pull/863) Interface translations template crash (derpdead)
+bugfix [#865](https://github.com/ergonode/frontend/pull/865) App translation crash (derpdead)
+bugfix [#869](https://github.com/ergonode/frontend/pull/869) Add user e2e tests (bleto)
+bugfix [#888](https://github.com/ergonode/frontend/pull/888) Improve JSON schema widget rendering mechanism (derpdead)
+bugfix [#941](https://github.com/ergonode/frontend/pull/941) Improve associated label for inputs (derpdead)
+bugfix [#946](https://github.com/ergonode/frontend/pull/946) Create status without save (bleto)
+bugfix [#951](https://github.com/ergonode/frontend/pull/951) Translations and overflowing avatar (derpdead)
+bugfix [#956](https://github.com/ergonode/frontend/pull/956) Polish interface translations (derpdead)
+bugfix [#958](https://github.com/ergonode/frontend/pull/958) Remove unused fonts (derpdead)
+performance [#953](https://github.com/ergonode/frontend/pull/953) Grid layout visual improvement (derpdead)
+tests [#868](https://github.com/ergonode/frontend/pull/868) Add new attribute icons (bleto)
+tests [#879](https://github.com/ergonode/frontend/pull/879) E2e performance (bleto)
+tests [#836](https://github.com/ergonode/frontend/pull/936) Workflow transition e2e (bleto)
+
+## CHANGELOG FOR v1.0.x
+
+#### 1.0.1
+- bugfix [#853](https://github.com/ergonode/frontend/pull/853) Polish interface translations improvement (derpdead)
+- bugfix [#857](https://github.com/ergonode/frontend/pull/857) Add a default property value for method updateRole (bleto)
+- bugfix [#859](https://github.com/ergonode/frontend/issues/859) AddMediaGrid is not sortable (derpdead)
+- bugfix [#852](https://github.com/ergonode/frontend/pull/862) Interface translations template crash (derpdead)
+- bugfix [#856](https://github.com/ergonode/frontend/pull/866) Incorrect method call - i18n (derpdead)
+- bugfix [#857](https://github.com/ergonode/frontend/issues/867) Missing polish interface translations (derpdead)
+- bugfix [#872](https://github.com/ergonode/frontend/issues/872) Default status for new product is not set (derpdead)
+
+#### 1.0.0
 - performance [#820](https://github.com/ergonode/frontend/pull/820) Remove legacy modal injection (derpdead)
 - performance [#822](https://github.com/ergonode/frontend/pull/822) Add support for extended header and footer slots (derpdead)
 - performance [#828](https://github.com/ergonode/frontend/pull/828) Status transition translations (derpdead)
