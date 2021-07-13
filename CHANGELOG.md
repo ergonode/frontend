@@ -5,6 +5,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## CHANGELOG FOR v1.1.x
 
+#### 1.1.1
+hotfix [#963](https://github.com/ergonode/frontend/issues/963) Workflow - wrong component import (bleto)
+
 #### 1.1.0
 feature [#846](https://github.com/ergonode/frontend/issues/846) Relation attribute type (derpdead, bleto)
 feature [#882](https://github.com/ergonode/frontend/issues/882) Workflow module v2 (derpdead, bleto)
