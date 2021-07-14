@@ -60,6 +60,7 @@ jobs:
           ./bin/phing database:create
           ./bin/phing database:migrate
           ./bin/phing database:fixture:e2e
+          composer install --no-dev
           wget https://get.symfony.com/cli/installer -O - | bash
           ~/.symfony/bin/symfony server:start -d --no-tls --port=8000
           cd ..
