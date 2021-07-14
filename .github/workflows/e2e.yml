@@ -54,7 +54,7 @@ jobs:
       - name: Run backend
         run: |
           cd backend
-          composer install
+          composer install --no-dev
           openssl genrsa -aes256 -passout pass:1234 -out "config/jwt/private.pem" 4096
           openssl rsa -pubout -in "config/jwt/private.pem" -passin pass:1234 -out "config/jwt/public.pem"
           ./bin/phing database:create
