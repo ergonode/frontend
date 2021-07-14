@@ -695,6 +695,7 @@ export default {
                     fieldKey: `${rowId}/${columnId}`,
                     languageCode: columnId.split(':')[1],
                     elementId: cachedElementIds[columnId],
+                    productId: rowId,
                     value,
                     scope: this.scope,
                 });

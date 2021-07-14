@@ -719,6 +719,7 @@ export default {
         languageCode,
         fieldKey,
         elementId,
+        productId = null,
         value,
         scope,
     }) {
@@ -729,7 +730,7 @@ export default {
                     id: elementId,
                     languageCode,
                     value,
-                    productId: state.id || fieldKey.split('/')[0],
+                    productId: productId || state.id,
                     onError: (errors) => {
                         throw errors;
                     },
