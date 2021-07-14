@@ -7,7 +7,7 @@
         <Preloader v-if="isPrefetchingData || !isLayoutResolved" />
         <template v-else>
             <div
-                v-if="isSelectColumn"
+                v-if="isSelectColumn && multiselect"
                 class="grid-collection-layout__header">
                 <GridSelectCollectionHeaderCell
                     :row-ids="rowIds"
@@ -29,6 +29,7 @@
                     :object-fit="objectFit"
                     :locked="!isEditable"
                     :selected-rows="selectedRows"
+                    :multiselect="multiselect"
                     :excluded-from-selection-rows="excludedFromSelectionRows"
                     :extended-data-cell="extendedComponents.dataCells
                         && extendedComponents.dataCells[element.type]"
@@ -130,6 +131,13 @@ export default {
         extendedComponents: {
             type: Object,
             default: () => ({}),
+        },
+        /**
+         * Determines if the component is multiple choice
+         */
+        multiselect: {
+            type: Boolean,
+            default: true,
         },
         /**
          * Determines if selecting row column is visible

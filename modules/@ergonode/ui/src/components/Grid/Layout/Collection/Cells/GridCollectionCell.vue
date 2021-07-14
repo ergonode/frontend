@@ -8,6 +8,7 @@
         :data="data"
         :drafts="drafts"
         :object-fit="objectFit"
+        :multiselect="multiselect"
         :locked="locked"
         :selected="selectedRowState"
         :is-select-column="isSelectColumn"
@@ -69,6 +70,13 @@ export default {
         excludedFromSelectionRows: {
             type: Object,
             default: () => ({}),
+        },
+        /**
+         * Determines if the component is multiple choice
+         */
+        multiselect: {
+            type: Boolean,
+            default: true,
         },
         /**
          * Determines if every row should be selected

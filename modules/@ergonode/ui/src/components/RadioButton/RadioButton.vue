@@ -43,7 +43,10 @@ export default {
          * Component value
          */
         value: {
-            type: String,
+            type: [
+                String,
+                Boolean,
+            ],
             default: '',
         },
         /**
@@ -70,6 +73,10 @@ export default {
     },
     computed: {
         isSelected() {
+            if (typeof this.value === 'boolean') {
+                return this.value;
+            }
+
             return this.value === this.label;
         },
         radioValue: {
@@ -77,7 +84,7 @@ export default {
                 return this.value;
             },
             set() {
-                this.$emit('input', this.label);
+                this.$emit('input', typeof this.value === 'boolean' ? !this.value : this.label);
             },
         },
         classes() {
@@ -101,7 +108,7 @@ export default {
         display: grid;
         grid-template-columns: max-content;
         grid-auto-flow: column;
-        column-gap: 8px;
+        column-gap: 4px;
         align-items: center;
 
         & input[type="radio"] {
@@ -134,6 +141,7 @@ export default {
             width: 18px;
             height: 18px;
             border: $BORDER_1_GREY;
+            margin: 4px;
             box-sizing: border-box;
             cursor: pointer;
         }

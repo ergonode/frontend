@@ -12,21 +12,21 @@
         :disabled="disabled"
         @mousedown.native="onSelect"
         @edit="onSelect">
-        <GridRadioEditCell
+        <GridCheckEditCell
             :value="selected"
             :disabled="disabled" />
     </GridTableCell>
 </template>
 
 <script>
-import GridRadioEditCell from '@UI/components/Grid/Layout/Table/Cells/Edit/GridRadioEditCell';
+import GridCheckEditCell from '@UI/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell';
 import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
 
 export default {
-    name: 'GridSelectRowEditCell',
+    name: 'GridMultiSelectRowEditCell',
     components: {
-        GridRadioEditCell,
         GridTableCell,
+        GridCheckEditCell,
     },
     props: {
         /**
