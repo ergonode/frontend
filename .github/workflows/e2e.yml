@@ -143,7 +143,7 @@ jobs:
         with:
           # we have already installed all dependencies above
           install: false
-          start:  npm run start
+          start:  ./node_modules/.bin/pm2 start npm -- start
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 120
           browser: chrome
