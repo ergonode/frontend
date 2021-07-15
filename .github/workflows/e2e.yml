@@ -141,9 +141,8 @@ jobs:
       - name: 'UI Tests - Chrome'
         uses: cypress-io/github-action@v2
         with:
-          # we have already installed all dependencies above
-          install: false
-          start:  ./node_modules/.bin/pm2 start npm -- start
+          install:  true
+          start: npm start
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 120
           browser: chrome
