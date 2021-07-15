@@ -68,6 +68,19 @@ jobs:
       - name: Test backend
         run: wget localhost:8000/api/doc
 
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Run frontend
         run: |
           npm ci
@@ -102,7 +115,7 @@ jobs:
         with:
           name: build
           if-no-files-found: error
-          path: ./frontend/build
+          path: ./frontend/.nuxt
 
       - name: Cypress install
         uses: cypress-io/github-action@v2
@@ -128,7 +141,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build
-          path: ./frontend/build
+          path: ./frontend/.nuxt
 
       - name: 'UI Tests - Chrome'
         uses: cypress-io/github-action@v2
