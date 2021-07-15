@@ -14,6 +14,7 @@ jobs:
       DATABASE_URL: pgsql://ergonode:123@localhost:5432/ergonode_test?serverVersion=10&charset=utf8
       USE_ASYNC_BUS: true
       LEAVE_TEST_TAG_ATTRS: true
+      PARALLEL: true
       API_BASE_URL: http://localhost:8000/api/v1/
 
     steps:
@@ -77,8 +78,8 @@ jobs:
       - name: Test frontend
         run: wget --retry-connrefused --waitretry=1 localhost:3000
 
-      - name: Run E2E tests
-        run: npm run cypress:ci
+      # - name: Run E2E tests
+      #   run: npm run cypress:ci
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
@@ -87,3 +88,57 @@ jobs:
           name: artifacts
           path: |
             ./backend/var/log
+
+  install:
+    runs-on: ubuntu-latest
+    container: cypress/browsers:node12.18.3-chrome87-ff82
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Save build folder
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          if-no-files-found: error
+          path: build
+
+      - name: Cypress install
+        uses: cypress-io/github-action@v2
+        with:
+          # Disable running of tests within install job
+          runTests: false
+          build: yarn build
+
+  ui-chrome-tests:
+    runs-on: ubuntu-latest
+    container: cypress/browsers:node12.18.3-chrome87-ff82
+    needs: install
+    strategy:
+      fail-fast: false
+      matrix:
+        # run copies of the current job in parallel
+        containers: [1, 2, 3, 4, 5]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download the build folders
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: build
+
+      - name: 'UI Tests - Chrome'
+        uses: cypress-io/github-action@v2
+        with:
+          # we have already installed all dependencies above
+          install: false
+          start: yarn start:ci
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 120
+          browser: chrome
+          record: true
+          parallel: true
+          group: 'UI - Chrome'
+          spec: cypress/*
