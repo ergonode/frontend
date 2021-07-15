@@ -22,11 +22,18 @@
             :title="data.description" />
         <GridCollectionCellActionsPanel>
             <template #prepend>
-                <CheckBox
-                    v-if="isSelectColumn"
-                    class="grid-collection-default-cell__select"
-                    :value="selected"
-                    @input="onSelect" />
+                <template v-if="isSelectColumn">
+                    <div
+                        class="grid-collection-default-cell__select"
+                        @click.prevent="onSelect">
+                        <CheckBox
+                            v-if="multiselect"
+                            :value="selected" />
+                        <RadioButton
+                            v-else
+                            :value="selected" />
+                    </div>
+                </template>
             </template>
             <template #append>
                 <Fab
@@ -72,10 +79,12 @@ import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 import IconEdit from '@UI/components/Icons/Actions/IconEdit';
 import IconPreview from '@UI/components/Icons/Actions/IconPreview';
 import LazyImage from '@UI/components/LazyImage/LazyImage';
+import RadioButton from '@UI/components/RadioButton/RadioButton';
 
 export default {
     name: 'GridCollectionDefaultCell',
     components: {
+        RadioButton,
         GridCollectionCellActionsPanel,
         IconPreview,
         IconDelete,
@@ -106,6 +115,13 @@ export default {
         objectFit: {
             type: String,
             default: '',
+        },
+        /**
+         * Determines if the component is multiple choice
+         */
+        multiselect: {
+            type: Boolean,
+            default: true,
         },
         /**
          * Determines if component is selected
@@ -220,6 +236,11 @@ export default {
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
+        }
+
+        &__select {
+            padding: 6px;
+            cursor: pointer;
         }
 
         &__image {

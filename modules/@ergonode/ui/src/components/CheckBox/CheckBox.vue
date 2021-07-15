@@ -124,9 +124,8 @@ export default {
         display: grid;
         grid-template-columns: max-content;
         grid-auto-flow: column;
-        column-gap: 8px;
+        column-gap: 4px;
         align-items: center;
-        margin: 4px;
 
         & label {
             position: relative;
@@ -135,6 +134,7 @@ export default {
 
             &::after {
                 position: absolute;
+                left: 4px;
                 width: 16px;
                 height: 16px;
                 box-shadow: $ELEVATOR_HOVER_FOCUS;
@@ -155,6 +155,7 @@ export default {
             width: 16px;
             height: 16px;
             border: $BORDER_1_GREY;
+            margin: 4px;
             box-sizing: border-box;
             background-color: $WHITE;
         }

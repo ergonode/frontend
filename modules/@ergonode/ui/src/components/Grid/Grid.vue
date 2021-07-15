@@ -58,6 +58,7 @@
                         :extended-components="extendedComponents[gridLayout.TABLE]"
                         :selected-rows="selectedRows"
                         :excluded-from-selection-rows="excludedFromSelectionRows"
+                        :multiselect="multiselect"
                         :is-prefetching-data="isPrefetchingData"
                         :is-layout-resolved="isLayoutResolved[layout]"
                         :is-editable="isEditable"
@@ -89,6 +90,7 @@
                         :extended-components="extendedComponents[gridLayout.COLLECTION]"
                         :selected-rows="selectedRows"
                         :excluded-from-selection-rows="excludedFromSelectionRows"
+                        :multiselect="multiselect"
                         :is-selected-all="isSelectedAll"
                         :is-select-column="isSelectColumn"
                         :is-editable="isEditable"
@@ -263,6 +265,13 @@ export default {
         draggingElementType: {
             type: String,
             default: DRAGGED_ELEMENT.LIST,
+        },
+        /**
+         * Determines if the component is multiple choice
+         */
+        multiselect: {
+            type: Boolean,
+            default: true,
         },
         /**
          * Determines if data is loaded asynchronously
@@ -450,13 +459,21 @@ export default {
             isSelected,
             rowIds,
         }) {
-            rowIds.forEach((rowId) => {
-                this.selectedRows[rowId] = isSelected;
-            });
+            let selectedRows = {};
 
-            this.selectedRows = {
-                ...this.selectedRows,
-            };
+            if (this.multiselect) {
+                selectedRows = {
+                    ...this.selectedRows,
+                };
+
+                rowIds.forEach((rowId) => {
+                    selectedRows[rowId] = isSelected;
+                });
+            } else {
+                selectedRows[rowIds[0]] = isSelected;
+            }
+
+            this.selectedRows = selectedRows;
         },
         onExcludedRowsSelect({
             isExcluded,

@@ -14,7 +14,8 @@
                 v-if="isSelectColumn"
                 :pinned-state="pinnedState.LEFT"
                 :sections="pinnedSections">
-                <GridSelectRowColumn
+                <GridMultiSelectRowColumn
+                    v-if="multiselect"
                     :style="templateRows"
                     :column-index="0"
                     :data-count="dataCount"
@@ -28,6 +29,17 @@
                     @rows-select="onRowsSelect"
                     @excluded-rows-select="onExcludedRowsSelect"
                     @select-all="onSelectAllRows" />
+                <GridSelectRowColumn
+                    v-else
+                    :style="templateRows"
+                    :column-index="0"
+                    :data-count="dataCount"
+                    :disabled-rows="disabledRows"
+                    :rows-offset="rowsOffset"
+                    :row-ids="rowIds"
+                    :selected-rows="selectedRows"
+                    :is-basic-filter="isBasicFilter"
+                    @rows-select="onRowsSelect" />
             </GridTableLayoutPinnedSection>
             <GridTableLayoutColumnsSection
                 :style="templateColumns"
@@ -165,6 +177,7 @@ import {
 } from '@Core/models/stringWrapper';
 import DropZone from '@UI/components/DropZone/DropZone';
 import GridDraggableDataColumn from '@UI/components/Grid/Layout/Table/Columns/GridDraggableDataColumn';
+import GridMultiSelectRowColumn from '@UI/components/Grid/Layout/Table/Columns/GridMultiSelectRowColumn';
 import GridRowActionColumn from '@UI/components/Grid/Layout/Table/Columns/GridRowActionColumn';
 import GridSelectRowColumn from '@UI/components/Grid/Layout/Table/Columns/GridSelectRowColumn';
 import GridSentinelColumn from '@UI/components/Grid/Layout/Table/Columns/GridSentinelColumn';
@@ -180,13 +193,14 @@ import {
 export default {
     name: 'GridTableLayout',
     components: {
+        GridSelectRowColumn,
         Preloader,
         DropZone,
         GridDraggableDataColumn,
         GridRowActionColumn,
         GridTableLayoutColumnsSection,
         GridTableLayoutPinnedSection,
-        GridSelectRowColumn,
+        GridMultiSelectRowColumn,
         GridSentinelColumn,
     },
     mixins: [
@@ -276,6 +290,13 @@ export default {
         excludedFromSelectionRows: {
             type: Object,
             default: () => ({}),
+        },
+        /**
+         * Determines if the component is multiple choice
+         */
+        multiselect: {
+            type: Boolean,
+            default: true,
         },
         /**
          * Determines if data is loaded asynchronously

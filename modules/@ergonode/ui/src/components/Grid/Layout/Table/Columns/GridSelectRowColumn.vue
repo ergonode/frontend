@@ -5,28 +5,16 @@
 <template>
     <GridActionColumn>
         <template #header>
-            <GridSelectRowHeaderCell
-                :rows-offset="rowsOffset"
-                :row-ids="rowIds"
-                :selected-rows="selectedRows"
-                :excluded-from-selection-rows="excludedFromSelectionRows"
-                :disabled="!isAnyData"
-                :is-selected-all="isSelectedAll"
-                @excluded-rows-select="onExcludedRowsSelect"
-                @rows-select="onRowsSelect" />
+            <GridTableCell
+                :locked="true"
+                :row="rowsOffset"
+                :column="0" />
         </template>
         <GridTableCell
             v-if="isBasicFilter"
             :locked="true"
             :row="rowsOffset + 1"
-            :column="0">
-            <GridSelectRowActionFabCell
-                :disabled="!isAnyData"
-                @select-all-global="onSelectAllGlobal"
-                @select-all-on-this-page="onSelectAllOnThisPage"
-                @deselect-all-global="onDeselectAllGlobal"
-                @deselect-all-on-this-page="onDeselectAllOnThisPage" />
-        </GridTableCell>
+            :column="0" />
         <GridSelectRowEditCell
             v-for="(row, rowIndex) in dataCount"
             :key="row"
@@ -34,29 +22,22 @@
             :disabled="disabledRows[rowIds[rowIndex]]"
             :row="rowsOffset + row + basicFiltersOffset"
             :row-id="rowIds[rowIndex]"
-            :selected="getSelectedRowState(rowIndex)"
+            :selected="selectedRows[rowIds[rowIndex]]"
             @select="onSelectRow" />
     </GridActionColumn>
 </template>
 
 <script>
-import {
-    deepClone,
-} from '@Core/models/objectWrapper';
 import GridSelectRowEditCell from '@UI/components/Grid/Layout/Table/Cells/Edit/GridSelectRowEditCell';
-import GridSelectRowActionFabCell from '@UI/components/Grid/Layout/Table/Cells/GridSelectRowActionFabCell';
 import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
-import GridSelectRowHeaderCell from '@UI/components/Grid/Layout/Table/Cells/Header/GridSelectRowHeaderCell';
 import GridActionColumn from '@UI/components/Grid/Layout/Table/Columns/GridActionColumn';
 
 export default {
     name: 'GridSelectRowColumn',
     components: {
-        GridSelectRowHeaderCell,
         GridActionColumn,
         GridTableCell,
         GridSelectRowEditCell,
-        GridSelectRowActionFabCell,
     },
     props: {
         /**
@@ -95,13 +76,6 @@ export default {
             default: () => ({}),
         },
         /**
-         * The map of rows excluded from selection
-         */
-        excludedFromSelectionRows: {
-            type: Object,
-            default: () => ({}),
-        },
-        /**
          * The number from which rows are enumerated
          */
         rowsOffset: {
@@ -115,13 +89,6 @@ export default {
             type: Boolean,
             default: false,
         },
-        /**
-         * Determines if every row should be selected
-         */
-        isSelectedAll: {
-            type: Boolean,
-            default: false,
-        },
     },
     computed: {
         isAnyData() {
@@ -132,41 +99,6 @@ export default {
         },
     },
     methods: {
-        onSelectAllGlobal() {
-            this.$emit('select-all', true);
-        },
-        onSelectAllOnThisPage() {
-            if (this.isSelectedAll) {
-                this.$emit('excluded-rows-select', {
-                    isExcluded: false,
-                    rowIds: deepClone(this.rowIds),
-                });
-            } else {
-                this.$emit('rows-select', {
-                    isSelected: true,
-                    rowIds: deepClone(this.rowIds),
-                });
-            }
-        },
-        onDeselectAllGlobal() {
-            this.$emit('select-all', false);
-        },
-        onDeselectAllOnThisPage() {
-            if (this.isSelectedAll) {
-                this.$emit('excluded-rows-select', {
-                    isExcluded: true,
-                    rowIds: deepClone(this.rowIds),
-                });
-            } else {
-                this.$emit('rows-select', {
-                    isSelected: false,
-                    rowIds: deepClone(this.rowIds),
-                });
-            }
-        },
-        onExcludedRowsSelect(payload) {
-            this.$emit('excluded-rows-select', payload);
-        },
         onRowsSelect(payload) {
             this.$emit('rows-select', payload);
         },
@@ -174,25 +106,12 @@ export default {
             row,
             selected,
         }) {
-            if (this.isSelectedAll) {
-                this.$emit('excluded-rows-select', {
-                    isExcluded: !selected,
-                    rowIds: [
-                        row,
-                    ],
-                });
-            } else {
-                this.$emit('rows-select', {
-                    isSelected: selected,
-                    rowIds: [
-                        row,
-                    ],
-                });
-            }
-        },
-        getSelectedRowState(index) {
-            return this.selectedRows[this.rowIds[index]]
-                || (this.isSelectedAll && !this.excludedFromSelectionRows[this.rowIds[index]]);
+            this.$emit('rows-select', {
+                isSelected: selected,
+                rowIds: [
+                    row,
+                ],
+            });
         },
     },
 };
