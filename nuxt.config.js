@@ -149,8 +149,6 @@ module.exports = {
             configFile: './babel.config.js',
         },
         parallel: PARALLEL,
-        hardSource: true,
-        cache: true,
         cssSourceMap: true,
         optimizeCSS: true,
         loaders: {

@@ -14,7 +14,6 @@ jobs:
       DATABASE_URL: pgsql://ergonode:123@localhost:5432/ergonode_test?serverVersion=10&charset=utf8
       USE_ASYNC_BUS: true
       LEAVE_TEST_TAG_ATTRS: true
-      PARALLEL: true
       API_BASE_URL: http://localhost:8000/api/v1/
 
     steps:
@@ -120,11 +119,10 @@ jobs:
         with:
           # we have already installed all dependencies above
           install: false
-          start: yarn start:ci
+          # command: npm run cypress:ci
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 120
           browser: chrome
           record: true
           parallel: true
           group: 'UI - Chrome'
-          spec: cypress/*
