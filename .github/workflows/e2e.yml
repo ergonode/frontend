@@ -78,7 +78,7 @@ jobs:
         run: wget --retry-connrefused --waitretry=1 localhost:3000
 
       - name: Run E2E tests
-        run: npm run cypress:run
+        run: npm run cypress:ci
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v2

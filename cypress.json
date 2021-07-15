@@ -3,7 +3,8 @@
   "viewportWidth": 1400,
   "viewportHeight": 800,
   "testFiles": "**/*.feature",
-  "video": false,
+  "video": true,
+  "projectId": "ergonode_e2e",
   "screenshotOnRunFailure": false,
   "env": {
     "apiServer": "http://localhost:8000/api/v1/",
