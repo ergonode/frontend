@@ -84,8 +84,6 @@ jobs:
         run: |
           npm ci
           npm run modules:all
-          npm run build
-          ./node_modules/.bin/pm2 start npm -- start
 
       - name: Test frontend
         run: wget --retry-connrefused --waitretry=1 localhost:3000
@@ -119,7 +117,10 @@ jobs:
         with:
           # we have already installed all dependencies above
           install: false
-          # command: npm run cypress:ci
+          start: |
+            npm run build
+            ./node_modules/.bin/pm2 start npm -- start
+          # command: npm run cypress:run
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 120
           browser: chrome
