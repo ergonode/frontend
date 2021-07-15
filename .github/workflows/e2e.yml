@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  e2e:
+  install:
     runs-on: ubuntu-latest
     env:
       APP_ENV: prod
@@ -89,9 +89,10 @@ jobs:
           path: |
             ./backend/var/log
 
-  install:
+  cypress:
     runs-on: ubuntu-latest
     container: cypress/browsers:node12.18.3-chrome87-ff82
+    needs: install
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -113,7 +114,7 @@ jobs:
   ui-chrome-tests:
     runs-on: ubuntu-latest
     container: cypress/browsers:node12.18.3-chrome87-ff82
-    needs: install
+    needs: cypress
     strategy:
       fail-fast: false
       matrix:
