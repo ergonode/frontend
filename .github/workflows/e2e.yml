@@ -101,10 +101,9 @@ jobs:
           npm ci
           npm run modules:all
           npm run build
-          ./node_modules/.bin/pm2 start npm -- start
 
-      - name: Test frontend
-        run: wget --retry-connrefused --waitretry=1 localhost:3000
+      # - name: Test frontend
+      #   run: wget --retry-connrefused --waitretry=1 localhost:3000
 
       - name: Save build folder
         uses: actions/upload-artifact@v2
@@ -137,17 +136,14 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build
-          # path: ./frontend/.nuxt/dist
+          path: ./.nuxt
 
       - name: 'UI Tests - Chrome'
         uses: cypress-io/github-action@v2
         with:
           # we have already installed all dependencies above
           install: false
-          # start: |
-          #   npm run build
-          #   ./node_modules/.bin/pm2 start npm -- start
-          # command: npm run cypress:run
+          start:  npm run start
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 120
           browser: chrome
