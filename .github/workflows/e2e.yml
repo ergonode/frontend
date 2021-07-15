@@ -102,7 +102,7 @@ jobs:
         with:
           name: build
           if-no-files-found: error
-          path: build
+          path: ./frontend/build
 
       - name: Cypress install
         uses: cypress-io/github-action@v2
@@ -128,7 +128,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build
-          path: build
+          path: ./frontend/build
 
       - name: 'UI Tests - Chrome'
         uses: cypress-io/github-action@v2
