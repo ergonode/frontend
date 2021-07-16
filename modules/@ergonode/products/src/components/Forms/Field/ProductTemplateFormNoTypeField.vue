@@ -8,7 +8,7 @@
         :position="position">
         <span
             v-text="placeholderTitle"
-            class="field-no-results-placeholder " />
+            class="product-template-form-no-type-field" />
     </ProductTemplateFormField>
 </template>
 
@@ -45,7 +45,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .field-no-results-placeholder {
+    .product-template-form-no-type-field {
         z-index: $Z_INDEX_LVL_2;
         display: flex;
         flex: 1;

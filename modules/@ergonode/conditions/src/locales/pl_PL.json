@@ -5,6 +5,9 @@
       "components": {
         "ConditionsSideBar": {
           "title": "Warunki"
+        },
+        "ConditionSetTreeDesignerNoTypeItemParameter": {
+          "placeholderTitle": "Brak wsparcia dla {info} typu parametru warunku"
         }
       }
     },

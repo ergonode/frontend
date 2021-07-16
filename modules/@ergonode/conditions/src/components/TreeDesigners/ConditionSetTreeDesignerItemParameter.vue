@@ -5,24 +5,16 @@
 <template>
     <Component
         :is="typeComponent"
-        :required="true"
-        :clearable="true"
-        :size="smallSize"
-        :label="parameter.name"
+        :value="value[parameter.name]"
+        :parameter="parameter"
         :disabled="disabled"
-        :options="options"
-        :value="conditionValue"
-        :multiselect="isConditionTypeMultiSelect"
         :error-messages="errorMessages"
-        @input="setConditionValueByType" />
+        @input="onValueChange" />
 </template>
 <script>
 import {
-    TYPES,
-} from '@Conditions/defaults/treeDesigner';
-import {
-    SIZE,
-} from '@Core/defaults/theme';
+    capitalizeAndConcatenationArray,
+} from '@Core/models/stringWrapper';
 import {
     mapActions,
     mapState,
@@ -35,12 +27,12 @@ export default {
             type: Object,
             required: true,
         },
+        value: {
+            type: Object,
+            default: () => ({}),
+        },
         itemId: {
             type: String,
-            required: true,
-        },
-        itemRow: {
-            type: Number,
             required: true,
         },
         scope: {
@@ -56,72 +48,21 @@ export default {
             default: false,
         },
     },
-    data() {
-        return {
-            affectedByOptionId: null,
-        };
-    },
     computed: {
         ...mapState('condition', [
             'conditionsValues',
         ]),
-        smallSize() {
-            return SIZE.SMALL;
-        },
         typeComponent() {
-            switch (this.parameter.type) {
-            case TYPES.SELECT:
-            case TYPES.MULTI_SELECT:
-                return () => import('@UI/components/Select/TranslationSelect');
-            case TYPES.TEXT:
-            case TYPES.UNIT:
-            case TYPES.NUMERIC:
-                return () => import('@UI/components/TextField/TextField');
-            default:
-                return null;
-            }
-        },
-        conditionValue() {
-            const {
-                name,
-            } = this.parameter;
+            const extendedParameters = this.$getExtendSlot('@Conditions/components/TreeDesigners/ConditionSetTreeDesignerItemParameter');
 
-            if (!(this.conditionsValues[this.itemId] && this.conditionsValues[this.itemId][name])) {
-                if (this.isConditionTypeMultiSelect) {
-                    return [];
-                }
-                return '';
+            if (extendedParameters && extendedParameters[this.parameter.type]) {
+                return extendedParameters[this.parameter.type];
             }
 
-            return this.conditionsValues[this.itemId][name];
-        },
-        options() {
-            const {
-                complexOptions = {},
-                affectedBy = '',
-            } = this.parameter;
+            const componentName = `ConditionSetTreeDesigner${capitalizeAndConcatenationArray(this.parameter.type.split('_'))}ItemParameter`;
 
-            let options = this.parameter.options || {};
-
-            if (affectedBy) {
-                if (this.conditionsValues[this.itemId]
-                    && this.conditionsValues[this.itemId][affectedBy]) {
-                    const affectedByValue = this.conditionsValues[this.itemId][affectedBy];
-
-                    if (complexOptions[affectedByValue.id]) {
-                        options = complexOptions[affectedByValue.id];
-                    }
-                }
-            }
-
-            return Object.keys(options).map(key => ({
-                id: key,
-                key,
-                value: options[key],
-            }));
-        },
-        isConditionTypeMultiSelect() {
-            return this.parameter.type === TYPES.MULTI_SELECT;
+            return () => import(`@Conditions/components/TreeDesigners/ItemParameters/${componentName}`)
+                .catch(() => import('@Conditions/components/TreeDesigners/ItemParameters/ConditionSetTreeDesignerNoTypeItemParameter'));
         },
     },
     methods: {
@@ -131,7 +72,7 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
-        setConditionValueByType(value) {
+        onValueChange(value) {
             const {
                 name,
             } = this.parameter;
