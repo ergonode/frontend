@@ -24,9 +24,9 @@
                     <template #parameter="{ index, parameter }">
                         <ConditionSetTreeDesignerItemParameter
                             :key="index"
+                            :value="conditionsValues[item.id]"
                             :parameter="parameter"
                             :item-id="item.id"
-                            :item-row="item.row"
                             :scope="scope"
                             :error-messages="errors[parameter.name]"
                             :disabled="disabled" />
