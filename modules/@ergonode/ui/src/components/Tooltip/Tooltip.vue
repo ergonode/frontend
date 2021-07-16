@@ -21,7 +21,7 @@ export default {
     props: {
         title: {
             type: String,
-            default: 'My amazing tooltip text, super long text, dupa, dupa, dupa, dupa',
+            default: 'Tooltip',
         },
         /**
          * Color of tooltip
