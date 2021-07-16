@@ -9,6 +9,8 @@ screenshotsFolder
 videosFolder
 cypress.env.json
 cypress/videos
+cypress-performance-tests
+benchmark.txt
 
 # logs
 npm-debug.log
