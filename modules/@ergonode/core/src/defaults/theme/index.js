@@ -17,6 +17,14 @@ export const SIZE = {
     EXTRA_LARGE: 'extra-large',
 };
 
+export const POSITION = {
+    TOP: 'top',
+    LEFT: 'left',
+    RIGHT: 'right',
+    BOTTOM: 'bottom',
+    FLUID: 'fluid',
+};
+
 export const ALIGNMENT = {
     LEFT: 'left',
     CENTER: 'center',
