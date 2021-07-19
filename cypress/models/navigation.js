@@ -44,7 +44,7 @@ export const checkGridRow = ({
         cy
             .get('@grid')
             .find('.grid-footer')
-            .get('[data-cy=grid-footer-show]')
+            .get('[data-cy=grid-visible-rows-select]')
             .chooseOption('200');
     }
 
@@ -105,7 +105,7 @@ export const noGridRow = ({
         cy
             .get('@grid')
             .find('.grid-footer')
-            .get('[data-cy=grid-footer-show]')
+            .get('[data-cy=grid-visible-rows-select]')
             .chooseOption('200');
     }
 
@@ -127,7 +127,7 @@ export const actionOnGrid = ({
         cy
             .get('@grid')
             .find('.grid-footer')
-            .get('[data-cy=grid-footer-show]')
+            .get('[data-cy=grid-visible-rows-select]')
             .chooseOption('200');
     }
 
@@ -165,7 +165,7 @@ export const noActionOnGrid = ({
         cy
             .get('@grid')
             .find('.grid-footer')
-            .get('[data-cy=grid-footer-show]')
+            .get('[data-cy=grid-visible-rows-select]')
             .chooseOption('200');
     }
 
@@ -200,7 +200,7 @@ export const editOnGrid = ({
         cy
             .get('@grid')
             .find('.grid-footer')
-            .get('[data-cy=grid-footer-show]')
+            .get('[data-cy=grid-visible-rows-select]')
             .chooseOption('200');
     }
 

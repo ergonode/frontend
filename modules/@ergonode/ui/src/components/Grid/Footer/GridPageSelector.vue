@@ -6,7 +6,7 @@
     <div class="grid-page-selector">
         <GridFooterText title="Show" />
         <Select
-            data-cy="grid-footer-show"
+            data-cy="grid-visible-rows-select"
             :value="value"
             :options="rowIntervalOptions"
             :size="smallSize"
