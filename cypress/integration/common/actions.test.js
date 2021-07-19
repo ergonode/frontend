@@ -195,9 +195,7 @@ MultiSteps([
         .contains(new RegExp(`${escapeStringRegexp(searchValue)}$`, 'g'))
         .parents('.workflow-designer-header-layer-cell')
         .find(`[data-cy=status-column-${action}]`)
-        .click({
-            force: true,
-        });
+        .click();
 });
 
 MultiSteps([

@@ -66,9 +66,7 @@ Cypress.Commands.add('login', (email, pass) => {
                     .should('have.value', pass);
                 cy
                     .get('[data-cy=submit]')
-                    .click({
-                        force: true,
-                    });
+                    .click();
 
                 cy
                     .wait('@postLogin')
@@ -85,17 +83,13 @@ Cypress.Commands.add('login', (email, pass) => {
 Cypress.Commands.add('logout', () => {
     cy
         .get('[data-cy=tool-bar-dropdown]')
-        .click({
-            force: true,
-        });
+        .click();
     cy
         .get('[data-cy=tool-bar-content]')
         .should('be.visible');
     cy
         .get('[data-cy=logout-button]')
-        .click({
-            force: true,
-        });
+        .click();
     cy
         .url()
         .should('include', '');
@@ -108,9 +102,7 @@ Cypress.Commands.add('selectRandomUser', () => {
             const {
                 length,
             } = links;
-            links[length - 1].click({
-                force: true,
-            });
+            links[length - 1].click();
         });
     cy
         .url()
@@ -187,9 +179,7 @@ Cypress.Commands.add('chooseOption', {
             }
         });
     cy.get('@selectedOption')
-        .click({
-            force: true,
-        });
+        .click();
     cy.get(`[data-cy=${id}-value] span`)
         .contains(value);
     cy.get(`[data-cy=${id}-drop-down]`)
