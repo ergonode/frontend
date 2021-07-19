@@ -31,7 +31,7 @@ export const sendRequest = ({
 };
 
 export const checkGridRow = ({
-    gridId, searchValue, columns,
+    gridId, searchValue, columns, showMoreRows = true,
 }) => {
     const parsedColumns = JSON.parse(columns.replace(/'/g, '"'));
 
@@ -39,11 +39,15 @@ export const checkGridRow = ({
         .get(`[data-cy=${gridId}]`)
         .should('be.visible')
         .as('grid');
-    cy
-        .get('@grid')
-        .find('.grid-footer')
-        .get('[data-cy=grid-footer-show]')
-        .chooseOption('200');
+
+    if (showMoreRows) {
+        cy
+            .get('@grid')
+            .find('.grid-footer')
+            .get('[data-cy=grid-footer-show]')
+            .chooseOption('200');
+    }
+
     cy
         .get('@grid')
         .contains(new RegExp(`^${escapeStringRegexp(searchValue)}$`, 'g'))
@@ -90,17 +94,21 @@ export const checkGridRow = ({
 };
 
 export const noGridRow = ({
-    gridId, searchValue,
+    gridId, searchValue, showMoreRows = true,
 }) => {
     cy
         .get(`[data-cy=${gridId}]`)
         .should('be.visible')
         .as('grid');
-    cy
-        .get('@grid')
-        .find('.grid-footer')
-        .get('[data-cy=grid-footer-show]')
-        .chooseOption('200');
+
+    if (showMoreRows) {
+        cy
+            .get('@grid')
+            .find('.grid-footer')
+            .get('[data-cy=grid-footer-show]')
+            .chooseOption('200');
+    }
+
     cy
         .get('@grid')
         .find('.grid-table-cell > span')
@@ -108,17 +116,21 @@ export const noGridRow = ({
 };
 
 export const actionOnGrid = ({
-    gridId, action, searchValue,
+    gridId, action, searchValue, showMoreRows = true,
 }) => {
     cy
         .get(`[data-cy=${gridId}]`)
         .should('be.visible')
         .as('grid');
-    cy
-        .get('@grid')
-        .find('.grid-footer')
-        .get('[data-cy=grid-footer-show]')
-        .chooseOption('200');
+
+    if (showMoreRows) {
+        cy
+            .get('@grid')
+            .find('.grid-footer')
+            .get('[data-cy=grid-footer-show]')
+            .chooseOption('200');
+    }
+
     cy
         .get('@grid')
         .find('.grid-table-cell')
@@ -142,17 +154,21 @@ export const actionOnGrid = ({
 };
 
 export const noActionOnGrid = ({
-    gridId, action, searchValue,
+    gridId, action, searchValue, showMoreRows = true,
 }) => {
     cy
         .get(`[data-cy=${gridId}]`)
         .should('be.visible')
         .as('grid');
-    cy
-        .get('@grid')
-        .find('.grid-footer')
-        .get('[data-cy=grid-footer-show]')
-        .chooseOption('200');
+
+    if (showMoreRows) {
+        cy
+            .get('@grid')
+            .find('.grid-footer')
+            .get('[data-cy=grid-footer-show]')
+            .chooseOption('200');
+    }
+
     cy
         .get('@grid')
         .find('.grid-table-cell')
@@ -171,7 +187,7 @@ export const noActionOnGrid = ({
 };
 
 export const editOnGrid = ({
-    gridId, searchValue, columns,
+    gridId, searchValue, columns, showMoreRows = true,
 }) => {
     const parsedColumns = JSON.parse(columns.replace(/'/g, '"'));
 
@@ -179,11 +195,15 @@ export const editOnGrid = ({
         .get(`[data-cy=${gridId}]`)
         .should('be.visible')
         .as('grid');
-    cy
-        .get('@grid')
-        .find('.grid-footer')
-        .get('[data-cy=grid-footer-show]')
-        .chooseOption('200');
+
+    if (showMoreRows) {
+        cy
+            .get('@grid')
+            .find('.grid-footer')
+            .get('[data-cy=grid-footer-show]')
+            .chooseOption('200');
+    }
+
     cy
         .get('@grid')
         .find('.grid-table-cell')
