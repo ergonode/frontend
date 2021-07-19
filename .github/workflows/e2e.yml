@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  install-be:
+  e2e:
     runs-on: ubuntu-latest
     env:
       APP_ENV: prod
@@ -67,6 +67,19 @@ jobs:
       - name: Test backend
         run: wget localhost:8000/api/doc
 
+      - name: Run frontend
+        run: |
+          npm ci
+          npm run modules:all
+          npm run build
+          ./node_modules/.bin/pm2 start npm -- start
+
+      - name: Test frontend
+        run: wget --retry-connrefused --waitretry=1 localhost:3000
+
+      - name: Run E2E tests
+        run: npm run cypress:run
+
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         if: always()
@@ -74,83 +87,3 @@ jobs:
           name: artifacts
           path: |
             ./backend/var/log
-
-  install-node:
-    runs-on: ubuntu-latest
-    container: cypress/browsers:node12.18.3-chrome87-ff82
-    needs: install-be
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup Node
-        uses: actions/setup-node@v1
-        with:
-          node-version: '14.x'
-
-      - name: Cache dependencies
-        uses: actions/cache@v1
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Run frontend
-        run: |
-          npm ci
-          npm run modules:all
-          npm run build
-
-      # - name: Test frontend
-      #   run: wget --retry-connrefused --waitretry=1 localhost:3000
-
-      - name: Save build folder
-        uses: actions/upload-artifact@v2
-        with:
-          name: build
-          if-no-files-found: error
-          path: ./.nuxt
-
-      # - name: Cypress install
-      #   uses: cypress-io/github-action@v2
-      #   with:
-      #     # Disable running of tests within install job
-      #     runTests: false
-      #     build: yarn build
-
-  ui-chrome-tests:
-    runs-on: ubuntu-latest
-    container: cypress/browsers:node12.18.3-chrome87-ff82
-    needs: install-node
-    strategy:
-      fail-fast: false
-      matrix:
-        # run copies of the current job in parallel
-        containers: [1, 2, 3, 4, 5]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Download the build folders
-        uses: actions/download-artifact@v2
-        with:
-          name: build
-          path: ./.nuxt
-
-      - name: 'UI Tests - Chrome'
-        uses: cypress-io/github-action@v2
-        with:
-          install:  true
-          start: npm run modules:all, npm start
-          wait-on: 'http://localhost:3000'
-          wait-on-timeout: 120
-          browser: chrome
-          record: true
-          parallel: true
-          group: 'UI - Chrome'
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          # Recommended: pass the GitHub token lets this action correctly
-          # determine the unique run id necessary to re-run the checks
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

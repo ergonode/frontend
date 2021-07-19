@@ -15,7 +15,7 @@ Feature: DELETE: Collection
 
   @other
   Scenario: Delete collection from edit page - give up
-    When On "grid" I can see row with "collection_code" value and columns data: "{'0': 'collection_code', '1': 'Other'}"
+    When On "grid" I can see row with "collection_code" value and columns data: "{'0': 'collection_code', '1': 'Up-sell'}"
     * On "grid" I click on "edit" button for row with "collection_code" value
     * I see "collections/collection/%UUID%/general" page
     * Element "collection-code" is visible

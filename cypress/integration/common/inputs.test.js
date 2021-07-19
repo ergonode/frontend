@@ -19,10 +19,9 @@ MultiSteps([
     When,
     Then,
 ], 'I fill the {string} input with the {string} term', (id, term) => {
-    cy.get(`[data-cy=${id}]`)
+    cy.get(`form [data-cy=${id}]`)
         .find('input')
-        .clear()
-        .type(term)
+        .fill(term)
         .should('have.value', term);
 });
 
@@ -32,8 +31,7 @@ MultiSteps([
 ], 'I fill the {string} textarea with the {string} term', (id, term) => {
     cy.get(`[data-cy=${id}]`)
         .find('textarea')
-        .clear()
-        .type(term)
+        .fill(term)
         .should('have.value', term);
 });
 
@@ -127,8 +125,7 @@ MultiSteps([
 
     cy.get(`[data-cy=${name}]`)
         .find('input')
-        .clear()
-        .type(term)
+        .fill(term)
         .should('have.value', term);
 });
 
@@ -140,8 +137,7 @@ MultiSteps([
 
     cy.get(`[data-cy=${name}]`)
         .find('textarea')
-        .clear()
-        .type(term)
+        .fill(term)
         .should('have.value', term);
 });
 
@@ -153,8 +149,7 @@ MultiSteps([
 
     cy.get(`[data-cy=${name}]`)
         .find('input')
-        .clear()
-        .type(term)
+        .fill(term)
         .should('have.value', term);
 });
 
@@ -164,14 +159,18 @@ MultiSteps([
 ], 'I click {string} check', (id) => {
     cy.get(`[data-cy=${id}]`)
         .find('label')
-        .click();
+        .click({
+            force: true,
+        });
 });
 
 MultiSteps([
     And,
     Then,
 ], 'I choose {int} option from {string} color picker field', (optionNr, id) => {
-    cy.get(`[data-cy=${id}]`).click();
+    cy.get(`[data-cy=${id}]`).click({
+        force: true,
+    });
     cy.get(`[data-cy=${id}-drop-down]`)
         .should('be.visible')
         .find('.color-picker-content > .color').as('elementList');
@@ -180,7 +179,9 @@ MultiSteps([
     cy.get('@selectedOption').click({
         force: true,
     });
-    cy.get(`[data-cy=${id}-drop-down]`).find('button').contains('OK').click();
+    cy.get(`[data-cy=${id}-drop-down]`).find('button').contains('OK').click({
+        force: true,
+    });
     cy.get(`[data-cy=${id}-drop-down]`).should('be.not.visible');
 });
 
@@ -189,7 +190,9 @@ MultiSteps([
     Then,
 ], 'I choose {string} option from {string} select field', (optionString, id) => {
     cy.get(`[data-cy=${id}]`)
-        .click();
+        .click({
+            force: true,
+        });
     cy.get(`[data-cy=${id}-drop-down]`)
         .should('be.visible')
         .find('.list-element')

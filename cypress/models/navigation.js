@@ -41,6 +41,11 @@ export const checkGridRow = ({
         .as('grid');
     cy
         .get('@grid')
+        .find('.grid-footer')
+        .get('[data-cy=grid-footer-show]')
+        .chooseOption('200');
+    cy
+        .get('@grid')
         .contains(new RegExp(`^${escapeStringRegexp(searchValue)}$`, 'g'))
         .parents('.grid-table-cell')
         .as('row');
@@ -93,6 +98,11 @@ export const noGridRow = ({
         .as('grid');
     cy
         .get('@grid')
+        .find('.grid-footer')
+        .get('[data-cy=grid-footer-show]')
+        .chooseOption('200');
+    cy
+        .get('@grid')
         .find('.grid-table-cell > span')
         .should('not.have.value', searchValue);
 };
@@ -104,6 +114,11 @@ export const actionOnGrid = ({
         .get(`[data-cy=${gridId}]`)
         .should('be.visible')
         .as('grid');
+    cy
+        .get('@grid')
+        .find('.grid-footer')
+        .get('[data-cy=grid-footer-show]')
+        .chooseOption('200');
     cy
         .get('@grid')
         .find('.grid-table-cell')
@@ -135,6 +150,11 @@ export const noActionOnGrid = ({
         .as('grid');
     cy
         .get('@grid')
+        .find('.grid-footer')
+        .get('[data-cy=grid-footer-show]')
+        .chooseOption('200');
+    cy
+        .get('@grid')
         .find('.grid-table-cell')
         .contains(new RegExp(`^${escapeStringRegexp(searchValue)}$`, 'g'))
         .parents('.grid-table-cell')
@@ -159,6 +179,11 @@ export const editOnGrid = ({
         .get(`[data-cy=${gridId}]`)
         .should('be.visible')
         .as('grid');
+    cy
+        .get('@grid')
+        .find('.grid-footer')
+        .get('[data-cy=grid-footer-show]')
+        .chooseOption('200');
     cy
         .get('@grid')
         .find('.grid-table-cell')
@@ -195,8 +220,7 @@ export const editOnGrid = ({
                         cy
                             .get(`@checkingCell${columnIndex}`)
                             .find('input')
-                            .clear()
-                            .type(parsedColumns[columnIndex])
+                            .fill(parsedColumns[columnIndex])
                             .should('have.value', parsedColumns[columnIndex]);
                     }
                 });

@@ -3,9 +3,9 @@
   "viewportWidth": 1400,
   "viewportHeight": 800,
   "testFiles": "**/*.feature",
-  "video": true,
-  "projectId": "ergonode_e2e",
+  "video": false,
   "screenshotOnRunFailure": false,
+  "experimentalFetchPolyfill": true,
   "env": {
     "apiServer": "http://localhost:8000/api/v1/",
     "defaultLanguage": "en_GB",

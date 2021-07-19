@@ -40,6 +40,8 @@ Feature: UPDATE: Attributes
     * I choose "[0,1]" options from "attribute-groups" multi select field
     Then I click on "submit" button
     * I send a "PUT" request and status code should be 204
+    * I click back arrow
+    * I see "attributes/grid" page
     Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_new>'}"
 
     Examples:
@@ -61,6 +63,8 @@ Feature: UPDATE: Attributes
     * I choose "<param>" option from "attribute-params" select field
     Then I click on "submit" button
     * I send a "PUT" request and status code should be 204
+    * I click back arrow
+    * I see "attributes/grid" page
     Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_new>'}"
 
     Examples:
@@ -83,6 +87,8 @@ Feature: UPDATE: Attributes
     * I fill the "attribute-option-2" input with the "new_option3" term
     Then I click on "submit" button
     * I send a "PUT" request and status code should be 204
+    * I click back arrow
+    * I see "attributes/grid" page
     Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_new>'}"
 
   Examples:
