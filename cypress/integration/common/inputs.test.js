@@ -18,6 +18,7 @@ import {
 MultiSteps([
     When,
     Then,
+    And,
 ], 'I fill the {string} input with the {string} term', (id, term) => {
     cy.get(`form [data-cy=${id}]`)
         .find('input')
