@@ -49,10 +49,6 @@
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import PRIVILEGES from '@Roles/config/privileges';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
-import TextArea from '@UI/components/TextArea/TextArea';
-import TextField from '@UI/components/TextField/TextField';
 import {
     mapActions,
     mapState,
@@ -60,12 +56,6 @@ import {
 
 export default {
     name: 'UserRoleForm',
-    components: {
-        Form,
-        FormSection,
-        TextField,
-        TextArea,
-    },
     mixins: [
         formActionsMixin,
         formFeedbackMixin,

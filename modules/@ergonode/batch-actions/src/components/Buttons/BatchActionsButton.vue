@@ -39,19 +39,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import ActionButton from '@UI/components/ActionButton/ActionButton';
-import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
 
 export default {
     name: 'BatchActionsButton',
-    components: {
-        ListElementTitle,
-        ListElementDescription,
-        ActionButton,
-        IconArrowDropdown,
-    },
     props: {
         highlighted: {
             type: Boolean,

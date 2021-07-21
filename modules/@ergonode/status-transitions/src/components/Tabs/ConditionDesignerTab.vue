@@ -31,7 +31,6 @@ import UpdateProductStatusConditionDesignerButton
     from '@Transitions/components/Buttons/UpdateProductStatusConditionDesignerButton';
 import RemoveConditionDropZone from '@Transitions/components/DropZones/RemoveConditionDropZone';
 import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
-import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import {
     mapActions,
 } from 'vuex';
@@ -42,7 +41,6 @@ export default {
         RemoveConditionDropZone,
         UpdateProductStatusConditionDesignerButton,
         GridViewTemplate,
-        VerticalTabBar,
         ConditionSetTreeDesigner,
     },
     mixins: [

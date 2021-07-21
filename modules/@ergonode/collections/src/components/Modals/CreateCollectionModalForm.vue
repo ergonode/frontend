@@ -30,7 +30,6 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
-import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
 } from 'vuex';
@@ -38,7 +37,6 @@ import {
 export default {
     name: 'CreateCollectionModalForm',
     components: {
-        ModalForm,
         CollectionForm,
     },
     mixins: [

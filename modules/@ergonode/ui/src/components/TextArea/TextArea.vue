@@ -71,11 +71,8 @@ import {
     INPUT_TYPE,
     SIZE,
 } from '@Core/defaults/theme';
-import InputController from '@UI/components/Input/InputController';
-import InputLabel from '@UI/components/Input/InputLabel';
 import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
 import InputUnderlineStyle from '@UI/components/Input/InputUnderlineStyle';
-import InputUUIDProvider from '@UI/components/Input/InputUUIDProvider';
 
 /**
  * `TextArea` is a default textarea input component.
@@ -83,12 +80,6 @@ import InputUUIDProvider from '@UI/components/Input/InputUUIDProvider';
  */
 export default {
     name: 'TextArea',
-    components: {
-        InputController,
-        InputLabel,
-        InputUUIDProvider,
-        ErrorHint: () => import('@UI/components/Hints/ErrorHint'),
-    },
     props: {
         /**
          * The size of the component

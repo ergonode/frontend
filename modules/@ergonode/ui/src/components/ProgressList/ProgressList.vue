@@ -20,13 +20,9 @@
 </template>
 
 <script>
-import ComplexProgressBar from '@UI/components/ProgressBar/Complex/ComplexProgressBar';
 
 export default {
     name: 'ProgressList',
-    components: {
-        ComplexProgressBar,
-    },
     props: {
         /**
          * List of data

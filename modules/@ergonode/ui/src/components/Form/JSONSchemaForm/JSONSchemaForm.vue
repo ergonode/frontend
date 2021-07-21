@@ -26,13 +26,10 @@
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
-import Form from '@UI/components/Form/Form';
 
 export default {
     name: 'JSONSchemaForm',
-    components: {
-        Form,
-    },
+    components: {},
     props: {
         /**
          * JSON schema

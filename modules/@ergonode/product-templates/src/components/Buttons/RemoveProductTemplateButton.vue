@@ -32,18 +32,12 @@ import PRIVILEGES from '@Templates/config/privileges';
 import {
     ROUTE_NAME,
 } from '@Templates/config/routes';
-import Button from '@UI/components/Button/Button';
-import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
     name: 'RemoveProductTemplateButton',
-    components: {
-        Button,
-        IconDelete,
-    },
     computed: {
         isAllowedToDelete() {
             return this.$hasAccess([

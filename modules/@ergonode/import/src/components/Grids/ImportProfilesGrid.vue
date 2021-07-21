@@ -81,15 +81,11 @@ import {
 import {
     IMPORT_PROFILE_CREATED_EVENT_NAME,
 } from '@Import/defaults';
-import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'ImportProfilesGrid',
     components: {
         CreateImportProfileButton,
-        Grid,
-        GridNoDataPlaceholder,
     },
     mixins: [
         extendPropsMixin({

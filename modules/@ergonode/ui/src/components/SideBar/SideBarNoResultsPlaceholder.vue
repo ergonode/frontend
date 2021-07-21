@@ -21,15 +21,9 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import Placeholder from '@UI/components/Placeholder/Placeholder';
-import PlaceholderClearSearchButton from '@UI/components/Placeholder/PlaceholderClearSearchButton';
 
 export default {
     name: 'SideBarNoResultsPlaceholder',
-    components: {
-        PlaceholderClearSearchButton,
-        Placeholder,
-    },
     props: {
         /**
          * The title of the component

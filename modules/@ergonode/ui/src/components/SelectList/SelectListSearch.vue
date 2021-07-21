@@ -32,15 +32,9 @@ import {
     GREEN,
     GREY_DARK,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconSearch from '@UI/components/Icons/Actions/IconSearch';
-import IconFilledClose from '@UI/components/Icons/Window/IconFilledClose';
 
 export default {
     name: 'SelectListSearch',
-    components: {
-        IconFilledClose,
-        IconSearch,
-    },
     props: {
         /**
          * Component value

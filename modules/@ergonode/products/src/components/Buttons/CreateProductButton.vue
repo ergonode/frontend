@@ -26,14 +26,10 @@ import PRIVILEGES from '@Products/config/privileges';
 import {
     PRODUCT_CREATED_EVENT_NAME,
 } from '@Products/defaults';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
 export default {
     name: 'CreateProductButton',
     components: {
-        Button,
-        IconAdd,
         CreateProductModalForm: () => import('@Products/components/Modals/CreateProductModalForm'),
     },
     data() {

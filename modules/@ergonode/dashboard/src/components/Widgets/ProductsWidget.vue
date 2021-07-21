@@ -35,20 +35,16 @@ import DoughnutProductsChart from '@Products/components/Chart/DoughnutProductsCh
 import {
     PRODUCT_TYPE_COLOR,
 } from '@Products/defaults';
-import Preloader from '@UI/components/Preloader/Preloader';
-import ProgressList from '@UI/components/ProgressList/ProgressList';
-import Widget from '@UI/components/Widget/Widget';
 
 export default {
     name: 'ProductsWidget',
     components: {
-        Widget,
         DoughnutProductsChart,
-        ProgressList,
-        Preloader,
     },
     async fetch() {
         try {
+            this.isPrefetchingData = true;
+
             const productsCount = await getProductsCount({
                 $axios: this.$axios,
             });

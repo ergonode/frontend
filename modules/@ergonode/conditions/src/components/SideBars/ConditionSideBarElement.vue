@@ -22,20 +22,12 @@ import {
 import {
     getUUID,
 } from '@Core/models/stringWrapper';
-import ListDraggableElement from '@UI/components/List/ListDraggableElement';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
     name: 'ConditionSideBarElement',
-    components: {
-        ListElementDescription,
-        ListElementTitle,
-        ListDraggableElement,
-    },
     props: {
         scope: {
             type: String,

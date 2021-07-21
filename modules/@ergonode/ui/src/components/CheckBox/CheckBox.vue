@@ -34,13 +34,9 @@
 </template>
 
 <script>
-import InputUUIDProvider from '@UI/components/Input/InputUUIDProvider';
 
 export default {
     name: 'CheckBox',
-    components: {
-        InputUUIDProvider,
-    },
     props: {
         /**
          * Component value

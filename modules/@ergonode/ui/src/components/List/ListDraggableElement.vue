@@ -21,13 +21,9 @@ import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '@Core/models/layout/ElementCopy';
-import IconDragDrop from '@UI/components/Icons/Actions/IconDragDrop';
 
 export default {
     name: 'ListDraggableElement',
-    components: {
-        IconDragDrop,
-    },
     props: {
         /**
          * Determinate if the component is disabled

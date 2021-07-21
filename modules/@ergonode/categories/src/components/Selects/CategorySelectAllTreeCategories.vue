@@ -13,13 +13,9 @@
 </template>
 
 <script>
-import CheckBox from '@UI/components/CheckBox/CheckBox';
 
 export default {
     name: 'CategorySelectAllTreeCheckBox',
-    components: {
-        CheckBox,
-    },
     props: {
         value: {
             type: Array,

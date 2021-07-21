@@ -81,15 +81,11 @@ import {
 import {
     ROLE_CREATED_EVENT_NAME,
 } from '@Roles/defaults';
-import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'RolesGrid',
     components: {
         CreateRoleButton,
-        Grid,
-        GridNoDataPlaceholder,
     },
     mixins: [
         extendPropsMixin({

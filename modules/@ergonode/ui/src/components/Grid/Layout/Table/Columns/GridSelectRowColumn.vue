@@ -29,14 +29,12 @@
 
 <script>
 import GridSelectRowEditCell from '@UI/components/Grid/Layout/Table/Cells/Edit/GridSelectRowEditCell';
-import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
 import GridActionColumn from '@UI/components/Grid/Layout/Table/Columns/GridActionColumn';
 
 export default {
     name: 'GridSelectRowColumn',
     components: {
         GridActionColumn,
-        GridTableCell,
         GridSelectRowEditCell,
     },
     props: {

@@ -56,15 +56,7 @@ import {
 import {
     GRAPHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import PointBadge from '@UI/components/Badges/PointBadge';
 import GridSelectEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
-import ListElementAction from '@UI/components/List/ListElementAction';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
-import Preloader from '@UI/components/Preloader/Preloader';
-import TranslationSelect from '@UI/components/Select/TranslationSelect';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import gridEditCellMixin from '@UI/mixins/grid/gridEditCellMixin';
 import {
     mapActions,
@@ -73,15 +65,7 @@ import {
 export default {
     name: 'GridLabelEditCell',
     components: {
-        Preloader,
-        FadeTransition,
-        IconSpinner,
         GridSelectEditContentCell,
-        TranslationSelect,
-        ListElementDescription,
-        ListElementTitle,
-        ListElementAction,
-        PointBadge,
     },
     mixins: [
         gridEditCellMixin,

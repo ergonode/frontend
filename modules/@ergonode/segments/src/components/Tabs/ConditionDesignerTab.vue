@@ -30,7 +30,6 @@ import UpdateSegmentConditionDesignerButton from '@Segments/components/Buttons/U
 import RemoveConditionDropZone from '@Segments/components/DropZones/RemoveConditionDropZone';
 import PRIVILEGES from '@Segments/config/privileges';
 import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
-import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import {
     mapActions,
 } from 'vuex';
@@ -41,7 +40,6 @@ export default {
         RemoveConditionDropZone,
         UpdateSegmentConditionDesignerButton,
         GridViewTemplate,
-        VerticalTabBar,
         ConditionSetTreeDesigner,
     },
     mixins: [

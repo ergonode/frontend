@@ -12,13 +12,9 @@
 </template>
 
 <script>
-import Preloader from '@UI/components/Preloader/Preloader';
 
 export default {
     name: 'AttributeFormField',
-    components: {
-        Preloader,
-    },
     props: {
         isPrefetchingData: {
             type: Boolean,

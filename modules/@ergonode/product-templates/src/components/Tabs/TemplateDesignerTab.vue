@@ -29,7 +29,6 @@ import RemoveElementDropZone from '@Templates/components/DropZones/RemoveElement
 import TemplateDesigner from '@Templates/components/TemplateDesigner/TemplateDesigner';
 import PRIVILEGES from '@Templates/config/privileges';
 import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
-import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import {
     mapActions,
     mapState,
@@ -42,7 +41,6 @@ export default {
         TemplateDesigner,
         UpdateTemplateDesignerButton,
         GridViewTemplate,
-        VerticalTabBar,
     },
     mixins: [
         tabFeedbackMixin,

@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import GridFilterPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridFilterPresentationCell';
 import gridDataFilterCellMixin from '@UI/mixins/grid/gridDataFilterCellMixin';
 import {
     DEFAULT_FORMAT,
@@ -22,9 +21,6 @@ import {
 
 export default {
     name: 'GridDateFilterDataCell',
-    components: {
-        GridFilterPresentationCell,
-    },
     mixins: [
         gridDataFilterCellMixin,
     ],

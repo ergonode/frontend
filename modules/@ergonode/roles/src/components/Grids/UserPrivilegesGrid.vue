@@ -45,7 +45,6 @@ import {
 } from '@Core/models/mappers/gridDataMapper';
 import PRIVILEGES from '@Roles/config/privileges';
 import privilegesDefaults from '@Roles/defaults/privileges';
-import Grid from '@UI/components/Grid/Grid';
 import {
     getMappedGridData,
 } from '@Users/models/gridDataMapper';
@@ -56,9 +55,7 @@ import {
 
 export default {
     name: 'UserPrivilegesGrid',
-    components: {
-        Grid,
-    },
+    components: {},
     mixins: [
         extendPropsMixin({
             extendedKey: '@Roles/components/Grids/UserPrivilegesGrid/props',

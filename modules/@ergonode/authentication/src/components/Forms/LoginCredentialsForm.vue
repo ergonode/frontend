@@ -45,9 +45,6 @@ import {
     INPUT_TYPE,
 } from '@Core/defaults/theme';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
-import LinkButton from '@UI/components/LinkButton/LinkButton';
-import TextField from '@UI/components/TextField/TextField';
-import Toggler from '@UI/components/Toggler/Toggler';
 import {
     mapActions,
 } from 'vuex';
@@ -56,9 +53,6 @@ export default {
     name: 'LoginCredentialsForm',
     components: {
         LoginForm,
-        TextField,
-        LinkButton,
-        Toggler,
         IconLogoName,
     },
     mixins: [

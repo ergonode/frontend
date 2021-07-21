@@ -33,16 +33,12 @@ import {
     INPUT_TYPE,
 } from '@Core/defaults/theme';
 import GridTextEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridTextEditContentCell';
-import RichTextEditor from '@UI/components/RichTextEditor/RichTextEditor';
-import TextArea from '@UI/components/TextArea/TextArea';
 import gridEditCellMixin from '@UI/mixins/grid/gridEditCellMixin';
 
 export default {
     name: 'GridTextAreaEditCell',
     components: {
         GridTextEditContentCell,
-        TextArea,
-        RichTextEditor,
     },
     mixins: [
         gridEditCellMixin,

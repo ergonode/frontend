@@ -43,16 +43,12 @@ import {
 } from '@Core/defaults/theme';
 import AdvancedFilterShowOnly from '@UI/components/AdvancedFilters/AdvancedFilterShowOnly';
 import AdvancedFilterContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterContent';
-import Divider from '@UI/components/Dividers/Divider';
-import TextField from '@UI/components/TextField/TextField';
 
 export default {
     name: 'AdvancedFilterRangeContent',
     components: {
-        TextField,
         AdvancedFilterContent,
         AdvancedFilterShowOnly,
-        Divider,
     },
     props: {
         /**

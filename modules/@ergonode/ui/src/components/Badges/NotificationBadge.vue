@@ -9,15 +9,9 @@
 </template>
 
 <script>
-import BadgeLabel from '@UI/components/Badges/BadgeLabel';
-import RoundedBadge from '@UI/components/Badges/RoundedBadge';
 
 export default {
     name: 'NotificationBadge',
-    components: {
-        RoundedBadge,
-        BadgeLabel,
-    },
     props: {
         /**
          * Number of unread notifications

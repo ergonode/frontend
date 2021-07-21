@@ -27,14 +27,10 @@ import PRIVILEGES from '@Segments/config/privileges';
 import {
     SEGMENT_CREATED_EVENT_NAME,
 } from '@Segments/defaults';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
 export default {
     name: 'CreateSegmentButton',
     components: {
-        Button,
-        IconAdd,
         CreateSegmentModalForm: () => import('@Segments/components/Modals/CreateSegmentModalForm'),
     },
     data() {

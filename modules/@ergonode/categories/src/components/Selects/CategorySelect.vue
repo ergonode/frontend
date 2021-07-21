@@ -196,43 +196,15 @@ import {
 } from '@Trees/services';
 import AdvancedFilters from '@UI/components/AdvancedFilters/AdvancedFilters';
 import AdvancedFiltersRemoveAllButton from '@UI/components/AdvancedFilters/AdvancedFiltersRemoveAllButton';
-import Button from '@UI/components/Button/Button';
-import CheckBox from '@UI/components/CheckBox/CheckBox';
-import InputController from '@UI/components/Input/InputController';
-import InputLabel from '@UI/components/Input/InputLabel';
-import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
-import ListElementAction from '@UI/components/List/ListElementAction';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
-import PlaceholderClearSearchButton from '@UI/components/Placeholder/PlaceholderClearSearchButton';
-import Preloader from '@UI/components/Preloader/Preloader';
-import SelectList from '@UI/components/SelectList/SelectList';
-import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
-import Toggler from '@UI/components/Toggler/Toggler';
-import TreeAccordion from '@UI/components/TreeAccordion/TreeAccordion';
 
 export default {
     name: 'CategorySelect',
     components: {
-        PlaceholderClearSearchButton,
-        Button,
         CreateCategoryButton,
         CategorySelectAllTreeCheckBox,
         CategorySelectAllCheckBox,
-        SelectListNoDataPlaceholder,
-        TreeAccordion,
-        InputSolidStyle,
-        InputController,
-        InputLabel,
-        ListElementTitle,
-        ListElementAction,
-        ListElementDescription,
-        Toggler,
-        CheckBox,
         ExpandNumericButton,
         AdvancedFilters,
-        Preloader,
-        SelectList,
         AdvancedFiltersRemoveAllButton,
     },
     props: {

@@ -28,25 +28,9 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import IconArrowSingle from '@UI/components/Icons/Arrows/IconArrowSingle';
-import ListElement from '@UI/components/List/ListElement';
-import ListElementAction from '@UI/components/List/ListElementAction';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementHint from '@UI/components/List/ListElementHint';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
-import Preloader from '@UI/components/Preloader/Preloader';
 
 export default {
     name: 'ListGroupElement',
-    components: {
-        Preloader,
-        ListElementDescription,
-        ListElementTitle,
-        ListElementHint,
-        ListElementAction,
-        ListElement,
-        IconArrowSingle,
-    },
     props: {
         /**
          * The title of the component

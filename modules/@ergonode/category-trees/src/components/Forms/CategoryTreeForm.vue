@@ -40,9 +40,6 @@
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import PRIVILEGES from '@Trees/config/privileges';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
-import TextField from '@UI/components/TextField/TextField';
 import {
     mapActions,
     mapState,
@@ -50,11 +47,6 @@ import {
 
 export default {
     name: 'CategoryTreeForm',
-    components: {
-        Form,
-        FormSection,
-        TextField,
-    },
     mixins: [
         formActionsMixin,
         formFeedbackMixin,

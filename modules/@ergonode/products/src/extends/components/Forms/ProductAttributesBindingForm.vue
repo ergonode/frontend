@@ -38,9 +38,6 @@
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import ProductAttributeBindingField from '@Products/extends/components/Forms/Field/ProductAttributeBindingField';
-import Form from '@UI/components/Form/Form';
-import FormListSection from '@UI/components/Form/Section/FormListSection';
-import FormListSubsection from '@UI/components/Form/Subsection/FormListSubsection';
 import {
     mapActions,
     mapState,
@@ -49,9 +46,6 @@ import {
 export default {
     name: 'ProductAttributesBindingForm',
     components: {
-        Form,
-        FormListSection,
-        FormListSubsection,
         ProductAttributeBindingField,
     },
     mixins: [

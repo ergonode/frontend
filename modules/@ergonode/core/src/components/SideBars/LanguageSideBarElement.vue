@@ -21,10 +21,6 @@
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
-import ListDraggableElement from '@UI/components/List/ListDraggableElement';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementHint from '@UI/components/List/ListElementHint';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
 import {
     mapActions,
     mapState,
@@ -32,12 +28,6 @@ import {
 
 export default {
     name: 'LanguageSideBarElement',
-    components: {
-        ListDraggableElement,
-        ListElementDescription,
-        ListElementTitle,
-        ListElementHint,
-    },
     props: {
         scope: {
             type: String,

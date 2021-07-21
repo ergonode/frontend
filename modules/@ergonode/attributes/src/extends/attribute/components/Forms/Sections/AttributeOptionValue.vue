@@ -17,16 +17,13 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import TextField from '@UI/components/TextField/TextField';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
     name: 'AttributeOptionValue',
-    components: {
-        TextField,
-    },
+    components: {},
     props: {
         index: {
             type: String,

@@ -59,13 +59,6 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import ElementContentBase from '@Templates/components/TemplateDesigner/ProductDesigner/ElementContentBase';
-import ActionIconButton from '@UI/components/ActionIconButton/ActionIconButton';
-import CheckBox from '@UI/components/CheckBox/CheckBox';
-import IconDots from '@UI/components/Icons/Others/IconDots';
-import ListElement from '@UI/components/List/ListElement';
-import ListElementAction from '@UI/components/List/ListElementAction';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
 import {
     mapActions,
 } from 'vuex';
@@ -73,14 +66,7 @@ import {
 export default {
     name: 'AttributeElementContent',
     components: {
-        IconDots,
-        ActionIconButton,
         ElementContentBase,
-        ListElement,
-        ListElementAction,
-        ListElementTitle,
-        ListElementDescription,
-        CheckBox,
     },
     props: {
         scope: {

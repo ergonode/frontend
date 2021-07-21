@@ -27,12 +27,10 @@
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
-import FormSection from '@UI/components/Form/Section/FormSection';
 
 export default {
     name: 'JSONSchemaFormObject',
     components: {
-        FormSection,
         JSONSchemaOneOf: () => import('@UI/components/Form/JSONSchemaForm/JSONSchemaOneOf'),
     },
     props: {

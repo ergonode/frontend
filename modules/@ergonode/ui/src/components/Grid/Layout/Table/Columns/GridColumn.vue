@@ -18,13 +18,9 @@
     </div>
 </template>
 <script>
-import GridColumnResizer from '@UI/components/Grid/Layout/Table/Columns/Resizer/GridColumnResizer';
 
 export default {
     name: 'GridColumn',
-    components: {
-        GridColumnResizer,
-    },
     props: {
         /**
          * Index of given component at the loop

@@ -29,7 +29,6 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
-import ModalForm from '@UI/components/Modal/ModalForm';
 import UserForm from '@Users/components/Forms/UserForm';
 import {
     ROUTE_NAME,
@@ -41,7 +40,6 @@ import {
 export default {
     name: 'CreateUserModalForm',
     components: {
-        ModalForm,
         UserForm,
     },
     mixins: [

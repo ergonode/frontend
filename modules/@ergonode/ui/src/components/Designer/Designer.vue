@@ -66,13 +66,10 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
 import DesignerBackgroundItem from '@UI/components/Designer/DesignerBackgroundItem';
 import DesignerBackgroundLayer from '@UI/components/Designer/DesignerBackgroundLayer';
 import DesignerFooter from '@UI/components/Designer/DesignerFooter';
 import DesignerLayers from '@UI/components/Designer/DesignerLayers';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
-import ResizeObserver from '@UI/components/Observers/ResizeObserver';
 import {
     COLUMNS,
     FOOTER_HEIGHT,
@@ -86,9 +83,6 @@ export default {
         DesignerLayers,
         DesignerBackgroundLayer,
         DesignerFooter,
-        Button,
-        IconAdd,
-        ResizeObserver,
     },
     props: {
         /**

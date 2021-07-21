@@ -44,9 +44,6 @@ import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 import PRIVILEGES from '@Media/config/privileges';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
-import TextField from '@UI/components/TextField/TextField';
 import {
     mapActions,
     mapState,
@@ -55,9 +52,6 @@ import {
 export default {
     name: 'ResourceForm',
     components: {
-        Form,
-        FormSection,
-        TextField,
         UploadImageFile,
     },
     mixins: [

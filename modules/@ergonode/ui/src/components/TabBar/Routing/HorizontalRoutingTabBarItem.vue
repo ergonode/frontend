@@ -43,18 +43,10 @@ import {
     GREEN,
     RED,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
-import IconError from '@UI/components/Icons/Feedback/IconError';
-import IconMark from '@UI/components/Icons/Feedback/IconMark';
-import IconSync from '@UI/components/Icons/Feedback/IconSync';
 
 export default {
     name: 'HorizontalRoutingTabBarItem',
     components: {
-        FeedbackProvider,
-        IconError,
-        IconSync,
-        IconMark,
         TranslatableTitleProvider,
     },
     props: {
@@ -112,6 +104,9 @@ export default {
         graphiteDarkColor() {
             return GRAPHITE_DARK;
         },
+    },
+    mounted() {
+        this.$emit('init');
     },
     methods: {
         onLinkSelect() {

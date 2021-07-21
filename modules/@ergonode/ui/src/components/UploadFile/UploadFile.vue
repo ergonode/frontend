@@ -66,29 +66,9 @@ import {
 import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Fab from '@UI/components/Fab/Fab';
-import IconDelete from '@UI/components/Icons/Actions/IconDelete';
-import InputController from '@UI/components/Input/InputController';
-import InputImageController from '@UI/components/Input/InputImageController';
-import InputLabel from '@UI/components/Input/InputLabel';
-import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
-import InputUploadPlaceholder from '@UI/components/Input/InputUploadPlaceholder';
-import InputUploadSpinner from '@UI/components/Input/InputUploadSpinner';
-import InputUUIDProvider from '@UI/components/Input/InputUUIDProvider';
 
 export default {
     name: 'UploadFile',
-    components: {
-        InputUploadPlaceholder,
-        InputUploadSpinner,
-        InputController,
-        InputImageController,
-        InputSolidStyle,
-        Fab,
-        IconDelete,
-        InputUUIDProvider,
-        InputLabel,
-    },
     props: {
         label: {
             type: String,

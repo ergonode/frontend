@@ -33,16 +33,12 @@ import {
     WHITE,
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
     name: 'DropZone',
-    components: {
-        IntersectionObserver,
-    },
     props: {
         /**
          * The title of the component

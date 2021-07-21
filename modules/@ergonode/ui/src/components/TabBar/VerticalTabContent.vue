@@ -23,15 +23,9 @@
 </template>
 
 <script>
-import GridColumnResizer from '@UI/components/Grid/Layout/Table/Columns/Resizer/GridColumnResizer';
-import Resizer from '@UI/components/Resizer/Resizer';
 
 export default {
     name: 'VerticalTabContent',
-    components: {
-        Resizer,
-        GridColumnResizer,
-    },
     props: {
         /**
          * Item data model

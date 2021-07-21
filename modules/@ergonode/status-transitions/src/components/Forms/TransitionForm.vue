@@ -50,10 +50,6 @@ import {
     isEmpty,
 } from '@Core/models/objectWrapper';
 import PRIVILEGES from '@Transitions/config/privileges';
-import Button from '@UI/components/Button/Button';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
-import TranslationSelect from '@UI/components/Select/TranslationSelect';
 import {
     mapActions,
     mapState,
@@ -61,12 +57,6 @@ import {
 
 export default {
     name: 'TransitionForm',
-    components: {
-        Button,
-        Form,
-        FormSection,
-        TranslationSelect,
-    },
     mixins: [
         formActionsMixin,
         formFeedbackMixin,

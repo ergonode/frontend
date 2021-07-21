@@ -33,17 +33,9 @@
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import PRIVILEGES from '@Products/config/privileges';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
-import TextArea from '@UI/components/TextArea/TextArea';
 
 export default {
     name: 'AddProductsBySKUForm',
-    components: {
-        Form,
-        FormSection,
-        TextArea,
-    },
     mixins: [
         formActionsMixin,
         formFeedbackMixin,

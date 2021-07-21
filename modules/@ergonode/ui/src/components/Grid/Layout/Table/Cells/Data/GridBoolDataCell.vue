@@ -25,14 +25,12 @@
 
 <script>
 import GridBoolEditCell from '@UI/components/Grid/Layout/Table/Cells/Edit/GridBoolEditCell';
-import GridSuffixPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
 import gridDataCellMixin from '@UI/mixins/grid/gridDataCellMixin';
 
 export default {
     name: 'GridBoolDataCell',
     components: {
         GridBoolEditCell,
-        GridSuffixPresentationCell,
     },
     mixins: [
         gridDataCellMixin,

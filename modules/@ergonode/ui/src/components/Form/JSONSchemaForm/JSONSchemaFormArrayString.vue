@@ -19,17 +19,9 @@
 </template>
 
 <script>
-import CheckBox from '@UI/components/CheckBox/CheckBox';
-import FormFieldset from '@UI/components/Form/FormFieldset';
-import FormSubsection from '@UI/components/Form/Subsection/FormSubsection';
 
 export default {
     name: 'JSONSchemaFormArrayString',
-    components: {
-        FormSubsection,
-        FormFieldset,
-        CheckBox,
-    },
     props: {
         /**
          * JSON schema

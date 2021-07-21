@@ -42,7 +42,6 @@ import {
     GRID_GAP,
     ROW_HEIGHT,
 } from '@Conditions/defaults/treeDesigner';
-import TreeDesigner from '@UI/components/TreeDesigner/TreeDesigner';
 import {
     mapActions,
     mapState,
@@ -52,7 +51,6 @@ export default {
     name: 'ConditionSetTreeDesigner',
     components: {
         ConditionSetTreeDesignerItem,
-        TreeDesigner,
     },
     props: {
         disabled: {

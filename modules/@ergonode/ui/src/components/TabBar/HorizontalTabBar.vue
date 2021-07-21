@@ -36,17 +36,8 @@
 </template>
 
 <script>
-import HorizontalTabBarContent from '@UI/components/TabBar/HorizontalTabBarContent';
-import HorizontalTabBarItem from '@UI/components/TabBar/HorizontalTabBarItem';
-import HorizontalTabBarItems from '@UI/components/TabBar/HorizontalTabBarItems';
-
 export default {
     name: 'HorizontalTabBar',
-    components: {
-        HorizontalTabBarContent,
-        HorizontalTabBarItems,
-        HorizontalTabBarItem,
-    },
     props: {
         /**
          * List of items

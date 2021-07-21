@@ -13,13 +13,9 @@
 </template>
 
 <script>
-import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
 
 export default {
     name: 'AdvancedFilterDropdown',
-    components: {
-        Dropdown,
-    },
     props: {
         /**
          * Determines visibility of component

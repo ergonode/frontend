@@ -143,7 +143,6 @@ import DesignerBackgroundLayer from '@UI/components/Designer/DesignerBackgroundL
 import DesignerDraggableLayer from '@UI/components/Designer/DesignerDraggableLayer';
 import HorizontalFixedScroll from '@UI/components/Layout/Scroll/HorizontalFixedScroll';
 import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
-import Preloader from '@UI/components/Preloader/Preloader';
 import {
     getBackgroundItem,
 } from '@UI/models/designer/intex';
@@ -213,7 +212,6 @@ export default {
         WorkflowDesignerIllustrationPlaceholder,
         DesignerBackgroundLayer,
         WorkflowDesignerHeaderLayerCell,
-        Preloader,
         Designer,
         DesignerDraggableLayer,
         VerticalFixedScroll,

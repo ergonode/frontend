@@ -21,13 +21,9 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import Placeholder from '@UI/components/Placeholder/Placeholder';
 
 export default {
     name: 'SideBarNoDataPlaceholder',
-    components: {
-        Placeholder,
-    },
     props: {
         /**
          * The title of the component

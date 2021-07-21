@@ -12,13 +12,10 @@
 </template>
 
 <script>
-import Toggler from '@UI/components/Toggler/Toggler';
 
 export default {
     name: 'AdvancedFilterShowOnly',
-    components: {
-        Toggler,
-    },
+    components: {},
     props: {
         /**
          * Component value

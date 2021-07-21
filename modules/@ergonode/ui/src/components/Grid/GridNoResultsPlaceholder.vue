@@ -21,15 +21,9 @@
 import {
     ORIENTATION,
 } from '@Core/defaults/layout';
-import Placeholder from '@UI/components/Placeholder/Placeholder';
-import PlaceholderClearSearchButton from '@UI/components/Placeholder/PlaceholderClearSearchButton';
 
 export default {
     name: 'GridNoResultsPlaceholder',
-    components: {
-        Placeholder,
-        PlaceholderClearSearchButton,
-    },
     props: {
         /**
          * The title of the component

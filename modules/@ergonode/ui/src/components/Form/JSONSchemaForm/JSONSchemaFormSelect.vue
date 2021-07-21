@@ -17,13 +17,10 @@
 </template>
 
 <script>
-import Select from '@UI/components/Select/Select';
 
 export default {
     name: 'JSONSchemaFormSelect',
-    components: {
-        Select,
-    },
+    components: {},
     props: {
         /**
          * JSON schema

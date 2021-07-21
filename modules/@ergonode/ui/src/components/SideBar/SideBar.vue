@@ -50,12 +50,6 @@
 </template>
 
 <script>
-
-import ListSearchHeader from '@UI/components/List/ListSearchHeader';
-import SideBarFooter from '@UI/components/SideBar/SideBarFooter';
-import SideBarNoDataPlaceholder from '@UI/components/SideBar/SideBarNoDataPlaceholder';
-import SideBarNoResultsPlaceholder from '@UI/components/SideBar/SideBarNoResultsPlaceholder';
-import SideBarStickyHeader from '@UI/components/SideBar/SideBarStickyHeader';
 import {
     ExpandingList,
 } from 'vue-windowing';
@@ -63,11 +57,6 @@ import {
 export default {
     name: 'SideBar',
     components: {
-        SideBarNoDataPlaceholder,
-        SideBarNoResultsPlaceholder,
-        SideBarStickyHeader,
-        SideBarFooter,
-        ListSearchHeader,
         ExpandingList,
     },
     props: {

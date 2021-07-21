@@ -30,7 +30,6 @@ import ProductStatusForm from '@Statuses/components/Forms/ProductStatusForm';
 import {
     ROUTE_NAME,
 } from '@Statuses/config/routes';
-import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
 } from 'vuex';
@@ -38,7 +37,6 @@ import {
 export default {
     name: 'CreateProductStatusModalForm',
     components: {
-        ModalForm,
         ProductStatusForm,
     },
     mixins: [

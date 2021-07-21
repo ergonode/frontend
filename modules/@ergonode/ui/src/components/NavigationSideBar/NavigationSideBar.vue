@@ -52,8 +52,6 @@ import {
     GREEN,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Fab from '@UI/components/Fab/Fab';
-import IconArrowDouble from '@UI/components/Icons/Arrows/IconArrowDouble';
 import NavigationSideBarElement from '@UI/components/NavigationSideBar/NavigationSideBarElement';
 import NavigationSideBarGroup from '@UI/components/NavigationSideBar/NavigationSideBarGroup';
 import NavigationSideBarLogo from '@UI/components/NavigationSideBar/NavigationSideBarLogo';
@@ -64,8 +62,6 @@ export default {
         NavigationSideBarLogo,
         NavigationSideBarElement,
         NavigationSideBarGroup,
-        IconArrowDouble,
-        Fab,
     },
     data() {
         return {

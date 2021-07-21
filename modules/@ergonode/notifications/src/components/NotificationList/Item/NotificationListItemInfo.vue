@@ -18,12 +18,10 @@ import NotificationListItemPrependTemplate
 import {
     BLUE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconInfo from '@UI/components/Icons/Feedback/IconInfo';
 
 export default {
     name: 'NotificationListItemInfo',
     components: {
-        IconInfo,
         NotificationListItemPrependTemplate,
     },
     props: {

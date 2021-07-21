@@ -51,24 +51,12 @@ import {
 import {
     GRAPHITE_LIGHT,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import ActionIconButton from '@UI/components/ActionIconButton/ActionIconButton';
-import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
-import GridTitleHeaderCell from '@UI/components/Grid/Layout/Table/Cells/Header/GridTitleHeaderCell';
-import IconArrowSort from '@UI/components/Icons/Arrows/IconArrowSort';
-import IconDots from '@UI/components/Icons/Others/IconDots';
 import {
     mapState,
 } from 'vuex';
 
 export default {
     name: 'GridHeaderCell',
-    components: {
-        GridTableCell,
-        GridTitleHeaderCell,
-        ActionIconButton,
-        IconArrowSort,
-        IconDots,
-    },
     props: {
         /**
          * The label is a text caption or description for the component

@@ -28,15 +28,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import ActionButton from '@UI/components/ActionButton/ActionButton';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
 export default {
     name: 'AddProductsToCollectionButton',
-    components: {
-        ActionButton,
-        IconAdd,
-    },
     data() {
         return {
             selectedModal: null,

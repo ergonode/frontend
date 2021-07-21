@@ -60,14 +60,11 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
-import Grid from '@UI/components/Grid/Grid';
 import PRIVILEGES from '@Users/config/privileges';
 
 export default {
     name: 'UserActivityLogsGrid',
-    components: {
-        Grid,
-    },
+    components: {},
     mixins: [
         extendPropsMixin({
             extendedKey: '@Users/components/Grids/UserActivityLogsGrid/props',

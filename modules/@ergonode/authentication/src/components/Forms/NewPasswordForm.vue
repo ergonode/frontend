@@ -36,7 +36,6 @@
 
 <script>
 import LoginForm from '@Authentication/components/Forms/LoginForm';
-import ListElement from '@Authentication/components/Lists/ListElement';
 import {
     ROUTE_NAME,
 } from '@Authentication/config/routes';
@@ -47,11 +46,6 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
-import FormHeader from '@UI/components/Form/FormHeader';
-import List from '@UI/components/List/List';
-import Paragraph from '@UI/components/Paragraph/Paragraph';
-import TextField from '@UI/components/TextField/TextField';
-import Toggler from '@UI/components/Toggler/Toggler';
 import {
     mapActions,
 } from 'vuex';
@@ -59,13 +53,7 @@ import {
 export default {
     name: 'NewPasswordForm',
     components: {
-        FormHeader,
-        Paragraph,
         LoginForm,
-        ListElement,
-        List,
-        Toggler,
-        TextField,
     },
     mixins: [
         modalFeedbackMixin,

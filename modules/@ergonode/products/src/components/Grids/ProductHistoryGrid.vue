@@ -61,13 +61,10 @@ import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
 import PRIVILEGES from '@Products/config/privileges';
-import Grid from '@UI/components/Grid/Grid';
 
 export default {
     name: 'ProductHistoryGrid',
-    components: {
-        Grid,
-    },
+    components: {},
     mixins: [
         extendPropsMixin({
             extendedKey: '@Products/components/Grids/ProductHistoryGrid/props',

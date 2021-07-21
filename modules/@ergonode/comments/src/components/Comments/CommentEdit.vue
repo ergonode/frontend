@@ -47,9 +47,6 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
-import TextArea from '@UI/components/TextArea/TextArea';
 import {
     mapActions,
 } from 'vuex';
@@ -58,9 +55,6 @@ export default {
     name: 'CommentEdit',
     components: {
         Comment,
-        Button,
-        TextArea,
-        IconSpinner,
     },
     props: {
         scope: {

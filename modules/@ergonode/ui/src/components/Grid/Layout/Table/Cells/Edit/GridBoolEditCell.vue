@@ -11,13 +11,9 @@
 
 <script>
 
-import Toggler from '@UI/components/Toggler/Toggler';
-
 export default {
     name: 'GridBoolEditCell',
-    components: {
-        Toggler,
-    },
+    components: {},
     props: {
         /**
          * Component value

@@ -57,7 +57,6 @@ import {
 import UpdateRolePrivilegesButton from '@Roles/components/Buttons/UpdateRolePrivilegesButton';
 import PRIVILEGES from '@Roles/config/privileges';
 import privilegesDefaults from '@Roles/defaults/privileges';
-import Grid from '@UI/components/Grid/Grid';
 import {
     getMappedGridData,
 } from '@Users/models/gridDataMapper';
@@ -69,7 +68,7 @@ import {
 export default {
     name: 'RolePrivilegesGrid',
     components: {
-        Grid,
+
         UpdateRolePrivilegesButton,
     },
     mixins: [

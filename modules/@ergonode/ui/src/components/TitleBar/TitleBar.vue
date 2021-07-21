@@ -28,17 +28,9 @@ import {
     GREEN,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import ReadOnlyBadge from '@UI/components/Badges/ReadOnlyBadge';
-import TitleBarActions from '@UI/components/TitleBar/TitleBarActions';
-import TitleBarHeader from '@UI/components/TitleBar/TitleBarHeader';
 
 export default {
     name: 'TitleBar',
-    components: {
-        ReadOnlyBadge,
-        TitleBarHeader,
-        TitleBarActions,
-    },
     props: {
         /**
          * The title of the component

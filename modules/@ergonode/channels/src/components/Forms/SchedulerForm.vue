@@ -98,15 +98,6 @@ import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     BLUE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import DatePicker from '@UI/components/DatePicker/DatePicker';
-import Divider from '@UI/components/Dividers/Divider';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
-import FormSubsection from '@UI/components/Form/Subsection/FormSubsection';
-import IconInfo from '@UI/components/Icons/Feedback/IconInfo';
-import Paragraph from '@UI/components/Paragraph/Paragraph';
-import TextField from '@UI/components/TextField/TextField';
-import Toggler from '@UI/components/Toggler/Toggler';
 import {
     DEFAULT_DATE_TIME_FORMAT,
     DEFAULT_FORMAT,
@@ -125,17 +116,6 @@ import {
 
 export default {
     name: 'SchedulerForm',
-    components: {
-        Form,
-        FormSection,
-        FormSubsection,
-        DatePicker,
-        TextField,
-        Toggler,
-        Divider,
-        IconInfo,
-        Paragraph,
-    },
     mixins: [
         formActionsMixin,
         formFeedbackMixin,

@@ -27,14 +27,10 @@ import PRIVILEGES from '@Roles/config/privileges';
 import {
     ROLE_CREATED_EVENT_NAME,
 } from '@Roles/defaults';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
 export default {
     name: 'CreateRoleButton',
     components: {
-        Button,
-        IconAdd,
         CreateRoleModalForm: () => import('@Roles/components/Modals/CreateRoleModalForm'),
     },
     data() {

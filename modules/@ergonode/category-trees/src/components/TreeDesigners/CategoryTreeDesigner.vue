@@ -26,7 +26,6 @@ import {
     ROW_HEIGHT,
 } from '@Trees/defaults/designer';
 import DesignerItemDescription from '@UI/components/Designer/DesignerItemDescription';
-import TreeDesigner from '@UI/components/TreeDesigner/TreeDesigner';
 import {
     mapActions,
     mapState,
@@ -35,7 +34,6 @@ import {
 export default {
     name: 'CategoryTreeDesigner',
     components: {
-        TreeDesigner,
         DesignerItemDescription,
     },
     props: {

@@ -28,15 +28,9 @@
 import {
     COLLECTION_CREATED_EVENT_NAME,
 } from '@Collections/defaults';
-import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
-import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
 
 export default {
     name: 'CollectionTypesAutocomplete',
-    components: {
-        SelectListNoDataPlaceholder,
-        Autocomplete,
-    },
     props: {
         value: {
             type: [

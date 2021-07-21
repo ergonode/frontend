@@ -29,17 +29,9 @@ import {
     RED,
     YELLOW,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Preloader from '@UI/components/Preloader/Preloader';
-import ProgressList from '@UI/components/ProgressList/ProgressList';
-import Widget from '@UI/components/Widget/Widget';
 
 export default {
     name: 'CompletenessWidget',
-    components: {
-        Widget,
-        ProgressList,
-        Preloader,
-    },
     async fetch() {
         try {
             const completenessCount = await getCompletenessCount({

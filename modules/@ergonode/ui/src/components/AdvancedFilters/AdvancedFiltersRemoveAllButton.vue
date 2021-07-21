@@ -13,13 +13,9 @@
 </template>
 
 <script>
-import IconCancel from '@UI/components/Icons/Actions/IconCancel';
 
 export default {
     name: 'AdvancedFiltersRemoveAllButton',
-    components: {
-        IconCancel,
-    },
     props: {
         title: {
             type: String,

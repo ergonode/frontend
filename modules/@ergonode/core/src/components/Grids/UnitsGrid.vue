@@ -71,7 +71,6 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
-import Grid from '@UI/components/Grid/Grid';
 import {
     mapActions,
 } from 'vuex';
@@ -79,7 +78,7 @@ import {
 export default {
     name: 'UnitsGrid',
     components: {
-        Grid,
+
         CreateUnitButton,
     },
     mixins: [

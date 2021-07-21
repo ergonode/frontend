@@ -20,16 +20,12 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import LazyImage from '@UI/components/LazyImage/LazyImage';
 import {
     mapState,
 } from 'vuex';
 
 export default {
     name: 'UserFabAvatar',
-    components: {
-        LazyImage,
-    },
     props: {
         /**
          * Unique identifier of user avatar

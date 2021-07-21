@@ -20,16 +20,10 @@
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
-import GridFilterPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridFilterPresentationCell';
-import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 import gridDataFilterCellMixin from '@UI/mixins/grid/gridDataFilterCellMixin';
 
 export default {
     name: 'GridSelectFilterDataCell',
-    components: {
-        GridFilterPresentationCell,
-        IconArrowDropdown,
-    },
     mixins: [
         gridDataFilterCellMixin,
     ],

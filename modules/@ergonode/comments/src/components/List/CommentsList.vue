@@ -24,15 +24,9 @@
 </template>
 
 <script>
-import List from '@UI/components/List/List';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
 
 export default {
     name: 'CommentsList',
-    components: {
-        List,
-        FadeTransition,
-    },
     props: {
         isPlaceholder: {
             type: Boolean,

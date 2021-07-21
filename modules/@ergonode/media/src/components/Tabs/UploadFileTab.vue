@@ -76,25 +76,9 @@ import {
     GREEN,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Button from '@UI/components/Button/Button';
-import IconUploadCloudFile from '@UI/components/Icons/Actions/IconUploadCloudFile';
-import InputUUIDProvider from '@UI/components/Input/InputUUIDProvider';
-import ListScrollableContainer from '@UI/components/List/ListScrollableContainer';
-import UploadFileList from '@UI/components/UploadFileList/UploadFileList';
-import UploadFileListElement from '@UI/components/UploadFileList/UploadFileListElement';
-import UploadFileListLoadingElement from '@UI/components/UploadFileList/UploadFileListLoadingElement';
 
 export default {
     name: 'UploadFileTab',
-    components: {
-        InputUUIDProvider,
-        IconUploadCloudFile,
-        Button,
-        UploadFileList,
-        UploadFileListElement,
-        UploadFileListLoadingElement,
-        ListScrollableContainer,
-    },
     data() {
         return {
             files: [],

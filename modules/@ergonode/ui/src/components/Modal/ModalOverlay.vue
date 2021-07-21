@@ -17,13 +17,8 @@
 </template>
 
 <script>
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
-
 export default {
     name: 'ModalOverlay',
-    components: {
-        FadeTransition,
-    },
     data() {
         return {
             isMounted: false,

@@ -63,10 +63,6 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import SelectListElement from '@UI/components/SelectList/SelectListElement';
-import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
-import SelectListNoResultsPlaceholder from '@UI/components/SelectList/SelectListNoResultsPlaceholder';
-import SelectListSearch from '@UI/components/SelectList/SelectListSearch';
 import {
     VirtualScroll,
 } from 'vue-windowing';
@@ -74,11 +70,7 @@ import {
 export default {
     name: 'SelectList',
     components: {
-        SelectListNoResultsPlaceholder,
-        SelectListNoDataPlaceholder,
         VirtualScroll,
-        SelectListElement,
-        SelectListSearch,
     },
     props: {
         /**

@@ -11,13 +11,8 @@
 
 <script>
 
-import CheckBox from '@UI/components/CheckBox/CheckBox';
-
 export default {
     name: 'GridCheckEditCell',
-    components: {
-        CheckBox,
-    },
     props: {
         /**
          * Component value

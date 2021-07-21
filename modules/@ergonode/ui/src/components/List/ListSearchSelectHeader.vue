@@ -30,8 +30,11 @@
             :theme="secondaryTheme"
             @click.native="onSearchButtonClick">
             <template #icon="{ color }">
-                <Component
-                    :is="searchButtonIconComponent"
+                <IconClose
+                    v-if="isSearchButtonClicked"
+                    :fill-color="color" />
+                <IconSearch
+                    v-else
                     :fill-color="color" />
             </template>
         </Fab>
@@ -47,26 +50,12 @@ import {
     GRAPHITE,
     GREEN,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Fab from '@UI/components/Fab/Fab';
-import IconSearch from '@UI/components/Icons/Actions/IconSearch';
-import IconClose from '@UI/components/Icons/Window/IconClose';
-import ListHeader from '@UI/components/List/ListHeader';
-import Select from '@UI/components/Select/Select';
-import TextField from '@UI/components/TextField/TextField';
 import {
     debounce,
 } from 'debounce';
 
 export default {
     name: 'ListSearchSelectHeader',
-    components: {
-        ListHeader,
-        Fab,
-        Select,
-        TextField,
-        IconSearch,
-        IconClose,
-    },
     props: {
         /**
          * The title of the component
@@ -109,11 +98,6 @@ export default {
         },
         secondaryTheme() {
             return THEME.SECONDARY;
-        },
-        searchButtonIconComponent() {
-            return this.isSearchButtonClicked
-                ? IconClose
-                : IconSearch;
         },
         searchIconFillColor() {
             return this.isSearchFocused

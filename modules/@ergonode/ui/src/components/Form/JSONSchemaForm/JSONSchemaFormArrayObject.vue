@@ -35,18 +35,12 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
 import JSONSchemaFormTableRowWidget from '@UI/components/Form/JSONSchemaForm/JSONSchemaFormTableRowWidget';
-import FormSubsection from '@UI/components/Form/Subsection/FormSubsection';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
 export default {
     name: 'JSONSchemaFormArrayObject',
     components: {
-        FormSubsection,
         JSONSchemaFormTableRowWidget,
-        IconAdd,
-        Button,
     },
     props: {
         /**

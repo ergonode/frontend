@@ -15,7 +15,6 @@ import {
     GRAPHITE_DARK,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import InformationBadge from '@UI/components/Badges/InformationBadge';
 import {
     calculateContrastRatio,
     calculateRelativeLuminance,
@@ -24,9 +23,6 @@ import {
 
 export default {
     name: 'ProductStatusBadge',
-    components: {
-        InformationBadge,
-    },
     props: {
         status: {
             type: Object,

@@ -32,13 +32,10 @@
 <script>
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 import PRIVILEGES from '@Trees/config/privileges';
-import TextField from '@UI/components/TextField/TextField';
 
 export default {
     name: 'CategoryTreeTranslationForm',
-    components: {
-        TextField,
-    },
+    components: {},
     mixins: [
         translationCardMixin,
     ],

@@ -24,15 +24,9 @@
 import {
     COLLECTION_IMAGE_HEIGHT,
 } from '@Core/defaults/grid';
-import DefaultImage from '@UI/components/DefaultImage/DefaultImage';
-import LazyImage from '@UI/components/LazyImage/LazyImage';
 
 export default {
     name: 'ProductCollectionItem',
-    components: {
-        DefaultImage,
-        LazyImage,
-    },
     props: {
         item: {
             type: Object,

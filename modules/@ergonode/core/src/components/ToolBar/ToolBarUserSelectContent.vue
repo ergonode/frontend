@@ -32,9 +32,6 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import navigationBarUserMenu from '@Core/models/navigation/navigationBarUserMenu';
-import Button from '@UI/components/Button/Button';
-import Divider from '@UI/components/Dividers/Divider';
-import MenuList from '@UI/components/MenuList/MenuList';
 import {
     mapActions,
 } from 'vuex';
@@ -42,10 +39,7 @@ import {
 export default {
     name: 'ToolBarUserSelectContent',
     components: {
-        Divider,
         ToolBarUserSelectContentHeader,
-        MenuList,
-        Button,
     },
     data() {
         return {

@@ -37,23 +37,8 @@
 
 <script>
 
-import CheckBox from '@UI/components/CheckBox/CheckBox';
-import ListElementAction from '@UI/components/List/ListElementAction';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
-import ListElementTree from '@UI/components/List/ListElementTree';
-import Select from '@UI/components/Select/Select';
-
 export default {
     name: 'TreeSelect',
-    components: {
-        Select,
-        ListElementTree,
-        ListElementAction,
-        ListElementDescription,
-        ListElementTitle,
-        CheckBox,
-    },
     inheritAttrs: false,
     computed: {
         parsedValue() {

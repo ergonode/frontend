@@ -6,12 +6,10 @@ import {
     STATE,
 } from '@Core/defaults/inputs/checkbox';
 import GridCheckEditCell from '@UI/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell';
-import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
 import deepmerge from 'deepmerge';
 
 export default {
     components: {
-        GridTableCell,
         GridCheckEditCell,
     },
     props: {

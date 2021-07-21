@@ -14,13 +14,10 @@
 </template>
 
 <script>
-import TextField from '@UI/components/TextField/TextField';
 
 export default {
     name: 'AttributeTextFormField',
-    components: {
-        TextField,
-    },
+    components: {},
     props: {
         value: {
             type: String,

@@ -11,20 +11,14 @@
         :edit-key-code="32"
         @mousedown.native="onEdit"
         @edit="onEdit">
-        <IconEdit v-once />
+        <IconEdit />
     </GridTableCell>
 </template>
 
 <script>
-import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
-import IconEdit from '@UI/components/Icons/Actions/IconEdit';
 
 export default {
     name: 'GridEditActionCell',
-    components: {
-        GridTableCell,
-        IconEdit,
-    },
     props: {
         /**
          * Unique row identifier
