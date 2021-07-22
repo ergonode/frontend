@@ -40,12 +40,6 @@ export default {
     mixins: [
         selectRowMixin,
     ],
-    props: {
-        index: {
-            type: Number,
-            required: true,
-        },
-    },
     methods: {
         onSelectAllRows() {
             const value = !this.rowsSelectionState;
