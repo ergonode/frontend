@@ -56,7 +56,6 @@
                         :key="column.id"
                         :scope="scope"
                         :column-index="columnIndex + columnsOffset"
-                        :index="columnIndex"
                         :column="column"
                         :rows="rows"
                         :rows-offset="rowsOffset"
