@@ -109,7 +109,6 @@ export default {
                 }, []),
             });
         } catch (e) {
-            console.log(e);
             if (this.app.$axios.isCancel(e)) {
                 return;
             }
