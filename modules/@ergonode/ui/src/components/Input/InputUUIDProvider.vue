@@ -11,8 +11,11 @@ export default {
     name: 'InputUUIDProvider',
     data() {
         return {
-            uuid: getUUID(),
+            uuid: '',
         };
+    },
+    mounted() {
+        this.uuid = getUUID();
     },
     render() {
         return this.$scopedSlots.default({
