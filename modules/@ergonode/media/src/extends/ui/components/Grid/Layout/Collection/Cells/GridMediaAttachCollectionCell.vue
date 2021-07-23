@@ -30,17 +30,9 @@
 </template>
 
 <script>
-import DefaultImage from '@UI/components/DefaultImage/DefaultImage';
-import LazyImage from '@UI/components/LazyImage/LazyImage';
-import Toggler from '@UI/components/Toggler/Toggler';
 
 export default {
     name: 'GridMediaAttachCollectionCell',
-    components: {
-        LazyImage,
-        Toggler,
-        DefaultImage,
-    },
     props: {
         data: {
             type: Object,

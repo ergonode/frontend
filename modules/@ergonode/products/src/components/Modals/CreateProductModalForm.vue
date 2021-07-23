@@ -30,7 +30,6 @@ import ProductForm from '@Products/components/Forms/ProductForm';
 import {
     ROUTE_NAME,
 } from '@Products/config/routes';
-import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
 } from 'vuex';
@@ -38,7 +37,6 @@ import {
 export default {
     name: 'CreateProductModalForm',
     components: {
-        ModalForm,
         ProductForm,
     },
     mixins: [

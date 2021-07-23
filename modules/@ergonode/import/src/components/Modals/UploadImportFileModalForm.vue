@@ -46,13 +46,6 @@ import UploadImportButton from '@Import/components/Buttons/UploadImportButton';
 import {
     GREEN,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
-import IconFile from '@UI/components/Icons/Others/IconFile';
-import LinkButton from '@UI/components/LinkButton/LinkButton';
-import ModalForm from '@UI/components/Modal/ModalForm';
-import Paragraph from '@UI/components/Paragraph/Paragraph';
-import UploadFile from '@UI/components/UploadFile/UploadFile';
 import {
     mapActions,
 } from 'vuex';
@@ -61,13 +54,6 @@ export default {
     name: 'UploadImportFileModalForm',
     components: {
         UploadImportButton,
-        UploadFile,
-        LinkButton,
-        IconFile,
-        Form,
-        FormSection,
-        Paragraph,
-        ModalForm,
     },
     mixins: [
         modalFeedbackMixin,

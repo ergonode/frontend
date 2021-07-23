@@ -44,15 +44,9 @@
 <script>
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 import PRIVILEGES from '@Segments/config/privileges';
-import TextArea from '@UI/components/TextArea/TextArea';
-import TextField from '@UI/components/TextField/TextField';
 
 export default {
     name: 'SegmentTranslationForm',
-    components: {
-        TextField,
-        TextArea,
-    },
     mixins: [
         translationCardMixin,
     ],

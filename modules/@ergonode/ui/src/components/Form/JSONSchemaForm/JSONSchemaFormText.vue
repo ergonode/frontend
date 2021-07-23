@@ -15,13 +15,9 @@
 </template>
 
 <script>
-import TextField from '@UI/components/TextField/TextField';
 
 export default {
     name: 'JSONSchemaFormText',
-    components: {
-        TextField,
-    },
     props: {
         /**
          * JSON schema

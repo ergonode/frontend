@@ -20,15 +20,9 @@
 import {
     deepClone,
 } from '@Core/models/objectWrapper';
-import CheckBox from '@UI/components/CheckBox/CheckBox';
-import GridSelectRowActionFabCell from '@UI/components/Grid/Layout/Table/Cells/GridSelectRowActionFabCell';
 
 export default {
     name: 'GridSelectCollectionHeaderCell',
-    components: {
-        GridSelectRowActionFabCell,
-        CheckBox,
-    },
     props: {
         /**
          * List of row ids

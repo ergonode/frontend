@@ -175,15 +175,11 @@ import {
 import {
     capitalizeAndConcatenationArray,
 } from '@Core/models/stringWrapper';
-import DropZone from '@UI/components/DropZone/DropZone';
 import GridDraggableDataColumn from '@UI/components/Grid/Layout/Table/Columns/GridDraggableDataColumn';
 import GridMultiSelectRowColumn from '@UI/components/Grid/Layout/Table/Columns/GridMultiSelectRowColumn';
 import GridRowActionColumn from '@UI/components/Grid/Layout/Table/Columns/GridRowActionColumn';
 import GridSelectRowColumn from '@UI/components/Grid/Layout/Table/Columns/GridSelectRowColumn';
 import GridSentinelColumn from '@UI/components/Grid/Layout/Table/Columns/GridSentinelColumn';
-import GridTableLayoutColumnsSection from '@UI/components/Grid/Layout/Table/Sections/GridTableLayoutColumnsSection';
-import GridTableLayoutPinnedSection from '@UI/components/Grid/Layout/Table/Sections/GridTableLayoutPinnedSection';
-import Preloader from '@UI/components/Preloader/Preloader';
 import gridResizerCellMixin from '@UI/mixins/grid/gridResizerCellMixin';
 import {
     getFixedMousePosition,
@@ -194,12 +190,8 @@ export default {
     name: 'GridTableLayout',
     components: {
         GridSelectRowColumn,
-        Preloader,
-        DropZone,
         GridDraggableDataColumn,
         GridRowActionColumn,
-        GridTableLayoutColumnsSection,
-        GridTableLayoutPinnedSection,
         GridMultiSelectRowColumn,
         GridSentinelColumn,
     },

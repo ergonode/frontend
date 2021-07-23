@@ -23,8 +23,6 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import PRIVILEGES from '@Users/config/privileges';
 import {
     USER_CREATED_EVENT_NAME,
@@ -33,8 +31,6 @@ import {
 export default {
     name: 'CreateUserButton',
     components: {
-        Button,
-        IconAdd,
         CreateUserModalForm: () => import('@Users/components/Modals/CreateUserModalForm'),
     },
     data() {

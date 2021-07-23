@@ -52,7 +52,6 @@ import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import ActionBaseButton from '@UI/components/ActionButton/ActionBaseButton';
-import IconButton from '@UI/components/IconButton/IconButton';
 
 /**
  * `ActionIconButton` is an `ActionBaseButton` with a `IconButton` inside named slot `button`.
@@ -62,7 +61,6 @@ export default {
     name: 'ActionIconButton',
     components: {
         ActionBaseButton,
-        IconButton,
     },
     props: {
         /**

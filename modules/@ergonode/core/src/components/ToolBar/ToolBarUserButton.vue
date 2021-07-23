@@ -38,8 +38,6 @@ import {
 import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
-import ToolBarSelectButton from '@UI/components/ToolBar/ToolBarSelectButton';
 import {
     mapState,
 } from 'vuex';
@@ -47,9 +45,7 @@ import {
 export default {
     name: 'ToolBarUserButton',
     components: {
-        ToolBarSelectButton,
         ToolBarUserSelectContent,
-        IconArrowDropdown,
         UserFabAvatar,
     },
     data() {

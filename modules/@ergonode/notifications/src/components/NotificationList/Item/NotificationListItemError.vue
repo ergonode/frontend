@@ -18,12 +18,10 @@ import NotificationListItemPrependTemplate
 import {
     RED,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconError from '@UI/components/Icons/Feedback/IconError';
 
 export default {
     name: 'NotificationListItemError',
     components: {
-        IconError,
         NotificationListItemPrependTemplate,
     },
     props: {

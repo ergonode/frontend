@@ -74,12 +74,6 @@ import {
 } from '@Core/defaults/colors';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import ColorPicker from '@UI/components/ColorPicker/ColorPicker';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
-import InfoHint from '@UI/components/Hints/InfoHint';
-import TextField from '@UI/components/TextField/TextField';
-import Toggler from '@UI/components/Toggler/Toggler';
 import WorkflowStatusBadge from '@Workflow/components/Badges/WorkflowStatusBadge';
 import WorkflowStatusPreview from '@Workflow/components/Inputs/WorkflowStatusPreview';
 import PRIVILEGES from '@Workflow/config/privileges';
@@ -93,12 +87,6 @@ export default {
     components: {
         WorkflowStatusBadge,
         WorkflowStatusPreview,
-        Form,
-        FormSection,
-        TextField,
-        ColorPicker,
-        Toggler,
-        InfoHint,
     },
     mixins: [
         formActionsMixin,

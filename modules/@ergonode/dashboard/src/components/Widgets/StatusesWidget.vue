@@ -47,9 +47,6 @@ import {
     getStatusesCount,
 } from '@Dashboard/services';
 import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
-import ActionButton from '@UI/components/ActionButton/ActionButton';
-import Preloader from '@UI/components/Preloader/Preloader';
-import Widget from '@UI/components/Widget/Widget';
 import {
     mapGetters,
     mapState,
@@ -58,10 +55,7 @@ import {
 export default {
     name: 'StatusesWidget',
     components: {
-        Widget,
         ProductStatusBadge,
-        ActionButton,
-        Preloader,
     },
     async fetch() {
         await this.getStatusesCount();

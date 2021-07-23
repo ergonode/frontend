@@ -9,8 +9,11 @@
             :hover-background-color="graphiteLightColor"
             :title="dropZoneTitle">
             <template #icon="{ color }">
-                <Component
-                    :is="dropZoneIconComponent"
+                <IconRemoveColumn
+                    v-if="isColumnDragging"
+                    :fill-color="color" />
+                <IconRemoveFilter
+                    v-else-if="isFilterDragging"
                     :fill-color="color" />
             </template>
         </DropZone>
@@ -24,20 +27,12 @@ import {
 import {
     GRAPHITE_LIGHT,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import DropZone from '@UI/components/DropZone/DropZone';
-import IconRemoveColumn from '@UI/components/Icons/Actions/IconRemoveColumn';
-import IconRemoveFilter from '@UI/components/Icons/Actions/IconRemoveFilter';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
     mapState,
 } from 'vuex';
 
 export default {
     name: 'RemoveFilterAndColumnDropZone',
-    components: {
-        DropZone,
-        FadeTransition,
-    },
     props: {
         scope: {
             type: String,
@@ -58,18 +53,15 @@ export default {
                 return '';
             }
 
-            return this.isElementDragging === DRAGGED_ELEMENT.COLUMN
+            return this.isColumnDragging
                 ? 'REMOVE COLUMN'
                 : 'REMOVE FILTER';
         },
-        dropZoneIconComponent() {
-            if (!this.isElementDragging) {
-                return null;
-            }
-
-            return this.isElementDragging === DRAGGED_ELEMENT.COLUMN
-                ? IconRemoveColumn
-                : IconRemoveFilter;
+        isColumnDragging() {
+            return this.isElementDragging === DRAGGED_ELEMENT.COLUMN;
+        },
+        isFilterDragging() {
+            return this.isElementDragging === DRAGGED_ELEMENT.FILTER;
         },
         isDropZoneVisible() {
             if (
@@ -78,8 +70,8 @@ export default {
                 return false;
             }
 
-            return this.isElementDragging === DRAGGED_ELEMENT.COLUMN
-                || this.isElementDragging === DRAGGED_ELEMENT.FILTER;
+            return this.isColumnDragging
+                || this.isFilterDragging;
         },
     },
 };

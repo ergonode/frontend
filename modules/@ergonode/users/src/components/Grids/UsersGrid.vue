@@ -73,8 +73,6 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
-import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 import CreateUserButton from '@Users/components/Buttons/CreateUserButton';
 import PRIVILEGES from '@Users/config/privileges';
 import {
@@ -88,8 +86,6 @@ export default {
     name: 'UsersGrid',
     components: {
         CreateUserButton,
-        Grid,
-        GridNoDataPlaceholder,
     },
     mixins: [
         extendPropsMixin({

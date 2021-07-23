@@ -16,17 +16,8 @@
 </template>
 
 <script>
-import DropZone from '@UI/components/DropZone/DropZone';
-import IconAddColumn from '@UI/components/Icons/Actions/IconAddColumn';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
-
 export default {
     name: 'AddGridColumnDropZone',
-    components: {
-        FadeTransition,
-        DropZone,
-        IconAddColumn,
-    },
     props: {
         isVisible: {
             type: Boolean,

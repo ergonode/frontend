@@ -52,13 +52,11 @@ import {
 import GridCollectionCell from '@UI/components/Grid/Layout/Collection/Cells/GridCollectionCell';
 import GridSelectCollectionHeaderCell
     from '@UI/components/Grid/Layout/Collection/Cells/Header/GridSelectCollectionHeaderCell';
-import Preloader from '@UI/components/Preloader/Preloader';
 
 export default {
     name: 'GridCollectionLayout',
     components: {
         GridSelectCollectionHeaderCell,
-        Preloader,
         GridCollectionCell,
     },
     props: {

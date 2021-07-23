@@ -25,14 +25,12 @@
 
 <script>
 import GridCheckEditCell from '@UI/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell';
-import GridSuffixPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
 import gridDataCellMixin from '@UI/mixins/grid/gridDataCellMixin';
 
 export default {
     name: 'GridCheckDataCell',
     components: {
         GridCheckEditCell,
-        GridSuffixPresentationCell,
     },
     mixins: [
         gridDataCellMixin,

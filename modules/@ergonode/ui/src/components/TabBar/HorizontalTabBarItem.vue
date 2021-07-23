@@ -4,7 +4,7 @@
  */
 <template>
     <button
-        class="tab-bar-item"
+        class="horizontal-tab-bar-item"
         type="button"
         :aria-label="item.title"
         v-text="item.title"
@@ -13,7 +13,7 @@
 
 <script>
 export default {
-    name: 'HorizontalRoutingTabBarItem',
+    name: 'HorizontalTabBarItem',
     props: {
         index: {
             type: Number,
@@ -33,7 +33,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .tab-bar-item {
+    .horizontal-tab-bar-item {
         outline: none;
         display: flex;
         min-width: 176px;

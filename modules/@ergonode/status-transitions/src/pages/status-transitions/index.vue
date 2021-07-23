@@ -29,17 +29,11 @@ import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import CreateStatusTransitionButton from '@Transitions/components/Buttons/CreateStatusTransitionButton';
 import PRIVILEGES from '@Transitions/config/privileges';
-import Page from '@UI/components/Layout/Page';
-import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
-import TitleBar from '@UI/components/TitleBar/TitleBar';
 
 export default {
     name: 'WorkflowTabs',
     components: {
         CreateStatusTransitionButton,
-        TitleBar,
-        Page,
-        HorizontalRoutingTabBar,
     },
     mixins: [
         beforeRouteLeaveMixin,

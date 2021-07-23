@@ -71,14 +71,7 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
-import CheckBox from '@UI/components/CheckBox/CheckBox';
-import DefaultImage from '@UI/components/DefaultImage/DefaultImage';
-import Fab from '@UI/components/Fab/Fab';
 import GridCollectionCellActionsPanel from '@UI/components/Grid/Layout/Collection/Cells/GridCollectionCellActionsPanel';
-import IconDelete from '@UI/components/Icons/Actions/IconDelete';
-import IconEdit from '@UI/components/Icons/Actions/IconEdit';
-import IconPreview from '@UI/components/Icons/Actions/IconPreview';
-import LazyImage from '@UI/components/LazyImage/LazyImage';
 import RadioButton from '@UI/components/RadioButton/RadioButton';
 
 export default {
@@ -86,13 +79,6 @@ export default {
     components: {
         RadioButton,
         GridCollectionCellActionsPanel,
-        IconPreview,
-        IconDelete,
-        IconEdit,
-        Fab,
-        CheckBox,
-        DefaultImage,
-        LazyImage,
     },
     props: {
         /**

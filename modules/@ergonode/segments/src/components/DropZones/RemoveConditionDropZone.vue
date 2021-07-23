@@ -22,20 +22,12 @@ import {
 import {
     GRAPHITE_LIGHT,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import DropZone from '@UI/components/DropZone/DropZone';
-import IconRemoveFilter from '@UI/components/Icons/Actions/IconRemoveFilter';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
     mapState,
 } from 'vuex';
 
 export default {
     name: 'RemoveConditionDropZone',
-    components: {
-        IconRemoveFilter,
-        DropZone,
-        FadeTransition,
-    },
     computed: {
         ...mapState('draggable', [
             'isElementDragging',

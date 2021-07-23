@@ -38,17 +38,9 @@ import {
     BATCH_ACTION_TYPE,
 } from '@ProductBatchActions/defaults';
 import PRIVILEGES from '@Products/config/privileges';
-import Button from '@UI/components/Button/Button';
-import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
-import IconSync from '@UI/components/Icons/Feedback/IconSync';
 
 export default {
     name: 'UpdateProductsButton',
-    components: {
-        FeedbackProvider,
-        Button,
-        IconSync,
-    },
     mixins: [
         updateButtonFeedbackMixin,
     ],

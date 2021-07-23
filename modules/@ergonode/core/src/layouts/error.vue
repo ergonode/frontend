@@ -12,13 +12,9 @@
 </template>
 
 <script>
-import Page from '@UI/components/Layout/Page';
 
 export default {
     name: 'ErrorLayout',
-    components: {
-        Page,
-    },
     props: {
         /**
          * Validation error

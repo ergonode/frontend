@@ -32,9 +32,6 @@
 
 <script>
 import ProductTemplateFormField from '@Products/components/Forms/Field/ProductTemplateFormField';
-import InfoHint from '@UI/components/Hints/InfoHint';
-import TextField from '@UI/components/TextField/TextField';
-import TextFieldSuffix from '@UI/components/TextField/TextFieldSuffix';
 import {
     mapState,
 } from 'vuex';
@@ -43,9 +40,6 @@ export default {
     name: 'ProductTemplateFormTextField',
     components: {
         ProductTemplateFormField,
-        TextField,
-        TextFieldSuffix,
-        InfoHint,
     },
     props: {
         size: {

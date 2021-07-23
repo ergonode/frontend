@@ -13,15 +13,9 @@
 </template>
 
 <script>
-import GridPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
-import InfoHint from '@UI/components/Hints/InfoHint';
 
 export default {
     name: 'GridHintPresentationCell',
-    components: {
-        GridPresentationCell,
-        InfoHint,
-    },
     props: {
         /**
          * Component value

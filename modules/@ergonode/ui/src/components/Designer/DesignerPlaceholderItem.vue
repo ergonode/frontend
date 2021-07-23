@@ -15,7 +15,6 @@
 import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconDragDrop from '@UI/components/Icons/Actions/IconDragDrop';
 import {
     GRID_GAP,
     ROW_HEIGHT,
@@ -23,9 +22,6 @@ import {
 
 export default {
     name: 'DesignerPlaceholderItem',
-    components: {
-        IconDragDrop,
-    },
     props: {
         row: {
             type: Number,

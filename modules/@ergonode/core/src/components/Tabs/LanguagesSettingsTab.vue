@@ -29,7 +29,6 @@ import LanguageInheritanceTreeDesigner from '@Core/components/LanguageInheritanc
 import PRIVILEGES from '@Core/config/privileges';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
-import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import {
     mapActions,
 } from 'vuex';
@@ -41,7 +40,6 @@ export default {
         UpdateLanguagesInheritanceButton,
         GridViewTemplate,
         LanguageInheritanceTreeDesigner,
-        VerticalTabBar,
     },
     mixins: [
         tabFeedbackMixin,

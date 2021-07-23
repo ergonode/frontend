@@ -65,21 +65,9 @@ import {
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
-import Button from '@UI/components/Button/Button';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
-import ModalForm from '@UI/components/Modal/ModalForm';
-import Select from '@UI/components/Select/Select';
 
 export default {
     name: 'GridSettingsModalForm',
-    components: {
-        ModalForm,
-        Form,
-        FormSection,
-        Button,
-        Select,
-    },
     props: {
         /**
          * Configuration of table layout

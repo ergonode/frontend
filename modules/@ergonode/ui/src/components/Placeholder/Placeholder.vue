@@ -29,15 +29,9 @@ import {
 import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import PlaceholderSubtitle from '@UI/components/Placeholder/PlaceholderSubtitle';
-import PlaceholderTitle from '@UI/components/Placeholder/PlaceholderTitle';
 
 export default {
     name: 'Placeholder',
-    components: {
-        PlaceholderSubtitle,
-        PlaceholderTitle,
-    },
     props: {
         /**
          * The size of the component

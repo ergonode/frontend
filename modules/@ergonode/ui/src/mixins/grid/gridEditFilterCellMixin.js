@@ -5,12 +5,8 @@
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
-import GridEditNavigationCell from '@UI/components/Grid/Layout/Table/Cells/Navigation/GridEditNavigationCell';
 
 export default {
-    components: {
-        GridEditNavigationCell,
-    },
     props: {
         value: {
             type: Object,

@@ -23,13 +23,9 @@ import {
     GREEN,
     GREY,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Icon from '@UI/components/Icons/Icon';
 
 export default {
     name: 'IconArrowSort',
-    components: {
-        Icon,
-    },
     inheritAttrs: false,
     computed: {
         lowerArrow() {

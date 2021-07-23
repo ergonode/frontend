@@ -26,14 +26,10 @@ import PRIVILEGES from '@Products/config/privileges';
 import {
     ATTRIBUTE_BINDING_ADDED_EVENT_NAME,
 } from '@Products/extends/defaults';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
 export default {
     name: 'AddBindingAttributesButton',
     components: {
-        Button,
-        IconAdd,
         AddBindingAttributesModalForm: () => import('@Products/extends/components/Modals/AddBindingAttributesModalForm'),
     },
     data() {

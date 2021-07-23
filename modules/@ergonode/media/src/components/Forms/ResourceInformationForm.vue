@@ -32,8 +32,6 @@
 
 <script>
 import PRIVILEGES from '@Media/config/privileges';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
 import Table from '@UI/components/Table/Table';
 import TableRow from '@UI/components/Table/TableRow';
 import TableRowCell from '@UI/components/Table/TableRowCell';
@@ -46,8 +44,6 @@ import {
 export default {
     name: 'ResourceInformationForm',
     components: {
-        Form,
-        FormSection,
         Table,
         TableRow,
         TableRowHeader,

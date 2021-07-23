@@ -30,18 +30,12 @@ import PRIVILEGES from '@Transitions/config/privileges';
 import {
     ROUTE_NAME,
 } from '@Transitions/config/routes';
-import Button from '@UI/components/Button/Button';
-import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
     name: 'RemoveStatusTransitionButton',
-    components: {
-        Button,
-        IconDelete,
-    },
     computed: {
         isAllowedToDelete() {
             return this.$hasAccess([

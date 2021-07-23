@@ -43,16 +43,10 @@
 
 <script>
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
-import TextArea from '@UI/components/TextArea/TextArea';
-import TextField from '@UI/components/TextField/TextField';
 import PRIVILEGES from '@Workflow/config/privileges';
 
 export default {
     name: 'WorkflowStatusTranslationForm',
-    components: {
-        TextField,
-        TextArea,
-    },
     mixins: [
         translationCardMixin,
     ],

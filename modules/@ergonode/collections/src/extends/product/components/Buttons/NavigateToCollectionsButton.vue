@@ -18,13 +18,9 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
 
 export default {
     name: 'NavigateToCollectionsButton',
-    components: {
-        Button,
-    },
     computed: {
         isAllowedToUpdate() {
             return this.$hasAccess([

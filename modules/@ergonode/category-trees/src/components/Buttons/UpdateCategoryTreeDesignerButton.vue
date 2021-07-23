@@ -35,22 +35,12 @@ import PRIVILEGES from '@Trees/config/privileges';
 import {
     Z_INDEX_LVL_2,
 } from '@UI/assets/scss/_js-variables/indexes.scss';
-import Button from '@UI/components/Button/Button';
-import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
-import IconSync from '@UI/components/Icons/Feedback/IconSync';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
     name: 'UpdateCategoryTreeDesignerButton',
-    components: {
-        FeedbackProvider,
-        Button,
-        IconSpinner,
-        IconSync,
-    },
     mixins: [
         updateButtonFeedbackMixin,
     ],

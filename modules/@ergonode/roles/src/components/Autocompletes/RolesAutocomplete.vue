@@ -33,15 +33,11 @@ import CreateRoleButton from '@Roles/components/Buttons/CreateRoleButton';
 import {
     ROLE_CREATED_EVENT_NAME,
 } from '@Roles/defaults';
-import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
-import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
 
 export default {
     name: 'RolesAutocomplete',
     components: {
         CreateRoleButton,
-        SelectListNoDataPlaceholder,
-        Autocomplete,
     },
     props: {
         value: {

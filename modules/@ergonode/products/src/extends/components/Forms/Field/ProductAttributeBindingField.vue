@@ -21,15 +21,9 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import FormListElementField from '@UI/components/Form/Field/FormListElementField';
-import TranslationSelect from '@UI/components/Select/TranslationSelect';
 
 export default {
     name: 'ProductAttributeBindingField',
-    components: {
-        FormListElementField,
-        TranslationSelect,
-    },
     props: {
         index: {
             type: Number,

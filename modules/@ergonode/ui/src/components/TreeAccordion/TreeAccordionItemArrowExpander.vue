@@ -15,13 +15,9 @@
 import {
     ARROW,
 } from '@Core/defaults/icons';
-import IconArrowRoundedDropdown from '@UI/components/Icons/Arrows/IconArrowRoundedDropdown';
 
 export default {
     name: 'TreeAccordionItemArrowExpander',
-    components: {
-        IconArrowRoundedDropdown,
-    },
     props: {
         isExpanded: {
             type: Boolean,

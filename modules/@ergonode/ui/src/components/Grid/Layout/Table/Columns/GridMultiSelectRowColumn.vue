@@ -44,19 +44,13 @@ import {
     deepClone,
 } from '@Core/models/objectWrapper';
 import GridMultiSelectRowEditCell from '@UI/components/Grid/Layout/Table/Cells/Edit/GridMultiSelectRowEditCell';
-import GridSelectRowActionFabCell from '@UI/components/Grid/Layout/Table/Cells/GridSelectRowActionFabCell';
-import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
-import GridSelectRowHeaderCell from '@UI/components/Grid/Layout/Table/Cells/Header/GridSelectRowHeaderCell';
 import GridActionColumn from '@UI/components/Grid/Layout/Table/Columns/GridActionColumn';
 
 export default {
     name: 'GridMultiSelectRowColumn',
     components: {
-        GridSelectRowHeaderCell,
         GridActionColumn,
-        GridTableCell,
         GridMultiSelectRowEditCell,
-        GridSelectRowActionFabCell,
     },
     props: {
         /**

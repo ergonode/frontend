@@ -27,13 +27,9 @@ import {
     GREY,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Icon from '@UI/components/Icons/Icon';
 
 export default {
     name: 'IconArrowRoundedDropdown',
-    components: {
-        Icon,
-    },
     inheritAttrs: false,
     computed: {
         drawingCommands() {

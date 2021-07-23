@@ -4,26 +4,24 @@
  */
 <template>
     <div class="grid-pagination">
-        <FadeTransition>
-            <GridPageSelectorArrowsPanel v-show="isLeftArrowVisible">
-                <Fab
-                    :theme="secondaryTheme"
-                    @click.native="toFirstPage">
-                    <template #icon="{ color }">
-                        <IconArrowPointerBlock :fill-color="color" />
-                    </template>
-                </Fab>
-                <Fab
-                    :theme="secondaryTheme"
-                    @click.native="decrementPage">
-                    <template #icon="{ color }">
-                        <IconArrowSingle
-                            :fill-color="color"
-                            :state="arrow.LEFT" />
-                    </template>
-                </Fab>
-            </GridPageSelectorArrowsPanel>
-        </FadeTransition>
+        <GridPageSelectorArrowsPanel :visible="isLeftArrowVisible">
+            <Fab
+                :theme="secondaryTheme"
+                @click.native="toFirstPage">
+                <template #icon="{ color }">
+                    <IconArrowPointerBlock :fill-color="color" />
+                </template>
+            </Fab>
+            <Fab
+                :theme="secondaryTheme"
+                @click.native="decrementPage">
+                <template #icon="{ color }">
+                    <IconArrowSingle
+                        :fill-color="color"
+                        :state="arrow.LEFT" />
+                </template>
+            </Fab>
+        </GridPageSelectorArrowsPanel>
         <GridFooterText title="Page" />
         <TextField
             :value="value"
@@ -34,28 +32,26 @@
             @input="onValueChange" />
         <GridFooterText title="of" />
         <GridFooterText :title="maxPage" />
-        <FadeTransition>
-            <GridPageSelectorArrowsPanel v-show="isRightArrowVisible">
-                <Fab
-                    :theme="secondaryTheme"
-                    @click.native="incrementPage">
-                    <template #icon="{ color }">
-                        <IconArrowSingle
-                            :fill-color="color"
-                            :state="arrow.RIGHT" />
-                    </template>
-                </Fab>
-                <Fab
-                    :theme="secondaryTheme"
-                    @click.native="toLastPage">
-                    <template #icon="{ color }">
-                        <IconArrowPointerBlock
-                            :fill-color="color"
-                            :state="arrow.RIGHT" />
-                    </template>
-                </Fab>
-            </GridPageSelectorArrowsPanel>
-        </FadeTransition>
+        <GridPageSelectorArrowsPanel :visible="isRightArrowVisible">
+            <Fab
+                :theme="secondaryTheme"
+                @click.native="incrementPage">
+                <template #icon="{ color }">
+                    <IconArrowSingle
+                        :fill-color="color"
+                        :state="arrow.RIGHT" />
+                </template>
+            </Fab>
+            <Fab
+                :theme="secondaryTheme"
+                @click.native="toLastPage">
+                <template #icon="{ color }">
+                    <IconArrowPointerBlock
+                        :fill-color="color"
+                        :state="arrow.RIGHT" />
+                </template>
+            </Fab>
+        </GridPageSelectorArrowsPanel>
     </div>
 </template>
 
@@ -68,25 +64,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import Fab from '@UI/components/Fab/Fab';
-import GridFooterText from '@UI/components/Grid/Footer/GridFooterText';
-import GridPageSelectorArrowsPanel from '@UI/components/Grid/Footer/GridPageSelectorArrowsPanel';
-import IconArrowPointerBlock from '@UI/components/Icons/Arrows/IconArrowPointerBlock';
-import IconArrowSingle from '@UI/components/Icons/Arrows/IconArrowSingle';
-import TextField from '@UI/components/TextField/TextField';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
 
 export default {
     name: 'GridPagination',
-    components: {
-        GridPageSelectorArrowsPanel,
-        GridFooterText,
-        TextField,
-        Fab,
-        IconArrowSingle,
-        IconArrowPointerBlock,
-        FadeTransition,
-    },
     props: {
         value: {
             type: Number,

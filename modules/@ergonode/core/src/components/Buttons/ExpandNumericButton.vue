@@ -30,17 +30,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import NumericBadge from '@UI/components/Badges/NumericBadge';
-import Button from '@UI/components/Button/Button';
-import IconArrowDouble from '@UI/components/Icons/Arrows/IconArrowDouble';
 
 export default {
     name: 'ExpandNumericButton',
-    components: {
-        Button,
-        NumericBadge,
-        IconArrowDouble,
-    },
     props: {
         /**
          * The size of the component

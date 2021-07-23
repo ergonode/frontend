@@ -10,13 +10,9 @@
 </template>
 
 <script>
-import Icon from '@UI/components/Icons/Icon';
 
 export default {
     name: 'IconHeadingTwo',
-    components: {
-        Icon,
-    },
     inheritAttrs: false,
     computed: {
         drawingCommands1() {

@@ -26,14 +26,10 @@ import PRIVILEGES from '@Transitions/config/privileges';
 import {
     TRANSITION_CREATED_EVENT_NAME,
 } from '@Transitions/defaults';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
 export default {
     name: 'CreateStatusTransitionButton',
     components: {
-        Button,
-        IconAdd,
         CreateStatusTransitionModalForm: () => import('@Transitions/components/Modals/CreateStatusTransitionModalForm'),
     },
     data() {

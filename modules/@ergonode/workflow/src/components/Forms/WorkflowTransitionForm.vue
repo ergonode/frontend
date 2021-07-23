@@ -51,10 +51,6 @@ import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     isEmpty,
 } from '@Core/models/objectWrapper';
-import Button from '@UI/components/Button/Button';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
-import TranslationSelect from '@UI/components/Select/TranslationSelect';
 import PRIVILEGES from '@Workflow/config/privileges';
 import {
     mapActions,
@@ -63,12 +59,6 @@ import {
 
 export default {
     name: 'WorkflowTransitionForm',
-    components: {
-        Button,
-        Form,
-        FormSection,
-        TranslationSelect,
-    },
     mixins: [
         formActionsMixin,
         formFeedbackMixin,

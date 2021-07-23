@@ -19,12 +19,10 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Products/config/privileges';
-import Button from '@UI/components/Button/Button';
 
 export default {
     name: 'AddProductsToGroupButton',
     components: {
-        Button,
         AddProductsToGroupModalGrid: () => import('@Products/extends/components/Modals/AddProductsToGroupModalGrid'),
     },
     data() {

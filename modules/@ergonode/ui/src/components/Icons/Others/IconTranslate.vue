@@ -12,13 +12,9 @@
 </template>
 
 <script>
-import Icon from '@UI/components/Icons/Icon';
 
 export default {
     name: 'IconTranslate',
-    components: {
-        Icon,
-    },
     inheritAttrs: false,
     computed: {
         drawingCommands() {

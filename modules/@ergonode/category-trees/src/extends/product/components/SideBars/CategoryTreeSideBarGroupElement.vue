@@ -12,13 +12,9 @@
 </template>
 
 <script>
-import ListGroupElement from '@UI/components/List/ListGroupElement';
 
 export default {
     name: 'CategoryTreeSideBarGroupElement',
-    components: {
-        ListGroupElement,
-    },
     props: {
         group: {
             type: Object,

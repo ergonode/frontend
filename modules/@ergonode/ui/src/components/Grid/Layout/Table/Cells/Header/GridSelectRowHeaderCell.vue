@@ -22,12 +22,10 @@ import {
     deepClone,
 } from '@Core/models/objectWrapper';
 import GridCheckEditCell from '@UI/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell';
-import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
 
 export default {
     name: 'GridSelectRowHeaderCell',
     components: {
-        GridTableCell,
         GridCheckEditCell,
     },
     props: {

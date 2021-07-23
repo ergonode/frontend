@@ -112,9 +112,6 @@ import {
     ATTRIBUTE_BINDING_ADDED_EVENT_NAME,
     PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
 } from '@Products/extends/defaults';
-import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import {
     mapActions,
     mapState,
@@ -123,11 +120,8 @@ import {
 export default {
     name: 'AttachedProductVariantsGrid',
     components: {
-        Grid,
-        GridNoDataPlaceholder,
         ExpandNumericButton,
         BindingAttributes,
-        IconAdd,
         AddProductVariantsButton,
     },
     mixins: [

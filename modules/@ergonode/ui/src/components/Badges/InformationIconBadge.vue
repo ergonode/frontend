@@ -17,13 +17,9 @@
 </template>
 
 <script>
-import InformationBadge from '@UI/components/Badges/InformationBadge';
 
 export default {
     name: 'InformationIconBadge',
-    components: {
-        InformationBadge,
-    },
     inheritAttrs: false,
 };
 </script>

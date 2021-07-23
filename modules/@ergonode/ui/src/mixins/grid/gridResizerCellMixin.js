@@ -4,9 +4,6 @@
  */
 
 export default {
-    components: {
-        GridCellResizer: () => import('@UI/components/Grid/Layout/Table/Cells/Resizer/GridCellResizer'),
-    },
     data() {
         return {
             isCellResizing: false,

@@ -39,9 +39,7 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import ActionIconButton from '@UI/components/ActionIconButton/ActionIconButton';
 import DesignerItemDescription from '@UI/components/Designer/DesignerItemDescription';
-import IconDots from '@UI/components/Icons/Others/IconDots';
 import {
     GRID_GAP,
 } from '@UI/defaults/designer';
@@ -49,8 +47,6 @@ import {
 export default {
     name: 'DesignerItem',
     components: {
-        IconDots,
-        ActionIconButton,
         DesignerItemDescription,
     },
     props: {

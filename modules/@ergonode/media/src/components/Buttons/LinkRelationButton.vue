@@ -16,13 +16,9 @@ import {
 import {
     isEmpty,
 } from '@Core/models/objectWrapper';
-import LinkButton from '@UI/components/LinkButton/LinkButton';
 
 export default {
     name: 'LinkRelationButton',
-    components: {
-        LinkButton,
-    },
     props: {
         /**
          * The title of the component

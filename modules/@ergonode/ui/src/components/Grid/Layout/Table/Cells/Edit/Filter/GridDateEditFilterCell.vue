@@ -23,7 +23,6 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import DatePicker from '@UI/components/DatePicker/DatePicker';
 import GridSelectEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
 import gridEditFilterCellMixin from '@UI/mixins/grid/gridEditFilterCellMixin';
 import {
@@ -38,7 +37,6 @@ export default {
     name: 'GridDateEditFilterCell',
     components: {
         GridSelectEditContentCell,
-        DatePicker,
     },
     mixins: [
         gridEditFilterCellMixin,

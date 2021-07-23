@@ -9,13 +9,9 @@
 </template>
 
 <script>
-import Icon from '@UI/components/Icons/Icon';
 
 export default {
     name: 'IconClose',
-    components: {
-        Icon,
-    },
     inheritAttrs: false,
     computed: {
         points() {

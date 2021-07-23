@@ -18,15 +18,9 @@ import {
     BLUE,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import InformationIconBadge from '@UI/components/Badges/InformationIconBadge';
-import IconLock from '@UI/components/Icons/Feedback/IconLock';
 
 export default {
     name: 'ReadOnlyBadge',
-    components: {
-        IconLock,
-        InformationIconBadge,
-    },
     computed: {
         whiteColor() {
             return WHITE;

@@ -79,28 +79,12 @@ import {
 import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
-import InputController from '@UI/components/Input/InputController';
-import InputImageController from '@UI/components/Input/InputImageController';
-import InputLabel from '@UI/components/Input/InputLabel';
-import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
 
 export default {
     name: 'UploadProductRelations',
     components: {
-        InputController,
-        InputSolidStyle,
-        InputLabel,
-        InputImageController,
-        Button,
-        IconAdd,
-        IconDots: () => import('@UI/components/Icons/Others/IconDots'),
         ProductCarousel: () => import('@Products/components/ProductCarousel/ProductCarousel'),
         AddProductRelationsModalGrid: () => import('@Products/components/Modals/AddProductRelationsModalGrid'),
-        ActionFab: () => import('@UI/components/ActionFab/ActionFab'),
-        ListElementDescription: () => import('@UI/components/List/ListElementDescription'),
-        ListElementTitle: () => import('@UI/components/List/ListElementTitle'),
     },
     mixins: [
         confirmLeaveModalMixin,

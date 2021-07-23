@@ -7,6 +7,7 @@
 import {
     join,
 } from 'path';
+import webpack from 'webpack';
 
 import modulesConfig from './modules.config';
 import {
@@ -144,7 +145,13 @@ module.exports = {
     axios: {
         baseURL: 'http://localhost:8080',
     },
+    alias: {
+        '@Vendor': join(__dirname, '/vendor'),
+    },
     build: {
+        plugins: [
+            new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        ],
         babel: {
             configFile: './babel.config.js',
         },
@@ -183,10 +190,6 @@ module.exports = {
             isDev,
             isClient,
         }) {
-            const alias = config.resolve.alias || {};
-
-            alias['@Vendor'] = join(__dirname, '/vendor');
-
             if (isDev) {
                 config.devtool = isClient ? 'source-map' : 'inline-source-map';
             }
@@ -198,7 +201,7 @@ module.exports = {
         optimization: {
             splitChunks: {
                 chunks: 'all',
-                maxSize: 200000,
+                maxSize: 249856,
             },
         },
     },

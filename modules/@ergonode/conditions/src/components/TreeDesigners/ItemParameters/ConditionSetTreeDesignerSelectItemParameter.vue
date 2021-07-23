@@ -19,13 +19,9 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import TranslationSelect from '@UI/components/Select/TranslationSelect';
 
 export default {
     name: 'ConditionSetTreeDesignerSelectItemParameter',
-    components: {
-        TranslationSelect,
-    },
     props: {
         parameter: {
             type: Object,

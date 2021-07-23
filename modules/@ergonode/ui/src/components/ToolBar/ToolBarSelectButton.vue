@@ -21,15 +21,9 @@
 </template>
 
 <script>
-import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
-import ToolBarButton from '@UI/components/ToolBar/ToolBarButton';
 
 export default {
     name: 'ToolBarSelectButton',
-    components: {
-        Dropdown,
-        ToolBarButton,
-    },
     data() {
         return {
             isFocused: false,

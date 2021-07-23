@@ -46,6 +46,7 @@ export default {
                 'tab-bar-item',
                 {
                     'tab-bar-item--selected': this.isSelected,
+                    'tab-bar-item--icon': this.isIcon,
                 },
             ];
         },
@@ -89,8 +90,12 @@ export default {
         text-align: center;
         cursor: pointer;
 
-        &__title {
+        &--icon &__title {
             margin-top: 4px;
+        }
+
+        &--icon {
+            min-height: 68px;
         }
 
         &--selected {

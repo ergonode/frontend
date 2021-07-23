@@ -16,12 +16,10 @@
 
 <script>
 import ExportDetailsGrid from '@Channels/components/Grids/ExportDetailsGrid';
-import ModalGrid from '@UI/components/Modal/ModalGrid';
 
 export default {
     name: 'ExportDetailsModalGrid',
     components: {
-        ModalGrid,
         ExportDetailsGrid,
     },
     props: {

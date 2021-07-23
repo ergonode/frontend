@@ -17,13 +17,9 @@
 </template>
 
 <script>
-import Preloader from '@UI/components/Preloader/Preloader';
 
 export default {
     name: 'Table',
-    components: {
-        Preloader,
-    },
     props: {
         /**
          * The title of the component

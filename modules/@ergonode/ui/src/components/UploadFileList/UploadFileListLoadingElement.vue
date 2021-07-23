@@ -32,15 +32,9 @@ import {
     GRAPHITE,
     GREEN,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconCheck from '@UI/components/Icons/Feedback/IconCheck';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 
 export default {
     name: 'UploadFileListLoadingElement',
-    components: {
-        IconSpinner,
-        IconCheck,
-    },
     props: {
         files: {
             type: Array,

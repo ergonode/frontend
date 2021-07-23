@@ -38,12 +38,7 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
 import ConfirmModalHeader from '@UI/components/ConfirmModal/ConfirmModalHeader';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
-import Modal from '@UI/components/Modal/Modal';
-import ModalFooter from '@UI/components/Modal/ModalFooter';
-import ModalOverlay from '@UI/components/Modal/ModalOverlay';
 import {
     mapActions,
 } from 'vuex';
@@ -51,12 +46,7 @@ import {
 export default {
     name: 'RestoreAttributeParentConfirmModal',
     components: {
-        ModalOverlay,
         ConfirmModalHeader,
-        Modal,
-        ModalFooter,
-        Button,
-        IconSpinner,
     },
     props: {
         element: {

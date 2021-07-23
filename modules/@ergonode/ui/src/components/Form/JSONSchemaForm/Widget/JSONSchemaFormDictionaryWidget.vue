@@ -35,19 +35,13 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
 import JSONSchemaFormDictionaryWidgetRow
     from '@UI/components/Form/JSONSchemaForm/Widget/JSONSchemaFormDictionaryWidgetRow';
-import FormSubsection from '@UI/components/Form/Subsection/FormSubsection';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
 export default {
     name: 'JSONSchemaFormDictionaryWidget',
     components: {
         JSONSchemaFormDictionaryWidgetRow,
-        FormSubsection,
-        IconAdd,
-        Button,
     },
     props: {
         /**

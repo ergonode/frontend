@@ -29,17 +29,11 @@ import CreateAttributeGroupButton from '@AttributeGroups/components/Buttons/Crea
 import PRIVILEGES from '@AttributeGroups/config/privileges';
 import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
-import Page from '@UI/components/Layout/Page';
-import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
-import TitleBar from '@UI/components/TitleBar/TitleBar';
 
 export default {
     name: 'AttributeTabs',
     components: {
         CreateAttributeGroupButton,
-        TitleBar,
-        Page,
-        HorizontalRoutingTabBar,
     },
     mixins: [
         beforeRouteLeaveMixin,

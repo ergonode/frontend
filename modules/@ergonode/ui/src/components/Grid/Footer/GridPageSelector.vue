@@ -21,15 +21,9 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import GridFooterText from '@UI/components/Grid/Footer/GridFooterText';
-import Select from '@UI/components/Select/Select';
 
 export default {
     name: 'GridPageSelector',
-    components: {
-        Select,
-        GridFooterText,
-    },
     props: {
         /**
          * Component value

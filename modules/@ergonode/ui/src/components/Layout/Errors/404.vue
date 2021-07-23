@@ -30,13 +30,9 @@
 </template>
 
 <script>
-import Button from '@UI/components/Button/Button';
 
 export default {
     name: 'Error404',
-    components: {
-        Button,
-    },
 };
 </script>
 

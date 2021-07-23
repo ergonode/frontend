@@ -35,8 +35,6 @@ import {
     getMappedObjectOptions,
 } from '@Core/models/mappers/translationsMapper';
 import ProductTemplateFormField from '@Products/components/Forms/Field/ProductTemplateFormField';
-import InfoHint from '@UI/components/Hints/InfoHint';
-import TranslationSelect from '@UI/components/Select/TranslationSelect';
 import {
     mapState,
 } from 'vuex';
@@ -45,8 +43,6 @@ export default {
     name: 'ProductTemplateFormSelectField',
     components: {
         ProductTemplateFormField,
-        TranslationSelect,
-        InfoHint,
     },
     props: {
         size: {

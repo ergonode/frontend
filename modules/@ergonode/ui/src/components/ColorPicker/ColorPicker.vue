@@ -50,18 +50,15 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
 import ColorPickerContent from '@UI/components/ColorPicker/ColorPickerContent';
 import DropdownFooter from '@UI/components/Select/Dropdown/Footers/DropdownFooter';
-import Select from '@UI/components/Select/Select';
 
 export default {
     name: 'ColorPicker',
     components: {
-        Select,
         ColorPickerContent,
         DropdownFooter,
-        Button,
+
     },
     computed: {
         tinySize() {

@@ -24,8 +24,6 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import confirmLeaveModalMixin from '@Core/mixins/feedback/confirmLeaveModalMixin';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import PRIVILEGES from '@Workflow/config/privileges';
 import {
     WORKFLOW_STATUS_CREATED_EVENT_NAME,
@@ -34,8 +32,6 @@ import {
 export default {
     name: 'CreateWorkflowStatusButton',
     components: {
-        Button,
-        IconAdd,
         CreateWorkflowStatusModalForm: () => import('@Workflow/components/Modals/CreateWorkflowStatusModalForm'),
     },
     mixins: [

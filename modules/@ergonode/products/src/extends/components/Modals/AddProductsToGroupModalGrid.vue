@@ -21,12 +21,10 @@ import ProductsToAttachForGroupGrid from '@Products/extends/components/Grids/Pro
 import {
     PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
 } from '@Products/extends/defaults';
-import ModalGrid from '@UI/components/Modal/ModalGrid';
 
 export default {
     name: 'AddProductsToGroupModalGrid',
     components: {
-        ModalGrid,
         ProductsToAttachForGroupGrid,
     },
     mixins: [

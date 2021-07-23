@@ -45,11 +45,6 @@
 <script>
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
-import LazyImage from '@UI/components/LazyImage/LazyImage';
-import StaticImage from '@UI/components/StaticImage/StaticImage';
-import UploadFile from '@UI/components/UploadFile/UploadFile';
 import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
@@ -58,13 +53,6 @@ import {
 
 export default {
     name: 'UserAvatarForm',
-    components: {
-        UploadFile,
-        LazyImage,
-        StaticImage,
-        Form,
-        FormSection,
-    },
     mixins: [
         formActionsMixin,
         formFeedbackMixin,

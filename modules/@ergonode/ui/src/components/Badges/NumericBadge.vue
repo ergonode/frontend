@@ -12,15 +12,9 @@
 import {
     THEME,
 } from '@Core/defaults/theme';
-import BadgeLabel from '@UI/components/Badges/BadgeLabel';
-import RoundedBadge from '@UI/components/Badges/RoundedBadge';
 
 export default {
     name: 'NumericBadge',
-    components: {
-        RoundedBadge,
-        BadgeLabel,
-    },
     props: {
         /**
          * Number displaying inside badge

@@ -48,9 +48,6 @@
 
 <script>
 import ProductTemplateFormField from '@Products/components/Forms/Field/ProductTemplateFormField';
-import InfoHint from '@UI/components/Hints/InfoHint';
-import RichTextEditor from '@UI/components/RichTextEditor/RichTextEditor';
-import TextArea from '@UI/components/TextArea/TextArea';
 import {
     mapState,
 } from 'vuex';
@@ -59,9 +56,6 @@ export default {
     name: 'ProductTemplateFormTextAreaField',
     components: {
         ProductTemplateFormField,
-        TextArea,
-        RichTextEditor,
-        InfoHint,
     },
     props: {
         size: {

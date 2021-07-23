@@ -50,23 +50,11 @@ import {
     DROPDOWN_MAX_HEIGHT,
 } from '@UI/assets/scss/_js-variables/sizes.scss';
 import AdvancedFilterShowOnly from '@UI/components/AdvancedFilters/AdvancedFilterShowOnly';
-import CheckBox from '@UI/components/CheckBox/CheckBox';
-import Divider from '@UI/components/Dividers/Divider';
-import ListElementAction from '@UI/components/List/ListElementAction';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
-import SelectList from '@UI/components/SelectList/SelectList';
 
 export default {
     name: 'AdvancedFilterMultiselectContent',
     components: {
-        ListElementAction,
-        ListElementDescription,
-        ListElementTitle,
-        SelectList,
-        CheckBox,
         AdvancedFilterShowOnly,
-        Divider,
     },
     props: {
         /**

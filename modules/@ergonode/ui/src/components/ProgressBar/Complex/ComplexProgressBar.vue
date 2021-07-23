@@ -26,13 +26,9 @@
 import {
     GRAPHITE_DARK,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import ResizeObserver from '@UI/components/Observers/ResizeObserver';
 
 export default {
     name: 'ComplexProgressBar',
-    components: {
-        ResizeObserver,
-    },
     props: {
         /**
          * Color of progress bar

@@ -24,8 +24,6 @@ import NotificationList from '@Notifications/components/NotificationList/Notific
 import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import NotificationBadge from '@UI/components/Badges/NotificationBadge';
-import ToolBarSelectButton from '@UI/components/ToolBar/ToolBarSelectButton';
 import {
     mapState,
 } from 'vuex';
@@ -34,9 +32,7 @@ export default {
     name: 'ToolBarNotificationButton',
     components: {
         NotificationList,
-        ToolBarSelectButton,
         IconBell,
-        NotificationBadge,
     },
     computed: {
         ...mapState('notification', [

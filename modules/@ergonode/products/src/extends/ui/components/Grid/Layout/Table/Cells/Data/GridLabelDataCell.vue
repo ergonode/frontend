@@ -31,16 +31,12 @@
 
 <script>
 import GridLabelPresentationCell from '@Products/extends/ui/components/Grid/Layout/Table/Cells/Presentation/GridLabelPresentationCell';
-import GridSuffixPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
-import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 import gridDataCellMixin from '@UI/mixins/grid/gridDataCellMixin';
 
 export default {
     name: 'GridLabelDataCell',
     components: {
         GridLabelPresentationCell,
-        GridSuffixPresentationCell,
-        IconArrowDropdown,
     },
     mixins: [
         gridDataCellMixin,

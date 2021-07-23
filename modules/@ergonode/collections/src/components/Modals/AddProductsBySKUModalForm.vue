@@ -28,7 +28,6 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
-import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
 } from 'vuex';
@@ -37,7 +36,6 @@ export default {
     name: 'AddProductsBySKUModalForm',
     components: {
         AddProductsBySKUForm,
-        ModalForm,
     },
     mixins: [
         modalFeedbackMixin,

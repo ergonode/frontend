@@ -23,20 +23,12 @@ import {
 import {
     ORIENTATION,
 } from '@Core/defaults/layout';
-import DropZone from '@UI/components/DropZone/DropZone';
-import IconAddFilter from '@UI/components/Icons/Actions/IconAddFilter';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
     mapState,
 } from 'vuex';
 
 export default {
     name: 'AddFilterDropZone',
-    components: {
-        FadeTransition,
-        DropZone,
-        IconAddFilter,
-    },
     props: {
         /**
          * List of filters

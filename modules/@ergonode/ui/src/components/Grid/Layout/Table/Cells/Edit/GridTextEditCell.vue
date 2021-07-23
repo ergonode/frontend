@@ -22,14 +22,13 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import GridTextEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridTextEditContentCell';
-import TextField from '@UI/components/TextField/TextField';
 import gridEditCellMixin from '@UI/mixins/grid/gridEditCellMixin';
 
 export default {
     name: 'GridTextEditCell',
     components: {
         GridTextEditContentCell,
-        TextField,
+
     },
     mixins: [
         gridEditCellMixin,

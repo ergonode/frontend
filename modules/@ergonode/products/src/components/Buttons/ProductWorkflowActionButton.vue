@@ -47,12 +47,6 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Products/config/privileges';
-import ActionButton from '@UI/components/ActionButton/ActionButton';
-import PointBadge from '@UI/components/Badges/PointBadge';
-import ListElementAction from '@UI/components/List/ListElementAction';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
-import Preloader from '@UI/components/Preloader/Preloader';
 import {
     mapActions,
     mapState,
@@ -60,14 +54,6 @@ import {
 
 export default {
     name: 'ProductWorkflowActionButton',
-    components: {
-        Preloader,
-        PointBadge,
-        ActionButton,
-        ListElementAction,
-        ListElementDescription,
-        ListElementTitle,
-    },
     props: {
         languageCode: {
             type: String,

@@ -34,7 +34,6 @@ import ExpandingCollection from '@Collections/extends/product/components/Expandi
 import ProductWithoutCollectionTabBarNoDataPlaceholder
     from '@Collections/extends/product/components/Placeholders/ProductWithoutCollectionTabBarNoDataPlaceholder';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
-import Preloader from '@UI/components/Preloader/Preloader';
 import {
     mapActions,
 } from 'vuex';
@@ -43,7 +42,6 @@ export default {
     name: 'ProductCollectionTab',
     components: {
         ProductWithoutCollectionTabBarNoDataPlaceholder,
-        Preloader,
         CenterViewTemplate,
         ProductCollection,
         ProductCollectionItem,

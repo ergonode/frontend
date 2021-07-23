@@ -11,7 +11,7 @@
         :edit-key-code="32"
         @mousedown.native="onDelete"
         @edit="onDelete">
-        <IconDelete v-once />
+        <IconDelete />
     </GridTableCell>
 </template>
 
@@ -19,15 +19,9 @@
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
-import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
-import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 
 export default {
     name: 'GridDeleteActionCell',
-    components: {
-        GridTableCell,
-        IconDelete,
-    },
     props: {
         /**
          * Unique row identifier

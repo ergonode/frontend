@@ -81,15 +81,11 @@ import PRIVILEGES from '@Import/config/privileges';
 import {
     IMPORT_CREATED_EVENT_NAME,
 } from '@Import/defaults';
-import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'ImportProfileHistoryGrid',
     components: {
         CreateImportButton,
-        Grid,
-        GridNoDataPlaceholder,
         ImportDetailsModalGrid: () => import('@Import/components/Modals/ImportDetailsModalGrid'),
     },
     mixins: [

@@ -32,14 +32,12 @@
 
 <script>
 import GridActionCell from '@UI/components/Grid/Layout/Table/Cells/Action/GridActionCell';
-import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
 import GridActionColumn from '@UI/components/Grid/Layout/Table/Columns/GridActionColumn';
 
 export default {
     name: 'GridRowActionColumn',
     components: {
         GridActionColumn,
-        GridTableCell,
         GridActionCell,
     },
     props: {

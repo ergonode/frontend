@@ -29,16 +29,12 @@
 </template>
 
 <script>
-import InputUUIDProvider from '@UI/components/Input/InputUUIDProvider';
 
 /**
  * `Toggler` is a default component to determinate true / false action.
  */
 export default {
     name: 'Toggler',
-    components: {
-        InputUUIDProvider,
-    },
     props: {
         /**
          * Component value

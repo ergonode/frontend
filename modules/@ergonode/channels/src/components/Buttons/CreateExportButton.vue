@@ -30,18 +30,12 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
     name: 'CreateExportButton',
-    components: {
-        Button,
-        IconAdd,
-    },
     computed: {
         isAllowedToUpdate() {
             return this.$hasAccess([

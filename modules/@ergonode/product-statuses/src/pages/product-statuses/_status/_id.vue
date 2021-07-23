@@ -40,9 +40,6 @@ import beforeRouteUpdateMixin from '@Core/mixins/route/beforeRouteUpdateMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import RemoveProductStatusButton from '@Statuses/components/Buttons/RemoveProductStatusButton';
 import PRIVILEGES from '@Statuses/config/privileges';
-import Page from '@UI/components/Layout/Page';
-import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
-import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
     mapState,
 } from 'vuex';
@@ -50,9 +47,6 @@ import {
 export default {
     name: 'StatusEdit',
     components: {
-        Page,
-        TitleBar,
-        HorizontalRoutingTabBar,
         RemoveProductStatusButton,
     },
     mixins: [

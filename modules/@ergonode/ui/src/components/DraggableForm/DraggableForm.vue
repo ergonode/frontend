@@ -50,7 +50,6 @@ import {
 } from '@Core/models/arrayWrapper';
 import DraggableFormItem from '@UI/components/DraggableForm/DraggableFormItem';
 import DraggableFormPlaceholderItem from '@UI/components/DraggableForm/DraggableFormPlaceholderItem';
-import Form from '@UI/components/Form/Form';
 import {
     getFixedMousePosition,
     isMouseOutsideElement,
@@ -63,7 +62,6 @@ import {
 export default {
     name: 'DraggableForm',
     components: {
-        Form,
         DraggableFormPlaceholderItem,
         DraggableFormItem,
     },

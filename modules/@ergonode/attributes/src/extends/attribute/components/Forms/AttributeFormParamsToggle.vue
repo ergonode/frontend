@@ -12,16 +12,12 @@
 
 <script>
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
-import Toggler from '@UI/components/Toggler/Toggler';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
     name: 'AttributeFormParamsToggle',
-    components: {
-        Toggler,
-    },
     mixins: [
         formFeedbackMixin,
     ],

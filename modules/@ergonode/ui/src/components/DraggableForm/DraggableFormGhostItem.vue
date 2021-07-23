@@ -12,13 +12,9 @@
 import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconAddFilter from '@UI/components/Icons/Actions/IconAddFilter';
 
 export default {
     name: 'DraggableFormGhostItem',
-    components: {
-        IconAddFilter,
-    },
     computed: {
         whiteColor() {
             return WHITE;

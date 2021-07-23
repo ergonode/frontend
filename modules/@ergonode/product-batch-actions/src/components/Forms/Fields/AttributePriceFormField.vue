@@ -19,15 +19,9 @@
 </template>
 
 <script>
-import TextField from '@UI/components/TextField/TextField';
-import TextFieldSuffix from '@UI/components/TextField/TextFieldSuffix';
 
 export default {
     name: 'AttributePriceFormField',
-    components: {
-        TextField,
-        TextFieldSuffix,
-    },
     props: {
         value: {
             type: [

@@ -50,7 +50,6 @@ import {
     getFilterQueryParams,
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
-import Grid from '@UI/components/Grid/Grid';
 import UpdateLanguageRestrictionsButton from '@Users/components/Buttons/UpdateLanguageRestrictionsButton';
 import PRIVILEGES from '@Users/config/privileges';
 import privilegeDefaults from '@Users/defaults/languages';
@@ -66,7 +65,6 @@ import {
 export default {
     name: 'UserLanguageRestrictionsGrid',
     components: {
-        Grid,
         UpdateLanguageRestrictionsButton,
     },
     mixins: [

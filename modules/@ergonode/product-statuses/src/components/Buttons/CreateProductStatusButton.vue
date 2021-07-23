@@ -27,14 +27,10 @@ import PRIVILEGES from '@Statuses/config/privileges';
 import {
     PRODUCT_STATUS_CREATED_EVENT_NAME,
 } from '@Statuses/defaults';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
 export default {
     name: 'CreateProductStatusButton',
     components: {
-        Button,
-        IconAdd,
         CreateProductStatusModalForm: () => import('@Statuses/components/Modals/CreateProductStatusModalForm'),
     },
     data() {

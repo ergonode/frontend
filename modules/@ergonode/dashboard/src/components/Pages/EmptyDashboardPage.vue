@@ -103,8 +103,6 @@ import TEMPLATE_PRIVILEGES from '@Templates/config/privileges';
 import {
     GREY,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
 
 export default {
@@ -112,8 +110,6 @@ export default {
     components: {
         CreateProductStepList,
         CreateProductStepListElement,
-        Button,
-        IconAdd,
         VerticalFixedScroll,
         DoughnutProductsChart,
         CreateAttributeModalForm: () => import('@Attributes/components/Modals/CreateAttributeModalForm'),

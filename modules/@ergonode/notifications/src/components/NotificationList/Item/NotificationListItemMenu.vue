@@ -29,19 +29,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import ActionFab from '@UI/components/ActionFab/ActionFab';
-import IconDots from '@UI/components/Icons/Others/IconDots';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
 
 export default {
     name: 'NotificationListItemMenu',
-    components: {
-        ActionFab,
-        IconDots,
-        ListElementDescription,
-        ListElementTitle,
-    },
     props: {
         items: {
             type: Array,

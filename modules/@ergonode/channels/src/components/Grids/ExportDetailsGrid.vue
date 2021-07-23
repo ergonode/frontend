@@ -75,8 +75,6 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
-import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 import Tile from '@UI/components/Tile/Tile';
 import {
     mapActions,
@@ -86,8 +84,6 @@ export default {
     name: 'ExportDetailsGrid',
     components: {
         Tile,
-        Grid,
-        GridNoDataPlaceholder,
         DownloadExportFileButton,
     },
     mixins: [

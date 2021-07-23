@@ -28,15 +28,9 @@ import {
 import {
     GRAPHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
-import TranslationSelect from '@UI/components/Select/TranslationSelect';
 
 export default {
     name: 'AttributeSelectFormField',
-    components: {
-        TranslationSelect,
-        IconSpinner,
-    },
     props: {
         value: {
             type: String,

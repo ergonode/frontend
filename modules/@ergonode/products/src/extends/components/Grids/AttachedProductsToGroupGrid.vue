@@ -86,8 +86,6 @@ import AddProductsToGroupButton from '@Products/extends/components/Buttons/AddPr
 import {
     PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
 } from '@Products/extends/defaults';
-import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 import {
     mapActions,
 } from 'vuex';
@@ -96,8 +94,6 @@ export default {
     name: 'AttachedProductsToGroupGrid',
     components: {
         AddProductsToGroupButton,
-        Grid,
-        GridNoDataPlaceholder,
         AddProductsToGroupActionButton,
     },
     mixins: [

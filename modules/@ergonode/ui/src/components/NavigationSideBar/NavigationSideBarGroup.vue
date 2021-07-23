@@ -74,18 +74,12 @@ import {
     GREY_DARK,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 import NavigationSideBarGroupElement from '@UI/components/NavigationSideBar/NavigationSideBarGroupElement';
-import AutoHeightTransition from '@UI/components/Transitions/AutoHeightTransition';
-import FadeNavigationSideBarTextTransition from '@UI/components/Transitions/FadeNavigationSideBarTextTransition';
 
 export default {
     name: 'NavigationSideBarGroup',
     components: {
-        AutoHeightTransition,
-        FadeNavigationSideBarTextTransition,
         NavigationSideBarGroupElement,
-        IconArrowDropdown,
         TranslatableTitleProvider,
     },
     props: {
