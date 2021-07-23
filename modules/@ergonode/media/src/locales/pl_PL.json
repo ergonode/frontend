@@ -32,6 +32,15 @@
           "createCancel": "Tworzenie zasobu zostało przerwane",
           "updateCancel": "Aktualizowanie zasobu zostało przerwane",
           "deleteCancel": "Usuwanie zasobu zostało przerwane"
+        },
+        "metadata": {
+          "alpha": "Kanał alfa",
+          "createdAt": "Stworzone dnia",
+          "height": "Wysokość",
+          "resolution": "Rozdzielczość",
+          "size": "Waga",
+          "type": "Typ",
+          "width": "Szerokość"
         }
       },
       "components": {

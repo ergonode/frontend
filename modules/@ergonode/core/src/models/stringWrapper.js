@@ -20,6 +20,18 @@ export function toCapitalize(string) {
 }
 
 /**
+ * Converting string to camelCaseString
+ * @param string
+ * @returns camelCaseString
+ */
+export function toCamelCase(string) {
+    return string.replace(/^([A-Z])|\s(\w)/g, (match, p1, p2) => {
+        if (p2) return p2.toUpperCase();
+        return p1.toLowerCase();
+    });
+}
+
+/**
  * Returns the string with first lower letter
  * @function
  * @param {string} string
