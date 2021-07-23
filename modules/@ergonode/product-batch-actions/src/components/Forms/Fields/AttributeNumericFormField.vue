@@ -18,7 +18,6 @@
 
 export default {
     name: 'AttributeNumericFormField',
-    components: {},
     props: {
         value: {
             type: [

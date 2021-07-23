@@ -35,7 +35,6 @@ import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 
 export default {
     name: 'AttributeGroupTranslationForm',
-    components: {},
     mixins: [
         translationCardMixin,
     ],

@@ -92,7 +92,6 @@ import {
 export default {
     name: 'CollectionProductsGrid',
     components: {
-
         AddProductsToCollectionButton,
         UpdateCollectionProductsVisibilityButton,
     },

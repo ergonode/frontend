@@ -33,7 +33,6 @@
 
 export default {
     name: 'Error404',
-    components: {},
 };
 </script>
 

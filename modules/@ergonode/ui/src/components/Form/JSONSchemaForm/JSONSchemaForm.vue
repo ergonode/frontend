@@ -29,7 +29,6 @@ import {
 
 export default {
     name: 'JSONSchemaForm',
-    components: {},
     props: {
         /**
          * JSON schema

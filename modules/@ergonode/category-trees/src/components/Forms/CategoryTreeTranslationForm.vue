@@ -35,7 +35,6 @@ import PRIVILEGES from '@Trees/config/privileges';
 
 export default {
     name: 'CategoryTreeTranslationForm',
-    components: {},
     mixins: [
         translationCardMixin,
     ],

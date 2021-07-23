@@ -64,7 +64,6 @@ import PRIVILEGES from '@Users/config/privileges';
 
 export default {
     name: 'UserActivityLogsGrid',
-    components: {},
     mixins: [
         extendPropsMixin({
             extendedKey: '@Users/components/Grids/UserActivityLogsGrid/props',

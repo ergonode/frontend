@@ -64,7 +64,6 @@ import PRIVILEGES from '@Products/config/privileges';
 
 export default {
     name: 'ProductHistoryGrid',
-    components: {},
     mixins: [
         extendPropsMixin({
             extendedKey: '@Products/components/Grids/ProductHistoryGrid/props',

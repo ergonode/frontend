@@ -27,7 +27,6 @@ import {
 
 export default {
     name: 'DatePickerInputHeader',
-    components: {},
     props: {
         /**
          * The title of the component

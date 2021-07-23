@@ -25,7 +25,6 @@ import {
 
 export default {
     name: 'WorkflowDesignerLayoutElement',
-    components: {},
     props: {
         index: {
             type: Number,

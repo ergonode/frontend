@@ -15,7 +15,6 @@
 
 export default {
     name: 'AdvancedFilterShowOnly',
-    components: {},
     props: {
         /**
          * Component value

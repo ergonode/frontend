@@ -21,7 +21,6 @@ import {
 
 export default {
     name: 'DownloadExportFileButton',
-    components: {},
     props: {
         link: {
             type: String,

@@ -65,7 +65,6 @@ import {
 export default {
     name: 'UserLanguageRestrictionsGrid',
     components: {
-
         UpdateLanguageRestrictionsButton,
     },
     mixins: [

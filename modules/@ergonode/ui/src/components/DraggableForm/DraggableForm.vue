@@ -62,7 +62,6 @@ import {
 export default {
     name: 'DraggableForm',
     components: {
-
         DraggableFormPlaceholderItem,
         DraggableFormItem,
     },

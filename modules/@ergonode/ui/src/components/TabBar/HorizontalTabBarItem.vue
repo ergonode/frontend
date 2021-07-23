@@ -23,10 +23,6 @@ export default {
             type: Object,
             required: true,
         },
-        error: {
-            type: Boolean,
-            default: false,
-        },
     },
     methods: {
         onSelect() {

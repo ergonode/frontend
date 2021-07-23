@@ -13,7 +13,6 @@
 
 export default {
     name: 'GridBoolEditCell',
-    components: {},
     props: {
         /**
          * Component value

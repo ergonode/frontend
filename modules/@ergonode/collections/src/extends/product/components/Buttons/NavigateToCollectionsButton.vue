@@ -21,7 +21,6 @@ import {
 
 export default {
     name: 'NavigateToCollectionsButton',
-    components: {},
     computed: {
         isAllowedToUpdate() {
             return this.$hasAccess([

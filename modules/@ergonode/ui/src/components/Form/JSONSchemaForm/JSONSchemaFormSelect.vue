@@ -20,7 +20,6 @@
 
 export default {
     name: 'JSONSchemaFormSelect',
-    components: {},
     props: {
         /**
          * JSON schema

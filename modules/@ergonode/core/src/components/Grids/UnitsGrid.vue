@@ -78,7 +78,6 @@ import {
 export default {
     name: 'UnitsGrid',
     components: {
-
         CreateUnitButton,
     },
     mixins: [

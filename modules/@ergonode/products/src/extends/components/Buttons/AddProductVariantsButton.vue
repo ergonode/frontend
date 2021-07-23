@@ -30,7 +30,6 @@ import PRIVILEGES from '@Products/config/privileges';
 export default {
     name: 'AddProductVariantsButton',
     components: {
-
         AddProductVariantsModalGrid: () => import('@Products/extends/components/Modals/AddProductVariantsModalGrid'),
     },
     props: {

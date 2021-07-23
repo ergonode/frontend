@@ -23,7 +23,6 @@ import {
 
 export default {
     name: 'AttributeOptionValue',
-    components: {},
     props: {
         index: {
             type: String,

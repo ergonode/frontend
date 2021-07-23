@@ -18,7 +18,6 @@ import {
 
 export default {
     name: 'AttributeFormParamsToggle',
-    components: {},
     mixins: [
         formFeedbackMixin,
     ],

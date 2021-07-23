@@ -17,7 +17,6 @@
 
 export default {
     name: 'AttributeTextFormField',
-    components: {},
     props: {
         value: {
             type: String,

@@ -18,7 +18,6 @@
 
 export default {
     name: 'JSONSchemaFormText',
-    components: {},
     props: {
         /**
          * JSON schema

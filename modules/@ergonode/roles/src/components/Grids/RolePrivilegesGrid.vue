@@ -68,7 +68,6 @@ import {
 export default {
     name: 'RolePrivilegesGrid',
     components: {
-
         UpdateRolePrivilegesButton,
     },
     mixins: [

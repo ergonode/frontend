@@ -55,7 +55,6 @@ import {
 
 export default {
     name: 'UserPrivilegesGrid',
-    components: {},
     mixins: [
         extendPropsMixin({
             extendedKey: '@Roles/components/Grids/UserPrivilegesGrid/props',

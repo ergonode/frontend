@@ -64,7 +64,6 @@ import {
 
 export default {
     name: 'UsersActivityLogsGrid',
-    components: {},
     mixins: [
         extendPropsMixin({
             extendedKey: '@ActivityLogs/components/Grids/UsersActivityLogsGrid/props',

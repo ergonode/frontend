@@ -23,7 +23,6 @@ import PRIVILEGES from '@Products/config/privileges';
 export default {
     name: 'AddProductsToGroupButton',
     components: {
-
         AddProductsToGroupModalGrid: () => import('@Products/extends/components/Modals/AddProductsToGroupModalGrid'),
     },
     data() {

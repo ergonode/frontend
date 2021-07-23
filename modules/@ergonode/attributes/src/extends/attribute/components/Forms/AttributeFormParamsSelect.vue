@@ -26,7 +26,6 @@ import {
 
 export default {
     name: 'AttributeFormParamsSelect',
-    components: {},
     mixins: [
         formFeedbackMixin,
     ],
