@@ -100,7 +100,7 @@ export default {
 
                     tmpArray.push({
                         name: this.app.i18n.te(`@Media.media.store.metadata.${toCamelCase(current)}`)
-                            ? this.app.i18n.t(`@Media.media.store.metadata.${current}`)
+                            ? this.app.i18n.t(`@Media.media.store.metadata.${toCamelCase(current)}`)
                             : current,
                         value: metadata[current].toString(),
                     });
