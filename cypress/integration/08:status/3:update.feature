@@ -7,8 +7,8 @@ Feature: UPDATE: Status
 
   @error
   Scenario: Update status from edit page - validation error (too long string)
-    When On "grid" I can see row with "status_code" value and columns data: "{'0': 'status_code', '2': '', '3': ''}"
-    * On "grid" I click on "edit" button for row with "status_code" value
+    When On "grid" I can see row with "status_code_test" value and columns data: "{'0': 'status_code_test', '2': '', '3': ''}"
+    * On "grid" I click on "edit" button for row with "status_code_test" value
     * I see "product-statuses/status/%UUID%/general" page
     * I click tab with "Translations" text
     * I see "product-statuses/status/%UUID%/translations" page
@@ -19,8 +19,8 @@ Feature: UPDATE: Status
 
   @success
   Scenario: Update status from edit page - success
-    When On "grid" I can see row with "status_code" value and columns data: "{'0': 'status_code', '2': '', '3': ''}"
-    * On "grid" I click on "edit" button for row with "status_code" value
+    When On "grid" I can see row with "status_code_test" value and columns data: "{'0': 'status_code_test', '2': '', '3': ''}"
+    * On "grid" I click on "edit" button for row with "status_code_test" value
     * I see "product-statuses/status/%UUID%/general" page
     * I click tab with "Translations" text
     * I see "product-statuses/status/%UUID%/translations" page
@@ -33,4 +33,4 @@ Feature: UPDATE: Status
     * I send a "PUT" request and status code should be 204
     * I click back arrow
     * I see "product-statuses/grid" page
-    Then On "grid" I can see row with "status_code" value and columns data: "{'0': 'status_code', '2': 'status_EN', '3': 'status_desc_EN'}"
+    Then On "grid" I can see row with "status_code_test" value and columns data: "{'0': 'status_code_test', '2': 'status_EN', '3': 'status_desc_EN'}"

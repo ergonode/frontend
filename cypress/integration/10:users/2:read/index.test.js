@@ -6,12 +6,15 @@ import {
     And,
     Given,
     Then,
+    When,
 } from 'cypress-cucumber-preprocessor/steps';
 
 import {
     MultiSteps,
 } from '../../../models/index';
 import {
+    actionOnGrid,
+    checkGridRow,
     openPage,
     sendRequest,
 } from '../../../models/navigation';
@@ -50,5 +53,30 @@ MultiSteps([
         requestName,
         reqType,
         status,
+    });
+});
+
+MultiSteps([
+    And,
+    Then,
+    When,
+], 'On {string} I can see row with {string} value and columns data: {string}', (gridId, searchValue, columns) => {
+    checkGridRow({
+        gridId,
+        searchValue,
+        columns,
+        showMoreRows: false,
+    });
+});
+
+MultiSteps([
+    And,
+    Then,
+], 'On {string} I click on {string} button for row with {string} value', (gridId, action, searchValue) => {
+    actionOnGrid({
+        gridId,
+        action,
+        searchValue,
+        showMoreRows: false,
     });
 });
