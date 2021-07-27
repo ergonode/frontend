@@ -7,6 +7,7 @@
         <div class="error-404__placeholder">
             <Placeholder
                 :bg-url="bgUrl"
+                :size="largeSize"
                 title="Page not found"
                 subtitle="The link you clicked may be broken or the page may have been removed."
                 :orientation="horizontalOrientation">
@@ -40,6 +41,9 @@ export default {
     computed: {
         smallSize() {
             return SIZE.SMALL;
+        },
+        largeSize() {
+            return SIZE.LARGE;
         },
         horizontalOrientation() {
             return ORIENTATION.HORIZONTAL;
