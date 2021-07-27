@@ -213,7 +213,8 @@
           "label": "Binding attribute"
         },
         "ProductAttributesBindingForm": {
-          "listTitle": "ADD BINDING ATTRIBUTE"
+          "listTitle": "ADD BINDING ATTRIBUTE",
+          "listTittleTooltip": "There are no more select type attributes"
         },
         "UpdateProductsAttachmentButton": {
           "successMessage": "Products attachment have been updated"
