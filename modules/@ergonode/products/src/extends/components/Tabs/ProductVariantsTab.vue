@@ -10,7 +10,7 @@
                 <AttachedProductVariantsGrid v-if="bindings.length" />
                 <TabBarNoDataPlaceholder
                     v-else
-                    v-bind="listPlaceholder">
+                    v-bind="productVariantsPlaceholder">
                     <template #action>
                         <AddBindingAttributesButton />
                     </template>
@@ -53,7 +53,7 @@ export default {
         ...mapState('product', [
             'bindings',
         ]),
-        listPlaceholder() {
+        productVariantsPlaceholder() {
             return {
                 style: 'margin-top: 24px; align-self: center',
                 title: this.$t('@Products.productExtend.components.ProductVariantsTab.placeholderTitle'),

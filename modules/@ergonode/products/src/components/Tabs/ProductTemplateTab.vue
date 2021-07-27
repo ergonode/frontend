@@ -26,13 +26,20 @@
             <template #centeredContent>
                 <Preloader v-if="isFetchingData" />
                 <ProductTemplateForm
-                    v-else
+                    v-else-if="elements.length > 0"
                     :language-code="languageCode"
                     :elements="elements"
                     :scope="scope"
                     :change-values="changeValues"
                     :errors="errors"
                     @input="onValueChange" />
+                <TabBarNoDataPlaceholder
+                    v-else
+                    v-bind="productTemplatePlaceholder">
+                    <template #action>
+                        <EditProductTemplateButton />
+                    </template>
+                </TabBarNoDataPlaceholder>
             </template>
             <UpdateProductTemplateButton
                 :scope="scope"
@@ -47,6 +54,7 @@
 <script>
 import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
+import EditProductTemplateButton from '@Products/components/Buttons/EditProductTemplateButton';
 import ProductWorkflowActionButton from '@Products/components/Buttons/ProductWorkflowActionButton';
 import RestoreProductButton from '@Products/components/Buttons/RestoreProductButton';
 import UpdateProductTemplateButton from '@Products/components/Buttons/UpdateProductTemplateButton';
@@ -56,6 +64,7 @@ import ReadOnlyBadge from '@UI/components/Badges/ReadOnlyBadge';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import Preloader from '@UI/components/Preloader/Preloader';
+import TabBarNoDataPlaceholder from '@UI/components/TabBar/TabBarNoDataPlaceholder';
 import {
     mapActions,
     mapGetters,
@@ -65,6 +74,7 @@ import {
 export default {
     name: 'ProductTemplateTab',
     components: {
+        EditProductTemplateButton,
         ReadOnlyBadge,
         UpdateProductTemplateButton,
         LanguageTreeSelect,
@@ -75,6 +85,7 @@ export default {
         CenterViewTemplate,
         ProductCompleteness,
         ProductWorkflowActionButton,
+        TabBarNoDataPlaceholder,
     },
     mixins: [
         tabFeedbackMixin,
@@ -107,6 +118,13 @@ export default {
                 ...prev,
                 [curr.properties.attribute_code]: curr.properties.attribute_id,
             }), {});
+        },
+        productTemplatePlaceholder() {
+            return {
+                style: 'margin-top: 24px; align-self: center',
+                title: this.$t('@Products.product.components.ProductTemplateTab.placeholderTitle'),
+                subtitle: this.$t('@Products.product.components.ProductTemplateTab.placeholderSubtitle'),
+            };
         },
         isReadOnlyLanguage() {
             return !this.languagePrivileges[this.languageCode].edit;
