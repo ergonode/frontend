@@ -39,7 +39,7 @@
             :is-border="isHeaderVisible">
             <slot name="body">
                 <AddGridColumnDropZone
-                    :is-visible="isElementDraggingToAdd && !isColumnExist"
+                    :is-visible="isDropZoneVisible"
                     @drop="onDropColumn" />
                 <KeepAlive>
                     <GridTableLayout
@@ -414,6 +414,9 @@ export default {
             }
 
             return Object.keys(this.selectedRows).filter(key => this.selectedRows[key]).length;
+        },
+        isDropZoneVisible() {
+            return this.isElementDraggingToAdd && !this.isColumnExist && this.isTableLayout;
         },
         isAnyFilter() {
             return Object.keys(this.filters).length > 0;
