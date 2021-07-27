@@ -5,16 +5,20 @@
 <template>
     <FormSection :title="title">
         <slot />
-        <Button
-            :title="addListTitle"
-            :size="smallSize"
-            :theme="secondaryTheme"
-            :disabled="disabled"
-            @click.native="onAddListElement">
-            <template #prepend="{ color }">
-                <IconAdd :fill-color="color" />
-            </template>
-        </Button>
+        <Tooltip
+            :title="addListTooltip"
+            max-width="100%">
+            <Button
+                :title="addListTitle"
+                :size="smallSize"
+                :theme="secondaryTheme"
+                :disabled="disabled"
+                @click.native="onAddListElement">
+                <template #prepend="{ color }">
+                    <IconAdd :fill-color="color" />
+                </template>
+            </Button>
+        </Tooltip>
     </FormSection>
 </template>
 
@@ -26,10 +30,12 @@ import {
 import Button from '@UI/components/Button/Button';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import Tooltip from '@UI/components/Tooltip/Tooltip';
 
 export default {
     name: 'FormListSection',
     components: {
+        Tooltip,
         IconAdd,
         Button,
         FormSection,
@@ -46,6 +52,13 @@ export default {
          * The title of the adding new list element button component
          */
         addListTitle: {
+            type: String,
+            default: '',
+        },
+        /**
+         * Add next option Button tooltip
+         */
+        addListTooltip: {
             type: String,
             default: '',
         },

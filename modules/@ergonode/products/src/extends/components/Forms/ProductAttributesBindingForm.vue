@@ -16,6 +16,7 @@
             <FormListSection
                 :disabled="isDisabled"
                 :add-list-title="$t('@Products.productExtend.components.ProductAttributesBindingForm.listTitle')"
+                :add-list-tooltip="addAttributeBindingTooltip"
                 @add="onAddRecord">
                 <FormListSubsection v-if="bindings.length && selectAttributes.length">
                     <ProductAttributeBindingField
@@ -68,6 +69,11 @@ export default {
         ...mapState('product', [
             'selectAttributes',
         ]),
+        addAttributeBindingTooltip() {
+            return this.isDisabled
+                ? this.$t('@Products.productExtend.components.ProductAttributesBindingForm.listTittleTooltip')
+                : '';
+        },
         isDisabled() {
             return this.bindings.length === this.selectAttributes.length;
         },
