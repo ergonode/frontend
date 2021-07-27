@@ -30,27 +30,33 @@
             </div>
         </div>
         <div
+            class="expanding-collection__preloader"
+            v-if="isPrefetchingData">
+            <Preloader />
+        </div>
+        <div
+            :style="gridTemplate"
             class="expanding-collection__body"
-            v-show="isExpanded">
-            <div
-                class="expanding-collection__item"
-                v-for="(item, itemIndex) in collection.items"
-                :key="itemIndex">
+            v-show="isExpanded && !isPrefetchingData">
+            <template v-for="(item, itemIndex) in collection.items">
                 <slot
                     name="item"
-                    :item="item" />
-            </div>
+                    :item="item"
+                    :item-index="itemIndex" />
+            </template>
         </div>
     </div>
 </template>
 
 <script>
 import ExpandNumericButton from '@Core/components/Buttons/ExpandNumericButton';
+import Preloader from '@UI/components/Preloader/Preloader';
 
 export default {
     name: 'ExpandingCollection',
     components: {
         ExpandNumericButton,
+        Preloader,
     },
     props: {
         /**
@@ -67,15 +73,30 @@ export default {
             type: Object,
             required: true,
         },
+        isPrefetchingData: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
             isExpanded: false,
         };
     },
+    computed: {
+        gridTemplate() {
+            const columnsNumber = 4;
+            const width = `${(10 - columnsNumber) * 50}px`;
+
+            return {
+                gridTemplateRows: `repeat(${Math.ceil(this.collection.items.length / columnsNumber)}, ${width})`,
+            };
+        },
+    },
     methods: {
         onExpand(isExpanded) {
             this.isExpanded = isExpanded;
+
             if (this.isExpanded && this.collection.itemsCount !== this.collection.items.length) {
                 this.$emit('fetch', {
                     id: this.collection.id,
@@ -105,6 +126,9 @@ export default {
             display: grid;
             grid-template-columns: repeat(4, minmax(50px, 1fr));
             grid-gap: 24px;
+        }
+
+        &__preloader, &__body {
             padding: 24px;
             border-top: $BORDER_1_GREY;
             box-sizing: border-box;
