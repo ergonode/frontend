@@ -25,6 +25,7 @@ export default {
             validator: value => [
                 SIZE.SMALL,
                 SIZE.REGULAR,
+                SIZE.LARGE,
             ].indexOf(value) !== -1,
         },
         /**
@@ -54,7 +55,7 @@ export default {
             font: $FONT_SEMI_BOLD_20_24;
         }
 
-        &--regular {
+        &--regular, &--large {
             font: $FONT_SEMI_BOLD_24_32;
         }
     }
