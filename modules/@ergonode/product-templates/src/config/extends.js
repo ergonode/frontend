@@ -30,6 +30,12 @@ export default {
                 },
             ],
         },
+        '@Products/components/Tabs/ProductTemplateTab/placeholderAction': [
+            {
+                component: Components.EditProductTemplateButton,
+                props: {},
+            },
+        ],
     },
     extendMethods: {
         '@Media/components/Buttons/LinkRelationButton/routeLinks': () => ({

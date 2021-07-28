@@ -37,7 +37,13 @@
                     v-else
                     v-bind="productTemplatePlaceholder">
                     <template #action>
-                        <EditProductTemplateButton />
+                        <template
+                            v-for="(actionItem, index) in extendedPlaceholderActions">
+                            <Component
+                                :is="actionItem.component"
+                                :key="index"
+                                v-bind="actionItem" />
+                        </template>
                     </template>
                 </TabBarNoDataPlaceholder>
             </template>
@@ -54,7 +60,6 @@
 <script>
 import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
-import EditProductTemplateButton from '@Products/components/Buttons/EditProductTemplateButton';
 import ProductWorkflowActionButton from '@Products/components/Buttons/ProductWorkflowActionButton';
 import RestoreProductButton from '@Products/components/Buttons/RestoreProductButton';
 import UpdateProductTemplateButton from '@Products/components/Buttons/UpdateProductTemplateButton';
@@ -74,7 +79,6 @@ import {
 export default {
     name: 'ProductTemplateTab',
     components: {
-        EditProductTemplateButton,
         ReadOnlyBadge,
         UpdateProductTemplateButton,
         LanguageTreeSelect,
@@ -118,6 +122,9 @@ export default {
                 ...prev,
                 [curr.properties.attribute_code]: curr.properties.attribute_id,
             }), {});
+        },
+        extendedPlaceholderActions() {
+            return this.$getExtendSlot('@Products/components/Tabs/ProductTemplateTab/placeholderAction');
         },
         productTemplatePlaceholder() {
             return {
