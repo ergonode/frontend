@@ -8,13 +8,16 @@
         :scope="scope"
         :change-values="changeValues"
         :errors="errors"
-        :disabled="!isAllowedToUpdate" />
+        :disabled="!isAllowedToUpdate || isReadOnly" />
 </template>
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
 import AttributeOptionValues from '@Attributes/extends/attribute/components/Forms/Sections/AttributeOptionValues';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'AttributeTranslationFormOptions',
@@ -25,10 +28,16 @@ export default {
         translationCardMixin,
     ],
     computed: {
+        ...mapState('authentication', {
+            languagePrivileges: state => state.user.languagePrivileges,
+        }),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.update,
             ]);
+        },
+        isReadOnly() {
+            return !this.languagePrivileges[this.languageCode].edit;
         },
     },
 };
