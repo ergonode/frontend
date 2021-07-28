@@ -22,7 +22,6 @@ import {
 } from '@Core/defaults/alerts';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import ProductForm from '@Products/components/Forms/ProductForm';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
 } from 'vuex';
@@ -31,7 +30,6 @@ export default {
     name: 'ProductGeneralTab',
     components: {
         ProductForm,
-        CenterViewTemplate,
     },
     mixins: [
         tabFeedbackMixin,

@@ -21,7 +21,6 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import UserForm from '@Users/components/Forms/UserForm';
 import {
     mapActions,
@@ -30,7 +29,6 @@ import {
 export default {
     name: 'UserGeneralTab',
     components: {
-        CenterViewTemplate,
         UserForm,
     },
     mixins: [

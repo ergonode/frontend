@@ -7,7 +7,7 @@
         <FadeTransition>
             <slot name="header" />
         </FadeTransition>
-        <FadeTransition v-if="isPlaceholder">
+        <FadeTransition v-if="!isPlaceholder">
             <List>
                 <slot name="content" />
             </List>

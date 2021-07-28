@@ -34,7 +34,7 @@ MultiSteps([
 ], 'I click on {string} button', (id) => {
     cy.get(`[data-cy=${id}]`)
         .click({
-            multiple: true,
+            force: true,
         });
 });
 
@@ -195,7 +195,9 @@ MultiSteps([
         .contains(new RegExp(`${escapeStringRegexp(searchValue)}$`, 'g'))
         .parents('.workflow-designer-header-layer-cell')
         .find(`[data-cy=status-column-${action}]`)
-        .click();
+        .click({
+            force: true,
+        });
 });
 
 MultiSteps([

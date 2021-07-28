@@ -9,9 +9,6 @@
         :theme="secondaryTheme"
         :disabled="!isAllowedToUpdate"
         @click.native="onShowModal">
-        <template #prepend="{ color }">
-            <IconAdd :fill-color="color" />
-        </template>
         <UploadImportFileModalForm
             v-if="isModalVisible"
             @close="onCloseModal"

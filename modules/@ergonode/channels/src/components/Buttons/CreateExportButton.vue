@@ -8,11 +8,7 @@
         :size="smallSize"
         :theme="secondaryTheme"
         :disabled="!isAllowedToUpdate"
-        @click.native="onCreateExport">
-        <template #prepend="{ color }">
-            <IconAdd :fill-color="color" />
-        </template>
-    </Button>
+        @click.native="onCreateExport" />
 </template>
 
 <script>

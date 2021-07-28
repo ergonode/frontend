@@ -58,7 +58,6 @@ import {
     GREY_DARK,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import ActionBaseButton from '@UI/components/ActionButton/ActionBaseButton';
 
 /**
  * `ActionFab` is an `ActionBaseButton` with a `IconButton` inside named slot `button`.
@@ -66,9 +65,6 @@ import ActionBaseButton from '@UI/components/ActionButton/ActionBaseButton';
  */
 export default {
     name: 'ActionFab',
-    components: {
-        ActionBaseButton,
-    },
     props: {
         /**
          * The theme of the component

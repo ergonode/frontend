@@ -15,13 +15,11 @@
 
 <script>
 import CollectionProductsGrid from '@Collections/components/Grids/CollectionProductsGrid';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'CollectionProductsTab',
     components: {
         CollectionProductsGrid,
-        CenterViewTemplate,
     },
     props: {
         scope: {

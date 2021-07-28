@@ -3,27 +3,16 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="product-collection-item">
-        <!-- TODO: Change relation to `multimedia` href.
-             INFO: Secure relationship does not break the application.
-        -->
-        <LazyImage
-            v-if="item.image"
-            :href="`multimedia/${item.image}/download/default`"
-            :value="item.image"
-            :height="collectionImageHeight" />
-        <DefaultImage v-else />
-        <span
-            class="product-collection-item__title"
-            :title="item.description"
-            v-text="item.description" />
-    </div>
+    <GridCollectionDefaultCell
+        :data="itemWithoutRemoveAction"
+        object-fit="cover"
+        @row-action="onRowAction" />
 </template>
 
 <script>
 import {
-    COLLECTION_IMAGE_HEIGHT,
-} from '@Core/defaults/grid';
+    ROUTE_NAME,
+} from '@Products/config/routes';
 
 export default {
     name: 'ProductCollectionItem',
@@ -34,33 +23,31 @@ export default {
         },
     },
     computed: {
-        collectionImageHeight() {
-            return COLLECTION_IMAGE_HEIGHT;
+        itemWithoutRemoveAction() {
+            const item = {
+                ...this.item,
+            };
+            delete item.actions.delete;
+
+            return item;
+        },
+    },
+    methods: {
+        onRowAction({
+            key,
+            value,
+        }) {
+            if (key === 'edit' || key === 'preview') {
+                const lastIndex = value.length - 1;
+
+                this.$router.push({
+                    name: ROUTE_NAME.PRODUCT_EDIT_GENERAL,
+                    params: {
+                        id: value[lastIndex],
+                    },
+                });
+            }
         },
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .product-collection-item {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        height: 190px;
-        border: $BORDER_1_GREY;
-        box-sizing: border-box;
-        text-align: left;
-        white-space: nowrap;
-
-        &__title {
-            height: 32px;
-            padding: 8px;
-            box-sizing: border-box;
-            color: $GRAPHITE_DARK;
-            font: $FONT_MEDIUM_12_16;
-            border-top: $BORDER_1_GREY;
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-    }
-</style>

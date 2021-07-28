@@ -126,7 +126,12 @@
           "successAlert": "Atrybuty {info} zostały przywrócone"
         },
         "ProductTemplateTab": {
-          "editLanguageSelectLabel": "Edytuj język"
+          "editLanguageSelectLabel": "Edytuj język",
+          "placeholderTitle": "Szablon jest pusty",
+          "placeholderSubtitle": "W szablonie produktowym nie ma atrybutów. Edytuj szablon i wybierz atrybuty, które chcesz wyświetlić."
+        },
+        "EditProductTemplateButton": {
+          "title": "Edytuj szablon"
         }
       },
       "pages": {
@@ -216,7 +221,8 @@
           "label": "Dowiązujący atrybut"
         },
         "ProductAttributesBindingForm": {
-          "listTitle": "DODAJ ATRYBUT DOWIĄZUJĄCY"
+          "listTitle": "DODAJ ATRYBUT DOWIĄZUJĄCY",
+          "listTittleTooltip": "Nie ma więcej atrybutów typu pola wyboru"
         },
         "UpdateProductsAttachmentButton": {
           "successMessage": "Załącznik do produktów został zaktualizowany"

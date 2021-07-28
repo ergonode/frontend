@@ -2,6 +2,7 @@
  * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import ActionBaseButton from '@UI/components/ActionButton/ActionBaseButton';
 import ActionButton from '@UI/components/ActionButton/ActionButton';
 import ActionFab from '@UI/components/ActionFab/ActionFab';
 import ActionIconButton from '@UI/components/ActionIconButton/ActionIconButton';
@@ -135,6 +136,7 @@ import InputUploadPlaceholder from '@UI/components/Input/InputUploadPlaceholder'
 import InputUploadSpinner from '@UI/components/Input/InputUploadSpinner';
 import InputUUIDProvider from '@UI/components/Input/InputUUIDProvider';
 import Page from '@UI/components/Layout/Page';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import LazyImage from '@UI/components/LazyImage/LazyImage';
 import LinkButton from '@UI/components/LinkButton/LinkButton';
 import List from '@UI/components/List/List';
@@ -256,6 +258,7 @@ Vue.component('Dropdown', Dropdown);
 Vue.component('Toggler', Toggler);
 Vue.component('Button', Button);
 Vue.component('ActionButton', ActionButton);
+Vue.component('ActionBaseButton', ActionBaseButton);
 Vue.component('ActionIconButton', ActionIconButton);
 Vue.component('ActionFab', ActionFab);
 Vue.component('Alert', Alert);
@@ -485,3 +488,4 @@ Vue.component('GridTitleHeaderCell', GridTitleHeaderCell);
 Vue.component('GridSelectRowActionFabCell', GridSelectRowActionFabCell);
 Vue.component('GridTableCell', GridTableCell);
 Vue.component('Page', Page);
+Vue.component('CenterViewTemplate', CenterViewTemplate);

@@ -32,6 +32,15 @@
           "createCancel": "Creating resource has been canceled",
           "updateCancel": "Updating resource has been canceled",
           "deleteCancel": "Removing resource has been canceled"
+        },
+        "metadata": {
+          "alpha": "Alpha",
+          "createdAt": "Created at",
+          "height": "Height",
+          "resolution": "Resolution",
+          "size": "Size",
+          "type": "Type",
+          "width": "Width"
         }
       },
       "components": {

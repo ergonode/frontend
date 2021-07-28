@@ -2,28 +2,72 @@
  * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+
+// Benchmark
+
+/*
+const commands = [];
+
+Cypress.on('test:after:run', (attributes) => {
+    console.log('Test "%s" has finished in %dms',
+        attributes.title, attributes.duration);
+    console.table(commands);
+    commands.length = 0;
+});
+
+Cypress.on('command:start', (c) => {
+    commands.push({
+        name: c.attributes.name,
+        args: c.attributes.args.toString(),
+        started: +new Date(),
+    });
+});
+
+Cypress.on('command:end', (c) => {
+    const lastCommand = commands[commands.length - 1];
+
+    if (lastCommand.name !== c.attributes.name) {
+        throw new Error('Last command is wrong');
+    }
+
+    lastCommand.endedAt = +new Date();
+    lastCommand.elapsed = `${lastCommand.endedAt - lastCommand.started} ms`;
+}); */
+
+// Benchmark
+
 Cypress.Commands.add('login', (email, pass) => {
     cy.getCookie('token')
         .then((token) => {
             if (!token) {
                 cy.visit('');
-                cy.intercept('POST', '**/login').as('postLogin');
-                cy.intercept('GET', '**/profile').as('profile');
-                cy.intercept('GET', '**/languages?limit=9999&offset=0&view=list&field=name&order=ASC').as('languages');
-                cy.intercept('GET', '**/language/tree').as('languageTree');
+                cy.intercept(
+                    {
+                        method: 'POST',
+                        url: /login/,
+                    },
+                ).as('postLogin');
+                cy.intercept(
+                    {
+                        method: 'GET',
+                        url: /profile/,
+                    },
+                ).as('profile');
+
                 cy
                     .get('[data-cy=login-email]')
                     .find('input')
-                    .type(email)
+                    .fill(email)
                     .should('have.value', email);
                 cy
                     .get('[data-cy=login-pass]')
                     .find('input')
-                    .type(pass)
+                    .fill(pass)
                     .should('have.value', pass);
                 cy
                     .get('[data-cy=submit]')
                     .click();
+
                 cy
                     .wait('@postLogin')
                     .its('response.statusCode')
@@ -32,17 +76,6 @@ Cypress.Commands.add('login', (email, pass) => {
                     .wait('@profile')
                     .its('response.statusCode')
                     .should('eq', 200);
-                cy
-                    .wait('@languages')
-                    .its('response.statusCode')
-                    .should('eq', 200);
-                cy
-                    .wait('@languageTree')
-                    .its('response.statusCode')
-                    .should('eq', 200);
-                cy
-                    .url()
-                    .should('include', '/dashboard');
             }
         });
 });
@@ -116,4 +149,39 @@ Cypress.Commands.add('openPage', ({
                 statusCode: 200,
             });
         });
+});
+
+Cypress.Commands.add('fill', {
+    prevSubject: 'element',
+}, (subject, value) => {
+    cy.wrap(subject).invoke('val', value).trigger('input').trigger('change');
+});
+
+Cypress.Commands.add('chooseOption', {
+    prevSubject: 'element',
+}, (subject, value) => {
+    const id = subject.selector.match(/\[data-cy=(.*[^\]])/i)[1];
+
+    cy.wrap(subject)
+        .click();
+    cy.get(`[data-cy=${id}-drop-down]`)
+        .should('be.visible')
+        .find('.list-element')
+        .as('elementList');
+    cy.get('@elementList')
+        .its('length')
+        .should('be.gt', 0);
+    cy.get('@elementList')
+        .each(($option) => {
+            if ($option.text().trim() === value) {
+                expect($option.text().trim()).equal(value);
+                cy.wrap($option).as('selectedOption');
+            }
+        });
+    cy.get('@selectedOption')
+        .click();
+    cy.get(`[data-cy=${id}-value] span`)
+        .contains(value);
+    cy.get(`[data-cy=${id}-drop-down]`)
+        .should('be.not.visible');
 });

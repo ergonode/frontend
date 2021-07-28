@@ -31,14 +31,12 @@ import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
 import CreateProductTemplateButton from '@Templates/components/Buttons/CreateProductTemplateButton';
 import ProductTemplatesGrid from '@Templates/components/Grids/ProductTemplatesGrid';
 import PRIVILEGES from '@Templates/config/privileges';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'Templates',
     components: {
         ProductTemplatesGrid,
         CreateProductTemplateButton,
-        CenterViewTemplate,
     },
     mixins: [
         beforeRouteLeaveMixin,

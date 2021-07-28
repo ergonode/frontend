@@ -22,7 +22,6 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
 } from 'vuex';
@@ -31,7 +30,6 @@ export default {
     name: 'UnitGeneralTab',
     components: {
         UnitForm,
-        CenterViewTemplate,
     },
     mixins: [
         tabFeedbackMixin,

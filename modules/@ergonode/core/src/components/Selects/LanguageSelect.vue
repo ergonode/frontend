@@ -7,20 +7,26 @@
         :value="languagesValue"
         :label="label"
         :size="size"
+        :search-value="searchValue"
         :multiselect="multiselect"
         :clearable="clearable"
+        :searchable="searchable"
         :required="required"
         :disabled="disabled"
         :options="languageOptions"
         :error-messages="errorMessages"
         :data-cy="dataCy"
-        @input="onSelect" />
+        @input="onSelect"
+        @search="onDebounceSearch" />
 </template>
 
 <script>
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import {
+    debounce,
+} from 'debounce';
 import {
     mapGetters,
     mapState,
@@ -68,6 +74,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        searchable: {
+            type: Boolean,
+            default: false,
+        },
         restrictedByPrivileges: {
             type: Boolean,
             default: false,
@@ -76,6 +86,12 @@ export default {
             type: String,
             default: '',
         },
+    },
+    data() {
+        return {
+            searchValue: '',
+            onDebounceSearch: null,
+        };
     },
     computed: {
         ...mapState('authentication', {
@@ -101,14 +117,33 @@ export default {
             );
         },
         languageOptions() {
-            return (this.restrictedByPrivileges
+            const lowerCaseSearchValue = this.searchValue.toLowerCase();
+
+            const options = this.restrictedByPrivileges
                 ? this.availableLanguages
-                : this.languages).map(language => ({
-                id: language.id,
-                key: language.code,
-                value: language.name,
-            }));
+                : this.languages;
+
+            return options
+                .map(language => ({
+                    id: language.id,
+                    key: language.code,
+                    value: language.name,
+                }))
+                .filter(option => (
+                    option.value || option.key
+                ).toLowerCase().includes(lowerCaseSearchValue))
+                .sort((a, b) => {
+                    const fieldA = a.value || a.key;
+                    const fieldB = b.value || b.key;
+
+                    return fieldA.toLowerCase().localeCompare(fieldB.toLowerCase());
+                });
         },
+    },
+    created() {
+        if (this.searchable) {
+            this.onDebounceSearch = debounce(this.onSearch, 500);
+        }
     },
     methods: {
         onSelect(value) {
@@ -121,6 +156,9 @@ export default {
             }
 
             this.$emit('input', languageCodes);
+        },
+        onSearch(value) {
+            this.searchValue = value;
         },
     },
 };

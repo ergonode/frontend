@@ -18,11 +18,11 @@ import {
 MultiSteps([
     When,
     Then,
+    And,
 ], 'I fill the {string} input with the {string} term', (id, term) => {
-    cy.get(`[data-cy=${id}]`)
+    cy.get(`form [data-cy=${id}]`)
         .find('input')
-        .clear()
-        .type(term)
+        .fill(term)
         .should('have.value', term);
 });
 
@@ -32,8 +32,7 @@ MultiSteps([
 ], 'I fill the {string} textarea with the {string} term', (id, term) => {
     cy.get(`[data-cy=${id}]`)
         .find('textarea')
-        .clear()
-        .type(term)
+        .fill(term)
         .should('have.value', term);
 });
 
@@ -127,8 +126,7 @@ MultiSteps([
 
     cy.get(`[data-cy=${name}]`)
         .find('input')
-        .clear()
-        .type(term)
+        .fill(term)
         .should('have.value', term);
 });
 
@@ -140,8 +138,7 @@ MultiSteps([
 
     cy.get(`[data-cy=${name}]`)
         .find('textarea')
-        .clear()
-        .type(term)
+        .fill(term)
         .should('have.value', term);
 });
 
@@ -153,8 +150,7 @@ MultiSteps([
 
     cy.get(`[data-cy=${name}]`)
         .find('input')
-        .clear()
-        .type(term)
+        .fill(term)
         .should('have.value', term);
 });
 
@@ -177,9 +173,7 @@ MultiSteps([
         .find('.color-picker-content > .color').as('elementList');
     cy.get('@elementList').its('length').should('be.gt', 0);
     cy.get('@elementList').eq(optionNr).as('selectedOption');
-    cy.get('@selectedOption').click({
-        force: true,
-    });
+    cy.get('@selectedOption').click();
     cy.get(`[data-cy=${id}-drop-down]`).find('button').contains('OK').click();
     cy.get(`[data-cy=${id}-drop-down]`).should('be.not.visible');
 });

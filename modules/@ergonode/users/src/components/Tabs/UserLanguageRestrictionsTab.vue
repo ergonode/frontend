@@ -15,14 +15,12 @@
 
 <script>
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import UserLanguageRestrictionsGrid from '@Users/components/Grids/UserLanguageRestrictionsGrid';
 
 export default {
     name: 'UserLanguageRestrictionsTab',
     components: {
         UserLanguageRestrictionsGrid,
-        CenterViewTemplate,
     },
     mixins: [
         tabFeedbackMixin,

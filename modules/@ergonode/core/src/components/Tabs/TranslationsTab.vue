@@ -32,7 +32,6 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapGetters,
     mapState,
@@ -41,7 +40,6 @@ import {
 export default {
     name: 'TranslationsTab',
     components: {
-        CenterViewTemplate,
         LanguageSelect,
     },
     data() {

@@ -22,7 +22,6 @@ import {
 } from '@Core/defaults/alerts';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import SegmentForm from '@Segments/components/Forms/SegmentForm';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
 } from 'vuex';
@@ -31,7 +30,6 @@ export default {
     name: 'SegmentGeneralTab',
     components: {
         SegmentForm,
-        CenterViewTemplate,
     },
     mixins: [
         tabFeedbackMixin,

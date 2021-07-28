@@ -22,7 +22,6 @@ import {
 } from '@Core/defaults/alerts';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import CategoryTreeForm from '@Trees/components/Forms/CategoryTreeForm';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
 } from 'vuex';
@@ -31,7 +30,6 @@ export default {
     name: 'CategoryTreeGeneralTab',
     components: {
         CategoryTreeForm,
-        CenterViewTemplate,
     },
     mixins: [
         tabFeedbackMixin,

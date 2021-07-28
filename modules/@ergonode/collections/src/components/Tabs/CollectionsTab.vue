@@ -12,12 +12,10 @@
 
 <script>
 import CollectionsGrid from '@Collections/components/Grids/CollectionsGrid';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'CollectionsTab',
     components: {
-        CenterViewTemplate,
         CollectionsGrid,
     },
 };

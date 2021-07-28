@@ -68,6 +68,7 @@
                     :data-cy="dataCyGenerator(languageFieldKey)"
                     :value="languageCode"
                     required
+                    searchable
                     :label="$t('@Users.user.components.UserForm.languageLabel')"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[languageFieldKey]"

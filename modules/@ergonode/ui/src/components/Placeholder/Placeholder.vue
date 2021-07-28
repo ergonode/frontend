@@ -42,6 +42,7 @@ export default {
             validator: value => [
                 SIZE.SMALL,
                 SIZE.REGULAR,
+                SIZE.LARGE,
             ].indexOf(value) !== -1,
         },
         /**
@@ -127,7 +128,9 @@ export default {
 
         &--regular {
             padding: 40px 40px 0;
+        }
 
+        &--regular, &--large {
             #{$placeholder}__description {
                 grid-template-columns: minmax(min-content, 272px);
             }

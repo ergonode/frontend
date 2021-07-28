@@ -1,0 +1,125 @@
+{
+  "columns": [
+    {
+      "id": "id",
+      "type": "TEXT",
+      "label": "Id",
+      "visible": false,
+      "editable": false,
+      "deletable": false,
+      "filter": {
+        "type": "IN"
+      }
+    },
+    {
+      "id": "code",
+      "type": "TEXT",
+      "label": "System name",
+      "visible": true,
+      "editable": false,
+      "deletable": false,
+      "filter": {
+        "type": "TEXT"
+      }
+    },
+    {
+      "id": "name",
+      "type": "TEXT",
+      "label": "Name",
+      "visible": true,
+      "editable": false,
+      "deletable": false,
+      "filter": {
+        "type": "TEXT"
+      }
+    },
+    {
+      "id": "elements_count",
+      "type": "INTEGER",
+      "label": "Number of attributes",
+      "visible": true,
+      "editable": false,
+      "deletable": false,
+      "filter": {
+        "type": "TEXT"
+      }
+    },
+    {
+      "id": "_links",
+      "type": "LINK",
+      "label": null,
+      "visible": false,
+      "editable": false,
+      "deletable": false
+    }
+  ],
+  "collection": [
+    {
+      "id": {
+        "value": "8f1a627e-a78c-4aae-be0e-196a877188ab"
+      },
+      "code": {
+        "value": "group_code"
+      },
+      "name": {
+        "value": "English_label_1"
+      },
+      "elements_count": {
+        "value": 0
+      },
+      "_links": {
+        "value": {
+          "get": {
+            "href": "//localhost:8000/api/v1/en_GB/attributes/groups/8f1a627e-a78c-4aae-be0e-196a877188ab",
+            "method": "GET"
+          },
+          "edit": {
+            "href": "//localhost:8000/api/v1/en_GB/attributes/groups/8f1a627e-a78c-4aae-be0e-196a877188ab",
+            "method": "PUT"
+          },
+          "delete": {
+            "href": "//localhost:8000/api/v1/en_GB/attributes/groups/8f1a627e-a78c-4aae-be0e-196a877188ab",
+            "method": "DELETE"
+          }
+        }
+      }
+    },
+    {
+      "id": {
+        "value": "cc69f40b-b6ad-4a98-a29a-7bac8ecf9ee4"
+      },
+      "code": {
+        "value": "text_attribute_group"
+      },
+      "name": {
+        "value": ""
+      },
+      "elements_count": {
+        "value": 0
+      },
+      "_links": {
+        "value": {
+          "get": {
+            "href": "//localhost:8000/api/v1/en_GB/attributes/groups/cc69f40b-b6ad-4a98-a29a-7bac8ecf9ee4",
+            "method": "GET"
+          },
+          "edit": {
+            "href": "//localhost:8000/api/v1/en_GB/attributes/groups/cc69f40b-b6ad-4a98-a29a-7bac8ecf9ee4",
+            "method": "PUT"
+          },
+          "delete": {
+            "href": "//localhost:8000/api/v1/en_GB/attributes/groups/cc69f40b-b6ad-4a98-a29a-7bac8ecf9ee4",
+            "method": "DELETE"
+          }
+        }
+      }
+    }
+  ],
+  "info": {
+    "offset": 0,
+    "limit": 25,
+    "count": 2,
+    "filtered": 2,
+    "actions": []
+  }
+}

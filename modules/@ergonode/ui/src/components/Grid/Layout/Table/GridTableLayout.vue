@@ -54,17 +54,23 @@
                         :is="columnComponents[column.type]"
                         :style="templateRows"
                         :key="column.id"
-                        :index="columnIndex"
+                        :scope="scope"
+                        :column-index="columnIndex + columnsOffset"
                         :column="column"
                         :rows="rows"
-                        :row-ids="rowIds"
-                        :drafts="drafts"
+                        :rows-offset="rowsOffset"
+                        :sort-order="sortOrder"
                         :filters="filters"
+                        :data-filter-cell-components="dataFilterCellComponents"
+                        :data-cell-components="dataCellComponents"
+                        :row-ids="rowIds"
+                        :errors="errors"
                         :disabled-rows="disabledRows"
+                        :drafts="drafts"
                         :selected-rows="selectedRows"
                         :excluded-from-selection-rows="excludedFromSelectionRows"
-                        :rows-offset="rowsOffset"
                         :is-basic-filter="isBasicFilter"
+                        :is-editable="isEditable"
                         :is-selected-all="isSelectedAll"
                         @remove="onRemoveColumn"
                         @swap="onSwapColumns"
@@ -610,40 +616,40 @@ export default {
                 } = column;
 
                 if (typeof this.extendedComponents.columns[type] !== 'undefined') {
+                    this.columnTypes[type] = this.getColumnTypeName(column);
+
                     requests.push(this.setExtendedColumn(type));
-                } else {
-                    if (typeof this.columnTypes[type] === 'undefined') {
-                        this.columnTypes[type] = this.getColumnTypeName(column);
+                } else if (typeof this.columnTypes[type] === 'undefined') {
+                    this.columnTypes[type] = this.getColumnTypeName(column);
 
-                        try {
-                            if (this.extendedComponents.dataCells
+                    try {
+                        if (this.extendedComponents.dataCells
                                 && this.extendedComponents.dataCells[type]) {
-                                requests.push(this.setExtendedDataCell(type));
-                            } else {
-                                requests.push(this.setDataCell(type));
-                            }
-                        } catch (e) {
-                            requests.push(this.setDefaultDataCell(type));
+                            requests.push(this.setExtendedDataCell(type));
+                        } else {
+                            requests.push(this.setDataCell(type));
                         }
+                    } catch (e) {
+                        requests.push(this.setDefaultDataCell(type));
                     }
+                }
 
-                    if (column.filter && typeof this.filterTypes[column.filter.type] === 'undefined') {
-                        const {
-                            type: filterType,
-                        } = column.filter;
+                if (column.filter && typeof this.filterTypes[column.filter.type] === 'undefined') {
+                    const {
+                        type: filterType,
+                    } = column.filter;
 
-                        this.filterTypes[filterType] = this.getColumnFilterTypeName(column);
+                    this.filterTypes[filterType] = this.getColumnFilterTypeName(column);
 
-                        try {
-                            if (this.extendedComponents.dataFilterCells
-                                && this.extendedComponents.dataFilterCells[filterType]) {
-                                requests.push(this.setExtendedFilterDataCell(filterType));
-                            } else {
-                                requests.push(this.setDataFilterCell(filterType));
-                            }
-                        } catch (e) {
-                            requests.push(this.setDefaultDataFilterCell(filterType));
+                    try {
+                        if (this.extendedComponents.dataFilterCells
+                            && this.extendedComponents.dataFilterCells[filterType]) {
+                            requests.push(this.setExtendedFilterDataCell(filterType));
+                        } else {
+                            requests.push(this.setDataFilterCell(filterType));
                         }
+                    } catch (e) {
+                        requests.push(this.setDefaultDataFilterCell(filterType));
                     }
                 }
 

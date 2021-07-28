@@ -12,12 +12,10 @@
 
 <script>
 import MediaGrid from '@Media/components/Grids/MediaGrid';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'MediaTab',
     components: {
-        CenterViewTemplate,
         MediaGrid,
     },
 };

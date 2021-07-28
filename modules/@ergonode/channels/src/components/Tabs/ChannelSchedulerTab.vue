@@ -22,7 +22,6 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
 } from 'vuex';
@@ -30,7 +29,6 @@ import {
 export default {
     name: 'ChannelSchedulerTab',
     components: {
-        CenterViewTemplate,
         SchedulerForm,
     },
     mixins: [

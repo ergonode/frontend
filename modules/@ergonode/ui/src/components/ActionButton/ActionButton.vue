@@ -64,7 +64,6 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import ActionBaseButton from '@UI/components/ActionButton/ActionBaseButton';
 
 /**
  * `ActionButton` is an `ActionBaseButton` with a `Button` inside named slot `button`.
@@ -72,9 +71,6 @@ import ActionBaseButton from '@UI/components/ActionButton/ActionBaseButton';
  */
 export default {
     name: 'ActionButton',
-    components: {
-        ActionBaseButton,
-    },
     props: {
         /**
          * The theme of the component

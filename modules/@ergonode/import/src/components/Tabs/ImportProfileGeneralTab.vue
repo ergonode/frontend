@@ -22,7 +22,6 @@ import {
 } from '@Core/defaults/alerts';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import ImportProfileForm from '@Import/components/Forms/ImportProfileForm';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
 } from 'vuex';
@@ -30,7 +29,6 @@ import {
 export default {
     name: 'ImportProfileGeneralTab',
     components: {
-        CenterViewTemplate,
         ImportProfileForm,
     },
     mixins: [

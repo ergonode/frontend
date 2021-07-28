@@ -12,13 +12,11 @@
 
 <script>
 import UnitsGrid from '@Core/components/Grids/UnitsGrid';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'UnitSettingsTab',
     components: {
         UnitsGrid,
-        CenterViewTemplate,
     },
 };
 </script>
