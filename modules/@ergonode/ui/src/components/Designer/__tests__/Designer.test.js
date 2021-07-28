@@ -13,6 +13,7 @@ import {
 } from '@vue/test-utils';
 
 const localVue = createLocalVue();
+localVue.component('Button', {});
 
 describe('Designer/DesignerBackgroundLayer', () => {
     let wrapper;
