@@ -20,6 +20,7 @@ export const Icons = {
 export const Components = {
     ProductFormTemplate: () => import('@Templates/extends/components/Forms/ProductFormTemplate').then(m => m.default || m),
     WidgetsVerticalTab: () => import('@Templates/components/VerticalTabs/WidgetsVerticalTab').then(m => m.default || m),
+    EditProductTemplateButton: () => import('@Templates/extends/components/Buttons/EditProductTemplateButton').then(m => m.default || m),
 };
 
 export const Store = {
