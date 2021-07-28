@@ -217,7 +217,7 @@
         },
         "ProductAttributesBindingForm": {
           "listTitle": "DODAJ ATRYBUT DOWIĄZUJĄCY",
-          "listTittleTooltip": "Nie ma więcej atrybutów typu pola tekstowego"
+          "listTittleTooltip": "Nie ma więcej atrybutów typu pola wyboru"
         },
         "UpdateProductsAttachmentButton": {
           "successMessage": "Załącznik do produktów został zaktualizowany"

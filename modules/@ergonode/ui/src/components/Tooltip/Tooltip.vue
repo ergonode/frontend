@@ -77,27 +77,19 @@ export default {
         };
     },
     watch: {
-        title: {
-            immediate: true,
-            handler() {
-                if (this.title) {
-                    this.initTooltip();
-                }
-            },
+        title(curr, prev) {
+            if (prev !== '' && curr === '') {
+                this.destroyTooltip();
+            } else {
+                this.initTooltip();
+            }
         },
     },
+    mounted() {
+        this.initTooltip();
+    },
     beforeDestroy() {
-        const app = document.documentElement.querySelector('.app');
-
-        if (app.contains(this.tooltip)) {
-            app.removeChild(this.tooltip);
-
-            this.tooltip = null;
-        }
-
-        this.$el.removeEventListener('click', this.onClick);
-        this.$el.removeEventListener('mouseenter', this.onMouseEnter);
-        document.documentElement.removeEventListener('mousemove', this.onMouseMove);
+        this.destroyTooltip();
     },
     methods: {
         onClick() {
@@ -145,13 +137,26 @@ export default {
             }
         },
         initTooltip() {
-            if (this.$el) {
+            if (this.$el && this.title !== '') {
                 if (this.showOnClick) {
                     this.$el.addEventListener('click', this.onClick);
                 } else {
                     this.$el.addEventListener('mouseenter', this.onMouseEnter);
                 }
             }
+        },
+        destroyTooltip() {
+            const app = document.documentElement.querySelector('.app');
+
+            if (app.contains(this.tooltip)) {
+                app.removeChild(this.tooltip);
+
+                this.tooltip = null;
+            }
+
+            this.$el.removeEventListener('click', this.onClick);
+            this.$el.removeEventListener('mouseenter', this.onMouseEnter);
+            document.documentElement.removeEventListener('mousemove', this.onMouseMove);
         },
         createTooltip() {
             const padding = 4;
@@ -233,6 +238,10 @@ export default {
             this.tooltip.classList.add('tooltip');
             this.tooltip.style = positionStyle;
 
+            if (this.position === POSITION.FLUID) {
+                this.updateFluidTooltipPosition(left, top);
+            }
+
             app.appendChild(this.tooltip);
         },
         updateFluidTooltipPosition(xPos, yPos) {
@@ -243,17 +252,23 @@ export default {
 </script>
 
 <style lang="scss">
+    .tooltip-wrapper {
+        width: fit-content;
+        height: fit-content;
+    }
+
     .tooltip {
         position: absolute;
-        z-index: $Z_INDEX_MAX;
+        z-index: $Z_INDEX_NEGATIVE;
         display: flex;
         padding: 4px;
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+        transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         opacity: 0;
         color: $WHITE;
         font: $FONT_MEDIUM_12_16;
 
         &--visible {
+            z-index: $Z_INDEX_MAX;
             opacity: 1;
         }
 
