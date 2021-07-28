@@ -11,6 +11,9 @@ module.exports = {
         'json',
         'vue',
     ],
+    setupFilesAfterEnv: [
+        '<rootDir>/modules/@ergonode/ui/src/plugins/global-component-loader.js',
+    ],
     snapshotSerializers: [
         'jest-serializer-vue',
     ],
