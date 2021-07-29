@@ -41,6 +41,7 @@ export default {
                 name,
                 extension,
                 alt,
+                mime,
             } = data;
             const translations = {
                 alt: Array.isArray(alt) ? {} : alt,
@@ -51,6 +52,10 @@ export default {
             commit('__SET_STATE', {
                 key: 'id',
                 value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'type',
+                value: mime.split('/')[0],
             });
             commit('__SET_STATE', {
                 key: 'name',
