@@ -165,8 +165,9 @@
         },
         "AddBindingAttributesModalForm": {
           "title": "Add binding attributes",
-          "submitTitle": "ADD ATTRIBUTES",
-          "successMessage": "Attribute bindings added"
+          "submitTitle": "CHOOSE ATTRIBUTES",
+          "successMessage": "Attribute bindings added",
+          "infoMessage": "No binding attributes have been chosen"
         },
         "ProductVariantsTab": {
           "placeholderTitle": "No binding attributes",

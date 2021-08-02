@@ -83,7 +83,12 @@ export default {
                 return;
             }
 
-            if (!arraysAreEqual(this.localBindings, this.bindings)) {
+            if (!this.localBindings.length && !this.bindings.length) {
+                this.$addAlert({
+                    type: ALERT_TYPE.INFO,
+                    message: this.$t('@Products.productExtend.components.AddBindingAttributesModalForm.infoMessage'),
+                });
+            } else if (!arraysAreEqual(this.localBindings, this.bindings)) {
                 this.isSubmitting = true;
 
                 this.removeScopeErrors(this.scope);
