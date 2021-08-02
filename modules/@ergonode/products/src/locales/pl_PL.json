@@ -171,8 +171,9 @@
         },
         "AddBindingAttributesModalForm": {
           "title": "Dodaj atrybuty dowiązujące",
-          "submitTitle": "Dodaj atrybuty",
-          "successMessage": "Atrybuty dowiązujące zostały dodane"
+          "submitTitle": "Wybierz atrybuty",
+          "successMessage": "Atrybuty dowiązujące zostały dodane",
+          "infoMessage": "Brak wybranych atrybutów dowiązujących"
         },
         "ProductVariantsTab": {
           "placeholderTitle": "Brak atrybutów dowiązujących",
