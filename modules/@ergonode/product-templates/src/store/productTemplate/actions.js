@@ -103,7 +103,7 @@ export default {
             );
 
             commit('__SET_STATE', {
-                key: 'layout-elements',
+                key: 'layoutElements',
                 value: layoutElements,
             });
 
