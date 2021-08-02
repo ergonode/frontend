@@ -7,6 +7,10 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
+    getMappedTransitions,
+    getSourceAndDestination,
+} from '@Workflow/models/workflowDesigner';
+import {
     createStatus,
     getDefaultStatus,
     getStatus,
@@ -70,7 +74,10 @@ export default {
 
             commit('__SET_STATE', {
                 key: 'transitions',
-                value: collection,
+                value: collection.map(transition => ({
+                    ...transition,
+                    isSaved: true,
+                })),
             });
 
             onSuccess();
@@ -423,7 +430,7 @@ export default {
             const [
                 source,
                 destination,
-            ] = id.split('--');
+            ] = getSourceAndDestination(id);
 
             // EXTENDED BEFORE METHOD
             await this.$getExtendMethod('@Workflow/store/workflow/action/getTransition/__before', {
@@ -572,9 +579,9 @@ export default {
     async updateTransitions(
         {
             state,
+            commit,
         },
         {
-            transitions,
             scope,
             onSuccess = () => {},
             onError = () => {},
@@ -583,7 +590,7 @@ export default {
         try {
             let data = {
                 statuses: state.statuses.map(status => status.id),
-                transitions,
+                transitions: getMappedTransitions(state.transitions),
             };
 
             // EXTENDED BEFORE METHOD
@@ -602,6 +609,14 @@ export default {
             await updateTransitions({
                 $axios: this.app.$axios,
                 data,
+            });
+
+            commit('__SET_STATE', {
+                key: 'transitions',
+                value: state.transitions.map(transition => ({
+                    ...transition,
+                    isSaved: true,
+                })),
             });
 
             // EXTENDED AFTER METHOD

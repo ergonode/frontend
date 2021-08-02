@@ -10,12 +10,20 @@
             :to="linkTo"
             @mouseenter.native="onMouseEnter"
             @mouseleave.native="onMouseLeave">
-            <IconEdit :fill-color="iconFillColor" />
+            <Fab
+                :theme="secondaryPlainTheme"
+                :size="tinySize">
+                <IconEdit :fill-color="iconFillColor" />
+            </Fab>
         </NuxtLink>
     </FadeTransition>
 </template>
 
 <script>
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 import {
     GRAPHITE_LIGHT,
     GREEN,
@@ -53,6 +61,12 @@ export default {
         iconFillColor() {
             return this.isHovered ? GREEN : GRAPHITE_LIGHT;
         },
+        tinySize() {
+            return SIZE.TINY;
+        },
+        secondaryPlainTheme() {
+            return THEME.SECONDARY_PLAIN;
+        },
     },
     methods: {
         onMouseEnter() {
@@ -67,11 +81,15 @@ export default {
 
 <style lang="scss" scoped>
     .workflow-designer-edit-status-link {
-        display: flex;
-        align-items: center;
-        width: 24px;
-        height: 24px;
-        transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-        will-change: opacity;
+        position: absolute;
+        right: 4px;
+        background-color: $WHITE;
+        border-radius: 12px;
+        box-shadow: $ELEVATOR_2_DP;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+
+        &:hover {
+            box-shadow: $ELEVATOR_HOVER_FOCUS;
+        }
     }
 </style>

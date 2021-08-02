@@ -7,12 +7,12 @@
         :class="classes"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave">
-        <div class="workflow-designer-header-layer-cell__title">
-            <WorkflowStatusBadge
-                :color="status.color"
-                :default-status="status.is_default" />
-            <span v-text="title" />
-        </div>
+        <WorkflowStatusBadge
+            :color="status.color"
+            :default-status="status.is_default" />
+        <span
+            class="workflow-designer-header-layer-cell__title"
+            v-text="title" />
         <WorkflowDesignerEditStatusLink
             v-if="isAllowedToUpdate"
             data-cy="status-column-edit"
@@ -89,10 +89,10 @@ export default {
 
 <style lang="scss" scoped>
     .workflow-designer-header-layer-cell {
+        position: relative;
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        padding: 0 2px 0 12px;
+        padding: 0 8px 0 4px;
         background-color: $WHITESMOKE;
         color: $GRAPHITE_DARK;
         font: $FONT_MEDIUM_12_16;
@@ -104,9 +104,11 @@ export default {
         }
 
         &__title {
-            display: flex;
-            align-items: center;
-            column-gap: 8px;
+            flex: 1;
+            width: 0;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
         }
     }
 </style>

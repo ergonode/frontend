@@ -41,12 +41,6 @@ export default {
     mixins: [
         updateButtonFeedbackMixin,
     ],
-    props: {
-        transitions: {
-            type: Array,
-            default: () => [],
-        },
-    },
     data() {
         return {
             isSubmitting: false,
@@ -71,7 +65,6 @@ export default {
 
             this.updateTransitions({
                 scope: this.scope,
-                transitions: this.transitions,
                 onSuccess: this.onCreateSuccess,
                 onError: this.onCreateError,
             });

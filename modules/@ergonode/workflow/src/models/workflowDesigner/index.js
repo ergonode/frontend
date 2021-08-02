@@ -2,6 +2,10 @@
  * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+export function getSourceAndDestination(id) {
+    return id.split('--');
+}
+
 export function getObstacleColumns({
     from,
     transitions,
@@ -38,42 +42,42 @@ export function getMappedLayoutElements({
         rowValues = null;
     }
 
-    return transitions.reduce((acc, current, index) => {
-        const tmpArray = acc;
+    return transitions.reduce((prev, current, index) => {
         const transitionId = `${current.source}--${current.destination}`;
         const from = statuses.findIndex(status => status.id === current.source);
         const to = statuses.findIndex(status => status.id === current.destination);
 
-        tmpArray.push({
-            id: transitionId,
-            from,
-            to,
-            row: rowValues ? rowValues[transitionId] : index,
-        });
-
-        return tmpArray;
+        return [
+            ...prev,
+            {
+                id: transitionId,
+                from,
+                to,
+                row: rowValues ? rowValues[transitionId] : index,
+            },
+        ];
     }, []);
 }
 
 export function getMappedStatusPositions({
     layoutElements, statuses,
 }) {
-    return layoutElements.reduce((acc, current) => {
-        const tmpArray = acc;
+    return layoutElements.reduce((prev, current) => {
         const [
             source,
             destination,
-        ] = current.id.split('--');
+        ] = getSourceAndDestination(current.id);
         const from = statuses.findIndex(status => status.id === source);
         const to = statuses.findIndex(status => status.id === destination);
 
-        tmpArray.push({
-            ...current,
-            from,
-            to,
-        });
-
-        return tmpArray;
+        return [
+            ...prev,
+            {
+                ...current,
+                from,
+                to,
+            },
+        ];
     }, []);
 }
 
@@ -85,30 +89,14 @@ export function getMappedRowPositions(layoutElements) {
 }
 
 export function getRows(layoutElements) {
-    return layoutElements.reduce((acc, current) => [
-        ...acc,
-        current.row,
-    ], []);
+    return layoutElements.map(element => element.row);
 }
 
-export function getMappedTransitions({
-    layoutElements, transitions,
-}) {
-    return layoutElements.map((element) => {
-        const [
-            source,
-            destination,
-        ] = element.id.split('--');
-        const currentTransition = transitions.find(
-            transition => transition.source === source
-            && transition.destination === destination,
-        );
-
-        return {
-            source,
-            destination,
-            roles: currentTransition ? currentTransition.roles : [],
-            condition_set: currentTransition ? currentTransition.condition_set_id : null,
-        };
-    });
+export function getMappedTransitions(transitions) {
+    return transitions.map(transition => ({
+        source: transition.source,
+        destination: transition.destination,
+        roles: transition.roles,
+        condition_set: transition.condition_set_id,
+    }));
 }
