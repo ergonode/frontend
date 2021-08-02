@@ -41,9 +41,6 @@ Cypress.Server.defaults({
         const regexString = ignorePaths.reduce((acc, current) => `${acc === '' ? acc : `${acc}|`}${escapeStringRegexp(current)}`, '');
         const checkPath = new RegExp(`${regexString}$`, 'g');
 
-        if (checkPath.test(xhr.url)) {
-            return true;
-        }
-        return false;
+        return checkPath.test(xhr.url);
     },
 });
