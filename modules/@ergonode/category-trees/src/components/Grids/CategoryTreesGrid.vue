@@ -81,15 +81,11 @@ import {
 import {
     CATEGORY_TREE_CREATED_EVENT_NAME,
 } from '@Trees/defaults';
-import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'CategoryTreesGrid',
     components: {
         CreateCategoryTreeButton,
-        Grid,
-        GridNoDataPlaceholder,
     },
     mixins: [
         extendPropsMixin({

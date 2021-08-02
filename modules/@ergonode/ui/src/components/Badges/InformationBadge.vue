@@ -19,13 +19,9 @@ import {
     GRAPHITE_DARK,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import BadgeLabel from '@UI/components/Badges/BadgeLabel';
 
 export default {
     name: 'InformationBadge',
-    components: {
-        BadgeLabel,
-    },
     props: {
         /**
          * The title of the component

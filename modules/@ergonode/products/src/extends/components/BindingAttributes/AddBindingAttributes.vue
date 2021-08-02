@@ -23,12 +23,10 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
 export default {
     name: 'AddBindingAttributes',
     components: {
-        IconAdd,
         AddBindingAttributesModalForm: () => import('@Products/extends/components/Modals/AddBindingAttributesModalForm'),
     },
     props: {

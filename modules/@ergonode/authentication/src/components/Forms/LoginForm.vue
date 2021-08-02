@@ -37,15 +37,9 @@ import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     isObject,
 } from '@Core/models/objectWrapper';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
 
 export default {
     name: 'LoginForm',
-    components: {
-        Form,
-        FormSection,
-    },
     mixins: [
         formActionsMixin,
     ],

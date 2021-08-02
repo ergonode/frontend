@@ -81,30 +81,12 @@ import {
 import {
     GRAPHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import CheckBox from '@UI/components/CheckBox/CheckBox';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
-import ListElementAction from '@UI/components/List/ListElementAction';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
-import Preloader from '@UI/components/Preloader/Preloader';
-import Select from '@UI/components/Select/Select';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
     debounce,
 } from 'debounce';
 
 export default {
     name: 'Autocomplete',
-    components: {
-        Preloader,
-        Select,
-        IconSpinner,
-        FadeTransition,
-        ListElementDescription,
-        ListElementTitle,
-        ListElementAction,
-        CheckBox,
-    },
     props: {
         /**
          * Component value

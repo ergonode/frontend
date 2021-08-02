@@ -15,16 +15,12 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import TreeSelect from '@UI/components/Select/Tree/TreeSelect';
 import {
     mapState,
 } from 'vuex';
 
 export default {
     name: 'LanguageTreeSelect',
-    components: {
-        TreeSelect,
-    },
     props: {
         value: {
             type: String,

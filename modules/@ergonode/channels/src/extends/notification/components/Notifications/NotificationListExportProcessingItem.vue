@@ -15,13 +15,11 @@
 
 <script>
 import NotificationListItemTemplate from '@Notifications/components/NotificationList/Item/NotificationListItemTemplate';
-import CircleProgressBar from '@UI/components/ProgressBar/Circle/CircleProgressBar';
 
 export default {
     name: 'NotificationListExportProcessingItem',
     components: {
         NotificationListItemTemplate,
-        CircleProgressBar,
     },
     props: {
         item: {

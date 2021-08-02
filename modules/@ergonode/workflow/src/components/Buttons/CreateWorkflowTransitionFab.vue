@@ -16,16 +16,10 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import Fab from '@UI/components/Fab/Fab';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import PRIVILEGES from '@Workflow/config/privileges';
 
 export default {
     name: 'CreateWorkflowTransitionFab',
-    components: {
-        Fab,
-        IconAdd,
-    },
     computed: {
         isAllowedToCreate() {
             return this.$hasAccess([

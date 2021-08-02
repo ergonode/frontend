@@ -32,7 +32,6 @@ import {
 } from '@Core/models/arrayWrapper';
 import ProductAttributesBindingForm
     from '@Products/extends/components/Forms/ProductAttributesBindingForm';
-import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
     mapState,
@@ -41,7 +40,6 @@ import {
 export default {
     name: 'AddBindingAttributesModalForm',
     components: {
-        ModalForm,
         ProductAttributesBindingForm,
     },
     mixins: [

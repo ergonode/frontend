@@ -81,8 +81,6 @@ import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import AdvancedFilterDropdown from '@UI/components/AdvancedFilters/Dropdown/AdvancedFilterDropdown';
-import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
-import InputUUIDProvider from '@UI/components/Input/InputUUIDProvider';
 import {
     getDraggedColumnPositionState,
 } from '@UI/models/dragAndDrop/helpers';
@@ -95,8 +93,6 @@ export default {
     name: 'AdvancedFilter',
     components: {
         AdvancedFilterDropdown,
-        IconArrowDropdown,
-        InputUUIDProvider,
     },
     props: {
         /**

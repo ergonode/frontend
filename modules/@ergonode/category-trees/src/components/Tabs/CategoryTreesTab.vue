@@ -12,13 +12,11 @@
 
 <script>
 import CategoryTreesGrid from '@Trees/components/Grids/CategoryTreesGrid';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'CategoryTreesTab',
     components: {
         CategoryTreesGrid,
-        CenterViewTemplate,
     },
 };
 </script>

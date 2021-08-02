@@ -14,12 +14,10 @@
 
 <script>
 import ProductBatchActionDetailsGrid from '@ProductBatchActions/components/Grids/ProductBatchActionDetailsGrid';
-import ModalGrid from '@UI/components/Modal/ModalGrid';
 
 export default {
     name: 'ProductBatchActionDetailsModalGrid',
     components: {
-        ModalGrid,
         ProductBatchActionDetailsGrid,
     },
     props: {

@@ -31,8 +31,6 @@ import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import SegmentsAutocomplete from '@Segments/components/Autocompletes/SegmentsAutocomplete';
 import PRIVILEGES from '@Segments/config/privileges';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
 import {
     mapActions,
 } from 'vuex';
@@ -41,8 +39,6 @@ export default {
     name: 'AddProductsFromSegmentForm',
     components: {
         SegmentsAutocomplete,
-        Form,
-        FormSection,
     },
     mixins: [
         formActionsMixin,

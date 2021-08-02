@@ -40,25 +40,9 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import CheckBox from '@UI/components/CheckBox/CheckBox';
-import ListElement from '@UI/components/List/ListElement';
-import ListElementAction from '@UI/components/List/ListElementAction';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
-import TreeAccordionItemBadge from '@UI/components/TreeAccordion/TreeAccordionItemBadge';
-import TreeAccordionItemNode from '@UI/components/TreeAccordion/TreeAccordionItemNode';
 
 export default {
     name: 'TreeAccordionItem',
-    components: {
-        TreeAccordionItemBadge,
-        TreeAccordionItemNode,
-        ListElement,
-        CheckBox,
-        ListElementAction,
-        ListElementDescription,
-        ListElementTitle,
-    },
     props: {
         item: {
             type: Object,

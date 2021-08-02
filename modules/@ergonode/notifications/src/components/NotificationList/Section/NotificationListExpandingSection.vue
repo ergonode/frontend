@@ -35,17 +35,11 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import NotificationListSection from '@Notifications/components/NotificationList/Section/NotificationListSection';
-import NumericBadge from '@UI/components/Badges/NumericBadge';
-import Fab from '@UI/components/Fab/Fab';
-import IconArrowDouble from '@UI/components/Icons/Arrows/IconArrowDouble';
 
 export default {
     name: 'NotificationListExpandingSection',
     components: {
         NotificationListSection,
-        IconArrowDouble,
-        Fab,
-        NumericBadge,
     },
     props: {
         title: {

@@ -47,9 +47,6 @@ import {
     deepClone,
 } from '@Core/models/objectWrapper';
 import DraggableFormGhostItem from '@UI/components/DraggableForm/DraggableFormGhostItem';
-import IconButton from '@UI/components/IconButton/IconButton';
-import IconDragDrop from '@UI/components/Icons/Actions/IconDragDrop';
-import IconFilledClose from '@UI/components/Icons/Window/IconFilledClose';
 import {
     getDraggedRowPositionState,
 } from '@UI/models/dragAndDrop/helpers';
@@ -65,9 +62,6 @@ export default {
     name: 'DraggableFormItem',
     components: {
         DraggableFormGhostItem,
-        IconFilledClose,
-        IconDragDrop,
-        IconButton,
     },
     props: {
         /**

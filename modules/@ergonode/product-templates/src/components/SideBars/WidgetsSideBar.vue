@@ -21,7 +21,6 @@ import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
 import WidgetSideBarElement from '@Templates/components/SideBars/WidgetSideBarElement';
-import SideBar from '@UI/components/SideBar/SideBar';
 import {
     mapState,
 } from 'vuex';
@@ -30,7 +29,6 @@ export default {
     name: 'WidgetsSideBar',
     components: {
         WidgetSideBarElement,
-        SideBar,
     },
     props: {
         scope: {

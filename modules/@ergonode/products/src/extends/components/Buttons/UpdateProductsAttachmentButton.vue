@@ -32,22 +32,12 @@ import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbac
 import {
     PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
 } from '@Products/extends/defaults';
-import Button from '@UI/components/Button/Button';
-import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
-import IconSync from '@UI/components/Icons/Feedback/IconSync';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
     name: 'UpdateProductsAttachmentButton',
-    components: {
-        FeedbackProvider,
-        Button,
-        IconSpinner,
-        IconSync,
-    },
     mixins: [
         updateButtonFeedbackMixin,
     ],

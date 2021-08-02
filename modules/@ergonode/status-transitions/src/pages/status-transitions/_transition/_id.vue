@@ -39,9 +39,6 @@ import beforeRouteUpdateMixin from '@Core/mixins/route/beforeRouteUpdateMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import RemoveStatusTransitionButton from '@Transitions/components/Buttons/RemoveStatusTransitionButton';
 import PRIVILEGES from '@Transitions/config/privileges';
-import Page from '@UI/components/Layout/Page';
-import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
-import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
     mapState,
 } from 'vuex';
@@ -49,9 +46,6 @@ import {
 export default {
     name: 'TransitionEdit',
     components: {
-        Page,
-        TitleBar,
-        HorizontalRoutingTabBar,
         RemoveStatusTransitionButton,
     },
     mixins: [

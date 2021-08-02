@@ -31,18 +31,12 @@ import PRIVILEGES from '@Roles/config/privileges';
 import {
     ROUTE_NAME,
 } from '@Roles/config/routes';
-import Button from '@UI/components/Button/Button';
-import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
     name: 'RemoveRoleButton',
-    components: {
-        Button,
-        IconDelete,
-    },
     computed: {
         isAllowedToDelete() {
             return this.$hasAccess([

@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import DatePicker from '@UI/components/DatePicker/DatePicker';
 import {
     DEFAULT_FORMAT,
 } from '@UI/models/calendar';
@@ -27,9 +26,6 @@ import {
 
 export default {
     name: 'AttributePriceFormField',
-    components: {
-        DatePicker,
-    },
     props: {
         value: {
             type: String,

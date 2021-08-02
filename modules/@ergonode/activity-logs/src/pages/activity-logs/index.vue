@@ -26,18 +26,10 @@
 <script>
 import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
-import Page from '@UI/components/Layout/Page';
-import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
-import TitleBar from '@UI/components/TitleBar/TitleBar';
 import PRIVILEGES from '@Users/config/privileges';
 
 export default {
     name: 'UsersTabs',
-    components: {
-        HorizontalRoutingTabBar,
-        TitleBar,
-        Page,
-    },
     mixins: [
         asyncTabsMixin,
         beforeRouteLeaveMixin,

@@ -81,15 +81,11 @@ import {
 import {
     SEGMENT_CREATED_EVENT_NAME,
 } from '@Segments/defaults';
-import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'SegmentsGrid',
     components: {
         CreateSegmentButton,
-        Grid,
-        GridNoDataPlaceholder,
     },
     mixins: [
         extendPropsMixin({

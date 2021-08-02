@@ -55,7 +55,6 @@ import {
 import {
     ELEVATOR_HOLE,
 } from '@UI/assets/scss/_js-variables/elevators.scss';
-import IconResize from '@UI/components/Icons/Others/IconResize';
 import {
     mapActions,
     mapState,
@@ -66,9 +65,6 @@ const unregisterResizeEventListeners = () => import('@UI/models/resize/unregiste
 
 export default {
     name: 'LayoutElement',
-    components: {
-        IconResize,
-    },
     props: {
         scope: {
             type: String,

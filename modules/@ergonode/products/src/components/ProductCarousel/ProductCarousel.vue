@@ -34,15 +34,11 @@ import ProductCarouselImage from '@Products/components/ProductCarousel/ProductCa
 import {
     ROUTE_NAME,
 } from '@Products/config/routes';
-import Carousel from '@UI/components/Carousel/Carousel';
-import Preloader from '@UI/components/Preloader/Preloader';
 
 export default {
     name: 'ProductCarousel',
     components: {
-        Carousel,
         ProductCarouselImage,
-        Preloader,
     },
     mixins: [
         confirmLeaveModalMixin,

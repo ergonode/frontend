@@ -22,7 +22,6 @@ import {
 } from '@Core/defaults/alerts';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import UserRoleForm from '@Roles/components/Forms/UserRoleForm';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
 } from 'vuex';
@@ -30,7 +29,6 @@ import {
 export default {
     name: 'RoleGeneralTab',
     components: {
-        CenterViewTemplate,
         UserRoleForm,
     },
     mixins: [

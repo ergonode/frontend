@@ -30,7 +30,6 @@ import TransitionForm from '@Transitions/components/Forms/TransitionForm';
 import {
     ROUTE_NAME,
 } from '@Transitions/config/routes';
-import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
     mapState,
@@ -39,7 +38,6 @@ import {
 export default {
     name: 'CreateStatusTransitionModalForm',
     components: {
-        ModalForm,
         TransitionForm,
     },
     mixins: [

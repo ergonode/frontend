@@ -26,7 +26,6 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
-import ModalForm from '@UI/components/Modal/ModalForm';
 import WorkflowStatusForm from '@Workflow/components/Forms/WorkflowStatusForm';
 import {
     ROUTE_NAME,
@@ -39,7 +38,6 @@ import {
 export default {
     name: 'CreateWorkflowStatusModalForm',
     components: {
-        ModalForm,
         WorkflowStatusForm,
     },
     mixins: [

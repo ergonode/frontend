@@ -91,22 +91,12 @@ import {
 import {
     MEDIA_TYPE,
 } from '@Media/defaults';
-import Button from '@UI/components/Button/Button';
-import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
-import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import {
     debounce,
 } from 'debounce';
 
 export default {
     name: 'AddMediaGrid',
-    components: {
-        Grid,
-        GridNoDataPlaceholder,
-        Button,
-        IntersectionObserver,
-    },
     mixins: [
         extendPropsMixin({
             extendedKey: '@Media/components/Grids/AddMediaGrid/props',

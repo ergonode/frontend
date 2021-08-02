@@ -12,15 +12,9 @@
 </template>
 
 <script>
-import DefaultImage from '@UI/components/DefaultImage/DefaultImage';
-import LazyImage from '@UI/components/LazyImage/LazyImage';
 
 export default {
     name: 'ProductCarouselImage',
-    components: {
-        DefaultImage,
-        LazyImage,
-    },
     props: {
         product: {
             type: Object,

@@ -32,11 +32,7 @@
 
 <script>
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
 import IconFontSize from '@UI/components/Icons/Editor/IconFontSize';
-import ModalForm from '@UI/components/Modal/ModalForm';
-import TextField from '@UI/components/TextField/TextField';
 import {
     mapActions,
 } from 'vuex';
@@ -45,10 +41,6 @@ export default {
     name: 'SectionTemplateModalForm',
     components: {
         IconFontSize,
-        FormSection,
-        Form,
-        TextField,
-        ModalForm,
     },
     mixins: [
         formFeedbackMixin,

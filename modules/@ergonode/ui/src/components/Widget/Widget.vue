@@ -20,13 +20,9 @@
 </template>
 
 <script>
-import WidgetNoDataPlaceholder from '@UI/components/Widget/WidgetNoDataPlaceholder';
 
 export default {
     name: 'Widget',
-    components: {
-        WidgetNoDataPlaceholder,
-    },
     props: {
         /**
          * The title of the component

@@ -52,7 +52,6 @@ import {
 } from '@Core/defaults/theme';
 import DatePickerContent from '@UI/components/DatePicker/DatePickerContent';
 import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
-import Select from '@UI/components/Select/Select';
 import {
     DEFAULT_FORMAT,
 } from '@UI/models/calendar';
@@ -63,7 +62,6 @@ import {
 export default {
     name: 'DatePicker',
     components: {
-        Select,
         DatePickerContent,
         SelectDropdownApplyFooter,
     },

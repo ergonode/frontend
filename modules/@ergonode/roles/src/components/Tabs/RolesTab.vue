@@ -12,13 +12,11 @@
 
 <script>
 import RolesGrid from '@Roles/components/Grids/RolesGrid';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'RolesTab',
     components: {
         RolesGrid,
-        CenterViewTemplate,
     },
 };
 </script>

@@ -11,15 +11,9 @@
 </template>
 
 <script>
-import Fab from '@UI/components/Fab/Fab';
-import IconArrowPointer from '@UI/components/Icons/Arrows/IconArrowPointer';
 
 export default {
     name: 'NavigateBackFab',
-    components: {
-        IconArrowPointer,
-        Fab,
-    },
     props: {
         previousRoute: {
             type: Object,

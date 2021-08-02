@@ -11,14 +11,11 @@
 </template>
 
 <script>
-
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import UserActivityLogsGrid from '@Users/components/Grids/UserActivityLogsGrid';
 
 export default {
     name: 'UserActivityLogsTab',
     components: {
-        CenterViewTemplate,
         UserActivityLogsGrid,
     },
 };

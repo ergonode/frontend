@@ -87,29 +87,11 @@ import {
 import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
-import InputController from '@UI/components/Input/InputController';
-import InputImageController from '@UI/components/Input/InputImageController';
-import InputLabel from '@UI/components/Input/InputLabel';
-import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
 
 export default {
     name: 'UploadImageFile',
     components: {
-        InputImageController,
-        InputController,
-        InputSolidStyle,
-        InputLabel,
-        Button,
-        IconAdd,
-        IconDots: () => import('@UI/components/Icons/Others/IconDots'),
-        LazyImage: () => import('@UI/components/LazyImage/LazyImage'),
-        ImageCarousel: () => import('@UI/components/ImageCarousel/ImageCarousel'),
         ModalMediaTabBar: () => import('@Media/components/Modal/ModalMediaTabBar'),
-        ActionFab: () => import('@UI/components/ActionFab/ActionFab'),
-        ListElementDescription: () => import('@UI/components/List/ListElementDescription'),
-        ListElementTitle: () => import('@UI/components/List/ListElementTitle'),
     },
     props: {
         /**

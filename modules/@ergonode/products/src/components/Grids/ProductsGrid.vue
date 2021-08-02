@@ -130,13 +130,6 @@ import {
     PRODUCT_CREATED_EVENT_NAME,
 } from '@Products/defaults';
 import AdvancedFilters from '@UI/components/AdvancedFilters/AdvancedFilters';
-import Button from '@UI/components/Button/Button';
-import AddFilterDropZone from '@UI/components/Grid/DropZone/AddFilterDropZone';
-import RemoveFilterAndColumnDropZone from '@UI/components/Grid/DropZone/RemoveFilterAndColumnDropZone';
-import Grid from '@UI/components/Grid/Grid';
-import GridNoResultsPlaceholder from '@UI/components/Grid/GridNoResultsPlaceholder';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
-import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import {
     mapActions,
     mapState,
@@ -147,13 +140,6 @@ export default {
     components: {
         ProductsGridNoDataPlaceholder,
         ProductAdvancedFilters,
-        Grid,
-        GridNoResultsPlaceholder,
-        AddFilterDropZone,
-        RemoveFilterAndColumnDropZone,
-        Button,
-        VerticalTabBar,
-        IconSpinner,
         UpdateProductsButton,
         ExpandNumericButton,
         AdvancedFilters,

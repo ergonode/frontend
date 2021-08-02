@@ -11,13 +11,11 @@
 </template>
 
 <script>
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import UsersGrid from '@Users/components/Grids/UsersGrid';
 
 export default {
     name: 'UsersTab',
     components: {
-        CenterViewTemplate,
         UsersGrid,
     },
 };

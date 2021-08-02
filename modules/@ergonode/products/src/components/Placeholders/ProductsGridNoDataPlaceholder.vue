@@ -14,13 +14,11 @@
 
 <script>
 import CreateProductButton from '@Products/components/Buttons/CreateProductButton';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'ProductsGridNoDataPlaceholder',
     components: {
         CreateProductButton,
-        GridNoDataPlaceholder,
     },
 };
 </script>

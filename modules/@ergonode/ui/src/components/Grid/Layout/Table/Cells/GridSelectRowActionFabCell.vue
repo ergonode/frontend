@@ -24,17 +24,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import ActionFab from '@UI/components/ActionFab/ActionFab';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
 
 export default {
     name: 'GridSelectRowActionFabCell',
-    components: {
-        ActionFab,
-        ListElementDescription,
-        ListElementTitle,
-    },
     props: {
         /**
          * Determinate if the component is disabled

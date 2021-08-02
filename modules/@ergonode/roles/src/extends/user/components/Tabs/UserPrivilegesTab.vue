@@ -12,12 +12,10 @@
 
 <script>
 import UserPrivilegesGrid from '@Roles/components/Grids/UserPrivilegesGrid';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'UserPrivilegesTab',
     components: {
-        CenterViewTemplate,
         UserPrivilegesGrid,
     },
 };

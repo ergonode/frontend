@@ -33,7 +33,6 @@ import UserRoleForm from '@Roles/components/Forms/UserRoleForm';
 import {
     ROUTE_NAME,
 } from '@Roles/config/routes';
-import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
     mapState,
@@ -42,7 +41,6 @@ import {
 export default {
     name: 'CreateRoleModalForm',
     components: {
-        ModalForm,
         UserRoleForm,
     },
     mixins: [

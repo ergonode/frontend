@@ -28,17 +28,13 @@ import {
     getParsedFilters,
 } from '@Core/models/mappers/gridDataMapper';
 import ProductsGrid from '@Products/components/Grids/ProductsGrid';
-import RemoveFilterAndColumnDropZone from '@UI/components/Grid/DropZone/RemoveFilterAndColumnDropZone';
 import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
-import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 
 export default {
     name: 'ProductCatalogTab',
     components: {
         ProductsGrid,
         GridViewTemplate,
-        RemoveFilterAndColumnDropZone,
-        VerticalTabBar,
     },
     mixins: [
         tabFeedbackMixin,

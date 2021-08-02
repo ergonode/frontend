@@ -21,16 +21,12 @@ import {
     INPUT_TYPE,
     SIZE,
 } from '@Core/defaults/theme';
-import TextField from '@UI/components/TextField/TextField';
 import {
     DEFAULT_FORMAT,
 } from '@UI/models/calendar';
 
 export default {
     name: 'DatePickerInputHeader',
-    components: {
-        TextField,
-    },
     props: {
         /**
          * The title of the component

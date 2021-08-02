@@ -32,13 +32,9 @@
 <script>
 import PRIVILEGES from '@Categories/config/privileges';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
-import TextField from '@UI/components/TextField/TextField';
 
 export default {
     name: 'CategoryTranslationForm',
-    components: {
-        TextField,
-    },
     mixins: [
         translationCardMixin,
     ],

@@ -12,15 +12,9 @@
 </template>
 
 <script>
-import PointBadge from '@UI/components/Badges/PointBadge';
-import GridPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
 
 export default {
     name: 'GridLabelPresentationCell',
-    components: {
-        PointBadge,
-        GridPresentationCell,
-    },
     props: {
         /**
          * Component value

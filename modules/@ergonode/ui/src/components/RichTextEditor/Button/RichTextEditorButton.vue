@@ -28,13 +28,9 @@ import {
     GRAPHITE,
     GREEN,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconButton from '@UI/components/IconButton/IconButton';
 
 export default {
     name: 'RichTextEditorButton',
-    components: {
-        IconButton,
-    },
     props: {
         /**
          * Determines whether RTE action button is active or not

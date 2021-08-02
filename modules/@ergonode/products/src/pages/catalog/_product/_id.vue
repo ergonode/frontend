@@ -47,9 +47,6 @@ import {
 import RemoveProductButton from '@Products/components/Buttons/RemoveProductButton';
 import PRIVILEGES from '@Products/config/privileges';
 import Footer from '@UI/components/Layout/Footer/Footer';
-import Page from '@UI/components/Layout/Page';
-import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
-import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
     mapState,
 } from 'vuex';
@@ -57,9 +54,6 @@ import {
 export default {
     name: 'ProductEdit',
     components: {
-        Page,
-        TitleBar,
-        HorizontalRoutingTabBar,
         Footer,
         RemoveProductButton,
     },

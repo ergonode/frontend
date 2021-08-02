@@ -27,19 +27,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
-import FormSection from '@UI/components/Form/Section/FormSection';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
-import Tooltip from '@UI/components/Tooltip/Tooltip';
 
 export default {
     name: 'FormListSection',
-    components: {
-        Tooltip,
-        IconAdd,
-        Button,
-        FormSection,
-    },
     props: {
         /**
          * The title of the component

@@ -47,9 +47,6 @@ import {
 import {
     getItems,
 } from '@Core/services/sidebar';
-import Preloader from '@UI/components/Preloader/Preloader';
-import SideBar from '@UI/components/SideBar/SideBar';
-import SideBarNoDataPlaceholder from '@UI/components/SideBar/SideBarNoDataPlaceholder';
 import debounce from 'debounce';
 import {
     mapActions,
@@ -59,11 +56,8 @@ import {
 export default {
     name: 'CategoriesSideBar',
     components: {
-        Preloader,
-        SideBarNoDataPlaceholder,
         CreateCategoryButton,
         CategorySideBarElement,
-        SideBar,
     },
     props: {
         scope: {

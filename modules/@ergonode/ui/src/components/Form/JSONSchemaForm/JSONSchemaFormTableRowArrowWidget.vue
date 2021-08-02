@@ -10,13 +10,9 @@
 import {
     ARROW,
 } from '@Core/defaults/icons';
-import IconArrowSingle from '@UI/components/Icons/Arrows/IconArrowSingle';
 
 export default {
     name: 'JSONSchemaFormTableRowArrowWidget',
-    components: {
-        IconArrowSingle,
-    },
     computed: {
         rightState() {
             return ARROW.RIGHT;

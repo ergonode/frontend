@@ -72,10 +72,7 @@ import RemoveFormFieldDropZone
     from '@ProductBatchActions/components/DropZones/RemoveFormFieldDropZone';
 import AttributeFormField
     from '@ProductBatchActions/components/Forms/Fields/AttributeFormField';
-import DraggableForm from '@UI/components/DraggableForm/DraggableForm';
 import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
-import ModalGrid from '@UI/components/Modal/ModalGrid';
-import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import {
     mapActions,
 } from 'vuex';
@@ -83,13 +80,10 @@ import {
 export default {
     name: 'UpdateProductsModal',
     components: {
-        ModalGrid,
         UpdateProductsButton,
         RemoveFormFieldDropZone,
         AttributeFormField,
         VerticalFixedScroll,
-        DraggableForm,
-        VerticalTabBar,
     },
     mixins: [
         modalFeedbackMixin,

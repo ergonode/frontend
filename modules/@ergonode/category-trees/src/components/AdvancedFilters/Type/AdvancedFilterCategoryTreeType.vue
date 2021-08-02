@@ -58,11 +58,6 @@ import {
     getAutocomplete,
 } from '@Trees/services';
 import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
-import SelectDropdownFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownFooter';
-import SelectList from '@UI/components/SelectList/SelectList';
-import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
 import debounce from 'debounce';
 
 export default {
@@ -70,11 +65,6 @@ export default {
     components: {
         CreateCategoryTreeButton,
         AdvancedFilter,
-        SelectDropdownFooter,
-        SelectList,
-        SelectListNoDataPlaceholder,
-        ListElementDescription,
-        ListElementTitle,
     },
     props: {
         /**

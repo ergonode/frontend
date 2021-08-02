@@ -11,13 +11,9 @@
 </template>
 
 <script>
-import IconLoader from '@UI/components/Icons/Feedback/IconLoader';
 
 export default {
     name: 'Preloader',
-    components: {
-        IconLoader,
-    },
 };
 </script>
 

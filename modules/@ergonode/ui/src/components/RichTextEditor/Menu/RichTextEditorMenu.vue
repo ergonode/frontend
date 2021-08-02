@@ -32,7 +32,6 @@ import {
 import {
     INPUT_TYPE,
 } from '@Core/defaults/theme';
-import RichTextEditorActionIconButton from '@UI/components/RichTextEditor/Button/RichTextEditorActionIconButton';
 import RichTextEditorButton from '@UI/components/RichTextEditor/Button/RichTextEditorButton';
 import {
     EditorMenuBar,
@@ -42,7 +41,6 @@ export default {
     name: 'RichTextEditorMenu',
     components: {
         RichTextEditorButton,
-        RichTextEditorActionIconButton,
         EditorMenuBar,
     },
     props: {

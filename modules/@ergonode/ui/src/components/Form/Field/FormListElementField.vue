@@ -17,13 +17,9 @@ import {
     GRAPHITE,
     GREY,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 
 export default {
     name: 'FormListElementField',
-    components: {
-        IconDelete,
-    },
     props: {
         /**
          * The key of the field used for emitting

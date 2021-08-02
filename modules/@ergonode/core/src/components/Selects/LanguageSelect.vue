@@ -24,7 +24,6 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import TranslationSelect from '@UI/components/Select/TranslationSelect';
 import {
     debounce,
 } from 'debounce';
@@ -35,9 +34,6 @@ import {
 
 export default {
     name: 'LanguageSelect',
-    components: {
-        TranslationSelect,
-    },
     props: {
         value: {
             type: [

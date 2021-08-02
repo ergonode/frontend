@@ -49,21 +49,9 @@
 </template>
 
 <script>
-import CheckBox from '@UI/components/CheckBox/CheckBox';
-import ListElementAction from '@UI/components/List/ListElementAction';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
-import Select from '@UI/components/Select/Select';
 
 export default {
     name: 'TranslationSelect',
-    components: {
-        Select,
-        ListElementDescription,
-        ListElementTitle,
-        ListElementAction,
-        CheckBox,
-    },
     inheritAttrs: false,
     computed: {
         parsedValue() {

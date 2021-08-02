@@ -13,13 +13,9 @@
 import {
     GRAPHITE_LIGHT,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconDragDrop from '@UI/components/Icons/Actions/IconDragDrop';
 
 export default {
     name: 'AdvancedFilterPlaceholder',
-    components: {
-        IconDragDrop,
-    },
     computed: {
         graphiteLightColor() {
             return GRAPHITE_LIGHT;

@@ -60,12 +60,6 @@ import PRIVILEGES from '@Import/config/privileges';
 import {
     GRAPHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Form from '@UI/components/Form/Form';
-import JSONSchemaForm from '@UI/components/Form/JSONSchemaForm/JSONSchemaForm';
-import FormSection from '@UI/components/Form/Section/FormSection';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
-import Select from '@UI/components/Select/Select';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
     mapActions,
     mapState,
@@ -73,14 +67,6 @@ import {
 
 export default {
     name: 'ImportProfileForm',
-    components: {
-        IconSpinner,
-        JSONSchemaForm,
-        Form,
-        FormSection,
-        Select,
-        FadeTransition,
-    },
     mixins: [
         formActionsMixin,
         formFeedbackMixin,

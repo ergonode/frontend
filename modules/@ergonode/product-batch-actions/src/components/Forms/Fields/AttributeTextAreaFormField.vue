@@ -3,8 +3,20 @@
  * See LICENSE for license details.
  */
 <template>
-    <Component
-        :is="component"
+    <RichTextEditor
+        v-if="isRichEdit"
+        :value="value"
+        height="150px"
+        resize="none"
+        :hint="hint"
+        :placeholder="placeholder"
+        :label="label"
+        :error-messages="errorMessages"
+        @blur="onBlur"
+        @focus="onFocus"
+        @input="onValueChange" />
+    <TextArea
+        v-else
         :value="value"
         height="150px"
         resize="none"
@@ -18,9 +30,6 @@
 </template>
 
 <script>
-import RichTextEditor from '@UI/components/RichTextEditor/RichTextEditor';
-import TextArea from '@UI/components/TextArea/TextArea';
-
 export default {
     name: 'AttributeTextAreaFormField',
     props: {
@@ -42,9 +51,6 @@ export default {
         },
     },
     computed: {
-        component() {
-            return this.isRichEdit ? RichTextEditor : TextArea;
-        },
         label() {
             return this.attribute.label[this.languageCode] || `#${this.attribute.code}`;
         },

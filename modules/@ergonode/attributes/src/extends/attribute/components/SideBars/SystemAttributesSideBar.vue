@@ -48,9 +48,6 @@ import {
 import {
     getItems,
 } from '@Core/services/sidebar';
-import ListSearchSelectHeader from '@UI/components/List/ListSearchSelectHeader';
-import Preloader from '@UI/components/Preloader/Preloader';
-import SideBar from '@UI/components/SideBar/SideBar';
 import debounce from 'debounce';
 import {
     mapGetters,
@@ -60,10 +57,7 @@ import {
 export default {
     name: 'SystemAttributesSideBar',
     components: {
-        Preloader,
-        ListSearchSelectHeader,
         AttributeSideBarElement,
-        SideBar,
         LanguageTreeSelect,
     },
     props: {

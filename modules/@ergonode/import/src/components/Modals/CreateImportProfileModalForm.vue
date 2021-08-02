@@ -30,7 +30,6 @@ import ImportProfileForm from '@Import/components/Forms/ImportProfileForm';
 import {
     ROUTE_NAME,
 } from '@Import/config/routes';
-import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
 } from 'vuex';
@@ -38,7 +37,6 @@ import {
 export default {
     name: 'CreateImportProfileModalForm',
     components: {
-        ModalForm,
         ImportProfileForm,
     },
     mixins: [

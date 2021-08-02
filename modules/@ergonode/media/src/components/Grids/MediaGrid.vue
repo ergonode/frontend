@@ -84,15 +84,11 @@ import {
 import {
     RESOURCES_UPLOADED_EVENT_NAME,
 } from '@Media/defaults';
-import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'MediaGrid',
     components: {
         UploadResourcesButton,
-        Grid,
-        GridNoDataPlaceholder,
     },
     mixins: [
         extendPropsMixin({

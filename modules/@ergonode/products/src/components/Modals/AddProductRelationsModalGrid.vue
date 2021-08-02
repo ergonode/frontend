@@ -28,17 +28,11 @@
 <script>
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import AddProductRelationsGrid from '@Products/components/Grids/AddProductRelationsGrid';
-import RemoveFilterAndColumnDropZone from '@UI/components/Grid/DropZone/RemoveFilterAndColumnDropZone';
-import ModalGrid from '@UI/components/Modal/ModalGrid';
-import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 
 export default {
     name: 'AddProductRelationsModalGrid',
     components: {
-        VerticalTabBar,
-        ModalGrid,
         AddProductRelationsGrid,
-        RemoveFilterAndColumnDropZone,
     },
     mixins: [
         modalFeedbackMixin,

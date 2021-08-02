@@ -45,9 +45,6 @@ import {
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
-import Page from '@UI/components/Layout/Page';
-import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
-import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
     mapState,
 } from 'vuex';
@@ -55,9 +52,6 @@ import {
 export default {
     name: 'EditAttribute',
     components: {
-        Page,
-        TitleBar,
-        HorizontalRoutingTabBar,
         RemoveAttributeButton,
     },
     mixins: [

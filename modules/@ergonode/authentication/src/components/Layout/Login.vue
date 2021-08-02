@@ -59,19 +59,13 @@ import {
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
-import FluidBlob from '@UI/components/FluidBlob/FluidBlob';
 import Footer from '@UI/components/Layout/Footer/Footer';
-import LinkButton from '@UI/components/LinkButton/LinkButton';
-import Select from '@UI/components/Select/Select';
 
 export default {
     name: 'Login',
     components: {
-        LinkButton,
         Footer,
         IconLogoName,
-        FluidBlob,
-        Select,
         GitReleaseInformation: () => import('@Core/components/GitReleaseInformation/GitReleaseInformation'),
     },
     data() {

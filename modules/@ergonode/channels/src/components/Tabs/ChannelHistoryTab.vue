@@ -12,13 +12,11 @@
 
 <script>
 import ChannelHistoryGrid from '@Channels/components/Grids/ChannelHistoryGrid';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'ChannelHistoryTab',
     components: {
         ChannelHistoryGrid,
-        CenterViewTemplate,
     },
 };
 </script>

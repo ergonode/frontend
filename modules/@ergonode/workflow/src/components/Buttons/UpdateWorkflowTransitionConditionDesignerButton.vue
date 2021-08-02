@@ -34,10 +34,6 @@ import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbac
 import {
     Z_INDEX_LVL_2,
 } from '@UI/assets/scss/_js-variables/indexes.scss';
-import Button from '@UI/components/Button/Button';
-import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
-import IconSync from '@UI/components/Icons/Feedback/IconSync';
 import PRIVILEGES from '@Workflow/config/privileges';
 import {
     mapActions,
@@ -46,12 +42,6 @@ import {
 
 export default {
     name: 'UpdateWorkflowTransitionConditionDesignerButton',
-    components: {
-        FeedbackProvider,
-        Button,
-        IconSpinner,
-        IconSync,
-    },
     mixins: [
         updateButtonFeedbackMixin,
     ],

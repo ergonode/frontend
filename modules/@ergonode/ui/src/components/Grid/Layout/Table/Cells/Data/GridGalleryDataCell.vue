@@ -28,16 +28,10 @@
 import {
     arraysAreEqual,
 } from '@Core/models/arrayWrapper';
-import GridImagePresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridImagePresentationCell';
-import GridSuffixPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
 import gridDataCellMixin from '@UI/mixins/grid/gridDataCellMixin';
 
 export default {
     name: 'GridGalleryDataCell',
-    components: {
-        GridImagePresentationCell,
-        GridSuffixPresentationCell,
-    },
     mixins: [
         gridDataCellMixin,
     ],

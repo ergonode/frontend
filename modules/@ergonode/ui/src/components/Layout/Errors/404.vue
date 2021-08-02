@@ -29,15 +29,9 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
-import Placeholder from '@UI/components/Placeholder/Placeholder';
 
 export default {
     name: 'Error404',
-    components: {
-        Placeholder,
-        Button,
-    },
     computed: {
         smallSize() {
             return SIZE.SMALL;

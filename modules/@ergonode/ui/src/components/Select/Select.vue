@@ -131,13 +131,8 @@ import {
     INPUT_TYPE,
     SIZE,
 } from '@Core/defaults/theme';
-import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
-import InputController from '@UI/components/Input/InputController';
-import InputLabel from '@UI/components/Input/InputLabel';
-import InputSelectValue from '@UI/components/Input/InputSelectValue';
 import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
 import InputUnderlineStyle from '@UI/components/Input/InputUnderlineStyle';
-import InputUUIDProvider from '@UI/components/Input/InputUUIDProvider';
 import SelectDropdown from '@UI/components/Select/Dropdown/SelectDropdown';
 
 export default {
@@ -145,12 +140,6 @@ export default {
     components: {
         InputSolidStyle,
         SelectDropdown,
-        IconArrowDropdown,
-        InputController,
-        InputLabel,
-        InputSelectValue,
-        InputUUIDProvider,
-        ErrorHint: () => import('@UI/components/Hints/ErrorHint'),
     },
     props: {
         /**

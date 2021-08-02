@@ -17,14 +17,10 @@
     </GridTableCell>
 </template>
 <script>
-import GridHintPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridHintPresentationCell';
 import gridDataCellMixin from '@UI/mixins/grid/gridDataCellMixin';
 
 export default {
     name: 'GridPrivilegeNameHintDataCell',
-    components: {
-        GridHintPresentationCell,
-    },
     mixins: [
         gridDataCellMixin,
     ],

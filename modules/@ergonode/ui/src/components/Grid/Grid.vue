@@ -152,34 +152,12 @@ import {
 import {
     getUUID,
 } from '@Core/models/stringWrapper';
-import AddGridColumnDropZone from '@UI/components/Grid/DropZone/AddGridColumnDropZone';
-import GridPageSelector from '@UI/components/Grid/Footer/GridPageSelector';
-import GridPagination from '@UI/components/Grid/Footer/GridPagination';
-import GridBody from '@UI/components/Grid/GridBody';
-import GridFooter from '@UI/components/Grid/GridFooter';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
-import GridNoResultsPlaceholder from '@UI/components/Grid/GridNoResultsPlaceholder';
-import GridHeader from '@UI/components/Grid/Header/GridHeader';
-import GridCollectionLayout from '@UI/components/Grid/Layout/Collection/GridCollectionLayout';
-import GridTableLayout from '@UI/components/Grid/Layout/Table/GridTableLayout';
 import {
     mapState,
 } from 'vuex';
 
 export default {
     name: 'Grid',
-    components: {
-        AddGridColumnDropZone,
-        GridNoDataPlaceholder,
-        GridNoResultsPlaceholder,
-        GridPagination,
-        GridHeader,
-        GridBody,
-        GridFooter,
-        GridTableLayout,
-        GridCollectionLayout,
-        GridPageSelector,
-    },
     props: {
         /**
          * Context scope

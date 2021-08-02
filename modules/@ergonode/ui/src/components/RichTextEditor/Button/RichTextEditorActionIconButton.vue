@@ -25,15 +25,11 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import ActionIconButton from '@UI/components/ActionIconButton/ActionIconButton';
-import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 import RichTextEditorButton from '@UI/components/RichTextEditor/Button/RichTextEditorButton';
 
 export default {
     name: 'RichTextEditorActionIconButton',
     components: {
-        ActionIconButton,
-        IconArrowDropdown,
         RichTextEditorButton,
     },
     props: {

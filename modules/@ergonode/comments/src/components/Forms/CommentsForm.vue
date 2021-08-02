@@ -78,10 +78,6 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
-import TabBarNoDataPlaceholder from '@UI/components/TabBar/TabBarNoDataPlaceholder';
 import {
     mapActions,
     mapState,
@@ -90,13 +86,9 @@ import {
 export default {
     name: 'CommentsForm',
     components: {
-        IconSpinner,
-        Button,
-        IconAdd,
         CommentsList,
         CommentStateChanger,
         CommentEdit,
-        TabBarNoDataPlaceholder,
     },
     props: {
         scope: {

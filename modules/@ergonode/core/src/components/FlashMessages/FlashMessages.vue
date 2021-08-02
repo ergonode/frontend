@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import Alert from '@UI/components/Alert/Alert';
 import {
     mapActions,
     mapState,
@@ -27,9 +26,6 @@ import {
 
 export default {
     name: 'FlashMessages',
-    components: {
-        Alert,
-    },
     computed: {
         ...mapState('alert', [
             'alerts',

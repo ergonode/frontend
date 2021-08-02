@@ -33,7 +33,6 @@ import {
 } from '@Core/defaults/theme';
 import DatePickerContent from '@UI/components/DatePicker/DatePickerContent';
 import DatePickerHeader from '@UI/components/DatePicker/DatePickerHeader';
-import Divider from '@UI/components/Dividers/Divider';
 import {
     DEFAULT_FORMAT,
     WEEK_DAYS,
@@ -46,7 +45,6 @@ export default {
     name: 'DateRangePickerContent',
     components: {
         DatePickerContent,
-        Divider,
         DatePickerHeader,
     },
     props: {

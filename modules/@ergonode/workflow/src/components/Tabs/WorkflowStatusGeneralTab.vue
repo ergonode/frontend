@@ -21,7 +21,6 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import WorkflowStatusForm from '@Workflow/components/Forms/WorkflowStatusForm';
 import {
     mapActions,
@@ -31,7 +30,6 @@ export default {
     name: 'WorkflowStatusGeneralTab',
     components: {
         WorkflowStatusForm,
-        CenterViewTemplate,
     },
     mixins: [
         tabFeedbackMixin,

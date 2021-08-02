@@ -3,7 +3,7 @@
 exports[`Errors/404 Component is named well 1`] = `
 <div class="error-404">
   <div class="error-404__placeholder">
-    <placeholder-stub size="large" orientation="horizontal" title="Page not found" subtitle="The link you clicked may be broken or the page may have been removed." bgurl=""></placeholder-stub>
+    <placeholder bg-url="" size="large" title="Page not found" subtitle="The link you clicked may be broken or the page may have been removed." orientation="horizontal"></placeholder>
   </div>
 </div>
 `;

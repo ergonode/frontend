@@ -33,15 +33,11 @@ import CreateProductTemplateButton from '@Templates/components/Buttons/CreatePro
 import {
     PRODUCT_TEMPLATE_CREATED_EVENT_NAME,
 } from '@Templates/defaults';
-import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
-import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
 
 export default {
     name: 'ProductTemplateAutocomplete',
     components: {
         CreateProductTemplateButton,
-        SelectListNoDataPlaceholder,
-        Autocomplete,
     },
     props: {
         value: {

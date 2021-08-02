@@ -56,8 +56,6 @@ import NotificationListSection from '@Notifications/components/NotificationList/
 import {
     AXIOS_CANCEL_TOKEN_PROCESSING_NOTIFICATION_KEY,
 } from '@Notifications/defaults';
-import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
-import Preloader from '@UI/components/Preloader/Preloader';
 import {
     mapActions,
     mapGetters,
@@ -71,8 +69,6 @@ export default {
         NotificationListSection,
         NotificationListHeader,
         NotificationListFooter,
-        IntersectionObserver,
-        Preloader,
         NotificationListNoDataPlaceholder,
     },
     props: {

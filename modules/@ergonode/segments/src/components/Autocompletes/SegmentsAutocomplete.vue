@@ -33,15 +33,11 @@ import CreateSegmentButton from '@Segments/components/Buttons/CreateSegmentButto
 import {
     SEGMENT_CREATED_EVENT_NAME,
 } from '@Segments/defaults';
-import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
-import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
 
 export default {
     name: 'SegmentsAutocomplete',
     components: {
         CreateSegmentButton,
-        SelectListNoDataPlaceholder,
-        Autocomplete,
     },
     props: {
         value: {

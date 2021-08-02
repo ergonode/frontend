@@ -24,16 +24,10 @@ import {
     GREEN,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Fab from '@UI/components/Fab/Fab';
-import IconEdit from '@UI/components/Icons/Actions/IconEdit';
 import PRIVILEGES from '@Workflow/config/privileges';
 
 export default {
     name: 'UpdateWorkflowTransitionFab',
-    components: {
-        Fab,
-        IconEdit,
-    },
     computed: {
         isAllowedToUpdate() {
             return this.$hasAccess([

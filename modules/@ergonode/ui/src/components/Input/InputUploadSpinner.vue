@@ -15,13 +15,9 @@
 </template>
 
 <script>
-import IconRefresh from '@UI/components/Icons/Actions/IconRefresh';
 
 export default {
     name: 'InputUploadSpinner',
-    components: {
-        IconRefresh,
-    },
 };
 </script>
 

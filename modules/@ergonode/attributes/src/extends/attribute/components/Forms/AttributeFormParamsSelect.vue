@@ -20,16 +20,12 @@ import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
-import Select from '@UI/components/Select/Select';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
     name: 'AttributeFormParamsSelect',
-    components: {
-        Select,
-    },
     mixins: [
         formFeedbackMixin,
     ],

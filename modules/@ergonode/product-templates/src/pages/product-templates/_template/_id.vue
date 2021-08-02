@@ -36,9 +36,6 @@ import beforeRouteUpdateMixin from '@Core/mixins/route/beforeRouteUpdateMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import RemoveProductTemplateButton from '@Templates/components/Buttons/RemoveProductTemplateButton';
 import PRIVILEGES from '@Templates/config/privileges';
-import Page from '@UI/components/Layout/Page';
-import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
-import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
     mapState,
 } from 'vuex';
@@ -46,9 +43,6 @@ import {
 export default {
     name: 'Edit',
     components: {
-        Page,
-        TitleBar,
-        HorizontalRoutingTabBar,
         RemoveProductTemplateButton,
     },
     mixins: [

@@ -29,16 +29,9 @@ import PRIVILEGES from '@Media/config/privileges';
 import {
     RESOURCES_UPLOADED_EVENT_NAME,
 } from '@Media/defaults';
-import Button from '@UI/components/Button/Button';
-import IconUploadFile from '@UI/components/Icons/Actions/IconUploadFile';
 
 export default {
     name: 'UploadResourcesButton',
-    components: {
-        Button,
-        IconUploadFile,
-        ModalTabBar: () => import('@UI/components/Modal/ModalTabBar'),
-    },
     data() {
         return {
             isModalVisible: false,

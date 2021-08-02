@@ -76,11 +76,6 @@ import {
     getKeyByValue,
     isObject,
 } from '@Core/models/objectWrapper';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
-import InfoHint from '@UI/components/Hints/InfoHint';
-import Select from '@UI/components/Select/Select';
-import TextField from '@UI/components/TextField/TextField';
 import {
     mapActions,
     mapGetters,
@@ -89,13 +84,6 @@ import {
 
 export default {
     name: 'AttributeForm',
-    components: {
-        Form,
-        FormSection,
-        InfoHint,
-        TextField,
-        Select,
-    },
     mixins: [
         formActionsMixin,
         formFeedbackMixin,

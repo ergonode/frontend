@@ -49,7 +49,6 @@ import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import IconLink from '@UI/components/Icons/Editor/IconLink';
-import IconFilledClose from '@UI/components/Icons/Window/IconFilledClose';
 import {
     EditorMenuBubble,
 } from 'tiptap';
@@ -59,7 +58,6 @@ export default {
     components: {
         EditorMenuBubble,
         IconLink,
-        IconFilledClose,
     },
     props: {
         /**

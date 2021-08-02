@@ -81,15 +81,11 @@ import {
 import {
     TRANSITION_CREATED_EVENT_NAME,
 } from '@Transitions/defaults';
-import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'TransitionsGrid',
     components: {
         CreateStatusTransitionButton,
-        Grid,
-        GridNoDataPlaceholder,
     },
     mixins: [
         extendPropsMixin({

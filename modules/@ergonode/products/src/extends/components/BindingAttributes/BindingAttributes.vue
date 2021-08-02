@@ -20,12 +20,10 @@
 <script>
 import AddBindingAttributes from '@Products/extends/components/BindingAttributes/AddBindingAttributes';
 import BindingAttribute from '@Products/extends/components/BindingAttributes/BindingAttribute';
-import GridPanelHeader from '@UI/components/Grid/Header/GridPanelHeader';
 
 export default {
     name: 'BindingAttributes',
     components: {
-        GridPanelHeader,
         BindingAttribute,
         AddBindingAttributes,
     },

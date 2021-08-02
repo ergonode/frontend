@@ -12,12 +12,10 @@
 
 <script>
 import ProductHistoryGrid from '@Products/components/Grids/ProductHistoryGrid';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'ProductHistoryTab',
     components: {
-        CenterViewTemplate,
         ProductHistoryGrid,
     },
 };

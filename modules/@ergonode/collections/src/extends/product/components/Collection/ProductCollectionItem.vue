@@ -13,13 +13,9 @@
 import {
     ROUTE_NAME,
 } from '@Products/config/routes';
-import GridCollectionDefaultCell from '@UI/components/Grid/Layout/Collection/Cells/GridCollectionDefaultCell';
 
 export default {
     name: 'ProductCollectionItem',
-    components: {
-        GridCollectionDefaultCell,
-    },
     props: {
         item: {
             type: Object,

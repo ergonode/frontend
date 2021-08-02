@@ -31,18 +31,12 @@ import PRIVILEGES from '@Segments/config/privileges';
 import {
     ROUTE_NAME,
 } from '@Segments/config/routes';
-import Button from '@UI/components/Button/Button';
-import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
     name: 'RemoveSegmentButton',
-    components: {
-        Button,
-        IconDelete,
-    },
     computed: {
         isAllowedToDelete() {
             return this.$hasAccess([

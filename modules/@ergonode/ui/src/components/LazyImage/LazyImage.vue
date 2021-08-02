@@ -18,13 +18,9 @@
 import {
     getImageData,
 } from '@Core/models/multimedia';
-import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 
 export default {
     name: 'LazyImage',
-    components: {
-        IntersectionObserver,
-    },
     props: {
         /**
          * Component value

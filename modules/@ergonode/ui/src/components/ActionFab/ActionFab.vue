@@ -58,9 +58,6 @@ import {
     GREY_DARK,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import ActionBaseButton from '@UI/components/ActionButton/ActionBaseButton';
-import Fab from '@UI/components/Fab/Fab';
-import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 
 /**
  * `ActionFab` is an `ActionBaseButton` with a `IconButton` inside named slot `button`.
@@ -68,11 +65,6 @@ import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
  */
 export default {
     name: 'ActionFab',
-    components: {
-        Fab,
-        ActionBaseButton,
-        IconArrowDropdown,
-    },
     props: {
         /**
          * The theme of the component

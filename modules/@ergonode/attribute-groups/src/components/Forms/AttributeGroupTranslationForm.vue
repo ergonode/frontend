@@ -32,13 +32,9 @@
 <script>
 import PRIVILEGES from '@AttributeGroups/config/privileges';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
-import TextField from '@UI/components/TextField/TextField';
 
 export default {
     name: 'AttributeGroupTranslationForm',
-    components: {
-        TextField,
-    },
     mixins: [
         translationCardMixin,
     ],

@@ -21,7 +21,6 @@ import {
     RED,
     YELLOW,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import ProgressBar from '@UI/components/ProgressBar/ProgressBar';
 import {
     mapActions,
     mapState,
@@ -29,9 +28,6 @@ import {
 
 export default {
     name: 'ProductCompleteness',
-    components: {
-        ProgressBar,
-    },
     props: {
         languageCode: {
             type: String,

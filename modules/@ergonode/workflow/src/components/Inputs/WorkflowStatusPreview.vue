@@ -29,18 +29,12 @@
 </template>
 
 <script>
-import InputController from '@UI/components/Input/InputController';
 import InputImageController from '@UI/components/Input/InputImageController';
-import InputLabel from '@UI/components/Input/InputLabel';
-import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
 import WorkflowStatusBadge from '@Workflow/components/Badges/WorkflowStatusBadge';
 
 export default {
     name: 'WorkflowStatusPreview',
     components: {
-        InputLabel,
-        InputSolidStyle,
-        InputController,
         WorkflowStatusBadge,
         InputImageController,
     },

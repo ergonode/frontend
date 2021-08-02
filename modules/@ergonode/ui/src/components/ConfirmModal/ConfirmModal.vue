@@ -35,20 +35,12 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
 import ConfirmModalHeader from '@UI/components/ConfirmModal/ConfirmModalHeader';
-import Modal from '@UI/components/Modal/Modal';
-import ModalFooter from '@UI/components/Modal/ModalFooter';
-import ModalOverlay from '@UI/components/Modal/ModalOverlay';
 
 export default {
     name: 'ConfirmModal',
     components: {
-        ModalOverlay,
         ConfirmModalHeader,
-        Modal,
-        ModalFooter,
-        Button,
     },
     props: {
         /**

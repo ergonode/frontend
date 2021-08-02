@@ -47,21 +47,9 @@ import {
 import {
     isObject,
 } from '@Core/models/objectWrapper';
-import List from '@UI/components/List/List';
-import ListElement from '@UI/components/List/ListElement';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
-import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
 
 export default {
     name: 'ActionBaseButton',
-    components: {
-        Dropdown,
-        List,
-        ListElement,
-        ListElementDescription,
-        ListElementTitle,
-    },
     props: {
         /**
          * Component variances that user can choose from

@@ -30,17 +30,11 @@ import PRIVILEGES from '@Categories/config/privileges';
 import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
 import beforeRouteUpdateMixin from '@Core/mixins/route/beforeRouteUpdateMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
-import Page from '@UI/components/Layout/Page';
-import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
-import TitleBar from '@UI/components/TitleBar/TitleBar';
 
 export default {
     name: 'Categories',
     components: {
         CreateCategoryButton,
-        TitleBar,
-        Page,
-        HorizontalRoutingTabBar,
     },
     mixins: [
         asyncTabsMixin,

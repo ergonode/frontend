@@ -38,10 +38,6 @@ import {
 import {
     Z_INDEX_LVL_2,
 } from '@UI/assets/scss/_js-variables/indexes.scss';
-import Button from '@UI/components/Button/Button';
-import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
-import IconSync from '@UI/components/Icons/Feedback/IconSync';
 import {
     mapActions,
     mapState,
@@ -49,12 +45,6 @@ import {
 
 export default {
     name: 'UpdateLanguagesInheritanceButton',
-    components: {
-        FeedbackProvider,
-        Button,
-        IconSpinner,
-        IconSync,
-    },
     mixins: [
         updateButtonFeedbackMixin,
     ],

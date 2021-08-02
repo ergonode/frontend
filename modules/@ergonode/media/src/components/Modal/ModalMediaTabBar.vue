@@ -10,13 +10,9 @@
 </template>
 
 <script>
-import ModalTabBar from '@UI/components/Modal/ModalTabBar';
 
 export default {
     name: 'ModalMediaTabBar',
-    components: {
-        ModalTabBar,
-    },
     props: {
         tabs: {
             type: Array,

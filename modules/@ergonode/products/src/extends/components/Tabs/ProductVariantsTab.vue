@@ -24,9 +24,6 @@
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import AddBindingAttributesButton from '@Products/extends/components/Buttons/AddBindingAttributesButton';
 import AttachedProductVariantsGrid from '@Products/extends/components/Grids/AttachedProductVariantsGrid';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
-import Preloader from '@UI/components/Preloader/Preloader';
-import TabBarNoDataPlaceholder from '@UI/components/TabBar/TabBarNoDataPlaceholder';
 import {
     mapActions,
     mapState,
@@ -36,10 +33,7 @@ export default {
     name: 'ProductVariantsTab',
     components: {
         AttachedProductVariantsGrid,
-        Preloader,
-        CenterViewTemplate,
         AddBindingAttributesButton,
-        TabBarNoDataPlaceholder,
     },
     mixins: [
         tabFeedbackMixin,

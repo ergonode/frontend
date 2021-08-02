@@ -19,13 +19,9 @@
 import {
     GREEN,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconUploadCloudFile from '@UI/components/Icons/Actions/IconUploadCloudFile';
 
 export default {
     name: 'InputUploadPlaceholder',
-    components: {
-        IconUploadCloudFile,
-    },
     computed: {
         greenColor() {
             return GREEN;

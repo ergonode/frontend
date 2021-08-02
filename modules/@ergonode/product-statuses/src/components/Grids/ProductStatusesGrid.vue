@@ -81,15 +81,11 @@ import {
 import {
     PRODUCT_STATUS_CREATED_EVENT_NAME,
 } from '@Statuses/defaults';
-import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'ProductStatusesGrid',
     components: {
         CreateProductStatusButton,
-        Grid,
-        GridNoDataPlaceholder,
     },
     mixins: [
         extendPropsMixin({

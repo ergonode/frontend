@@ -13,12 +13,10 @@
 <script>
 
 import ChannelsGrid from '@Channels/components/Grids/ChannelsGrid';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'ChannelsTab',
     components: {
-        CenterViewTemplate,
         ChannelsGrid,
     },
 };

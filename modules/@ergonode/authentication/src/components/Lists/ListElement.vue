@@ -24,15 +24,9 @@ import {
     GREEN,
     RED,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconError from '@UI/components/Icons/Feedback/IconError';
-import IconSuccess from '@UI/components/Icons/Feedback/IconSuccess';
 
 export default {
     name: 'ListElement',
-    components: {
-        IconError,
-        IconSuccess,
-    },
     props: {
         item: {
             type: Object,

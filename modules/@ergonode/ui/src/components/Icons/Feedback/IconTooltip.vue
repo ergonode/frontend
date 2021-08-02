@@ -15,13 +15,9 @@
 import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Icon from '@UI/components/Icons/Icon';
 
 export default {
     name: 'IconTooltip',
-    components: {
-        Icon,
-    },
     inheritAttrs: false,
     computed: {
         ovalDrawingCommands() {

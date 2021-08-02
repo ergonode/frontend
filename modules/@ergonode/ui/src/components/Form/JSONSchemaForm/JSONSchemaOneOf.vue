@@ -27,15 +27,9 @@ import {
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
-import FormSubsection from '@UI/components/Form/Subsection/FormSubsection';
-import Select from '@UI/components/Select/Select';
 
 export default {
     name: 'JSONSchemaOneOf',
-    components: {
-        Select,
-        FormSubsection,
-    },
     props: {
         /**
          * Component value

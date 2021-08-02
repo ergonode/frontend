@@ -12,13 +12,9 @@
 import {
     THEME,
 } from '@Core/defaults/theme';
-import NumericBadge from '@UI/components/Badges/NumericBadge';
 
 export default {
     name: 'TreeAccordionItemBadge',
-    components: {
-        NumericBadge,
-    },
     props: {
         all: {
             type: Number,

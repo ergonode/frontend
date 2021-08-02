@@ -24,15 +24,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import ModalHeader from '@UI/components/Modal/ModalHeader';
-import ModalOverlay from '@UI/components/Modal/ModalOverlay';
 
 export default {
     name: 'ModalGrid',
-    components: {
-        ModalOverlay,
-        ModalHeader,
-    },
     props: {
         /**
          * The title of the component
