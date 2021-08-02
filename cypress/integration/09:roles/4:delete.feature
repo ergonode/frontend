@@ -31,7 +31,6 @@ Feature: DELETE: Role
     When On "grid" I can see row with "Admin" value and columns data: "{'0': 'Admin'}"
     * On "grid" I click on "delete" button for row with "Admin" value
     * I confirm modal
-    * I send a "DELETE" request and status code should be 409
     Then On "grid" I can see row with "Admin" value and columns data: "{'0': 'Admin'}"
 
   @success
@@ -39,7 +38,6 @@ Feature: DELETE: Role
     When On "grid" I can see row with "Data inputer" value and columns data: "{'0': 'Data inputer'}"
     * On "grid" I click on "delete" button for row with "Data inputer" value
     * I confirm modal
-    * I send a "DELETE" request and status code should be 204
     Then On "grid" I can not see row with "Data inputer" value
 
   @success

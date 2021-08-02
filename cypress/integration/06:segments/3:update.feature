@@ -14,8 +14,7 @@ Feature: UPDATE: Segment
   #   * I click tab with "Translations" text
   #   * I see "segments/segment/%UUID%/translations" page
   #   * I fill the "segment-name" input with the "segment_codesegment_codesegment_codesegment_codesegment_codesegment_codesegment_codesegment_codesegment_code" term for "en_GB" translation
-  #   Then I click on "submit" button
-  #   * I send a "PUT" request and status code should be 400
+  #   * I "submit" the data and "update" it "incorrectly"
   #   Then I see a form validation error that says "['Segment name is too long. It should contain 32 characters or less.']"
 
   @success
@@ -30,8 +29,7 @@ Feature: UPDATE: Segment
     * I fill the "segment-description" textarea with the "segment_desc_EN" term for "en_GB" translation
     * I fill the "segment-name" input with the "segment_PL" term for "pl_PL" translation
     * I fill the "segment-description" textarea with the "segment_desc_PL" term for "pl_PL" translation
-    Then I click on "submit" button
-    * I send a "PUT" request and status code should be 204
+    * I "submit" the data and "update" it "correctly"
     * I click back arrow
     * I see "segments/grid" page
     Then On "grid" I can see row with "segment_code" value and columns data: "{'0': 'segment_code', '1': 'segment_EN',  '2': 'segment_desc_EN',  '4': '0'}"

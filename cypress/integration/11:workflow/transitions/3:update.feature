@@ -7,11 +7,10 @@ Feature: UPDATE: Transition workflow
 
   @success
   Scenario: Update transition from edit page - success
-    When On "workflow-designer" I can see the transition from "New" to "Draft"
-    * On "workflow-designer" I click on the "edit" button for the transition from "New" to "Draft"
+    When On "workflow-designer" I can see the transition from "New" to "Processed"
+    * On "workflow-designer" I click on the "edit" button for the transition from "New" to "Processed"
     * I see "workflow/transition/%UUID%/general" page
     * I choose "[1]" option from "transition-roleId" multi select field
-    Then I click on "submit" button
-    * I send a "PUT" request and status code should be 204
+    * On "form" I "submit" the data and "update" it "correctly"
     * I click back arrow
     Then I see "workflow/designer" page

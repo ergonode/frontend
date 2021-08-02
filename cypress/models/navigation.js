@@ -6,30 +6,6 @@ import {
     escapeStringRegexp,
 } from './index';
 
-export const openPage = ({
-    page, requestName,
-}) => {
-    cy.visit(`/${page}`);
-    cy
-        .url()
-        .should('include', `/${page}`);
-    cy
-        .wait(`@${requestName}_GET`)
-        .its('response.statusCode')
-        .should('eq', 200);
-};
-
-export const sendRequest = ({
-    requestName, reqType, status,
-}) => {
-    cy
-        .wait(`@${requestName}_${reqType}`)
-        .then((xhr) => {
-            expect(xhr.request.method).to.equal(reqType);
-            expect(xhr.response.statusCode).to.equal(status);
-        });
-};
-
 export const checkGridRow = ({
     gridId, searchValue, columns, showMoreRows = true,
 }) => {
@@ -50,6 +26,7 @@ export const checkGridRow = ({
 
     cy
         .get('@grid')
+        .find('.grid-column')
         .contains(new RegExp(`^${escapeStringRegexp(searchValue)}$`, 'g'))
         .parents('.grid-table-cell')
         .as('row');

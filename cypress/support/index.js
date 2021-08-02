@@ -21,10 +21,29 @@
 import './commands';
 // PLugin only for Chrome browser
 import 'cypress-real-events/support';
+import 'cypress-failed-log';
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+import {
+    escapeStringRegexp,
+} from '../models';
 
 Cypress.Cookies.defaults({
     preserve: 'token',
+});
+
+Cypress.Server.defaults({
+    force404: false,
+    ignore: (xhr) => {
+        const ignorePaths = [
+            'notifications/check',
+            'language/tree',
+        ];
+        const regexString = ignorePaths.reduce((acc, current) => `${acc === '' ? acc : `${acc}|`}${escapeStringRegexp(current)}`, '');
+        const checkPath = new RegExp(`${regexString}$`, 'g');
+
+        if (checkPath.test(xhr.url)) {
+            return true;
+        }
+        return false;
+    },
 });

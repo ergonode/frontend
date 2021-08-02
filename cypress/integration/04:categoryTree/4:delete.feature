@@ -31,7 +31,6 @@ Feature: DELETE: Category tree
     When On "grid" I can see row with "category_tree" value and columns data: "{'0': 'category_tree'}"
     * On "grid" I click on "delete" button for row with "category_tree" value
     * I confirm modal
-    * I send a "DELETE" request and status code should be 204
     Then On "grid" I can not see row with "category_tree" value
 
   @success

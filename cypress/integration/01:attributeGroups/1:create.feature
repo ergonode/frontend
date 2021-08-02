@@ -10,8 +10,7 @@ Feature: CREATE: Attribute groups
   @success
   Scenario Outline: Add attribute group - success
     When I fill the "attribute-group-code" input with the "<name>" term
-    * I click on "submit" button
-    * I send a "POST" request and status code should be 201
+    * On "modal" I "submit" the data and "create" it "correctly"
     Then On "grid" I can see row with "<name>" value and columns data: "{'0': '<name>', '2': '0'}"
 
     Examples:
@@ -23,8 +22,7 @@ Feature: CREATE: Attribute groups
   @success
   Scenario: Add attribute group and go to edit - success
     When I fill the "attribute-group-code" input with the "text_attribute_group4" term
-    * I click on "proceed" button
-    * I send a "POST" request and status code should be 201
+    * On "modal" I "proceed" the data and "create" it "correctly"
     * I see "attribute-groups/group/%UUID%/general" page
     * Element "attribute-group-code" is visible
     * Element "title-bar-header" is visible
@@ -33,23 +31,20 @@ Feature: CREATE: Attribute groups
   @error
   Scenario: Add attribute group - duplication error
     When I fill the "attribute-group-code" input with the "text_attribute_group" term
-    * I click on "submit" button
-    * I send a "POST" request and status code should be 400
+    * On "modal" I "submit" the data and "create" it "incorrectly"
     * I see a form validation error that says "['The value is not unique.']"
     Then I close modal
 
   @error
   Scenario: Add attribute group - validation error (empty string)
-    When I click on "submit" button
-    * I send a "POST" request and status code should be 400
+    When On "modal" I "submit" the data and "create" it "incorrectly"
     * I see a form validation error that says "['System name is required']"
     Then I close modal
 
   @error
   Scenario: Add attribute group - validation error (misc string)
     When I fill the "attribute-group-code" input with the "@#$%()" term
-    * I click on "submit" button
-    * I send a "POST" request and status code should be 400
+    * On "modal" I "submit" the data and "create" it "incorrectly"
     * I see a form validation error that says "['System name can have only letters, digits or underscore symbol']"
     * I close modal
     Then On "grid" I can not see row with "@#$%()" value

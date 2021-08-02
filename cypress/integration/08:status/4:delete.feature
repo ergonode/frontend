@@ -31,7 +31,6 @@ Feature: DELETE: Status
     When On "grid" I can see row with "status_code_test" value and columns data: "{'0': 'status_code_test'}"
     * On "grid" I click on "delete" button for row with "status_code_test" value
     * I confirm modal
-    * I send a "DELETE" request and status code should be 204
     Then On "grid" I can not see row with "status_code_test" value
 
   @success

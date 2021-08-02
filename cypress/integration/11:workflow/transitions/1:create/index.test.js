@@ -13,7 +13,6 @@ import {
     MultiSteps,
 } from '../../../../models/index';
 
-const requestName = 'transitionRequest';
 const requestWorkflowName = 'workflowRequest';
 const url = /workflow\/default/;
 const workflowUrl = /workflow\/default\/transitions/;
@@ -25,16 +24,10 @@ before(() => {
 beforeEach(() => {
     cy.intercept(
         {
-            method: 'POST',
-            url,
-        },
-    ).as(`${requestName}_POST`);
-    cy.intercept(
-        {
             method: 'GET',
             url,
         },
-    ).as(`${requestName}_GET`);
+    ).as(`${Cypress.spec.name}_GET`);
     cy.intercept(
         {
             method: 'GET',
@@ -43,14 +36,11 @@ beforeEach(() => {
     ).as(`${requestWorkflowName}_GET`);
 });
 
-MultiSteps([
-    Given,
-    And,
-], 'I open {string} page', (page) => {
+Given('I open {string} page', (page) => {
     cy.openPage({
         page,
         requestAliases: [
-            `@${requestName}_GET`,
+            `@${Cypress.spec.name}_GET`,
             `@${requestWorkflowName}_GET`,
         ],
     });
@@ -63,7 +53,7 @@ MultiSteps([
 ], 'On {string} in row {int} I create transition from {string} to {string}', (gridId, rowId, from, to) => {
     const statuses = [];
     cy
-        .get(`[data-cy=${gridId}]`)
+        .getBySel(gridId)
         .should('be.visible')
         .as('grid');
 

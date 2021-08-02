@@ -2,21 +2,7 @@
  * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import {
-    And,
-    Given,
-    Then,
-} from 'cypress-cucumber-preprocessor/steps';
 
-import {
-    MultiSteps,
-} from '../../../models/index';
-import {
-    openPage,
-    sendRequest,
-} from '../../../models/navigation';
-
-const requestName = 'attributeGroupRequest';
 const url = /attributes\/groups/;
 
 before(() => {
@@ -29,32 +15,11 @@ beforeEach(() => {
             method: 'POST',
             url,
         },
-    ).as(`${requestName}_POST`);
+    ).as(`${Cypress.spec.name}_POST`);
     cy.intercept(
         {
             method: 'GET',
             url,
         },
-    ).as(`${requestName}_GET`);
-});
-
-MultiSteps([
-    Given,
-    And,
-], 'I open {string} page', (page) => {
-    openPage({
-        page,
-        requestName,
-    });
-});
-
-MultiSteps([
-    Then,
-    And,
-], 'I send a {string} request and status code should be {int}', (reqType, status) => {
-    sendRequest({
-        requestName,
-        reqType,
-        status,
-    });
+    ).as(`${Cypress.spec.name}_GET`);
 });

@@ -4,6 +4,7 @@
  */
 import {
     And,
+    Given,
     Then,
     When,
 } from 'cypress-cucumber-preprocessor/steps';
@@ -54,10 +55,16 @@ MultiSteps([
     Then,
     And,
 ], 'I see {string} page', (page) => {
-    const url = page.replace(/%\w+%/g, '(.*?)');
+    cy.checkUrl(page);
+});
 
-    cy.url()
-        .should('match', new RegExp(url));
+Given('I open {string} page', (page) => {
+    cy.openPage({
+        page,
+        requestAliases: [
+            `@${Cypress.spec.name}_GET`,
+        ],
+    });
 });
 
 MultiSteps([

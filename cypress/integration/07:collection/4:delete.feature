@@ -31,7 +31,6 @@ Feature: DELETE: Collection
     When On "grid" I can see row with "collection_code" value and columns data: "{'0': 'collection_code', '1': 'Up-sell'}"
     * On "grid" I click on "delete" button for row with "collection_code" value
     * I confirm modal
-    * I send a "DELETE" request and status code should be 204
     Then On "grid" I can not see row with "collection_code" value
 
   @success

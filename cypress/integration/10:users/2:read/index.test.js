@@ -4,7 +4,6 @@
  */
 import {
     And,
-    Given,
     Then,
     When,
 } from 'cypress-cucumber-preprocessor/steps';
@@ -15,11 +14,8 @@ import {
 import {
     actionOnGrid,
     checkGridRow,
-    openPage,
-    sendRequest,
 } from '../../../models/navigation';
 
-const requestName = 'accountsRequest';
 const url = /accounts/;
 
 before(() => {
@@ -32,28 +28,7 @@ beforeEach(() => {
             method: 'GET',
             url,
         },
-    ).as(`${requestName}_GET`);
-});
-
-MultiSteps([
-    Given,
-    And,
-], 'I open {string} page', (page) => {
-    openPage({
-        page,
-        requestName,
-    });
-});
-
-MultiSteps([
-    Then,
-    And,
-], 'I send a {string} request and status code should be {int}', (reqType, status) => {
-    sendRequest({
-        requestName,
-        reqType,
-        status,
-    });
+    ).as(`${Cypress.spec.name}_GET`);
 });
 
 MultiSteps([

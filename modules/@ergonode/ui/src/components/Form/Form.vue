@@ -9,6 +9,7 @@
         <template #default="{ hasError, hasValueToSave }">
             <form
                 class="form"
+                data-cy="form"
                 :style="styles"
                 @submit.prevent="onSubmit">
                 <slot name="header">

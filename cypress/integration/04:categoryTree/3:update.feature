@@ -15,8 +15,7 @@ Feature: UPDATE: Category tree
   #   * I click tab with "Translations" text
   #   * I see "category-trees/tree/%UUID%/translations" page
   #   * I fill the "category-tree-name" input with the "category_tree_category_tree_category_tree_category_tree_category_" term for "en_GB" translation
-  #   Then I click on "submit" button
-  #   * I send a "PUT" request and status code should be 400
+  #   * I "submit" the data and "update" it "incorrectly"
   #   Then I see a form validation error that says "['Category tree name is too long. It should contain 32 characters or less.']"
 
   @success
@@ -29,8 +28,7 @@ Feature: UPDATE: Category tree
     * I choose "[1]" option from "translation-language-select" multi select field
     * I fill the "category-tree-name" input with the "category_tree_EN" term for "en_GB" translation
     * I fill the "category-tree-name" input with the "category_tree_PL" term for "pl_PL" translation
-    Then I click on "submit" button
-    * I send a "PUT" request and status code should be 204
+    * I "submit" the data and "update" it "correctly"
     * I click back arrow
     * I see "category-trees/grid" page
     Then On "grid" I can see row with "category_tree" value and columns data: "{'0': 'category_tree', '1': 'category_tree_EN'}"
