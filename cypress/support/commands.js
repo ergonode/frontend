@@ -5,36 +5,44 @@
 
 // Benchmark
 
-/*
-const commands = [];
+// const commands = [];
 
-Cypress.on('test:after:run', (attributes) => {
-    console.log('Test "%s" has finished in %dms',
-        attributes.title, attributes.duration);
-    console.table(commands);
-    commands.length = 0;
-});
+// Cypress.on('test:after:run', (attributes) => {
+//     console.log('Test "%s" has finished in %dms',
+//         attributes.title, attributes.duration);
+//     console.table(commands);
+//     commands.length = 0;
+// });
 
-Cypress.on('command:start', (c) => {
-    commands.push({
-        name: c.attributes.name,
-        args: c.attributes.args.toString(),
-        started: +new Date(),
-    });
-});
+// Cypress.on('command:start', (c) => {
+//     commands.push({
+//         name: c.attributes.name,
+//         args: c.attributes.args.toString(),
+//         started: +new Date(),
+//     });
+// });
 
-Cypress.on('command:end', (c) => {
-    const lastCommand = commands[commands.length - 1];
+// Cypress.on('command:end', (c) => {
+//     const lastCommand = commands[commands.length - 1];
 
-    if (lastCommand.name !== c.attributes.name) {
-        throw new Error('Last command is wrong');
-    }
+//     if (lastCommand.name !== c.attributes.name) {
+//         throw new Error('Last command is wrong');
+//     }
 
-    lastCommand.endedAt = +new Date();
-    lastCommand.elapsed = `${lastCommand.endedAt - lastCommand.started} ms`;
-}); */
-
+//     lastCommand.endedAt = +new Date();
+//     lastCommand.elapsed = `${lastCommand.endedAt - lastCommand.started} ms`;
+// });
 // Benchmark
+
+Cypress.Commands.add('getBySel', (selector, ...args) => cy.get(`[data-cy=${selector}]`, ...args));
+
+Cypress.Commands.add('getBySelLike', (selector, ...args) => cy.get(`[data-cy*=${selector}]`, ...args));
+
+Cypress.Commands.add('checkUrl', (page) => {
+    const url = page.replace(/%\w+%/g, '(.*?)');
+
+    cy.url().should('match', new RegExp(url));
+});
 
 Cypress.Commands.add('login', (email, pass) => {
     cy.getCookie('token')
@@ -124,12 +132,12 @@ Cypress.Commands.add('checkRequest', ({
 });
 
 Cypress.Commands.add('sendRequest', ({
-    requestName, reqType, status,
+    requestName, requestType, status,
 }) => {
     cy
-        .wait(`@${requestName}_${reqType}`)
+        .wait(`@${requestName}_${requestType}`)
         .then((xhr) => {
-            expect(xhr.request.method).to.equal(reqType);
+            expect(xhr.request.method).to.equal(requestType);
             expect(xhr.response.statusCode).to.equal(status);
         });
 });
@@ -137,11 +145,8 @@ Cypress.Commands.add('sendRequest', ({
 Cypress.Commands.add('openPage', ({
     page, requestAliases = [],
 }) => {
-    cy.visit(`/${page}`);
-    cy
-        .url()
-        .should('include', `/${page}`);
-
+    cy.visit(page);
+    cy.checkUrl(page);
     cy.wrap(requestAliases)
         .each((requestAlias) => {
             cy.checkRequest({

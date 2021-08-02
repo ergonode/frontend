@@ -31,7 +31,6 @@ Feature: DELETE: Category
     When On "grid" I can see row with "text_category" value and columns data: "{'1': 'text_category', '3': '0'}"
     * On "grid" I click on "delete" button for row with "text_category" value
     * I confirm modal
-    * I send a "DELETE" request and status code should be 204
     Then On "grid" I can not see row with "text_category" value
 
   @success

@@ -6,6 +6,10 @@
   "video": false,
   "screenshotOnRunFailure": false,
   "experimentalFetchPolyfill": true,
+  "retries": {
+    "runMode": 0,
+    "openMode": 0
+  },
   "env": {
     "apiServer": "http://localhost:8000/api/v1/",
     "defaultLanguage": "en_GB",

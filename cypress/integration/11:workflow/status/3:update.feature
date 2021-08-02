@@ -3,24 +3,23 @@ Feature: UPDATE: Statuson workflow
   This feature allows update status on workflow
 
   Background:
-    Given I open "workflow/designer" page
+    Given I open "/workflow/designer" page
 
   @error
   Scenario: Update status from edit page - validation error (too long string)
-    When On "workflow-designer" I can see column with "status_code" value
-    * On "workflow-designer" I click on "edit" button for column with "status_code" value
+    When On "workflow-designer" I can see column with "Blocked" value
+    * On "workflow-designer" I click on "edit" button for column with "Blocked" value
     * I see "workflow/status/%UUID%/general" page
     * I click tab with "Translations" text
     * I see "workflow/status/%UUID%/translations" page
     * I fill the "status-name" input with the "status_status_status_status_status_status_status_status_status_status_status_status_status_status_status_status_" term for "en_GB" translation
-    Then I click on "submit" button
-    * I send a "PUT" request and status code should be 400
+    * I "submit" the data and "update" is "incorrect"
     Then I see a form validation error that says "['Status name is too long. It should contain 100 characters or less.']"
 
   @success
   Scenario: Update status from edit page - success
-    When On "workflow-designer" I can see column with "status_code" value
-    * On "workflow-designer" I click on "edit" button for column with "status_code" value
+    When On "workflow-designer" I can see column with "Blocked" value
+    * On "workflow-designer" I click on "edit" button for column with "Blocked" value
     * I see "workflow/status/%UUID%/general" page
     * I click tab with "Translations" text
     * I see "workflow/status/%UUID%/translations" page
@@ -29,7 +28,6 @@ Feature: UPDATE: Statuson workflow
     * I fill the "status-description" textarea with the "status_desc_EN" term for "en_GB" translation
     * I fill the "status-name" input with the "status_PL" term for "pl_PL" translation
     * I fill the "status-description" textarea with the "status_desc_PL" term for "pl_PL" translation
-    Then I click on "submit" button
-    * I send a "PUT" request and status code should be 204
+    * I "submit" the data and "update" is "correct"
     * I click back arrow
     Then I see "workflow/designer" page

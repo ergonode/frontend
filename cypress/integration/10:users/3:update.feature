@@ -10,10 +10,11 @@ Feature: UPDATE: User
     When On "grid" I can see row with "admin@ergonode.com" value and columns data: "{'0': 'admin@ergonode.com'}"
     * On "grid" I click on "edit" button for row with "admin@ergonode.com" value
     * I see "users/user/%UUID%/general" page
-    Then I fill the "user-password" input with the "123" term
-    * I fill the "user-passwordRepeat" input with the "777" term
-    Then I click on "submit" button
-    * I send a "PUT" request and status code should be 400
+    Then I fill the "user-firstName" input with the "Johnny" term
+    * I fill the "user-lastName" input with the "Bravo" term
+    * I fill the "user-password" input with the "User1" term
+    * I fill the "user-passwordRepeat" input with the "User2" term
+    * I "submit" the data and "update" is "incorrect"
     Then I see a form validation error that says "['Password and password repeat must be identical', 'User password is too short. It should have at least 6 characters.', 'This value should be the same as password']"
 
   @success
@@ -26,8 +27,7 @@ Feature: UPDATE: User
     * I fill the "user-password" input with the "UserEmail123" term
     * I fill the "user-passwordRepeat" input with the "UserEmail123" term
     * I choose "Arabic (Egypt)" option from "user-language" select field
-    Then I click on "submit" button
-    * I send a "PUT" request and status code should be 204
+    * I "submit" the data and "update" is "correct"
     * I click back arrow
     * I see "users/grid" page
     Then On "grid" I can see row with "admin@ergonode.com" value and columns data: "{'0': 'admin@ergonode.com', '1': 'Johnny', '2': 'Bravo'}"
@@ -42,5 +42,4 @@ Feature: UPDATE: User
     * On "grid" I can see row with "Polish (Poland)" value and columns data: "{'0': true, '1': 'Polish (Poland)', '2': true, '3': true}"
     * On "grid" I edit "{'0': false}" fields for row with "Polish (Poland)" value
     * On "grid" I can see row with "Polish (Poland)" value and columns data: "{'0': false, '1': 'Polish (Poland)', '2': false, '3': false}"
-    Then I click on "submit" button
-    * I send a "PUT" request and status code should be 204
+    * I "submit" the data and "update" is "correct"

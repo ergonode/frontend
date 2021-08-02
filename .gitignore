@@ -9,6 +9,7 @@ screenshotsFolder
 videosFolder
 cypress.env.json
 cypress/videos
+cypress/logs
 cypress-performance-tests
 benchmark.txt
 

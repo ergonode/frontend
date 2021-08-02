@@ -8,9 +8,9 @@ Feature: READ: Roles
   @success
   Scenario: Read roles on grid - success
     When I can see "User roles" text on "title-bar-header" element
-    * On "grid" I can see row with "Admin" value and columns data: "{'0': 'Admin', '2': '1'}"
-    * On "grid" I can see row with "Data inputer" value and columns data: "{'0': 'Data inputer', '2': '0'}"
-    * On "grid" I can see row with "Category manager" value and columns data: "{'0': 'Category manager', '2': '0'}"
+    * On "grid" I can see row with "Admin" value and columns data: "{'0': 'Admin'}"
+    * On "grid" I can see row with "Data inputer" value and columns data: "{'0': 'Data inputer'}"
+    * On "grid" I can see row with "Category manager" value and columns data: "{'0': 'Category manager'}"
 
   @success
   Scenario: Read role general - success

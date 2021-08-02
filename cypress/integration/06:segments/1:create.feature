@@ -10,15 +10,13 @@ Feature: CREATE: Segment
   @success
   Scenario: Add segment - success
     When I fill the "segment-code" input with the "segment_code" term
-    * I click on "submit" button
-    * I send a "POST" request and status code should be 201
+    * On "modal" I "submit" the data and "create" is "correct"
     Then On "grid" I can see row with "segment_code" value and columns data: "{'0': 'segment_code', '1': '',  '2': '',  '4': '0'}"
 
   @success
   Scenario: Add segment and go to edit - success
     When I fill the "segment-code" input with the "segment_code2" term
-    * I click on "proceed" button
-    * I send a "POST" request and status code should be 201
+    * On "modal" I "proceed" the data and "create" is "correct"
     * I see "segments/segment/%UUID%/general" page
     * Element "segment-code" is visible
     * Element "title-bar-header" is visible
@@ -27,15 +25,13 @@ Feature: CREATE: Segment
   @error
   Scenario: Add segment - duplication error
     When I fill the "segment-code" input with the "segment_code" term
-    * I click on "submit" button
-    * I send a "POST" request and status code should be 400
+    * On "modal" I "submit" the data and "create" is "incorrect"
     * I see a form validation error that says "['Given value is not unique']"
     Then I close modal
 
   @error
   Scenario: Add segment - validation error (empty string)
-    When I click on "submit" button
-    * I send a "POST" request and status code should be 400
+    When On "modal" I "submit" the data and "create" is "incorrect"
     * I see a form validation error that says "['System name is required']"
     Then I close modal
 
@@ -43,8 +39,7 @@ Feature: CREATE: Segment
   # @error
   # Scenario: Add segment - validation error (misc string)
   #   When I fill the "segment-code" input with the "@#$%()" term
-  #   * I click on "submit" button
-  #   * I send a "POST" request and status code should be 400
+  #   * On "modal" I "submit" the data and "create" is "incorrect"
   #   * I see a form validation error that says "['System name can have only letters, digits or underscore symbol']"
   #   * I close modal
   #   Then On "grid" I can not see row with "@#$%()" value

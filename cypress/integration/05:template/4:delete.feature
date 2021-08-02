@@ -37,7 +37,6 @@ Feature: DELETE: Template
     Then On "grid" I can see row with "template_name" value and columns data: "{'0': 'template_name'}"
     * On "grid" I click on "delete" button for row with "template_name" value
     * I confirm modal
-    * I send a "DELETE" request and status code should be 204
     Then On "grid" I can not see row with "template_name" value
 
   @success

@@ -12,8 +12,7 @@ Feature: UPDATE: Role
     * I see "user-roles/role/%UUID%/general" page
     * I fill the "role-name" input with the "role_name role_name role_name role_name role_name role_name role_name role_name role_name role_name role_name role_name " term
     * I fill the "role-description" textarea with the "role_description role_description role_description role_description" term
-    Then I click on "submit" button
-    * I send a "PUT" request and status code should be 400
+    * I "submit" the data and "update" is "incorrect"
     Then I see a form validation error that says "['Role name is too long. It should contain 100 characters or less.']"
 
   @success
@@ -23,8 +22,7 @@ Feature: UPDATE: Role
     * I see "user-roles/role/%UUID%/general" page
     * I fill the "role-name" input with the "role_name_edit" term
     * I fill the "role-description" textarea with the "role_description_edit" term
-    Then I click on "submit" button
-    * I send a "PUT" request and status code should be 204
+    * I "submit" the data and "update" is "correct"
     * I click back arrow
     * I see "user-roles/grid" page
     Then On "grid" I can see row with "role_name_edit" value and columns data: "{'0': 'role_name_edit', '1': 'role_description_edit'}"
@@ -50,5 +48,4 @@ Feature: UPDATE: Role
     Then On "grid" I can see row with "Channel" value and columns data: "{'0': false, '1': 'Channel', '2': false, '3': false, '4': false, '5': false}"
     * On "grid" I edit "{'5': true}" fields for row with "Channel" value
     * On "grid" I can see row with "Channel" value and columns data: "{'0': true, '1': 'Channel', '2': false, '3': false, '4': true, '5': true}"
-    Then I click on "submit" button
-    * I send a "PUT" request and status code should be 204
+    * I "submit" the data and "update" is "correct"

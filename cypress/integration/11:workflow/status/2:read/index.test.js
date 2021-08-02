@@ -3,15 +3,9 @@
  * See LICENSE for license details.
  */
 import {
-    And,
     Given,
 } from 'cypress-cucumber-preprocessor/steps';
 
-import {
-    MultiSteps,
-} from '../../../../models/index';
-
-const requestName = 'statusRequest';
 const requestWorkflowName = 'workflowRequest';
 const url = /status/;
 const workflowUrl = /workflow\/default\/transitions/;
@@ -26,7 +20,7 @@ beforeEach(() => {
             method: 'GET',
             url,
         },
-    ).as(`${requestName}_GET`);
+    ).as(`${Cypress.spec.name}_GET`);
     cy.intercept(
         {
             method: 'GET',
@@ -35,14 +29,11 @@ beforeEach(() => {
     ).as(`${requestWorkflowName}_GET`);
 });
 
-MultiSteps([
-    Given,
-    And,
-], 'I open {string} page', (page) => {
+Given('I open {string} page', (page) => {
     cy.openPage({
         page,
         requestAliases: [
-            `@${requestName}_GET`,
+            `@${Cypress.spec.name}_GET`,
             `@${requestWorkflowName}_GET`,
         ],
     });
