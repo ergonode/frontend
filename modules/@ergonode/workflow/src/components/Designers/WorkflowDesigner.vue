@@ -93,10 +93,11 @@
                                                     :mouse-x-position="mouseXPosition">
                                                     <template #arrowActions>
                                                         <WorkflowDesignerLayoutArrowActions
+                                                            :element-id="element.id"
                                                             :is-hovered="
                                                                 element.row === rowHovered
                                                             "
-                                                            :element-id="element.id"
+                                                            :is-saved="transitions[index].isSaved"
                                                             @remove-transition="onRemoveTransition"
                                                             @submit-transition="onSubmitTransition"
                                                         />
@@ -135,6 +136,9 @@ import {
     getMaxValueObject,
     removeValueAtIndex,
 } from '@Core/models/arrayWrapper';
+import {
+    hasAnyChange,
+} from '@Core/models/mappers/feedbackMapper';
 import {
     isEmpty,
 } from '@Core/models/objectWrapper';
@@ -189,9 +193,9 @@ import {
     getMappedLayoutElements,
     getMappedRowPositions,
     getMappedStatusPositions,
-    getMappedTransitions,
     getObstacleColumns,
     getRows,
+    getSourceAndDestination,
     getValidColumnsToAddTransition,
 } from '@Workflow/models/workflowDesigner';
 import {
@@ -332,6 +336,7 @@ export default {
             'getWorkflow',
             'getStatuses',
             'updateTransitions',
+            '__setState',
         ]),
         ...mapActions('feedback', [
             'onScopeValueChange',
@@ -370,17 +375,29 @@ export default {
 
             return isRevers;
         },
-        rowIndex(id) {
+        getRowIndex(id) {
             return this.layoutElements.findIndex(
                 element => element.id === id,
             );
         },
         onRemoveTransition(id) {
+            const [
+                source,
+                destination,
+            ] = getSourceAndDestination(id);
             this.layoutElements = removeValueAtIndex(
                 this.layoutElements,
-                this.rowIndex(id),
+                this.getRowIndex(id),
             );
-            this.$emit('layoutElements', this.layoutElements);
+
+            this.__setState({
+                key: 'transitions',
+                value: this.transitions.filter(
+                    transition => !(transition.source === source
+                        && transition.destination === destination),
+                ),
+            });
+
             this.onScopeValueChange({
                 scope: this.scope,
                 fieldKey: 'workflowDesigner',
@@ -388,30 +405,38 @@ export default {
             });
         },
         onSubmitTransition(id) {
-            this.$confirm({
-                type: MODAL_TYPE.POSITIVE,
-                title: this.$t('@Workflow.workflow.components.WorkflowDesigner.confirmTitle'),
-                subtitle: this.$t('@Workflow.workflow.components.WorkflowDesigner.confirmSubtitle'),
-                applyTitle: this.$t('@Workflow.workflow.components.WorkflowDesigner.applyTitle'),
-                cancelTitle: this.$t('@Workflow.workflow.components.WorkflowDesigner.cancelTitle'),
-                action: async () => {
-                    const transitions = getMappedTransitions({
-                        layoutElements: this.layoutElements,
-                        transitions: this.transitions,
-                    });
-
-                    await this.updateTransitions({
-                        scope: this.scope,
-                        transitions,
-                        onSuccess: () => {
-                            this.onUpdateSuccess(id);
-                        },
-                        onError: this.onUpdateError,
-                    });
-
-                    this.removeScopeErrors(this.scope);
+            if (hasAnyChange({
+                changeValues: {
+                    [this.scope]: this.changeValues,
                 },
-            });
+                errors: this.errors,
+            })) {
+                this.$confirm({
+                    type: MODAL_TYPE.POSITIVE,
+                    title: this.$t('@Workflow.workflow.components.WorkflowDesigner.confirmTitle'),
+                    subtitle: this.$t('@Workflow.workflow.components.WorkflowDesigner.confirmSubtitle'),
+                    applyTitle: this.$t('@Workflow.workflow.components.WorkflowDesigner.applyTitle'),
+                    cancelTitle: this.$t('@Workflow.workflow.components.WorkflowDesigner.cancelTitle'),
+                    action: async () => {
+                        await this.updateTransitions({
+                            scope: this.scope,
+                            onSuccess: () => {
+                                this.onUpdateSuccess(id);
+                            },
+                            onError: this.onUpdateError,
+                        });
+
+                        this.removeScopeErrors(this.scope);
+                    },
+                });
+            } else {
+                this.$router.push({
+                    name: ROUTE_NAME.WORKFLOW_TRANSITION_EDIT_GENERAL,
+                    params: {
+                        id,
+                    },
+                });
+            }
         },
         onRemoveStartPointer(row) {
             if (this.isRowEdited(row)) {
@@ -420,7 +445,7 @@ export default {
                 this.mouseXPosition = 0;
                 this.layoutElements = removeValueAtIndex(
                     this.layoutElements,
-                    this.rowIndex(EDITED_ROW_ID),
+                    this.getRowIndex(EDITED_ROW_ID),
                 );
             }
         },
@@ -521,9 +546,15 @@ export default {
                     });
                 }
             } else {
-                const editedIndex = this.rowIndex(EDITED_ROW_ID);
+                const editedIndex = this.getRowIndex(EDITED_ROW_ID);
                 const tmpElement = this.layoutElements[editedIndex];
-                const transitionId = `${this.statuses[tmpElement.from].id}--${this.statuses[column].id}`;
+                const [
+                    prevSource,
+                    prevDestination,
+                ] = getSourceAndDestination(tmpElement.id);
+                const source = this.statuses[tmpElement.from].id;
+                const destination = this.statuses[column].id;
+                const transitionId = `${source}--${destination}`;
 
                 this.editedRow = -1;
                 this.validColumns = [];
@@ -534,7 +565,39 @@ export default {
                     to: column,
                     row,
                 };
-                this.$emit('layoutElements', this.layoutElements);
+
+                const transitionIndex = this.transitions.findIndex(
+                    transition => transition.source === prevSource
+                        && transition.destination === prevDestination,
+                );
+                if (transitionIndex === -1) {
+                    this.__setState({
+                        key: 'transitions',
+                        value: [
+                            ...this.transitions,
+                            {
+                                source,
+                                destination,
+                                roles: [],
+                                condition_set: null,
+                                isSaved: false,
+                            },
+                        ],
+                    });
+                } else {
+                    const transitions = [
+                        ...this.transitions,
+                    ];
+
+                    transitions[transitionIndex].source = source;
+                    transitions[transitionIndex].destination = destination;
+
+                    this.__setState({
+                        key: 'transitions',
+                        value: transitions,
+                    });
+                }
+
                 this.onScopeValueChange({
                     scope: this.scope,
                     fieldKey: 'workflowDesigner',
@@ -620,7 +683,7 @@ export default {
                 this.mouseXPosition = 0;
                 this.layoutElements = removeValueAtIndex(
                     this.layoutElements,
-                    this.rowIndex(EDITED_ROW_ID),
+                    this.getRowIndex(EDITED_ROW_ID),
                 );
             }
         },

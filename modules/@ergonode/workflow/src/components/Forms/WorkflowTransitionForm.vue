@@ -53,6 +53,9 @@ import {
 } from '@Core/models/objectWrapper';
 import PRIVILEGES from '@Workflow/config/privileges';
 import {
+    getSourceAndDestination,
+} from '@Workflow/models/workflowDesigner';
+import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -81,7 +84,7 @@ export default {
                 const [
                     source,
                     destination,
-                ] = id.split('--');
+                ] = getSourceAndDestination(id);
 
                 return Boolean(source) && Boolean(destination);
             }

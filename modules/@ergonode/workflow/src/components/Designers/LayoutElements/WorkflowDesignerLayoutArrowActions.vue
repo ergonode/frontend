@@ -5,7 +5,7 @@
 <template>
     <div :class="classes">
         <NuxtLink
-            v-if="transitionId"
+            v-if="isSaved"
             data-cy="transition-action-edit"
             :to="linkTo">
             <UpdateWorkflowTransitionFab />
@@ -50,6 +50,10 @@ export default {
             type: String,
             required: true,
         },
+        isSaved: {
+            type: Boolean,
+            default: false,
+        },
         isHovered: {
             type: Boolean,
             default: false,
@@ -59,30 +63,6 @@ export default {
         ...mapState('workflow', [
             'transitions',
         ]),
-        linkTo() {
-            return {
-                name: ROUTE_NAME.WORKFLOW_TRANSITION_EDIT_GENERAL,
-                params: {
-                    id: this.transitionId,
-                },
-            };
-        },
-        transitionId() {
-            const [
-                from,
-                to,
-            ] = this.elementId.split('--');
-            const hasId = this.transitions.find(
-                ({
-                    source, destination,
-                }) => source === from && destination === to,
-            );
-
-            return hasId ? this.elementId : null;
-        },
-        extendedArrowAction() {
-            return this.$getExtendSlot('@Workflow/components/Designer/WorkflowDesignerLayoutArrow/arrowActions');
-        },
         classes() {
             return [
                 'workflow-designer-layout-arrow-actions',
@@ -90,6 +70,17 @@ export default {
                     'workflow-designer-layout-arrow-actions--hovered': this.isHovered,
                 },
             ];
+        },
+        linkTo() {
+            return {
+                name: ROUTE_NAME.WORKFLOW_TRANSITION_EDIT_GENERAL,
+                params: {
+                    id: this.elementId,
+                },
+            };
+        },
+        extendedArrowAction() {
+            return this.$getExtendSlot('@Workflow/components/Designer/WorkflowDesignerLayoutArrow/arrowActions');
         },
     },
     methods: {

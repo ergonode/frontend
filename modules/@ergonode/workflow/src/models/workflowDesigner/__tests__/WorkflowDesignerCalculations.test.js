@@ -136,10 +136,7 @@ describe('getMappedLayoutElements', () => {
 
 describe('getMappedTransitions', () => {
     it('Based on layout element get transition to send', () => {
-        const result = getMappedTransitions({
-            transitions: [],
-            layoutElements,
-        });
+        const result = getMappedTransitions(transitions);
 
         expect(result.length).toEqual(3);
         expect(result).toEqual(transitionsToSend);
