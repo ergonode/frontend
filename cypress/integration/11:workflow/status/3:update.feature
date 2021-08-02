@@ -13,7 +13,7 @@ Feature: UPDATE: Statuson workflow
     * I click tab with "Translations" text
     * I see "workflow/status/%UUID%/translations" page
     * I fill the "status-name" input with the "status_status_status_status_status_status_status_status_status_status_status_status_status_status_status_status_" term for "en_GB" translation
-    * I "submit" the data and "update" it "incorrectly"
+    * I "submit" the data and "update" is "incorrect"
     Then I see a form validation error that says "['Status name is too long. It should contain 100 characters or less.']"
 
   @success
@@ -28,6 +28,6 @@ Feature: UPDATE: Statuson workflow
     * I fill the "status-description" textarea with the "status_desc_EN" term for "en_GB" translation
     * I fill the "status-name" input with the "status_PL" term for "pl_PL" translation
     * I fill the "status-description" textarea with the "status_desc_PL" term for "pl_PL" translation
-    * I "submit" the data and "update" it "correctly"
+    * I "submit" the data and "update" is "correct"
     * I click back arrow
     Then I see "workflow/designer" page

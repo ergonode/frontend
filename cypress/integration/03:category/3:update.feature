@@ -13,7 +13,7 @@ Feature: UPDATE: Category
     * I click tab with "Translations" text
     * I see "categories/category/%UUID%/translations" page
     * I fill the "category-name" input with the "category_category_category_category_category_category_category_category_" term for "en_GB" translation
-    * I "submit" the data and "update" it "incorrectly"
+    * I "submit" the data and "update" is "incorrect"
     Then I see a form validation error that says "['Category name is too long. It should contain 32 characters or less.']"
 
   @success
@@ -26,7 +26,7 @@ Feature: UPDATE: Category
     * I choose "[1]" option from "translation-language-select" multi select field
     * I fill the "category-name" input with the "category_EN" term for "en_GB" translation
     * I fill the "category-name" input with the "category_PL" term for "pl_PL" translation
-    * I "submit" the data and "update" it "correctly"
+    * I "submit" the data and "update" is "correct"
     * I click back arrow
     * I see "categories/grid" page
     Then On "grid" I can see row with "text_category" value and columns data: "{'1': 'text_category', '2': 'category_EN', '3': '0'}"

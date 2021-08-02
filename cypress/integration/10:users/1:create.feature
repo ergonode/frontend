@@ -16,7 +16,7 @@ Feature: CREATE: User
     * I fill the "user-passwordRepeat" input with the "UserEmail123" term
     * I choose "Arabic (Egypt)" option from "user-language" select field
     * I choose "Admin" option from "user-role" select field
-    * On "modal" I "submit" the data and "create" it "correctly"
+    * On "modal" I "submit" the data and "create" is "correct"
     Then On "grid" I can see row with "user@email.com" value and columns data: "{'0': 'user@email.com', '1': 'User', '2': 'Email'}"
 
   @success
@@ -28,7 +28,7 @@ Feature: CREATE: User
     * I fill the "user-passwordRepeat" input with the "UserEmail123" term
     * I choose "Arabic (Egypt)" option from "user-language" select field
     * I choose "Admin" option from "user-role" select field
-    * On "modal" I "proceed" the data and "create" it "correctly"
+    * On "modal" I "proceed" the data and "create" is "correct"
     * I see "users/user/%UUID%/general" page
     * Element "title-bar-header" is visible
     * Element "user-email" is visible
@@ -58,7 +58,7 @@ Feature: CREATE: User
     * I fill the "user-passwordRepeat" input with the "UserEmail123" term
     * I choose "Arabic (Egypt)" option from "user-language" select field
     * I choose "Admin" option from "user-role" select field
-    * On "modal" I "submit" the data and "create" it "incorrectly"
+    * On "modal" I "submit" the data and "create" is "incorrect"
     * I see a form validation error that says "['User admin@ergonode.com already exists.']"
     Then I close modal
 
@@ -71,12 +71,12 @@ Feature: CREATE: User
     * I fill the "user-passwordRepeat" input with the "UserEmail123" term
     * I choose "Arabic (Egypt)" option from "user-language" select field
     * I choose "Admin" option from "user-role" select field
-    * On "modal" I "submit" the data and "create" it "incorrectly"
+    * On "modal" I "submit" the data and "create" is "incorrect"
     * I see a form validation error that says "['This value is not a valid email address., User email is too short. It should have at least 5 characters.']"
     Then I close modal
 
   @error
   Scenario: Add user - validation error (empty string)
-    When On "modal" I "submit" the data and "create" it "incorrectly"
+    When On "modal" I "submit" the data and "create" is "incorrect"
     * I see a form validation error that says "['User first name is required', 'User last name is required', 'User email is required', 'User password is required', 'User password repeat is required', 'User language is required', 'Role Id is required']"
     Then I close modal

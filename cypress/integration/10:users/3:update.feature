@@ -14,7 +14,7 @@ Feature: UPDATE: User
     * I fill the "user-lastName" input with the "Bravo" term
     * I fill the "user-password" input with the "User1" term
     * I fill the "user-passwordRepeat" input with the "User2" term
-    * I "submit" the data and "update" it "incorrectly"
+    * I "submit" the data and "update" is "incorrect"
     Then I see a form validation error that says "['Password and password repeat must be identical', 'User password is too short. It should have at least 6 characters.', 'This value should be the same as password']"
 
   @success
@@ -27,7 +27,7 @@ Feature: UPDATE: User
     * I fill the "user-password" input with the "UserEmail123" term
     * I fill the "user-passwordRepeat" input with the "UserEmail123" term
     * I choose "Arabic (Egypt)" option from "user-language" select field
-    * I "submit" the data and "update" it "correctly"
+    * I "submit" the data and "update" is "correct"
     * I click back arrow
     * I see "users/grid" page
     Then On "grid" I can see row with "admin@ergonode.com" value and columns data: "{'0': 'admin@ergonode.com', '1': 'Johnny', '2': 'Bravo'}"
@@ -42,4 +42,4 @@ Feature: UPDATE: User
     * On "grid" I can see row with "Polish (Poland)" value and columns data: "{'0': true, '1': 'Polish (Poland)', '2': true, '3': true}"
     * On "grid" I edit "{'0': false}" fields for row with "Polish (Poland)" value
     * On "grid" I can see row with "Polish (Poland)" value and columns data: "{'0': false, '1': 'Polish (Poland)', '2': false, '3': false}"
-    * I "submit" the data and "update" it "correctly"
+    * I "submit" the data and "update" is "correct"

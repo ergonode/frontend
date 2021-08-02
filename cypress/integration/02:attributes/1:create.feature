@@ -13,7 +13,7 @@ Feature: CREATE: Attributes
     * I fill the "attribute-code" input with the "<name>" term
     * I choose "<scope_txt>" option from "attribute-scope" select field
     * I choose "[0]" options from "attribute-groups" multi select field
-    * On "modal" I "submit" the data and "create" it "correctly"
+    * On "modal" I "submit" the data and "create" is "correct"
     Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_txt>'}"
 
     Examples:
@@ -32,7 +32,7 @@ Feature: CREATE: Attributes
     * I choose "<scope_txt>" option from "attribute-scope" select field
     * I choose "[0]" options from "attribute-groups" multi select field
     * I choose "<param>" option from "attribute-params" select field
-    * On "modal" I "proceed" the data and "create" it "correctly"
+    * On "modal" I "proceed" the data and "create" is "correct"
     * I see "attributes/attribute/%UUID%/general" page
     * Element "attribute-code" is visible
     * Element "title-bar-header" is visible
@@ -55,7 +55,7 @@ Feature: CREATE: Attributes
     * I fill the "attribute-option-0" input with the "<option1>" term
     * On "attribute-add-options" element I click button with "ADD OPTION" text
     * I fill the "attribute-option-1" input with the "<option2>" term
-    * On "modal" I "submit" the data and "create" it "correctly"
+    * On "modal" I "submit" the data and "create" is "correct"
     Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_txt>'}"
 
   Examples:
@@ -69,13 +69,13 @@ Feature: CREATE: Attributes
     * I fill the "attribute-code" input with the "text_attribute" term
     * I choose "global" option from "attribute-scope" select field
     * I choose "[0]" options from "attribute-groups" multi select field
-    * On "modal" I "submit" the data and "create" it "incorrectly"
+    * On "modal" I "submit" the data and "create" is "incorrect"
     * I see a form validation error that says "['The value is not unique.']"
     Then I close modal
 
   @error
   Scenario: Add attribute - validation error (empty type)
-    When On "modal" I "submit" the data and "create" it "incorrectly"
+    When On "modal" I "submit" the data and "create" is "incorrect"
     * I see a form validation error that says "['Type of attribute is required']"
     Then I close modal
 
@@ -83,7 +83,7 @@ Feature: CREATE: Attributes
   @error
   Scenario: Add attribute - validation error (empty other fields)
     When I choose "Date" option from "attribute-type" select field
-    * On "modal" I "submit" the data and "create" it "incorrectly"
+    * On "modal" I "submit" the data and "create" is "incorrect"
     * I see a form validation error that says "['System name is required', 'Attribute scope is required', 'This value should not be blank.']"
     Then I close modal
 
@@ -102,7 +102,7 @@ Feature: CREATE: Attributes
     When I choose "Text" option from "attribute-type" select field
     * I fill the "attribute-code" input with the "@#$%()" term
     * I choose "local" option from "attribute-scope" select field
-    * On "modal" I "submit" the data and "create" it "incorrectly"
+    * On "modal" I "submit" the data and "create" is "incorrect"
     * I see a form validation error that says "['System name can have only letters, digits or underscore symbol']"
     * I close modal
     Then On "grid" I can not see row with "@#$%()" value
@@ -112,7 +112,7 @@ Feature: CREATE: Attributes
     When I choose "Text" option from "attribute-type" select field
     * I fill the "attribute-code" input with the "text_attribute_text_text_attribute_text_text_attribute_text_text_attribute_text_text_attribute_text_text_attribute_text_text_attribute_text_" term
     * I choose "local" option from "attribute-scope" select field
-    * On "modal" I "submit" the data and "create" it "incorrectly"
+    * On "modal" I "submit" the data and "create" is "incorrect"
     * I see a form validation error that says "['System name is too long. It should contain 128 characters or less.']"
     * I close modal
     Then On "grid" I can not see row with "text_attribute_text_text_attribute_text_text_attribute_text_text_attribute_text_text_attribute_text_text_attribute_text_text_attribute_text_" value
