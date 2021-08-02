@@ -12,19 +12,19 @@ export const requestTypes = {
 
 export const statusCodes = {
     GET: {
-        correctly: 200,
-        incorrectly: 404,
+        correct: 200,
+        incorrect: 404,
     },
     POST: {
-        correctly: 201,
-        incorrectly: 400,
+        correct: 201,
+        incorrect: 400,
     },
     PUT: {
-        correctly: 204,
-        incorrectly: 400,
+        correct: 204,
+        incorrect: 400,
     },
     DELETE: {
-        correctly: 204,
-        incorrectly: 400,
+        correct: 204,
+        incorrect: 400,
     },
 };
