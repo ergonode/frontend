@@ -1,0 +1,41 @@
+/*
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+<template>
+    <div class="grid-file-presentation-cell">
+        <IconFile />
+    </div>
+</template>
+
+<script>
+import IconFile from '@UI/components/Icons/Others/IconFile';
+
+export default {
+    name: 'GridFilePresentationCell',
+    components: {
+        IconFile,
+    },
+    props: {
+        /**
+         * Component value
+         */
+        value: {
+            type: String,
+            default: '',
+        },
+    },
+};
+</script>
+
+<style lang="scss" scoped>
+    .grid-file-presentation-cell {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+</style>

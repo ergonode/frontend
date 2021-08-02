@@ -24,10 +24,14 @@
                     :label="$t('@Media.media.components.ResourceForm.filenameLabel')"
                     @input="setNameValue" />
                 <UploadImageFile
+                    v-if="type === 'image'"
                     :value="id"
                     disabled
                     :label="$t('@Media.media.components.ResourceForm.previewLabel')"
                     height="246px" />
+                <FilePreview
+                    v-else
+                    :label="$t('@Media.media.components.ResourceForm.previewLabel')" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
                         :is="field.component"
@@ -42,6 +46,7 @@
 <script>
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import FilePreview from '@Media/components/Inputs/FilePreview';
 import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 import PRIVILEGES from '@Media/config/privileges';
 import {
@@ -52,6 +57,7 @@ import {
 export default {
     name: 'ResourceForm',
     components: {
+        FilePreview,
         UploadImageFile,
     },
     mixins: [
@@ -62,6 +68,7 @@ export default {
         ...mapState('media', [
             'id',
             'name',
+            'type',
         ]),
         extendedForm() {
             return this.$extendedForm({
