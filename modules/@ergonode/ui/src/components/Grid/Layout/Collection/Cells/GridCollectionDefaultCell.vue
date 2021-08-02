@@ -7,15 +7,17 @@
         <!-- TODO: Change relation to `multimedia` href.
              INFO: Secure relationship does not break the application.
         -->
-        <LazyImage
-            v-if="data.image"
-            class="grid-collection-default-cell__image"
-            :href="`multimedia/${data.image}/download/default`"
-            :value="data.image"
-            :object-fit="objectFit" />
-        <DefaultImage
-            v-else
-            class="grid-collection-default-cell__default-image" />
+        <slot name="image">
+            <LazyImage
+                v-if="data.image"
+                class="grid-collection-default-cell__image"
+                :href="`multimedia/${data.image}/download/default`"
+                :value="data.image"
+                :object-fit="objectFit" />
+            <DefaultImage
+                v-else
+                class="grid-collection-default-cell__default-image" />
+        </slot>
         <span
             class="grid-collection-default-cell__title"
             v-text="data.description"

@@ -216,8 +216,13 @@ export default {
                     const additionalData = {};
 
                     if (additionalColumns) {
-                        additionalColumns.forEach((columnId) => {
-                            additionalData[columnId] = row[columnId] ? row[columnId].value : '';
+                        additionalColumns.forEach((columnId, columnIdIndex) => {
+                            // TODO: Think about rewriting mechanism
+                            const key = columnId === 'type'
+                                ? `type${columnIdIndex}`
+                                : columnId;
+
+                            additionalData[key] = row[columnId] ? row[columnId].value : '';
                         });
                     }
 

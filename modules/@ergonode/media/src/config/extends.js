@@ -39,8 +39,12 @@ export default {
         productTemplate: Store.Template,
     },
     extendComponents: {
+        '@UI/components/Grid/Layout/Table/Columns': {
+            IMAGE_PREVIEW: Components.GridImagePreviewColumn,
+        },
         '@UI/components/Grid/Layout/Collection/Cells': {
             MEDIA_ATTACH: Components.GridMediaAttachCollectionCell,
+            IMAGE_PREVIEW: Components.GridImagePreviewCollectionCell,
         },
         '@UI/components/Grid/Layout/Table/Cells/Edit': {
             [ATTRIBUTE_TYPES.IMAGE]: Components.GridImageEditCell,
