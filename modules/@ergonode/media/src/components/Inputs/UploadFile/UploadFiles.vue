@@ -95,36 +95,13 @@ import {
 import {
     GREEN,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
-import InputController from '@UI/components/Input/InputController';
-import InputImageController from '@UI/components/Input/InputImageController';
-import InputLabel from '@UI/components/Input/InputLabel';
-import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
 import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
-import Preloader from '@UI/components/Preloader/Preloader';
 
 export default {
     name: 'UploadFiles',
     components: {
-        InputImageController,
-        Preloader,
-        InputController,
-        Button,
-        IconAdd,
-        InputLabel,
-        InputSolidStyle,
         VerticalFixedScroll,
         ModalMediaTabBar: () => import('@Media/components/Modal/ModalMediaTabBar'),
-        IconFile: () => import('@UI/components/Icons/Others/IconFile'),
-        IconFilledClose: () => import('@UI/components/Icons/Window/IconFilledClose'),
-        IconButton: () => import('@UI/components/IconButton/IconButton'),
-        ListElementDescription: () => import('@UI/components/List/ListElementDescription'),
-        ListElementTitle: () => import('@UI/components/List/ListElementTitle'),
-        ListElementIcon: () => import('@UI/components/List/ListElementIcon'),
-        ListElement: () => import('@UI/components/List/ListElement'),
-        ListElementAction: () => import('@UI/components/List/ListElementAction'),
-        List: () => import('@UI/components/List/List'),
     },
     props: {
         /**

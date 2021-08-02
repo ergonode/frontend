@@ -20,19 +20,9 @@
 </template>
 
 <script>
-import Modal from '@UI/components/Modal/Modal';
-import ModalBody from '@UI/components/Modal/ModalBody';
-import ModalHeader from '@UI/components/Modal/ModalHeader';
-import ModalOverlay from '@UI/components/Modal/ModalOverlay';
 
 export default {
     name: 'ModalForm',
-    components: {
-        Modal,
-        ModalBody,
-        ModalHeader,
-        ModalOverlay,
-    },
     props: {
         /**
          * The title of the component

@@ -16,6 +16,7 @@
             <FormListSection
                 :disabled="isDisabled"
                 :add-list-title="$t('@Products.productExtend.components.ProductAttributesBindingForm.listTitle')"
+                :add-list-tooltip="addAttributeBindingTooltip"
                 @add="onAddRecord">
                 <FormListSubsection v-if="bindings.length && selectAttributes.length">
                     <ProductAttributeBindingField
@@ -38,9 +39,6 @@
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import ProductAttributeBindingField from '@Products/extends/components/Forms/Field/ProductAttributeBindingField';
-import Form from '@UI/components/Form/Form';
-import FormListSection from '@UI/components/Form/Section/FormListSection';
-import FormListSubsection from '@UI/components/Form/Subsection/FormListSubsection';
 import {
     mapActions,
     mapState,
@@ -49,9 +47,6 @@ import {
 export default {
     name: 'ProductAttributesBindingForm',
     components: {
-        Form,
-        FormListSection,
-        FormListSubsection,
         ProductAttributeBindingField,
     },
     mixins: [
@@ -68,6 +63,11 @@ export default {
         ...mapState('product', [
             'selectAttributes',
         ]),
+        addAttributeBindingTooltip() {
+            return this.isDisabled
+                ? this.$t('@Products.productExtend.components.ProductAttributesBindingForm.listTittleTooltip')
+                : '';
+        },
         isDisabled() {
             return this.bindings.length === this.selectAttributes.length;
         },

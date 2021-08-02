@@ -16,13 +16,11 @@
 
 <script>
 import ImportDetailsGrid from '@Import/components/Grids/ImportDetailsGrid';
-import ModalGrid from '@UI/components/Modal/ModalGrid';
 
 export default {
     name: 'ImportDetailsModalGrid',
     components: {
         ImportDetailsGrid,
-        ModalGrid,
     },
     props: {
         sourceId: {

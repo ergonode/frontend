@@ -20,18 +20,12 @@ import {
     GRAPHITE_LIGHT,
     GREEN,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconEdit from '@UI/components/Icons/Actions/IconEdit';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
     ROUTE_NAME,
 } from '@Workflow/config/routes';
 
 export default {
     name: 'WorkflowDesignerEditStatusLink',
-    components: {
-        IconEdit,
-        FadeTransition,
-    },
     props: {
         statusId: {
             type: String,

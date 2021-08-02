@@ -14,13 +14,9 @@
 import {
     ARROW,
 } from '@Core/defaults/icons';
-import Icon from '@UI/components/Icons/Icon';
 
 export default {
     name: 'IconArrowPointer',
-    components: {
-        Icon,
-    },
     inheritAttrs: false,
     computed: {
         points() {

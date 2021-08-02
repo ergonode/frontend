@@ -16,13 +16,9 @@
 </template>
 
 <script>
-import LazyImage from '@UI/components/LazyImage/LazyImage';
 
 export default {
     name: 'GridImagePresentationCell',
-    components: {
-        LazyImage,
-    },
     props: {
         /**
          * Component value

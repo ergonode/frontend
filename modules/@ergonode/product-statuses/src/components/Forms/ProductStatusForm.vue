@@ -65,12 +65,6 @@ import {
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import PRIVILEGES from '@Statuses/config/privileges';
-import CheckBox from '@UI/components/CheckBox/CheckBox';
-import ColorPicker from '@UI/components/ColorPicker/ColorPicker';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
-import InfoHint from '@UI/components/Hints/InfoHint';
-import TextField from '@UI/components/TextField/TextField';
 import {
     mapActions,
     mapState,
@@ -78,14 +72,6 @@ import {
 
 export default {
     name: 'ProductStatusForm',
-    components: {
-        Form,
-        FormSection,
-        TextField,
-        ColorPicker,
-        CheckBox,
-        InfoHint,
-    },
     mixins: [
         formActionsMixin,
         formFeedbackMixin,

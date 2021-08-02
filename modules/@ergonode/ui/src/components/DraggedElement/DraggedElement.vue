@@ -12,13 +12,8 @@
 </template>
 
 <script>
-import IconDragDrop from '@UI/components/Icons/Actions/IconDragDrop';
-
 export default {
     name: 'DraggedElement',
-    components: {
-        IconDragDrop,
-    },
     props: {
         /**
          * The label is a text caption or description for the component

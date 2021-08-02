@@ -22,7 +22,6 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import DatePicker from '@UI/components/DatePicker/DatePicker';
 import GridSelectEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
 import gridEditCellMixin from '@UI/mixins/grid/gridEditCellMixin';
 import {
@@ -37,7 +36,6 @@ export default {
     name: 'GridDateTimeEditCell',
     components: {
         GridSelectEditContentCell,
-        DatePicker,
     },
     mixins: [
         gridEditCellMixin,

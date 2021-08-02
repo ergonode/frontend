@@ -44,18 +44,12 @@ import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
-import TextArea from '@UI/components/TextArea/TextArea';
-import TextField from '@UI/components/TextField/TextField';
 import {
     mapState,
 } from 'vuex';
 
 export default {
     name: 'AttributeTranslationForm',
-    components: {
-        TextField,
-        TextArea,
-    },
     mixins: [
         translationCardMixin,
     ],

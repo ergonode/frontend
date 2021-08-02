@@ -14,7 +14,6 @@
                     :index="index"
                     :item="item">
                     <HorizontalRoutingTabBarItem
-                        :key="index"
                         :index="index"
                         :item="item"
                         :selected-index="selectedIndex"
@@ -42,17 +41,9 @@
 </template>
 
 <script>
-import HorizontalTabBarContent from '@UI/components/TabBar/HorizontalTabBarContent';
-import HorizontalTabBarItems from '@UI/components/TabBar/HorizontalTabBarItems';
-import HorizontalRoutingTabBarItem from '@UI/components/TabBar/Routing/HorizontalRoutingTabBarItem';
 
 export default {
     name: 'HorizontalRoutingTabBar',
-    components: {
-        HorizontalTabBarContent,
-        HorizontalTabBarItems,
-        HorizontalRoutingTabBarItem,
-    },
     props: {
         /**
          * List of items

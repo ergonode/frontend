@@ -52,11 +52,6 @@ import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
 import PRIVILEGES from '@Products/config/privileges';
-import Button from '@UI/components/Button/Button';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
-import Select from '@UI/components/Select/Select';
-import TextField from '@UI/components/TextField/TextField';
 import {
     mapActions,
     mapState,
@@ -64,13 +59,6 @@ import {
 
 export default {
     name: 'ProductForm',
-    components: {
-        Button,
-        Form,
-        FormSection,
-        Select,
-        TextField,
-    },
     mixins: [
         formActionsMixin,
         formFeedbackMixin,

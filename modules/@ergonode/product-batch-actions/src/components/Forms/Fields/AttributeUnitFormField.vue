@@ -27,9 +27,6 @@
 import {
     GRAPHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
-import TextField from '@UI/components/TextField/TextField';
-import TextFieldSuffix from '@UI/components/TextField/TextFieldSuffix';
 import {
     mapActions,
     mapState,
@@ -37,11 +34,6 @@ import {
 
 export default {
     name: 'AttributeUnitFormField',
-    components: {
-        IconSpinner,
-        TextField,
-        TextFieldSuffix,
-    },
     props: {
         value: {
             type: [

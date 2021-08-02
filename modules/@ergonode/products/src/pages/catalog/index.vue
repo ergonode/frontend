@@ -31,11 +31,6 @@ import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import CreateProductButton from '@Products/components/Buttons/CreateProductButton';
 import PRIVILEGES from '@Products/config/privileges';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
-import Page from '@UI/components/Layout/Page';
-import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
-import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
     mapState,
 } from 'vuex';
@@ -44,11 +39,6 @@ export default {
     name: 'Products',
     components: {
         CreateProductButton,
-        TitleBar,
-        Page,
-        HorizontalRoutingTabBar,
-        Button,
-        IconAdd,
     },
     mixins: [
         beforeRouteLeaveMixin,

@@ -33,9 +33,6 @@
 
 <script>
 import ProductTemplateFormField from '@Products/components/Forms/Field/ProductTemplateFormField';
-import DatePicker from '@UI/components/DatePicker/DatePicker';
-import InfoHint from '@UI/components/Hints/InfoHint';
-import TextFieldSuffix from '@UI/components/TextField/TextFieldSuffix';
 import {
     DEFAULT_FORMAT,
 } from '@UI/models/calendar';
@@ -51,9 +48,6 @@ export default {
     name: 'ProductTemplateFormDateField',
     components: {
         ProductTemplateFormField,
-        DatePicker,
-        TextFieldSuffix,
-        InfoHint,
     },
     props: {
         size: {

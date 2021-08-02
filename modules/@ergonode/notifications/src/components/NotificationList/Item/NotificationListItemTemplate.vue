@@ -40,7 +40,6 @@ import NotificationListItemMenu from '@Notifications/components/NotificationList
 import {
     GRAPHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Paragraph from '@UI/components/Paragraph/Paragraph';
 import {
     DEFAULT_DATE_TIME_FORMAT,
 } from '@UI/models/calendar';
@@ -56,7 +55,6 @@ export default {
     name: 'NotificationListItemTemplate',
     components: {
         NotificationListItemMenu,
-        Paragraph,
     },
     props: {
         item: {

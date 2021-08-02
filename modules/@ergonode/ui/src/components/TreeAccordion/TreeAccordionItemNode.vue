@@ -15,13 +15,9 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import TreeAccordionItemArrowExpander from '@UI/components/TreeAccordion/TreeAccordionItemArrowExpander';
 
 export default {
     name: 'TreeAccordionItemNode',
-    components: {
-        TreeAccordionItemArrowExpander,
-    },
     props: {
         /**
          * The size of the component

@@ -19,15 +19,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
-import IconFilledClose from '@UI/components/Icons/Window/IconFilledClose';
 
 export default {
     name: 'PlaceholderClearSearchButton',
-    components: {
-        Button,
-        IconFilledClose,
-    },
     props: {
         title: {
             type: String,

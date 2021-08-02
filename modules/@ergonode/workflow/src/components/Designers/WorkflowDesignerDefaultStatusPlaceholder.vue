@@ -25,14 +25,12 @@
 import {
     ORIENTATION,
 } from '@Core/defaults/layout';
-import Placeholder from '@UI/components/Placeholder/Placeholder';
 import CreateWorkflowStatusButton from '@Workflow/components/Buttons/CreateWorkflowStatusButton';
 
 export default {
     name: 'WorkflowDesignerDefaultStatusPlaceholder',
     components: {
         CreateWorkflowStatusButton,
-        Placeholder,
     },
     computed: {
         arrowUrl() {

@@ -36,21 +36,9 @@ import {
 import {
     isObject,
 } from '@Core/models/objectWrapper';
-import CheckBox from '@UI/components/CheckBox/CheckBox';
-import ListElement from '@UI/components/List/ListElement';
-import ListElementAction from '@UI/components/List/ListElementAction';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
 
 export default {
     name: 'SelectListElement',
-    components: {
-        ListElement,
-        ListElementAction,
-        ListElementDescription,
-        ListElementTitle,
-        CheckBox,
-    },
     props: {
         /**
          * Index of given component at the loop

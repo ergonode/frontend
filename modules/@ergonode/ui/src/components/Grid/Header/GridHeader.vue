@@ -48,22 +48,9 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
-import Fab from '@UI/components/Fab/Fab';
-import GridHeaderSettings from '@UI/components/Grid/Header/GridHeaderSettings';
-import GridCollectionLayoutActivator from '@UI/components/Grid/Layout/Collection/GridCollectionLayoutActivator';
-import GridTableLayoutActivator from '@UI/components/Grid/Layout/Table/GridTableLayoutActivator';
-import IconSettings from '@UI/components/Icons/Actions/IconSettings';
 
 export default {
     name: 'GridHeader',
-    components: {
-        GridTableLayoutActivator,
-        GridCollectionLayoutActivator,
-        GridHeaderSettings,
-        Fab,
-        IconSettings,
-        GridSettingsModalForm: () => import('@UI/components/Grid/Modals/GridSettingsModalForm'),
-    },
     props: {
         /**
          * Configuration of table layout

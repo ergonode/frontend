@@ -14,13 +14,9 @@
 import {
     PINNED_COLUMN_STATE,
 } from '@Core/defaults/grid';
-import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 
 export default {
     name: 'GridSentinelColumn',
-    components: {
-        IntersectionObserver,
-    },
     props: {
         /**
          * The state of column. Columns might be pinned to the right or left side

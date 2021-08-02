@@ -12,14 +12,10 @@
 </template>
 
 <script>
-import GridFilterPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridFilterPresentationCell';
 import gridDataFilterCellMixin from '@UI/mixins/grid/gridDataFilterCellMixin';
 
 export default {
     name: 'GridNumericFilterDataCell',
-    components: {
-        GridFilterPresentationCell,
-    },
     mixins: [
         gridDataFilterCellMixin,
     ],

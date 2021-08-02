@@ -12,13 +12,11 @@
 
 <script>
 import AttributeGroupsGrid from '@AttributeGroups/components/Grids/AttributeGroupsGrid';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'AttributeGroupsTab',
     components: {
         AttributeGroupsGrid,
-        CenterViewTemplate,
     },
 };
 </script>

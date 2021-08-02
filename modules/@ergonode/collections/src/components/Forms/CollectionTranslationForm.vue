@@ -44,15 +44,9 @@
 <script>
 import PRIVILEGES from '@Collections/config/privileges';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
-import TextArea from '@UI/components/TextArea/TextArea';
-import TextField from '@UI/components/TextField/TextField';
 
 export default {
     name: 'CollectionTranslationForm',
-    components: {
-        TextArea,
-        TextField,
-    },
     mixins: [
         translationCardMixin,
     ],

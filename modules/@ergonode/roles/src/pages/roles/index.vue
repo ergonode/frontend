@@ -29,17 +29,11 @@ import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import CreateRoleButton from '@Roles/components/Buttons/CreateRoleButton';
 import PRIVILEGES from '@Roles/config/privileges';
-import Page from '@UI/components/Layout/Page';
-import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
-import TitleBar from '@UI/components/TitleBar/TitleBar';
 
 export default {
     name: 'Roles',
     components: {
         CreateRoleButton,
-        TitleBar,
-        Page,
-        HorizontalRoutingTabBar,
     },
     mixins: [
         beforeRouteLeaveMixin,

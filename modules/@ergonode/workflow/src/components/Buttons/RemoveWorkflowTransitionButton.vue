@@ -27,8 +27,6 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
-import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 import PRIVILEGES from '@Workflow/config/privileges';
 import {
     ROUTE_NAME,
@@ -39,10 +37,6 @@ import {
 
 export default {
     name: 'RemoveWorkflowTransitionButton',
-    components: {
-        Button,
-        IconDelete,
-    },
     computed: {
         isAllowedToDelete() {
             return this.$hasAccess([

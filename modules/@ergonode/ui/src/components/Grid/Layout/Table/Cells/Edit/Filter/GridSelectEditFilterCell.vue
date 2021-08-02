@@ -34,14 +34,12 @@ import {
     getMappedObjectOptions,
 } from '@Core/models/mappers/translationsMapper';
 import GridSelectEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
-import TranslationSelect from '@UI/components/Select/TranslationSelect';
 import gridEditFilterCellMixin from '@UI/mixins/grid/gridEditFilterCellMixin';
 
 export default {
     name: 'GridSelectEditFilterCell',
     components: {
         GridSelectEditContentCell,
-        TranslationSelect,
     },
     mixins: [
         gridEditFilterCellMixin,

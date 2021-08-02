@@ -23,7 +23,6 @@ import {
 import AdvancedFilterShowOnly from '@UI/components/AdvancedFilters/AdvancedFilterShowOnly';
 import AdvancedFilterContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterContent';
 import DateRangePickerContent from '@UI/components/DatePicker/DateRangePickerContent';
-import Divider from '@UI/components/Dividers/Divider';
 import {
     DEFAULT_FORMAT,
 } from '@UI/models/calendar';
@@ -34,7 +33,6 @@ export default {
         AdvancedFilterContent,
         DateRangePickerContent,
         AdvancedFilterShowOnly,
-        Divider,
     },
     props: {
         /**

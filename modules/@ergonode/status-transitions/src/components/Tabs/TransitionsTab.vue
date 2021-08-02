@@ -12,13 +12,11 @@
 
 <script>
 import TransitionsGrid from '@Transitions/components/Grids/TransitionsGrid';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'TransitionsTab',
     components: {
         TransitionsGrid,
-        CenterViewTemplate,
     },
 };
 </script>

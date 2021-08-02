@@ -36,12 +36,10 @@ import {
     GREEN,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import FadeNavigationSideBarTextTransition from '@UI/components/Transitions/FadeNavigationSideBarTextTransition';
 
 export default {
     name: 'NavigationSideBarElement',
     components: {
-        FadeNavigationSideBarTextTransition,
         TranslatableTitleProvider,
     },
     props: {

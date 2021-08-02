@@ -120,7 +120,12 @@
           "successAlert": "Attributes {info} have been restored"
         },
         "ProductTemplateTab": {
-          "editLanguageSelectLabel": "Edit language"
+          "editLanguageSelectLabel": "Edit language",
+          "placeholderTitle": "Template is empty",
+          "placeholderSubtitle": "No attribute has been added in the Template Designer. Edit the template and select attributes to display."
+        },
+        "EditProductTemplateButton": {
+          "title": "Edit template"
         }
       },
       "pages": {
@@ -213,7 +218,8 @@
           "label": "Binding attribute"
         },
         "ProductAttributesBindingForm": {
-          "listTitle": "ADD BINDING ATTRIBUTE"
+          "listTitle": "ADD BINDING ATTRIBUTE",
+          "listTittleTooltip": "There are no more select type attributes"
         },
         "UpdateProductsAttachmentButton": {
           "successMessage": "Products attachment have been updated"

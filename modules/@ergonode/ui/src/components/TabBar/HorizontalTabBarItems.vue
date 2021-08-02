@@ -7,34 +7,33 @@
         <HorizontalFixedScroll @scroll.native="onScroll">
             <div
                 data-cy="tab-bar__items"
-                ref="items"
                 class="horizontal-tab-bar-items__container">
-                <template v-for="(item, index) in items">
+                <HorizontalTabBarItemResizeObserver
+                    v-for="(item, index) in items"
+                    :key="index"
+                    :index="index"
+                    @width-change="onWidthChange">
                     <slot
                         name="item"
                         :index="index"
                         :item="item" />
-                </template>
+                </HorizontalTabBarItemResizeObserver>
             </div>
         </HorizontalFixedScroll>
-        <ClientOnly>
-            <TabBarItemSlider
-                :items-reference="$refs.items"
-                :scroll-left="scrollLeft"
-                :selected-index="selectedIndex" />
-        </ClientOnly>
+        <TabBarItemSlider
+            :widths="itemWidths"
+            :scroll-left="scrollLeft"
+            :selected-index="selectedIndex" />
     </div>
 </template>
 
 <script>
 import HorizontalFixedScroll from '@UI/components/Layout/Scroll/HorizontalFixedScroll';
-import TabBarItemSlider from '@UI/components/TabBar/TabBarItemSlider';
 
 export default {
     name: 'HorizontalTabBarItems',
     components: {
         HorizontalFixedScroll,
-        TabBarItemSlider,
     },
     props: {
         items: {
@@ -49,6 +48,7 @@ export default {
     data() {
         return {
             scrollLeft: 0,
+            itemWidths: {},
         };
     },
     methods: {
@@ -56,6 +56,15 @@ export default {
             requestAnimationFrame(() => {
                 this.scrollLeft = event.target.scrollLeft;
             });
+        },
+        onWidthChange({
+            index,
+            width,
+        }) {
+            this.itemWidths = {
+                ...this.itemWidths,
+                [index]: width,
+            };
         },
     },
 };

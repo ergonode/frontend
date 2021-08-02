@@ -35,15 +35,11 @@ import CreateAttributeButton from '@Attributes/components/Buttons/CreateAttribut
 import {
     ATTRIBUTE_CREATED_EVENT_NAME,
 } from '@Attributes/defaults';
-import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
-import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
 
 export default {
     name: 'AttributesAutocomplete',
     components: {
         CreateAttributeButton,
-        SelectListNoDataPlaceholder,
-        Autocomplete,
     },
     props: {
         value: {

@@ -89,25 +89,9 @@ import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     RED,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Button from '@UI/components/Button/Button';
-import Divider from '@UI/components/Dividers/Divider';
-import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
-import IconError from '@UI/components/Icons/Feedback/IconError';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
-import IconSync from '@UI/components/Icons/Feedback/IconSync';
-import LinkButton from '@UI/components/LinkButton/LinkButton';
 
 export default {
     name: 'Form',
-    components: {
-        FeedbackProvider,
-        Button,
-        LinkButton,
-        IconError,
-        Divider,
-        IconSpinner,
-        IconSync,
-    },
     mixins: [
         formActionsMixin,
     ],

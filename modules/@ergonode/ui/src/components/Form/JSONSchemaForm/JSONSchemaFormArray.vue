@@ -16,13 +16,9 @@
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
-import FormSubsection from '@UI/components/Form/Subsection/FormSubsection';
 
 export default {
     name: 'JSONSchemaFormArray',
-    components: {
-        FormSubsection,
-    },
     props: {
         /**
          * JSON schema

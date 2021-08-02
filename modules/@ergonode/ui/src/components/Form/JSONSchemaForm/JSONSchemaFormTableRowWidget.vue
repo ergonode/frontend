@@ -36,15 +36,11 @@ import {
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
-import Fab from '@UI/components/Fab/Fab';
 import JSONSchemaFormTableRowArrowWidget from '@UI/components/Form/JSONSchemaForm/JSONSchemaFormTableRowArrowWidget';
-import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 
 export default {
     name: 'JSONSchemaFormTableRowWidget',
     components: {
-        Fab,
-        IconDelete,
         JSONSchemaFormTableRowArrowWidget,
     },
     props: {

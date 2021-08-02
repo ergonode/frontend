@@ -14,12 +14,10 @@
 
 <script>
 import NavigateToCollectionsButton from '@Collections/extends/product/components/Buttons/NavigateToCollectionsButton';
-import TabBarNoDataPlaceholder from '@UI/components/TabBar/TabBarNoDataPlaceholder';
 
 export default {
     name: 'ProductWithoutCollectionTabBarNoDataPlaceholder',
     components: {
-        TabBarNoDataPlaceholder,
         NavigateToCollectionsButton,
     },
 };

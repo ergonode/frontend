@@ -12,13 +12,9 @@
 import {
     ALIGN,
 } from '@Core/defaults/icons';
-import Icon from '@UI/components/Icons/Icon';
 
 export default {
     name: 'IconAlignLeft',
-    components: {
-        Icon,
-    },
     inheritAttrs: false,
     computed: {
         drawingCommands() {

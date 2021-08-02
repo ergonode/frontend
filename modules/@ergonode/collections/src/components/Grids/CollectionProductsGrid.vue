@@ -85,7 +85,6 @@ import {
 import {
     ROUTE_NAME,
 } from '@Products/config/routes';
-import Grid from '@UI/components/Grid/Grid';
 import {
     mapActions,
 } from 'vuex';
@@ -93,7 +92,6 @@ import {
 export default {
     name: 'CollectionProductsGrid',
     components: {
-        Grid,
         AddProductsToCollectionButton,
         UpdateCollectionProductsVisibilityButton,
     },

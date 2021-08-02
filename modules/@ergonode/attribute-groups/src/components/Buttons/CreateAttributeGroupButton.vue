@@ -27,14 +27,10 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
 export default {
     name: 'CreateAttributeGroupButton',
     components: {
-        Button,
-        IconAdd,
         CreateAttributeGroupModalForm: () => import('@AttributeGroups/components/Modals/CreateAttributeGroupModalForm'),
     },
     data() {

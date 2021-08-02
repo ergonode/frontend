@@ -38,15 +38,9 @@ import {
 import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Fab from '@UI/components/Fab/Fab';
-import IconArrowSingle from '@UI/components/Icons/Arrows/IconArrowSingle';
 
 export default {
     name: 'CarouselPagination',
-    components: {
-        IconArrowSingle,
-        Fab,
-    },
     props: {
         currentIndex: {
             type: Number,

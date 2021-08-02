@@ -14,13 +14,9 @@
 </template>
 
 <script>
-import TextField from '@UI/components/TextField/TextField';
 
 export default {
     name: 'AttributeTextFormField',
-    components: {
-        TextField,
-    },
     props: {
         value: {
             type: String,

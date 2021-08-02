@@ -78,8 +78,6 @@ import {
 } from '@Core/services/grid/getGridData.service';
 import PRIVILEGES from '@Products/config/privileges';
 import UpdateProductsAttachmentButton from '@Products/extends/components/Buttons/UpdateProductsAttachmentButton';
-import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 import {
     mapActions,
 } from 'vuex';
@@ -88,8 +86,6 @@ export default {
     name: 'ProductsToAttachForGroupGrid',
     components: {
         UpdateProductsAttachmentButton,
-        Grid,
-        GridNoDataPlaceholder,
     },
     mixins: [
         extendPropsMixin({

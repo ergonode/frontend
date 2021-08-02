@@ -96,9 +96,6 @@ import Designer from '@UI/components/Designer/Designer';
 import DesignerGhostItem from '@UI/components/Designer/DesignerGhostItem';
 import DesignerPlaceholderItem from '@UI/components/Designer/DesignerPlaceholderItem';
 import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
-import TreeDesignerConnectionLine from '@UI/components/TreeDesigner/TreeDesignerConnectionLine';
-import TreeDesignerDraggableLayer from '@UI/components/TreeDesigner/TreeDesignerDraggableLayer';
-import TreeDesignerItem from '@UI/components/TreeDesigner/TreeDesignerItem';
 import {
     COLUMNS,
     GRID_GAP,
@@ -114,10 +111,7 @@ export default {
         VerticalFixedScroll,
         DesignerPlaceholderItem,
         Designer,
-        TreeDesignerDraggableLayer,
         DesignerGhostItem,
-        TreeDesignerItem,
-        TreeDesignerConnectionLine,
     },
     props: {
         /**

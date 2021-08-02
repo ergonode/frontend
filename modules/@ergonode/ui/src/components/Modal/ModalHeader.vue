@@ -25,15 +25,9 @@
 import {
     THEME,
 } from '@Core/defaults/theme';
-import Fab from '@UI/components/Fab/Fab';
-import IconClose from '@UI/components/Icons/Window/IconClose';
 
 export default {
     name: 'ModalHeader',
-    components: {
-        Fab,
-        IconClose,
-    },
     props: {
         /**
          * The title of the component

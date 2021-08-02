@@ -23,15 +23,9 @@ import {
     GRAPHITE,
     GREEN,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Fab from '@UI/components/Fab/Fab';
-import IconListMedium from '@UI/components/Icons/Others/IconListMedium';
 
 export default {
     name: 'GridTableLayoutActivator',
-    components: {
-        Fab,
-        IconListMedium,
-    },
     props: {
         /**
          * Determines if component is selected

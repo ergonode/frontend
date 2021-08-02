@@ -44,15 +44,9 @@
 <script>
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 import PRIVILEGES from '@Statuses/config/privileges';
-import TextArea from '@UI/components/TextArea/TextArea';
-import TextField from '@UI/components/TextField/TextField';
 
 export default {
     name: 'ProductStatusTranslationForm',
-    components: {
-        TextField,
-        TextArea,
-    },
     mixins: [
         translationCardMixin,
     ],

@@ -68,9 +68,6 @@ import {
     GREEN,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Fab from '@UI/components/Fab/Fab';
-import IconDelete from '@UI/components/Icons/Actions/IconDelete';
-import IconEdit from '@UI/components/Icons/Actions/IconEdit';
 import {
     format as formatDate,
 } from 'date-fns';
@@ -82,9 +79,6 @@ export default {
     name: 'CommentPresentation',
     components: {
         Comment,
-        Fab,
-        IconEdit,
-        IconDelete,
         UserFabAvatar,
     },
     props: {

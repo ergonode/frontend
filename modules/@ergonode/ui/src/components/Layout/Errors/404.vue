@@ -3,91 +3,65 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="placeholder">
-        <div class="horizontal-wrapper">
-            <img
-                class="image"
-                src="@UI/assets/images/placeholders/error-pages/404.svg">
-            <div class="navigation-section">
-                <h1 class="navigation-section__header">
-                    Not found
-                </h1>
-                <p
-                    class="navigation-section__description">
-                    The link you clicked may be broken or the page may have been removed.
-                </p>
-                <Button
-                    title="Go to dashboard"
-                    @click.native="$router.push({ name: 'dashboard' })" />
-            </div>
+    <div class="error-404">
+        <div class="error-404__placeholder">
+            <Placeholder
+                :bg-url="bgUrl"
+                :size="largeSize"
+                title="Page not found"
+                subtitle="The link you clicked may be broken or the page may have been removed."
+                :orientation="horizontalOrientation">
+                <template #action>
+                    <Button
+                        title="Go to dashboard"
+                        :size="smallSize"
+                        @click.native="$router.push({ name: 'dashboard' })" />
+                </template>
+            </Placeholder>
         </div>
-        <span
-            class="error-section section__quotation">
-            The page you were looking for doesn’t exist. If you think this is an
-            <br> error, please report it to the system administrator.
-        </span>
     </div>
 </template>
 
 <script>
-import Button from '@UI/components/Button/Button';
+import {
+    ORIENTATION,
+} from '@Core/defaults/layout';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'Error404',
-    components: {
-        Button,
+    computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
+        largeSize() {
+            return SIZE.LARGE;
+        },
+        horizontalOrientation() {
+            return ORIENTATION.HORIZONTAL;
+        },
+        bgUrl() {
+            return require('@UI/assets/images/placeholders/error-pages/404.svg');
+        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .placeholder {
+    .error-404 {
         display: flex;
         flex: 1;
         flex-direction: column;
-        justify-content: center;
+        align-items: center;
+        background-color: $WHITE;
 
-        .horizontal-wrapper {
+        &__placeholder {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-
-            .image {
-                margin-right: 64px;
-            }
-
-            .navigation-section {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                width: 285px;
-
-                &__header {
-                    color: $GREEN;
-                    font: bold 56px/56px "Inter UI";
-                }
-
-                &__description {
-                    margin: 8px 0 16px;
-                    color: $GRAPHITE_DARK;
-                    font: $FONT_MEDIUM_16_24;
-                }
-
-                &__header, &__description {
-                    text-align: center;
-                }
-            }
-        }
-
-        .error-section {
-            margin-top: 64px;
-            color: $GRAPHITE;
-            font: $FONT_MEDIUM_16_24;
-            text-align: center;
-        }
-
-        .error-plug {
-            justify-self: flex-start;
+            width: 845px;
+            height: 346px;
+            padding-top: 168px;
         }
     }
 </style>

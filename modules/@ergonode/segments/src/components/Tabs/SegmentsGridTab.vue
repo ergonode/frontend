@@ -12,12 +12,10 @@
 
 <script>
 import SegmentsGrid from '@Segments/components/Grids/SegmentsGrid';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'SegmentsGridTab',
     components: {
-        CenterViewTemplate,
         SegmentsGrid,
     },
 };

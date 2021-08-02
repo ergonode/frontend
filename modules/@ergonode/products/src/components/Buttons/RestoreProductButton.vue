@@ -27,8 +27,6 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Products/config/privileges';
-import Button from '@UI/components/Button/Button';
-import IconRestore from '@UI/components/Icons/Actions/IconRestore';
 import {
     mapGetters,
     mapState,
@@ -37,8 +35,6 @@ import {
 export default {
     name: 'RestoreProductButton',
     components: {
-        Button,
-        IconRestore,
         RestoreProductAttributesModalForm: () => import('@Products/components/Modals/RestoreProductAttributesModalForm'),
     },
     props: {

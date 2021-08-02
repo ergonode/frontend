@@ -11,13 +11,9 @@
 </template>
 
 <script>
-import CheckBox from '@UI/components/CheckBox/CheckBox';
 
 export default {
     name: 'JSONSchemaFormBoolean',
-    components: {
-        CheckBox,
-    },
     props: {
         /**
          * JSON schema

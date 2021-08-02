@@ -36,20 +36,12 @@ import {
 } from '@Attributes/defaults';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import CheckBox from '@UI/components/CheckBox/CheckBox';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
 import {
     mapState,
 } from 'vuex';
 
 export default {
     name: 'RestoreForm',
-    components: {
-        Form,
-        FormSection,
-        CheckBox,
-    },
     mixins: [
         formActionsMixin,
         formFeedbackMixin,

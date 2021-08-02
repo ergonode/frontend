@@ -27,7 +27,6 @@ import {
     ROW_HEIGHT,
 } from '@Core/defaults/languagesDesigner';
 import DesignerItemDescription from '@UI/components/Designer/DesignerItemDescription';
-import TreeDesigner from '@UI/components/TreeDesigner/TreeDesigner';
 import {
     mapActions,
     mapState,
@@ -36,7 +35,6 @@ import {
 export default {
     name: 'LanguageInheritanceTreeDesigner',
     components: {
-        TreeDesigner,
         DesignerItemDescription,
     },
     props: {

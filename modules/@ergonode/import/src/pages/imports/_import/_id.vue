@@ -41,9 +41,6 @@ import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import CreateImportButton from '@Import/components/Buttons/CreateImportButton';
 import RemoveImportButton from '@Import/components/Buttons/RemoveImportButton';
 import PRIVILEGES from '@Import/config/privileges';
-import Page from '@UI/components/Layout/Page';
-import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
-import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
     mapState,
 } from 'vuex';
@@ -51,9 +48,6 @@ import {
 export default {
     name: 'EditImportProfile',
     components: {
-        Page,
-        TitleBar,
-        HorizontalRoutingTabBar,
         CreateImportButton,
         RemoveImportButton,
     },

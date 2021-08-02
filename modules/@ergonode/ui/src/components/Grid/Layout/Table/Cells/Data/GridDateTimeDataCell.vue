@@ -23,8 +23,6 @@
 </template>
 
 <script>
-import GridPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
-import GridSuffixPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
 import gridDataCellMixin from '@UI/mixins/grid/gridDataCellMixin';
 import {
     DEFAULT_DATE_TIME_FORMAT,
@@ -35,10 +33,6 @@ import {
 
 export default {
     name: 'GridDateTimeDataCell',
-    components: {
-        GridPresentationCell,
-        GridSuffixPresentationCell,
-    },
     mixins: [
         gridDataCellMixin,
     ],

@@ -22,14 +22,10 @@ import PRIVILEGES from '@Categories/config/privileges';
 import {
     CATEGORY_CREATED_EVENT_NAME,
 } from '@Categories/defaults/attributes';
-import Fab from '@UI/components/Fab/Fab';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
 export default {
     name: 'CreateCategoryFab',
     components: {
-        Fab,
-        IconAdd,
         CreateCategoryModalForm: () => import('@Categories/components/Modals/CreateCategoryModalForm'),
     },
     props: {

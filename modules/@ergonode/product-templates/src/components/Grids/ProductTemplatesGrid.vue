@@ -86,15 +86,11 @@ import {
 import {
     PRODUCT_TEMPLATE_CREATED_EVENT_NAME,
 } from '@Templates/defaults';
-import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'ProductTemplatesGrid',
     components: {
         CreateProductTemplateButton,
-        Grid,
-        GridNoDataPlaceholder,
     },
     mixins: [
         extendPropsMixin({

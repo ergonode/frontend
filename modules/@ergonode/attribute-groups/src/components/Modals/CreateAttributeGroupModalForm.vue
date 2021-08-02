@@ -33,7 +33,6 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
-import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
 } from 'vuex';
@@ -41,7 +40,6 @@ import {
 export default {
     name: 'CreateAttributeGroupModalForm',
     components: {
-        ModalForm,
         AttributeGroupForm,
     },
     mixins: [

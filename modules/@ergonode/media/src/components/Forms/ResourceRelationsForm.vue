@@ -44,9 +44,6 @@
 <script>
 import LinkRelationButton from '@Media/components/Buttons/LinkRelationButton';
 import PRIVILEGES from '@Media/config/privileges';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
-import TabBarNoDataPlaceholder from '@UI/components/TabBar/TabBarNoDataPlaceholder';
 import Table from '@UI/components/Table/Table';
 import TableRow from '@UI/components/Table/TableRow';
 import TableRowCell from '@UI/components/Table/TableRowCell';
@@ -58,10 +55,7 @@ import {
 export default {
     name: 'ResourceRelationsForm',
     components: {
-        Form,
-        FormSection,
         LinkRelationButton,
-        TabBarNoDataPlaceholder,
         Table,
         TableRow,
         TableRowHeader,

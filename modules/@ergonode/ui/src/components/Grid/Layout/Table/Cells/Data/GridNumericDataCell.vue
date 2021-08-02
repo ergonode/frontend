@@ -23,16 +23,10 @@
 </template>
 
 <script>
-import GridPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
-import GridSuffixPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
 import gridDataCellMixin from '@UI/mixins/grid/gridDataCellMixin';
 
 export default {
     name: 'GridNumericDataCell',
-    components: {
-        GridPresentationCell,
-        GridSuffixPresentationCell,
-    },
     mixins: [
         gridDataCellMixin,
     ],

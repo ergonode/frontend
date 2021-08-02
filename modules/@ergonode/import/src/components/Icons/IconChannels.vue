@@ -11,13 +11,9 @@
 </template>
 
 <script>
-import Icon from '@UI/components/Icons/Icon';
 
 export default {
     name: 'IconChannels',
-    components: {
-        Icon,
-    },
     inheritAttrs: false,
     computed: {
         drawingCommands() {

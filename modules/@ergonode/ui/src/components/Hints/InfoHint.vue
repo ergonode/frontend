@@ -11,13 +11,9 @@
 </template>
 
 <script>
-import IconTooltip from '@UI/components/Icons/Feedback/IconTooltip';
 
 export default {
     name: 'InfoHint',
-    components: {
-        IconTooltip,
-    },
     props: {
         /**
          *  The hint is a tip for the component

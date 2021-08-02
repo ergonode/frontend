@@ -68,8 +68,6 @@
 <script>
 import GridFilterDataCell from '@UI/components/Grid/Layout/Table/Cells/Data/Filter/GridFilterDataCell';
 import GridDataCell from '@UI/components/Grid/Layout/Table/Cells/Data/GridDataCell';
-import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
-import GridHeaderCell from '@UI/components/Grid/Layout/Table/Cells/Header/GridHeaderCell';
 import GridColumn from '@UI/components/Grid/Layout/Table/Columns/GridColumn';
 import GridDraggableColumn from '@UI/components/Grid/Layout/Table/Columns/GridDraggableColumn';
 
@@ -78,8 +76,6 @@ export default {
     components: {
         GridDataCell,
         GridFilterDataCell,
-        GridTableCell,
-        GridHeaderCell,
         GridColumn,
         GridDraggableColumn,
     },

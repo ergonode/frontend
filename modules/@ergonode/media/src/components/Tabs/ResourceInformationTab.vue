@@ -12,12 +12,10 @@
 
 <script>
 import ResourceInformationForm from '@Media/components/Forms/ResourceInformationForm';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'ResourceInformationTab',
     components: {
-        CenterViewTemplate,
         ResourceInformationForm,
     },
 };

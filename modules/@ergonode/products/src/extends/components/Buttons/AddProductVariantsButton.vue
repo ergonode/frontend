@@ -26,12 +26,10 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Products/config/privileges';
-import Button from '@UI/components/Button/Button';
 
 export default {
     name: 'AddProductVariantsButton',
     components: {
-        Button,
         AddProductVariantsModalGrid: () => import('@Products/extends/components/Modals/AddProductVariantsModalGrid'),
     },
     props: {

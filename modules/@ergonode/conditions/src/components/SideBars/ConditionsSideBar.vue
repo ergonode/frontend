@@ -27,8 +27,6 @@ import ConditionSideBarElement from '@Conditions/components/SideBars/ConditionSi
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
-import Preloader from '@UI/components/Preloader/Preloader';
-import SideBar from '@UI/components/SideBar/SideBar';
 import {
     mapActions,
 } from 'vuex';
@@ -36,9 +34,7 @@ import {
 export default {
     name: 'ConditionsSideBar',
     components: {
-        Preloader,
         ConditionSideBarElement,
-        SideBar,
     },
     props: {
         scope: {

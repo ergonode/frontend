@@ -16,13 +16,11 @@
 </template>
 
 <script>
-import Carousel from '@UI/components/Carousel/Carousel';
 import ImageCarouselImage from '@UI/components/ImageCarousel/ImageCarouselImage';
 
 export default {
     name: 'ImageCarousel',
     components: {
-        Carousel,
         ImageCarouselImage,
     },
     props: {

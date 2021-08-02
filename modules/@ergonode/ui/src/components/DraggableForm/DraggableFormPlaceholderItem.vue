@@ -10,13 +10,8 @@
 </template>
 
 <script>
-import IconDragDrop from '@UI/components/Icons/Actions/IconDragDrop';
-
 export default {
     name: 'DraggableFormPlaceholderItem',
-    components: {
-        IconDragDrop,
-    },
 };
 </script>
 

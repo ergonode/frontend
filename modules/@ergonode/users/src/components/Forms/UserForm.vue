@@ -68,6 +68,7 @@
                     :data-cy="dataCyGenerator(languageFieldKey)"
                     :value="languageCode"
                     required
+                    searchable
                     :label="$t('@Users.user.components.UserForm.languageLabel')"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[languageFieldKey]"
@@ -87,13 +88,6 @@
 import LanguageSelect from '@Core/components/Selects/LanguageSelect';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import Button from '@UI/components/Button/Button';
-import Form from '@UI/components/Form/Form';
-import FormSection from '@UI/components/Form/Section/FormSection';
-import Select from '@UI/components/Select/Select';
-import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
-import TextField from '@UI/components/TextField/TextField';
-import Toggler from '@UI/components/Toggler/Toggler';
 import CreateUserButton from '@Users/components/Buttons/CreateUserButton';
 import PRIVILEGES from '@Users/config/privileges';
 import {
@@ -106,13 +100,6 @@ export default {
     components: {
         LanguageSelect,
         CreateUserButton,
-        SelectListNoDataPlaceholder,
-        Button,
-        Form,
-        FormSection,
-        TextField,
-        Toggler,
-        Select,
     },
     mixins: [
         formActionsMixin,

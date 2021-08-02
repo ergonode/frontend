@@ -54,18 +54,14 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
 import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
 import SelectDropdownFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownFooter';
-import SelectList from '@UI/components/SelectList/SelectList';
 
 export default {
     name: 'SelectDropdown',
     components: {
         SelectDropdownFooter,
         MultiselectDropdownFooter,
-        Dropdown,
-        SelectList,
     },
     props: {
         /**

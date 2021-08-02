@@ -15,16 +15,12 @@ import PRIVILEGES from '@Channels/config/privileges';
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
 import {
     mapState,
 } from 'vuex';
 
 export default {
     name: 'DownloadExportFileButton',
-    components: {
-        Button,
-    },
     props: {
         link: {
             type: String,

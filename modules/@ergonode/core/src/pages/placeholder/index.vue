@@ -50,15 +50,9 @@
 </template>
 
 <script>
-import Button from '@UI/components/Button/Button';
-import Typer from '@UI/components/Typer/Typer';
 
 export default {
     name: 'Placeholder',
-    components: {
-        Button,
-        Typer,
-    },
 };
 </script>
 

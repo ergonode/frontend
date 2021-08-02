@@ -1,20 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Errors/404 Component is named well 1`] = `
-<div class="placeholder">
-  <div class="horizontal-wrapper"><img src="@UI/assets/images/placeholders/error-pages/404.svg" class="image">
-    <div class="navigation-section">
-      <h1 class="navigation-section__header">
-        Not found
-      </h1>
-      <p class="navigation-section__description">
-        The link you clicked may be broken or the page may have been removed.
-      </p>
-      <button-stub theme="primary" size="regular" title="Go to dashboard"></button-stub>
-    </div>
-  </div> <span class="error-section section__quotation">
-        The page you were looking for doesn’t exist. If you think this is an
-        <br> error, please report it to the system administrator.
-    </span>
+<div class="error-404">
+  <div class="error-404__placeholder">
+    <placeholder bg-url="" size="large" title="Page not found" subtitle="The link you clicked may be broken or the page may have been removed." orientation="horizontal"></placeholder>
+  </div>
 </div>
 `;

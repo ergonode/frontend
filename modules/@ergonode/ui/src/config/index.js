@@ -19,4 +19,10 @@ export default {
     styleResources: {
         scss: './assets/scss/main.scss',
     },
+    plugins: [
+        {
+            ssr: true,
+            src: './plugins/global-component-loader',
+        },
+    ],
 };

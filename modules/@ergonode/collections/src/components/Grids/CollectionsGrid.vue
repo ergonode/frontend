@@ -81,15 +81,11 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
-import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'CollectionsGrid',
     components: {
         CreateCollectionButton,
-        Grid,
-        GridNoDataPlaceholder,
     },
     mixins: [
         extendPropsMixin({

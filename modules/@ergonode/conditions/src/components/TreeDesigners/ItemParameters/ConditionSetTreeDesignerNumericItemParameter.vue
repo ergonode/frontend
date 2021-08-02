@@ -19,13 +19,9 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import TextField from '@UI/components/TextField/TextField';
 
 export default {
     name: 'ConditionSetTreeDesignerNumericItemParameter',
-    components: {
-        TextField,
-    },
     props: {
         parameter: {
             type: Object,

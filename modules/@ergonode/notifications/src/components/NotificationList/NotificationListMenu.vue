@@ -26,22 +26,12 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import ActionFab from '@UI/components/ActionFab/ActionFab';
-import IconDots from '@UI/components/Icons/Others/IconDots';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
     name: 'NotificationListMenu',
-    components: {
-        ActionFab,
-        IconDots,
-        ListElementDescription,
-        ListElementTitle,
-    },
     computed: {
         smallSize() {
             return SIZE.SMALL;

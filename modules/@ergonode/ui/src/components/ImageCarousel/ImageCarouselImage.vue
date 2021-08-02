@@ -10,13 +10,9 @@
 </template>
 
 <script>
-import LazyImage from '@UI/components/LazyImage/LazyImage';
 
 export default {
     name: 'ImageCarouselImage',
-    components: {
-        LazyImage,
-    },
     props: {
         /**
          * Id of image

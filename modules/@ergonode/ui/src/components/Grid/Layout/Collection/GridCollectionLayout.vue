@@ -52,13 +52,11 @@ import {
 import GridCollectionCell from '@UI/components/Grid/Layout/Collection/Cells/GridCollectionCell';
 import GridSelectCollectionHeaderCell
     from '@UI/components/Grid/Layout/Collection/Cells/Header/GridSelectCollectionHeaderCell';
-import Preloader from '@UI/components/Preloader/Preloader';
 
 export default {
     name: 'GridCollectionLayout',
     components: {
         GridSelectCollectionHeaderCell,
-        Preloader,
         GridCollectionCell,
     },
     props: {
@@ -216,8 +214,13 @@ export default {
                     const additionalData = {};
 
                     if (additionalColumns) {
-                        additionalColumns.forEach((columnId) => {
-                            additionalData[columnId] = row[columnId] ? row[columnId].value : '';
+                        additionalColumns.forEach((columnId, columnIdIndex) => {
+                            // TODO: Think about rewriting mechanism
+                            const key = columnId === 'type'
+                                ? `type${columnIdIndex}`
+                                : columnId;
+
+                            additionalData[key] = row[columnId] ? row[columnId].value : '';
                         });
                     }
 

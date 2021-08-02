@@ -14,7 +14,6 @@
 import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconAddFilter from '@UI/components/Icons/Actions/IconAddFilter';
 import {
     GRID_GAP,
     ROW_HEIGHT,
@@ -22,9 +21,6 @@ import {
 
 export default {
     name: 'DesignerGhostItem',
-    components: {
-        IconAddFilter,
-    },
     props: {
         row: {
             type: Number,

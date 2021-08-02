@@ -41,11 +41,6 @@ import {
     GRAPHITE,
     GREY,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import ListDraggableElement from '@UI/components/List/ListDraggableElement';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementHint from '@UI/components/List/ListElementHint';
-import ListElementIcon from '@UI/components/List/ListElementIcon';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
 import {
     mapActions,
     mapState,
@@ -53,13 +48,6 @@ import {
 
 export default {
     name: 'AttributeSideBarElement',
-    components: {
-        ListElementDescription,
-        ListElementTitle,
-        ListElementHint,
-        ListElementIcon,
-        ListDraggableElement,
-    },
     props: {
         scope: {
             type: String,

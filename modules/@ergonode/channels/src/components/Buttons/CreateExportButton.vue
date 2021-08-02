@@ -8,11 +8,7 @@
         :size="smallSize"
         :theme="secondaryTheme"
         :disabled="!isAllowedToUpdate"
-        @click.native="onCreateExport">
-        <template #prepend="{ color }">
-            <IconAdd :fill-color="color" />
-        </template>
-    </Button>
+        @click.native="onCreateExport" />
 </template>
 
 <script>
@@ -30,18 +26,12 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
     name: 'CreateExportButton',
-    components: {
-        Button,
-        IconAdd,
-    },
     computed: {
         isAllowedToUpdate() {
             return this.$hasAccess([

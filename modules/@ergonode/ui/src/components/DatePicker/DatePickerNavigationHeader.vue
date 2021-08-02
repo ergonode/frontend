@@ -40,15 +40,9 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
-import Fab from '@UI/components/Fab/Fab';
-import IconArrowSingle from '@UI/components/Icons/Arrows/IconArrowSingle';
 
 export default {
     name: 'DatePickerNavigationHeader',
-    components: {
-        Fab,
-        IconArrowSingle,
-    },
     props: {
         /**
          * The title of the component

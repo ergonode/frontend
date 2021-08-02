@@ -20,12 +20,10 @@
 
 <script>
 import GridCheckEditCell from '@UI/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell';
-import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
 
 export default {
     name: 'GridMultiSelectRowEditCell',
     components: {
-        GridTableCell,
         GridCheckEditCell,
     },
     props: {

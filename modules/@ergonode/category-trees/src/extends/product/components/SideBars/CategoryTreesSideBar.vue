@@ -71,11 +71,6 @@ import {
     get as getCategoryTree,
     getAutocomplete as getCategoryTreesAutocomplete,
 } from '@Trees/services';
-import ListSearchHeader from '@UI/components/List/ListSearchHeader';
-import Preloader from '@UI/components/Preloader/Preloader';
-import SideBar from '@UI/components/SideBar/SideBar';
-import SideBarNoDataPlaceholder from '@UI/components/SideBar/SideBarNoDataPlaceholder';
-import TreeAccordionItem from '@UI/components/TreeAccordion/TreeAccordionItem';
 import {
     getSelectedNodes,
 } from '@UI/models/treeAccordion';
@@ -86,13 +81,8 @@ import {
 export default {
     name: 'CategoryTreesSideBar',
     components: {
-        SideBarNoDataPlaceholder,
         CategoryTreeSideBarGroupElement,
         CreateCategoryButton,
-        SideBar,
-        ListSearchHeader,
-        Preloader,
-        TreeAccordionItem,
     },
     props: {
         scope: {

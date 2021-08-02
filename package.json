@@ -18,6 +18,7 @@
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
+    "analyze": "nuxt build --analyze",
     "start": "nuxt start",
     "lint:scss": "stylelint './**/*.scss' './**/*.vue'",
     "lint": "eslint --ext .js,.vue,.json . && npm run lint:scss",

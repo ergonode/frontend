@@ -17,15 +17,9 @@
 </template>
 
 <script>
-import MenuListElement from '@UI/components/MenuList/MenuListElement';
-import MenuListHeader from '@UI/components/MenuList/MenuListHeader';
 
 export default {
     name: 'MenuList',
-    components: {
-        MenuListElement,
-        MenuListHeader,
-    },
     props: {
         /**
          * The title of the component

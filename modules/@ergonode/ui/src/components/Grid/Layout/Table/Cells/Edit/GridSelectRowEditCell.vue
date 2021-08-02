@@ -20,13 +20,11 @@
 
 <script>
 import GridRadioEditCell from '@UI/components/Grid/Layout/Table/Cells/Edit/GridRadioEditCell';
-import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
 
 export default {
     name: 'GridSelectRowEditCell',
     components: {
         GridRadioEditCell,
-        GridTableCell,
     },
     props: {
         /**

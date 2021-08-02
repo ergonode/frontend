@@ -19,11 +19,9 @@ export default {
             type: Number,
             required: true,
         },
-        /**
-         * The DOM element reference for item container
-         */
-        itemsReference: {
-            required: true,
+        widths: {
+            type: Object,
+            default: () => ({}),
         },
         scrollLeft: {
             type: Number,
@@ -32,22 +30,13 @@ export default {
     },
     computed: {
         itemWidth() {
-            if (!this.itemsReference) {
-                return 0;
-            }
-
-            return this.itemsReference.children[this.selectedIndex].offsetWidth;
+            return this.widths[this.selectedIndex] || 0;
         },
         itemsWidth() {
-            if (!this.itemsReference) {
-                return 0;
-            }
-
-            return [
-                ...this.itemsReference.children,
-            ]
+            return Object.keys(this.widths).map(key => +key)
+                .sort((a, b) => a - b)
                 .slice(0, this.selectedIndex)
-                .reduce((offsetWidth, curr) => offsetWidth + curr.offsetWidth, 0);
+                .reduce((width, curr) => width + this.widths[curr], 0);
         },
         style() {
             return {

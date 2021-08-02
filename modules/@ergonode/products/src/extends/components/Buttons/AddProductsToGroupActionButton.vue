@@ -28,15 +28,9 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Products/config/privileges';
-import ActionButton from '@UI/components/ActionButton/ActionButton';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
 export default {
     name: 'AddProductsToGroupActionButton',
-    components: {
-        IconAdd,
-        ActionButton,
-    },
     data() {
         return {
             selectedModal: null,

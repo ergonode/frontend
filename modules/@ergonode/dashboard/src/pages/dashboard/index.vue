@@ -20,12 +20,10 @@ import {
     getProductsCount,
 } from '@Dashboard/services';
 import PRODUCT_PRIVILEGES from '@Products/config/privileges';
-import Preloader from '@UI/components/Preloader/Preloader';
 
 export default {
     name: 'Dashboard',
     components: {
-        Preloader,
         DashboardPage,
         EmptyDashboardPage,
     },

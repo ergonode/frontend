@@ -84,15 +84,11 @@ import {
 import {
     RESOURCES_UPLOADED_EVENT_NAME,
 } from '@Media/defaults';
-import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'MediaGrid',
     components: {
         UploadResourcesButton,
-        Grid,
-        GridNoDataPlaceholder,
     },
     mixins: [
         extendPropsMixin({
@@ -142,6 +138,10 @@ export default {
             return {
                 imageColumn: 'image',
                 descriptionColumn: 'name',
+                type: 'IMAGE_PREVIEW',
+                additionalColumns: [
+                    'type',
+                ],
             };
         },
         isAllowedToUpdate() {
@@ -223,7 +223,16 @@ export default {
             rows,
             filtered,
         }) {
-            this.columns = columns;
+            this.columns = columns.map((column) => {
+                if (column.id === 'image') {
+                    return {
+                        ...column,
+                        type: 'IMAGE_PREVIEW',
+                    };
+                }
+
+                return column;
+            });
             this.rows = rows;
             this.filtered = filtered;
         },

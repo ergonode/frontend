@@ -30,7 +30,6 @@ import ProductTemplateForm from '@Templates/components/Forms/ProductTemplateForm
 import {
     ROUTE_NAME,
 } from '@Templates/config/routes';
-import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
 } from 'vuex';
@@ -38,7 +37,6 @@ import {
 export default {
     name: 'CreateProductTemplateModalForm',
     components: {
-        ModalForm,
         ProductTemplateForm,
     },
     mixins: [

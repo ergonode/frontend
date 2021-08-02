@@ -83,13 +83,9 @@ import {
     INPUT_TYPE,
     SIZE,
 } from '@Core/defaults/theme';
-import InputController from '@UI/components/Input/InputController';
-import InputLabel from '@UI/components/Input/InputLabel';
 import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
 import InputUnderlineStyle from '@UI/components/Input/InputUnderlineStyle';
-import InputUUIDProvider from '@UI/components/Input/InputUUIDProvider';
 import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
-import ResizeObserver from '@UI/components/Observers/ResizeObserver';
 import RichTextEditorMenu from '@UI/components/RichTextEditor/Menu/RichTextEditorMenu';
 import RichTextEditorMenuBubble from '@UI/components/RichTextEditor/MenuBubble/RichTextEditorMenuBubble';
 import {
@@ -116,15 +112,10 @@ import {
 export default {
     name: 'RichTextEditor',
     components: {
-        InputController,
-        InputLabel,
         RichTextEditorMenu,
         RichTextEditorMenuBubble,
         EditorContent,
         VerticalFixedScroll,
-        ResizeObserver,
-        InputUUIDProvider,
-        ErrorHint: () => import('@UI/components/Hints/ErrorHint'),
     },
     props: {
         /**

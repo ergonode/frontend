@@ -14,9 +14,12 @@
                             :key="collection.id"
                             :index="index"
                             :collection="collection"
+                            :is-prefetching-data="fetchingCollectionIndex === index"
                             @fetch="fetchCollectionItems">
-                            <template #item="{ item }">
-                                <ProductCollectionItem :item="item" />
+                            <template #item="{ item, itemIndex }">
+                                <ProductCollectionItem
+                                    :key="itemIndex"
+                                    :item="item" />
                             </template>
                         </ExpandingCollection>
                     </ProductCollection>
@@ -33,8 +36,6 @@ import ProductCollectionItem from '@Collections/extends/product/components/Colle
 import ExpandingCollection from '@Collections/extends/product/components/ExpandingCollection/ExpandingCollection';
 import ProductWithoutCollectionTabBarNoDataPlaceholder
     from '@Collections/extends/product/components/Placeholders/ProductWithoutCollectionTabBarNoDataPlaceholder';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
-import Preloader from '@UI/components/Preloader/Preloader';
 import {
     mapActions,
 } from 'vuex';
@@ -43,8 +44,6 @@ export default {
     name: 'ProductCollectionTab',
     components: {
         ProductWithoutCollectionTabBarNoDataPlaceholder,
-        Preloader,
-        CenterViewTemplate,
         ProductCollection,
         ProductCollectionItem,
         ExpandingCollection,
@@ -52,6 +51,7 @@ export default {
     data() {
         return {
             collections: [],
+            fetchingCollectionIndex: -1,
             isFetchingData: true,
         };
     },
@@ -106,21 +106,30 @@ export default {
         ...mapActions('collection', [
             'getCollectionTypeOptions',
         ]),
-        fetchCollectionItems({
-            id, index,
+        async fetchCollectionItems({
+            id,
+            index,
         }) {
-            this.$axios.$get(`collections/${id}/elements`).then(({
+            this.fetchingCollectionIndex = index;
+
+            const {
                 collection,
-            }) => {
-                this.collections[index].items = collection.map(({
-                    sku,
-                    default_image,
-                    system_name,
-                }) => ({
-                    description: system_name || sku,
-                    image: default_image,
-                }));
-            });
+            } = await this.$axios.$get(`collections/${id}/elements`);
+
+            this.collections[index].items = collection.map(({
+                sku,
+                default_image,
+                system_name,
+                _links,
+            }) => ({
+                description: system_name || sku,
+                image: default_image,
+                actions: {
+                    ..._links,
+                },
+            }));
+
+            this.fetchingCollectionIndex = -1;
         },
     },
 };

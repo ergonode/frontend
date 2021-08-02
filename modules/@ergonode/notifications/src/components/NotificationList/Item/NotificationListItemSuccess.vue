@@ -18,12 +18,10 @@ import NotificationListItemPrependTemplate
 import {
     GREEN,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconMark from '@UI/components/Icons/Feedback/IconMark';
 
 export default {
     name: 'NotificationListItemSuccess',
     components: {
-        IconMark,
         NotificationListItemPrependTemplate,
     },
     props: {

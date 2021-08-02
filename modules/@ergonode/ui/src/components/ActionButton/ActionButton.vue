@@ -64,9 +64,6 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import ActionBaseButton from '@UI/components/ActionButton/ActionBaseButton';
-import Button from '@UI/components/Button/Button';
-import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 
 /**
  * `ActionButton` is an `ActionBaseButton` with a `Button` inside named slot `button`.
@@ -74,11 +71,6 @@ import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
  */
 export default {
     name: 'ActionButton',
-    components: {
-        ActionBaseButton,
-        Button,
-        IconArrowDropdown,
-    },
     props: {
         /**
          * The theme of the component

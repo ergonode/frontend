@@ -30,10 +30,6 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
-import Button from '@UI/components/Button/Button';
-import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
-import IconSync from '@UI/components/Icons/Feedback/IconSync';
 import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
@@ -42,12 +38,6 @@ import {
 
 export default {
     name: 'UpdateLanguageRestrictionsButton',
-    components: {
-        FeedbackProvider,
-        Button,
-        IconSpinner,
-        IconSync,
-    },
     mixins: [
         updateButtonFeedbackMixin,
     ],

@@ -11,20 +11,14 @@
         :disabled="disabled"
         @mousedown.native="onPreview"
         @edit="onPreview">
-        <IconPreview v-once />
+        <IconPreview />
     </GridTableCell>
 </template>
 
 <script>
-import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
-import IconPreview from '@UI/components/Icons/Actions/IconPreview';
 
 export default {
     name: 'GridGetActionCell',
-    components: {
-        GridTableCell,
-        IconPreview,
-    },
     props: {
         /**
          * Unique row identifier

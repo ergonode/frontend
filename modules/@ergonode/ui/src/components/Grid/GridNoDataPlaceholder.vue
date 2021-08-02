@@ -19,13 +19,9 @@
 import {
     ORIENTATION,
 } from '@Core/defaults/layout';
-import Placeholder from '@UI/components/Placeholder/Placeholder';
 
 export default {
     name: 'GridNoDataPlaceholder',
-    components: {
-        Placeholder,
-    },
     props: {
         /**
          * The title of the component

@@ -23,13 +23,11 @@ import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
 import PRIVILEGES from '@Products/config/privileges';
-import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'ProductCommentsTab',
     components: {
         CommentsForm,
-        CenterViewTemplate,
     },
     props: {
         scope: {

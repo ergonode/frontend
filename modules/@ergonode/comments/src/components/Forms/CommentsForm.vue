@@ -3,10 +3,10 @@
  * See LICENSE for license details.
  */
 <template>
-    <CommentsList :is-placeholder="!!commentList.length">
+    <CommentsList :is-placeholder="isPlaceholderVisible">
         <template #header>
             <Button
-                v-if="!showForm"
+                v-if="!showForm && commentList.length > 0"
                 :title="$t('@Comments.comment.components.CommentsForm.addButton')"
                 :disabled="disabled"
                 :size="smallSize"
@@ -16,7 +16,7 @@
                 </template>
             </Button>
             <CommentEdit
-                v-else
+                v-if="showForm"
                 :scope="scope"
                 :errors="errors"
                 :is-edit="false"
@@ -35,7 +35,19 @@
         <template #placeholder>
             <TabBarNoDataPlaceholder
                 :title="noDataTitleDefautl"
-                :subtitle="noDataPlaceholder" />
+                :subtitle="noDataPlaceholder">
+                <template #action>
+                    <Button
+                        :title="$t('@Comments.comment.components.CommentsForm.addButton')"
+                        :disabled="disabled"
+                        :size="smallSize"
+                        @click.native="openForm">
+                        <template #prepend="{ color }">
+                            <IconAdd :fill-color="color" />
+                        </template>
+                    </Button>
+                </template>
+            </TabBarNoDataPlaceholder>
         </template>
         <template
             v-if="isMoreButtonVisible"
@@ -66,10 +78,6 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
-import TabBarNoDataPlaceholder from '@UI/components/TabBar/TabBarNoDataPlaceholder';
 import {
     mapActions,
     mapState,
@@ -78,13 +86,9 @@ import {
 export default {
     name: 'CommentsForm',
     components: {
-        IconSpinner,
-        Button,
-        IconAdd,
         CommentsList,
         CommentStateChanger,
         CommentEdit,
-        TabBarNoDataPlaceholder,
     },
     props: {
         scope: {
@@ -142,6 +146,9 @@ export default {
             return this.$t('@Comments.comment.components.CommentsForm.showMore', {
                 nr: (this.fullListCount - listLength),
             });
+        },
+        isPlaceholderVisible() {
+            return !this.commentList.length && !this.showForm;
         },
         isMoreButtonVisible() {
             const {

@@ -65,14 +65,13 @@ import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
 import PRIVILEGES from '@Products/config/privileges';
-import Grid from '@UI/components/Grid/Grid';
 import Tile from '@UI/components/Tile/Tile';
 
 export default {
     name: 'ProductBatchActionDetailsGrid',
     components: {
         Tile,
-        Grid,
+
     },
     mixins: [
         extendPropsMixin({

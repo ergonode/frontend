@@ -31,7 +31,6 @@ import {
     PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
 } from '@Products/extends/defaults';
 import AddProductsFromSegmentForm from '@Segments/components/Forms/AddProductsFromSegmentForm';
-import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
 } from 'vuex';
@@ -40,7 +39,6 @@ export default {
     name: 'AddProductsFromSegmentModalForm',
     components: {
         AddProductsFromSegmentForm,
-        ModalForm,
     },
     mixins: [
         modalFeedbackMixin,

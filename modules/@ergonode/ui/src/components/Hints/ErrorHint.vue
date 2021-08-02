@@ -14,13 +14,9 @@
 import {
     RED,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconError from '@UI/components/Icons/Feedback/IconError';
 
 export default {
     name: 'ErrorHint',
-    components: {
-        IconError,
-    },
     props: {
         /**
          *  The hint is a tip for the component

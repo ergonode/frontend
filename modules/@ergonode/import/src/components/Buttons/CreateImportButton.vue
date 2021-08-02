@@ -9,9 +9,6 @@
         :theme="secondaryTheme"
         :disabled="!isAllowedToUpdate"
         @click.native="onShowModal">
-        <template #prepend="{ color }">
-            <IconAdd :fill-color="color" />
-        </template>
         <UploadImportFileModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
@@ -28,14 +25,10 @@ import PRIVILEGES from '@Import/config/privileges';
 import {
     IMPORT_CREATED_EVENT_NAME,
 } from '@Import/defaults';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
 export default {
     name: 'CreateImportButton',
     components: {
-        Button,
-        IconAdd,
         UploadImportFileModalForm: () => import('@Import/components/Modals/UploadImportFileModalForm'),
     },
     data() {

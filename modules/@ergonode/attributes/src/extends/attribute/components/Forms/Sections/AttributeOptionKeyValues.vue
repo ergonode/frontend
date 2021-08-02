@@ -40,10 +40,6 @@ import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import {
     getUUID,
 } from '@Core/models/stringWrapper';
-import FormListElementField from '@UI/components/Form/Field/FormListElementField';
-import FormListSection from '@UI/components/Form/Section/FormListSection';
-import FormListSubsection from '@UI/components/Form/Subsection/FormListSubsection';
-import TextField from '@UI/components/TextField/TextField';
 import {
     mapActions,
     mapState,
@@ -51,12 +47,6 @@ import {
 
 export default {
     name: 'AttributeOptionKeyValues',
-    components: {
-        FormListElementField,
-        FormListSection,
-        FormListSubsection,
-        TextField,
-    },
     mixins: [
         formFeedbackMixin,
     ],

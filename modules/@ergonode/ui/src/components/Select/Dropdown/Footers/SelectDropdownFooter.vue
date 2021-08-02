@@ -17,14 +17,13 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
 import DropdownFooter from '@UI/components/Select/Dropdown/Footers/DropdownFooter';
 
 export default {
     name: 'SelectDropdownFooter',
     components: {
         DropdownFooter,
-        Button,
+
     },
     props: {
         /**

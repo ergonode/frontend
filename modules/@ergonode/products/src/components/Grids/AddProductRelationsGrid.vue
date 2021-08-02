@@ -140,11 +140,6 @@ import PRIVILEGES from '@Products/config/privileges';
 import {
     ROUTE_NAME,
 } from '@Products/config/routes';
-import AddFilterDropZone from '@UI/components/Grid/DropZone/AddFilterDropZone';
-import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
-import GridNoResultsPlaceholder from '@UI/components/Grid/GridNoResultsPlaceholder';
-import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import {
     debounce,
 } from 'debounce';
@@ -158,13 +153,8 @@ export default {
     components: {
         ProductAdvancedFilters,
         ProductsGridNoDataPlaceholder,
-        AddFilterDropZone,
         ExpandNumericButton,
         AddProductRelationsButton,
-        Grid,
-        GridNoDataPlaceholder,
-        IntersectionObserver,
-        GridNoResultsPlaceholder,
     },
     mixins: [
         extendPropsMixin({

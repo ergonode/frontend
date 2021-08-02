@@ -31,17 +31,9 @@ import {
 import {
     postGridData,
 } from '@Core/services/grid/postGridData.service';
-import Button from '@UI/components/Button/Button';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
-import IconSync from '@UI/components/Icons/Feedback/IconSync';
 
 export default {
     name: 'AddProductRelationsButton',
-    components: {
-        Button,
-        IconSpinner,
-        IconSync,
-    },
     props: {
         dataCount: {
             type: Number,

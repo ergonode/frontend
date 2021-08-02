@@ -29,16 +29,10 @@ import {
     RED,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Fab from '@UI/components/Fab/Fab';
-import IconCancel from '@UI/components/Icons/Actions/IconCancel';
 import PRIVILEGES from '@Workflow/config/privileges';
 
 export default {
     name: 'RemoveWorkflowTransitionFab',
-    components: {
-        Fab,
-        IconCancel,
-    },
     computed: {
         isAllowedToDelete() {
             return this.$hasAccess([

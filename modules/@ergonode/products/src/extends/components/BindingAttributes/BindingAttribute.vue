@@ -19,13 +19,9 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import IconCancel from '@UI/components/Icons/Actions/IconCancel';
 
 export default {
     name: 'BindingAttribute',
-    components: {
-        IconCancel,
-    },
     props: {
         index: {
             type: Number,

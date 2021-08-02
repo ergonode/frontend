@@ -46,9 +46,6 @@
 import ToolBarUserButton from '@Core/components/ToolBar/ToolBarUserButton';
 import App from '@UI/components/Layout/App';
 import AppMain from '@UI/components/Layout/AppMain';
-import NavigationSideBar from '@UI/components/NavigationSideBar/NavigationSideBar';
-import ToolBar from '@UI/components/ToolBar/ToolBar';
-import ToolBarBreadcrumb from '@UI/components/ToolBar/ToolBarBreadcrumb';
 import {
     mapActions,
     mapState,
@@ -59,10 +56,7 @@ export default {
     components: {
         AppMain,
         App,
-        NavigationSideBar,
-        ToolBar,
         ToolBarUserButton,
-        ToolBarBreadcrumb,
         FlashMessages: () => import('@Core/components/FlashMessages/FlashMessages'),
     },
     data() {

@@ -3,6 +3,12 @@
  * See LICENSE for license details.
  */
 
+<template>
+    <div class="tooltip-wrapper">
+        <slot />
+    </div>
+</template>
+
 <script>
 
 import {
@@ -19,9 +25,12 @@ import {
 export default {
     name: 'Tooltip',
     props: {
+        /**
+         * Title
+         */
         title: {
             type: String,
-            default: 'Tooltip',
+            default: '',
         },
         /**
          * Color of tooltip
@@ -63,55 +72,27 @@ export default {
     },
     data() {
         return {
+            isMouseEnter: false,
             tooltip: null,
         };
     },
-    mounted() {
-        if (this.$slots.default[0].elm) {
-            if (this.showOnClick) {
-                this.$slots.default[0].elm.addEventListener(
-                    'click',
-                    this.onClick,
-                    true,
-                );
+    watch: {
+        title(curr, prev) {
+            if (prev !== '' && curr === '') {
+                this.destroyTooltip();
             } else {
-                this.$slots.default[0].elm.addEventListener(
-                    'mouseenter',
-                    this.onMouseEnter,
-                    true,
-                );
+                this.initTooltip();
             }
-        }
+        },
+    },
+    mounted() {
+        this.initTooltip();
     },
     beforeDestroy() {
-        const app = document.documentElement.querySelector('.app');
-
-        if (app.contains(this.tooltip)) {
-            app.removeChild(this.tooltip);
-
-            this.tooltip = null;
-        }
-
-        if (this.$slots.default[0].elm) {
-            if (this.showOnClick) {
-                this.$slots.default[0].elm.removeEventListener(
-                    'click',
-                    this.onClick,
-                    true,
-                );
-            } else {
-                this.$slots.default[0].elm.removeEventListener(
-                    'mouseenter',
-                    this.onMouseEnter,
-                    true,
-                );
-            }
-        }
-
-        window.removeEventListener('mouseover', this.onMouseOver);
+        this.destroyTooltip();
     },
     methods: {
-        onClick(event) {
+        onClick() {
             if (this.tooltip) {
                 if (this.tooltip.classList.contains('tooltip--visible')) {
                     this.tooltip.classList.remove('tooltip--visible');
@@ -119,37 +100,65 @@ export default {
                     this.tooltip.classList.add('tooltip--visible');
                 }
             } else {
-                this.createTooltip(event);
+                this.createTooltip();
                 this.tooltip.classList.add('tooltip--visible');
             }
         },
-        onMouseEnter(event) {
-            if (this.tooltip) {
-                this.tooltip.classList.add('tooltip--visible');
-            } else {
-                this.createTooltip(event);
+        onMouseEnter() {
+            if (!this.isMouseEnter) {
+                if (this.tooltip) {
+                    this.tooltip.classList.add('tooltip--visible');
+                } else {
+                    this.createTooltip();
+                    this.tooltip.classList.add('tooltip--visible');
+                }
+
+                document.documentElement.addEventListener('mousemove', this.onMouseMove);
             }
 
-            window.addEventListener('mouseover', this.onMouseOver);
+            this.isMouseEnter = true;
         },
-        onMouseOver(event) {
+        onMouseMove(event) {
             const {
                 xPos,
                 yPos,
             } = getFixedMousePosition(event);
 
             const isOutsideChildren = isMouseOutsideElement(this.$el, xPos, yPos);
-
             if (isOutsideChildren
                 && isMouseOutsideElement(this.tooltip, xPos, yPos)) {
                 this.tooltip.classList.remove('tooltip--visible');
 
-                window.removeEventListener('mouseover', this.onMouseOver);
+                document.documentElement.removeEventListener('mousemove', this.onMouseMove);
+
+                this.isMouseEnter = false;
             } else if (!isOutsideChildren) {
-                this.updatePositionWhenFluid(xPos, yPos);
+                this.updateFluidTooltipPosition(xPos, yPos);
             }
         },
-        createTooltip(event) {
+        initTooltip() {
+            if (this.$el && this.title !== '') {
+                if (this.showOnClick) {
+                    this.$el.addEventListener('click', this.onClick);
+                } else {
+                    this.$el.addEventListener('mouseenter', this.onMouseEnter);
+                }
+            }
+        },
+        destroyTooltip() {
+            const app = document.documentElement.querySelector('.app');
+
+            if (app.contains(this.tooltip)) {
+                app.removeChild(this.tooltip);
+
+                this.tooltip = null;
+            }
+
+            this.$el.removeEventListener('click', this.onClick);
+            this.$el.removeEventListener('mouseenter', this.onMouseEnter);
+            document.documentElement.removeEventListener('mousemove', this.onMouseMove);
+        },
+        createTooltip() {
             const padding = 4;
             const paddingMultiplier = this.cloudy ? 1 : -1;
             const app = document.documentElement.querySelector('.app');
@@ -209,18 +218,6 @@ export default {
                     border-color: transparent ${this.color} transparent transparent;
                 `;
                 break;
-            case POSITION.FLUID: {
-                const {
-                    xPos,
-                    yPos,
-                } = getFixedMousePosition(event);
-
-                positionStyle = `
-                    top: ${yPos}px;
-                    left: ${xPos}px;
-                `;
-                break;
-            }
             default: break;
             }
 
@@ -241,31 +238,39 @@ export default {
             this.tooltip.classList.add('tooltip');
             this.tooltip.style = positionStyle;
 
+            if (this.position === POSITION.FLUID) {
+                this.updateFluidTooltipPosition(left, top);
+            }
+
             app.appendChild(this.tooltip);
         },
-        updatePositionWhenFluid(xPos, yPos) {
-            requestAnimationFrame(() => {
-                this.tooltip.style.top = `${yPos}px`;
-                this.tooltip.style.left = `${xPos}px`;
-            });
+        updateFluidTooltipPosition(xPos, yPos) {
+            this.tooltip.style.transform = `translate(${xPos - (this.tooltip.offsetWidth / 2)}px, ${yPos - 8 - this.tooltip.offsetHeight}px)`;
         },
-    },
-    render() {
-        return this.$scopedSlots.default();
     },
 };
 </script>
 
 <style lang="scss">
+    .tooltip-wrapper {
+        width: fit-content;
+        height: fit-content;
+    }
+
     .tooltip {
         position: absolute;
-        z-index: $Z_INDEX_MAX;
+        z-index: $Z_INDEX_NEGATIVE;
         display: flex;
         padding: 4px;
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+        transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         opacity: 0;
         color: $WHITE;
         font: $FONT_MEDIUM_12_16;
+
+        &--visible {
+            z-index: $Z_INDEX_MAX;
+            opacity: 1;
+        }
 
         &__body {
             position: relative;
@@ -276,10 +281,6 @@ export default {
             position: absolute;
             border-width: 4px;
             border-style: solid;
-        }
-
-        &--visible {
-            opacity: 1;
         }
     }
 </style>

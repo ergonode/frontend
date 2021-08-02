@@ -25,7 +25,6 @@ import LanguageSideBarElement from '@Core/components/SideBars/LanguageSideBarEle
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
-import SideBar from '@UI/components/SideBar/SideBar';
 import {
     mapState,
 } from 'vuex';
@@ -34,7 +33,6 @@ export default {
     name: 'LanguagesSideBar',
     components: {
         LanguageSideBarElement,
-        SideBar,
     },
     props: {
         scope: {

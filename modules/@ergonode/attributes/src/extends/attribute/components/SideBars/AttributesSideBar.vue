@@ -77,10 +77,6 @@ import {
     getGroups,
     getItems,
 } from '@Core/services/sidebar';
-import ListSearchSelectHeader from '@UI/components/List/ListSearchSelectHeader';
-import Preloader from '@UI/components/Preloader/Preloader';
-import SideBar from '@UI/components/SideBar/SideBar';
-import SideBarNoDataPlaceholder from '@UI/components/SideBar/SideBarNoDataPlaceholder';
 import debounce from 'debounce';
 import {
     mapActions,
@@ -91,12 +87,8 @@ export default {
     name: 'AttributesSideBar',
     components: {
         CreateAttributeButton,
-        SideBarNoDataPlaceholder,
         AttributeSideBarGroupElement,
-        SideBar,
-        ListSearchSelectHeader,
         LanguageTreeSelect,
-        Preloader,
         AttributeSideBarElement,
     },
     props: {

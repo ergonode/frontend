@@ -82,8 +82,6 @@ import {
 } from '@Core/services/grid/getGridData.service';
 import PRIVILEGES from '@Products/config/privileges';
 import UpdateProductsAttachmentButton from '@Products/extends/components/Buttons/UpdateProductsAttachmentButton';
-import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 import {
     mapActions,
     mapState,
@@ -93,8 +91,6 @@ export default {
     name: 'ProductVariantsToAttachGrid',
     components: {
         UpdateProductsAttachmentButton,
-        Grid,
-        GridNoDataPlaceholder,
     },
     mixins: [
         extendPropsMixin({
