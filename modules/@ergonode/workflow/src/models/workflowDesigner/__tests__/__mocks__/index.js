@@ -7,14 +7,20 @@ export const transitions = [
     {
         source: '0',
         destination: '2',
+        roles: [],
+        condition_set_id: null,
     },
     {
         source: '0',
         destination: '3',
+        roles: [],
+        condition_set_id: null,
     },
     {
         source: '0',
         destination: '1',
+        roles: [],
+        condition_set_id: null,
     },
 ];
 
