@@ -76,6 +76,9 @@
           "addImageToGalleryOptionTitle": "Add image to gallery",
           "detachFromGalleryOptionTitle": "Detach this image from gallery"
         },
+        "FilePreview": {
+          "downloadFileOptionTitle": "Download this file"
+        },
         "UploadFiles": {
           "title": "Add files",
           "mediaTabTitle": "Media",

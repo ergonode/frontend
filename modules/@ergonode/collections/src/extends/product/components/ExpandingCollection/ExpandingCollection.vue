@@ -50,13 +50,11 @@
 
 <script>
 import ExpandNumericButton from '@Core/components/Buttons/ExpandNumericButton';
-import Preloader from '@UI/components/Preloader/Preloader';
 
 export default {
     name: 'ExpandingCollection',
     components: {
         ExpandNumericButton,
-        Preloader,
     },
     props: {
         /**

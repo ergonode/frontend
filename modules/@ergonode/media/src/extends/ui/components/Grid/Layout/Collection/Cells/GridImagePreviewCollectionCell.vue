@@ -39,19 +39,9 @@
 import {
     THEME,
 } from '@Core/defaults/theme';
-import DefaultImage from '@UI/components/DefaultImage/DefaultImage';
-import GridCollectionDefaultCell from '@UI/components/Grid/Layout/Collection/Cells/GridCollectionDefaultCell';
-import IconFile from '@UI/components/Icons/Others/IconFile';
-import LazyImage from '@UI/components/LazyImage/LazyImage';
 
 export default {
     name: 'GridImagePreviewCollectionCell',
-    components: {
-        IconFile,
-        GridCollectionDefaultCell,
-        DefaultImage,
-        LazyImage,
-    },
     props: {
         /**
          * Component data used for filling cell
