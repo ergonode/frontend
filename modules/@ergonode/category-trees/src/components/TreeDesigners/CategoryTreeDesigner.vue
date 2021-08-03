@@ -81,9 +81,12 @@ export default {
             'setDisabledScopeElement',
         ]),
         itemSubtitle(childrenLength) {
-            return childrenLength
-                ? `${this.$t('@Trees.tree.components.CategoryTreeDesigner.itemSubtitle')}: ${childrenLength}`
-                : '';
+            if (childrenLength) {
+                return this.$t('@Trees.tree.components.CategoryTreeDesigner.itemSubtitle', {
+                    info: childrenLength,
+                });
+            }
+            return '';
         },
         onRemoveItems(ids) {
             ids.forEach((id) => {

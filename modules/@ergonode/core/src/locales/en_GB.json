@@ -47,6 +47,9 @@
         }
       },
       "components": {
+        "LanguageInheritanceTreeDesigner": {
+          "itemSubtitle": "Inherited languages: {info}"
+        },
         "UnitForm": {
           "title": "Options",
           "nameLabel": "Unit name",

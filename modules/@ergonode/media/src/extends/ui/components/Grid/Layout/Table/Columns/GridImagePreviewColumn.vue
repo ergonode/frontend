@@ -70,22 +70,16 @@
 <script>
 import GridImagePreviewDataCell from '@Media/extends/ui/components/Grid/Layout/Table/Cells/Data/GridImagePreviewDataCell';
 import GridFilterDataCell from '@UI/components/Grid/Layout/Table/Cells/Data/Filter/GridFilterDataCell';
-import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
-import GridHeaderCell from '@UI/components/Grid/Layout/Table/Cells/Header/GridHeaderCell';
 import GridColumn from '@UI/components/Grid/Layout/Table/Columns/GridColumn';
 import GridDraggableColumn from '@UI/components/Grid/Layout/Table/Columns/GridDraggableColumn';
-import Preloader from '@UI/components/Preloader/Preloader';
 
 export default {
     name: 'GridImagePreviewColumn',
     components: {
         GridImagePreviewDataCell,
         GridFilterDataCell,
-        GridTableCell,
-        GridHeaderCell,
         GridColumn,
         GridDraggableColumn,
-        Preloader,
     },
     props: {
         /**

@@ -47,6 +47,9 @@
         }
       },
       "components": {
+        "LanguageInheritanceTreeDesigner": {
+          "itemSubtitle": "Dziedziczone języki: {info}"
+        },
         "UnitForm": {
           "title": "Opcje",
           "nameLabel": "Nazwa jednostki",

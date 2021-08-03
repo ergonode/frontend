@@ -157,6 +157,20 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if the image is able to change / remove
+         */
+        editable: {
+            type: Boolean,
+            default: true,
+        },
+        /**
+         * Determines if the image is able to download
+         */
+        downloadable: {
+            type: Boolean,
+            default: true,
+        },
     },
     data() {
         return {
@@ -221,37 +235,57 @@ export default {
             return Boolean(this.value);
         },
         settingsOptions() {
+            const options = [];
+
             if (!this.multiple) {
-                return [
+                if (this.editable) {
+                    options.push(
+                        {
+                            text: this.$t('@Media.media.components.UploadImageFile.changeImageOptionTitle'),
+                            action: this.onShowModal,
+                        },
+                        {
+                            text: this.$t('@Media.media.components.UploadImageFile.removeImageOptionTitle'),
+                            action: this.onRemoveImage,
+                        },
+                    );
+                }
+
+                if (this.downloadable) {
+                    options.push(
+                        {
+                            text: this.$t('@Media.media.components.UploadImageFile.downloadImageOptionTitle'),
+                            action: this.onDownloadImage,
+                        },
+                    );
+                }
+
+                return options;
+            }
+
+            if (this.editable) {
+                options.push(
                     {
-                        text: this.$t('@Media.media.components.UploadImageFile.changeImageOptionTitle'),
+                        text: this.$t('@Media.media.components.UploadImageFile.addImageToGalleryOptionTitle'),
                         action: this.onShowModal,
                     },
+                    {
+                        text: this.$t('@Media.media.components.UploadImageFile.detachFromGalleryOptionTitle'),
+                        action: this.onRemoveImage,
+                    },
+                );
+            }
+
+            if (this.downloadable) {
+                options.push(
                     {
                         text: this.$t('@Media.media.components.UploadImageFile.downloadImageOptionTitle'),
                         action: this.onDownloadImage,
                     },
-                    {
-                        text: this.$t('@Media.media.components.UploadImageFile.removeImageOptionTitle'),
-                        action: this.onRemoveImage,
-                    },
-                ];
+                );
             }
 
-            return [
-                {
-                    text: this.$t('@Media.media.components.UploadImageFile.addImageToGalleryOptionTitle'),
-                    action: this.onShowModal,
-                },
-                {
-                    text: this.$t('@Media.media.components.UploadImageFile.downloadImageOptionTitle'),
-                    action: this.onDownloadImage,
-                },
-                {
-                    text: this.$t('@Media.media.components.UploadImageFile.detachFromGalleryOptionTitle'),
-                    action: this.onRemoveImage,
-                },
-            ];
+            return options;
         },
         isAllowedToCreate() {
             return this.$hasAccess([
@@ -279,11 +313,14 @@ export default {
                 .then((response) => {
                     const downloadUrl = window.URL.createObjectURL(new Blob([
                         response,
-                    ]));
+                    ], {
+                        type: 'application/octet-stream',
+                    }));
+
                     const link = document.createElement('a');
 
                     link.href = downloadUrl;
-                    link.setAttribute('download', `${value}.png`);
+                    link.setAttribute('download', value);
                     document.body.appendChild(link);
                     link.click();
                     link.remove();

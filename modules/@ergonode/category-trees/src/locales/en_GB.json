@@ -63,7 +63,7 @@
           "updateSuccess": "Category tree has been updated"
         },
         "CategoryTreeDesigner": {
-          "itemSubtitle": "Subcategories"
+          "itemSubtitle": "Subcategories: {info}"
         }
       },
       "pages": {

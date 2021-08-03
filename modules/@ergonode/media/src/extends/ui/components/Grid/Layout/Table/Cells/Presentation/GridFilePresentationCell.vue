@@ -9,13 +9,9 @@
 </template>
 
 <script>
-import IconFile from '@UI/components/Icons/Others/IconFile';
 
 export default {
     name: 'GridFilePresentationCell',
-    components: {
-        IconFile,
-    },
     props: {
         /**
          * Component value

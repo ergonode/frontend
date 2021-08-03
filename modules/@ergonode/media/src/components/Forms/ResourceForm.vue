@@ -26,11 +26,14 @@
                 <UploadImageFile
                     v-if="type === 'image'"
                     :value="id"
-                    disabled
+                    :editable="false"
+                    :downloadable="true"
                     :label="$t('@Media.media.components.ResourceForm.previewLabel')"
                     height="246px" />
                 <FilePreview
                     v-else
+                    :value="id"
+                    :downloadable="true"
                     :label="$t('@Media.media.components.ResourceForm.previewLabel')" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
