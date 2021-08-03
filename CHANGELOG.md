@@ -5,6 +5,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## CHANGELOG FOR v1.1.x
 
+#### 1.1.2
+ - hotfix [#1014](https://github.com/ergonode/frontend/issues/1014) Workflow - wrong modules relations (bleto)
+
 #### 1.1.1
  - hotfix [#963](https://github.com/ergonode/frontend/issues/963) Workflow - wrong component import (bleto)
 
