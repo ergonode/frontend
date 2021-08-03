@@ -63,7 +63,7 @@
           "updateSuccess": "Drzewo kategorii zostało uaktualnione"
         },
         "CategoryTreeDesigner": {
-          "itemSubtitle": "Podkategorie"
+          "itemSubtitle": "Podkategorie: {info}"
         }
       },
       "pages": {

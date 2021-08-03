@@ -15,7 +15,7 @@
         <template #itemDescription="{ item, childrenLength }">
             <DesignerItemDescription
                 :title="item.name || `#${item.code}`"
-                :subtitle="childrenLength ? `Inherited languages: ${childrenLength}` : ''" />
+                :subtitle="itemSubtitle(childrenLength)" />
         </template>
     </TreeDesigner>
 </template>
@@ -93,6 +93,14 @@ export default {
             'removeDisabledScopeElement',
             'setDisabledScopeElement',
         ]),
+        itemSubtitle(childrenLength) {
+            if (childrenLength) {
+                return this.$t('@Core.core.components.LanguageInheritanceTreeDesigner.itemSubtitle', {
+                    info: childrenLength,
+                });
+            }
+            return '';
+        },
         onRemoveItems(ids) {
             ids.forEach((id) => {
                 this.removeDisabledScopeElement({
