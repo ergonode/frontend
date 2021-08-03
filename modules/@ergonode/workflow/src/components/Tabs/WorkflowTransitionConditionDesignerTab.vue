@@ -26,12 +26,12 @@
 <script>
 import ConditionSetTreeDesigner from '@Conditions/components/TreeDesigners/ConditionSetTreeDesigner';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
-import PRIVILEGES from '@Statuses/config/privileges';
 import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
 import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import UpdateWorkflowTransitionConditionDesignerButton
     from '@Workflow/components/Buttons/UpdateWorkflowTransitionConditionDesignerButton';
 import RemoveTransitionConditionDropZone from '@Workflow/components/DropZones/RemoveTransitionConditionDropZone';
+import PRIVILEGES from '@Workflow/config/privileges';
 
 export default {
     name: 'WorkflowTransitionConditionDesignerTab',
