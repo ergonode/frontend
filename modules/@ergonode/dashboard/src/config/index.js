@@ -12,7 +12,6 @@ export default {
         '@ergonode/categories',
         '@ergonode/attributes',
         '@ergonode/products',
-        '@ergonode/product-statuses',
         '@ergonode/product-templates',
     ],
 };
