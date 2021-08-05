@@ -156,6 +156,7 @@ export default {
                 descriptionColumn: 'name',
                 type: 'MEDIA_ATTACH',
                 additionalColumns: [
+                    'type',
                     'esa_attached',
                 ],
             };
@@ -284,7 +285,16 @@ export default {
             rows,
             filtered,
         }) {
-            this.columns = columns;
+            this.columns = columns.map((column) => {
+                if (column.id === 'image') {
+                    return {
+                        ...column,
+                        type: 'IMAGE_PREVIEW',
+                    };
+                }
+
+                return column;
+            });
             this.rows = rows;
             this.filtered = filtered;
         },
