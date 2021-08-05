@@ -53,6 +53,9 @@ import {
 import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'FilePreview',
@@ -98,6 +101,9 @@ export default {
         },
     },
     computed: {
+        ...mapState('media', [
+            'extension',
+        ]),
         secondaryTheme() {
             return THEME.SECONDARY;
         },
@@ -138,7 +144,7 @@ export default {
                     const link = document.createElement('a');
 
                     link.href = downloadUrl;
-                    link.setAttribute('download', `${this.value}.zip`);
+                    link.setAttribute('download', `${this.value}.${this.extension}`);
                     document.body.appendChild(link);
                     link.click();
                     link.remove();
