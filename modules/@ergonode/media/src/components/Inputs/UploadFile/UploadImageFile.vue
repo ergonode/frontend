@@ -310,7 +310,7 @@ export default {
             const value = this.multiple
                 ? this.value[this.currentIndex]
                 : this.value;
-            const url = `multimedia/${value}/download/default`;
+            const url = `multimedia/${value}/download`;
 
             this.$axios.$get(url, {
                 responseType: 'arraybuffer',
