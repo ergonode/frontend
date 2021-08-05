@@ -6,15 +6,22 @@
     <div
         class="grid-media-attach-collection-cell"
         @click="onClick">
-        <LazyImage
-            v-if="data.image"
-            class="grid-media-attach-collection-cell__image"
-            :href="`multimedia/${data.image}/download/default`"
-            :value="data.image"
-            :object-fit="objectFit" />
-        <DefaultImage
+        <template v-if="data.type0 === 'image'">
+            <LazyImage
+                v-if="data.image"
+                class="grid-media-attach-collection-cell__image"
+                :href="`multimedia/${data.image}/download/default`"
+                :value="data.image"
+                :object-fit="objectFit" />
+            <DefaultImage
+                v-else
+                class="grid-media-attach-collection-cell__default-image" />
+        </template>
+        <div
             v-else
-            class="grid-media-attach-collection-cell__default-image" />
+            class="grid-media-attach-collection-cell__file-icon">
+            <IconFile />
+        </div>
         <div
             class="grid-media-attach-collection-cell__fixed-title-content"
             :title="data.description">
@@ -127,6 +134,13 @@ export default {
 
         &__default-image, &__image {
             flex: 1 1 auto;
+        }
+
+        &__file-icon {
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            align-items: center;
         }
 
         &:hover {
