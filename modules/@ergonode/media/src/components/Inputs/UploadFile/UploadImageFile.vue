@@ -87,6 +87,9 @@ import {
 import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'UploadImageFile',
@@ -179,6 +182,9 @@ export default {
         };
     },
     computed: {
+        ...mapState('media', [
+            'extension',
+        ]),
         secondaryTheme() {
             return THEME.SECONDARY;
         },
@@ -313,14 +319,12 @@ export default {
                 .then((response) => {
                     const downloadUrl = window.URL.createObjectURL(new Blob([
                         response,
-                    ], {
-                        type: 'application/octet-stream',
-                    }));
+                    ]));
 
                     const link = document.createElement('a');
 
                     link.href = downloadUrl;
-                    link.setAttribute('download', value);
+                    link.setAttribute('download', `${value}.${this.extension}`);
                     document.body.appendChild(link);
                     link.click();
                     link.remove();
