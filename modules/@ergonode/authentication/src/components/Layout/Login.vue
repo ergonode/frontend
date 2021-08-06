@@ -15,14 +15,17 @@
         <Footer space-between>
             <div class="login__footer-info">
                 <Select
+                    data-cy="change-language"
                     :value="value"
                     :options="languageOptions"
                     :size="smallSize"
                     @input="onValueChange" />
                 <LinkButton
+                    data-cy="help-button"
                     :title="$t('@Authentication.authentication.components.LoginLayout.help')"
                     @click.native="onHelpClicked" />
                 <LinkButton
+                    data-cy="guide-button"
                     :title="$t('@Authentication.authentication.components.LoginLayout.userGuide')"
                     @click.native="onUserGuideOpen" />
                 <template

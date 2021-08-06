@@ -4,6 +4,7 @@
  */
 <template>
     <LoginForm
+        data-cy="help-form"
         :submit-title="$t('@Authentication.authentication.components.LoginHelpForm.redirectTo')"
         @submit="onRedirect">
         <template #header>

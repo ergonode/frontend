@@ -4,6 +4,7 @@
  */
 <template>
     <LoginForm
+        data-cy="login-form"
         :submit-title="$t('@Authentication.authentication.components.LoginCredentialsForm.button')"
         :is-submitting="isSubmitting"
         :errors="scopeErrors"
@@ -26,8 +27,10 @@
             <div class="login-help-area">
                 <Toggler
                     v-model="isPasswordVisible"
+                    data-cy="show-password"
                     :label="$t('@Authentication.authentication.components.LoginCredentialsForm.toggle')" />
                 <LinkButton
+                    data-cy="forgot-password"
                     :title="$t('@Authentication.authentication.components.LoginCredentialsForm.forgot')"
                     @click.native="redirectToRecovery" />
             </div>
