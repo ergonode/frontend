@@ -14,7 +14,9 @@
         @proceed="onProceed"
         @submit="onSubmit">
         <template #header>
-            <header class="login-header">
+            <header
+                data-cy="login-header"
+                class="login-header">
                 <slot name="header" />
             </header>
         </template>

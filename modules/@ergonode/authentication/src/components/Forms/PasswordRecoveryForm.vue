@@ -4,6 +4,7 @@
  */
 <template>
     <LoginForm
+        data-cy="password-recovery-form"
         :submit-title="$t('@Authentication.authentication.components.PasswordRecoveryForm.button')"
         :is-submitting="isSubmitting"
         :errors="errors"
@@ -19,6 +20,7 @@
         <template #body>
             <Paragraph :title="$t('@Authentication.authentication.components.PasswordRecoveryForm.info')" />
             <TextField
+                data-cy="recovery-email"
                 v-model="email"
                 required
                 :error-messages="errors[emialFieldKey]"
