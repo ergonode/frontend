@@ -8,7 +8,7 @@
         @close="onClose">
         <template #body>
             <VerticalTabBar :items="verticalTabs">
-                <RemoveFormFieldDropZone />
+                <RemoveFormFieldDropZone :scope="scope" />
             </VerticalTabBar>
             <div class="update-products-modal__form-section">
                 <VerticalFixedScroll>

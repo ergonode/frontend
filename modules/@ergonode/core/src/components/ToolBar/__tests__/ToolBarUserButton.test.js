@@ -37,6 +37,8 @@ describe('ToolBar/ToolBarUserButton', () => {
             mocks,
             stubs: {
                 NuxtLink: true,
+                ToolBarSelectButton: true,
+                IconArrowDropdown: true,
             },
         });
     });

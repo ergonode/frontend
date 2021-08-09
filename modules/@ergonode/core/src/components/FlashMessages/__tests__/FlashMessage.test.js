@@ -39,6 +39,10 @@ describe('Alerts/FlashMessages', () => {
         wrapper = shallowMount(FlashMessages, {
             localVue,
             mocks,
+            stubs: {
+                TransitionGroup: true,
+                Alert: true,
+            },
         });
     });
 

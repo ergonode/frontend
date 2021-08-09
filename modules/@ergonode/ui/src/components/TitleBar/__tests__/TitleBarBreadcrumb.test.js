@@ -25,6 +25,7 @@ describe('TitleBar/TitleBarBreadcrumb', () => {
             },
             stubs: {
                 NuxtLink: true,
+                Icon: true,
             },
         });
     });

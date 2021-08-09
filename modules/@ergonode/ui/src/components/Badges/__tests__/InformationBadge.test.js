@@ -21,6 +21,9 @@ describe('Badges/InformationBadge', () => {
             propsData: {
                 title: 'Default',
             },
+            stubs: {
+                BadgeLabel: true,
+            },
         });
     });
 

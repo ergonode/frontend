@@ -28,6 +28,9 @@ describe('Designer/DesignerGhostItem', () => {
                 width: 1,
                 height: 1,
             },
+            stubs: {
+                IconAddFilter: true,
+            },
         });
     });
 

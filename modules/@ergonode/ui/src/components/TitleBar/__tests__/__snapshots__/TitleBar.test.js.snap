@@ -2,7 +2,7 @@
 
 exports[`TitleBar/TitleBar TitleBar is rendered with information badge 1`] = `
 <header data-cy="title-bar" class="title-bar">
-  <titlebarheader title="test"></titlebarheader>
-  <titlebaractions> </titlebaractions>
+  <titlebarheader-stub title="test"></titlebarheader-stub>
+  <titlebaractions-stub> </titlebaractions-stub>
 </header>
 `;

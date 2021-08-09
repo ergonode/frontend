@@ -39,6 +39,7 @@ export default {
         /**
          * The vue component reference to which dropdown is hooked
          */
+        // eslint-disable-next-line vue/require-prop-types
         parentReference: {
             required: true,
         },

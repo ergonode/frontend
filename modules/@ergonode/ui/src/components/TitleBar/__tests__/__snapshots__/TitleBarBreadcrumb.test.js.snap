@@ -2,8 +2,8 @@
 
 exports[`TitleBar/TitleBarBreadcrumb Renders breadcrumb with category 1`] = `
 <nuxtlink-stub aria-label="Breadcrumb" class="breadcrumb">
-  <icon width="16" height="16">
+  <icon-stub width="16" height="16">
     <polygon points="10 21 10 15 14 15 14 21 19 21 19 13 22 13 12 4 2 13 5 13 5 21"></polygon>
-  </icon> <span class="breadcrumb__title">Dashboard</span>
+  </icon-stub> <span class="breadcrumb__title">Dashboard</span>
 </nuxtlink-stub>
 `;

@@ -17,6 +17,10 @@ describe('Badges/NumericBadge', () => {
             propsData: {
                 number: 0,
             },
+            stubs: {
+                BadgeLabel: true,
+                RoundedBadge: true,
+            },
         });
     });
 

@@ -38,6 +38,7 @@ export default {
         /**
          * The vue component reference to which resizer is hooked
          */
+        // eslint-disable-next-line vue/require-prop-types
         parentReference: {
             required: true,
         },
