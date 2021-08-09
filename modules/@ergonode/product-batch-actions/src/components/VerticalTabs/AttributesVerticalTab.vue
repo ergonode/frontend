@@ -4,7 +4,9 @@
  */
 <template>
     <div class="attributes-vertical-tab">
-        <AttributesSideBar :filter="filter" />
+        <AttributesSideBar
+            :filter="filter"
+            :scope="scope" />
     </div>
 </template>
 
@@ -17,6 +19,10 @@ export default {
         AttributesSideBar,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         filter: {
             type: [
                 Object,
