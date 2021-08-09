@@ -31,6 +31,10 @@ export default {
             type: Object,
             default: null,
         },
+        affectedBy: {
+            type: Object,
+            default: null,
+        },
         errorMessages: {
             type: String,
             default: '',
@@ -47,18 +51,13 @@ export default {
         options() {
             const {
                 complexOptions = {},
-                affectedBy = '',
             } = this.parameter;
 
             let options = this.parameter.options || {};
 
-            if (affectedBy) {
-                if (this.value[affectedBy]) {
-                    const affectedByValue = this.value[affectedBy];
-
-                    if (complexOptions[affectedByValue.id]) {
-                        options = complexOptions[affectedByValue.id];
-                    }
+            if (this.affectedBy) {
+                if (complexOptions[this.affectedBy.id]) {
+                    options = complexOptions[this.affectedBy.id];
                 }
             }
 
@@ -71,7 +70,7 @@ export default {
     },
     methods: {
         onValueChange(value) {
-            this.$emit('input', value);
+            this.$emit('input', value === '' ? null : value);
         },
     },
 };

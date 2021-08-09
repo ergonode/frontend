@@ -30,6 +30,10 @@ export default {
             type: String,
             default: '',
         },
+        affectedBy: {
+            type: Object,
+            default: null,
+        },
         errorMessages: {
             type: String,
             default: '',

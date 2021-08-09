@@ -33,7 +33,7 @@ export function getParsedConditions({
 
                 if (Array.isArray(value)) {
                     value = value.map(conditionValue => conditionValue.id);
-                } else if (typeof value === 'object') {
+                } else if (typeof value === 'object' && value !== null) {
                     value = value.id;
                 }
             }

@@ -6,6 +6,7 @@
     <Component
         :is="typeComponent"
         :value="value[parameter.name]"
+        :affected-by="value[parameter.affectedBy]"
         :parameter="parameter"
         :disabled="disabled"
         :error-messages="errorMessages"

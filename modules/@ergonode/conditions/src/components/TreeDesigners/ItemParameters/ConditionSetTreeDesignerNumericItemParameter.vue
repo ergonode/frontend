@@ -34,6 +34,10 @@ export default {
             ],
             default: '',
         },
+        affectedBy: {
+            type: Object,
+            default: null,
+        },
         errorMessages: {
             type: String,
             default: '',
