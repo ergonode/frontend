@@ -16,6 +16,10 @@ describe('/ToolBar/ToolBarSelectButton', () => {
     beforeEach(() => {
         wrapper = shallowMount(ToolBarSelectButton, {
             localVue,
+            stubs: {
+                Dropdown: true,
+                ToolBarButton: true,
+            },
         });
     });
 

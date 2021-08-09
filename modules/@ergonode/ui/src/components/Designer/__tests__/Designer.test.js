@@ -27,6 +27,10 @@ describe('Designer/DesignerBackgroundLayer', () => {
                 lastItemRow,
                 rowHeight: DEFAULT_ROW_HEIGHT,
             },
+            stubs: {
+                ResizeObserver: true,
+                Button: true,
+            },
         });
     });
 

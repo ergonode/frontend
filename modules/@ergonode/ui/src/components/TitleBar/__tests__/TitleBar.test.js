@@ -15,6 +15,10 @@ describe('TitleBar/TitleBar', () => {
                 title: 'test',
                 isReadOnly: true,
             },
+            stubs: {
+                TitleBarHeader: true,
+                TitleBarActions: true,
+            },
         });
     });
 

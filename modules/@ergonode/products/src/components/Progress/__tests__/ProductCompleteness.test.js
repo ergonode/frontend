@@ -40,6 +40,9 @@ describe('Badges/ProductCompleteness', () => {
             propsData: {
                 languageCode: 'en_GB',
             },
+            stubs: {
+                ProgressBar: true,
+            },
         });
     });
 

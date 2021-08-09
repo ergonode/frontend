@@ -10,7 +10,12 @@ import {
 describe('Errors/404', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = shallowMount(Error404);
+        wrapper = shallowMount(Error404, {
+            stubs: {
+                Placeholder: true,
+                Button: true,
+            },
+        });
     });
 
     it('Component is named well', () => {

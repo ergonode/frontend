@@ -35,6 +35,9 @@ module.exports = {
     testMatch: [
         '**/(__tests__|tests)/**/*.test.(js|jsx|ts|tsx)',
     ],
+    modulePathIgnorePatterns: [
+        '<rootDir>/.*/__mocks__',
+    ],
     testURL: 'http://localhost/',
     reporters: [
         'default',

@@ -2,9 +2,6 @@
  * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import {
-    GRAPHITE_DARK,
-} from '@UI/assets/scss/_js-variables/colors.scss';
 import PointBadge from '@UI/components/Badges/PointBadge';
 import {
     shallowMount,
@@ -15,7 +12,7 @@ describe('Badges/PointBadge', () => {
     beforeEach(() => {
         wrapper = shallowMount(PointBadge, {
             propsData: {
-                color: GRAPHITE_DARK,
+                color: '#ffffff',
             },
         });
     });

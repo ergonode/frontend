@@ -14,6 +14,9 @@ describe('AdvancedFilters/AdvancedFilterShowOnly', () => {
             propsData: {
                 value: false,
             },
+            stubs: {
+                Toggler: true,
+            },
         });
     });
 

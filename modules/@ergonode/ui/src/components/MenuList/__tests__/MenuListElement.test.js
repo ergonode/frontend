@@ -37,9 +37,10 @@ describe('Navigation/MenuListElement', () => {
                     isHover: false,
                 };
             },
-            stubs: [
-                'NuxtLink',
-            ],
+            stubs: {
+                NuxtLink: true,
+                Document: true,
+            },
         });
     });
 

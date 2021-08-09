@@ -24,6 +24,10 @@ describe('Alert', () => {
                 type: ALERT_TYPE.INFO,
                 message: 'Ya, know...',
             },
+            stubs: {
+                Fab: true,
+                Icon: true,
+            },
         });
     });
 
