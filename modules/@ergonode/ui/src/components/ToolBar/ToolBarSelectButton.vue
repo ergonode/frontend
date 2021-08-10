@@ -38,12 +38,16 @@ export default {
             }
 
             this.isFocused = !this.isFocused;
+
+            this.$emit('focus', this.isFocused);
         },
         onClickOutside({
             isClickedOutside,
         }) {
             if (isClickedOutside) {
                 this.isFocused = false;
+
+                this.$emit('focus', this.isFocused);
             }
         },
     },
