@@ -9,7 +9,11 @@ export default {
     props: {
         options: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+                threshold: [
+                    0.0,
+                ],
+            }),
         },
         observeOnce: {
             type: Boolean,
