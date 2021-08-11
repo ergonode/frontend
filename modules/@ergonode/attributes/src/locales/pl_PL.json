@@ -19,7 +19,17 @@
         "title": "Atrybuty",
         "headTitle": "Atrybuty - Ergonode",
         "noAttributes": "Brak atrybutów",
-        "createFirst": "W systemie nie ma atrybutów, stwórz pierwszy."
+        "createFirst": "W systemie nie ma atrybutów, stwórz pierwszy.",
+        "types": {
+          "TEXT": "Tekst",
+          "TEXT_AREA": "Pole tekstowe",
+          "NUMERIC": "Numeryczny",
+          "SELECT": "Pole wyboru",
+          "MULTI_SELECT": "Lista wyboru",
+          "PRICE": "Cena",
+          "UNIT": "Jednostka",
+          "DATE": "Data"
+        }
       },
       "components": {
         "AttributeForm": {

@@ -63,6 +63,11 @@ export default {
         await store.dispatch('productTemplate/getTemplate', {
             id: params.id,
         });
+        await store.dispatch('dictionaries/getInitialDictionaries', {
+            keys: [
+                'attrTypes',
+            ],
+        });
     },
     computed: {
         ...mapState('productTemplate', [

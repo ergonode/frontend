@@ -77,6 +77,9 @@ export default {
         ...mapState('list', [
             'disabledElements',
         ]),
+        ...mapState('dictionaries', [
+            'attrTypes',
+        ]),
         isDisabled() {
             return this.disabled
                 || (this.disabledElements[this.scope]
@@ -106,7 +109,7 @@ export default {
             return icon;
         },
         formattedAttributeType() {
-            return capitalizeAndConcatenationArray(this.item.type.split('_'));
+            return this.attrTypes[this.item.type] || capitalizeAndConcatenationArray(this.item.type.split('_'));
         },
         hint() {
             return this.item.label ? `#${this.item.code} ${this.languageCode}` : '';

@@ -60,7 +60,7 @@ export default {
 
                         commit('__SET_STATE', {
                             key,
-                            value: dataMapper(response),
+                            value: dataMapper(response, this.app),
                         });
                     }
                 } catch (e) {

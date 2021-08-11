@@ -13,17 +13,17 @@
         <div class="vertical-wrapper">
             <span
                 class="element-content__header"
-                v-text="element.type" />
+                v-text="element.label" />
             <span
                 class="element-content__subheader"
-                v-text="element.label" />
+                v-text="getTypeTranslation(element.type)" />
         </div>
         <div
             v-if="!disabled"
             :class="['element-content__contextual-menu', contextualMenuHoveStateClasses]">
             <ActionIconButton
                 :theme="secondaryTheme"
-                :size="tinySize"
+                :size="smallSize"
                 :options="contextualMenuItems"
                 @input="onSelectValue"
                 @focus="onSelectFocus">
@@ -44,6 +44,7 @@ import ElementContentBase from '@Templates/components/TemplateDesigner/ProductDe
 import IconFontSize from '@UI/components/Icons/Editor/IconFontSize';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -89,8 +90,11 @@ export default {
         };
     },
     computed: {
-        tinySize() {
-            return SIZE.TINY;
+        ...mapState('productTemplate', [
+            'types',
+        ]),
+        smallSize() {
+            return SIZE.SMALL;
         },
         secondaryTheme() {
             return THEME.SECONDARY;
@@ -139,6 +143,13 @@ export default {
         onMouseLeave() {
             if (!this.isContextualMenuActive) this.isHovered = false;
         },
+        getTypeTranslation(key) {
+            if (this.$te(`@Templates.productTemplate._.types.${key}`)) {
+                return this.$t(`@Templates.productTemplate._.types.${key}`);
+            }
+
+            return this.types.find(type => type.variant === 'ui' && type.type === key).label;
+        },
     },
 };
 </script>
@@ -157,13 +168,13 @@ export default {
             padding-top: 10px;
         }
 
-        &__header {
-            letter-spacing: 0.5px;
-            color: $GRAPHITE_LIGHT;
-            font: $FONT_SEMI_BOLD_12_16;
+        &__subheader {
+            letter-spacing: 0.2px;
+            color: $GRAPHITE;
+            font: $FONT_SEMI_BOLD_10_12;
         }
 
-        &__subheader {
+        &__header {
             height: 20px;
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_14_20;
@@ -178,7 +189,7 @@ export default {
         &__contextual-menu {
             flex: 0;
             align-items: flex-start;
-            padding: 12px 0;
+            padding: 8px;
             opacity: 0;
 
             &--hovered {

@@ -19,7 +19,17 @@
         "title": "Attributes",
         "headTitle": "Attributes - Ergonode",
         "noAttributes": "No attributes",
-        "createFirst": "There are no attributes in the system, so you can add the first one."
+        "createFirst": "There are no attributes in the system, so you can add the first one.",
+        "types": {
+          "TEXT": "Text",
+          "TEXT_AREA": "Text area",
+          "NUMERIC": "Numeric",
+          "SELECT": "Select",
+          "MULTI_SELECT": "Multi select",
+          "PRICE": "Price",
+          "UNIT": "Unit",
+          "DATE": "Date"
+        }
       },
       "components": {
         "AttributeForm": {

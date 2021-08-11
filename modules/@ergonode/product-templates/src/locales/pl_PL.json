@@ -18,7 +18,10 @@
         "title": "Szablony produktowe",
         "headTitle": "Szablony produktowe - Ergonode",
         "noTemplate": "Brak szablonów produktowych",
-        "createFirst": "W systemie nie ma szablonów produktowych, stwórz pierwszy."
+        "createFirst": "W systemie nie ma szablonów produktowych, stwórz pierwszy.",
+        "types": {
+          "SECTION": "Widget sekcji"
+        }
       },
       "pages": {
         "id": {
