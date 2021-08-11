@@ -3,7 +3,10 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="designer-item-description">
+    <Tooltip
+        class="designer-item-description"
+        :title="title"
+        max-width="100%">
         <span
             v-if="title"
             class="designer-item-description__title"
@@ -12,7 +15,7 @@
             v-if="subtitle"
             class="designer-item-description__subtitle"
             v-text="subtitle" />
-    </div>
+    </Tooltip>
 </template>
 
 <script>

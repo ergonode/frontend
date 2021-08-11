@@ -30,14 +30,14 @@
                                 <ListElementAction
                                     v-if="!disabled"
                                     :size="smallSize">
-                                    <IconButton
-                                        :size="smallSize"
-                                        :theme="secondaryTheme"
+                                    <Fab
+                                        :size="tinySize"
+                                        :theme="destructiveTheme"
                                         @click.native="onRemoveFile(file)">
                                         <template #icon="{ color }">
                                             <IconFilledClose :fill-color="color" />
                                         </template>
-                                    </IconButton>
+                                    </Fab>
                                 </ListElementAction>
                             </ListElement>
                             <div
@@ -162,8 +162,14 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
+        destructiveTheme() {
+            return THEME.DESTRUCTIVE;
+        },
         smallSize() {
             return SIZE.SMALL;
+        },
+        tinySize() {
+            return SIZE.TINY;
         },
         greenColor() {
             return GREEN;

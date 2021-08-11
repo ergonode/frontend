@@ -21,7 +21,7 @@
             v-if="!disabled && menuItems.length"
             :class="menuItemsClasses">
             <ActionIconButton
-                :theme="secondaryPlainTheme"
+                :theme="secondaryTheme"
                 :size="tinySize"
                 :floating="menuPosition"
                 :options="menuItems"
@@ -134,8 +134,8 @@ export default {
         tinySize() {
             return SIZE.TINY;
         },
-        secondaryPlainTheme() {
-            return THEME.SECONDARY_PLAIN;
+        secondaryTheme() {
+            return THEME.SECONDARY;
         },
     },
     methods: {
