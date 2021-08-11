@@ -21,7 +21,7 @@
                 v-text="element.label" />
             <span
                 class="element-content__subheader"
-                v-text="this.attrTypes[element.type] || element.type" />
+                v-text="attrTypes[element.type] || element.type" />
         </div>
         <div
             v-if="!disabled"

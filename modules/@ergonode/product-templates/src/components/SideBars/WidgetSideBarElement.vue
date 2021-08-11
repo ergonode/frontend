@@ -6,14 +6,14 @@
     <ListDraggableElement
         :disabled="disabled"
         :draggable-id="item.type"
-        :label="getTypeTranslation"
+        :label="typeTranslation"
         @drag-start="onDragStart"
         @drag-end="onDragEnd">
         <ListElementIcon>
             <IconFontSize />
         </ListElementIcon>
         <ListElementDescription>
-            <ListElementTitle :title="getTypeTranslation" />
+            <ListElementTitle :title="typeTranslation" />
             <ListElementHint :title="item.code" />
         </ListElementDescription>
     </ListDraggableElement>
@@ -55,7 +55,7 @@ export default {
         },
     },
     computed: {
-        getTypeTranslation() {
+        typeTranslation() {
             const {
                 type: keyType,
                 label,
