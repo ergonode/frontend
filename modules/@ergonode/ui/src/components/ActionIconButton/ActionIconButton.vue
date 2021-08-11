@@ -13,7 +13,7 @@
         @hover="onHover"
         @input="onSelect">
         <template #button>
-            <IconButton
+            <Fab
                 :theme="theme"
                 :size="size"
                 :disabled="disabled">
@@ -26,7 +26,7 @@
                         name="icon"
                         :color="iconFillColor" />
                 </template>
-            </IconButton>
+            </Fab>
         </template>
         <template #option="{ option }">
             <!--
