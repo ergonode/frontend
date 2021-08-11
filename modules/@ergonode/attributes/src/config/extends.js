@@ -137,7 +137,16 @@ export default {
                 path: '/dictionary/attributes/types',
                 config: {},
             },
-            dataMapper: response => response,
+            dataMapper: (response, $app) => Object.keys(response).reduce((acc, type) => {
+                const tmpObject = acc;
+                if ($app.i18n.te(`@Attributes.attribute._.types.${type}`)) {
+                    tmpObject[type] = $app.i18n.t(`@Attributes.attribute._.types.${type}`);
+                } else {
+                    tmpObject[type] = response[type];
+                }
+
+                return tmpObject;
+            }, {}),
         },
     ],
     extendStore: {

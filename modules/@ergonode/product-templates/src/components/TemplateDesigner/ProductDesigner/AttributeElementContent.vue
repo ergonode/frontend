@@ -17,18 +17,18 @@
         </div>
         <div class="vertical-wrapper">
             <span
-                :class="[typeLabelClasses, typeLabelRequireClass]"
-                v-text="element.type" />
+                :class="['element-content__header', typeLabelRequireClass]"
+                v-text="element.label" />
             <span
                 class="element-content__subheader"
-                v-text="element.label" />
+                v-text="this.attrTypes[element.type] || element.type" />
         </div>
         <div
             v-if="!disabled"
             :class="['element-content__contextual-menu', contextualMenuHoveStateClasses]">
             <ActionIconButton
-                :theme="secondaryPlainTheme"
-                :size="tinySize"
+                :theme="secondaryTheme"
+                :size="smallSize"
                 :options="contextualMenuItems"
                 @input="onSelectValue"
                 @focus="onSelectFocus">
@@ -61,6 +61,7 @@ import {
 import ElementContentBase from '@Templates/components/TemplateDesigner/ProductDesigner/ElementContentBase';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -105,22 +106,22 @@ export default {
         };
     },
     computed: {
+        ...mapState('dictionaries', [
+            'attrTypes',
+        ]),
         smallSize() {
             return SIZE.SMALL;
         },
         tinySize() {
             return SIZE.TINY;
         },
-        secondaryPlainTheme() {
-            return THEME.SECONDARY_PLAIN;
+        secondaryTheme() {
+            return THEME.SECONDARY;
         },
         typeLabelRequireClass() {
             return {
                 'element-content--required': this.element.required,
             };
-        },
-        typeLabelClasses() {
-            return 'element-content__header';
         },
         typeIconComponent() {
             const icon = this.$extendedForm({
@@ -214,13 +215,13 @@ export default {
             padding-top: 10px;
         }
 
-        &__header {
-            letter-spacing: 0.5px;
-            color: $GRAPHITE_LIGHT;
-            font: $FONT_SEMI_BOLD_12_16;
+        &__subheader {
+            letter-spacing: 0.2px;
+            color: $GRAPHITE;
+            font: $FONT_SEMI_BOLD_10_12;
         }
 
-        &__subheader {
+        &__header {
             height: 20px;
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_14_20;
@@ -234,7 +235,7 @@ export default {
         &__contextual-menu {
             flex: 0;
             align-items: flex-start;
-            padding: 12px 0;
+            padding: 8px;
             opacity: 0;
 
             &--hovered {
