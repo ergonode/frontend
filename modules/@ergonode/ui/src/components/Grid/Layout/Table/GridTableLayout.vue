@@ -382,7 +382,7 @@ export default {
             return [
                 'grid-table-layout',
                 {
-                    'grid-table-layout--placeholder': this.dataCount === 0,
+                    'grid-table-layout--placeholder': !this.dataCount && !this.isPrefetchingData,
                 },
             ];
         },
@@ -400,7 +400,7 @@ export default {
                 return this.extendedComponents.dataEditCells[this.editCell.type];
             }
 
-            // TODO: Change deafult component to placeholder if the type is not recognized.
+            // TODO: Change default component to placeholder if the type is not recognized.
             return () => import(`@UI/components/Grid/Layout/Table/Cells/Edit/Grid${type}EditCell`)
                 .catch(() => import('@UI/components/Grid/Layout/Table/Cells/Edit/GridTextEditCell'));
         },
@@ -448,12 +448,27 @@ export default {
         },
     },
     watch: {
-        columns: {
+        visibleColumns: {
             immediate: true,
             async handler() {
-                if (this.orderedColumns.length !== this.visibleColumns.length
-                    || (this.rows.length && !Object.keys(this.actionCellComponents).length)) {
-                    await this.initializeColumns();
+                if (this.visibleColumns.length) {
+                    const requests = [
+                        ...this.getColumnComponents(),
+                        ...this.getActionColumnComponents(),
+                    ];
+
+                    await Promise.all(requests);
+
+                    this.initializeColumnWidths();
+
+                    this.orderedColumns = this.visibleColumns;
+
+                    if (!this.isLayoutResolved) {
+                        this.$emit('resolved', {
+                            layout: GRID_LAYOUT.TABLE,
+                            isResolved: true,
+                        });
+                    }
                 }
             },
         },
@@ -494,20 +509,12 @@ export default {
         onEditCell(editCell = null) {
             this.editCell = editCell;
 
-            if (editCell) {
-                this.$refs.gridTableLayout.addEventListener('mousedown', this.onMouseDown);
-            } else {
-                this.$refs.gridTableLayout.removeEventListener('mousedown', this.onMouseDown);
-            }
+            this.setMouseDownEvent(editCell !== null);
         },
         onEditFilterCell(editFilterCell = null) {
             this.editFilterCell = editFilterCell;
 
-            if (editFilterCell) {
-                this.$refs.gridTableLayout.addEventListener('mousedown', this.onMouseDown);
-            } else {
-                this.$refs.gridTableLayout.removeEventListener('mousedown', this.onMouseDown);
-            }
+            this.setMouseDownEvent(editFilterCell !== null);
         },
         onSortColumn(sortOrder) {
             this.$emit('sort-column', sortOrder);
@@ -547,7 +554,7 @@ export default {
             width,
         }) {
             if (this.hasInitialWidths) {
-                this.initialColumnWidths();
+                this.updateInitialColumnWidths();
             }
 
             this.columnWidths[index - this.columnsOffset] = width;
@@ -599,10 +606,13 @@ export default {
         onRowAction(payload) {
             this.$emit('row-action', payload);
         },
-        async initializeColumns() {
-            const actionColumns = this.isActionColumn ? this.getActionColumns() : [];
-            const orderedColumns = [];
-            const columnWidths = [];
+        getColumnComponents() {
+            const isAnyNewColumnType = this.visibleColumns.some(column => typeof this.columnTypes[column.type] === 'undefined');
+
+            if (!isAnyNewColumnType) {
+                return [];
+            }
+
             const {
                 length,
             } = this.visibleColumns;
@@ -610,36 +620,36 @@ export default {
             const requests = [];
 
             for (let i = 0; i < length; i += 1) {
-                const column = this.visibleColumns[i];
                 const {
                     type,
-                } = column;
+                    filter,
+                } = this.visibleColumns[i];
 
-                if (typeof this.extendedComponents.columns[type] !== 'undefined') {
-                    this.columnTypes[type] = this.getColumnTypeName(column);
+                if (typeof this.columnTypes[type] === 'undefined') {
+                    this.columnTypes[type] = this.getColumnTypeName(type);
 
-                    requests.push(this.setExtendedColumn(type));
-                } else if (typeof this.columnTypes[type] === 'undefined') {
-                    this.columnTypes[type] = this.getColumnTypeName(column);
-
-                    try {
-                        if (this.extendedComponents.dataCells
+                    if (typeof this.extendedComponents.columns[type] !== 'undefined') {
+                        requests.push(this.setExtendedColumn(type));
+                    } else {
+                        try {
+                            if (this.extendedComponents.dataCells
                                 && this.extendedComponents.dataCells[type]) {
-                            requests.push(this.setExtendedDataCell(type));
-                        } else {
-                            requests.push(this.setDataCell(type));
+                                requests.push(this.setExtendedDataCell(type));
+                            } else {
+                                requests.push(this.setDataCell(type));
+                            }
+                        } catch (e) {
+                            requests.push(this.setDefaultDataCell(type));
                         }
-                    } catch (e) {
-                        requests.push(this.setDefaultDataCell(type));
                     }
                 }
 
-                if (column.filter && typeof this.filterTypes[column.filter.type] === 'undefined') {
+                if (filter && typeof this.filterTypes[filter.type] === 'undefined') {
                     const {
                         type: filterType,
-                    } = column.filter;
+                    } = filter;
 
-                    this.filterTypes[filterType] = this.getColumnFilterTypeName(column);
+                    this.filterTypes[filterType] = this.getColumnFilterTypeName(filterType);
 
                     try {
                         if (this.extendedComponents.dataFilterCells
@@ -652,15 +662,23 @@ export default {
                         requests.push(this.setDefaultDataFilterCell(filterType));
                     }
                 }
-
-                orderedColumns.push(column);
-                columnWidths.push(column.width || COLUMN_WIDTH.DEFAULT);
             }
 
-            for (let i = 0; i < actionColumns.length; i += 1) {
+            return requests;
+        },
+        getActionColumnComponents() {
+            if (!this.isActionColumn) {
+                return [];
+            }
+
+            const requests = [];
+
+            this.actionColumns = this.getActionColumns();
+
+            for (let i = 0; i < this.actionColumns.length; i += 1) {
                 const {
                     id,
-                } = actionColumns[i];
+                } = this.actionColumns[i];
 
                 if (typeof this.actionCellComponents[id] === 'undefined') {
                     try {
@@ -671,20 +689,28 @@ export default {
                 }
             }
 
-            await Promise.all(requests);
-
-            this.actionColumns = actionColumns;
-            this.orderedColumns = orderedColumns;
-            this.columnWidths = columnWidths;
-
-            if (!this.isLayoutResolved) {
-                this.$emit('resolved', {
-                    layout: GRID_LAYOUT.TABLE,
-                    isResolved: true,
-                });
+            return requests;
+        },
+        setMouseDownEvent(shouldAdd) {
+            if (shouldAdd) {
+                this.$refs.gridTableLayout.addEventListener('mousedown', this.onMouseDown);
+            } else {
+                this.$refs.gridTableLayout.removeEventListener('mousedown', this.onMouseDown);
             }
         },
-        initialColumnWidths() {
+        initializeColumnWidths() {
+            if (!this.columnWidths.length) {
+                this.columnWidths = this.visibleColumns.map(
+                    column => column.width || COLUMN_WIDTH.DEFAULT,
+                );
+            } else if (this.columnWidths.length < this.visibleColumns.length) {
+                this.columnWidths = [
+                    this.visibleColumns[0].width || COLUMN_WIDTH.DEFAULT,
+                    ...this.columnWidths,
+                ];
+            }
+        },
+        updateInitialColumnWidths() {
             const {
                 columnsSection,
             } = this.$refs;
@@ -732,15 +758,14 @@ export default {
         },
         getActionColumns() {
             const {
-                length: dataLength,
-            } = this.rows;
-            const {
                 length: actionsLength,
             } = this.gridActions;
             const actionColumns = [];
             const tmp = {};
 
-            for (let i = 0; i < dataLength; i += 1) {
+            let i = 0;
+
+            while (actionColumns.length < actionsLength - 1 && i < this.dataCount) {
                 const row = this.rows[i];
 
                 for (let j = 0; j < actionsLength; j += 1) {
@@ -759,15 +784,17 @@ export default {
                         }
                     }
                 }
+
+                i += 1;
             }
 
             return actionColumns;
         },
-        getColumnFilterTypeName(column) {
-            return this.columnTypes[column.filter.type] || capitalizeAndConcatenationArray(column.filter.type.split('_'));
+        getColumnFilterTypeName(type) {
+            return this.columnTypes[type] || capitalizeAndConcatenationArray(type.split('_'));
         },
-        getColumnTypeName(column) {
-            return capitalizeAndConcatenationArray(column.type.split('_'));
+        getColumnTypeName(type) {
+            return capitalizeAndConcatenationArray(type.split('_'));
         },
         setExtendedFilterDataCell(type) {
             return this.extendedComponents.dataFilterCells[type]().then((response) => {
