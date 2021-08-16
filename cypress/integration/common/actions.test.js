@@ -25,7 +25,7 @@ MultiSteps([
     When,
     Then,
     And,
-], 'On {string} I {string} the data and {string} it {string}', (container, button, action, status) => {
+], 'On {string} I {string} the data and {string} is {string}', (container, button, action, status) => {
     const requestType = requestTypes[action];
 
     if (statusCodes[requestType][status] && requestType) {
@@ -44,7 +44,7 @@ MultiSteps([
     When,
     Then,
     And,
-], 'I {string} the data and {string} it {string}', (button, action, status) => {
+], 'I {string} the data and {string} is {string}', (button, action, status) => {
     const requestType = requestTypes[action];
 
     if (statusCodes[requestType][status] && requestType) {
@@ -63,9 +63,7 @@ MultiSteps([
     Then,
     And,
 ], 'I click back arrow', () => {
-    cy.getBySel('title-bar-header')
-        .find('button.fab')
-        .click();
+    cy.getBySel('navigate-back-fab').click();
 });
 
 MultiSteps([

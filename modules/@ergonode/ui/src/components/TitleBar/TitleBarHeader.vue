@@ -40,6 +40,7 @@ export default {
         &__title {
             color: $GRAPHITE_DARK;
             font: $FONT_SEMI_BOLD_24_32;
+            word-break: break-word;
         }
     }
 </style>
