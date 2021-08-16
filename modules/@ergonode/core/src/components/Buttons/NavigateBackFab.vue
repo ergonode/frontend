@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <Fab @click.native="onBack">
+    <Fab
+        data-cy="navigate-back-fab"
+        @click.native="onBack">
         <template #icon="{ color }">
             <IconArrowPointer :fill-color="color" />
         </template>
