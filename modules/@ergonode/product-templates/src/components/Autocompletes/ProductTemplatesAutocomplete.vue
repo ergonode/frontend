@@ -14,6 +14,7 @@
         :custom-fetch-event="productTemplateCreatedEventName"
         :error-messages="errorMessages"
         :disabled="disabled"
+        :sort-order="sortOrder"
         href="templates/autocomplete"
         @input="onValueChange">
         <template #noDataPlaceholder>
@@ -29,6 +30,9 @@
 </template>
 
 <script>
+import {
+    SORTING_ORDER,
+} from '@Core/defaults/icons';
 import CreateProductTemplateButton from '@Templates/components/Buttons/CreateProductTemplateButton';
 import {
     PRODUCT_TEMPLATE_CREATED_EVENT_NAME,
@@ -80,6 +84,12 @@ export default {
             return {
                 title: this.$t('@Templates.productTemplate._.noTemplate'),
                 subtitle: this.$t('@Templates.productTemplate._.createFirst'),
+            };
+        },
+        sortOrder() {
+            return {
+                order: SORTING_ORDER.ASC,
+                field: 'label',
             };
         },
     },

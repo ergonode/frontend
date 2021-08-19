@@ -244,6 +244,13 @@ export default {
             type: String,
             default: '',
         },
+        /**
+         * The data model of sorted column
+         */
+        sortOrder: {
+            type: Object,
+            default: null,
+        },
     },
     data() {
         return {
@@ -344,12 +351,19 @@ export default {
             try {
                 this.isFetchingData = true;
 
-                const options = await this.$axios.$get(this.href, {
+                const config = {
                     params: {
                         search: this.searchValue,
                         ...this.params,
                     },
-                });
+                };
+
+                if (this.sortOrder) {
+                    config.params.order = this.sortOrder.order;
+                    config.params.field = this.sortOrder.field;
+                }
+
+                const options = await this.$axios.$get(this.href, config);
 
                 if (this.additionalStaticOptions.length) {
                     const lowerCaseSearchValue = this.searchValue.toLowerCase();
