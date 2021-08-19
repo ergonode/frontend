@@ -711,7 +711,7 @@ export default {
                 params: getParams({
                     $route: this.$route,
                     $cookies: this.$userCookies,
-                    defaultColumns: 'index,sku,_links,esa_default_image,esa_default_label',
+                    defaultColumns: 'esa_index,esa_sku,_links,esa_default_image,esa_default_label',
                 }),
                 onSuccess: this.onFetchDataSuccess,
                 onError: this.onFetchDataError,
