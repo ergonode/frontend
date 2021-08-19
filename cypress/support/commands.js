@@ -34,6 +34,29 @@
 // });
 // Benchmark
 
+const getSelectedOption = (scrollContainer, optionElement, scrollTop, option) => {
+    const newScrollTop = scrollTop + 100;
+
+    let hasOption = false;
+
+    cy.get(optionElement).each(($option) => {
+        if ($option.text().trim() === option) {
+            hasOption = true;
+            cy.wrap($option).as('selectedOption');
+
+            return false;
+        }
+
+        return true;
+    }).then(() => {
+        if (!hasOption) {
+            cy.get(scrollContainer).scrollTo(0, newScrollTop);
+
+            getSelectedOption(scrollContainer, optionElement, newScrollTop, option);
+        }
+    });
+};
+
 Cypress.Commands.add('getBySel', (selector, ...args) => cy.get(`[data-cy=${selector}]`, ...args));
 
 Cypress.Commands.add('getBySelLike', (selector, ...args) => cy.get(`[data-cy*=${selector}]`, ...args));
@@ -169,24 +192,26 @@ Cypress.Commands.add('chooseOption', {
 
     cy.wrap(subject)
         .click();
-    cy.get(`[data-cy=${id}-drop-down]`)
+    cy.get(`[data-cy=${id}-dropdown]`)
         .should('be.visible')
+        .as('dropdown');
+    cy.get('@dropdown')
+        .find('.virtual-scroll')
+        .should('be.visible')
+        .as('virtualScroll');
+    cy.get('@virtualScroll')
         .find('.list-element')
-        .as('elementList');
-    cy.get('@elementList')
-        .its('length')
-        .should('be.gt', 0);
-    cy.get('@elementList')
-        .each(($option) => {
-            if ($option.text().trim() === value) {
-                expect($option.text().trim()).equal(value);
-                cy.wrap($option).as('selectedOption');
-            }
-        });
+        .should('be.visible')
+        .as('option');
+
+    getSelectedOption('@virtualScroll', '@option', 0, value);
+
     cy.get('@selectedOption')
-        .click();
-    cy.get(`[data-cy=${id}-value] span`)
+        .click({
+            force: true,
+        });
+    cy.getBySel(`${id}-value`)
         .contains(value);
-    cy.get(`[data-cy=${id}-drop-down]`)
+    cy.get('@dropdown')
         .should('be.not.visible');
 });

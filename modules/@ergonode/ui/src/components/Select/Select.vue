@@ -70,7 +70,7 @@
                         ref="menu"
                         :value="value"
                         :parent-reference="inputReference"
-                        :data-cy="`${dataCy}-drop-down`"
+                        :data-cy="`${dataCy}-dropdown`"
                         :fixed="fixedContent"
                         :size="size"
                         :multiselect="multiselect"
