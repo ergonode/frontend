@@ -163,7 +163,7 @@ MultiSteps([
 ], 'I choose {int} option from {string} color picker field', (optionNr, id) => {
     cy.getBySel(id)
         .click();
-    cy.getBySel(`${id}-drop-down`)
+    cy.getBySel(`${id}-dropdown`)
         .as('dropDown');
     cy.get('@dropDown')
         .should('be.visible')
@@ -178,34 +178,8 @@ MultiSteps([
 MultiSteps([
     And,
     Then,
-], 'I choose {string} option from {string} select field', (optionString, id) => {
-    cy.getBySel(id)
-        .click();
-    cy.getBySel(`${id}-drop-down`)
-        .as('dropDown');
-    cy.get('@dropDown')
-        .should('be.visible')
-        .find('.list-element')
-        .as('elementList');
-    cy.get('@elementList')
-        .its('length')
-        .should('be.gt', 0);
-    cy.get('@elementList')
-        .each(($option) => {
-            if ($option.text().trim() === optionString) {
-                expect($option.text().trim()).equal(optionString);
-                cy.wrap($option).as('selectedOption');
-            }
-        });
-    cy.get('@selectedOption')
-        .click({
-            force: true,
-        });
-    cy.getBySel(`${id}-value`)
-        .find('span')
-        .contains(optionString);
-    cy.get('@dropDown')
-        .should('be.not.visible');
+], 'I choose {string} option from {string} select field', (option, id) => {
+    cy.getBySel(id).chooseOption(option);
 });
 
 MultiSteps([
@@ -213,11 +187,10 @@ MultiSteps([
     Then,
 ], 'I choose {string} option(s) from {string} multi select field', (optionNrs, id) => {
     cy.getBySel(id)
-        .click()
-        .should('be.visible');
-    cy.getBySel(`${id}-drop-down`)
-        .as('dropDown');
-    cy.get('@dropDown')
+        .click();
+    cy.getBySel(`${id}-dropdown`)
+        .as('dropdown');
+    cy.get('@dropdown')
         .should('be.visible')
         .find('.list-element')
         .as('elementList');
@@ -232,11 +205,11 @@ MultiSteps([
             cy.get('@selectedOption')
                 .click();
         });
-    cy.get('@dropDown')
+    cy.get('@dropdown')
         .find('button')
         .contains('OK')
         .click();
-    cy.get('@dropDown')
+    cy.get('@dropdown')
         .should('be.not.visible');
 });
 
