@@ -4,6 +4,7 @@
  */
 <template>
     <Button
+        data-cy="delete-resource"
         :theme="secondaryTheme"
         :size="smallSize"
         :title="$t('@Media.media.components.RemoveResourceButton.title')"

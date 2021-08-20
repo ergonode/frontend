@@ -4,7 +4,9 @@
  */
 <template>
     <ModalOverlay @close="onClose">
-        <div class="modal-tab-bar">
+        <div
+            class="modal"
+            data-cy="modal">
             <div class="fixed-width-container">
                 <ModalHeader
                     :title="title"
@@ -52,7 +54,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .modal-tab-bar {
+    .modal {
         display: flex;
         width: 1080px;
         height: 80%;

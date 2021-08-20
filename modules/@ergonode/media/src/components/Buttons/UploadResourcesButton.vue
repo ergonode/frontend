@@ -4,6 +4,7 @@
  */
 <template>
     <Button
+        data-cy="upload-resource"
         :title="$t('@Media.media.components.UploadResourcesButton.title')"
         :size="smallSize"
         :theme="secondaryTheme"

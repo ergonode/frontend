@@ -59,7 +59,7 @@ MultiSteps([
 
     cy
         .get('@grid')
-        .find('.workflow-designer-header-layer-cell__title span')
+        .find('.workflow-designer-header-layer-cell__title')
         .each(($el) => {
             statuses.push($el.text().trim());
         }).then(() => {

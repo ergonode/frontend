@@ -14,6 +14,7 @@ import {
 } from '../../models';
 import {
     checkGridRow,
+    checkGridRows,
     noGridRow,
 } from '../../models/navigation';
 
@@ -76,6 +77,17 @@ MultiSteps([
         gridId,
         searchValue,
         columns,
+    });
+});
+
+MultiSteps([
+    And,
+    Then,
+    When,
+], 'On {string} I can see rows with {string} values', (id, values) => {
+    checkGridRows({
+        id,
+        values,
     });
 });
 

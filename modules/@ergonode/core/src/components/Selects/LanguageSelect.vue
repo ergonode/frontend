@@ -90,7 +90,6 @@ export default {
     data() {
         return {
             searchValue: '',
-            onDebounceSearch: null,
         };
     },
     computed: {
@@ -141,9 +140,10 @@ export default {
         },
     },
     created() {
-        if (this.searchable) {
-            this.onDebounceSearch = debounce(this.onSearch, 500);
-        }
+        this.onDebounceSearch = debounce(this.onSearch, 500);
+    },
+    beforeDestroy() {
+        delete this.onDebounceSearch;
     },
     methods: {
         onSelect(value) {

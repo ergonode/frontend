@@ -6,6 +6,7 @@
     <GridTableCell
         :row="rowIndex"
         :column="columnIndex"
+        :data-cy="columnId"
         :locked="true">
         <div
             :class="classes"

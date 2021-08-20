@@ -21,6 +21,7 @@
                     required
                     :error-messages="errors[nameFieldKey]"
                     :disabled="!isAllowedToUpdate"
+                    :data-cy="dataCyGenerator(nameFieldKey)"
                     :label="$t('@Media.media.components.ResourceForm.filenameLabel')"
                     @input="setNameValue" />
                 <UploadImageFile
@@ -118,6 +119,9 @@ export default {
                 fieldKey: this.nameFieldKey,
                 value,
             });
+        },
+        dataCyGenerator(key) {
+            return `resource-${key}`;
         },
     },
 };

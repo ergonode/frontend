@@ -69,7 +69,7 @@ export default {
             };
         },
         dataCyGenerator(key) {
-            return `media-${key}`;
+            return `resource-${key}_${this.languageCode}`;
         },
     },
 };

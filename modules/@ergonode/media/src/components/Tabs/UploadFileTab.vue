@@ -16,9 +16,10 @@
                         type="file"
                         ref="input"
                         multiple
+                        data-cy="upload-file"
                         @dragenter="onDragEnter"
                         @dragleave="onDragLeave"
-                        @input="onUpload">
+                        @change="onUpload">
                     <label
                         class="upload-file-tab__label"
                         :for="uuid">
