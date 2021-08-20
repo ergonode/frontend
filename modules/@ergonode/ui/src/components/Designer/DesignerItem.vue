@@ -17,21 +17,19 @@
             </slot>
             <slot name="append" />
         </slot>
-        <div
+        <ActionIconButton
             v-if="!disabled && menuItems.length"
-            :class="menuItemsClasses">
-            <ActionIconButton
-                :theme="secondaryTheme"
-                :size="tinySize"
-                :floating="menuPosition"
-                :options="menuItems"
-                @input="onSelectValue"
-                @focus="onSelectFocus">
-                <template #icon="{ color }">
-                    <IconDots :fill-color="color" />
-                </template>
-            </ActionIconButton>
-        </div>
+            :class="menuItemsClasses"
+            :theme="secondaryTheme"
+            :size="tinySize"
+            :floating="menuPosition"
+            :options="menuItems"
+            @input="onSelectValue"
+            @focus="onSelectFocus">
+            <template #icon="{ color }">
+                <IconDots :fill-color="color" />
+            </template>
+        </ActionIconButton>
     </div>
 </template>
 <script>
@@ -187,8 +185,6 @@ export default {
         }
 
         &__menu {
-            flex: 0 1 auto;
-            align-items: flex-start;
             opacity: 0;
 
             &--hovered {

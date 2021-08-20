@@ -11,6 +11,7 @@
         :subtitle="subtitle"
         :disabled="disabled"
         :menu-items="menuItems"
+        :menu-position="{ right: '8px' }"
         @select-menu-option="onSelectValue">
         <template #prepend>
             <IconButton
