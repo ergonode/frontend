@@ -185,10 +185,6 @@ export default {
         }
 
         &__menu {
-            position: absolute;
-            right: 8px;
-            flex: 0 1 auto;
-            align-items: flex-start;
             opacity: 0;
 
             &--hovered {
