@@ -87,7 +87,7 @@ Feature: CREATE: Attributes
     * I see a form validation error that says "['System name is required', 'Attribute scope is required', 'This value should not be blank.']"
     Then I close modal
 
-  # FIXME: Wront validation message - replace other message with the option message
+  # FIXME: Wrong validation message - replace other message with the option message
   # NOTE: When option is select, request not send
   @error
   Scenario: Add attribute - validation error (empty option fields)
@@ -103,7 +103,7 @@ Feature: CREATE: Attributes
     * I fill the "attribute-code" input with the "@#$%()" term
     * I choose "local" option from "attribute-scope" select field
     * On "modal" I "submit" the data and "create" is "incorrect"
-    * I see a form validation error that says "['System name can have only letters, digits or underscore symbol']"
+    * I see a form validation error that says "['System name can/'t start with esa_ and can have only letters, digits or underscore symbol']"
     * I close modal
     Then On "grid" I can not see row with "@#$%()" value
 

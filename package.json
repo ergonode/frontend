@@ -51,6 +51,7 @@
     "camelcase-keys": "^6.2.2",
     "chart.js": "^2.9.4",
     "cookie-universal-nuxt": "^2.1.5",
+    "cypress-file-upload": "^5.0.8",
     "cypress-real-events": "^1.5.1",
     "date-fns": "^2.22.1",
     "debounce": "^1.2.1",

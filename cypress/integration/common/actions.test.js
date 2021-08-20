@@ -118,9 +118,8 @@ MultiSteps([
     Then,
     And,
 ], 'I close modal', () => {
-    cy.getBySel('modal')
+    cy.getBySel('modal-close')
         .should('be.visible')
-        .find('[data-cy=modal-close]')
         .click();
 });
 
@@ -128,9 +127,8 @@ MultiSteps([
     Then,
     And,
 ], 'I close modal by button', () => {
-    cy.getBySel('modal')
+    cy.getBySel('modal-cancel')
         .should('be.visible')
-        .find('[data-cy=modal-cancel]')
         .click();
 });
 
@@ -188,7 +186,7 @@ MultiSteps([
         .as('grid');
     cy
         .get('@grid')
-        .find('.workflow-designer-header-layer-cell__title span')
+        .find('.workflow-designer-header-layer-cell__title')
         .contains(new RegExp(`${escapeStringRegexp(searchValue)}$`, 'g'))
         .parents('.workflow-designer-header-layer-cell')
         .find(`[data-cy=status-column-${action}]`)
@@ -208,7 +206,7 @@ MultiSteps([
         .as('grid');
     cy
         .get('@grid')
-        .find('.workflow-designer-header-layer-cell__title span')
+        .find('.workflow-designer-header-layer-cell__title')
         .contains(new RegExp(`${escapeStringRegexp(searchValue)}$`, 'g'));
 });
 

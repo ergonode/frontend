@@ -1,6 +1,6 @@
 @delete
-Feature: DELETE: Category
-  This feature allows delete category
+Feature: DELETE: Unit
+  This feature allows delete unit
 
   Background:
     Given I open "settings/units" page

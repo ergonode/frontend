@@ -19,6 +19,16 @@ MultiSteps([
     When,
     Then,
     And,
+], 'I select the {string} file in the {string} input', (files, id) => {
+    const parsedFiles = JSON.parse(files.replace(/'/g, '"')).map(file => `files/${file}`);
+
+    cy.getBySel(id).attachFile(parsedFiles);
+});
+
+MultiSteps([
+    When,
+    Then,
+    And,
 ], 'I fill the {string} input with the {string} term', (id, term) => {
     cy.getBySel(id)
         .find('input')
@@ -33,15 +43,6 @@ MultiSteps([
     cy.getBySel(id)
         .find('textarea')
         .fill(term)
-        .should('have.value', term);
-});
-
-MultiSteps([
-    When,
-    Then,
-], 'I can see {string} input with the {string} term', (id, term) => {
-    cy.getBySel(id)
-        .find('input')
         .should('have.value', term);
 });
 
@@ -179,7 +180,7 @@ MultiSteps([
     And,
     Then,
 ], 'I choose {string} option from {string} select field', (option, id) => {
-    cy.getBySel(id).chooseOption(option);
+    cy.getBySel(id).chooseSelectOption(option);
 });
 
 MultiSteps([

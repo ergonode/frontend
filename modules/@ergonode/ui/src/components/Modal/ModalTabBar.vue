@@ -4,7 +4,9 @@
  */
 <template>
     <ModalOverlay @close="onClose">
-        <div class="modal-tab-bar">
+        <div
+            class="modal-tab-bar"
+            data-cy="modal">
             <div class="fixed-width-container">
                 <ModalHeader
                     :title="title"

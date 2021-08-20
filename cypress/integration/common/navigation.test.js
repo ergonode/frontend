@@ -14,6 +14,7 @@ import {
 } from '../../models';
 import {
     checkGridRow,
+    checkGridRows,
     noGridRow,
 } from '../../models/navigation';
 
@@ -82,6 +83,17 @@ MultiSteps([
 MultiSteps([
     And,
     Then,
+    When,
+], 'On {string} I can see rows with {string} values', (id, values) => {
+    checkGridRows({
+        id,
+        values,
+    });
+});
+
+MultiSteps([
+    And,
+    Then,
 ], 'On {string} I can not see row with {string} value', (gridId, searchValue) => {
     noGridRow({
         gridId,
@@ -93,7 +105,7 @@ MultiSteps([
     Then,
     And,
 ], 'I see a form validation error that says {string}', (errors) => {
-    const parsedErrors = JSON.parse(errors.replace(/'/g, '"'));
+    const parsedErrors = JSON.parse(errors.replace(/'/g, '"').replace(/\/"/g, "'"));
 
     cy
         .get('[data-cy=form-errors]')

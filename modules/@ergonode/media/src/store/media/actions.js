@@ -44,7 +44,7 @@ export default {
                 mime,
             } = data;
             const translations = {
-                alt: Array.isArray(alt) ? {} : alt,
+                alt,
             };
 
             dispatch('__clearStorage');

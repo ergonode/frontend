@@ -6,6 +6,36 @@ import {
     escapeStringRegexp,
 } from './index';
 
+export const checkGridRows = ({
+    id,
+    values,
+}) => {
+    const parsedValues = JSON.parse(values.replace(/'/g, '"'));
+
+    cy.getBySel(id).as('grid');
+
+    parsedValues.forEach((value) => {
+        const [
+            entry,
+        ] = Object.entries(value);
+        const [
+            columnId,
+            rowValue,
+        ] = entry;
+
+        cy.getBySel(columnId).then((element) => {
+            const columnIndex = element.attr('column');
+
+            cy
+                .get('@grid')
+                .find('.grid-column')
+                .eq(columnIndex)
+                .contains(rowValue)
+                .should('exist');
+        });
+    });
+};
+
 export const checkGridRow = ({
     gridId, searchValue, columns, showMoreRows = true,
 }) => {
@@ -21,7 +51,7 @@ export const checkGridRow = ({
             .get('@grid')
             .find('.grid-footer')
             .get('[data-cy=grid-visible-rows-select]')
-            .chooseOption('200');
+            .chooseSelectOption('200');
     }
 
     cy
@@ -83,7 +113,7 @@ export const noGridRow = ({
             .get('@grid')
             .find('.grid-footer')
             .get('[data-cy=grid-visible-rows-select]')
-            .chooseOption('200');
+            .chooseSelectOption('200');
     }
 
     cy
@@ -105,7 +135,7 @@ export const actionOnGrid = ({
             .get('@grid')
             .find('.grid-footer')
             .get('[data-cy=grid-visible-rows-select]')
-            .chooseOption('200');
+            .chooseSelectOption('200');
     }
 
     cy
@@ -143,7 +173,7 @@ export const noActionOnGrid = ({
             .get('@grid')
             .find('.grid-footer')
             .get('[data-cy=grid-visible-rows-select]')
-            .chooseOption('200');
+            .chooseSelectOption('200');
     }
 
     cy
@@ -178,7 +208,7 @@ export const editOnGrid = ({
             .get('@grid')
             .find('.grid-footer')
             .get('[data-cy=grid-visible-rows-select]')
-            .chooseOption('200');
+            .chooseSelectOption('200');
     }
 
     cy
