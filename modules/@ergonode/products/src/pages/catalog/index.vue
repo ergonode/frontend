@@ -44,6 +44,15 @@ export default {
         beforeRouteLeaveMixin,
         asyncTabsMixin,
     ],
+    async fetch({
+        store,
+    }) {
+        await store.dispatch('dictionaries/getInitialDictionaries', {
+            keys: [
+                'attrTypes',
+            ],
+        });
+    },
     computed: {
         ...mapState('feedback', [
             'errors',
