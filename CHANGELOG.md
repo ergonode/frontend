@@ -9,6 +9,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 tests [#969](https://github.com/ergonode/frontend/issues/969) Downgrade cypress, clean tests (derpdead)
 bugfix [#1041](https://github.com/ergonode/frontend/issues/1041) Too long uplaoded resource name (derpdead)
 bugfix [#1042](https://https://github.com/ergonode/frontend/pull/1042) Advanced filter date type an empty record option (derpdead)
+bugfix [#1044](https://https://github.com/ergonode/frontend/pull/1044) Add resource preview cell (derpdead)
 
 ## CHANGELOG FOR v1.1.x
 
