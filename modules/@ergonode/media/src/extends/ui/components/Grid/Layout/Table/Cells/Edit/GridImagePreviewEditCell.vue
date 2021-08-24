@@ -7,12 +7,16 @@
         <GridSelectEditContentCell :style="positionStyle">
             <GridImageEditContentCell>
                 <UploadImageFile
+                    v-if="type === 'image'"
                     v-model="localValue"
                     :disabled="disabled"
                     object-fit="contain"
                     :size="smallSize"
                     :border="false"
                     :height="`${cellHeight}px`" />
+                <IconFile
+                    :style="{ height: `${cellHeight}px` }"
+                    v-else />
             </GridImageEditContentCell>
         </GridSelectEditContentCell>
     </GridEditNavigationCell>
@@ -28,7 +32,7 @@ import GridSelectEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Ed
 import gridEditCellMixin from '@UI/mixins/grid/gridEditCellMixin';
 
 export default {
-    name: 'GridImageEditCell',
+    name: 'GridImagePreviewEditCell',
     components: {
         UploadImageFile,
         GridSelectEditContentCell,
@@ -40,6 +44,12 @@ export default {
     mixins: [
         gridEditCellMixin,
     ],
+    props: {
+        type: {
+            type: String,
+            required: true,
+        },
+    },
     computed: {
         cellHeight() {
             return 181;

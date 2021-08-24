@@ -298,39 +298,51 @@ export default {
             this.onFetchData();
         },
         async onDropColumn(payload) {
-            try {
-                const columnCode = payload.split('/')[1];
+            const columnCode = payload.split('/')[1];
 
-                insertCookieAtIndex({
-                    cookies: this.$userCookies,
-                    cookieName: `GRID_CONFIG:${this.$route.name}`,
-                    index: 0,
-                    data: columnCode,
-                });
+            insertCookieAtIndex({
+                cookies: this.$userCookies,
+                cookieName: `GRID_CONFIG:${this.$route.name}`,
+                index: 0,
+                data: columnCode,
+            });
 
-                await this.onFetchData();
+            await getGridData({
+                $route: this.$route,
+                $cookies: this.$userCookies,
+                $axios: this.$axios,
+                path: 'products',
+                params: getParams({
+                    $route: this.$route,
+                    $cookies: this.$userCookies,
+                    defaultColumns: 'esa_index,esa_sku,_links,esa_default_image,esa_default_label',
+                }),
+                onSuccess: (data) => {
+                    this.onFetchDataSuccess(data);
 
-                const column = this.columns.find(({
-                    id,
-                }) => id === columnCode);
+                    const column = this.columns.find(({
+                        id,
+                    }) => id === columnCode);
 
-                if (column && column.element_id) {
-                    this.setDisabledScopeElement({
-                        disabledElement: getDisabledElement({
-                            languageCode: column.language,
-                            elementId: column.element_id,
-                            disabledElements: this.disabledElements[this.scope],
-                        }),
-                        scope: this.scope,
+                    if (column && column.element_id) {
+                        this.setDisabledScopeElement({
+                            disabledElement: getDisabledElement({
+                                languageCode: column.language,
+                                elementId: column.element_id,
+                                disabledElements: this.disabledElements[this.scope],
+                            }),
+                            scope: this.scope,
+                        });
+                    }
+                },
+                onError: () => {
+                    removeCookieAtIndex({
+                        cookies: this.$userCookies,
+                        cookieName: `GRID_CONFIG:${this.$route.name}`,
+                        index: 0,
                     });
-                }
-            } catch {
-                removeCookieAtIndex({
-                    cookies: this.$userCookies,
-                    cookieName: `GRID_CONFIG:${this.$route.name}`,
-                    index: 0,
-                });
-            }
+                },
+            });
         },
         onSwapColumns({
             from,

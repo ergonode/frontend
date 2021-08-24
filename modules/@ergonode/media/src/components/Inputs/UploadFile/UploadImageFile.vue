@@ -5,6 +5,7 @@
 <template>
     <InputSolidStyle
         :size="size"
+        :border="border"
         :height="height"
         :disabled="disabled">
         <template #activator>
@@ -171,6 +172,13 @@ export default {
          * Determines if the image is able to download
          */
         downloadable: {
+            type: Boolean,
+            default: true,
+        },
+        /**
+         * Determines if the component has border
+         */
+        border: {
             type: Boolean,
             default: true,
         },

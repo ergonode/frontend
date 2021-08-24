@@ -11,6 +11,7 @@
                     height="181px"
                     :disabled="disabled"
                     :size="smallSize"
+                    :border="false"
                     :multiple="true" />
             </GridImageEditContentCell>
         </GridSelectEditContentCell>
