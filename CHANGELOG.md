@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## CHANGELOG FOR v1.0.2
+- bugfix [#1038](https://https://github.com/ergonode/frontend/pull/1038) Advanced filter date type an empty record option (derpdead)
+
 ## CHANGELOG FOR v1.0.1
 - bugfix [#853](https://github.com/ergonode/frontend/pull/853) Polish interface translations improvement (derpdead)
 - bugfix [#857](https://github.com/ergonode/frontend/pull/857) Add a default property value for method updateRole (bleto)
