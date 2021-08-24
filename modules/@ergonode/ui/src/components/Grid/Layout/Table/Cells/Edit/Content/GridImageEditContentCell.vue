@@ -16,6 +16,9 @@ export default {
 
 <style lang="scss" scoped>
     .image-edit-content-cell {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_6_DP;
     }
