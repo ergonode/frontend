@@ -318,7 +318,7 @@ export default {
                     defaultColumns: 'esa_index,esa_sku,_links,esa_default_image,esa_default_label',
                 }),
                 onSuccess: (data) => {
-                    this.onFetchData(data);
+                    this.onFetchDataSuccess(data);
 
                     const column = this.columns.find(({
                         id,
