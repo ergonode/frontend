@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <li :class="['upload-file-list-element', { 'upload-file-list-element--error': isError }]">
+    <li :class="classes">
         <div class="horizontal-wrapper">
             <div class="vertical-wrapper">
                 <span
@@ -66,6 +66,14 @@ export default {
         },
     },
     computed: {
+        classes() {
+            return [
+                'upload-file-list-element',
+                {
+                    'upload-file-list-element--error': this.isError,
+                },
+            ];
+        },
         greenColor() {
             return GREEN;
         },
@@ -109,10 +117,13 @@ export default {
 
         display: flex;
         flex-direction: column;
+        overflow: hidden;
 
         &__file-name {
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_12_16;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
 
         &__file-size {
@@ -140,6 +151,8 @@ export default {
 
     .vertical-wrapper {
         display: flex;
+        flex: 1;
         flex-direction: column;
+        width: 0;
     }
 </style>
