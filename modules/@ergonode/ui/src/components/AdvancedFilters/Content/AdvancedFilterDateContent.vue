@@ -69,8 +69,23 @@ export default {
         },
     },
     methods: {
-        onValueChange(payload) {
-            this.$emit('input', payload);
+        onValueChange({
+            from,
+            to,
+        }) {
+            if (from !== this.parsedDate.from) {
+                this.$emit('input', {
+                    key: FILTER_OPERATOR.GREATER_OR_EQUAL,
+                    value: from,
+                });
+            }
+
+            if (to !== this.parsedDate.to) {
+                this.$emit('input', {
+                    key: FILTER_OPERATOR.SMALLER_OR_EQUAL,
+                    value: to,
+                });
+            }
         },
         onEmptyRecordChange(value) {
             this.$emit('input', {

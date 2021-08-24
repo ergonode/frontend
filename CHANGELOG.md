@@ -5,6 +5,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## CHANGELOG FOR v1.1.x
 
+#### 1.1.3
+- bugfix [#1039](https://https://github.com/ergonode/frontend/pull/1039) Advanced filter date type an empty record option (derpdead)
+
 #### 1.1.2
  - hotfix [#1014](https://github.com/ergonode/frontend/issues/1014) Workflow - wrong modules relations (bleto)
 
