@@ -108,7 +108,7 @@
     "jest-transform-stub": "^2.0.0",
     "jsdom": "^17.0.0",
     "lerna": "^4.0.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^5.0.0",
     "pm2": "^5.1.1",
     "sass-loader": "^10.2.0",
     "stylelint": "^13.13.1",
