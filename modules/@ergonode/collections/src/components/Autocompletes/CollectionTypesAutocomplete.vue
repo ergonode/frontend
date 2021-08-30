@@ -8,6 +8,7 @@
         :value="value"
         :required="required"
         :searchable="true"
+        :wrap-value="true"
         :multiselect="multiselect"
         :clearable="clearable"
         :label="$t('@Collections.collection.components.CollectionTypesAutocomplete.label')"

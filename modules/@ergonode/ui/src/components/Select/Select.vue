@@ -30,7 +30,8 @@
                             :size="size"
                             :alignment="alignment"
                             :disabled="disabled"
-                            :value="multiselect ? value.join(', ') : value">
+                            :value="multiselect ? value.join(', ') : value"
+                            :wrap="wrapValue">
                             <template #value>
                                 <slot name="value" />
                             </template>
@@ -231,6 +232,13 @@ export default {
             default: '',
         },
         /**
+         * Wrapping selected values
+         */
+        wrapValue: {
+            type: Boolean,
+            default: false,
+        },
+        /**
          * Determines if the given component is required
          */
         required: {
@@ -297,6 +305,10 @@ export default {
     },
     computed: {
         height() {
+            if (this.wrapValue) {
+                return '';
+            }
+
             return this.size === SIZE.SMALL
                 ? '32px'
                 : '40px';

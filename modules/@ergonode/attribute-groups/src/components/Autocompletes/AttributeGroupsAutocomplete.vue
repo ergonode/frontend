@@ -13,6 +13,7 @@
         :label="$t('@AttributeGroups.attributeGroup.components.AttributeGroupsAutocomplete.groupLabel')"
         :custom-fetch-event="attributeGroupCreatedEventName"
         :error-messages="errorMessages"
+        :wrap-value="true"
         :disabled="disabled"
         href="attributes/groups/autocomplete"
         @input="onValueChange">

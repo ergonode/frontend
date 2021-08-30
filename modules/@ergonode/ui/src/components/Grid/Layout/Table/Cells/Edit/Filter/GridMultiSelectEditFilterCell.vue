@@ -13,6 +13,7 @@
                 :size="smallSize"
                 :clearable="true"
                 :multiselect="true"
+                :wrap-value="true"
                 :options="localOptions"
                 @focus="onFocus"
                 @search="onSearch" />

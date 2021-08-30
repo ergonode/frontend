@@ -12,6 +12,7 @@
                 :size="smallSize"
                 :searchable="true"
                 :clearable="true"
+                :wrap-value="true"
                 :disabled="disabled"
                 :options="localOptions"
                 :error-messages="errorMessages"

@@ -9,6 +9,7 @@
         :required="required"
         :searchable="true"
         :multiselect="multiselect"
+        :wrap-value="true"
         :clearable="clearable"
         :label="$t('@Segments.segment.components.SegmentsAutocomplete.label')"
         :custom-fetch-event="segmentCreatedEventName"
