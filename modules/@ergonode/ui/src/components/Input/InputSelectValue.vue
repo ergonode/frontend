@@ -98,10 +98,6 @@ export default {
             white-space: nowrap;
         }
 
-        &--wrap & > span {
-
-        }
-
         &--left {
             justify-content: flex-start;
         }
