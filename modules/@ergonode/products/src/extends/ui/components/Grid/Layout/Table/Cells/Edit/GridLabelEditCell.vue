@@ -11,6 +11,7 @@
                 :size="smallSize"
                 :disabled="disabled"
                 :clearable="true"
+                :wrap-value="true"
                 :options="options"
                 :error-messages="errorMessages"
                 @focus="onFocus">

@@ -8,6 +8,7 @@
         :value="value"
         :required="required"
         :searchable="true"
+        :wrap-value="true"
         :multiselect="multiselect"
         :clearable="clearable"
         :label="$t('@Templates.productTemplate.components.ProductTemplateAutocomplete.label')"

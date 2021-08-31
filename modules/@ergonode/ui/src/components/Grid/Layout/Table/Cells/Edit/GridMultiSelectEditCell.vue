@@ -14,6 +14,7 @@
                 :clearable="true"
                 :disabled="disabled"
                 :multiselect="true"
+                :wrap-value="true"
                 :options="localOptions"
                 :error-messages="errorMessages"
                 @focus="onFocus"

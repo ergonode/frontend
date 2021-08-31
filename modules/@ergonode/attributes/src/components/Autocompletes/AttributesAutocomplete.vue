@@ -12,6 +12,7 @@
         :multiselect="multiselect"
         :clearable="clearable"
         :label="label"
+        :wrap-value="true"
         :custom-fetch-event="attributeCreatedEventName"
         :error-messages="errorMessages"
         :disabled="disabled"
