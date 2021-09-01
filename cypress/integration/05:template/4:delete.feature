@@ -6,7 +6,7 @@ Feature: DELETE: Template
     Given I open "product-templates" page
 
   @other
-  Scenario: Delete tamplate by grid button - give up
+  Scenario: Delete template by grid button - give up
     When I see "product-templates" page
     * I set "table" view on the grid
     Then On "grid" I can see row with "template_name" value and columns data: "{'0': 'template_name'}"

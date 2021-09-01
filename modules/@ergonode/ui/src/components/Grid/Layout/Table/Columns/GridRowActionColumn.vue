@@ -131,6 +131,11 @@ export default {
             return this.isBasicFilter ? 1 : 0;
         },
     },
+    watch: {
+        actionCellComponents() {
+            console.log('set', this.actionCellComponents);
+        },
+    },
     methods: {
         onRowAction(payload) {
             this.$emit('row-action', payload);
