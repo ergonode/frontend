@@ -27,12 +27,10 @@
                             <h3 class="errors-list__header">
                                 Please review errors below
                             </h3>
-                            <div class="errors-list__links">
-                                <LinkButton
-                                    v-for="(error, index) in presentationErrors"
-                                    :title="error"
-                                    :key="index" />
-                            </div>
+                            <LinkButton
+                                v-for="(error, index) in presentationErrors"
+                                :title="error"
+                                :key="index" />
                         </div>
                     </section>
                     <Divider />
@@ -215,10 +213,6 @@ export default {
             &__header {
                 color: $GRAPHITE_DARK;
                 font: $FONT_SEMI_BOLD_14_20;
-            }
-
-            &__links {
-                display: contents;
             }
         }
     }

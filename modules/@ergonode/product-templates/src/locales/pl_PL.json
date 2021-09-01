@@ -58,7 +58,8 @@
         },
         "ProductTemplateForm": {
           "title": "Opcje",
-          "nameLabel": "Nazwa szablonu"
+          "nameLabel": "Nazwa szablonu",
+          "codeLabel": "Kod szablonu"
         },
         "UpdateTemplateDesignerButton": {
           "successMessage": "Szablon został zaktualizowany"
