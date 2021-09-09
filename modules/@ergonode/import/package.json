@@ -1,6 +1,6 @@
 {
   "name": "@ergonode/import",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Team Ergonode <team@ergonode.com>",
   "description": "Ergonode import module",
   "license": "OSL-3.0",
