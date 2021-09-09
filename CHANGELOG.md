@@ -5,6 +5,8 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## CHANGELOG FOR v1.0.2
 - bugfix [#1038](https://https://github.com/ergonode/frontend/pull/1038) Advanced filter date type an empty record option (derpdead)
+- bugfix [#912](https://https://github.com/ergonode/frontend/pull/912) Include language in batch actions draggable form (bleto)
+- bugfix [#903](https://https://github.com/ergonode/frontend/pull/903) Remove attribute value on form element removal (bleto)
 
 ## CHANGELOG FOR v1.0.1
 - bugfix [#853](https://github.com/ergonode/frontend/pull/853) Polish interface translations improvement (derpdead)

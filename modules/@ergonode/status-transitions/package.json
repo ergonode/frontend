@@ -1,6 +1,6 @@
 {
   "name": "@ergonode/status-transitions",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Team Ergonode <team@ergonode.com>",
   "description": "Ergonode status transitions module",
   "license": "OSL-3.0",
