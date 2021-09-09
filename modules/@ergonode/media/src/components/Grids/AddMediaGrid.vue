@@ -170,6 +170,8 @@ export default {
 
             for (let i = 0; i < this.columns.length; i += 1) {
                 if (this.columns[i].id !== 'type') {
+                    columns.push(this.columns[i]);
+
                     if (i === 3) {
                         columns.push({
                             id: 'esa_attached',
@@ -180,8 +182,6 @@ export default {
                             deletable: false,
                             parameters: [],
                         });
-                    } else {
-                        columns.push(this.columns[i]);
                     }
                 }
             }
