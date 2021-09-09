@@ -13,6 +13,7 @@
         @proceed="onProceed"
         @submit="onSubmit">
         <template #body>
+            <Paragraph :title="$t('@Products.productExtend.components.ProductAttributesBindingForm.paragraphInfo')" />
             <FormListSection
                 :disabled="isDisabled"
                 :add-list-title="$t('@Products.productExtend.components.ProductAttributesBindingForm.listTitle')"

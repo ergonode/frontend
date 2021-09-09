@@ -177,7 +177,7 @@
         },
         "ProductVariantsTab": {
           "placeholderTitle": "Brak atrybutów dowiązujących",
-          "placeholderSubtitle": "Atrybuty dowiązujące są częścią wspólną atrybutów w produkcie, która łączy produkty w warianty produktu."
+          "placeholderSubtitle": "Atrybuty dowiązujące są częścią wspólną atrybutów (typu pola wyboru) w produkcie, która łączy produkty w warianty produktu."
         },
         "AddBindingAttributes": {
           "title": "Dodaj atrybut",
@@ -222,6 +222,7 @@
           "label": "Dowiązujący atrybut"
         },
         "ProductAttributesBindingForm": {
+          "paragraphInfo": "Atrybuty dowiązujące są częścią wspólną atrybutów (typu pola wyboru) w produkcie, która łączy produkty w warianty produktu.",
           "listTitle": "DODAJ ATRYBUT DOWIĄZUJĄCY",
           "listTittleTooltip": "Nie ma więcej atrybutów typu pola wyboru"
         },
