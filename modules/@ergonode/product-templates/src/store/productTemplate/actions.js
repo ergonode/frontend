@@ -73,6 +73,7 @@ export default {
 
             const {
                 name,
+                code,
                 elements = [],
             } = template;
 
@@ -85,6 +86,10 @@ export default {
             commit('__SET_STATE', {
                 key: 'title',
                 value: name,
+            });
+            commit('__SET_STATE', {
+                key: 'code',
+                value: code,
             });
             commit('__SET_STATE', {
                 key: 'id',
@@ -136,10 +141,12 @@ export default {
             const {
                 id,
                 title,
+                code,
                 layoutElements,
             } = state;
             let data = {
                 name: title,
+                code,
                 elements: getMappedLayoutElementsForAPIUpdate(layoutElements),
             };
 
@@ -289,9 +296,11 @@ export default {
         try {
             const {
                 title,
+                code,
             } = state;
             let data = {
                 name: title,
+                code,
             };
 
             // EXTENDED BEFORE METHOD

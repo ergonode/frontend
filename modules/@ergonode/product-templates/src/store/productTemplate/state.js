@@ -5,6 +5,7 @@
 export default () => ({
     layoutElements: [],
     title: '',
+    code: '',
     id: '',
     types: [],
 });
