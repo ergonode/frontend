@@ -6,8 +6,9 @@
     <ToolBarSelectButton>
         <template #input>
             <IconBell :fill-color="whiteColor" />
+            <NotificationWarningBadge v-if="isWaitingForDecision" />
             <NotificationBadge
-                v-if="unread > 0"
+                v-else-if="unread > 0"
                 :number="unread" />
         </template>
         <template #dropdown="{ visible }">
@@ -19,6 +20,8 @@
 </template>
 
 <script>
+import NotificationWarningBadge
+    from '@Notifications/components/Badges/NotificationWarningBadge/NotificationWarningBadge';
 import IconBell from '@Notifications/components/Icons/IconBell';
 import NotificationList from '@Notifications/components/NotificationList/NotificationList';
 import {
@@ -31,12 +34,14 @@ import {
 export default {
     name: 'ToolBarNotificationButton',
     components: {
+        NotificationWarningBadge,
         NotificationList,
         IconBell,
     },
     computed: {
         ...mapState('notification', [
             'unread',
+            'isWaitingForDecision',
         ]),
         whiteColor() {
             return WHITE;

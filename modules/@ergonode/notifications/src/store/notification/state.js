@@ -15,4 +15,5 @@ export default () => ({
     processingNotifications: [],
     requestTimeInterval: 1000,
     requestTimeout: null,
+    isWaitingForDecision: false,
 });
