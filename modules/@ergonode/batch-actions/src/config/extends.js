@@ -3,11 +3,11 @@
  * See LICENSE for license details.
  */
 import {
-    Components,
-} from '@BatchActions/config/imports';
-import {
     getBatchActionStatuses,
 } from '@BatchActions/services';
+import {
+    capitalizeAndConcatenationArray,
+} from '@Core/models/stringWrapper';
 import {
     ACTION_CENTER_SECTIONS,
     AXIOS_CANCEL_TOKEN_PROCESSING_NOTIFICATION_KEY,
@@ -35,20 +35,29 @@ export default {
             });
 
             const notifications = [];
+            const extendedComponents = $this.$getExtendSlot('@BatchActions/extends/notification/components/Notifications');
 
             batchActionStatuses.forEach((notification) => {
                 const {
                     status,
+                    name,
                 } = notification;
 
-                if (status === 'PRECESSED') {
+                const extendedKey = capitalizeAndConcatenationArray([
+                    ...name.split('_'),
+                    status,
+                ]);
+
+                if (extendedComponents[extendedKey]) {
                     notifications.push({
                         ...notification,
                         createdAt: notification.started_at,
                         readAt: false,
-                        message: `${$this.app.i18n.t('@BatchActions.batchActionExtend.message')} "${notification.name}"`,
+                        message: $this.app.i18n.t('@BatchActions.batchActionExtend.message', {
+                            info: notification.name,
+                        }),
                         section: ACTION_CENTER_SECTIONS.PROCESSING,
-                        component: Components.NotificationListBatchActionsProcessingItem,
+                        component: extendedComponents[extendedKey],
                     });
                 }
             });

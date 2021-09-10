@@ -8,7 +8,7 @@
       }
     },
     "batchActionExtend": {
-      "message": "Processing"
+      "message": "Processing {info}"
     }
   }
 }

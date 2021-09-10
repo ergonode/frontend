@@ -16,6 +16,9 @@ export default {
                 props: {},
             },
         ],
+        '@BatchActions/extends/notification/components/Notifications': {
+            ProductEditPrecessed: Components.NotificationListBatchActionsProcessingItem,
+        },
         '@Notifications/components/NotificationList/Item': {
             BatchActionEnded: Components.NotificationListBatchActionEndedItem,
         },

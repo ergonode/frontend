@@ -13,7 +13,7 @@
         <Fab
             data-cy="modal-close"
             :theme="secondaryTheme"
-            @click.native="onClose">
+            @click.native.prevent.stop="onClose">
             <template #icon="{ color }">
                 <IconClose :fill-color="color" />
             </template>
