@@ -10,6 +10,7 @@ import {
 } from '@Notifications/config/imports';
 import {
     ACTION_CENTER_SECTIONS,
+    MAX_NOTIFICATIONS_INTERVAL,
 } from '@Notifications/defaults';
 import {
     check,
@@ -25,7 +26,6 @@ import {
 export default {
     async checkUnreadNotifications({
         commit,
-        dispatch,
     }, {
         onSuccess = () => {},
         onError = () => {},
@@ -36,9 +36,6 @@ export default {
             } = await check({
                 $axios: this.app.$axios,
             });
-
-            dispatch('increaseRequestTimeInterval');
-            dispatch('setRequestTimeout');
 
             commit('__SET_STATE', {
                 key: 'unread',
@@ -201,16 +198,10 @@ export default {
         const {
             requestTimeInterval,
         } = state;
-        const fiveMinutesInMs = 300000;
-        const isGreaterThanFiveMinutes = requestTimeInterval === fiveMinutesInMs
-            || requestTimeInterval * 2 > fiveMinutesInMs;
-        const updatedInterval = isGreaterThanFiveMinutes
-            ? fiveMinutesInMs
-            : requestTimeInterval * 2;
 
         commit('__SET_STATE', {
             key: 'requestTimeInterval',
-            value: updatedInterval,
+            value: Math.min(MAX_NOTIFICATIONS_INTERVAL, requestTimeInterval * 2),
         });
     },
     setRequestTimeout({
@@ -218,8 +209,16 @@ export default {
     }) {
         dispatch('invalidateRequestTimeout');
 
-        const timeout = setTimeout(() => {
-            dispatch('checkUnreadNotifications', {});
+        const timeout = setTimeout(async () => {
+            await Promise.all([
+                this.$getExtendMethod('@Notifications/store/notification/action/setRequestTimeout', {
+                    $this: this,
+                }),
+                dispatch('checkUnreadNotifications', {}),
+            ]);
+
+            dispatch('increaseRequestTimeInterval');
+            dispatch('setRequestTimeout');
         }, state.requestTimeInterval);
 
         commit('__SET_STATE', {
@@ -231,6 +230,7 @@ export default {
         commit, state,
     }) {
         clearTimeout(state.requestTimeout);
+
         commit('__SET_STATE', {
             key: 'requestTimeout',
             value: null,

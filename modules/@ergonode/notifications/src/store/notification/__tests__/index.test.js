@@ -7,6 +7,7 @@ import {
 } from '@Notifications/config/imports';
 import {
     ACTION_CENTER_SECTIONS,
+    MAX_NOTIFICATIONS_INTERVAL,
 } from '@Notifications/defaults';
 import axios from 'axios';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -138,29 +139,27 @@ describe('Notifications', () => {
             });
             expect(store.state.requestTimeInterval).toBe(4000);
 
-            const fiveMinutesInMs = 300000;
-
             commit('__SET_STATE', {
                 key: 'requestTimeInterval',
-                value: fiveMinutesInMs,
+                value: MAX_NOTIFICATIONS_INTERVAL,
             });
 
             testedAction({
                 commit,
                 state: store.state,
             });
-            expect(store.state.requestTimeInterval).toBe(fiveMinutesInMs);
+            expect(store.state.requestTimeInterval).toBe(MAX_NOTIFICATIONS_INTERVAL);
 
             commit('__SET_STATE', {
                 key: 'requestTimeInterval',
-                value: fiveMinutesInMs - 1,
+                value: MAX_NOTIFICATIONS_INTERVAL - 1,
             });
 
             testedAction({
                 commit,
                 state: store.state,
             });
-            expect(store.state.requestTimeInterval).toBe(fiveMinutesInMs);
+            expect(store.state.requestTimeInterval).toBe(MAX_NOTIFICATIONS_INTERVAL);
         });
 
         it('Setting up request timeout', async () => {
