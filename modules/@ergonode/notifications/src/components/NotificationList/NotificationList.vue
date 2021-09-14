@@ -55,7 +55,7 @@ import NotificationListExpandingSection
 import NotificationListSection from '@Notifications/components/NotificationList/Section/NotificationListSection';
 import {
     AXIOS_CANCEL_TOKEN_PROCESSING_NOTIFICATION_KEY,
-    ONE_SECOND_IN_MS,
+    MIN_NOTIFICATIONS_INTERVAL,
 } from '@Notifications/defaults';
 import {
     mapActions,
@@ -140,7 +140,7 @@ export default {
                     });
                     this.__setState({
                         key: 'requestTimeInterval',
-                        value: ONE_SECOND_IN_MS,
+                        value: MIN_NOTIFICATIONS_INTERVAL,
                     });
 
                     this.$clearCancelTokens([
@@ -185,7 +185,7 @@ export default {
                 onSuccess: () => {
                     this.timeout = setTimeout(() => {
                         this.requestProcessingNotifications();
-                    }, ONE_SECOND_IN_MS);
+                    }, MIN_NOTIFICATIONS_INTERVAL);
                 },
             });
         },

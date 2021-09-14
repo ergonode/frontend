@@ -6,7 +6,7 @@ import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
 import {
-    ONE_SECOND_IN_MS,
+    MIN_NOTIFICATIONS_INTERVAL,
 } from '@Notifications/defaults';
 
 export default () => ({
@@ -16,7 +16,7 @@ export default () => ({
     unread: 0,
     notifications: [],
     processingNotifications: [],
-    requestTimeInterval: ONE_SECOND_IN_MS,
+    requestTimeInterval: MIN_NOTIFICATIONS_INTERVAL,
     requestTimeout: null,
     isWaitingForDecision: false,
 });

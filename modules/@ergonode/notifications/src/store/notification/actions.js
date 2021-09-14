@@ -10,7 +10,7 @@ import {
 } from '@Notifications/config/imports';
 import {
     ACTION_CENTER_SECTIONS,
-    THIRTY_SECONDS_IN_MS,
+    MAX_NOTIFICATIONS_INTERVAL,
 } from '@Notifications/defaults';
 import {
     check,
@@ -201,7 +201,7 @@ export default {
 
         commit('__SET_STATE', {
             key: 'requestTimeInterval',
-            value: Math.min(THIRTY_SECONDS_IN_MS, requestTimeInterval * 2),
+            value: Math.min(MAX_NOTIFICATIONS_INTERVAL, requestTimeInterval * 2),
         });
     },
     setRequestTimeout({

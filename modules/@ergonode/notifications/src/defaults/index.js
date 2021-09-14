@@ -3,9 +3,9 @@
  * See LICENSE for license details.
  */
 
-export const THIRTY_SECONDS_IN_MS = 30000;
+export const MAX_NOTIFICATIONS_INTERVAL = 30000;
 
-export const ONE_SECOND_IN_MS = 1000;
+export const MIN_NOTIFICATIONS_INTERVAL = 1000;
 
 export const ACTION_CENTER_SECTIONS = {
     PROCESSING: 'PROCESSING',
