@@ -64,5 +64,17 @@ export default {
 
             return notifications;
         },
+        '@Notifications/store/notification/action/setRequestTimeout': async ({
+            $this,
+        }) => {
+            const batchActionStatuses = await getBatchActionStatuses({
+                $axios: $this.app.$axios,
+            });
+
+            $this.app.store.dispatch('notification/__setState', {
+                key: 'isWaitingForDecision',
+                value: batchActionStatuses.some(action => action.status === 'WAITING_FOR_DECISION'),
+            });
+        },
     },
 };

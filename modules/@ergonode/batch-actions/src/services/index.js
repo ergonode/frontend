@@ -16,7 +16,7 @@ export const getCount = ({
 
 export const getBatchActionStatuses = ({
     $axios,
-    cancelToken,
+    cancelToken = null,
 }) => $axios.$get('profile/batch-action', {
     cancelToken,
 });

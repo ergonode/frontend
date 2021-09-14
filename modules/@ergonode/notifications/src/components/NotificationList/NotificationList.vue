@@ -55,6 +55,7 @@ import NotificationListExpandingSection
 import NotificationListSection from '@Notifications/components/NotificationList/Section/NotificationListSection';
 import {
     AXIOS_CANCEL_TOKEN_PROCESSING_NOTIFICATION_KEY,
+    ONE_SECOND_IN_MS,
 } from '@Notifications/defaults';
 import {
     mapActions,
@@ -119,6 +120,8 @@ export default {
                 if (this.visible) {
                     this.isFetchingData = true;
 
+                    this.invalidateRequestTimeout();
+
                     await Promise.all([
                         this.checkUnreadNotifications({}),
                         this.getNotifications({}),
@@ -135,17 +138,28 @@ export default {
                         key: 'notifications',
                         value: [],
                     });
+                    this.__setState({
+                        key: 'requestTimeInterval',
+                        value: ONE_SECOND_IN_MS,
+                    });
+
                     this.$clearCancelTokens([
                         AXIOS_CANCEL_TOKEN_PROCESSING_NOTIFICATION_KEY,
                     ]);
+
                     clearTimeout(this.timeout);
+
                     this.timeout = null;
+
+                    this.setRequestTimeout();
                 }
             },
         },
     },
     methods: {
         ...mapActions('notification', [
+            'setRequestTimeout',
+            'invalidateRequestTimeout',
             'getNotifications',
             'getProcessingNotifications',
             'checkUnreadNotifications',
@@ -171,7 +185,7 @@ export default {
                 onSuccess: () => {
                     this.timeout = setTimeout(() => {
                         this.requestProcessingNotifications();
-                    }, 1000);
+                    }, ONE_SECOND_IN_MS);
                 },
             });
         },
