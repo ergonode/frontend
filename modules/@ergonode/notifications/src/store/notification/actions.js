@@ -210,7 +210,7 @@ export default {
         dispatch('invalidateRequestTimeout');
 
         const timeout = setTimeout(async () => {
-            Promise.all([
+            await Promise.all([
                 this.$getExtendMethod('@Notifications/store/notification/action/setRequestTimeout', {
                     $this: this,
                 }),
