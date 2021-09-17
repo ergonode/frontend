@@ -36,3 +36,11 @@ export const end = ({
 }) => $axios.$get(`batch-action/${id}/end`, {
     cancelToken,
 });
+
+export const reprocess = ({
+    $axios,
+    id,
+    cancelToken = null,
+}) => $axios.$get(`batch-action/${id}/reprocess`, {
+    cancelToken,
+});
