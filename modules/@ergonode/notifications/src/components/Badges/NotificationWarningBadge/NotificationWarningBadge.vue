@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <RoundedBadge class="notification-warning-badge">
+    <RoundedBadge :style="styles">
         <IconWarning
             :fill-color="yellowColor"
             :width="16"
@@ -19,18 +19,26 @@ import {
 
 export default {
     name: 'NotificationWarningBadge',
+    props: {
+        floating: {
+            type: Object,
+            default: null,
+        },
+    },
     computed: {
+        styles() {
+            if (!this.floating) {
+                return null;
+            }
+
+            return {
+                position: 'absolute',
+                ...this.floating,
+            };
+        },
         yellowColor() {
             return YELLOW;
         },
     },
 };
 </script>
-
-<style lang="scss" scoped>
-.notification-warning-badge {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-}
-</style>
