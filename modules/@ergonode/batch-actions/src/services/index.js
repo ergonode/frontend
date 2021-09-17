@@ -40,7 +40,8 @@ export const end = ({
 export const reprocess = ({
     $axios,
     id,
+    payload,
     cancelToken = null,
-}) => $axios.$get(`batch-action/${id}/reprocess`, {
+}) => $axios.$patch(`batch-action/${id}/reprocess`, payload, {
     cancelToken,
 });
