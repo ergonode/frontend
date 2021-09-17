@@ -45,7 +45,7 @@ export default {
 
                 const extendedKey = capitalizeAndConcatenationArray([
                     ...name.split('_'),
-                    status,
+                    ...status.split('_'),
                 ]);
 
                 if (extendedComponents[extendedKey]) {
