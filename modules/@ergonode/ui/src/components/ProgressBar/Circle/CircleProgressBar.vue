@@ -30,6 +30,7 @@
         <span
             class="circle-progress-bar__title"
             v-text="percentProgress" />
+        <slot />
     </div>
 </template>
 

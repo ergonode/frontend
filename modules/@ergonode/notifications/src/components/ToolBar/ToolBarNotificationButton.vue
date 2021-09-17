@@ -6,7 +6,9 @@
     <ToolBarSelectButton>
         <template #input>
             <IconBell :fill-color="whiteColor" />
-            <NotificationWarningBadge v-if="isWaitingForDecision" />
+            <NotificationWarningBadge
+                v-if="isWaitingForDecision"
+                :floating="{ top: '8px', right: '8px'}" />
             <NotificationBadge
                 v-else-if="unread > 0"
                 :number="unread" />
