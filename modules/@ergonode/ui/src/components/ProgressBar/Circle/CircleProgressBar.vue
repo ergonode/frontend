@@ -2,9 +2,14 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+/*
+* Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+* See LICENSE for license details.
+*/
 <template>
     <div class="circle-progress-bar">
         <svg
+            class="circle-progress-bar__svg"
             :height="size"
             :width="size">
             <circle
@@ -15,8 +20,8 @@
                 :cx="radius"
                 :cy="radius" />
             <circle
-                class="circle-stroke-dasharray"
-                :stroke="greenStrokeColor"
+                class="circle-progress-bar__progress"
+                :stroke="strokeColor"
                 fill="transparent"
                 :stroke-dasharray="strokeDasharray"
                 :style="{ strokeDashoffset }"
@@ -53,13 +58,14 @@ export default {
             type: Number,
             default: 4,
         },
+        strokeColor: {
+            type: String,
+            default: GREEN,
+        },
     },
     computed: {
         whitesmokeStrokeColor() {
             return WHITESMOKE;
-        },
-        greenStrokeColor() {
-            return GREEN;
         },
         percentProgress() {
             return `${Math.floor(this.progress)}%`;
@@ -84,27 +90,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .circle-progress-bar {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+.circle-progress-bar {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-        .circle-stroke-dasharray {
-            transition: 0.35s stroke-dashoffset;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-        }
-
-        &__title {
-            position: absolute;
-            color: $GRAPHITE_DARK;
-            font: $FONT_SEMI_BOLD_12_16;
-        }
-
-        & > svg {
-            paint-order: stroke;
-        }
+    &__progress {
+        transition: 0.35s stroke-dashoffset;
+        transform: rotate(-90deg);
+        transform-origin: 50% 50%;
     }
+
+    &__title {
+        position: absolute;
+        color: $GRAPHITE_DARK;
+        font: $FONT_SEMI_BOLD_12_16;
+    }
+
+    &__svg {
+        paint-order: stroke;
+    }
+}
 </style>

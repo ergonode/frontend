@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import {
-    getBatchActionStatuses,
+    getAll,
 } from '@BatchActions/services';
 import {
     capitalizeAndConcatenationArray,
@@ -29,7 +29,7 @@ export default {
                 ],
             );
 
-            const batchActionStatuses = await getBatchActionStatuses({
+            const batchActions = await getAll({
                 $axios: $this.app.$axios,
                 cancelToken: source.token,
             });
@@ -37,11 +37,11 @@ export default {
             const notifications = [];
             const extendedComponents = $this.$getExtendSlot('@BatchActions/extends/notification/components/Notifications');
 
-            batchActionStatuses.forEach((notification) => {
+            batchActions.forEach((batchAction) => {
                 const {
                     status,
                     name,
-                } = notification;
+                } = batchAction;
 
                 const extendedKey = capitalizeAndConcatenationArray([
                     ...name.split('_'),
@@ -50,11 +50,11 @@ export default {
 
                 if (extendedComponents[extendedKey]) {
                     notifications.push({
-                        ...notification,
-                        createdAt: notification.started_at,
+                        ...batchAction,
+                        createdAt: batchAction.started_at,
                         readAt: false,
                         message: $this.app.i18n.t('@BatchActions.batchActionExtend.message', {
-                            info: notification.name,
+                            info: batchAction.name,
                         }),
                         section: ACTION_CENTER_SECTIONS.PROCESSING,
                         component: extendedComponents[extendedKey],
@@ -67,13 +67,13 @@ export default {
         '@Notifications/store/notification/action/setRequestTimeout': async ({
             $this,
         }) => {
-            const batchActionStatuses = await getBatchActionStatuses({
+            const batchActions = await getAll({
                 $axios: $this.app.$axios,
             });
 
             $this.app.store.dispatch('notification/__setState', {
                 key: 'isWaitingForDecision',
-                value: batchActionStatuses.some(action => action.status === 'WAITING_FOR_DECISION'),
+                value: batchActions.some(batchAction => batchAction.status === 'WAITING_FOR_DECISION'),
             });
         },
     },
