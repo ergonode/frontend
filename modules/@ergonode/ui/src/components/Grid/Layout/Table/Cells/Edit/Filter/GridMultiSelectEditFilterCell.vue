@@ -5,7 +5,7 @@
 <template>
     <GridEditNavigationCell @edit="onEditCell">
         <GridSelectEditContentCell :style="positionStyle">
-            <TranslationSelect
+            <Select
                 v-model="localValue"
                 :search-value="searchValue"
                 :autofocus="true"
@@ -15,6 +15,8 @@
                 :multiselect="true"
                 :wrap-value="true"
                 :options="localOptions"
+                option-key="key"
+                option-value="value"
                 @focus="onFocus"
                 @search="onSearch" />
         </GridSelectEditContentCell>

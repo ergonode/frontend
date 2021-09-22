@@ -5,7 +5,7 @@
 <template>
     <GridEditNavigationCell @edit="onEditCell">
         <GridSelectEditContentCell :style="positionStyle">
-            <TranslationSelect
+            <Select
                 v-model="localValue"
                 :autofocus="true"
                 :size="smallSize"
@@ -14,6 +14,8 @@
                 :wrap-value="true"
                 :options="options"
                 :error-messages="errorMessages"
+                option-key="key"
+                option-value="value"
                 @focus="onFocus">
                 <template #dropdownBody>
                     <Preloader v-if="isFetchingData" />
@@ -45,7 +47,7 @@
                             :title="option.value || `#${option.key}`" />
                     </ListElementDescription>
                 </template>
-            </TranslationSelect>
+            </Select>
         </GridSelectEditContentCell>
     </GridEditNavigationCell>
 </template>

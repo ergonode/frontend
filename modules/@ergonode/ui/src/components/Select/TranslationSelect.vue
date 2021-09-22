@@ -50,6 +50,9 @@
 
 <script>
 
+/**
+ * @deprecated since 1.1.0
+ */
 export default {
     name: 'TranslationSelect',
     inheritAttrs: false,

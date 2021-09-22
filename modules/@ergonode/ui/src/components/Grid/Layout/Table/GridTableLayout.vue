@@ -740,7 +740,10 @@ export default {
                 length: actionsLength,
             } = this.gridActions;
             const requests = this.gridActions.map(action => this.setActionCell(action));
-            const tmp = {};
+            const tmp = this.actionColumns.reduce((prev, curr) => ({
+                ...prev,
+                [curr.id]: true,
+            }), {});
 
             let i = 0;
 

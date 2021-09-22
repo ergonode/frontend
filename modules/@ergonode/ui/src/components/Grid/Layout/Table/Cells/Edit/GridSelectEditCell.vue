@@ -5,7 +5,7 @@
 <template>
     <GridEditNavigationCell @edit="onEditCell">
         <GridSelectEditContentCell :style="positionStyle">
-            <TranslationSelect
+            <Select
                 v-model="localValue"
                 :search-value="searchValue"
                 :autofocus="true"
@@ -16,6 +16,8 @@
                 :disabled="disabled"
                 :options="localOptions"
                 :error-messages="errorMessages"
+                option-key="key"
+                option-value="value"
                 @focus="onFocus"
                 @search="onSearch" />
         </GridSelectEditContentCell>
@@ -109,7 +111,7 @@ export default {
             this.searchValue = value;
 
             this.localOptions = simpleSearch(
-                this.allCategories,
+                this.allOptions,
                 value,
                 [
                     'value',
