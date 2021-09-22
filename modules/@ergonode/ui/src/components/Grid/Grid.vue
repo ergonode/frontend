@@ -10,9 +10,8 @@
         <GridHeader
             v-if="isHeaderVisible"
             :layout="layout"
-            :table-layout-config="tableLayoutConfig"
-            :collection-layout-config="collectionLayoutConfig"
-            :is-collection-layout="isCollectionLayout"
+            :layout-configs="layoutConfigs"
+            :layout-activators="layoutActivators"
             @layout-change="onLayoutChange"
             @apply-settings="onApplySettings">
             <template #prepend>
@@ -42,8 +41,9 @@
                     :is-visible="isDropZoneVisible"
                     @drop="onDropColumn" />
                 <KeepAlive>
-                    <GridTableLayout
-                        v-if="isTableLayout"
+                    <Component
+                        v-if="activeLayout"
+                        :is="activeLayout.layout.component"
                         :scope="scope"
                         :columns="columns"
                         :rows="rows"
@@ -54,7 +54,6 @@
                         :filters="filters"
                         :sort-order="sortOrder"
                         :pagination="pagination"
-                        :row-height="tableLayoutConfig.rowHeight"
                         :extended-components="extendedComponents[gridLayout.TABLE]"
                         :selected-rows="selectedRows"
                         :excluded-from-selection-rows="excludedFromSelectionRows"
@@ -66,6 +65,7 @@
                         :is-basic-filter="isBasicFilter"
                         :is-selected-all="isSelectedAll"
                         :is-action-column="isActionColumn"
+                        v-bind="layoutConfigs[activeLayout.key]"
                         @sort-column="onSortColumn"
                         @filter="onFilterChange"
                         @cell-value="onCellValueChange"
@@ -73,32 +73,6 @@
                         @row-action="onRowAction"
                         @remove-column="onRemoveColumn"
                         @swap-columns="onSwapColumns"
-                        @rows-select="onRowsSelect"
-                        @excluded-rows-select="onExcludedRowsSelect"
-                        @select-all="onSelectAllRows"
-                        @resolved="onResolvedLayout" />
-                    <GridCollectionLayout
-                        v-else
-                        :scope="scope"
-                        :rows="rows"
-                        :row-ids="rowIds"
-                        :collection-cell-binding="collectionCellBinding"
-                        :drafts="drafts"
-                        :disabled-rows="disabledRows"
-                        :columns-number="collectionLayoutConfig.columnsNumber"
-                        :object-fit="collectionLayoutConfig.scaling"
-                        :extended-components="extendedComponents[gridLayout.COLLECTION]"
-                        :selected-rows="selectedRows"
-                        :excluded-from-selection-rows="excludedFromSelectionRows"
-                        :multiselect="multiselect"
-                        :is-selected-all="isSelectedAll"
-                        :is-select-column="isSelectColumn"
-                        :is-editable="isEditable"
-                        :is-prefetching-data="isPrefetchingData"
-                        :is-layout-resolved="isLayoutResolved[layout]"
-                        :is-action-column="isActionColumn"
-                        @row-action="onRowAction"
-                        @cell-value="onCellValueChange"
                         @rows-select="onRowsSelect"
                         @excluded-rows-select="onExcludedRowsSelect"
                         @select-all="onSelectAllRows"
@@ -146,12 +120,17 @@ import {
     DEFAULT_PAGE,
     DRAGGED_ELEMENT,
     GRID_LAYOUT,
-    IMAGE_SCALING,
+    OBJECT_FIT,
     ROW_HEIGHT,
 } from '@Core/defaults/grid';
 import {
     getUUID,
 } from '@Core/models/stringWrapper';
+import GridCollectionLayout from '@UI/components/Grid/Layout/Collection/GridCollectionLayout';
+import GridCollectionLayoutActivator from '@UI/components/Grid/Layout/Collection/GridCollectionLayoutActivator';
+import GridTableLayout from '@UI/components/Grid/Layout/Table/GridTableLayout';
+import GridTableLayoutActivator from '@UI/components/Grid/Layout/Table/GridTableLayoutActivator';
+import deepmerge from 'deepmerge';
 import {
     mapState,
 } from 'vuex';
@@ -331,17 +310,32 @@ export default {
                 [GRID_LAYOUT.COLLECTION]: {},
             }),
         },
+        /**
+         * Custom layout definitions
+         */
+        customLayouts: {
+            type: Array,
+            default: () => [],
+        },
     },
     data() {
-        return {
-            layout: this.defaultLayout,
-            collectionLayoutConfig: {
-                columnsNumber: COLUMNS_NUMBER.FOURTH_COLUMNS.value,
-                scaling: IMAGE_SCALING.FIT_TO_SIZE.value,
-            },
-            tableLayoutConfig: {
+        const layoutConfigs = {
+            [GRID_LAYOUT.TABLE]: {
                 rowHeight: ROW_HEIGHT.SMALL,
             },
+        };
+
+        if (this.isCollectionLayout) {
+            layoutConfigs[GRID_LAYOUT.COLLECTION] = {
+                columnsNumber: COLUMNS_NUMBER.FOURTH_COLUMNS.value,
+                objectFit: OBJECT_FIT.FIT_TO_SIZE.value,
+                collectionCellBinding: this.collectionCellBinding,
+            };
+        }
+
+        return {
+            layout: this.defaultLayout,
+            layoutConfigs,
             selectedRows: {},
             excludedFromSelectionRows: {},
             isSelectedAll: false,
@@ -363,6 +357,49 @@ export default {
                     'grid--border': this.isBorder,
                 },
             ];
+        },
+        layouts() {
+            const layouts = [
+                {
+                    key: GRID_LAYOUT.TABLE,
+                    layout: {
+                        component: GridTableLayout,
+                    },
+                    activator: {
+                        component: GridTableLayoutActivator,
+                        dataCy: 'grid-table-view',
+                    },
+                },
+            ];
+
+            if (this.isCollectionLayout) {
+                layouts.push(
+                    {
+                        key: GRID_LAYOUT.COLLECTION,
+                        layout: {
+                            component: GridCollectionLayout,
+                        },
+                        activator: {
+                            component: GridCollectionLayoutActivator,
+                            dataCy: 'grid-collection-view',
+                        },
+                    },
+                );
+            }
+
+            return [
+                ...layouts,
+                ...this.customLayouts,
+            ];
+        },
+        layoutActivators() {
+            return this.layouts.map(layout => ({
+                key: layout.key,
+                ...layout.activator,
+            }));
+        },
+        activeLayout() {
+            return this.layouts.find(layout => layout.key === this.layout);
         },
         gridLayout() {
             return GRID_LAYOUT;
@@ -474,12 +511,8 @@ export default {
             this.selectedRows = {};
             this.excludedFromSelectionRows = {};
         },
-        onApplySettings({
-            tableConfig,
-            collectionConfig,
-        }) {
-            this.tableLayoutConfig = tableConfig;
-            this.collectionLayoutConfig = collectionConfig;
+        onApplySettings(layoutConfigs) {
+            this.layoutConfigs = deepmerge(this.layoutConfigs, layoutConfigs);
         },
         onLayoutChange(layout) {
             this.layout = layout;
