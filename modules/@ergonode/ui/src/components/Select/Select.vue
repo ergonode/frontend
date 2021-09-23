@@ -30,7 +30,7 @@
                             :size="size"
                             :alignment="alignment"
                             :disabled="disabled"
-                            :value="multiselect ? value.join(', ') : value"
+                            :value="presentingValue"
                             :wrap="wrapValue">
                             <template #value>
                                 <slot name="value" />
@@ -80,6 +80,8 @@
                         :searchable="searchable"
                         :options="options"
                         :search-value="searchValue"
+                        :option-key="optionKey"
+                        :option-value="optionValue"
                         :is-visible="isFocused"
                         @dismiss="onDismiss"
                         @clear="onClear"
@@ -288,6 +290,20 @@ export default {
             default: '',
         },
         /**
+         * The key of the option
+         */
+        optionKey: {
+            type: String,
+            default: '',
+        },
+        /**
+         * The key of the value
+         */
+        optionValue: {
+            type: String,
+            default: '',
+        },
+        /**
          * Unique identifier for cypress
          */
         dataCy: {
@@ -304,6 +320,25 @@ export default {
         };
     },
     computed: {
+        presentingValue() {
+            if (!this.value) {
+                return '';
+            }
+
+            let value = [
+                this.value,
+            ];
+
+            if (this.multiselect) {
+                value = this.value;
+            }
+
+            if (this.optionValue) {
+                return value.map(item => item[this.optionValue]).join(', ');
+            }
+
+            return value.join(', ');
+        },
         height() {
             if (this.wrapValue) {
                 return '';

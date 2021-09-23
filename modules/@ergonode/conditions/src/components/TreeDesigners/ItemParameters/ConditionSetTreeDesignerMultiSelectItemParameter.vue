@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <TranslationSelect
+    <Select
         :value="value"
         :required="true"
         :multiselect="true"
@@ -13,6 +13,8 @@
         :disabled="disabled"
         :options="options"
         :error-messages="errorMessages"
+        option-key="key"
+        option-value="value"
         @input="onValueChange" />
 </template>
 

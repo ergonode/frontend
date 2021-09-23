@@ -16,7 +16,7 @@
         @submit="onSubmit">
         <template #body>
             <FormSection>
-                <TranslationSelect
+                <Select
                     :data-cy="dataCyGenerator(sourceFieldKey)"
                     :value="transition.source"
                     :required="true"
@@ -24,8 +24,10 @@
                     :options="sourceOptions"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errors[sourceFieldKey]"
+                    option-key="key"
+                    option-value="value"
                     @input="onSourceValueChange" />
-                <TranslationSelect
+                <Select
                     :data-cy="dataCyGenerator(destinationFieldKey)"
                     :value="transition.destination"
                     :required="true"
@@ -33,6 +35,8 @@
                     :options="destinationOptions"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errors[destinationFieldKey]"
+                    option-key="key"
+                    option-value="value"
                     @input="onDestinationValueChange" />
                 <template v-for="(field, index) in extendedForm">
                     <Component

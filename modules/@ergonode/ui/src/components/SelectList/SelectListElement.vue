@@ -11,7 +11,7 @@
         <slot
             name="option"
             :is-selected="selected">
-            <template v-if="isOptionValid">
+            <template>
                 <ListElementAction
                     v-if="multiselect"
                     :size="size">
@@ -21,8 +21,9 @@
                 </ListElementAction>
                 <ListElementDescription>
                     <ListElementTitle
+                        :hint="value.hint"
                         :size="size"
-                        :title="value" />
+                        :title="presentingValue" />
                 </ListElementDescription>
             </template>
         </slot>
@@ -33,9 +34,6 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import {
-    isObject,
-} from '@Core/models/objectWrapper';
 
 export default {
     name: 'SelectListElement',
@@ -83,15 +81,22 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * The key of the value
+         */
+        optionValue: {
+            type: String,
+            default: '',
+        },
     },
     computed: {
-        isOptionValid() {
-            return !isObject(this.value);
+        presentingValue() {
+            return this.value[this.optionValue] || this.value;
         },
     },
     methods: {
         onSelectValue(event) {
-            if (this.isOptionValid || (!this.isOptionValid && !this.value.disabled)) {
+            if (!this.value.disabled) {
                 this.$emit('input', this.index);
             } else {
                 event.stopPropagation();

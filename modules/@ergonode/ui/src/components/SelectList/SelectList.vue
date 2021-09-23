@@ -45,7 +45,8 @@
                 :size="size"
                 :value="item"
                 :multiselect="multiselect"
-                :selected="isItemSelected(index)"
+                :option-value="optionValue"
+                :selected="selectedItems[item[optionKey] || item]"
                 @input="onValueChange">
                 <template #option="{ isSelected }">
                     <slot
@@ -128,15 +129,46 @@ export default {
             type: Boolean,
             default: false,
         },
-    },
-    data() {
-        return {
-            selectedItems: {},
-        };
+        /**
+         * The key of the option
+         */
+        optionKey: {
+            type: String,
+            default: '',
+        },
+        /**
+         * The key of the value
+         */
+        optionValue: {
+            type: String,
+            default: '',
+        },
     },
     computed: {
-        stringifiedItems() {
-            return this.items.map(option => JSON.stringify(option));
+        selectedItems() {
+            if (!this.value) {
+                return {};
+            }
+
+            let value = [
+                this.value,
+            ];
+
+            if (this.multiselect) {
+                value = this.value;
+            }
+
+            if (this.optionKey) {
+                return value.reduce((prev, curr) => ({
+                    ...prev,
+                    [curr[this.optionKey]]: true,
+                }), {});
+            }
+
+            return value.reduce((prev, curr) => ({
+                ...prev,
+                [curr]: true,
+            }), {});
         },
         isAnyItem() {
             return this.items.length > 0;
@@ -154,45 +186,29 @@ export default {
             return this.isAnyItem || this.isAnySearchPhrase;
         },
     },
-    watch: {
-        value: {
-            immediate: true,
-            handler() {
-                let selectedItems = {};
-
-                if (Array.isArray(this.value) && this.value.length) {
-                    this.value.forEach((option) => {
-                        selectedItems[JSON.stringify(option)] = option;
-                    });
-                } else if (!Array.isArray(this.value) && (this.value || this.value === 0)) {
-                    selectedItems = {
-                        [JSON.stringify(this.value)]: this.value,
-                    };
-                }
-
-                this.selectedItems = selectedItems;
-            },
-        },
-    },
     methods: {
-        isItemSelected(index) {
-            return typeof this.selectedItems[this.stringifiedItems[index]] !== 'undefined';
-        },
         onValueChange(index) {
             const value = this.items[index];
 
             if (this.multiselect) {
-                const selectedItems = {
-                    ...this.selectedItems,
-                };
+                const isSelected = this.optionKey
+                    ? this.selectedItems[value[this.optionKey]]
+                    : this.selectedItems[value];
 
-                if (this.isItemSelected(index)) {
-                    delete selectedItems[this.stringifiedItems[index]];
+                if (isSelected) {
+                    this.$emit('input', this.value.filter((item) => {
+                        if (this.optionKey) {
+                            return item[this.optionKey] !== value[this.optionKey];
+                        }
+
+                        return item !== value;
+                    }));
                 } else {
-                    selectedItems[this.stringifiedItems[index]] = value;
+                    this.$emit('input', [
+                        ...this.value,
+                        value,
+                    ]);
                 }
-
-                this.$emit('input', Object.values(selectedItems));
             } else {
                 this.$emit('input', value);
             }

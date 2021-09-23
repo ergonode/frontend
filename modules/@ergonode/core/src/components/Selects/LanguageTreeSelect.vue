@@ -8,6 +8,8 @@
         :label="label"
         :size="smallSize"
         :options="languageOptions"
+        option-key="key"
+        option-value="value"
         @input="onSelect" />
 </template>
 

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <TranslationSelect
+    <Select
         :value="languagesValue"
         :label="label"
         :size="size"
@@ -16,6 +16,8 @@
         :options="languageOptions"
         :error-messages="errorMessages"
         :data-cy="dataCy"
+        option-key="key"
+        option-value="value"
         @input="onSelect"
         @search="onDebounceSearch" />
 </template>
@@ -126,7 +128,7 @@ export default {
                 .map(language => ({
                     id: language.id,
                     key: language.code,
-                    value: language.name,
+                    value: language.name || `#${language.key}`,
                 }))
                 .filter(option => (
                     option.value || option.key
