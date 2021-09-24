@@ -37,7 +37,7 @@ export const ROW_HEIGHT = {
     LARGE: 96,
 };
 
-export const IMAGE_SCALING = {
+export const OBJECT_FIT = {
     FIT_TO_SIZE: {
         value: 'contain',
         description: 'Fit to size',
