@@ -12,6 +12,7 @@
         :filters="filterValues"
         :pagination="pagination"
         :extended-components="extendedGridComponents"
+        :layout="layout"
         :is-prefetching-data="isPrefetchingData"
         :is-basic-filter="true"
         :is-border="true"
@@ -23,6 +24,7 @@
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
         @remove-all-filters="onRemoveAllFilters"
+        @layout="onLayoutChange"
         v-bind="extendedProps['grid']">
         <template #actionsHeader="actionsHeaderProps">
             <Component
@@ -61,6 +63,7 @@ import {
 } from '@Core/defaults/alerts';
 import {
     DEFAULT_PAGE,
+    GRID_LAYOUT,
 } from '@Core/defaults/grid';
 import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
@@ -118,6 +121,7 @@ export default {
             filterValues,
             pagination,
             sortOrder,
+            layout: GRID_LAYOUT.TABLE,
             rows: [],
             columns: [],
             filtered: 0,
@@ -165,6 +169,9 @@ export default {
         document.documentElement.removeEventListener(ROLE_CREATED_EVENT_NAME, this.onRoleCreated);
     },
     methods: {
+        onLayoutChange(layout) {
+            this.layout = layout;
+        },
         onRoleCreated() {
             this.onFetchData();
         },

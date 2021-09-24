@@ -11,9 +11,11 @@
         </template>
         <template #grid>
             <ProductsGrid
+                :layout="layout"
                 :scope="scope"
                 :errors="errors"
-                :change-values="changeValues" />
+                :change-values="changeValues"
+                @layout="onLayoutChange" />
         </template>
     </GridViewTemplate>
 </template>
@@ -21,6 +23,7 @@
 <script>
 import {
     DEFAULT_PAGE,
+    GRID_LAYOUT,
 } from '@Core/defaults/grid';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import {
@@ -41,6 +44,7 @@ export default {
     ],
     data() {
         return {
+            layout: GRID_LAYOUT.TABLE,
             filters: getMappedFilters(this.$route.query.advancedFilter),
             verticalTabs: [],
         };
@@ -55,17 +59,25 @@ export default {
 
             this.setVerticalTabs();
         },
+        layout() {
+            this.setVerticalTabs();
+        },
     },
     mounted() {
         this.setVerticalTabs();
     },
     methods: {
+        onLayoutChange(layout) {
+            this.layout = layout;
+        },
         async setVerticalTabs() {
             const extendedVerticalTabs = await this.$getExtendMethod('@Products/components/Tabs/ProductCatalogTab/verticalTabs', {
                 $this: this,
             });
 
-            this.verticalTabs = [].concat(...extendedVerticalTabs);
+            this.verticalTabs = []
+                .concat(...extendedVerticalTabs)
+                .filter(tab => typeof tab.layouts === 'undefined' || tab.layouts.some(layout => layout === this.layout));
         },
         onFiltersChange(filters) {
             this.filters = filters;

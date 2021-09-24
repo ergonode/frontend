@@ -10,13 +10,15 @@
                 <slot name="actions" />
             </template>
             <template #configuration>
-                <Component
-                    v-for="activator in layoutActivators"
-                    :key="activator.key"
-                    :is="activator.component"
-                    :selected="layout === activator.key"
-                    :data-cy="activator.dataCy"
-                    @active="onLayoutActivate" />
+                <template v-if="layoutActivators.length > 1">
+                    <Component
+                        v-for="activator in layoutActivators"
+                        :key="activator.key"
+                        :is="activator.component"
+                        :selected="layout === activator.key"
+                        :data-cy="activator.dataCy"
+                        @active="onLayoutActivate" />
+                </template>
                 <Fab
                     :theme="theme.SECONDARY"
                     @click.native="onShowModal">

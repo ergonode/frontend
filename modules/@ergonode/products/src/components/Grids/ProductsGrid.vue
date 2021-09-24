@@ -13,6 +13,7 @@
         :errors="errors"
         :data-count="filtered"
         :pagination="pagination"
+        :layout="layout"
         :collection-cell-binding="collectionCellBinding"
         :extended-components="extendedGridComponents"
         :is-editable="isAllowedToUpdate"
@@ -31,6 +32,7 @@
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @remove-all-filters="onRemoveAllFilters"
+        @layout="onLayoutChange"
         v-bind="extendedProps['grid']">
         <template #actionsHeader="actionsHeaderProps">
             <Component
@@ -155,6 +157,10 @@ export default {
         extendedGridComponentsMixin,
     ],
     props: {
+        layout: {
+            type: String,
+            required: true,
+        },
         scope: {
             type: String,
             default: '',
@@ -294,6 +300,9 @@ export default {
             'setDisabledScopeElement',
             'setDisabledScopeElements',
         ]),
+        onLayoutChange(layout) {
+            this.$emit('layout', layout);
+        },
         onProductCreated() {
             this.onFetchData();
         },
