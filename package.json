@@ -29,6 +29,7 @@
     "info": "./lib/index.js info",
     "modules": "./lib/index.js modules",
     "modules:all": "./lib/index.js modules-all",
+    "modules:relations": "./lib/index.js modules-relations",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "cypress:cc": "cypress cache clear",
