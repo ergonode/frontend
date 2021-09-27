@@ -77,7 +77,7 @@ export default {
 
             this.verticalTabs = []
                 .concat(...extendedVerticalTabs)
-                .filter(tab => tab.layouts?.some(layout => layout === this.layout));
+                .filter(tab => typeof tab.layouts === 'undefined' || tab.layouts.some(layout => layout === this.layout));
         },
         onFiltersChange(filters) {
             this.filters = filters;
