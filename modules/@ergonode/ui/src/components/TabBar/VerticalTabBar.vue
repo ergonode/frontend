@@ -67,6 +67,11 @@ export default {
             return this.isExpanded && this.items.length > 0;
         },
     },
+    watch: {
+        items() {
+            this.selectedTabIndex = 0;
+        },
+    },
     methods: {
         onSelectTabBarItem(index) {
             this.selectedTabIndex = index;

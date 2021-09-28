@@ -210,6 +210,13 @@ export default {
             validator: value => Object.values(GRID_LAYOUT).indexOf(value) !== -1,
         },
         /**
+         * Determines chosen layout of Grid
+         */
+        layout: {
+            type: String,
+            default: GRID_LAYOUT.TABLE,
+        },
+        /**
          * Number of all data
          */
         dataCount: {
@@ -334,7 +341,6 @@ export default {
         }
 
         return {
-            layout: this.defaultLayout,
             layoutConfigs,
             selectedRows: {},
             excludedFromSelectionRows: {},
@@ -515,7 +521,7 @@ export default {
             this.layoutConfigs = deepmerge(this.layoutConfigs, layoutConfigs);
         },
         onLayoutChange(layout) {
-            this.layout = layout;
+            this.$emit('layout', layout);
         },
         onCellValueChange(payload) {
             this.$emit('cell-value', payload);
