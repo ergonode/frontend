@@ -90,7 +90,7 @@
                 </slot>
             </slot>
         </GridBody>
-        <GridFooter v-if="isFooterVisible">
+        <GridFooter v-if="isFooterVisible && activeLayout.isFooterVisible">
             <slot name="footer">
                 <GridPageSelector
                     :value="pagination.itemsPerPage"
@@ -375,6 +375,7 @@ export default {
                         component: GridTableLayoutActivator,
                         dataCy: 'grid-table-view',
                     },
+                    isFooterVisible: true,
                 },
             ];
 
@@ -389,6 +390,7 @@ export default {
                             component: GridCollectionLayoutActivator,
                             dataCy: 'grid-collection-view',
                         },
+                        isFooterVisible: true,
                     },
                 );
             }
