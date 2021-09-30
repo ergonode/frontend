@@ -9,7 +9,7 @@
         :class="classes">
         <GridHeader
             v-if="isHeaderVisible"
-            :layout="layout"
+            :layout="layoutKey"
             :layout-configs="layoutConfigs"
             :layout-activators="layoutActivators"
             @layout-change="onLayoutChange"
@@ -59,7 +59,7 @@
                         :excluded-from-selection-rows="excludedFromSelectionRows"
                         :multiselect="multiselect"
                         :is-prefetching-data="isPrefetchingData"
-                        :is-layout-resolved="isLayoutResolved[layout]"
+                        :is-layout-resolved="isLayoutResolved[layoutKey]"
                         :is-editable="isEditable"
                         :is-select-column="isSelectColumn"
                         :is-basic-filter="isBasicFilter"
@@ -343,6 +343,7 @@ export default {
         return {
             layoutConfigs,
             selectedRows: {},
+            layoutKey: this.layout,
             excludedFromSelectionRows: {},
             isSelectedAll: false,
             isLayoutResolved: {
@@ -407,7 +408,7 @@ export default {
             }));
         },
         activeLayout() {
-            return this.layouts.find(layout => layout.key === this.layout);
+            return this.layouts.find(layout => layout.key === this.layoutKey);
         },
         gridLayout() {
             return GRID_LAYOUT;
@@ -453,7 +454,7 @@ export default {
             );
         },
         isTableLayout() {
-            return this.layout === GRID_LAYOUT.TABLE;
+            return this.layoutKey === GRID_LAYOUT.TABLE;
         },
         isAnyData() {
             return this.dataCount > 0;
@@ -462,14 +463,30 @@ export default {
             return !this.isAnyData
                 && !this.isPrefetchingData
                 && !this.isAnyFilter
-                && this.isLayoutResolved[this.layout];
+                && this.isLayoutResolved[this.layoutKey];
         },
         isFilterPlaceholderVisible() {
             return !this.isAnyData
                 && !this.isPrefetchingData
                 && this.isAnyFilter
-                && this.isLayoutResolved[this.layout];
+                && this.isLayoutResolved[this.layoutKey];
         },
+    },
+    async mounted() {
+        if (this.isHeaderVisible && !this.$route.query.layout) {
+            this.$router.replace({
+                query: {
+                    ...this.$route.query,
+                    layout: this.layoutKey,
+                },
+            });
+        } else if (
+            this.isHeaderVisible
+            && this.$route.query.layout
+            && this.$route.query.layout !== this.layoutKey
+        ) {
+            this.layoutKey = this.$route.query.layout;
+        }
     },
     methods: {
         onResolvedLayout({
@@ -523,6 +540,16 @@ export default {
             this.layoutConfigs = deepmerge(this.layoutConfigs, layoutConfigs);
         },
         onLayoutChange(layout) {
+            if (this.isHeaderVisible) {
+                this.$router.replace({
+                    query: {
+                        ...this.$route.query,
+                        layout,
+                    },
+                });
+            }
+
+            this.layoutKey = layout;
             this.$emit('layout', layout);
         },
         onCellValueChange(payload) {
