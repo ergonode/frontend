@@ -14,6 +14,7 @@
         :data-count="filtered"
         :pagination="pagination"
         :layout="layout"
+        :custom-layouts="customLayouts"
         :collection-cell-binding="collectionCellBinding"
         :extended-components="extendedGridComponents"
         :is-editable="isAllowedToUpdate"
@@ -216,6 +217,7 @@ export default {
             columns: [],
             filtered: 0,
             advancedFilters: [],
+            customLayouts: [],
             isFiltersExpanded: false,
             isPrefetchingData: true,
         };
@@ -276,7 +278,9 @@ export default {
             this.isPrefetchingData = false;
         },
     },
-    mounted() {
+    async mounted() {
+        await this.extendedCustomLayouts();
+
         document.documentElement.addEventListener(
             PRODUCT_CREATED_EVENT_NAME,
             this.onProductCreated,
@@ -305,6 +309,15 @@ export default {
         },
         onProductCreated() {
             this.onFetchData();
+        },
+        async extendedCustomLayouts() {
+            const customLayouts = await this.$getExtendMethod('@Products/components/Grids/ProductsGrid/customLayouts', {
+                $this: this,
+            });
+
+            this.customLayouts = []
+                .concat(...customLayouts)
+                .filter(layout => typeof layout.layout !== 'undefined');
         },
         async onDropColumn(payload) {
             const columnCode = payload.split('/')[1];
