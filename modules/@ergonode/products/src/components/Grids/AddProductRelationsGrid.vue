@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -14,6 +14,7 @@
         :collection-cell-binding="collectionCellBinding"
         :dragging-element-type="relationElementType"
         :extended-components="extendedGridComponents"
+        :layout="layout"
         :is-editable="isAllowedToUpdate"
         :is-prefetching-data="isPrefetchingData"
         :is-select-column="true"
@@ -31,6 +32,7 @@
         @sort-column="onColumnSortChange"
         @remove-all-filters="onRemoveAllFilters"
         @filter="onFilterChange"
+        @layout="onLayoutChange"
         v-bind="extendedProps['grid']">
         <template #actionsHeader="actionsHeaderProps">
             <Component
@@ -110,6 +112,7 @@ import {
 import {
     DEFAULT_GRID_PAGINATION,
     DEFAULT_POST_GRID_FETCH_PARAMS,
+    GRID_LAYOUT,
 } from '@Core/defaults/grid';
 import {
     FILTER_OPERATOR,
@@ -230,6 +233,7 @@ export default {
             searchValue: null,
             isPrefetchingData: true,
             isFiltersExpanded: false,
+            layout: GRID_LAYOUT.TABLE,
             advancedFilters: [],
             columnModels: [],
             rows: [],
@@ -311,6 +315,9 @@ export default {
             'setDisabledScopeElement',
             'setDisabledScopeElements',
         ]),
+        onLayoutChange(layout) {
+            this.layout = layout;
+        },
         onFiltersExpand() {
             this.isFiltersExpanded = !this.isFiltersExpanded;
         },

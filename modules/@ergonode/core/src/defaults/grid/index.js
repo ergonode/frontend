@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 export const ROW_INTERVALS = [
@@ -37,7 +37,7 @@ export const ROW_HEIGHT = {
     LARGE: 96,
 };
 
-export const IMAGE_SCALING = {
+export const OBJECT_FIT = {
     FIT_TO_SIZE: {
         value: 'contain',
         description: 'Fit to size',

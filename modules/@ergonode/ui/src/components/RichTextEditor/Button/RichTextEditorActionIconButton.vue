@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -7,9 +7,12 @@
         :options="options"
         :size="tinySize"
         :dismissible="false"
-        :theme="secondaryTheme">
+        :theme="secondaryTheme"
+        @focus="onFocus">
         <template #icon="{ color }">
-            <IconArrowDropdown :fill-color="color" />
+            <IconArrowDropdown
+                :fill-color="color"
+                :state="arrowIconState" />
         </template>
         <template #option="{ option }">
             <RichTextEditorButton
@@ -21,6 +24,9 @@
 </template>
 
 <script>
+import {
+    ARROW,
+} from '@Core/defaults/icons';
 import {
     SIZE,
     THEME,
@@ -55,12 +61,25 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            isFocused: false,
+        };
+    },
     computed: {
         tinySize() {
             return SIZE.TINY;
         },
         secondaryTheme() {
             return THEME.SECONDARY;
+        },
+        arrowIconState() {
+            return this.isFocused ? ARROW.UP : ARROW.DOWN;
+        },
+    },
+    methods: {
+        onFocus(isFocused) {
+            this.isFocused = isFocused;
         },
     },
 };

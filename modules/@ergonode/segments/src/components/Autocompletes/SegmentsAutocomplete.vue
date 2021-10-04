@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -9,6 +9,7 @@
         :required="required"
         :searchable="true"
         :multiselect="multiselect"
+        :wrap-value="true"
         :clearable="clearable"
         :label="$t('@Segments.segment.components.SegmentsAutocomplete.label')"
         :custom-fetch-event="segmentCreatedEventName"

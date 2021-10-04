@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -14,6 +14,7 @@
         :collection-cell-binding="collectionCellBinding"
         :pagination="pagination"
         :extended-components="extendedGridComponents"
+        :layout="layout"
         :is-editable="isAllowedToUpdate"
         :is-prefetching-data="isPrefetchingData"
         :is-basic-filter="true"
@@ -25,6 +26,7 @@
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
         @remove-all-filters="onRemoveAllFilters"
+        @layout="onLayoutChange"
         v-bind="extendedProps['grid']">
         <template #actionsHeader="actionsHeaderProps">
             <Component
@@ -64,6 +66,7 @@ import {
 } from '@Core/defaults/alerts';
 import {
     DEFAULT_PAGE,
+    GRID_LAYOUT,
 } from '@Core/defaults/grid';
 import {
     FILTER_OPERATOR,
@@ -128,6 +131,7 @@ export default {
             filterValues,
             pagination,
             sortOrder,
+            layout: GRID_LAYOUT.TABLE,
             rows: [],
             columns: [],
             filtered: 0,
@@ -190,6 +194,9 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
+        onLayoutChange(layout) {
+            this.layout = layout;
+        },
         async onProductsAttachmentUpdated() {
             await this.onFetchData();
         },

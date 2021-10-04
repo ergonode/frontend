@@ -1,18 +1,21 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
     <GridEditNavigationCell @edit="onEditCell">
         <GridSelectEditContentCell :style="positionStyle">
-            <TranslationSelect
+            <Select
                 v-model="localValue"
                 :autofocus="true"
                 :size="smallSize"
                 :disabled="disabled"
                 :clearable="true"
+                :wrap-value="true"
                 :options="options"
                 :error-messages="errorMessages"
+                option-key="key"
+                option-value="value"
                 @focus="onFocus">
                 <template #dropdownBody>
                     <Preloader v-if="isFetchingData" />
@@ -44,7 +47,7 @@
                             :title="option.value || `#${option.key}`" />
                     </ListElementDescription>
                 </template>
-            </TranslationSelect>
+            </Select>
         </GridSelectEditContentCell>
     </GridEditNavigationCell>
 </template>

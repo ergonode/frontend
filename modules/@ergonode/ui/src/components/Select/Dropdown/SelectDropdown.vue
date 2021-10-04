@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -17,6 +17,8 @@
                     :size="size"
                     :searchable="searchable"
                     :multiselect="multiselect"
+                    :option-key="optionKey"
+                    :option-value="optionValue"
                     @input="onValueChange"
                     @search="onSearch">
                     <template #item="{ index, item, isSelected }">
@@ -142,6 +144,20 @@ export default {
         // eslint-disable-next-line vue/require-prop-types
         parentReference: {
             required: true,
+        },
+        /**
+         * The key of the option
+         */
+        optionKey: {
+            type: String,
+            default: '',
+        },
+        /**
+         * The key of the value
+         */
+        optionValue: {
+            type: String,
+            default: '',
         },
     },
     computed: {

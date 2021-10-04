@@ -58,7 +58,8 @@
         },
         "ProductTemplateForm": {
           "title": "Options",
-          "nameLabel": "Template name"
+          "nameLabel": "Template name",
+          "codeLabel": "Template code"
         },
         "UpdateTemplateDesignerButton": {
           "successMessage": "Template has been updated"

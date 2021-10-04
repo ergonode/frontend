@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -11,6 +11,8 @@
         :size="smallSize"
         :searchable="!value.isEmptyRecord"
         :multiselect="true"
+        option-key="key"
+        option-value="value"
         @input="onSelectValue"
         @search="onSearch">
         <template #prependHeader>
@@ -21,17 +23,6 @@
         </template>
         <template #body>
             <div v-if="value.isEmptyRecord" />
-        </template>
-        <template #item="{ item, isSelected }">
-            <ListElementAction :size="smallSize">
-                <CheckBox :value="isSelected" />
-            </ListElementAction>
-            <ListElementDescription>
-                <ListElementTitle
-                    :size="smallSize"
-                    :hint="item.value ? `#${item.key} ${languageCode}` : ''"
-                    :title="item.value || `#${item.key}`" />
-            </ListElementDescription>
         </template>
     </SelectList>
 </template>

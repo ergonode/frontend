@@ -1,8 +1,11 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 
+import {
+    GRID_LAYOUT,
+} from '@Core/defaults/grid';
 import {
     Components,
     Icons,
@@ -27,6 +30,10 @@ export default {
                     value: $this.filters,
                     onValueChange: $this.onFiltersChange,
                 },
+                layouts: [
+                    GRID_LAYOUT.COLLECTION,
+                    GRID_LAYOUT.TABLE,
+                ],
             },
         ],
         '@Products/components/Modals/AddProductRelationsModalGrid/verticalTabs': ({

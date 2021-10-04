@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -32,6 +32,7 @@ import {
 import {
     INPUT_TYPE,
 } from '@Core/defaults/theme';
+import RichTextEditorActionIconButton from '@UI/components/RichTextEditor/Button/RichTextEditorActionIconButton';
 import RichTextEditorButton from '@UI/components/RichTextEditor/Button/RichTextEditorButton';
 import {
     EditorMenuBar,
@@ -41,6 +42,7 @@ export default {
     name: 'RichTextEditorMenu',
     components: {
         RichTextEditorButton,
+        RichTextEditorActionIconButton,
         EditorMenuBar,
     },
     props: {

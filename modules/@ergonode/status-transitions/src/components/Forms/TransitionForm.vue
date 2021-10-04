@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -16,21 +16,25 @@
         @submit="onSubmit">
         <template #body>
             <FormSection>
-                <TranslationSelect
+                <Select
                     :value="source"
                     :required="true"
                     :label="$t('@Transitions.transition.components.TransitionForm.fromLabel')"
                     :options="sourceOptions"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errors[sourceFieldKey]"
+                    option-key="key"
+                    option-value="value"
                     @input="setSourceValue" />
-                <TranslationSelect
+                <Select
                     :value="destination"
                     :required="true"
                     :label="$t('@Transitions.transition.components.TransitionForm.toLabel')"
                     :options="destinationOptions"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errors[destinationFieldKey]"
+                    option-key="key"
+                    option-value="value"
                     @input="setDestinationValue" />
                 <template v-for="(field, index) in extendedForm">
                     <Component

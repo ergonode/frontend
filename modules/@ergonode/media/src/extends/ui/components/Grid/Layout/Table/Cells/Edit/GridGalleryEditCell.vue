@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -11,6 +11,7 @@
                     height="181px"
                     :disabled="disabled"
                     :size="smallSize"
+                    :border="false"
                     :multiple="true" />
             </GridImageEditContentCell>
         </GridSelectEditContentCell>

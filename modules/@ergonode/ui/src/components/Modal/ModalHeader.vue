@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -13,7 +13,7 @@
         <Fab
             data-cy="modal-close"
             :theme="secondaryTheme"
-            @click.native="onClose">
+            @click.native.prevent.stop="onClose">
             <template #icon="{ color }">
                 <IconClose :fill-color="color" />
             </template>

@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -666,31 +666,6 @@ export default {
 
             return requests;
         },
-        getActionColumnComponents() {
-            if (!this.isActionColumn) {
-                return [];
-            }
-
-            const requests = [];
-
-            this.actionColumns = this.getActionColumns();
-
-            for (let i = 0; i < this.actionColumns.length; i += 1) {
-                const {
-                    id,
-                } = this.actionColumns[i];
-
-                if (typeof this.actionCellComponents[id] === 'undefined') {
-                    try {
-                        requests.push(this.setActionCell(id));
-                    } catch (e) {
-                        requests.push(this.setDefaultActionCell(id));
-                    }
-                }
-            }
-
-            return requests;
-        },
         setMouseDownEvent(shouldAdd) {
             if (shouldAdd) {
                 this.$refs.gridTableLayout.addEventListener('mousedown', this.onMouseDown);
@@ -756,16 +731,23 @@ export default {
                 ),
             ];
         },
-        getActionColumns() {
+        getActionColumnComponents() {
+            if (!this.isActionColumn) {
+                return [];
+            }
+
             const {
                 length: actionsLength,
             } = this.gridActions;
-            const actionColumns = [];
-            const tmp = {};
+            const requests = this.gridActions.map(action => this.setActionCell(action));
+            const tmp = this.actionColumns.reduce((prev, curr) => ({
+                ...prev,
+                [curr.id]: true,
+            }), {});
 
             let i = 0;
 
-            while (actionColumns.length < actionsLength - 1 && i < this.dataCount) {
+            while (this.actionColumns.length < actionsLength - 1 && i < this.dataCount) {
                 const row = this.rows[i];
 
                 for (let j = 0; j < actionsLength; j += 1) {
@@ -778,9 +760,17 @@ export default {
 
                         if ((action === GRID_ACTION.GET && !tmp[GRID_ACTION.EDIT])
                             || action !== GRID_ACTION.GET) {
-                            actionColumns.push({
+                            this.actionColumns.push({
                                 id: action,
                             });
+
+                            if (typeof this.actionCellComponents[action] === 'undefined') {
+                                try {
+                                    requests.push(this.setActionCell(action));
+                                } catch (e) {
+                                    requests.push(this.setDefaultActionCell(action));
+                                }
+                            }
                         }
                     }
                 }
@@ -788,7 +778,7 @@ export default {
                 i += 1;
             }
 
-            return actionColumns;
+            return requests;
         },
         getColumnFilterTypeName(type) {
             return this.columnTypes[type] || capitalizeAndConcatenationArray(type.split('_'));

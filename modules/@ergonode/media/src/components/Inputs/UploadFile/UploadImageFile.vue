@@ -1,10 +1,11 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
     <InputSolidStyle
         :size="size"
+        :border="border"
         :height="height"
         :disabled="disabled">
         <template #activator>
@@ -171,6 +172,13 @@ export default {
          * Determines if the image is able to download
          */
         downloadable: {
+            type: Boolean,
+            default: true,
+        },
+        /**
+         * Determines if the component has border
+         */
+        border: {
             type: Boolean,
             default: true,
         },

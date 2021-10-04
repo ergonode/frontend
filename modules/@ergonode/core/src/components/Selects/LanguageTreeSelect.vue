@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -8,6 +8,8 @@
         :label="label"
         :size="smallSize"
         :options="languageOptions"
+        option-key="key"
+        option-value="value"
         @input="onSelect" />
 </template>
 

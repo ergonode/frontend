@@ -1,11 +1,7 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-/*
-* Copyright © Ergonode Sp. z o.o. All rights reserved.
-* See LICENSE for license details.
-*/
 <template>
     <GridTableCell
         :row="rowIndex"
@@ -50,6 +46,24 @@ export default {
         type: {
             type: String,
             required: true,
+        },
+    },
+    methods: {
+        onEditCell() {
+            this.$emit('edit-cell', {
+                type: this.column.type,
+                props: {
+                    bounds: this.$el.getBoundingClientRect(),
+                    value: this.cellData.value,
+                    row: this.rowIndex,
+                    column: this.columnIndex,
+                    disabled: this.isLocked,
+                    type: this.type,
+                    rowId: this.rowId,
+                    columnId: this.column.id,
+                    errorMessages: this.errorMessages,
+                },
+            });
         },
     },
 };

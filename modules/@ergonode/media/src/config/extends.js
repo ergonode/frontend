@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 
@@ -50,6 +50,7 @@ export default {
             [ATTRIBUTE_TYPES.IMAGE]: Components.GridImageEditCell,
             [ATTRIBUTE_TYPES.GALLERY]: Components.GridGalleryEditCell,
             [ATTRIBUTE_TYPES.FILE]: Components.GridFileEditCell,
+            IMAGE_PREVIEW: Components.GridImagePreviewEditCell,
         },
         '@Templates/components/Forms/ProductTemplateForm': {
             __ALL: [

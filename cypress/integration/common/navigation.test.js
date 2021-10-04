@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 import {
@@ -113,12 +113,13 @@ MultiSteps([
         .as('formErrorsWrapper');
     cy
         .get('@formErrorsWrapper')
-        .find('.errors-list__links > button')
+        .find('.errors-list > button')
         .as('errorList');
 
     cy.get('@errorList')
-        .should('have.length', parsedErrors.length)
-        .each(($error, i) => {
-            expect($error.find('span').text().trim()).to.equal(parsedErrors[i]);
-        });
+        .should('have.length', parsedErrors.length);
+
+    parsedErrors.forEach((error) => {
+        cy.get('@errorList').contains('span', error);
+    });
 });

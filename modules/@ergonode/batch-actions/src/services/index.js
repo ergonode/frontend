@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 export const create = ({
@@ -14,9 +14,34 @@ export const getCount = ({
     payload,
 }) => $axios.$post('batch-action/count', payload);
 
-export const getBatchActionStatuses = ({
+export const getAll = ({
     $axios,
-    cancelToken,
+    cancelToken = null,
 }) => $axios.$get('profile/batch-action', {
+    cancelToken,
+});
+
+export const get = ({
+    $axios,
+    id,
+    cancelToken = null,
+}) => $axios.$get(`batch-action/${id}`, {
+    cancelToken,
+});
+
+export const end = ({
+    $axios,
+    id,
+    cancelToken = null,
+}) => $axios.$get(`batch-action/${id}/end`, {
+    cancelToken,
+});
+
+export const reprocess = ({
+    $axios,
+    id,
+    payload,
+    cancelToken = null,
+}) => $axios.$patch(`batch-action/${id}/reprocess`, payload, {
     cancelToken,
 });

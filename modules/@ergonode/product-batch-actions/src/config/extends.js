@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 
@@ -16,6 +16,9 @@ export default {
                 props: {},
             },
         ],
+        '@BatchActions/extends/notification/components/Notifications': {
+            ProductEditPrecessed: Components.NotificationListBatchActionsProcessingItem,
+        },
         '@Notifications/components/NotificationList/Item': {
             BatchActionEnded: Components.NotificationListBatchActionEndedItem,
         },

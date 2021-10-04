@@ -1,7 +1,12 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+
+export const MAX_NOTIFICATIONS_INTERVAL = 30000;
+
+export const MIN_NOTIFICATIONS_INTERVAL = 1000;
+
 export const ACTION_CENTER_SECTIONS = {
     PROCESSING: 'PROCESSING',
     NOTIFICATIONS: 'NOTIFICATIONS',

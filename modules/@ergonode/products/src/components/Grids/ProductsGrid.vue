@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -13,6 +13,8 @@
         :errors="errors"
         :data-count="filtered"
         :pagination="pagination"
+        :layout="layout"
+        :custom-layouts="customLayouts"
         :collection-cell-binding="collectionCellBinding"
         :extended-components="extendedGridComponents"
         :is-editable="isAllowedToUpdate"
@@ -31,6 +33,7 @@
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @remove-all-filters="onRemoveAllFilters"
+        @layout="onLayoutChange"
         v-bind="extendedProps['grid']">
         <template #actionsHeader="actionsHeaderProps">
             <Component
@@ -155,6 +158,10 @@ export default {
         extendedGridComponentsMixin,
     ],
     props: {
+        layout: {
+            type: String,
+            required: true,
+        },
         scope: {
             type: String,
             default: '',
@@ -210,6 +217,7 @@ export default {
             columns: [],
             filtered: 0,
             advancedFilters: [],
+            customLayouts: [],
             isFiltersExpanded: false,
             isPrefetchingData: true,
         };
@@ -270,7 +278,9 @@ export default {
             this.isPrefetchingData = false;
         },
     },
-    mounted() {
+    async mounted() {
+        await this.extendedCustomLayouts();
+
         document.documentElement.addEventListener(
             PRODUCT_CREATED_EVENT_NAME,
             this.onProductCreated,
@@ -294,43 +304,67 @@ export default {
             'setDisabledScopeElement',
             'setDisabledScopeElements',
         ]),
+        onLayoutChange(layout) {
+            this.$emit('layout', layout);
+        },
         onProductCreated() {
             this.onFetchData();
         },
+        async extendedCustomLayouts() {
+            const customLayouts = await this.$getExtendMethod('@Products/components/Grids/ProductsGrid/customLayouts', {
+                $this: this,
+            });
+
+            this.customLayouts = []
+                .concat(...customLayouts)
+                .filter(layout => typeof layout.layout !== 'undefined');
+        },
         async onDropColumn(payload) {
-            try {
-                const columnCode = payload.split('/')[1];
+            const columnCode = payload.split('/')[1];
 
-                insertCookieAtIndex({
-                    cookies: this.$userCookies,
-                    cookieName: `GRID_CONFIG:${this.$route.name}`,
-                    index: 0,
-                    data: columnCode,
-                });
+            insertCookieAtIndex({
+                cookies: this.$userCookies,
+                cookieName: `GRID_CONFIG:${this.$route.name}`,
+                index: 0,
+                data: columnCode,
+            });
 
-                await this.onFetchData();
+            await getGridData({
+                $route: this.$route,
+                $cookies: this.$userCookies,
+                $axios: this.$axios,
+                path: 'products',
+                params: getParams({
+                    $route: this.$route,
+                    $cookies: this.$userCookies,
+                    defaultColumns: 'esa_index,esa_sku,_links,esa_default_image,esa_default_label',
+                }),
+                onSuccess: (data) => {
+                    this.onFetchDataSuccess(data);
 
-                const column = this.columns.find(({
-                    id,
-                }) => id === columnCode);
+                    const column = this.columns.find(({
+                        id,
+                    }) => id === columnCode);
 
-                if (column && column.element_id) {
-                    this.setDisabledScopeElement({
-                        disabledElement: getDisabledElement({
-                            languageCode: column.language,
-                            elementId: column.element_id,
-                            disabledElements: this.disabledElements[this.scope],
-                        }),
-                        scope: this.scope,
+                    if (column && column.element_id) {
+                        this.setDisabledScopeElement({
+                            disabledElement: getDisabledElement({
+                                languageCode: column.language,
+                                elementId: column.element_id,
+                                disabledElements: this.disabledElements[this.scope],
+                            }),
+                            scope: this.scope,
+                        });
+                    }
+                },
+                onError: () => {
+                    removeCookieAtIndex({
+                        cookies: this.$userCookies,
+                        cookieName: `GRID_CONFIG:${this.$route.name}`,
+                        index: 0,
                     });
-                }
-            } catch {
-                removeCookieAtIndex({
-                    cookies: this.$userCookies,
-                    cookieName: `GRID_CONFIG:${this.$route.name}`,
-                    index: 0,
-                });
-            }
+                },
+            });
         },
         onSwapColumns({
             from,

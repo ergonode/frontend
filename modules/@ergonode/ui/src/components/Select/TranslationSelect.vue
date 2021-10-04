@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -50,6 +50,9 @@
 
 <script>
 
+/**
+ * @deprecated since 1.1.0
+ */
 export default {
     name: 'TranslationSelect',
     inheritAttrs: false,

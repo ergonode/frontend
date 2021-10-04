@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -10,14 +10,13 @@
                 <slot name="actions" />
             </template>
             <template #configuration>
-                <template v-if="isCollectionLayout">
-                    <GridTableLayoutActivator
-                        data-cy="grid-table-view"
-                        :is-selected="isSelectedTableLayout"
-                        @active="onLayoutActivate" />
-                    <GridCollectionLayoutActivator
-                        data-cy="grid-collection-view"
-                        :is-selected="isSelectedCollectionLayout"
+                <template v-if="layoutActivators.length > 1">
+                    <Component
+                        v-for="activator in layoutActivators"
+                        :key="activator.key"
+                        :is="activator.component"
+                        :selected="layout === activator.key"
+                        :data-cy="activator.dataCy"
                         @active="onLayoutActivate" />
                 </template>
                 <Fab
@@ -32,9 +31,7 @@
         </GridHeaderSettings>
         <GridSettingsModalForm
             v-if="isSettingsModal"
-            :table-layout-config="tableLayoutConfig"
-            :collection-layout-config="collectionLayoutConfig"
-            :is-collection-layout="isCollectionLayout"
+            :layout-configs="layoutConfigs"
             @close="onCloseModal"
             @apply="onApplySettings" />
         <slot name="append" />
@@ -53,17 +50,17 @@ export default {
     name: 'GridHeader',
     props: {
         /**
-         * Configuration of table layout
+         * Configuration of layouts
          */
-        tableLayoutConfig: {
+        layoutConfigs: {
             type: Object,
             required: true,
         },
         /**
-         * Configuration of collection layout
+         * The available layouts
          */
-        collectionLayoutConfig: {
-            type: Object,
+        layoutActivators: {
+            type: Array,
             required: true,
         },
         /**
@@ -72,13 +69,6 @@ export default {
         layout: {
             type: String,
             default: GRID_LAYOUT.TABLE,
-        },
-        /**
-         * Determines if collection layout might be chosen
-         */
-        isCollectionLayout: {
-            type: Boolean,
-            default: false,
         },
     },
     data() {

@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -16,18 +16,16 @@
                             :options="rowHeightOptions" />
                     </FormSection>
                     <FormSection
-                        title="Image grid"
-                        v-if="isCollectionLayout">
+                        v-if="isCollectionLayout"
+                        title="Image grid">
                         <Select
                             v-model="columnsNumberDescription"
                             label="Number of columns"
-                            :options="columnsNumberOptions"
-                        />
+                            :options="columnsNumberOptions" />
                         <Select
-                            v-model="imageScalingDescription"
+                            v-model="objectFitDescription"
                             label="Image scaling"
-                            :options="imageScalingOptions"
-                        />
+                            :options="objectFitOptions" />
                     </FormSection>
                 </template>
                 <template #submit>
@@ -52,7 +50,8 @@
 
 import {
     COLUMNS_NUMBER,
-    IMAGE_SCALING,
+    GRID_LAYOUT,
+    OBJECT_FIT,
     ROW_HEIGHT,
 } from '@Core/defaults/grid';
 import {
@@ -72,42 +71,31 @@ export default {
         /**
          * Configuration of table layout
          */
-        tableLayoutConfig: {
+        layoutConfigs: {
             type: Object,
             required: true,
-        },
-        /**
-         * Configuration of collection layout
-         */
-        collectionLayoutConfig: {
-            type: Object,
-            required: true,
-        },
-        /**
-         * Determines if collection layout might be chosen
-         */
-        isCollectionLayout: {
-            type: Boolean,
-            default: false,
         },
     },
     data() {
         const columnsNumberValues = Object.values(COLUMNS_NUMBER);
-        const imageScalingValues = Object.values(IMAGE_SCALING);
+        const objectFitValues = Object.values(OBJECT_FIT);
 
         return {
             rowHeightDescription: toCapitalize(
-                getKeyByValue(ROW_HEIGHT, this.tableLayoutConfig.rowHeight).toLowerCase(),
+                getKeyByValue(
+                    ROW_HEIGHT,
+                    this.layoutConfigs[GRID_LAYOUT.TABLE].rowHeight,
+                ).toLowerCase(),
             ),
             columnsNumberDescription: columnsNumberValues.find(
                 ({
                     value,
-                }) => value === this.collectionLayoutConfig.columnsNumber,
+                }) => value === this.layoutConfigs[GRID_LAYOUT.COLLECTION].columnsNumber,
             ).description,
-            imageScalingDescription: imageScalingValues.find(
+            objectFitDescription: objectFitValues.find(
                 ({
                     value,
-                }) => value === this.collectionLayoutConfig.scaling,
+                }) => value === this.layoutConfigs[GRID_LAYOUT.COLLECTION].objectFit,
             ).description,
         };
     },
@@ -120,8 +108,8 @@ export default {
                 description,
             }) => description);
         },
-        imageScalingOptions() {
-            return Object.values(IMAGE_SCALING).map(({
+        objectFitOptions() {
+            return Object.values(OBJECT_FIT).map(({
                 description,
             }) => description);
         },
@@ -131,6 +119,9 @@ export default {
         theme() {
             return THEME;
         },
+        isCollectionLayout() {
+            return typeof this.layoutConfigs[GRID_LAYOUT.COLLECTION] !== 'undefined';
+        },
     },
     methods: {
         onClose() {
@@ -138,22 +129,22 @@ export default {
         },
         onApply() {
             const columnsNumberValues = Object.values(COLUMNS_NUMBER);
-            const imageScalingValues = Object.values(IMAGE_SCALING);
+            const objectFitValues = Object.values(OBJECT_FIT);
 
             this.$emit('apply', {
-                tableConfig: {
+                [GRID_LAYOUT.TABLE]: {
                     rowHeight: ROW_HEIGHT[this.rowHeightDescription.toUpperCase()],
                 },
-                collectionConfig: {
+                [GRID_LAYOUT.COLLECTION]: {
                     columnsNumber: columnsNumberValues.find(
                         ({
                             description,
                         }) => description === this.columnsNumberDescription,
                     ).value,
-                    scaling: imageScalingValues.find(
+                    objectFit: objectFitValues.find(
                         ({
                             description,
-                        }) => description === this.imageScalingDescription,
+                        }) => description === this.objectFitDescription,
                     ).value,
                 },
             });

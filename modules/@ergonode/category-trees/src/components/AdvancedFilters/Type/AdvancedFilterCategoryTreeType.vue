@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -20,6 +20,8 @@
                 :items="options"
                 :size="smallSize"
                 :searchable="true"
+                option-key="id"
+                option-value="label"
                 @input="onValueChange"
                 @search="onSearch">
                 <template #noDataPlaceholder>
@@ -30,13 +32,6 @@
                             <CreateCategoryTreeButton />
                         </template>
                     </SelectListNoDataPlaceholder>
-                </template>
-                <template #item="{ item }">
-                    <ListElementDescription>
-                        <ListElementTitle
-                            :size="smallSize"
-                            :title="item.label || `#${item.code}`" />
-                    </ListElementDescription>
                 </template>
             </SelectList>
             <SelectDropdownFooter
@@ -212,7 +207,7 @@ export default {
             try {
                 this.isFetchingData = true;
 
-                this.options = await getAutocomplete({
+                const options = await getAutocomplete({
                     $axios: this.$axios,
                     config: {
                         params: {
@@ -221,6 +216,11 @@ export default {
                         },
                     },
                 });
+
+                this.options = options.map(option => ({
+                    id: option.id,
+                    label: option.label || `#${option.code}`,
+                }));
 
                 this.isFetchingData = false;
             } catch (e) {

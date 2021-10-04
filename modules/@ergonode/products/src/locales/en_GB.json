@@ -171,7 +171,7 @@
         },
         "ProductVariantsTab": {
           "placeholderTitle": "No binding attributes",
-          "placeholderSubtitle": "Binding attribute is the common attribute of the products, which link products together into the product with variants."
+          "placeholderSubtitle": "Binding attribute is the common attribute (select type) of the products, which link products together into the product with variants."
         },
         "AddBindingAttributes": {
           "title": "Add attribute",
@@ -219,6 +219,7 @@
           "label": "Binding attribute"
         },
         "ProductAttributesBindingForm": {
+          "paragraphInfo": "Binding attribute is the common attribute (select type) of the products, which link products together into the product with variants.",
           "listTitle": "ADD BINDING ATTRIBUTE",
           "listTittleTooltip": "There are no more select type attributes"
         },

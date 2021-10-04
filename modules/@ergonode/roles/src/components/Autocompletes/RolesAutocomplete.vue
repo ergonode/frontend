@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -8,6 +8,7 @@
         :value="value"
         :required="required"
         :searchable="true"
+        :wrap-value="true"
         :multiselect="multiselect"
         :clearable="clearable"
         :label="$t('@Roles.role.components.RolesAutocomplete.roleLabel')"

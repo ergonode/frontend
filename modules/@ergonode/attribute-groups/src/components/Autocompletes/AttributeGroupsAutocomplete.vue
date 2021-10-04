@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -13,6 +13,7 @@
         :label="$t('@AttributeGroups.attributeGroup.components.AttributeGroupsAutocomplete.groupLabel')"
         :custom-fetch-event="attributeGroupCreatedEventName"
         :error-messages="errorMessages"
+        :wrap-value="true"
         :disabled="disabled"
         href="attributes/groups/autocomplete"
         @input="onValueChange">

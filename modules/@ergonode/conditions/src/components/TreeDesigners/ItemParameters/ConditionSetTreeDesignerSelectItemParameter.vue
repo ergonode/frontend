@@ -1,9 +1,9 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
-    <TranslationSelect
+    <Select
         :value="value"
         :required="true"
         :clearable="true"
@@ -12,6 +12,8 @@
         :disabled="disabled"
         :options="options"
         :error-messages="errorMessages"
+        option-key="key"
+        option-value="value"
         @input="onValueChange" />
 </template>
 

@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -13,6 +13,7 @@
         @proceed="onProceed"
         @submit="onSubmit">
         <template #body>
+            <Paragraph :title="$t('@Products.productExtend.components.ProductAttributesBindingForm.paragraphInfo')" />
             <FormListSection
                 :disabled="isDisabled"
                 :add-list-title="$t('@Products.productExtend.components.ProductAttributesBindingForm.listTitle')"

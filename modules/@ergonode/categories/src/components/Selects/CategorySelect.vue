@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -106,6 +106,8 @@
                         :searchable="true"
                         :selectable="true"
                         :multiselect="true"
+                        option-key="id"
+                        option-value="label"
                         @input="onValueChange"
                         @search="onSearch">
                         <template #appendSearchHeader>
@@ -135,18 +137,6 @@
                                         @click.native="onClearVisibilitySelection" />
                                 </template>
                             </SelectListNoDataPlaceholder>
-                        </template>
-                        <template #item="{ item, isSelected }">
-                            <ListElementAction :size="smallSize">
-                                <CheckBox
-                                    :value="isSelected"
-                                    :disabled="item.disabled" />
-                            </ListElementAction>
-                            <ListElementDescription>
-                                <ListElementTitle
-                                    :size="smallSize"
-                                    :title="item.label || `#${item.code}`" />
-                            </ListElementDescription>
                         </template>
                     </SelectList>
                     <div
@@ -421,9 +411,14 @@ export default {
         async onCategoryCreated() {
             this.isFetchingData = true;
 
-            this.allCategories = await getAutocomplete({
+            const categories = await getAutocomplete({
                 $axios: this.$axios,
             });
+
+            this.allCategories = categories.map(category => ({
+                id: category.id,
+                label: category.label || `#${category.code}`,
+            }));
 
             this.isFetchingData = false;
         },

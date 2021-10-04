@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -10,7 +10,9 @@
             :style="inputStyle"
             @mousedown="onMouseDown"
             @mouseup="onMouseUp">
-            <fieldset class="input-solid-style__border" />
+            <fieldset
+                v-if="border"
+                class="input-solid-style__border" />
             <slot
                 name="activator"
                 :input-reference="$refs.input" />
@@ -80,6 +82,13 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * Determines if the component has border
+         */
+        border: {
+            type: Boolean,
+            default: true,
         },
         /**
          * Additional label which gives user hint about component above

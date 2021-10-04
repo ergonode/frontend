@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -16,6 +16,9 @@ export default {
 
 <style lang="scss" scoped>
     .image-edit-content-cell {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_6_DP;
     }

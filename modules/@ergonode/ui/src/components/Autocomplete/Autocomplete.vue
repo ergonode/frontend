@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -22,6 +22,7 @@
         :clearable="clearable"
         :multiselect="multiselect"
         :searchable="searchable"
+        :wrap-value="wrapValue"
         :data-cy="dataCy"
         @focus="onFocus"
         @search="onSearch"
@@ -124,6 +125,13 @@ export default {
             type: String,
             default: INPUT_TYPE.SOLID,
             validator: value => Object.values(INPUT_TYPE).indexOf(value) !== -1,
+        },
+        /**
+         * Wrapping selected values
+         */
+        wrapValue: {
+            type: Boolean,
+            default: false,
         },
         /**
          * The flag which tells if the dropdown has fixed content to it's parent width

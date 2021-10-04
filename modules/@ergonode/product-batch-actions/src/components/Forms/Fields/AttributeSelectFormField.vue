@@ -1,9 +1,9 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
-    <TranslationSelect
+    <Select
         :value="parsedValue"
         :hint="hint"
         :placeholder="placeholder"
@@ -11,6 +11,8 @@
         :options="options"
         :error-messages="errorMessages"
         :clearable="true"
+        option-key="key"
+        option-value="value"
         @focus="onFocus"
         @input="onValueChange">
         <template #append>
@@ -18,13 +20,16 @@
                 v-if="isFetchingData"
                 :fill-color="graphiteColor" />
         </template>
-    </TranslationSelect>
+    </Select>
 </template>
 
 <script>
 import {
     getOption,
 } from '@Attributes/services';
+import {
+    getMappedTranslationArrayOptions,
+} from '@Core/models/mappers/translationsMapper';
 import {
     GRAPHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
@@ -55,21 +60,9 @@ export default {
             id: this.attribute.id,
         });
 
-        this.options = options.map((option) => {
-            let value = '';
-            let hint = '';
-
-            if (option.label) {
-                value = option.label[this.languageCode];
-                hint = `#${option.code} ${this.languageCode}`;
-            }
-
-            return {
-                id: option.id,
-                key: option.code,
-                value,
-                hint,
-            };
+        this.options = getMappedTranslationArrayOptions({
+            options,
+            languageCode: this.languageCode,
         });
 
         this.isFetchingData = false;
@@ -95,7 +88,7 @@ export default {
         },
         parsedValue() {
             if (!this.value) {
-                return '';
+                return null;
             }
 
             return this.options.find(option => option.id === this.value);

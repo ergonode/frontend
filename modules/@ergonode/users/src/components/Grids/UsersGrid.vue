@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -11,6 +11,7 @@
         :sort-order="sortOrder"
         :filters="filterValues"
         :pagination="pagination"
+        :layout="layout"
         :extended-components="extendedGridComponents"
         :is-prefetching-data="isPrefetchingData"
         :is-basic-filter="true"
@@ -23,6 +24,7 @@
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
         @remove-all-filters="onRemoveAllFilters"
+        @layout="onLayoutChange"
         v-bind="extendedProps['grid']">
         <template #actionsHeader="actionsHeaderProps">
             <Component
@@ -61,6 +63,7 @@ import {
 } from '@Core/defaults/alerts';
 import {
     DEFAULT_PAGE,
+    GRID_LAYOUT,
 } from '@Core/defaults/grid';
 import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
@@ -118,6 +121,7 @@ export default {
             filterValues,
             pagination,
             sortOrder,
+            layout: GRID_LAYOUT.TABLE,
             rows: [],
             columns: [],
             filtered: 0,
@@ -159,6 +163,9 @@ export default {
         document.documentElement.removeEventListener(USER_CREATED_EVENT_NAME, this.onUserCreated);
     },
     methods: {
+        onLayoutChange(layout) {
+            this.layout = layout;
+        },
         onUserCreated() {
             this.onFetchData();
         },

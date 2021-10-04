@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -14,6 +14,7 @@
             :rows="rowsWithAttachValues"
             :sort-order="localParams.sortOrder"
             :collection-cell-binding="collectionCellBinding"
+            :layout="layout"
             :extended-components="extendedGridComponents"
             :is-editable="isAllowedToUpdate"
             :is-prefetching-data="isPrefetchingData"
@@ -28,6 +29,7 @@
             @sort-column="onColumnSortChange"
             @remove-all-filters="onRemoveAllFilters"
             @filter="onFilterChange"
+            @layout="onLayoutChange"
             v-bind="extendedProps['grid']">
             <template #actionsHeader="actionsHeaderProps">
                 <Component
@@ -68,6 +70,7 @@ import {
 import {
     DEFAULT_GRID_FETCH_PARAMS,
     DEFAULT_GRID_PAGINATION,
+    GRID_LAYOUT,
 } from '@Core/defaults/grid';
 import {
     FILTER_OPERATOR,
@@ -133,6 +136,7 @@ export default {
             searchValue: null,
             isPrefetchingData: true,
             filterValues: {},
+            layout: GRID_LAYOUT.TABLE,
             rows: [],
             columns: [],
             filtered: 0,
@@ -170,6 +174,8 @@ export default {
 
             for (let i = 0; i < this.columns.length; i += 1) {
                 if (this.columns[i].id !== 'type') {
+                    columns.push(this.columns[i]);
+
                     if (i === 3) {
                         columns.push({
                             id: 'esa_attached',
@@ -180,8 +186,6 @@ export default {
                             deletable: false,
                             parameters: [],
                         });
-                    } else {
-                        columns.push(this.columns[i]);
                     }
                 }
             }
@@ -217,6 +221,9 @@ export default {
         delete this.onDebounceSearch;
     },
     methods: {
+        onLayoutChange(layout) {
+            this.layout = layout;
+        },
         async onIntersect(isIntersecting) {
             if (isIntersecting) {
                 this.isPrefetchingData = true;

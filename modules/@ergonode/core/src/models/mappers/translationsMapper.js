@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 
@@ -7,13 +7,21 @@ export function getMappedObjectOption({
     option,
     languageCode,
 }) {
+    const isLabel = option.label && option.label.length > 0;
+
+    let value = `#${option.code}`;
+    let hint = `#${option.code} ${languageCode}`;
+
+    if (isLabel) {
+        value = option.label;
+        hint = '';
+    }
+
     return {
         id: option.id,
         key: option.code,
-        value: option.label || '',
-        hint: option.label
-            ? `#${option.code} ${languageCode}`
-            : '',
+        value,
+        hint,
     };
 }
 

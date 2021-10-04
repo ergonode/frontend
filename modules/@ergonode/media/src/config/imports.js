@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 export const Pages = {
@@ -24,6 +24,7 @@ export const Components = {
     GridImageEditCell: () => import('@Media/extends/ui/components/Grid/Layout/Table/Cells/Edit/GridImageEditCell').then(m => m.default || m),
     GridGalleryEditCell: () => import('@Media/extends/ui/components/Grid/Layout/Table/Cells/Edit/GridGalleryEditCell').then(m => m.default || m),
     GridFileEditCell: () => import('@Media/extends/ui/components/Grid/Layout/Table/Cells/Edit/GridFileEditCell').then(m => m.default || m),
+    GridImagePreviewEditCell: () => import('@Media/extends/ui/components/Grid/Layout/Table/Cells/Edit/GridImagePreviewEditCell').then(m => m.default || m),
     GridImagePreviewCollectionCell: () => import('@Media/extends/ui/components/Grid/Layout/Collection/Cells/GridImagePreviewCollectionCell').then(m => m.default || m),
     GridImagePreviewColumn: () => import('@Media/extends/ui/components/Grid/Layout/Table/Columns/GridImagePreviewColumn').then(m => m.default || m),
 };

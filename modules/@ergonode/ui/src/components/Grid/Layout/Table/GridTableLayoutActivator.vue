@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -30,7 +30,7 @@ export default {
         /**
          * Determines if component is selected
          */
-        isSelected: {
+        selected: {
             type: Boolean,
             default: false,
         },
@@ -40,7 +40,7 @@ export default {
             return THEME.SECONDARY;
         },
         fillColor() {
-            return this.isSelected ? GREEN : GRAPHITE;
+            return this.selected ? GREEN : GRAPHITE;
         },
     },
     methods: {

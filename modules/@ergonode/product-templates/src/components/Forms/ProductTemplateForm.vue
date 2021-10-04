@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -17,12 +17,20 @@
         <template #body>
             <FormSection>
                 <TextField
+                    :data-cy="dataCyGenerator(codeFieldKey)"
+                    :value="code"
+                    required
+                    :error-messages="errors[codeFieldKey]"
+                    :label="$t('@Templates.productTemplate.components.ProductTemplateForm.codeLabel')"
+                    :disabled="isDisabled || !isAllowedToUpdate"
+                    @input="setCodeValue" />
+                <TextField
                     :data-cy="dataCyGenerator(nameFieldKey)"
                     :value="title"
                     required
                     :error-messages="errors[nameFieldKey]"
                     :label="$t('@Templates.productTemplate.components.ProductTemplateForm.nameLabel')"
-                    :disabled="isDisabled || !isAllowedToUpdate"
+                    :disabled="!isAllowedToUpdate"
                     @input="setTitleValue" />
             </FormSection>
             <template v-for="(field, index) in extendedForm">
@@ -54,6 +62,7 @@ export default {
         ...mapState('productTemplate', [
             'id',
             'title',
+            'code',
         ]),
         extendedForm() {
             return this.$extendedForm({
@@ -70,6 +79,9 @@ export default {
                 PRIVILEGES.TEMPLATE_DESIGNER.create,
             ]));
         },
+        codeFieldKey() {
+            return 'code';
+        },
         nameFieldKey() {
             return 'name';
         },
@@ -80,6 +92,18 @@ export default {
         ]),
         onSubmit() {
             this.$emit('submit');
+        },
+        setCodeValue(value) {
+            this.__setState({
+                key: 'code',
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'code',
+                value,
+            });
         },
         setTitleValue(value) {
             this.__setState({

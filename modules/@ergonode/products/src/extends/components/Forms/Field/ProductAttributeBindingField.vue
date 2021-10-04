@@ -1,18 +1,20 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
     <FormListElementField
         :field-key="index"
         @remove="onRemove">
-        <TranslationSelect
+        <Select
             :value="attribute"
             required
             :label="$t('@Products.productExtend.components.ProductAttributeBindingField.label')"
             :error-messages="errorMessages"
             :size="smallSize"
             :options="filteredOptions"
+            option-key="key"
+            option-value="value"
             @input="onValueChange" />
     </FormListElementField>
 </template>

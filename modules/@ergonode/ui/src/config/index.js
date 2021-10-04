@@ -1,5 +1,5 @@
 /*
- * Copyright © Ergonode Sp. z o.o. All rights reserved.
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 export default {
@@ -12,9 +12,9 @@ export default {
         '@UI': '/',
     },
     css: [
-        './assets/scss/reset.scss',
-        './assets/scss/font-inter-ui.scss',
-        './assets/scss/global.scss',
+        './assets/scss/reset',
+        './assets/scss/font-inter-ui',
+        './assets/scss/global',
     ],
     styleResources: {
         scss: './assets/scss/main.scss',
