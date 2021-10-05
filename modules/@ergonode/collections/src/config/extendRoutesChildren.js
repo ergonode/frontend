@@ -3,14 +3,13 @@
  * See LICENSE for license details.
  */
 import {
+    Icons,
+    Tabs,
+} from '@Collections/config/imports';
+import {
     GROUP,
     ROUTE_NAME as PRODUCT_ROUTE_NAME,
 } from '@Products/config/routes';
-
-import {
-    Icons,
-    Tabs,
-} from './imports';
 
 export const ROUTE_NAME = {
     PRODUCT_EDIT_COLLECTIONS: 'product-id-collections',
