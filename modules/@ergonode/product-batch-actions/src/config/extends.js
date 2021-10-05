@@ -6,7 +6,7 @@
 import {
     Components,
     Icons,
-} from './imports';
+} from '@ProductBatchActions/config/imports';
 
 export default {
     extendComponents: {
