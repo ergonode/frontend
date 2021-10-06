@@ -90,7 +90,7 @@
                 </slot>
             </slot>
         </GridBody>
-        <GridFooter v-if="isFooterVisible && activeLayout.isFooterVisible">
+        <GridFooter v-if="isFooterVisible && activeLayout && activeLayout.isFooterVisible">
             <slot name="footer">
                 <GridPageSelector
                     :value="pagination.itemsPerPage"
