@@ -273,7 +273,7 @@ export default {
                 ...sortOrder,
                 filter: [
                     filter,
-                    `type=${FILTER_OPERATOR.EQUAL}${this.type}`,
+                    `type${FILTER_OPERATOR.EQUAL}${this.type}`,
                 ].join(';'),
             };
 
