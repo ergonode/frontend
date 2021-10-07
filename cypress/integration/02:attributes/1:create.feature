@@ -103,7 +103,7 @@ Feature: CREATE: Attributes
     * I fill the "attribute-code" input with the "@#$%()" term
     * I choose "local" option from "attribute-scope" select field
     * On "modal" I "submit" the data and "create" is "incorrect"
-    * I see a form validation error that says "['System name can/'t start with esa_ and can have only letters, digits or underscore symbol']"
+    * I see a form validation error that says "['The attribute code shouldn't start with esa_', 'System name can have only letters, digits or underscore symbol']"
     * I close modal
     Then On "grid" I can not see row with "@#$%()" value
 

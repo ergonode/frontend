@@ -57,7 +57,7 @@ export default {
                 const tmpObject = acc;
 
                 if (isObject(errors[key])) {
-                    tmpObject[key] = Object.values(errors[key]).join(', ');
+                    tmpObject[key] = Object.values(errors[key]).join(' ');
                 } else {
                     tmpObject[key] = errors[key];
                 }
