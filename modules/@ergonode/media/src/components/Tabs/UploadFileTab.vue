@@ -71,6 +71,9 @@ import {
     getMappedScopedErrors,
 } from '@Core/models/mappers/errorsMapper';
 import {
+    isObject,
+} from '@Core/models/objectWrapper';
+import {
     formatBytes,
 } from '@Core/models/stringWrapper';
 import {
@@ -159,17 +162,17 @@ export default {
                             message: e.message,
                         });
                         this.files.splice(fixedIndex, 1);
+                    } else {
+                        const isError = e.data && e.data.errors && isObject(e.data.errors);
 
-                        return;
+                        this.files[fixedIndex].error = isError
+                            ? getMappedScopedErrors({
+                                errors: e.data.errors,
+                                fieldKeys: {},
+                                scope: 'uploadFileTab',
+                            }).uploadFileTab.upload
+                            : this.$t('@Media.media.components.UploadFileTab.errorMessage');
                     }
-
-                    this.files[fixedIndex].error = e.data && e.data.errors
-                        ? getMappedScopedErrors({
-                            errors: e.data.errors,
-                            fieldKeys: {},
-                            scope: 'uploadFileTab',
-                        }).uploadFileTab.upload
-                        : this.$t('@Media.media.components.UploadFileTab.errorMessage');
                 });
             });
 
