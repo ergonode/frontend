@@ -162,17 +162,18 @@ export default {
                             message: e.message,
                         });
                         this.files.splice(fixedIndex, 1);
-                    } else {
-                        const isError = e.data && e.data.errors && isObject(e.data.errors);
 
-                        this.files[fixedIndex].error = isError
-                            ? getMappedScopedErrors({
-                                errors: e.data.errors,
-                                fieldKeys: {},
-                                scope: 'uploadFileTab',
-                            }).uploadFileTab.upload
-                            : this.$t('@Media.media.components.UploadFileTab.errorMessage');
+                        return;
                     }
+                    const isError = e.data && e.data.errors && isObject(e.data.errors);
+
+                    this.files[fixedIndex].error = isError
+                        ? getMappedScopedErrors({
+                            errors: e.data.errors,
+                            fieldKeys: {},
+                            scope: 'uploadFileTab',
+                        }).uploadFileTab.upload
+                        : this.$t('@Media.media.components.UploadFileTab.errorMessage');
                 });
             });
 
