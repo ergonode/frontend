@@ -71,6 +71,9 @@ import {
     getMappedScopedErrors,
 } from '@Core/models/mappers/errorsMapper';
 import {
+    isObject,
+} from '@Core/models/objectWrapper';
+import {
     formatBytes,
 } from '@Core/models/stringWrapper';
 import {
@@ -162,8 +165,9 @@ export default {
 
                         return;
                     }
+                    const isError = e.data && e.data.errors && isObject(e.data.errors);
 
-                    this.files[fixedIndex].error = e.data && e.data.errors
+                    this.files[fixedIndex].error = isError
                         ? getMappedScopedErrors({
                             errors: e.data.errors,
                             fieldKeys: {},
