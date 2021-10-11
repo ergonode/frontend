@@ -33,7 +33,7 @@ export const end = ({
     $axios,
     id,
     cancelToken = null,
-}) => $axios.$get(`batch-action/${id}/end`, {
+}) => $axios.$put(`batch-action/${id}/end`, {
     cancelToken,
 });
 
