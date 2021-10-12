@@ -15,7 +15,7 @@
                         v-for="activator in layoutActivators"
                         :key="activator.key"
                         :is="activator.component"
-                        :selected="activeLayoutKey === activator.key"
+                        :selected="layout === activator.key"
                         :data-cy="activator.dataCy"
                         @active="onLayoutActivate" />
                 </template>
@@ -74,7 +74,6 @@ export default {
     data() {
         return {
             isSettingsModal: false,
-            activeLayoutKey: this.layout,
         };
     },
     computed: {
@@ -85,14 +84,6 @@ export default {
         },
         theme() {
             return THEME;
-        },
-    },
-    watch: {
-        layout: {
-            immediate: true,
-            handler(value) {
-                this.activeLayoutKey = value;
-            },
         },
     },
     methods: {
