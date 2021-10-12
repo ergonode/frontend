@@ -64,6 +64,10 @@ export default {
         },
     },
     mounted() {
+        if (this.$route.query.layout) {
+            this.layout = this.$route.query.layout;
+        }
+
         this.setVerticalTabs();
     },
     methods: {

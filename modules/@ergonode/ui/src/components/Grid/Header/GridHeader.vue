@@ -85,12 +85,6 @@ export default {
         theme() {
             return THEME;
         },
-        isSelectedTableLayout() {
-            return this.layout === GRID_LAYOUT.TABLE;
-        },
-        isSelectedCollectionLayout() {
-            return this.layout === GRID_LAYOUT.COLLECTION;
-        },
     },
     methods: {
         onLayoutActivate(layout) {
