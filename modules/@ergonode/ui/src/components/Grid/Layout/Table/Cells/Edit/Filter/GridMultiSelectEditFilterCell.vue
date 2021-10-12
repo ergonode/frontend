@@ -15,7 +15,7 @@
                 :multiselect="true"
                 :wrap-value="true"
                 :options="localOptions"
-                option-key="key"
+                option-key="id"
                 option-value="value"
                 @focus="onFocus"
                 @search="onSearch" />
