@@ -15,7 +15,7 @@
                         v-for="activator in layoutActivators"
                         :key="activator.key"
                         :is="activator.component"
-                        :selected="layout === activator.key"
+                        :selected="activeLayoutKey === activator.key"
                         :data-cy="activator.dataCy"
                         @active="onLayoutActivate" />
                 </template>
@@ -74,6 +74,7 @@ export default {
     data() {
         return {
             isSettingsModal: false,
+            activeLayoutKey: this.layout,
         };
     },
     computed: {
@@ -85,11 +86,13 @@ export default {
         theme() {
             return THEME;
         },
-        isSelectedTableLayout() {
-            return this.layout === GRID_LAYOUT.TABLE;
-        },
-        isSelectedCollectionLayout() {
-            return this.layout === GRID_LAYOUT.COLLECTION;
+    },
+    watch: {
+        layout: {
+            immediate: true,
+            handler(value) {
+                this.activeLayoutKey = value;
+            },
         },
     },
     methods: {

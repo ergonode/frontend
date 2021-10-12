@@ -540,7 +540,7 @@ export default {
             this.layoutConfigs = deepmerge(this.layoutConfigs, layoutConfigs);
         },
         onLayoutChange(layout) {
-            if (this.isHeaderVisible) {
+            if (this.isHeaderVisible && this.$route.query.layout !== layout) {
                 this.$router.replace({
                     query: {
                         ...this.$route.query,
