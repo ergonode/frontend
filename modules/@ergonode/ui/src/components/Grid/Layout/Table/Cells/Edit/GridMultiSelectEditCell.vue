@@ -17,7 +17,7 @@
                 :wrap-value="true"
                 :options="localOptions"
                 :error-messages="errorMessages"
-                option-key="key"
+                option-key="id"
                 option-value="value"
                 @focus="onFocus"
                 @search="onSearch" />

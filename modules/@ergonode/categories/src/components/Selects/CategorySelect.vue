@@ -211,16 +211,7 @@ export default {
         },
     },
     async fetch() {
-        const categories = await getAutocomplete({
-            $axios: this.$axios,
-        });
-
-        this.allCategories = categories.map(category => ({
-            ...category,
-            disabled: this.disabled,
-        }));
-
-        this.isFetchingData = false;
+        await this.getAllCategories();
     },
     data() {
         return {
@@ -409,18 +400,7 @@ export default {
     },
     methods: {
         async onCategoryCreated() {
-            this.isFetchingData = true;
-
-            const categories = await getAutocomplete({
-                $axios: this.$axios,
-            });
-
-            this.allCategories = categories.map(category => ({
-                id: category.id,
-                label: category.label || `#${category.code}`,
-            }));
-
-            this.isFetchingData = false;
+            await this.getAllCategories();
         },
         onSelectAllVisible(value) {
             this.$emit('input', value);
@@ -487,6 +467,21 @@ export default {
                     id: this.advancedFilterValues.categoryTree,
                 },
             });
+        },
+        async getAllCategories() {
+            this.isFetchingData = true;
+
+            const categories = await getAutocomplete({
+                $axios: this.$axios,
+            });
+
+            this.allCategories = categories.map(category => ({
+                id: category.id,
+                label: category.label || `#${category.code}`,
+                disabled: this.disabled,
+            }));
+
+            this.isFetchingData = false;
         },
         getFilterValue() {
             return this.isSelectedOnlyVisibleCategories
