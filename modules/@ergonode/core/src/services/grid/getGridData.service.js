@@ -19,8 +19,6 @@ export const getGridData = async ({
     onError = () => {},
 }) => {
     try {
-        // _links
-
         const config = {
             params: {
                 ...params,
