@@ -68,12 +68,12 @@ export default ({
             app.$cookies.remove(getCookieKey(store, key));
         },
     });
-    inject('confirm', payload => {
+    inject('confirm', (payload) => {
         app.store.dispatch('core/addModal', {
             component: () => import('@UI/components/ConfirmModal/ConfirmModal'),
             props: payload,
-        }))
-    };
+        });
+    });
     inject('extendedForm', ({
         key, type = null,
     }) => {
