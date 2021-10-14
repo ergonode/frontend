@@ -7,9 +7,9 @@ import {
 } from '@Core/models/mappers/gridDataMapper';
 
 export const postGridData = async ({
-    $route,
     $cookies,
     $axios,
+    layout,
     path,
     data,
     onSuccess = () => {},
@@ -35,9 +35,9 @@ export const postGridData = async ({
             }),
         );
 
-        if (columns.length > 0 && !$cookies.get(`GRID_CONFIG:${$route.name}`)) {
+        if ($cookies && columns.length > 0 && !$cookies.get(layout)) {
             $cookies.set(
-                `GRID_CONFIG:${$route.name}`,
+                layout,
                 sortedColumns
                     .map(({
                         id,

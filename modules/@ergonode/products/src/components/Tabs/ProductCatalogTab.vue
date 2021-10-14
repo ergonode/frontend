@@ -51,7 +51,7 @@ export default {
     },
     watch: {
         $route(from, to) {
-            if (from.name !== to.name) {
+            if (from.name !== to.name || from.query.layout !== to.query.layout) {
                 return;
             }
 

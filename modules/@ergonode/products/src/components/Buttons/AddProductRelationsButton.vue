@@ -118,8 +118,6 @@ export default {
                 this.isSubmitting = true;
 
                 await postGridData({
-                    $route: this.$route,
-                    $cookies: this.$userCookies,
                     $axios: this.$axios,
                     path: 'products/grid',
                     data: {

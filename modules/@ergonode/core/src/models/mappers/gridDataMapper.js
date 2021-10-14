@@ -117,6 +117,7 @@ export function getFilterQueryParams({
 export function getParams({
     $route,
     $cookies,
+    layout,
     defaultColumns = '',
 }) {
     const {
@@ -132,7 +133,7 @@ export function getParams({
         offset: (page - 1) * itemsPerPage,
         limit: itemsPerPage,
         extended: true,
-        columns: $cookies.get(`GRID_CONFIG:${$route.name}`) || defaultColumns,
+        columns: $cookies.get(layout) || defaultColumns,
     };
 
     const mappedFilter = getFilterQueryParams($route.query);

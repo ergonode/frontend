@@ -10,11 +10,11 @@ import {
 } from '@Core/models/mappers/translationsMapper';
 
 export const getGridData = async ({
-    $route,
     $cookies,
     $axios,
     path,
     params,
+    layout,
     onSuccess = () => {},
     onError = () => {},
 }) => {
@@ -39,9 +39,9 @@ export const getGridData = async ({
 
         const sortedColumns = getSortedColumnsByIDs(columns, params.columns);
 
-        if (columns.length > 0 && !$cookies.get(`GRID_CONFIG:${$route.name}`)) {
+        if ($cookies && columns.length > 0 && !$cookies.get(layout)) {
             $cookies.set(
-                `GRID_CONFIG:${$route.name}`,
+                layout,
                 sortedColumns
                     .map(({
                         id,

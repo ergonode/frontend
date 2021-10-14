@@ -11,7 +11,6 @@
         :sort-order="sortOrder"
         :filters="filterValues"
         :pagination="pagination"
-        :layout="layout"
         :extended-components="extendedGridComponents"
         :is-editable="isAllowedToUpdate"
         :is-prefetching-data="isPrefetchingData"
@@ -24,7 +23,6 @@
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
         @remove-all-filters="onRemoveAllFilters"
-        @layout="onLayoutChange"
         v-bind="extendedProps['grid']">
         <template #actionsHeader="actionsHeaderProps">
             <Component
@@ -63,7 +61,6 @@ import {
 } from '@Core/defaults/alerts';
 import {
     DEFAULT_PAGE,
-    GRID_LAYOUT,
 } from '@Core/defaults/grid';
 import extendPropsMixin from '@Core/mixins/extend/extendProps';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
@@ -121,7 +118,6 @@ export default {
             filterValues,
             pagination,
             sortOrder,
-            layout: GRID_LAYOUT.TABLE,
             rows: [],
             columns: [],
             filtered: 0,
@@ -143,7 +139,7 @@ export default {
     },
     watch: {
         async $route(from, to) {
-            if (from.name !== to.name) {
+            if (from.name !== to.name || from.query.layout !== to.query.layout) {
                 return;
             }
 
@@ -175,9 +171,6 @@ export default {
         );
     },
     methods: {
-        onLayoutChange(layout) {
-            this.layout = layout;
-        },
         onSegmentCreated() {
             this.onFetchData();
         },
@@ -200,13 +193,12 @@ export default {
         },
         async onFetchData() {
             await getGridData({
-                $route: this.$route,
-                $cookies: this.$userCookies,
+                $cookies: this.$gridCookies,
                 $axios: this.$axios,
                 path: 'segments',
                 params: getParams({
                     $route: this.$route,
-                    $cookies: this.$userCookies,
+                    $cookies: this.$gridCookies,
                 }),
                 onSuccess: this.onFetchDataSuccess,
                 onError: this.onFetchDataError,

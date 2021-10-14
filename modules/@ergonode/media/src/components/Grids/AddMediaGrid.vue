@@ -278,8 +278,6 @@ export default {
             };
 
             await getGridData({
-                $route: this.$route,
-                $cookies: this.$userCookies,
                 $axios: this.$axios,
                 path: 'multimedia',
                 params,

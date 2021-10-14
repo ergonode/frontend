@@ -196,9 +196,8 @@ export default {
                 defaults: privilegesDefaults,
                 isEditable: this.isAllowedToUpdate,
             });
-            const config = this.$userCookies.get(`GRID_CONFIG:${this.$route.name}`) || '';
 
-            this.columns = getSortedColumnsByIDs(columns, config.split(','));
+            this.columns = getSortedColumnsByIDs(columns, this.$gridCookies.get().split(','));
             this.filtered = this.privilegesDictionary.length;
             this.rows = rows;
 

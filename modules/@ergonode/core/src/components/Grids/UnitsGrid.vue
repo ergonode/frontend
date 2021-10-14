@@ -132,7 +132,7 @@ export default {
     },
     watch: {
         async $route(from, to) {
-            if (from.name !== to.name) {
+            if (from.name !== to.name || from.query.layout !== to.query.layout) {
                 return;
             }
 
@@ -182,13 +182,12 @@ export default {
         },
         async onFetchData() {
             await getGridData({
-                $route: this.$route,
-                $cookies: this.$userCookies,
+                $cookies: this.$gridCookies,
                 $axios: this.$axios,
                 path: 'units',
                 params: getParams({
                     $route: this.$route,
-                    $cookies: this.$userCookies,
+                    $cookies: this.$gridCookies,
                 }),
                 onSuccess: this.onFetchDataSuccess,
                 onError: this.onFetchDataError,
