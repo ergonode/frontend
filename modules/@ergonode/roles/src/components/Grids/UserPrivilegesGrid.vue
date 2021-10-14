@@ -85,10 +85,9 @@ export default {
             selectedData: this.privileges,
             defaults: privilegesDefaults,
         });
-        const config = this.$userCookies.get(`GRID_CONFIG:${this.$route.name}`) || '';
 
         this.filtered = this.dictionaryPrivileges.length;
-        this.columns = getSortedColumnsByIDs(columns, config.split(','));
+        this.columns = getSortedColumnsByIDs(columns, this.$gridCookies.get().split(','));
         this.rows = rows;
         this.isPrefetchingData = false;
     },

@@ -322,22 +322,22 @@ export default {
         async onDropColumn(payload) {
             const columnCode = payload.split('/')[1];
 
-            insertCookieAtIndex({
-                cookies: this.$userCookies,
-                cookieName: `GRID_CONFIG:${this.$route.name}`,
-                index: 0,
-                data: columnCode,
-            });
+            this.$gridCookies.insertAtIndex(
+                this.layout,
+                0,
+                columnCode,
+            );
 
             await getGridData({
-                $route: this.$route,
-                $cookies: this.$userCookies,
+                $cookies: this.$gridCookies,
                 $axios: this.$axios,
+                layout: this.layout,
                 path: 'products',
                 params: getParams({
                     $route: this.$route,
-                    $cookies: this.$userCookies,
-                    defaultColumns: 'esa_index,esa_sku,_links,esa_default_image,esa_default_label',
+                    $cookies: this.$gridCookies,
+                    layout: this.layout,
+                    defaultColumns: 'esa_index,esa_sku,esa_default_image,esa_default_label',
                 }),
                 onSuccess: (data) => {
                     this.onFetchDataSuccess(data);
@@ -358,11 +358,10 @@ export default {
                     }
                 },
                 onError: () => {
-                    removeCookieAtIndex({
-                        cookies: this.$userCookies,
-                        cookieName: `GRID_CONFIG:${this.$route.name}`,
-                        index: 0,
-                    });
+                    this.$gridCookies.removeAtIndex(
+                        this.layout,
+                        0,
+                    );
                 },
             });
         },
@@ -370,12 +369,7 @@ export default {
             from,
             to,
         }) {
-            changeCookiePosition({
-                cookies: this.$userCookies,
-                cookieName: `GRID_CONFIG:${this.$route.name}`,
-                from,
-                to,
-            });
+            this.$gridCookies.changePosition(this.layout, from, to);
         },
         onRemoveColumn({
             index,
@@ -412,11 +406,7 @@ export default {
             const isReplaceRequired = this.sortOrder.field === column.id
                 || typeof this.filterValues[column.id] !== 'undefined';
 
-            removeCookieAtIndex({
-                cookies: this.$userCookies,
-                cookieName: `GRID_CONFIG:${this.$route.name}`,
-                index,
-            });
+            this.$gridCookies.removeAtIndex(this.layout, index);
 
             if (isReplaceRequired) {
                 delete this.filterValues[id];
@@ -738,14 +728,15 @@ export default {
         },
         async onFetchData() {
             await getGridData({
-                $route: this.$route,
-                $cookies: this.$userCookies,
+                $cookies: this.$gridCookies,
                 $axios: this.$axios,
+                layout: this.layout,
                 path: 'products',
                 params: getParams({
                     $route: this.$route,
-                    $cookies: this.$userCookies,
-                    defaultColumns: 'esa_index,esa_sku,_links,esa_default_image,esa_default_label',
+                    $cookies: this.$gridCookies,
+                    layout: this.layout,
+                    defaultColumns: 'esa_index,esa_sku,esa_default_image,esa_default_label',
                 }),
                 onSuccess: this.onFetchDataSuccess,
                 onError: this.onFetchDataError,

@@ -193,13 +193,12 @@ export default {
         },
         async onFetchData() {
             await getGridData({
-                $route: this.$route,
-                $cookies: this.$userCookies,
+                $cookies: this.$gridCookies,
                 $axios: this.$axios,
                 path: 'categories',
                 params: getParams({
                     $route: this.$route,
-                    $cookies: this.$userCookies,
+                    $cookies: this.$gridCookies,
                 }),
                 onSuccess: this.onFetchDataSuccess,
                 onError: this.onFetchDataError,

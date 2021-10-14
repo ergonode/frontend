@@ -101,8 +101,6 @@ export default {
                     };
 
                     getGridData({
-                        $route: this.$route,
-                        $cookies: this.$userCookies,
                         $axios: this.$axios,
                         path: 'products',
                         params,

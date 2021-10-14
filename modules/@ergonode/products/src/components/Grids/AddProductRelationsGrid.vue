@@ -381,8 +381,6 @@ export default {
             } = this.localParams;
 
             await postGridData({
-                $route: this.$route,
-                $cookies: this.$userCookies,
                 $axios: this.$axios,
                 path: 'products/grid',
                 data: {

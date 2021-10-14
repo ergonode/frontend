@@ -3,7 +3,14 @@
  * See LICENSE for license details.
  */
 import {
+    GRID_LAYOUT,
+} from '@Core/defaults/grid';
+import {
+    changeCookiePosition,
     getCookieKey,
+    getGridCookieKey,
+    insertCookieAtIndex,
+    removeCookieAtIndex,
 } from '@Core/models/cookies';
 import {
     isEmpty,
@@ -14,24 +21,57 @@ import deepmerge from 'deepmerge';
 export default ({
     app,
     store,
+    route,
 }, inject) => {
+    inject('gridCookies', {
+        set(layout = GRID_LAYOUT.TABLE, value) {
+            app.$cookies.set(getGridCookieKey(store, route.name, layout), value);
+        },
+        get(layout = GRID_LAYOUT.TABLE) {
+            return app.$cookies.get(getGridCookieKey(store, route.name, layout)) || '';
+        },
+        remove(layout = GRID_LAYOUT.TABLE) {
+            app.$cookies.remove(getGridCookieKey(store, route.name, layout));
+        },
+        insertAtIndex(layout = GRID_LAYOUT.TABLE, index, value) {
+            insertCookieAtIndex({
+                cookies: app.$cookies,
+                cookieName: getGridCookieKey(store, route.name, layout),
+                index,
+                data: value,
+            });
+        },
+        removeAtIndex(layout = GRID_LAYOUT.TABLE, index) {
+            removeCookieAtIndex({
+                cookies: app.$cookies,
+                cookieName: getGridCookieKey(store, route.name, layout),
+                index,
+            });
+        },
+        changePosition(layout = GRID_LAYOUT.TABLE, from, to) {
+            changeCookiePosition({
+                cookies: app.$cookies,
+                cookieName: getGridCookieKey(store, route.name, layout),
+                from,
+                to,
+            });
+        },
+    });
     inject('userCookies', {
         set(key, value) {
-            getCookieKey(store, key, userKey => app.$cookies.set(userKey, value));
+            app.$cookies.set(getCookieKey(store, key), value);
         },
         get(key) {
-            return getCookieKey(store, key, userKey => app.$cookies.get(userKey));
+            return app.$cookies.get(getCookieKey(store, key));
         },
         remove(key) {
-            getCookieKey(store, key, userKey => app.$cookies.remove(userKey));
+            app.$cookies.remove(getCookieKey(store, key));
         },
     });
-    inject('confirm', (payload) => {
-        app.store.dispatch('core/addModal', {
-            component: () => import('@UI/components/ConfirmModal/ConfirmModal'),
-            props: payload,
-        });
-    });
+    inject('confirm', payload => app.store.dispatch('core/addModal', {
+        component: () => import('@UI/components/ConfirmModal/ConfirmModal'),
+        props: payload,
+    }));
     inject('extendedForm', ({
         key, type = null,
     }) => {

@@ -285,7 +285,8 @@ export default {
         async onFetchData() {
             const params = getParams({
                 $route: this.$route,
-                $cookies: this.$userCookies,
+                $cookies: this.$gridCookies,
+                layout: this.layout,
             });
 
             if (typeof params.filter === 'undefined') {
@@ -299,8 +300,8 @@ export default {
             params.columns = this.bindingAttributes.map(attribute => attribute.key).join(',');
 
             await getGridData({
-                $route: this.$route,
-                $cookies: this.$userCookies,
+                $cookies: this.$gridCookies,
+                layout: this.layout,
                 $axios: this.$axios,
                 path: `products/${this.$route.params.id}/children-and-available-products`,
                 params,

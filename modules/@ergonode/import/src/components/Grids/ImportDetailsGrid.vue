@@ -188,8 +188,6 @@ export default {
             };
 
             await getGridData({
-                $route: this.$route,
-                $cookies: this.$userCookies,
                 $axios: this.$axios,
                 path: `sources/${this.sourceId}/imports/${this.importId}/errors`,
                 params,

@@ -7,14 +7,15 @@ import {
     swapItemPosition,
 } from '@Core/models/arrayWrapper';
 
-export function getCookieKey(store, key, callback) {
+export const getCookieKey = (store, key) => {
     const {
         user = null,
     } = store.state.authentication;
-    const userKey = user && user.id ? `[${user.id}]${key}` : key;
 
-    return callback(userKey);
-}
+    return user && user.id ? `[${user.id}]${key}` : key;
+};
+
+export const getGridCookieKey = (store, routeName, layout) => getCookieKey(store, `GRID_CONFIG:${layout}/${routeName}`);
 
 export const removeCookieAtIndex = ({
     cookies,

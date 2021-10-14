@@ -2,6 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import {
+    deepClone,
+} from '@Core/models/objectWrapper';
+
 /**
  * Returns object with max value in array by object key
  * @function
@@ -29,7 +33,7 @@ export function getMaxValueObject(array, key) {
  * @returns {Array}
  */
 export function swapItemPosition(array, pos1, pos2) {
-    const tmpArray = array;
+    const tmpArray = deepClone(array);
     // local variables
     let i;
     let tmp;

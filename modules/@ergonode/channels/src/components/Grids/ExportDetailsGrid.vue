@@ -207,8 +207,6 @@ export default {
             };
 
             await getGridData({
-                $route: this.$route,
-                $cookies: this.$userCookies,
                 $axios: this.$axios,
                 path: `channels/${this.channelId}/exports/${this.exportId}/errors`,
                 params,
