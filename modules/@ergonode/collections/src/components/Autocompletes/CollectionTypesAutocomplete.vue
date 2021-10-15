@@ -15,6 +15,8 @@
         :custom-fetch-event="collectionCreatedEventName"
         :error-messages="errorMessages"
         :disabled="disabled"
+        option-key="id"
+        option-value="label"
         href="collections/type/autocomplete"
         @input="onValueChange">
         <template #noDataPlaceholder>

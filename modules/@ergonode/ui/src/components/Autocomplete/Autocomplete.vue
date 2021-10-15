@@ -23,6 +23,8 @@
         :multiselect="multiselect"
         :searchable="searchable"
         :wrap-value="wrapValue"
+        :option-key="optionKey"
+        :option-value="optionValue"
         :data-cy="dataCy"
         @focus="onFocus"
         @search="onSearch"
@@ -258,6 +260,20 @@ export default {
         sortOrder: {
             type: Object,
             default: null,
+        },
+        /**
+         * The key of the option
+         */
+        optionKey: {
+            type: String,
+            default: '',
+        },
+        /**
+         * The key of the value
+         */
+        optionValue: {
+            type: String,
+            default: '',
         },
     },
     data() {

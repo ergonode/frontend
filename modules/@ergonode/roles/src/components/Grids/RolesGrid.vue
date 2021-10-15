@@ -22,7 +22,6 @@
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
         @remove-all-filters="onRemoveAllFilters"
-        @layout="onLayoutChange"
         v-bind="extendedProps['grid']">
         <template #actionsHeader="actionsHeaderProps">
             <Component
