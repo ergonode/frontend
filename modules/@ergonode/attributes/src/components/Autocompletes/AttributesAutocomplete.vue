@@ -16,6 +16,8 @@
         :custom-fetch-event="attributeCreatedEventName"
         :error-messages="errorMessages"
         :disabled="disabled"
+        option-key="id"
+        option-value="label"
         :additional-static-options="additionalStaticOptions"
         href="attributes/autocomplete"
         @input="onValueChange">

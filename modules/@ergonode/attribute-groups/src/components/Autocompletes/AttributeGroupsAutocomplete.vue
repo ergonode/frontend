@@ -14,6 +14,8 @@
         :custom-fetch-event="attributeGroupCreatedEventName"
         :error-messages="errorMessages"
         :wrap-value="true"
+        option-key="id"
+        option-value="label"
         :disabled="disabled"
         href="attributes/groups/autocomplete"
         @input="onValueChange">

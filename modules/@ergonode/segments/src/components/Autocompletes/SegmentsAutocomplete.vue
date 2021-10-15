@@ -15,6 +15,8 @@
         :custom-fetch-event="segmentCreatedEventName"
         :error-messages="errorMessages"
         :disabled="disabled"
+        option-key="id"
+        option-value="label"
         href="segments/autocomplete"
         @input="onValueChange">
         <template #noDataPlaceholder>

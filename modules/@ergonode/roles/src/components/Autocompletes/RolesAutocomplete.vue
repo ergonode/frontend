@@ -15,6 +15,8 @@
         :custom-fetch-event="roleCreatedEventName"
         :error-messages="errorMessages"
         :disabled="disabled"
+        option-key="id"
+        option-value="label"
         href="roles/autocomplete"
         @input="onValueChange">
         <template #noDataPlaceholder>

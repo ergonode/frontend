@@ -16,6 +16,8 @@
         :error-messages="errorMessages"
         :disabled="disabled"
         :sort-order="sortOrder"
+        option-key="id"
+        option-value="label"
         href="templates/autocomplete"
         @input="onValueChange">
         <template #noDataPlaceholder>
