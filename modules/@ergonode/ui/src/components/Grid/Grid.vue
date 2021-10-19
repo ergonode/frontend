@@ -54,7 +54,7 @@
                         :filters="filters"
                         :sort-order="sortOrder"
                         :pagination="pagination"
-                        :extended-components="extendedComponents[gridLayout.TABLE]"
+                        :extended-components="extendedComponents[activeLayout.key]"
                         :selected-rows="selectedRows"
                         :excluded-from-selection-rows="excludedFromSelectionRows"
                         :multiselect="multiselect"
