@@ -630,17 +630,11 @@ export default {
 
                     if (typeof this.extendedComponents.columns[type] !== 'undefined') {
                         requests.push(this.setExtendedColumn(type));
+                    } else if (this.extendedComponents.dataCells
+                            && this.extendedComponents.dataCells[type]) {
+                        requests.push(this.setExtendedDataCell(type));
                     } else {
-                        try {
-                            if (this.extendedComponents.dataCells
-                                && this.extendedComponents.dataCells[type]) {
-                                requests.push(this.setExtendedDataCell(type));
-                            } else {
-                                requests.push(this.setDataCell(type));
-                            }
-                        } catch (e) {
-                            requests.push(this.setDefaultDataCell(type));
-                        }
+                        requests.push(this.setDataCell(type));
                     }
                 }
 
@@ -651,15 +645,11 @@ export default {
 
                     this.filterTypes[filterType] = this.getColumnFilterTypeName(filterType);
 
-                    try {
-                        if (this.extendedComponents.dataFilterCells
-                            && this.extendedComponents.dataFilterCells[filterType]) {
-                            requests.push(this.setExtendedFilterDataCell(filterType));
-                        } else {
-                            requests.push(this.setDataFilterCell(filterType));
-                        }
-                    } catch (e) {
-                        requests.push(this.setDefaultDataFilterCell(filterType));
+                    if (this.extendedComponents.dataFilterCells
+                        && this.extendedComponents.dataFilterCells[filterType]) {
+                        requests.push(this.setExtendedFilterDataCell(filterType));
+                    } else {
+                        requests.push(this.setDataFilterCell(filterType));
                     }
                 }
             }
@@ -795,6 +785,8 @@ export default {
             return import(`@UI/components/Grid/Layout/Table/Cells/Data/Filter/Grid${this.filterTypes[type]}FilterDataCell`)
                 .then((response) => {
                     this.dataFilterCellComponents[type] = response.default;
+                }).catch(() => {
+                    this.setDefaultDataFilterCell(type);
                 });
         },
         setDefaultDataFilterCell(type) {
@@ -817,6 +809,8 @@ export default {
             return import(`@UI/components/Grid/Layout/Table/Cells/Data/Grid${this.columnTypes[type]}DataCell`)
                 .then((response) => {
                     this.dataCellComponents[type] = response.default;
+                }).catch(() => {
+                    this.setDefaultDataCell(type);
                 });
         },
         setDefaultDataCell(type) {
@@ -831,6 +825,8 @@ export default {
             return import(`@UI/components/Grid/Layout/Table/Cells/Action/Grid${type}ActionCell`)
                 .then((response) => {
                     this.actionCellComponents[id] = response.default;
+                }).catch((e) => {
+                    throw e;
                 });
         },
         setDefaultActionCell(id) {
