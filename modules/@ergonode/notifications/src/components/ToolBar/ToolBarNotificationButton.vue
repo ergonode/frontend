@@ -5,7 +5,7 @@
 <template>
     <ToolBarSelectButton>
         <template #input>
-            <IconBell :fill-color="whiteColor" />
+            <IconInfo :fill-color="whiteColor" />
             <NotificationWarningBadge
                 v-if="isWaitingForDecision"
                 :floating="{ top: '8px', right: '8px'}" />
@@ -24,7 +24,7 @@
 <script>
 import NotificationWarningBadge
     from '@Notifications/components/Badges/NotificationWarningBadge/NotificationWarningBadge';
-import IconBell from '@Notifications/components/Icons/IconBell';
+import IconInfo from '@Notifications/components/Icons/IconInfo';
 import NotificationList from '@Notifications/components/NotificationList/NotificationList';
 import {
     WHITE,
@@ -38,7 +38,7 @@ export default {
     components: {
         NotificationWarningBadge,
         NotificationList,
-        IconBell,
+        IconInfo,
     },
     computed: {
         ...mapState('notification', [

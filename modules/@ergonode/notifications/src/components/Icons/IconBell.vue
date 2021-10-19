@@ -11,7 +11,7 @@
 <script>
 
 export default {
-    name: 'IconBell',
+    name: 'IconInfo',
     inheritAttrs: false,
     computed: {
         drawingCommands() {
