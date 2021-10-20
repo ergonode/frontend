@@ -8,161 +8,163 @@
         ref="gridTableLayout"
         @focusin="onFocusInside"
         @focusout="onFocusOut">
-        <Preloader v-if="isPrefetchingData || !isLayoutResolved" />
-        <template v-else>
-            <GridTableLayoutPinnedSection
-                v-if="isSelectColumn"
-                :pinned-state="pinnedState.LEFT"
-                :sections="pinnedSections">
-                <GridMultiSelectRowColumn
-                    v-if="multiselect"
-                    :style="templateRows"
-                    :column-index="0"
-                    :data-count="dataCount"
-                    :disabled-rows="disabledRows"
-                    :rows-offset="rowsOffset"
-                    :row-ids="rowIds"
-                    :selected-rows="selectedRows"
-                    :excluded-from-selection-rows="excludedFromSelectionRows"
-                    :is-basic-filter="isBasicFilter"
-                    :is-selected-all="isSelectedAll"
-                    @rows-select="onRowsSelect"
-                    @excluded-rows-select="onExcludedRowsSelect"
-                    @select-all="onSelectAllRows" />
-                <GridSelectRowColumn
-                    v-else
-                    :style="templateRows"
-                    :column-index="0"
-                    :data-count="dataCount"
-                    :disabled-rows="disabledRows"
-                    :rows-offset="rowsOffset"
-                    :row-ids="rowIds"
-                    :selected-rows="selectedRows"
-                    :is-basic-filter="isBasicFilter"
-                    @rows-select="onRowsSelect" />
-            </GridTableLayoutPinnedSection>
-            <GridTableLayoutColumnsSection
-                :style="templateColumns"
-                ref="columnsSection">
-                <GridSentinelColumn
+        <div class="grid-table-layout__body">
+            <Preloader v-if="isPrefetchingData || !isLayoutResolved" />
+            <template v-else>
+                <GridTableLayoutPinnedSection
                     v-if="isSelectColumn"
                     :pinned-state="pinnedState.LEFT"
-                    @sticky="onStickyChange" />
-                <template v-for="(column, columnIndex) in orderedColumns">
-                    <Component
-                        v-if="columnComponents[column.type]"
-                        :is="columnComponents[column.type]"
+                    :sections="pinnedSections">
+                    <GridMultiSelectRowColumn
+                        v-if="multiselect"
                         :style="templateRows"
-                        :key="column.id"
-                        :scope="scope"
-                        :column-index="columnIndex + columnsOffset"
-                        :column="column"
-                        :rows="rows"
-                        :rows-offset="rowsOffset"
-                        :sort-order="sortOrder"
-                        :filters="filters"
-                        :data-filter-cell-components="dataFilterCellComponents"
-                        :data-cell-components="dataCellComponents"
-                        :row-ids="rowIds"
-                        :errors="errors"
+                        :column-index="0"
+                        :data-count="dataCount"
                         :disabled-rows="disabledRows"
-                        :drafts="drafts"
+                        :rows-offset="rowsOffset"
+                        :row-ids="rowIds"
                         :selected-rows="selectedRows"
                         :excluded-from-selection-rows="excludedFromSelectionRows"
                         :is-basic-filter="isBasicFilter"
-                        :is-editable="isEditable"
                         :is-selected-all="isSelectedAll"
-                        @remove="onRemoveColumn"
-                        @swap="onSwapColumns"
-                        @resize="onResizeColumn"
-                        @sort="onSortColumn"
-                        @edit-filter-cell="onEditFilterCell"
-                        @filter-value="onFilterValueChange"
-                        @filter-clear="onFilterValueClear"
-                        @cell-value="onCellValueChange"
-                        @edit-cell="onEditCell"
-                    />
-                    <GridDraggableDataColumn
+                        @rows-select="onRowsSelect"
+                        @excluded-rows-select="onExcludedRowsSelect"
+                        @select-all="onSelectAllRows" />
+                    <GridSelectRowColumn
                         v-else
                         :style="templateRows"
-                        :key="column.id"
-                        :scope="scope"
-                        :column-index="columnIndex + columnsOffset"
-                        :column="column"
-                        :rows="rows"
-                        :rows-offset="rowsOffset"
-                        :sort-order="sortOrder"
-                        :filters="filters"
-                        :data-filter-cell-components="dataFilterCellComponents"
-                        :data-cell-components="dataCellComponents"
-                        :row-ids="rowIds"
-                        :errors="errors"
+                        :column-index="0"
+                        :data-count="dataCount"
                         :disabled-rows="disabledRows"
-                        :drafts="drafts"
+                        :rows-offset="rowsOffset"
+                        :row-ids="rowIds"
+                        :selected-rows="selectedRows"
+                        :is-basic-filter="isBasicFilter"
+                        @rows-select="onRowsSelect" />
+                </GridTableLayoutPinnedSection>
+                <GridTableLayoutColumnsSection
+                    :style="templateColumns"
+                    ref="columnsSection">
+                    <GridSentinelColumn
+                        v-if="isSelectColumn"
+                        :pinned-state="pinnedState.LEFT"
+                        @sticky="onStickyChange" />
+                    <template v-for="(column, columnIndex) in orderedColumns">
+                        <Component
+                            v-if="columnComponents[column.type]"
+                            :is="columnComponents[column.type]"
+                            :style="templateRows"
+                            :key="column.id"
+                            :scope="scope"
+                            :column-index="columnIndex + columnsOffset"
+                            :column="column"
+                            :rows="rows"
+                            :rows-offset="rowsOffset"
+                            :sort-order="sortOrder"
+                            :filters="filters"
+                            :data-filter-cell-components="dataFilterCellComponents"
+                            :data-cell-components="dataCellComponents"
+                            :row-ids="rowIds"
+                            :errors="errors"
+                            :disabled-rows="disabledRows"
+                            :drafts="drafts"
+                            :selected-rows="selectedRows"
+                            :excluded-from-selection-rows="excludedFromSelectionRows"
+                            :is-basic-filter="isBasicFilter"
+                            :is-editable="isEditable"
+                            :is-selected-all="isSelectedAll"
+                            @remove="onRemoveColumn"
+                            @swap="onSwapColumns"
+                            @resize="onResizeColumn"
+                            @sort="onSortColumn"
+                            @edit-filter-cell="onEditFilterCell"
+                            @filter-value="onFilterValueChange"
+                            @filter-clear="onFilterValueClear"
+                            @cell-value="onCellValueChange"
+                            @edit-cell="onEditCell"
+                        />
+                        <GridDraggableDataColumn
+                            v-else
+                            :style="templateRows"
+                            :key="column.id"
+                            :scope="scope"
+                            :column-index="columnIndex + columnsOffset"
+                            :column="column"
+                            :rows="rows"
+                            :rows-offset="rowsOffset"
+                            :sort-order="sortOrder"
+                            :filters="filters"
+                            :data-filter-cell-components="dataFilterCellComponents"
+                            :data-cell-components="dataCellComponents"
+                            :row-ids="rowIds"
+                            :errors="errors"
+                            :disabled-rows="disabledRows"
+                            :drafts="drafts"
+                            :selected-rows="selectedRows"
+                            :excluded-from-selection-rows="excludedFromSelectionRows"
+                            :is-basic-filter="isBasicFilter"
+                            :is-editable="isEditable"
+                            :is-selected-all="isSelectedAll"
+                            @remove="onRemoveColumn"
+                            @swap="onSwapColumns"
+                            @resize="onResizeColumn"
+                            @sort="onSortColumn"
+                            @edit-filter-cell="onEditFilterCell"
+                            @filter-value="onFilterValueChange"
+                            @filter-clear="onFilterValueClear"
+                            @cell-value="onCellValueChange"
+                            @edit-cell="onEditCell"
+                        />
+                    </template>
+                    <GridSentinelColumn
+                        v-if="actionColumns.length"
+                        :style="{ gridColumn: `${orderedColumns.length}`}"
+                        :pinned-state="pinnedState.RIGHT"
+                        @sticky="onStickyChange" />
+                </GridTableLayoutColumnsSection>
+                <GridTableLayoutPinnedSection
+                    :pinned-state="pinnedState.RIGHT"
+                    :sections="pinnedSections">
+                    <GridRowActionColumn
+                        v-for="(column, columnIndex) in actionColumns"
+                        :style="templateRows"
+                        :key="column.id"
+                        :column="column"
+                        :action-cell-components="actionCellComponents"
+                        :columns="actionColumns"
+                        :rows="rows"
+                        :disabled-rows="disabledRows"
+                        :row-ids="rowIds"
+                        :rows-offset="rowsOffset"
+                        :columns-offset="orderedColumns.length + columnIndex + columnsOffset"
                         :selected-rows="selectedRows"
                         :excluded-from-selection-rows="excludedFromSelectionRows"
                         :is-basic-filter="isBasicFilter"
-                        :is-editable="isEditable"
                         :is-selected-all="isSelectedAll"
-                        @remove="onRemoveColumn"
-                        @swap="onSwapColumns"
-                        @resize="onResizeColumn"
-                        @sort="onSortColumn"
-                        @edit-filter-cell="onEditFilterCell"
-                        @filter-value="onFilterValueChange"
-                        @filter-clear="onFilterValueClear"
-                        @cell-value="onCellValueChange"
-                        @edit-cell="onEditCell"
-                    />
-                </template>
-                <GridSentinelColumn
-                    v-if="actionColumns.length"
-                    :style="{ gridColumn: `${orderedColumns.length}`}"
-                    :pinned-state="pinnedState.RIGHT"
-                    @sticky="onStickyChange" />
-            </GridTableLayoutColumnsSection>
-            <GridTableLayoutPinnedSection
-                :pinned-state="pinnedState.RIGHT"
-                :sections="pinnedSections">
-                <GridRowActionColumn
-                    v-for="(column, columnIndex) in actionColumns"
-                    :style="templateRows"
-                    :key="column.id"
-                    :column="column"
-                    :action-cell-components="actionCellComponents"
-                    :columns="actionColumns"
-                    :rows="rows"
-                    :disabled-rows="disabledRows"
-                    :row-ids="rowIds"
-                    :rows-offset="rowsOffset"
-                    :columns-offset="orderedColumns.length + columnIndex + columnsOffset"
-                    :selected-rows="selectedRows"
-                    :excluded-from-selection-rows="excludedFromSelectionRows"
-                    :is-basic-filter="isBasicFilter"
-                    :is-selected-all="isSelectedAll"
-                    @row-action="onRowAction" />
-            </GridTableLayoutPinnedSection>
-        </template>
-        <Component
-            v-if="editCell"
-            :is="editCellComponent"
-            ref="editCell"
-            v-bind="editCell.props"
-            @cell-value="onCellValueChange"
-            @dismiss="onDismissEditCell" />
-        <Component
-            v-if="editFilterCell"
-            :is="editFilterCellComponent"
-            ref="editCell"
-            v-bind="editFilterCell.props"
-            @filter-value="onFilterValueChange"
-            @filter-clear="onFilterValueClear"
-            @dismiss="onDismissEditFilterCell" />
-        <GridCellResizer
-            v-if="cellResizer"
-            v-bind="cellResizer"
-            @resize="onCellResize"
-            @copy="onCopyCellValuesByResizing" />
+                        @row-action="onRowAction" />
+                </GridTableLayoutPinnedSection>
+            </template>
+            <Component
+                v-if="editCell"
+                :is="editCellComponent"
+                ref="editCell"
+                v-bind="editCell.props"
+                @cell-value="onCellValueChange"
+                @dismiss="onDismissEditCell" />
+            <Component
+                v-if="editFilterCell"
+                :is="editFilterCellComponent"
+                ref="editCell"
+                v-bind="editFilterCell.props"
+                @filter-value="onFilterValueChange"
+                @filter-clear="onFilterValueClear"
+                @dismiss="onDismissEditFilterCell" />
+            <GridCellResizer
+                v-if="cellResizer"
+                v-bind="cellResizer"
+                @resize="onCellResize"
+                @copy="onCopyCellValuesByResizing" />
+        </div>
     </div>
 </template>
 
@@ -860,6 +862,11 @@ export default {
 
         &--placeholder {
             flex: 0 0 auto;
+        }
+
+        &__body {
+            display: flex;
+            flex: 1 1 auto;
         }
     }
 </style>

@@ -603,7 +603,6 @@ export default {
         display: flex;
         flex: 1 1 auto;
         flex-direction: column;
-        min-width: 0;
         overflow: hidden;
 
         &--border {
