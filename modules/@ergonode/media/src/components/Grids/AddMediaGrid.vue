@@ -268,13 +268,18 @@ export default {
                 ...rest
             } = this.localParams;
 
+            const filters = [
+                filter,
+            ];
+
+            if (this.type !== MEDIA_TYPE.APPLICATION) {
+                filters.push(`type${FILTER_OPERATOR.EQUAL}${this.type}`);
+            }
+
             const params = {
                 ...rest,
                 ...sortOrder,
-                filter: [
-                    filter,
-                    `type${FILTER_OPERATOR.EQUAL}${this.type}`,
-                ].join(';'),
+                filter: filters.join(';'),
             };
 
             await getGridData({
