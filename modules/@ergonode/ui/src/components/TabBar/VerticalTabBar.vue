@@ -68,8 +68,10 @@ export default {
         },
     },
     watch: {
-        items() {
-            this.selectedTabIndex = 0;
+        items(oldValue, newValue) {
+            if (oldValue.length !== newValue.length) {
+                this.selectedTabIndex = 0;
+            }
         },
     },
     methods: {
