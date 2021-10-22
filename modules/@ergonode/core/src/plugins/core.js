@@ -21,22 +21,21 @@ import deepmerge from 'deepmerge';
 export default ({
     app,
     store,
-    route,
 }, inject) => {
     inject('gridCookies', {
         set(layout = GRID_LAYOUT.TABLE, value) {
-            app.$cookies.set(getGridCookieKey(store, route.name, layout), value);
+            app.$cookies.set(getGridCookieKey(store, app.context.route.name, layout), value);
         },
         get(layout = GRID_LAYOUT.TABLE) {
-            return app.$cookies.get(getGridCookieKey(store, route.name, layout)) || '';
+            return app.$cookies.get(getGridCookieKey(store, app.context.route.name, layout)) || '';
         },
         remove(layout = GRID_LAYOUT.TABLE) {
-            app.$cookies.remove(getGridCookieKey(store, route.name, layout));
+            app.$cookies.remove(getGridCookieKey(store, app.context.route.name, layout));
         },
         insertAtIndex(layout = GRID_LAYOUT.TABLE, index, value) {
             insertCookieAtIndex({
                 cookies: app.$cookies,
-                cookieName: getGridCookieKey(store, route.name, layout),
+                cookieName: getGridCookieKey(store, app.context.route.name, layout),
                 index,
                 data: value,
             });
@@ -44,14 +43,14 @@ export default ({
         removeAtIndex(layout = GRID_LAYOUT.TABLE, index) {
             removeCookieAtIndex({
                 cookies: app.$cookies,
-                cookieName: getGridCookieKey(store, route.name, layout),
+                cookieName: getGridCookieKey(store, app.context.route.name, layout),
                 index,
             });
         },
         changePosition(layout = GRID_LAYOUT.TABLE, from, to) {
             changeCookiePosition({
                 cookies: app.$cookies,
-                cookieName: getGridCookieKey(store, route.name, layout),
+                cookieName: getGridCookieKey(store, app.context.route.name, layout),
                 from,
                 to,
             });
