@@ -73,8 +73,8 @@ export default {
         },
         noDataPlaceholder() {
             return {
-                title: this.$t('@Collections.collection.noCollection'),
-                subtitle: this.$t('@Collections.collection.createFirst'),
+                title: this.$t('@Collections.collection._.noCollectionType'),
+                subtitle: this.$t('@Collections.collection._.noCollectionTypeDescription'),
             };
         },
     },

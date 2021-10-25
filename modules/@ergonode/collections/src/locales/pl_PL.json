@@ -24,7 +24,9 @@
         "title": "Kolekcje",
         "headTitle": "Kolekcje - Ergonode",
         "noCollection": "Brak kolekcji",
-        "createFirst": "W systemie nie ma kolekcji, dodaj pierwszą."
+        "noCollectionType": "Brak typów kolekcji",
+        "createFirst": "W systemie nie ma kolekcji, dodaj pierwszą.",
+        "noCollectionTypeDescription": "W systemie nie ma typów kolekcji, skontaktuj się z supportem."
       },
       "pages": {
         "id": {
