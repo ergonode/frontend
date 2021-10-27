@@ -324,6 +324,17 @@ export default {
             type: Array,
             default: () => [],
         },
+        /**
+         * The state of the selected rows
+         */
+        selectionState: {
+            type: Object,
+            default: () => ({
+                isSelectedAll: false,
+                selectedRows: {},
+                excludedFromSelectionRows: {},
+            }),
+        },
     },
     data() {
         const layoutConfigs = {
@@ -471,6 +482,19 @@ export default {
                 && this.isLayoutResolved[this.layout];
         },
     },
+    watch: {
+        selectionState() {
+            const {
+                isSelectedAll,
+                selectedRows,
+                excludedFromSelectionRows,
+            } = this.selectionState;
+
+            this.isSelectedAll = isSelectedAll;
+            this.selectedRows = selectedRows;
+            this.excludedFromSelectionRows = excludedFromSelectionRows;
+        },
+    },
     methods: {
         onResolvedLayout({
             layout,
@@ -500,6 +524,12 @@ export default {
             }
 
             this.selectedRows = selectedRows;
+
+            this.$emit('selection-state', {
+                isSelectedAll: this.isSelectedAll,
+                selectedRows,
+                excludedFromSelectionRows: this.excludedFromSelectionRows,
+            });
         },
         onExcludedRowsSelect({
             isExcluded,
@@ -512,12 +542,24 @@ export default {
             this.excludedFromSelectionRows = {
                 ...this.excludedFromSelectionRows,
             };
+
+            this.$emit('selection-state', {
+                isSelectedAll: this.isSelectedAll,
+                selectedRows: this.selectedRows,
+                excludedFromSelectionRows: this.excludedFromSelectionRows,
+            });
         },
         onSelectAllRows(isSelectedAll) {
             this.isSelectedAll = isSelectedAll;
 
             this.selectedRows = {};
             this.excludedFromSelectionRows = {};
+
+            this.$emit('selection-state', {
+                isSelectedAll,
+                selectedRows: {},
+                excludedFromSelectionRows: {},
+            });
         },
         onApplySettings(layoutConfigs) {
             this.layoutConfigs = deepmerge(this.layoutConfigs, layoutConfigs);
@@ -553,6 +595,12 @@ export default {
             this.excludedFromSelectionRows = {
                 ...this.excludedFromSelectionRows,
             };
+
+            this.$emit('selection-state', {
+                isSelectedAll: this.isSelectedAll,
+                selectedRows: this.selectedRows,
+                excludedFromSelectionRows: this.excludedFromSelectionRows,
+            });
 
             this.$emit(`${key}-row`, value);
         },
@@ -592,6 +640,12 @@ export default {
             this.isSelectedAll = false;
             this.selectedRows = {};
             this.excludedFromSelectionRows = {};
+
+            this.$emit('selection-state', {
+                isSelectedAll: false,
+                selectedRows: {},
+                excludedFromSelectionRows: {},
+            });
         },
     },
 };
