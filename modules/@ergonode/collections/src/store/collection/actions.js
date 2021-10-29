@@ -308,7 +308,7 @@ export default {
         state,
     }, {
         scope,
-        skus,
+        skus = [],
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -317,9 +317,9 @@ export default {
         const {
             id,
         } = state;
-        const mappedSkus = skus.replace(/\n/g, ',');
+        const mappedSkus = typeof skus === 'string' ? skus.replace(/\n/g, ',') : skus;
         const data = {
-            skus: mappedSkus !== '' ? mappedSkus.split(',') : [],
+            skus: typeof mappedSkus === 'string' && mappedSkus !== '' ? mappedSkus.split(',') : skus,
         };
 
         try {
