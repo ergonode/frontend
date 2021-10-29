@@ -15,6 +15,7 @@
         "editCollections": "Collections"
       },
       "addProducts": {
+        "fromListOption": "Select from list",
         "fromSkuOption": "Add by SKU",
         "fromSegmentOption": "Add from segment"
       }
@@ -69,12 +70,22 @@
           "formSubtitle": "Add to collection",
           "successMessage": "Products have been added to collection"
         },
+        "UpdateProductsAttachmentButton": {
+          "successMessage": "Products have been added to collection"
+        },
         "CollectionsGrid": {
           "successMessage": "Collection removed",
           "errorMessage": "Collections haven’t been fetched properly"
         },
         "CollectionProductsGrid": {
           "successMessage": "Collection products haven’t been fetched properly"
+        },
+        "ProductsToAttachForCollectionGrid": {
+          "noProducts": "No products",
+          "createFirst": "There are either no product with variants nor simple products in the system, so you can add the first one.",
+          "attachedLabel": "Attached",
+          "notAttachedLabel": "Not attached",
+          "getRequest": "Products haven’t been fetched properly"
         },
         "CollectionTranslationForm": {
           "collectionNameLabel": "Collection name",

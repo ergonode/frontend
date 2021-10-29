@@ -52,6 +52,10 @@ export default {
         modalComponents() {
             let modalComponents = [
                 {
+                    component: () => import('@Collections/components/Modals/AddProductsFromListModalGrid'),
+                    name: this.$t('@Collections._.addProducts.fromListOption'),
+                },
+                {
                     component: () => import('@Collections/components/Modals/AddProductsBySKUModalForm'),
                     name: this.$t('@Collections._.addProducts.fromSkuOption'),
                 },

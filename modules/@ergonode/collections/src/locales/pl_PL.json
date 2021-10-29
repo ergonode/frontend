@@ -15,6 +15,7 @@
         "editCollections": "Kolekcje"
       },
       "addProducts": {
+        "fromListTitle": "Dodaj produkty z listy",
         "fromSkuOption": "Dodaj po SKU",
         "fromSegmentOption": "Dodaj z reguł segmentacji"
       }
@@ -64,12 +65,22 @@
           "formSubtitle": "Dodaj do kolekcji",
           "successMessage": "Produkty zostały dodane do kolekcji"
         },
+        "UpdateProductsAttachmentButton": {
+          "successMessage": "Produkty zostały dodane do kolekcji"
+        },
         "CollectionsGrid": {
           "successMessage": "Kolekcja została usunięta",
           "errorMessage": "Kolekcje nie zostały pobrane poprawnie"
         },
         "CollectionProductsGrid": {
           "successMessage": "Kolekcja produktów nie została pobrana prawidłowo"
+        },
+        "ProductsToAttachForCollectionGrid": {
+          "noProducts": "Brak produktów",
+          "createFirst": "Brak produktów z wariantami albo produktów prostych w systemie, stwórz pierwszy.",
+          "attachedLabel": "Przypięte",
+          "notAttachedLabel": "Nie przypięte",
+          "getRequest": "Produkty nie zostały pobrane"
         },
         "CollectionTranslationForm": {
           "collectionNameLabel": "Nazwa kolekcji",
