@@ -9,21 +9,6 @@
         <EmptyDashboardPage
             v-else
             @product-created="onProductCreated" />
-        <DynamicScroller
-            :items="items"
-            :min-item-size="32">
-            <template #default="{ item, index, active }">
-                <DynamicScrollerItem
-                    :item="item"
-                    :active="active"
-                    :data-index="index"
-                    :data-active="active">
-                    <li :style="style">
-                        {{ item }}
-                    </li>
-                </DynamicScrollerItem>
-            </template>
-        </DynamicScroller>
     </div>
 </template>
 
@@ -51,7 +36,6 @@ export default {
         return {
             isFetchingData: true,
             productsCount: [],
-            items: Array.from(Array(1).keys()),
         };
     },
     computed: {
@@ -62,11 +46,6 @@ export default {
             return this.$hasAccess([
                 PRODUCT_PRIVILEGES.PRODUCT.read,
             ]);
-        },
-        style() {
-            return {
-                minHeight: '40px',
-            };
         },
     },
     methods: {
