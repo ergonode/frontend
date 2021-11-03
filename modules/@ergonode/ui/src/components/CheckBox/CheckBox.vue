@@ -169,8 +169,8 @@ export default {
                 flex-direction: row-reverse;
 
                 &::after {
-                    right: 4px;
                     left: unset;
+                    right: 4px;
                 }
             }
 
