@@ -15,6 +15,7 @@
         @swap="onSwap">
         <template #dropdown>
             <SelectList
+                :items-max-height="itemsMaxHeight"
                 :value="filterValue"
                 :search-value="searchValue"
                 :items="options"
@@ -52,6 +53,9 @@ import {
 import {
     getAutocomplete,
 } from '@Trees/services';
+import {
+    DROPDOWN_MAX_HEIGHT,
+} from '@UI/assets/scss/_js-variables/sizes.scss';
 import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
 import debounce from 'debounce';
 
@@ -102,6 +106,9 @@ export default {
         };
     },
     computed: {
+        itemsMaxHeight() {
+            return DROPDOWN_MAX_HEIGHT;
+        },
         placeholder() {
             return {
                 title: this.$t('@Trees.tree._.noTrees'),

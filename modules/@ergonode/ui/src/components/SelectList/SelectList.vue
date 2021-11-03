@@ -3,76 +3,76 @@
  * See LICENSE for license details.
  */
 <template>
-    <VirtualScroll
-        :items="items"
-        :render-ahead="4"
-        :estimated-height="20">
-        <template #header>
-            <div
-                v-if="!isPlaceholderVisible"
-                class="select-list-header">
-                <slot name="prependHeader" />
-                <div class="select-list-header__search">
-                    <SelectListSearch
-                        v-if="searchable"
-                        :placeholder="searchPlaceholder"
-                        :value="searchValue"
-                        :size="size"
-                        @input="onSearch" />
-                    <slot name="appendSearchHeader" />
-                </div>
-                <slot name="appendHeader" />
+    <div class="select-list">
+        <div
+            v-if="!isPlaceholderVisible"
+            class="select-list__header">
+            <slot name="prependHeader" />
+            <div class="select-list__search">
+                <SelectListSearch
+                    v-if="searchable"
+                    :placeholder="searchPlaceholder"
+                    :value="searchValue"
+                    :size="size"
+                    @input="onSearch" />
+                <slot name="appendSearchHeader" />
             </div>
-        </template>
-        <template #body>
-            <slot name="body">
-                <slot
-                    v-if="isPlaceholderVisible"
-                    name="noDataPlaceholder">
-                    <SelectListNoDataPlaceholder />
-                </slot>
-                <slot
-                    v-else-if="isSearchPlaceholderVisible"
-                    name="noResultsPlaceholder">
-                    <SelectListNoResultsPlaceholder @clear="onClearSearch" />
-                </slot>
+            <slot name="appendHeader" />
+        </div>
+        <slot name="body">
+            <slot
+                v-if="isPlaceholderVisible"
+                name="noDataPlaceholder">
+                <SelectListNoDataPlaceholder />
             </slot>
-        </template>
-        <template #item="{ item, index }">
-            <SelectListElement
-                :key="index"
-                :index="index"
-                :size="size"
-                :value="item"
-                :multiselect="multiselect"
-                :option-value="optionValue"
-                :selected="selectedItems[item[optionKey] || item]"
-                @input="onValueChange">
-                <template #option="{ isSelected }">
-                    <slot
-                        name="item"
+            <slot
+                v-else-if="isSearchPlaceholderVisible"
+                name="noResultsPlaceholder">
+                <SelectListNoResultsPlaceholder @clear="onClearSearch" />
+            </slot>
+            <DynamicScroller
+                v-if="!isPlaceholderVisible && !isSearchPlaceholderVisible"
+                :style="{ maxHeight: itemsMaxHeight }"
+                :items="items"
+                :key-field="optionKey"
+                :min-item-size="minItemSize">
+                <template #default="{ item, index, active }">
+                    <DynamicScrollerItem
                         :item="item"
-                        :is-selected="isSelected"
-                        :index="index" />
+                        :active="active"
+                        :index="index">
+                        <SelectListElement
+                            :key="index"
+                            :index="index"
+                            :size="size"
+                            :value="item"
+                            :multiselect="multiselect"
+                            :option-key="optionKey"
+                            :option-value="optionValue"
+                            :selected="selectedItems[item[optionKey] || item]"
+                            @input="onValueChange">
+                            <template #option="{ isSelected }">
+                                <slot
+                                    name="item"
+                                    :item="item"
+                                    :is-selected="isSelected"
+                                    :index="index" />
+                            </template>
+                        </SelectListElement>
+                    </DynamicScrollerItem>
                 </template>
-            </SelectListElement>
-        </template>
-    </VirtualScroll>
+            </DynamicScroller>
+        </slot>
+    </div>
 </template>
 
 <script>
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import {
-    VirtualScroll,
-} from 'vue-windowing';
 
 export default {
     name: 'SelectList',
-    components: {
-        VirtualScroll,
-    },
     props: {
         /**
          * Map of selected item values
@@ -143,8 +143,26 @@ export default {
             type: String,
             default: '',
         },
+        /**
+         * The max height of elements list
+         */
+        itemsMaxHeight: {
+            type: String,
+            default: '100%',
+        },
     },
     computed: {
+        minItemSize() {
+            switch (this.size) {
+            case SIZE.SMALL:
+                return 32;
+            case SIZE.REGULAR:
+                return 40;
+            case SIZE.LARGE:
+                return 48;
+            default: return 48;
+            }
+        },
         selectedItems() {
             if (!this.value) {
                 return {};
@@ -224,22 +242,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .select-list-header {
-        position: sticky;
-        top: 0;
-        z-index: $Z_INDEX_LVL_1;
+    .select-list {
         display: flex;
         flex-direction: column;
-        background-color: $WHITE;
+        height: 100%;
+        overflow: hidden;
 
-        &__search {
+        &__header {
+            position: sticky;
+            top: 0;
+            z-index: $Z_INDEX_LVL_1;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+            flex-direction: column;
+            background-color: $WHITE;
 
-        &__select-all {
-            margin-right: 12px;
+            &__search {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            &__select-all {
+                margin-right: 12px;
+            }
         }
     }
 </style>

@@ -333,8 +333,8 @@ export default {
                 value = this.value;
             }
 
-            if (this.optionValue) {
-                return value.map(item => item[this.optionValue]).join(', ');
+            if (this.optionValue || this.optionKey) {
+                return value.map(item => item[this.optionValue] || `#${item[this.optionKey]}`).join(', ');
             }
 
             return value.join(', ');

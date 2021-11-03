@@ -12,9 +12,6 @@
 
 <script>
 import {
-    DROPDOWN_MAX_HEIGHT,
-} from '@UI/assets/scss/_js-variables/sizes.scss';
-import {
     getFixedMousePosition,
     isMouseOutsideElement,
 } from '@UI/models/mouse';
@@ -60,14 +57,11 @@ export default {
         fixed() {
             requestAnimationFrame(() => {
                 if (this.fixed) {
-                    const maxHeight = parseInt(DROPDOWN_MAX_HEIGHT, 10);
                     const parentOffset = this.parentElement.getBoundingClientRect();
 
-                    this.$refs.dropdown.style.maxHeight = `${maxHeight}px`;
                     this.$refs.dropdown.style.width = `${parentOffset.width}px`;
                 } else {
                     this.$refs.dropdown.style.width = null;
-                    this.$refs.dropdown.style.maxHeight = null;
                 }
             });
         },
@@ -97,13 +91,10 @@ export default {
                         const {
                             innerHeight,
                         } = window;
-                        let maxHeight = parseInt(DROPDOWN_MAX_HEIGHT, 10);
+                        const maxHeight = this.$refs.dropdown.clientHeight;
 
                         if (this.fixed) {
-                            this.$refs.dropdown.style.maxHeight = `${maxHeight}px`;
                             this.$refs.dropdown.style.width = `${parentOffset.width}px`;
-                        } else {
-                            maxHeight = this.$refs.dropdown.clientHeight;
                         }
 
                         const yPos = innerHeight - parentOffset.y;

@@ -34,14 +34,12 @@ import {
 } from '@Core/defaults/operators';
 import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
 import AdvancedFilterMultiselectContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterMultiselectContent';
-import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
 
 export default {
     name: 'AdvancedFilterMultiSelectType',
     components: {
         AdvancedFilter,
         AdvancedFilterMultiselectContent,
-        MultiselectDropdownFooter,
     },
     props: {
         /**

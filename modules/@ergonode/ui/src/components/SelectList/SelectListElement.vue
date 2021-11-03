@@ -82,6 +82,13 @@ export default {
             default: false,
         },
         /**
+         * The key of the option
+         */
+        optionKey: {
+            type: String,
+            default: '',
+        },
+        /**
          * The key of the value
          */
         optionValue: {
@@ -91,7 +98,15 @@ export default {
     },
     computed: {
         presentingValue() {
-            return this.value[this.optionValue] || this.value;
+            if (this.value[this.optionValue]) {
+                return this.value[this.optionValue];
+            }
+
+            if (this.value[this.optionKey]) {
+                return `#${this.value[this.optionKey]}`;
+            }
+
+            return this.value;
         },
     },
     methods: {
