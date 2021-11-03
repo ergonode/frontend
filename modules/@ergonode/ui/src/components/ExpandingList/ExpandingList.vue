@@ -15,8 +15,7 @@
                     <DynamicScrollerItem
                         :item="item"
                         :active="active"
-                        :data-index="index"
-                        :data-active="active">
+                        :index="index">
                         <slot
                             name="item"
                             :index="index"
