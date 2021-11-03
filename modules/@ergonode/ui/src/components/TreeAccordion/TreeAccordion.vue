@@ -62,15 +62,9 @@ import {
     getSelectedItems,
     getSelectedNodes,
 } from '@UI/models/treeAccordion';
-import {
-    ExpandingList,
-} from 'vue-windowing';
 
 export default {
     name: 'TreeAccordion',
-    components: {
-        ExpandingList,
-    },
     props: {
         /**
          * Map of selected item values

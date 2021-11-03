@@ -2,6 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
+
 import ActionBaseButton from '@UI/components/ActionButton/ActionBaseButton';
 import ActionButton from '@UI/components/ActionButton/ActionButton';
 import ActionFab from '@UI/components/ActionFab/ActionFab';
@@ -27,6 +29,7 @@ import DefaultImage from '@UI/components/DefaultImage/DefaultImage';
 import Divider from '@UI/components/Dividers/Divider';
 import DraggableForm from '@UI/components/DraggableForm/DraggableForm';
 import DropZone from '@UI/components/DropZone/DropZone';
+import ExpandingList from '@UI/components/ExpandingList/ExpandingList';
 import Fab from '@UI/components/Fab/Fab';
 import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
 import FluidBlob from '@UI/components/FluidBlob/FluidBlob';
@@ -182,6 +185,8 @@ import RangeSlider from '@UI/components/RangeSlider/RangeSlider';
 import Resizer from '@UI/components/Resizer/Resizer';
 import RichTextEditor from '@UI/components/RichTextEditor/RichTextEditor';
 import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
+import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
+import SelectDropdownFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownFooter';
 import Select from '@UI/components/Select/Select';
 import TranslationSelect from '@UI/components/Select/TranslationSelect';
 import TreeSelect from '@UI/components/Select/Tree/TreeSelect';
@@ -247,7 +252,16 @@ import UploadFileListLoadingElement from '@UI/components/UploadFileList/UploadFi
 import Widget from '@UI/components/Widget/Widget';
 import WidgetNoDataPlaceholder from '@UI/components/Widget/WidgetNoDataPlaceholder';
 import Vue from 'vue';
+import {
+    DynamicScroller,
+    DynamicScrollerItem,
+} from 'vue-virtual-scroller';
 
+Vue.component('ExpandingList', ExpandingList);
+Vue.component('MultiselectDropdownFooter', MultiselectDropdownFooter);
+Vue.component('SelectDropdownFooter', SelectDropdownFooter);
+Vue.component('DynamicScrollerItem', DynamicScrollerItem);
+Vue.component('DynamicScroller', DynamicScroller);
 Vue.component('TextField', TextField);
 Vue.component('TextFieldSuffix', TextFieldSuffix);
 Vue.component('TextArea', TextArea);
