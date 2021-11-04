@@ -209,7 +209,7 @@ Cypress.Commands.add('chooseSelectOption', {
         .should('be.visible')
         .as('option');
 
-    getSelectedOption('@virtualScroll', '@option', 0, value);
+    getSelectedOption('@dropdown', '@option', 0, value);
 
     cy.get('@selectedOption')
         .click({

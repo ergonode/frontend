@@ -16,15 +16,5 @@
     "defaultLanguage": "en_GB",
     "adminEmail": "test@ergonode.com",
     "adminPass": "abcd1234"
-  },
-  "numTestsKeptInMemory": 100,
-  "responseTimeout": 4000,
-  "requestTimeout": 2000,
-  "defaultCommandTimeout": 2000,
-  "e2e": {
-    "slowTestThreshold": 5000
-  },
-  "component": {
-    "slowTestThreshold": 150
   }
 }
