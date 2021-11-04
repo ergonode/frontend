@@ -205,11 +205,15 @@ Cypress.Commands.add('chooseSelectOption', {
         .should('be.visible')
         .as('dropdown');
     cy.get('@dropdown')
+        .find('.vue-recycle-scroller')
+        .should('be.visible')
+        .as('virtualScroll');
+    cy.get('@virtualScroll')
         .find('.list-element')
         .should('be.visible')
         .as('option');
 
-    getSelectedOption('@dropdown', '@option', 0, value);
+    getSelectedOption('@virtualScroll', '@option', 0, value);
 
     cy.get('@selectedOption')
         .click({
