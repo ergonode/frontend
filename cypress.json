@@ -6,7 +6,6 @@
   "video": false,
   "screenshotOnRunFailure": false,
   "experimentalFetchPolyfill": true,
-  "waitForAnimations": false,
   "retries": {
     "runMode": 0,
     "openMode": 0
