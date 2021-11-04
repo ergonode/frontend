@@ -205,10 +205,6 @@ Cypress.Commands.add('chooseSelectOption', {
         .should('be.visible')
         .as('dropdown');
     cy.get('@dropdown')
-        .find('.virtual-scroll')
-        .should('be.visible')
-        .as('virtualScroll');
-    cy.get('@virtualScroll')
         .find('.list-element')
         .should('be.visible')
         .as('option');
