@@ -255,16 +255,16 @@ export default {
             display: flex;
             flex-direction: column;
             background-color: $WHITE;
+        }
 
-            &__search {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
+        &__search {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-            &__select-all {
-                margin-right: 12px;
-            }
+        &__select-all {
+            margin-right: 12px;
         }
     }
 </style>
