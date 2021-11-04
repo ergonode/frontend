@@ -63,7 +63,7 @@ Feature: CREATE: User
     Then I close modal
 
   @error
-  Scenario: Add user - validation error (too string string and wrong email)
+  Scenario: Add user - validation error (too short string and wrong email)
     When I fill the "user-email" input with the "test" term
     * I fill the "user-firstName" input with the "Admin" term
     * I fill the "user-lastName" input with the "Ergo" term
@@ -72,7 +72,7 @@ Feature: CREATE: User
     * I choose "Arabic (Egypt)" option from "user-language" select field
     * I choose "Admin" option from "user-role" select field
     * On "modal" I "submit" the data and "create" is "incorrect"
-    * I see a form validation error that says "['This value is not a valid email address., User email is too short. It should have at least 5 characters.']"
+    * I see a form validation error that says "['This value is not a valid email address. User email is too short. It should have at least 5 characters.']"
     Then I close modal
 
   @error
