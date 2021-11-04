@@ -167,6 +167,11 @@ export default {
 
             & label {
                 flex-direction: row-reverse;
+
+                &::after {
+                    left: unset;
+                    right: 4px;
+                }
             }
 
             #{$checkbox}__label {

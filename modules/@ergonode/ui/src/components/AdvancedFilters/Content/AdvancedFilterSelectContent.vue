@@ -4,7 +4,7 @@
  */
 <template>
     <SelectList
-        :style="styles"
+        :items-max-height="itemsMaxHeight"
         :value="filterValue"
         :items="options"
         :size="smallSize"
@@ -78,10 +78,8 @@ export default {
         };
     },
     computed: {
-        styles() {
-            return {
-                maxHeight: DROPDOWN_MAX_HEIGHT,
-            };
+        itemsMaxHeight() {
+            return DROPDOWN_MAX_HEIGHT;
         },
         smallSize() {
             return SIZE.SMALL;

@@ -496,7 +496,7 @@ export default {
                 column,
             } = this.editCell.props;
 
-            this.$refs.gridTableLayout.querySelector(`.coordinates-${column}-${row}`).focus();
+            this.focusCellAtPosition(row, column);
             this.onEditCell();
         },
         onDismissEditFilterCell() {
@@ -505,7 +505,7 @@ export default {
                 column,
             } = this.editFilterCell.props;
 
-            this.$refs.gridTableLayout.querySelector(`.coordinates-${column}-${row}`).focus();
+            this.focusCellAtPosition(row, column);
             this.onEditFilterCell();
         },
         onEditCell(editCell = null) {
@@ -607,6 +607,13 @@ export default {
         },
         onRowAction(payload) {
             this.$emit('row-action', payload);
+        },
+        focusCellAtPosition(row, column) {
+            const cell = this.$refs.gridTableLayout.querySelector(`.coordinates-${column}-${row}`);
+
+            if (cell) {
+                cell.focus();
+            }
         },
         getColumnComponents() {
             const isAnyNewColumnType = this.visibleColumns.some(column => typeof this.columnTypes[column.type] === 'undefined');

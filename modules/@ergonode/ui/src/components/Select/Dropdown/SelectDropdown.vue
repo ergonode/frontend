@@ -11,6 +11,7 @@
         <slot name="body">
             <slot name="dropdown">
                 <SelectList
+                    :items-max-height="itemsMaxHeight"
                     :value="value"
                     :search-value="searchValue"
                     :items="options"
@@ -56,15 +57,12 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
-import SelectDropdownFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownFooter';
+import {
+    DROPDOWN_MAX_HEIGHT,
+} from '@UI/assets/scss/_js-variables/sizes.scss';
 
 export default {
     name: 'SelectDropdown',
-    components: {
-        SelectDropdownFooter,
-        MultiselectDropdownFooter,
-    },
     props: {
         /**
          * The size of the component
@@ -161,6 +159,9 @@ export default {
         },
     },
     computed: {
+        itemsMaxHeight() {
+            return DROPDOWN_MAX_HEIGHT;
+        },
         isAnyOption() {
             return this.options.length > 0;
         },
