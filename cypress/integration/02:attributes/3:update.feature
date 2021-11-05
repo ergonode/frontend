@@ -91,9 +91,9 @@ Feature: UPDATE: Attributes
     * I fill the "attribute-label" input with the "<type_txt>_label_EN" term for "en_GB" translation
     * I fill the "attribute-hint" textarea with the "<type_txt>_hint_EN" term for "en_GB" translation
     * I fill the "attribute-placeholder" textarea with the "<type_txt>_placeholder_EN" term for "en_GB" translation
-    * I fill the "attribute-label" input with the "<type_txt>_label_PL" term for "pl_PL" translation
-    * I fill the "attribute-hint" textarea with the "<type_txt>_hint_PL" term for "pl_PL" translation
-    * I fill the "attribute-placeholder" textarea with the "<type_txt>_placeholder_PL" term for "pl_PL" translation
+    # * I fill the "attribute-label" input with the "<type_txt>_label_PL" term for "pl_PL" translation
+    # * I fill the "attribute-hint" textarea with the "<type_txt>_hint_PL" term for "pl_PL" translation
+    # * I fill the "attribute-placeholder" textarea with the "<type_txt>_placeholder_PL" term for "pl_PL" translation
     * I "submit" the data and "update" is "correct"
     * I click back arrow
     * I see "attributes/grid" page
@@ -112,8 +112,8 @@ Feature: UPDATE: Attributes
     * I see "attributes/attribute/%UUID%/translations" page
     * I fill the "attribute-label" input with the "<type_txt>_label_EN" term for "en_GB" translation
     * I fill the "attribute-hint" textarea with the "<type_txt>_hint_EN" term for "en_GB" translation
-    * I fill the "attribute-label" input with the "<type_txt>_label_PL" term for "pl_PL" translation
-    * I fill the "attribute-hint" textarea with the "<type_txt>_hint_PL" term for "pl_PL" translation
+    # * I fill the "attribute-label" input with the "<type_txt>_label_PL" term for "pl_PL" translation
+    # * I fill the "attribute-hint" textarea with the "<type_txt>_hint_PL" term for "pl_PL" translation
     * I "submit" the data and "update" is "correct"
     * I click back arrow
     * I see "attributes/grid" page
@@ -135,10 +135,10 @@ Feature: UPDATE: Attributes
     * I fill the "attribute-hint" textarea with the "<type_txt>_hint_EN" term for "en_GB" translation
     * I fill the "attribute-option" input for index 0 with the "<type_txt>_option_0_EN" term for "en_GB" translation
     * I fill the "attribute-option" input for index 1 with the "<type_txt>_option_1_EN" term for "en_GB" translation
-    * I fill the "attribute-label" input with the "<type_txt>_label_PL" term for "pl_PL" translation
-    * I fill the "attribute-hint" textarea with the "<type_txt>_hint_PL" term for "pl_PL" translation
-    * I fill the "attribute-option" input for index 0 with the "<type_txt>_option_0_PL" term for "pl_PL" translation
-    * I fill the "attribute-option" input for index 1 with the "<type_txt>_option_1_PL" term for "pl_PL" translation
+    # * I fill the "attribute-label" input with the "<type_txt>_label_PL" term for "pl_PL" translation
+    # * I fill the "attribute-hint" textarea with the "<type_txt>_hint_PL" term for "pl_PL" translation
+    # * I fill the "attribute-option" input for index 0 with the "<type_txt>_option_0_PL" term for "pl_PL" translation
+    # * I fill the "attribute-option" input for index 1 with the "<type_txt>_option_1_PL" term for "pl_PL" translation
     * I "submit" the data and "update" is "correct"
     * I send a "PUT" option request and status code should be 200
     * I click back arrow
