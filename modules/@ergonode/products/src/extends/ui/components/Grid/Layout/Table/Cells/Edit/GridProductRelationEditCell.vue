@@ -21,8 +21,8 @@
 
 <script>
 import {
-    DEFAULT_LARGE_EDIT_CELL_CONTENT_HEIGHT,
-    DEFAULT_LARGE_EDIT_CELL_CONTENT_WIDTH,
+    DEFAULT_EDIT_CELL_CONTENT_HEIGHT,
+    DEFAULT_EDIT_CELL_CONTENT_WIDTH,
 } from '@Core/defaults/grid';
 import {
     SIZE,
@@ -57,10 +57,10 @@ export default {
     },
     computed: {
         height() {
-            return DEFAULT_LARGE_EDIT_CELL_CONTENT_HEIGHT;
+            return DEFAULT_EDIT_CELL_CONTENT_HEIGHT;
         },
         width() {
-            return DEFAULT_LARGE_EDIT_CELL_CONTENT_WIDTH;
+            return DEFAULT_EDIT_CELL_CONTENT_WIDTH;
         },
         smallSize() {
             return SIZE.SMALL;

@@ -36,8 +36,8 @@
 
 <script>
 import {
+    DEFAULT_EDIT_CELL_CONTENT_WIDTH,
     DEFAULT_LARGE_EDIT_CELL_CONTENT_HEIGHT,
-    DEFAULT_LARGE_EDIT_CELL_CONTENT_WIDTH,
 } from '@Core/defaults/grid';
 import {
     INPUT_TYPE,
@@ -60,7 +60,7 @@ export default {
             return DEFAULT_LARGE_EDIT_CELL_CONTENT_HEIGHT;
         },
         width() {
-            return DEFAULT_LARGE_EDIT_CELL_CONTENT_WIDTH;
+            return DEFAULT_EDIT_CELL_CONTENT_WIDTH;
         },
         underlineInputType() {
             return INPUT_TYPE.UNDERLINE;
