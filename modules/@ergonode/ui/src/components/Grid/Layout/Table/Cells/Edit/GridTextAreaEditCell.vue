@@ -6,10 +6,16 @@
     <GridEditNavigationCell
         :edit-key-code="27"
         @edit="onEditCell">
-        <GridTextEditContentCell :style="positionStyle">
+        <GridEditContentCell
+            :bounds="bounds"
+            :shadow="true"
+            :centered="true"
+            :padding="8"
+            :fixed-width="width"
+            :fixed-height="height">
             <RichTextEditor
                 v-if="isRichEdit"
-                :style="{height: '134px'}"
+                :style="{ height: `${height}px` }"
                 :value="localValue"
                 :disabled="disabled"
                 :autofocus="true"
@@ -17,29 +23,29 @@
                 @blur="onRTEValueChange" />
             <TextArea
                 v-else
-                height="134px"
+                :height="`${height}px`"
                 v-model="localValue"
                 :autofocus="true"
                 :disabled="disabled"
                 :type="underlineInputType"
                 :error-messages="errorMessages"
                 resize="none" />
-        </GridTextEditContentCell>
+        </GridEditContentCell>
     </GridEditNavigationCell>
 </template>
 
 <script>
 import {
+    DEFAULT_EDIT_CELL_CONTENT_WIDTH,
+    DEFAULT_LARGE_EDIT_CELL_CONTENT_HEIGHT,
+} from '@Core/defaults/grid';
+import {
     INPUT_TYPE,
 } from '@Core/defaults/theme';
-import GridTextEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridTextEditContentCell';
 import gridEditCellMixin from '@UI/mixins/grid/gridEditCellMixin';
 
 export default {
     name: 'GridTextAreaEditCell',
-    components: {
-        GridTextEditContentCell,
-    },
     mixins: [
         gridEditCellMixin,
     ],
@@ -50,17 +56,11 @@ export default {
         },
     },
     computed: {
-        positionStyle() {
-            const {
-                x,
-                y,
-            } = this.bounds;
-
-            return {
-                top: `${y}px`,
-                left: `${x}px`,
-                width: '320px',
-            };
+        height() {
+            return DEFAULT_LARGE_EDIT_CELL_CONTENT_HEIGHT;
+        },
+        width() {
+            return DEFAULT_EDIT_CELL_CONTENT_WIDTH;
         },
         underlineInputType() {
             return INPUT_TYPE.UNDERLINE;

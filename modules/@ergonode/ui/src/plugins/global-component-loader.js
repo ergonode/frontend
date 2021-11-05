@@ -64,6 +64,7 @@ import GridSelectCollectionHeaderCell
     from '@UI/components/Grid/Layout/Collection/Cells/Header/GridSelectCollectionHeaderCell';
 import GridCollectionLayout from '@UI/components/Grid/Layout/Collection/GridCollectionLayout';
 import GridCollectionLayoutActivator from '@UI/components/Grid/Layout/Collection/GridCollectionLayoutActivator';
+import GridEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridEditContentCell';
 import GridSelectRowActionFabCell from '@UI/components/Grid/Layout/Table/Cells/GridSelectRowActionFabCell';
 import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
 import GridHeaderCell from '@UI/components/Grid/Layout/Table/Cells/Header/GridHeaderCell';
@@ -257,6 +258,7 @@ import {
     DynamicScrollerItem,
 } from 'vue-virtual-scroller';
 
+Vue.component('GridEditContentCell', GridEditContentCell);
 Vue.component('ExpandingList', ExpandingList);
 Vue.component('MultiselectDropdownFooter', MultiselectDropdownFooter);
 Vue.component('SelectDropdownFooter', SelectDropdownFooter);

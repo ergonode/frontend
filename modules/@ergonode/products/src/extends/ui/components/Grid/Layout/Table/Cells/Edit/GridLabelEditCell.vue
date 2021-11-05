@@ -4,7 +4,7 @@
  */
 <template>
     <GridEditNavigationCell @edit="onEditCell">
-        <GridSelectEditContentCell :style="positionStyle">
+        <GridEditContentCell :bounds="bounds">
             <Select
                 v-model="localValue"
                 :autofocus="true"
@@ -48,7 +48,7 @@
                     </ListElementDescription>
                 </template>
             </Select>
-        </GridSelectEditContentCell>
+        </GridEditContentCell>
     </GridEditNavigationCell>
 </template>
 
@@ -59,7 +59,6 @@ import {
 import {
     GRAPHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import GridSelectEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
 import gridEditCellMixin from '@UI/mixins/grid/gridEditCellMixin';
 import {
     mapActions,
@@ -67,9 +66,6 @@ import {
 
 export default {
     name: 'GridLabelEditCell',
-    components: {
-        GridSelectEditContentCell,
-    },
     mixins: [
         gridEditCellMixin,
     ],
