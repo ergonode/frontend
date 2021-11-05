@@ -26,7 +26,7 @@
                 <DraggableFormPlaceholderItem v-if="isPlaceholderItemVisible" />
                 <DraggableFormItem
                     v-for="(item, index) in localItems"
-                    :key="`${item.id}|${item.languageCode}`"
+                    :key="`${item.id || item.fieldKey}|${item.languageCode || ''}`"
                     :scope="scope"
                     :index="index"
                     :item="item"
@@ -125,6 +125,13 @@ export default {
             type: Function,
             default: null,
         },
+        /**
+         * Show drag & drop placeholder
+         */
+        hasDropPlaceholder: {
+            type: Boolean,
+            default: true,
+        },
     },
     data() {
         return {
@@ -141,8 +148,8 @@ export default {
             return this.localItems.map(item => item.id);
         },
         isPlaceholderItemVisible() {
-            return !this.localItems.length
-                || (this.localItems.length === 1 && this.draggedElement && this.ghostIndex === -1);
+            return this.hasDropPlaceholder && (!this.localItems.length
+                || (this.localItems.length === 1 && this.draggedElement && this.ghostIndex === -1));
         },
     },
     watch: {

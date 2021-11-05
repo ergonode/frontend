@@ -8,26 +8,27 @@
         :disabled="disabled"
         :add-list-title="$t('@Attributes.attributeExtend.components.AttributeOptionKeyValues.addOption')"
         @add="onAddOptionKey">
-        <FormListSubsection v-if="optionIndexes.length">
-            <FormListElementField
-                v-for="(fieldKey, i) in optionIndexes"
-                :key="fieldKey"
-                :field-key="fieldKey"
-                :disabled="disabled"
-                @remove="onRemoveOption">
-                <TextField
-                    :data-cy="dataCyGenerator(i)"
-                    :value="options[fieldKey].key"
-                    required
-                    :size="smallSize"
-                    :disabled="disabled"
-                    :label="$t('@Attributes.attributeExtend.components.AttributeOptionKeyValues.optionLabel')"
-                    :error-messages="errors[`option_${fieldKey}`]"
-                    @input="value => onUpdateOptionKey({
-                        key: fieldKey,
-                        value,
-                    })" />
-            </FormListElementField>
+        <FormListSubsection v-if="optionValues.length">
+            <DraggableForm
+                :has-drop-placeholder="false"
+                :scope="scope"
+                :items="optionValues"
+                @remove-item="onRemoveOption">
+                <template #item="{ item }">
+                    <TextField
+                        :data-cy="dataCyGenerator(item.fieldKey)"
+                        :value="item.key"
+                        required
+                        :size="smallSize"
+                        :disabled="disabled"
+                        :label="$t('@Attributes.attributeExtend.components.AttributeOptionKeyValues.optionLabel')"
+                        :error-messages="errors[`option_${item.fieldKey}`]"
+                        @input="value => onUpdateOptionKey({
+                            key: item.fieldKey,
+                            value,
+                        })" />
+                </template>
+            </DraggableForm>
         </FormListSubsection>
     </FormListSection>
 </template>
@@ -63,8 +64,11 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
-        optionIndexes() {
-            return Object.keys(this.options);
+        optionValues() {
+            return Object.keys(this.options).map(key => ({
+                fieldKey: key,
+                ...this.options[key],
+            }));
         },
     },
     methods: {
@@ -89,10 +93,10 @@ export default {
                 value: this.options,
             });
         },
-        onRemoveOption(fieldKey) {
+        onRemoveOption(item) {
             this.removeAttributeOptionKey({
-                index: fieldKey,
-                id: this.options[fieldKey].id,
+                index: item.fieldKey,
+                id: item.id,
             });
 
             this.onScopeValueChange({
