@@ -29,7 +29,7 @@ Feature: UPDATE: Attributes
     * On "grid" I click on "edit" button for row with "<name>" value
     * I see "attributes/attribute/%UUID%/general" page
     * I choose "<scope_new>" option from "attribute-scope" select field
-    * I choose "[0,1]" options from "attribute-groups" multi select field
+    * I choose "[0]" options from "attribute-groups" multi select field
     * I "submit" the data and "update" is "correct"
     * I click back arrow
     * I see "attributes/grid" page
@@ -47,8 +47,7 @@ Feature: UPDATE: Attributes
     * On "grid" I click on "edit" button for row with "<name>" value
     * I see "attributes/attribute/%UUID%/general" page
     * I choose "<scope_new>" option from "attribute-scope" select field
-    * I choose "[0,1]" options from "attribute-groups" multi select field
-    * I choose "<param>" option from "attribute-params" select field
+    * I choose "[0]" options from "attribute-groups" multi select field
     * I "submit" the data and "update" is "correct"
     * I click back arrow
     * I see "attributes/grid" page
@@ -89,7 +88,6 @@ Feature: UPDATE: Attributes
     * I see "attributes/attribute/%UUID%/general" page
     * I click tab with "Translations" text
     * I see "attributes/attribute/%UUID%/translations" page
-    * I choose "[1]" option from "translation-language-select" multi select field
     * I fill the "attribute-label" input with the "<type_txt>_label_EN" term for "en_GB" translation
     * I fill the "attribute-hint" textarea with the "<type_txt>_hint_EN" term for "en_GB" translation
     * I fill the "attribute-placeholder" textarea with the "<type_txt>_placeholder_EN" term for "en_GB" translation
@@ -107,12 +105,11 @@ Feature: UPDATE: Attributes
 
   @success
   Scenario Outline: Update <type_txt> attribute from edit page - success
-    When On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '2':'', '3': '<type_txt>', '4': '<scope_txt>'}"
+    When On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '2':'', '3': '<type_txt>'}"
     * On "grid" I click on "edit" button for row with "<name>" value
     * I see "attributes/attribute/%UUID%/general" page
     * I click tab with "Translations" text
     * I see "attributes/attribute/%UUID%/translations" page
-    * I choose "[1]" option from "translation-language-select" multi select field
     * I fill the "attribute-label" input with the "<type_txt>_label_EN" term for "en_GB" translation
     * I fill the "attribute-hint" textarea with the "<type_txt>_hint_EN" term for "en_GB" translation
     * I fill the "attribute-label" input with the "<type_txt>_label_PL" term for "pl_PL" translation
@@ -120,12 +117,12 @@ Feature: UPDATE: Attributes
     * I "submit" the data and "update" is "correct"
     * I click back arrow
     * I see "attributes/grid" page
-    Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '2':'<type_txt>_label_EN', '3': '<type_txt>', '4': '<scope_txt>'}"
+    Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '2':'<type_txt>_label_EN', '3': '<type_txt>'}"
 
     Examples:
-      | name                | type_txt | scope_txt |
-      | price_attribute     | Price    | global    |
-      | gallery_attribute   | Gallery  | global    |
+      | name                | type_txt |
+      | price_attribute     | Price    |
+      | gallery_attribute   | Gallery  |
 
   @success
   Scenario Outline: Update <type_txt> attribute from edit page - success
@@ -134,7 +131,6 @@ Feature: UPDATE: Attributes
     * I see "attributes/attribute/%UUID%/general" page
     * I click tab with "Translations" text
     * I see "attributes/attribute/%UUID%/translations" page
-    * I choose "[1]" option from "translation-language-select" multi select field
     * I fill the "attribute-label" input with the "<type_txt>_label_EN" term for "en_GB" translation
     * I fill the "attribute-hint" textarea with the "<type_txt>_hint_EN" term for "en_GB" translation
     * I fill the "attribute-option" input for index 0 with the "<type_txt>_option_0_EN" term for "en_GB" translation
