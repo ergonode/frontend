@@ -16,10 +16,10 @@ Feature: Upload: Resource
   Scenario: Upload single resource - success
     When I select the "['supported_file1.jpg']" file in the "upload-file" input
     * I close modal
-    Then On "grid" I can see row with "supported_file1.jpg" value and columns data: "{'1': 'supported_file1.jpg'}"
+    Then On "grid" I can see rows with "[{ 'name': 'supported_file1.jpg' }]" values
 
   @success
   Scenario: Upload multiple resources - success
-    When I select the "['supported_file2.jpg', 'supported_file3.jpg']" file in the "upload-file" input
+    When I select the "['supported_file2.jpg', 'supported_file3.jpg']" file in the "upload-file " input
     * I close modal
     Then On "grid" I can see rows with "[{ 'name': 'supported_file2.jpg' }, { 'name': 'supported_file3.jpg'}]" values
