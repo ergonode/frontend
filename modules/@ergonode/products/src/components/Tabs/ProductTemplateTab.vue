@@ -168,7 +168,7 @@ export default {
                     languageCode,
                 }),
                 this.getProductCollections({
-                    languageCode: this.languageCode,
+                    languageCode,
                 }),
             ];
 
