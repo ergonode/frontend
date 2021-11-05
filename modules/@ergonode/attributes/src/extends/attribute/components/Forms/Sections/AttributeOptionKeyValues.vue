@@ -10,7 +10,6 @@
         @add="onAddOptionKey">
         <FormListSubsection v-if="optionValues.length">
             <DraggableForm
-                :title="'Add options'"
                 :has-drop-placeholder="false"
                 :scope="scope"
                 :items="optionValues"
