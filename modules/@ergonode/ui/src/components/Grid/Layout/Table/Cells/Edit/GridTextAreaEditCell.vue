@@ -36,6 +36,10 @@
 
 <script>
 import {
+    DEFAULT_LARGE_EDIT_CELL_CONTENT_HEIGHT,
+    DEFAULT_LARGE_EDIT_CELL_CONTENT_WIDTH,
+} from '@Core/defaults/grid';
+import {
     INPUT_TYPE,
 } from '@Core/defaults/theme';
 import gridEditCellMixin from '@UI/mixins/grid/gridEditCellMixin';
@@ -53,10 +57,10 @@ export default {
     },
     computed: {
         height() {
-            return 181;
+            return DEFAULT_LARGE_EDIT_CELL_CONTENT_HEIGHT;
         },
         width() {
-            return 320;
+            return DEFAULT_LARGE_EDIT_CELL_CONTENT_WIDTH;
         },
         underlineInputType() {
             return INPUT_TYPE.UNDERLINE;

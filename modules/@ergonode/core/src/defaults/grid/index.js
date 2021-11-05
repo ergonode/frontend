@@ -88,6 +88,10 @@ export const DATA_LIMIT = 25;
 
 export const DEFAULT_PAGE = 1;
 
+export const DEFAULT_LARGE_EDIT_CELL_CONTENT_HEIGHT = 181;
+
+export const DEFAULT_LARGE_EDIT_CELL_CONTENT_WIDTH = 320;
+
 export const DEFAULT_GRID_FETCH_PARAMS = () => ({
     extended: true,
     offset: 0,

@@ -22,6 +22,10 @@
 
 <script>
 import {
+    DEFAULT_LARGE_EDIT_CELL_CONTENT_HEIGHT,
+    DEFAULT_LARGE_EDIT_CELL_CONTENT_WIDTH,
+} from '@Core/defaults/grid';
+import {
     SIZE,
 } from '@Core/defaults/theme';
 import {
@@ -49,10 +53,10 @@ export default {
     },
     computed: {
         height() {
-            return 181;
+            return DEFAULT_LARGE_EDIT_CELL_CONTENT_HEIGHT;
         },
         width() {
-            return 304;
+            return DEFAULT_LARGE_EDIT_CELL_CONTENT_WIDTH;
         },
         smallSize() {
             return SIZE.SMALL;
