@@ -47,9 +47,10 @@ export default {
                 width,
                 height,
             } = this.bounds;
+            const bottomOffset = this.centered ? 16 : 8;
             const actualHeight = this.fixedHeight || height;
             const actualWidth = (this.fixedWidth || width) + this.padding;
-            const yPos = Math.min(window.innerHeight - actualHeight, y);
+            const yPos = Math.min(window.innerHeight - actualHeight - bottomOffset, y);
 
             return {
                 top: `${yPos}px`,
