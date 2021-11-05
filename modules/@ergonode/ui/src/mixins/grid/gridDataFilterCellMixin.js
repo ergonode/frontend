@@ -42,7 +42,7 @@ export default {
             this.$emit('edit-filter-cell', {
                 type: this.data.type,
                 props: {
-                    bounds: this.$el.getBoundingClientRect(),
+                    bounds: this.$el.getBoundingClientRect().toJSON(),
                     value: this.value,
                     columnId: this.columnId,
                     row: this.rowIndex,

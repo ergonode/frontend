@@ -4,21 +4,23 @@
  */
 <template>
     <GridEditNavigationCell @edit="onEditCell">
-        <GridSelectEditContentCell :style="positionStyle">
-            <GridImageEditContentCell>
-                <UploadImageFile
-                    v-if="type === 'image'"
-                    v-model="localValue"
-                    :disabled="disabled"
-                    object-fit="contain"
-                    :size="smallSize"
-                    :border="false"
-                    :height="`${cellHeight}px`" />
-                <IconFile
-                    :style="{ height: `${cellHeight}px` }"
-                    v-else />
-            </GridImageEditContentCell>
-        </GridSelectEditContentCell>
+        <GridEditContentCell
+            :bounds="bounds"
+            :shadow="true"
+            :fixed-width="width"
+            :fixed-height="height">
+            <UploadImageFile
+                v-if="type === 'image'"
+                v-model="localValue"
+                :disabled="disabled"
+                object-fit="contain"
+                :size="smallSize"
+                :border="false"
+                :height="`${height}px`" />
+            <IconFile
+                :style="{ height: `${height}px` }"
+                v-else />
+        </GridEditContentCell>
     </GridEditNavigationCell>
 </template>
 
@@ -27,20 +29,13 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
-import GridImageEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridImageEditContentCell';
-import GridSelectEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
 import gridEditCellMixin from '@UI/mixins/grid/gridEditCellMixin';
 
 export default {
     name: 'GridImagePreviewEditCell',
     components: {
         UploadImageFile,
-        GridSelectEditContentCell,
-        GridImageEditContentCell,
     },
-    inject: [
-        'getGridTableLayoutReference',
-    ],
     mixins: [
         gridEditCellMixin,
     ],
@@ -51,30 +46,11 @@ export default {
         },
     },
     computed: {
-        cellHeight() {
+        height() {
             return 181;
         },
-        positionStyle() {
-            const {
-                x,
-                y,
-                height,
-            } = this.bounds;
-
-            const {
-                scrollTop,
-                offsetHeight,
-            } = this.getGridTableLayoutReference();
-
-            const yPos = offsetHeight + scrollTop - y - height > this.cellHeight
-                ? y
-                : y - this.cellHeight + height;
-
-            return {
-                top: `${yPos}px`,
-                left: `${x}px`,
-                width: '304px',
-            };
+        width() {
+            return 304;
         },
         smallSize() {
             return SIZE.SMALL;

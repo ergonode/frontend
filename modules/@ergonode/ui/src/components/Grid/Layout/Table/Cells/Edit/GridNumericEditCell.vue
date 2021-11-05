@@ -4,7 +4,11 @@
  */
 <template>
     <GridEditNavigationCell @edit="onEditCell">
-        <GridTextEditContentCell :style="positionStyle">
+        <GridEditContentCell
+            :bounds="bounds"
+            :padding="8"
+            :centered="true"
+            :shadow="true">
             <TextField
                 v-model="localValue"
                 autofocus
@@ -14,7 +18,7 @@
                 :input="{ type: 'number' }"
                 :size="smallSize"
                 :type="underlineType" />
-        </GridTextEditContentCell>
+        </GridEditContentCell>
     </GridEditNavigationCell>
 </template>
 
@@ -24,15 +28,10 @@ import {
     INPUT_TYPE,
     SIZE,
 } from '@Core/defaults/theme';
-import GridTextEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridTextEditContentCell';
 import gridEditCellMixin from '@UI/mixins/grid/gridEditCellMixin';
 
 export default {
     name: 'GridNumericEditCell',
-    components: {
-        GridTextEditContentCell,
-
-    },
     mixins: [
         gridEditCellMixin,
     ],
