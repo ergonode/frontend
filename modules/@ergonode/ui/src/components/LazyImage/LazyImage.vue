@@ -5,6 +5,13 @@
 <template>
     <IntersectionObserver
         observe-once
+        :options="{
+            threshold: [
+                0.0,
+            ],
+            trackVisibility: true,
+            delay: 100,
+        }"
         @intersect="onIntersect">
         <img
             :style="styles"
