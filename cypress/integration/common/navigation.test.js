@@ -105,7 +105,7 @@ MultiSteps([
     Then,
     And,
 ], 'I see a form validation error that says {string}', (errors) => {
-    const parsedErrors = JSON.parse(errors.replace(/'/g, '"').replace(/\/"/g, "'"));
+    const parsedErrors = JSON.parse(errors.replace(/'/g, '"').replace(/`/g, "'").replace(/\/"/g, "'"));
 
     cy
         .get('[data-cy=form-errors]')
