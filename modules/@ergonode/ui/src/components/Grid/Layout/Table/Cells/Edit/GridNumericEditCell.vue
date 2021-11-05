@@ -48,21 +48,6 @@ export default {
         },
     },
     computed: {
-        positionStyle() {
-            const {
-                x,
-                y,
-                width,
-                height,
-            } = this.bounds;
-
-            return {
-                top: `${y}px`,
-                left: `${x}px`,
-                width: `${width + 8}px`,
-                minHeight: `${height + 8}px`,
-            };
-        },
         underlineType() {
             return INPUT_TYPE.UNDERLINE;
         },
