@@ -102,6 +102,14 @@ module.exports = {
             },
         },
     },
+    polyfill: {
+        features: [
+            {
+                require: 'intersection-observer',
+                detect: () => 'IntersectionObserver' in window,
+            },
+        ],
+    },
     modules: [
         'nuxt-i18n',
         '@nuxtjs/style-resources',
@@ -113,6 +121,7 @@ module.exports = {
         ],
         'cookie-universal-nuxt',
         '@nuxtjs/axios',
+        'nuxt-polyfill',
     ],
     vuems: {
         required: _requiredModules,
