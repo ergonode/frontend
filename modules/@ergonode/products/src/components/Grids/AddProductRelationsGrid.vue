@@ -196,7 +196,7 @@ export default {
 
         this.columnModels = [
             {
-                name: 'sku',
+                name: 'esa_sku',
             },
             {
                 name: 'esa_template',
