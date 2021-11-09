@@ -31,7 +31,11 @@ beforeEach(() => {
 });
 
 Given('I open {string} page', (page) => {
-    cy.visit(page);
+    cy.visit({
+        url: page,
+        log: false,
+        retryOnNetworkFailure: false,
+    });
     cy.checkUrl(page);
 });
 

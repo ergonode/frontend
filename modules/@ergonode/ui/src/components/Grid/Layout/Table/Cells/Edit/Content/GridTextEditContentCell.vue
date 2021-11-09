@@ -9,6 +9,9 @@
 </template>
 
 <script>
+/**
+ * @deprecated since 1.2.0 - replaced by GridEditContentCell
+ */
 export default {
     name: 'GridTextEditContentCell',
 };

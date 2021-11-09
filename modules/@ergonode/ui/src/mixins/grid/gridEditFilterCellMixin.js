@@ -43,6 +43,9 @@ export default {
         };
     },
     computed: {
+        /**
+         * @deprecated since 1.2.0 - replaced by GridEditContentCell
+         */
         positionStyle() {
             const {
                 x,

@@ -4,7 +4,7 @@
  */
 <template>
     <GridEditNavigationCell @edit="onEditCell">
-        <GridSelectEditContentCell :style="positionStyle">
+        <GridEditContentCell :bounds="bounds">
             <DatePicker
                 v-model="localValue"
                 :size="smallSize"
@@ -12,7 +12,7 @@
                 :placeholder="format"
                 :format="format"
                 @focus="onFocus" />
-        </GridSelectEditContentCell>
+        </GridEditContentCell>
     </GridEditNavigationCell>
 </template>
 
@@ -23,7 +23,6 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import GridSelectEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
 import gridEditFilterCellMixin from '@UI/mixins/grid/gridEditFilterCellMixin';
 import {
     DEFAULT_FORMAT,
@@ -35,9 +34,6 @@ import {
 
 export default {
     name: 'GridDateEditFilterCell',
-    components: {
-        GridSelectEditContentCell,
-    },
     mixins: [
         gridEditFilterCellMixin,
     ],

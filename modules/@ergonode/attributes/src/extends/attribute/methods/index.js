@@ -179,14 +179,24 @@ export const updateOptionsData = async ({
                         code: option.key,
                         label: optionValue,
                     },
-                }).then(({
-                    id: optionId,
-                }) => $this.dispatch('attribute/updateAttributeOptionKey',
-                    {
-                        index: key,
+                })
+                    .then(({
                         id: optionId,
-                        key: option.key,
-                    })),
+                    }) => $this.dispatch('attribute/updateAttributeOptionKey',
+                        {
+                            index: key,
+                            id: optionId,
+                            key: option.key,
+                        }))
+                    .catch((e) => {
+                        throw {
+                            data: {
+                                errors: {
+                                    [`option_${key}`]: e.data.errors.code,
+                                },
+                            },
+                        };
+                    }),
             );
         } else if (updatedOptions[option.id]) {
             updateOptionsRequests.push(
@@ -198,6 +208,14 @@ export const updateOptionsData = async ({
                         code: option.key,
                         label: optionValue,
                     },
+                }).catch((e) => {
+                    throw {
+                        data: {
+                            errors: {
+                                [`option_${key}`]: e.data.errors.code,
+                            },
+                        },
+                    };
                 }),
             );
         }
