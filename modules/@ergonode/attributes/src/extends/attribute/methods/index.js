@@ -127,6 +127,7 @@ export const createOptionsData = async ({
     const {
         id,
     } = data;
+    const errors = {};
 
     await Promise.all(
         Object.keys(options).map(key => createOption({
@@ -135,8 +136,18 @@ export const createOptionsData = async ({
             data: {
                 code: options[key].key,
             },
+        }).catch((e) => {
+            errors[`option_${key}`] = e.data.errors.code;
         })),
     );
+
+    if (Object.keys(errors).length > 0) {
+        throw {
+            data: {
+                errors,
+            },
+        };
+    }
 };
 
 export const updateOptionsData = async ({
@@ -150,6 +161,7 @@ export const updateOptionsData = async ({
     const optionKeys = Object.keys(options);
     const addOptionsRequests = [];
     const updateOptionsRequests = [];
+    const errors = {};
 
     optionKeys.forEach((key) => {
         const option = options[key];
@@ -174,13 +186,7 @@ export const updateOptionsData = async ({
                             key: option.key,
                         }))
                     .catch((e) => {
-                        throw {
-                            data: {
-                                errors: {
-                                    [`option_${key}`]: e.data.errors.code,
-                                },
-                            },
-                        };
+                        errors[`option_${key}`] = e.data.errors.code;
                     }),
             );
         } else if (updatedOptions[option.id]) {
@@ -194,13 +200,7 @@ export const updateOptionsData = async ({
                         label: optionValue,
                     },
                 }).catch((e) => {
-                    throw {
-                        data: {
-                            errors: {
-                                [`option_${key}`]: e.data.errors.code,
-                            },
-                        },
-                    };
+                    errors[`option_${key}`] = e.data.errors.code;
                 }),
             );
         }
@@ -210,6 +210,14 @@ export const updateOptionsData = async ({
         ...addOptionsRequests,
         ...updateOptionsRequests,
     ]);
+
+    if (Object.keys(errors).length > 0) {
+        throw {
+            data: {
+                errors,
+            },
+        };
+    }
 };
 
 export const getAttributeOptions = async ({
