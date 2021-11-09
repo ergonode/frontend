@@ -4,20 +4,26 @@
  */
 <template>
     <GridEditNavigationCell @edit="onEditCell">
-        <GridSelectEditContentCell :style="positionStyle">
-            <GridImageEditContentCell>
-                <UploadProductRelations
-                    v-model="localValue"
-                    height="181px"
-                    :size="smallSize"
-                    :disabled="disabled"
-                    :product-id="rowId" />
-            </GridImageEditContentCell>
-        </GridSelectEditContentCell>
+        <GridEditContentCell
+            :bounds="bounds"
+            :shadow="true"
+            :fixed-width="width"
+            :fixed-height="height">
+            <UploadProductRelations
+                v-model="localValue"
+                :height="`${height}px`"
+                :size="smallSize"
+                :disabled="disabled"
+                :product-id="rowId" />
+        </GridEditContentCell>
     </GridEditNavigationCell>
 </template>
 
 <script>
+import {
+    DEFAULT_EDIT_CELL_CONTENT_HEIGHT,
+    DEFAULT_EDIT_CELL_CONTENT_WIDTH,
+} from '@Core/defaults/grid';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -25,16 +31,12 @@ import {
     arraysAreEqual,
 } from '@Core/models/arrayWrapper';
 import UploadProductRelations from '@Products/components/Inputs/UploadProductRelations';
-import GridImageEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridImageEditContentCell';
-import GridSelectEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
 import gridEditCellMixin from '@UI/mixins/grid/gridEditCellMixin';
 
 export default {
     name: 'GridProductRelationEditCell',
     components: {
         UploadProductRelations,
-        GridSelectEditContentCell,
-        GridImageEditContentCell,
     },
     mixins: [
         gridEditCellMixin,
@@ -54,17 +56,11 @@ export default {
         };
     },
     computed: {
-        positionStyle() {
-            const {
-                x,
-                y,
-            } = this.bounds;
-
-            return {
-                top: `${y}px`,
-                left: `${x}px`,
-                width: '304px',
-            };
+        height() {
+            return DEFAULT_EDIT_CELL_CONTENT_HEIGHT;
+        },
+        width() {
+            return DEFAULT_EDIT_CELL_CONTENT_WIDTH;
         },
         smallSize() {
             return SIZE.SMALL;

@@ -53,7 +53,7 @@ export default {
             this.$emit('edit-cell', {
                 type: this.column.type,
                 props: {
-                    bounds: this.$el.getBoundingClientRect(),
+                    bounds: this.$el.getBoundingClientRect().toJSON(),
                     value: this.cellData.value,
                     row: this.rowIndex,
                     column: this.columnIndex,

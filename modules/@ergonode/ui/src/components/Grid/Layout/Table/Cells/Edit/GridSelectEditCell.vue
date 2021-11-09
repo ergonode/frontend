@@ -4,7 +4,7 @@
  */
 <template>
     <GridEditNavigationCell @edit="onEditCell">
-        <GridSelectEditContentCell :style="positionStyle">
+        <GridEditContentCell :bounds="bounds">
             <Select
                 v-model="localValue"
                 :search-value="searchValue"
@@ -20,7 +20,7 @@
                 option-value="value"
                 @focus="onFocus"
                 @search="onSearch" />
-        </GridSelectEditContentCell>
+        </GridEditContentCell>
     </GridEditNavigationCell>
 </template>
 
@@ -35,14 +35,10 @@ import {
     getMappedObjectOption,
     getMappedObjectOptions,
 } from '@Core/models/mappers/translationsMapper';
-import GridSelectEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
 import gridEditCellMixin from '@UI/mixins/grid/gridEditCellMixin';
 
 export default {
     name: 'GridSelectEditCell',
-    components: {
-        GridSelectEditContentCell,
-    },
     mixins: [
         gridEditCellMixin,
     ],
