@@ -232,6 +232,13 @@ export default {
                 });
             }
 
+            if (this.ghostIndex !== -1) {
+                this.$emit('move-item', {
+                    index: this.ghostIndex,
+                    items: this.localItems,
+                });
+            }
+
             event.preventDefault();
         },
         onRemoveItem(item) {

@@ -5,6 +5,7 @@
  */
 import {
     createOption,
+    removeOption,
     updateOption,
 } from '@Attributes/extends/attribute/services';
 import {
@@ -150,6 +151,20 @@ export const updateOptionsData = async ({
     const optionKeys = Object.keys(options);
     const addOptionsRequests = [];
     const updateOptionsRequests = [];
+    const deletedOptionsIds = $this.app.store.getters['attribute/deletedOptionsIds'];
+    const removeOptionsRequests = deletedOptionsIds.map(({
+        optionId, keyField,
+    }) => {
+        if (optionId) {
+            return removeOption({
+                $axios: $this.app.$axios,
+                attributeId: id,
+                optionId,
+            }).then(() => $this.dispatch('attribute/removeAttributeOptionKey', keyField));
+        }
+
+        return $this.dispatch('attribute/removeAttributeOptionKey', keyField);
+    });
 
     optionKeys.forEach((key) => {
         const option = options[key];
@@ -189,6 +204,7 @@ export const updateOptionsData = async ({
     });
 
     await Promise.all([
+        ...removeOptionsRequests,
         ...addOptionsRequests,
         ...updateOptionsRequests,
     ]);

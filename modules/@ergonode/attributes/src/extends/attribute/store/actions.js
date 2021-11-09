@@ -4,7 +4,6 @@
  */
 import {
     getOption,
-    removeOption,
 } from '@Attributes/extends/attribute/services';
 import {
     getMappedArrayOptions,
@@ -15,6 +14,11 @@ import {
 } from './mutations';
 
 export default {
+    setOptionState({
+        commit,
+    }, payload) {
+        commit(types.SET_OPTION_STATE, payload);
+    },
     async getAttributeOptions({
         commit,
     }, {
@@ -37,36 +41,20 @@ export default {
     }, index) {
         commit(types.ADD_ATTRIBUTE_OPTION_KEY, index);
     },
+    setSortedOptions({
+        commit,
+    }, options) {
+        commit(types.SET_SORTED_OPTION, options);
+    },
     removeAttributeOptionKey({
-        commit, dispatch,
-    }, {
-        id, index,
-    }) {
-        if (id) {
-            dispatch('removeOption', {
-                id,
-                index,
-            });
-        } else {
-            commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index);
-        }
+        commit,
+    }, index) {
+        commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index);
     },
     removeAttributeOptions({
         commit,
     }) {
         commit(types.INITIALIZE_OPTIONS);
-    },
-    removeOption({
-        commit,
-        state,
-    }, {
-        id, index,
-    }) {
-        return removeOption({
-            $axios: this.app.$axios,
-            attributeId: state.id,
-            optionId: id,
-        }).then(() => commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index));
     },
     updateAttributeOptionKey({
         commit,

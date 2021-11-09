@@ -335,6 +335,7 @@ export default {
             case TYPES.SELECT:
             case TYPES.MULTI_SELECT:
                 $this.commit('attribute/REMOVE_UPDATED_OPTION');
+                $this.commit('attribute/REMOVE_OPTIONS_STATE');
                 break;
             default:
                 break;
