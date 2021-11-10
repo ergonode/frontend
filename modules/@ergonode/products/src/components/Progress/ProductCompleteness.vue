@@ -101,15 +101,13 @@ export default {
             'getProductCompleteness',
         ]),
         async onGetProductCompleteness() {
-            if (typeof this.completeness[this.languageCode] === 'undefined') {
-                this.isFetchingData = true;
+            this.isFetchingData = true;
 
-                await this.getProductCompleteness({
-                    languageCode: this.languageCode,
-                });
+            await this.getProductCompleteness({
+                languageCode: this.languageCode,
+            });
 
-                this.isFetchingData = false;
-            }
+            this.isFetchingData = false;
         },
     },
 };
