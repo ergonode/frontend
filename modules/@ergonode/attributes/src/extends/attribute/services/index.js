@@ -31,3 +31,10 @@ export const updateOption = ({
     optionId,
     data,
 }) => $axios.$put(`attributes/${attributeId}/options/${optionId}`, data);
+
+export const moveOption = ({
+    $axios,
+    attributeId,
+    optionId,
+    data,
+}) => $axios.$put(`attributes/${attributeId}/options/${optionId}/move`, data);

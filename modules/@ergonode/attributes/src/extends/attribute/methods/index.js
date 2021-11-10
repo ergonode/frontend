@@ -3,6 +3,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+
+import {
+    OPTION_STATES,
+} from '@Attributes/defaults';
 import {
     createOption,
     removeOption,
@@ -147,6 +151,8 @@ export const updateOptionsData = async ({
         id,
         options,
         updatedOptions,
+        optionsState,
+        sortedOptions,
     } = $this.state.attribute;
     const optionKeys = Object.keys(options);
     const addOptionsRequests = [];
@@ -160,10 +166,77 @@ export const updateOptionsData = async ({
                 $axios: $this.app.$axios,
                 attributeId: id,
                 optionId,
-            }).then(() => $this.dispatch('attribute/removeAttributeOptionKey', keyField));
+            }).then(
+                () => $this.dispatch('attribute/removeAttributeOptionKey', keyField),
+            ).catch((e) => {
+                throw {
+                    data: {
+                        errors: {
+                            [`option_${keyField}`]: e.data.errors.code,
+                        },
+                    },
+                };
+            });
         }
 
         return $this.dispatch('attribute/removeAttributeOptionKey', keyField);
+    });
+    // const add = (keyField, option) => createOption({
+    //     $axios: $this.app.$axios,
+    //     id,
+    //     data: {
+    //         code: option.key,
+    //         label: option.value,
+    //     },
+    // }).catch((e) => {
+    //     throw {
+    //         data: {
+    //             errors: {
+    //                 [`option_${keyField}`]: e.data.errors.code,
+    //             },
+    //         },
+    //     };
+    // });
+
+    sortedOptions.forEach((keyField) => {
+        const optionStates = optionsState[keyField];
+        // const option = options[keyField];
+
+        if (optionStates) {
+            const isAdded = OPTION_STATES.ADD in optionStates;
+            const isEdited = OPTION_STATES.EDIT in optionStates;
+            const isMoved = OPTION_STATES.MOVE in optionStates;
+
+            switch (true) {
+            case isAdded && isEdited:
+                //   add(keyField, option).then(({
+                //     id: optionId,
+                // }) => $this.dispatch('attribute/updateAttributeOptionKey',
+                //     {
+                //         index: keyField,
+                //         id: optionId,
+                //         key: option.key,
+                //     }));
+                console.log('dodaj pole na koniec');
+                break;
+            case isAdded && isEdited && isMoved:
+                console.log('dodaj nowego  i przenies');
+                break;
+            case isMoved && !isAdded && !isEdited:
+                console.log('tylko przenies');
+                break;
+            case isEdited && isMoved:
+                console.log(' edytuje i przenosze');
+                break;
+            case isEdited && !isMoved && !isAdded:
+                console.log('tylko edycja');
+                break;
+            default:
+                break;
+            }
+        } else {
+            console.log('other option ');
+        }
     });
 
     optionKeys.forEach((key) => {
