@@ -22,13 +22,13 @@ export default {
     async getAttributeOptions({
         commit,
     }, {
-        id,
+        id: attributeId,
         onError = () => {},
     }) {
         try {
             const options = await getOption({
                 $axios: this.app.$axios,
-                id,
+                attributeId,
             });
 
             commit(types.INITIALIZE_OPTIONS, getMappedArrayOptions(options));

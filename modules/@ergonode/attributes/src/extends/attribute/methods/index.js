@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-throw-literal */
 /*
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
@@ -8,9 +9,13 @@ import {
     OPTION_STATES,
 } from '@Attributes/defaults';
 import {
+    createOptionHelper,
+    moveOptionHelper,
+    removeOptionHelper,
+    updateOptionHelper,
+} from '@Attributes/extends/attribute/methods/helpers';
+import {
     createOption,
-    removeOption,
-    updateOption,
 } from '@Attributes/extends/attribute/services';
 import {
     ALERT_TYPE,
@@ -128,79 +133,19 @@ export const createOptionsData = async ({
 }) => {
     const {
         options,
-    } = $this.state.attribute;
-    const {
-        id,
-    } = data;
-
-    await Promise.all(
-        Object.keys(options).map(key => createOption({
-            $axios: $this.app.$axios,
-            id,
-            data: {
-                code: options[key].key,
-            },
-        })),
-    );
-};
-
-export const updateOptionsData = async ({
-    $this,
-}) => {
-    const {
-        id,
-        options,
-        updatedOptions,
-        optionsState,
         sortedOptions,
+        optionsState,
     } = $this.state.attribute;
-    const optionKeys = Object.keys(options);
-    const addOptionsRequests = [];
-    const updateOptionsRequests = [];
-    const deletedOptionsIds = $this.app.store.getters['attribute/deletedOptionsIds'];
-    const removeOptionsRequests = deletedOptionsIds.map(({
-        optionId, keyField,
-    }) => {
-        if (optionId) {
-            return removeOption({
-                $axios: $this.app.$axios,
-                attributeId: id,
-                optionId,
-            }).then(
-                () => $this.dispatch('attribute/removeAttributeOptionKey', keyField),
-            ).catch((e) => {
-                throw {
-                    data: {
-                        errors: {
-                            [`option_${keyField}`]: e.data.errors.code,
-                        },
-                    },
-                };
-            });
-        }
+    const {
+        id: attributeId,
+    } = data;
+    const starterPromise = Promise.resolve(null);
 
-        return $this.dispatch('attribute/removeAttributeOptionKey', keyField);
-    });
-    // const add = (keyField, option) => createOption({
-    //     $axios: $this.app.$axios,
-    //     id,
-    //     data: {
-    //         code: option.key,
-    //         label: option.value,
-    //     },
-    // }).catch((e) => {
-    //     throw {
-    //         data: {
-    //             errors: {
-    //                 [`option_${keyField}`]: e.data.errors.code,
-    //             },
-    //         },
-    //     };
-    // });
-
-    sortedOptions.forEach((keyField) => {
+    await sortedOptions.reduce((request, keyField, index) => request.then(() => {
         const optionStates = optionsState[keyField];
-        // const option = options[keyField];
+        const option = options[keyField];
+        const after = index !== 0;
+        const positionId = index === 0 ? null : options[sortedOptions[index - 1]].id;
 
         if (optionStates) {
             const isAdded = OPTION_STATES.ADD in optionStates;
@@ -208,97 +153,162 @@ export const updateOptionsData = async ({
             const isMoved = OPTION_STATES.MOVE in optionStates;
 
             switch (true) {
-            case isAdded && isEdited:
-                //   add(keyField, option).then(({
-                //     id: optionId,
-                // }) => $this.dispatch('attribute/updateAttributeOptionKey',
-                //     {
-                //         index: keyField,
-                //         id: optionId,
-                //         key: option.key,
-                //     }));
-                console.log('dodaj pole na koniec');
-                break;
-            case isAdded && isEdited && isMoved:
-                console.log('dodaj nowego  i przenies');
-                break;
-            case isMoved && !isAdded && !isEdited:
-                console.log('tylko przenies');
-                break;
-            case isEdited && isMoved:
-                console.log(' edytuje i przenosze');
-                break;
-            case isEdited && !isMoved && !isAdded:
-                console.log('tylko edycja');
-                break;
-            default:
-                break;
-            }
-        } else {
-            console.log('other option ');
-        }
-    });
-
-    optionKeys.forEach((key) => {
-        const option = options[key];
-        const optionValue = option.value || null;
-
-        if (!option.id) {
-            addOptionsRequests.push(
-                createOption({
+            // create new option
+            case isAdded && isEdited && !isMoved: {
+                return createOption({
                     $axios: $this.app.$axios,
-                    id,
+                    attributeId,
                     data: {
                         code: option.key,
-                        label: optionValue,
-                    },
-                })
-                    .then(({
-                        id: optionId,
-                    }) => $this.dispatch('attribute/updateAttributeOptionKey',
-                        {
-                            index: key,
-                            id: optionId,
-                            key: option.key,
-                        }))
-                    .catch((e) => {
-                        throw {
-                            data: {
-                                errors: {
-                                    [`option_${key}`]: e.data.errors.code,
-                                },
-                            },
-                        };
-                    }),
-            );
-        } else if (updatedOptions[option.id]) {
-            updateOptionsRequests.push(
-                updateOption({
-                    $axios: $this.app.$axios,
-                    attributeId: id,
-                    optionId: option.id,
-                    data: {
-                        code: option.key,
-                        label: optionValue,
+                        label: option.value,
                     },
                 }).catch((e) => {
                     throw {
                         data: {
                             errors: {
-                                [`option_${key}`]: e.data.errors.code,
+                                [`option_${keyField}`]: e.data.errors.code,
                             },
                         },
                     };
-                }),
-            );
+                });
+            }
+            // create new option and move
+            case isAdded && isEdited && isMoved: {
+                return createOption({
+                    $axios: $this.app.$axios,
+                    attributeId,
+                    data: {
+                        code: option.key,
+                        label: option.value,
+                        after,
+                        positionId,
+                    },
+                }).catch((e) => {
+                    throw {
+                        data: {
+                            errors: {
+                                [`option_${keyField}`]: e.data.errors.code,
+                            },
+                        },
+                    };
+                });
+            }
+            default:
+                return null;
+            }
         }
-    });
+    }), starterPromise);
+};
 
-    await Promise.all([
-        ...removeOptionsRequests,
-        ...addOptionsRequests,
-        ...updateOptionsRequests,
-    ]);
+export const updateOptionsData = async ({
+    $this,
+}) => {
+    const {
+        options,
+        optionsState,
+        sortedOptions,
+    } = $this.state.attribute;
+    const starterPromise = Promise.resolve(null);
+    const deletedOptionsIds = $this.app.store.getters['attribute/deletedOptionsIds'];
+
+    await deletedOptionsIds.reduce((request, {
+        optionId, keyField,
+    }) => request.then(() => {
+        if (optionId) {
+            return removeOptionHelper({
+                $this,
+                keyField,
+                optionId,
+            });
+        }
+
+        return $this.dispatch('attribute/removeAttributeOptionKey', keyField);
+    }), starterPromise);
+
+    await sortedOptions.reduce((request, keyField, index) => request.then(() => {
+        const optionStates = optionsState[keyField];
+        const option = options[keyField];
+        const after = index !== 0;
+        const positionId = index === 0 ? null : options[sortedOptions[index - 1]].id;
+
+        if (optionStates) {
+            const isAdded = OPTION_STATES.ADD in optionStates;
+            const isEdited = OPTION_STATES.EDIT in optionStates;
+            const isMoved = OPTION_STATES.MOVE in optionStates;
+
+            switch (true) {
+            // create new option
+            case isAdded && isEdited && !isMoved: {
+                return createOptionHelper({
+                    $this,
+                    keyField,
+                    data: {
+                        code: option.key,
+                        label: option.value,
+                    },
+                });
+            }
+            // create new option and move
+            case isAdded && isEdited && isMoved: {
+                return createOptionHelper({
+                    $this,
+                    keyField,
+                    data: {
+                        code: option.key,
+                        label: option.value,
+                        after,
+                        positionId,
+                    },
+                });
+            }
+            // only move
+            case isMoved && !isAdded && !isEdited: {
+                return moveOptionHelper({
+                    $this,
+                    keyField,
+                    data: {
+                        after,
+                        positionId,
+                    },
+                });
+            }
+            // edit option and move
+            case isEdited && isMoved: {
+                return Promise.all([
+                    updateOptionHelper({
+                        $this,
+                        keyField,
+                        data: {
+                            code: option.key,
+                            label: option.value,
+                        },
+                    }),
+                    moveOptionHelper({
+                        $this,
+                        keyField,
+                        data: {
+                            after,
+                            positionId,
+                        },
+                    }),
+                ]);
+            }
+            // only edit
+            case isEdited && !isMoved && !isAdded: {
+                return updateOptionHelper({
+                    $this,
+                    keyField,
+                    data: {
+                        code: option.key,
+                        label: option.value,
+                    },
+                });
+            }
+            default:
+                return null;
+            }
+        }
+    }), starterPromise);
 };
 
 export const getAttributeOptions = async ({

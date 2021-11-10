@@ -5,7 +5,7 @@
 export default () => ({
     parameters: null,
     options: {},
-    updatedOptions: {},
+    // updatedOptions: {},
     optionsState: {},
     sortedOptions: [],
 });

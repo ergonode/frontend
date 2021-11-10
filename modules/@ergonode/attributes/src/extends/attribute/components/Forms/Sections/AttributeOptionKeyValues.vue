@@ -146,7 +146,11 @@ export default {
         },
         onAddOptionKey() {
             const fieldKey = getUUID();
-            const tmpOptions = insertValueAtIndex(this.sortedOptions, fieldKey, 2);
+            const tmpOptions = insertValueAtIndex(
+                this.sortedOptions,
+                fieldKey,
+                this.sortedOptions.length,
+            );
 
             this.addAttributeOptionKey(fieldKey);
             this.setOptionState({

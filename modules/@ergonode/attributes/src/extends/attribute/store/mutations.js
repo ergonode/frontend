@@ -45,12 +45,12 @@ export default {
     [types.SET_SORTED_OPTION](state, options) {
         state.sortedOptions = options;
     },
-    [types.SET_UPDATED_OPTION](state, id) {
-        state.updatedOptions[id] = true;
-    },
-    [types.REMOVE_UPDATED_OPTION](state) {
-        state.updatedOptions = {};
-    },
+    // [types.SET_UPDATED_OPTION](state, id) {
+    //     state.updatedOptions[id] = true;
+    // },
+    // [types.REMOVE_UPDATED_OPTION](state) {
+    //     state.updatedOptions = {};
+    // },
     [types.INITIALIZE_OPTIONS](state, options = {}) {
         state.options = options;
     },
