@@ -9,11 +9,9 @@ import {
 export const types = {
     SET_OPTION_STATE: 'SET_OPTION_STATE',
     SET_SORTED_OPTION: 'SET_SORTED_OPTION',
-    SET_UPDATED_OPTION: 'SET_UPDATED_OPTION',
     INITIALIZE_OPTIONS: 'INITIALIZE_OPTIONS',
     ADD_ATTRIBUTE_OPTION_KEY: 'ADD_ATTRIBUTE_OPTION_KEY',
     REMOVE_ATTRIBUTE_OPTION_KEY: 'REMOVE_ATTRIBUTE_OPTION_KEY',
-    REMOVE_UPDATED_OPTION: 'REMOVE_UPDATED_OPTION',
     REMOVE_OPTIONS_STATE: 'REMOVE_OPTIONS_STATE',
     SET_ATTRIBUTE_OPTION_KEY: 'SET_ATTRIBUTE_OPTION_KEY',
     SET_OPTION_LANGUAGE_CODE_FOR_VALUE: 'SET_OPTION_LANGUAGE_CODE_FOR_VALUE',
@@ -45,12 +43,6 @@ export default {
     [types.SET_SORTED_OPTION](state, options) {
         state.sortedOptions = options;
     },
-    // [types.SET_UPDATED_OPTION](state, id) {
-    //     state.updatedOptions[id] = true;
-    // },
-    // [types.REMOVE_UPDATED_OPTION](state) {
-    //     state.updatedOptions = {};
-    // },
     [types.INITIALIZE_OPTIONS](state, options = {}) {
         state.options = options;
     },

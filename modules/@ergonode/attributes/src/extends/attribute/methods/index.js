@@ -134,69 +134,31 @@ export const createOptionsData = async ({
     const {
         options,
         sortedOptions,
-        optionsState,
     } = $this.state.attribute;
     const {
         id: attributeId,
     } = data;
     const starterPromise = Promise.resolve(null);
 
-    await sortedOptions.reduce((request, keyField, index) => request.then(() => {
-        const optionStates = optionsState[keyField];
+    await sortedOptions.reduce((request, keyField) => request.then(() => {
         const option = options[keyField];
-        const after = index !== 0;
-        const positionId = index === 0 ? null : options[sortedOptions[index - 1]].id;
 
-        if (optionStates) {
-            const isAdded = OPTION_STATES.ADD in optionStates;
-            const isEdited = OPTION_STATES.EDIT in optionStates;
-            const isMoved = OPTION_STATES.MOVE in optionStates;
-
-            switch (true) {
-            // create new option
-            case isAdded && isEdited && !isMoved: {
-                return createOption({
-                    $axios: $this.app.$axios,
-                    attributeId,
-                    data: {
-                        code: option.key,
-                        label: option.value,
+        return createOption({
+            $axios: $this.app.$axios,
+            attributeId,
+            data: {
+                code: option.key,
+                label: option.value,
+            },
+        }).catch((e) => {
+            throw {
+                data: {
+                    errors: {
+                        [`option_${keyField}`]: e.data.errors.code,
                     },
-                }).catch((e) => {
-                    throw {
-                        data: {
-                            errors: {
-                                [`option_${keyField}`]: e.data.errors.code,
-                            },
-                        },
-                    };
-                });
-            }
-            // create new option and move
-            case isAdded && isEdited && isMoved: {
-                return createOption({
-                    $axios: $this.app.$axios,
-                    attributeId,
-                    data: {
-                        code: option.key,
-                        label: option.value,
-                        after,
-                        positionId,
-                    },
-                }).catch((e) => {
-                    throw {
-                        data: {
-                            errors: {
-                                [`option_${keyField}`]: e.data.errors.code,
-                            },
-                        },
-                    };
-                });
-            }
-            default:
-                return null;
-            }
-        }
+                },
+            };
+        });
     }), starterPromise);
 };
 

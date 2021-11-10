@@ -158,9 +158,7 @@ export default {
             handler() {
                 this.localItems = [
                     ...this.items,
-                ].sort(
-                    (a, b) => this.itemsOrder.indexOf(a.id) - this.itemsOrder.indexOf(b.id),
-                );
+                ];
             },
         },
     },

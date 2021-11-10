@@ -74,14 +74,14 @@ export default {
             return SIZE.SMALL;
         },
         optionValues() {
-            return Object.keys(this.options).map(key => ({
+            return this.sortedOptions.map(key => ({
                 fieldKey: key,
                 ...this.options[key],
             }));
         },
     },
-    async mounted() {
-        this.setSortedOptions(this.optionValues.map(item => item.fieldKey));
+    mounted() {
+        this.setSortedOptions(Object.keys(this.options));
     },
     methods: {
         ...mapActions('attribute', [

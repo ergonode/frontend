@@ -59,15 +59,12 @@ export default {
     updateAttributeOptionKey({
         commit,
     }, option) {
-        if (option.id) {
-            commit(types.SET_UPDATED_OPTION, option.id);
-        }
         commit(types.SET_ATTRIBUTE_OPTION_KEY, option);
     },
     setOptionValueForLanguageCode({
         commit, state,
     }, {
-        index, languageCode, value, id,
+        index, languageCode, value,
     }) {
         if (!state.options[index].value || !state.options[index].value[languageCode]) {
             commit(types.SET_OPTION_LANGUAGE_CODE_FOR_VALUE, {
@@ -81,9 +78,5 @@ export default {
             languageCode,
             value,
         });
-
-        if (id) {
-            commit(types.SET_UPDATED_OPTION, id);
-        }
     },
 };
