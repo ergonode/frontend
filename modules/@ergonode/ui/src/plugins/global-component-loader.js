@@ -155,6 +155,7 @@ import ListElementTitle from '@UI/components/List/ListElementTitle';
 import ListElementTree from '@UI/components/List/ListElementTree';
 import ListGroupElement from '@UI/components/List/ListGroupElement';
 import ListHeader from '@UI/components/List/ListHeader';
+import ListLinkElement from '@UI/components/List/ListLinkElement';
 import ListScrollableContainer from '@UI/components/List/ListScrollableContainer';
 import ListSearchHeader from '@UI/components/List/ListSearchHeader';
 import ListSearchSelectHeader from '@UI/components/List/ListSearchSelectHeader';
@@ -258,6 +259,7 @@ import {
     DynamicScrollerItem,
 } from 'vue-virtual-scroller';
 
+Vue.component('ListLinkElement', ListLinkElement);
 Vue.component('GridEditContentCell', GridEditContentCell);
 Vue.component('ExpandingList', ExpandingList);
 Vue.component('MultiselectDropdownFooter', MultiselectDropdownFooter);
