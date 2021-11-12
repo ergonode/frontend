@@ -31,7 +31,10 @@ export default {
                 attributeId,
             });
 
-            commit(types.INITIALIZE_OPTIONS, getMappedArrayOptions(options));
+            const initOptions = getMappedArrayOptions(options);
+
+            commit(types.INITIALIZE_OPTIONS, initOptions);
+            commit(types.SET_SORTED_OPTION, Object.keys(initOptions));
         } catch (e) {
             onError(e);
         }

@@ -107,7 +107,7 @@ export default {
             });
             this.onScopeValueChange({
                 scope: this.scope,
-                fieldKey: 'attribute-add-options',
+                fieldKey: 'attribute-update-options',
                 value: this.options,
             });
         },
@@ -125,7 +125,7 @@ export default {
             });
             this.onScopeValueChange({
                 scope: this.scope,
-                fieldKey: 'attribute-add-options',
+                fieldKey: 'attribute-remove-option',
                 value: this.options,
             });
             this.setSortedOptions(tmpOptions);
@@ -143,6 +143,12 @@ export default {
                 value: index,
             });
             this.setSortedOptions(items.map(item => item.fieldKey));
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'attribute-move-options',
+                value: this.options,
+            });
         },
         onAddOptionKey() {
             const fieldKey = getUUID();
@@ -159,7 +165,7 @@ export default {
             });
             this.onScopeValueChange({
                 scope: this.scope,
-                fieldKey: 'attribute-add-options',
+                fieldKey: 'attribute-add-option',
                 value: this.options,
             });
             this.setSortedOptions(tmpOptions);
