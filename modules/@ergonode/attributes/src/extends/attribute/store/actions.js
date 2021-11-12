@@ -4,7 +4,6 @@
  */
 import {
     getOption,
-    removeOption,
 } from '@Attributes/extends/attribute/services';
 import {
     getMappedArrayOptions,
@@ -15,16 +14,21 @@ import {
 } from './mutations';
 
 export default {
+    setOptionState({
+        commit,
+    }, payload) {
+        commit(types.SET_OPTION_STATE, payload);
+    },
     async getAttributeOptions({
         commit,
     }, {
-        id,
+        id: attributeId,
         onError = () => {},
     }) {
         try {
             const options = await getOption({
                 $axios: this.app.$axios,
-                id,
+                attributeId,
             });
 
             commit(types.INITIALIZE_OPTIONS, getMappedArrayOptions(options));
@@ -37,49 +41,30 @@ export default {
     }, index) {
         commit(types.ADD_ATTRIBUTE_OPTION_KEY, index);
     },
+    setSortedOptions({
+        commit,
+    }, options) {
+        commit(types.SET_SORTED_OPTION, options);
+    },
     removeAttributeOptionKey({
-        commit, dispatch,
-    }, {
-        id, index,
-    }) {
-        if (id) {
-            dispatch('removeOption', {
-                id,
-                index,
-            });
-        } else {
-            commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index);
-        }
+        commit,
+    }, index) {
+        commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index);
     },
     removeAttributeOptions({
         commit,
     }) {
         commit(types.INITIALIZE_OPTIONS);
     },
-    removeOption({
-        commit,
-        state,
-    }, {
-        id, index,
-    }) {
-        return removeOption({
-            $axios: this.app.$axios,
-            attributeId: state.id,
-            optionId: id,
-        }).then(() => commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index));
-    },
     updateAttributeOptionKey({
         commit,
     }, option) {
-        if (option.id) {
-            commit(types.SET_UPDATED_OPTION, option.id);
-        }
         commit(types.SET_ATTRIBUTE_OPTION_KEY, option);
     },
     setOptionValueForLanguageCode({
         commit, state,
     }, {
-        index, languageCode, value, id,
+        index, languageCode, value,
     }) {
         if (!state.options[index].value || !state.options[index].value[languageCode]) {
             commit(types.SET_OPTION_LANGUAGE_CODE_FOR_VALUE, {
@@ -93,9 +78,5 @@ export default {
             languageCode,
             value,
         });
-
-        if (id) {
-            commit(types.SET_UPDATED_OPTION, id);
-        }
     },
 };

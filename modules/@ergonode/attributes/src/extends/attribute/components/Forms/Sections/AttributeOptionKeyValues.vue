@@ -13,7 +13,8 @@
                 :has-drop-placeholder="false"
                 :scope="scope"
                 :items="optionValues"
-                @remove-item="onRemoveOption">
+                @remove-item="onRemoveOption"
+                @move-item="onMoveItem">
                 <template #item="{ item }">
                     <TextField
                         :data-cy="dataCyGenerator(item.fieldKey)"
@@ -35,9 +36,16 @@
 
 <script>
 import {
+    OPTION_STATES,
+} from '@Attributes/defaults';
+import {
     SIZE,
 } from '@Core/defaults/theme';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
+import {
+    insertValueAtIndex,
+    removeValueAtIndex,
+} from '@Core/models/arrayWrapper';
 import {
     getUUID,
 } from '@Core/models/stringWrapper';
@@ -60,22 +68,28 @@ export default {
     computed: {
         ...mapState('attribute', [
             'options',
+            'sortedOptions',
         ]),
         smallSize() {
             return SIZE.SMALL;
         },
         optionValues() {
-            return Object.keys(this.options).map(key => ({
+            return this.sortedOptions.map(key => ({
                 fieldKey: key,
                 ...this.options[key],
             }));
         },
+    },
+    mounted() {
+        this.setSortedOptions(Object.keys(this.options));
     },
     methods: {
         ...mapActions('attribute', [
             'addAttributeOptionKey',
             'removeAttributeOptionKey',
             'updateAttributeOptionKey',
+            'setOptionState',
+            'setSortedOptions',
         ]),
         onUpdateOptionKey({
             key,
@@ -86,33 +100,69 @@ export default {
                 id: this.options[key].id,
                 key: value,
             });
-
+            this.setOptionState({
+                key,
+                type: OPTION_STATES.EDIT,
+                value,
+            });
             this.onScopeValueChange({
                 scope: this.scope,
                 fieldKey: 'attribute-add-options',
                 value: this.options,
             });
         },
-        onRemoveOption(item) {
-            this.removeAttributeOptionKey({
-                index: item.fieldKey,
-                id: item.id,
-            });
+        onRemoveOption({
+            fieldKey, id,
+        }) {
+            const indexToRemove = this.sortedOptions.indexOf(fieldKey);
+            const tmpOptions = removeValueAtIndex(this.sortedOptions, indexToRemove);
 
+            this.removeAttributeOptionKey(fieldKey);
+            this.setOptionState({
+                key: fieldKey,
+                type: OPTION_STATES.DELETE,
+                value: id,
+            });
             this.onScopeValueChange({
                 scope: this.scope,
                 fieldKey: 'attribute-add-options',
                 value: this.options,
             });
+            this.setSortedOptions(tmpOptions);
+        },
+        onMoveItem({
+            index, items,
+        }) {
+            const {
+                fieldKey,
+            } = items[index];
+
+            this.setOptionState({
+                key: fieldKey,
+                type: OPTION_STATES.MOVE,
+                value: index,
+            });
+            this.setSortedOptions(items.map(item => item.fieldKey));
         },
         onAddOptionKey() {
-            this.addAttributeOptionKey(getUUID());
+            const fieldKey = getUUID();
+            const tmpOptions = insertValueAtIndex(
+                this.sortedOptions,
+                fieldKey,
+                this.sortedOptions.length,
+            );
 
+            this.addAttributeOptionKey(fieldKey);
+            this.setOptionState({
+                key: fieldKey,
+                type: OPTION_STATES.ADD,
+            });
             this.onScopeValueChange({
                 scope: this.scope,
                 fieldKey: 'attribute-add-options',
                 value: this.options,
             });
+            this.setSortedOptions(tmpOptions);
         },
         dataCyGenerator(key) {
             return `attribute-option-${key}`;

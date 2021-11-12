@@ -4,18 +4,18 @@
  */
 export const createOption = ({
     $axios,
-    id,
+    attributeId,
     data,
-}) => $axios.$post(`attributes/${id}/options`, data);
+}) => $axios.$post(`attributes/${attributeId}/options`, data);
 
 export const getOption = ({
     $axios,
-    id,
+    attributeId,
     params = {
         order: 'ASC',
         field: 'code',
     },
-}) => $axios.$get(`attributes/${id}/options`, {
+}) => $axios.$get(`attributes/${attributeId}/options`, {
     params,
 });
 
@@ -31,3 +31,10 @@ export const updateOption = ({
     optionId,
     data,
 }) => $axios.$put(`attributes/${attributeId}/options/${optionId}`, data);
+
+export const moveOption = ({
+    $axios,
+    attributeId,
+    optionId,
+    data,
+}) => $axios.$put(`attributes/${attributeId}/options/${optionId}/move`, data);

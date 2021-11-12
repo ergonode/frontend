@@ -65,7 +65,6 @@ export default {
                 index: this.index,
                 languageCode: this.languageCode,
                 value,
-                id: this.option.id,
             });
         },
     },

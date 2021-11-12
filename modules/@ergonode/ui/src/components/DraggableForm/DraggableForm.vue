@@ -158,9 +158,7 @@ export default {
             handler() {
                 this.localItems = [
                     ...this.items,
-                ].sort(
-                    (a, b) => this.itemsOrder.indexOf(a.id) - this.itemsOrder.indexOf(b.id),
-                );
+                ];
             },
         },
     },
@@ -229,6 +227,13 @@ export default {
                 this.__setState({
                     key: 'ghostIndex',
                     value: -1,
+                });
+            }
+
+            if (this.ghostIndex !== -1) {
+                this.$emit('move-item', {
+                    index: this.ghostIndex,
+                    items: this.localItems,
                 });
             }
 

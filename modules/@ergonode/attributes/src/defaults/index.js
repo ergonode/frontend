@@ -4,6 +4,13 @@
  */
 export const SKU_MODEL_ID = 'SKU';
 
+export const OPTION_STATES = {
+    ADD: 'ADD',
+    MOVE: 'MOVE',
+    DELETE: 'DELETE',
+    EDIT: 'EDIT',
+};
+
 export const SKU_MODEL = {
     id: SKU_MODEL_ID,
     code: SKU_MODEL_ID,
