@@ -28,6 +28,9 @@ const unregisterResizeEventListeners = () => import('@UI/models/resize/unregiste
 
 export default {
     name: 'GridCellResizer',
+    inject: [
+        'getGridTableLayoutReference',
+    ],
     props: {
         /**
          * The size of the component
@@ -87,11 +90,14 @@ export default {
             } = event;
 
             this.isResizing = true;
-            this.startY = pageY;
+            this.startY = pageY + this.getGridTableLayoutReference().scrollTop;
             this.startHeight = parseInt(this.size.height, 10);
             this.currentHeight = this.startHeight;
 
-            this.$emit('resize', true);
+            this.$emit('resize', {
+                isResizing: true,
+                factor: 0,
+            });
 
             registerResizeEventListeners().then((response) => {
                 response.default(this.onResize, this.onStopResizing);
@@ -101,7 +107,7 @@ export default {
             const {
                 pageY,
             } = event;
-            const height = pageY - this.startY;
+            const height = pageY + this.getGridTableLayoutReference().scrollTop - this.startY;
             const factor = Math.ceil(height / this.startHeight);
             const fixedHeight = factor * this.startHeight;
 
@@ -127,16 +133,18 @@ export default {
         onStopResizing() {
             const absCurrentHeight = Math.abs(this.currentHeight);
             const absStartHeight = Math.abs(this.startHeight);
+            const factor = Math.ceil(this.currentHeight / this.startHeight);
 
             if (absCurrentHeight !== absStartHeight || absCurrentHeight === absStartHeight) {
-                const factor = Math.ceil(this.currentHeight / this.startHeight);
-
                 this.$emit('copy', factor);
             }
 
             this.isResizing = false;
 
-            this.$emit('resize', false);
+            this.$emit('resize', {
+                isResizing: false,
+                factor,
+            });
 
             unregisterResizeEventListeners().then((response) => {
                 response.default(this.onResize, this.onStopResizing);
