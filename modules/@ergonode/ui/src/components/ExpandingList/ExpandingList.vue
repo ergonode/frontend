@@ -9,7 +9,7 @@
             <DynamicScroller
                 :items="expandedItems"
                 :key-field="'id'"
-                :prerender="renderAhead"
+                :prerender="prerender"
                 :min-item-size="estimatedHeight">
                 <template #default="{ item, index, active }">
                     <DynamicScrollerItem
@@ -79,6 +79,13 @@ export default {
         };
     },
     computed: {
+        prerender() {
+            if (this.renderAhead > this.expandedItems.length) {
+                return 0;
+            }
+
+            return this.renderAhead;
+        },
         expandedItems() {
             const expandedItems = [];
             const expandedParents = {};

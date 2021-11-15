@@ -50,15 +50,8 @@
 </template>
 
 <script>
-import {
-    ExpandingList,
-} from 'vue-windowing';
-
 export default {
     name: 'SideBar',
-    components: {
-        ExpandingList,
-    },
     props: {
         /**
          * The title of the component
@@ -126,6 +119,8 @@ export default {
 
 <style lang="scss" scoped>
     .side-bar {
-        max-height: 100%;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
     }
 </style>
