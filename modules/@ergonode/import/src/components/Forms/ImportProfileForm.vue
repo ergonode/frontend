@@ -12,6 +12,7 @@
         :disabled="!isAllowedToUpdate"
         :errors="errors"
         :change-values="changeValues"
+        :errors-presentation-mapper="errorMapper"
         @proceed="onProceed"
         @submit="onSubmit">
         <template #body>
@@ -56,6 +57,9 @@
 <script>
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import {
+    getMappedPresentationErrors,
+} from '@Core/models/mappers/errorsMapper';
 import PRIVILEGES from '@Import/config/privileges';
 import {
     GRAPHITE,
@@ -134,6 +138,9 @@ export default {
             '__setState',
             'getConfiguration',
         ]),
+        errorMapper(errors) {
+            return getMappedPresentationErrors(errors);
+        },
         bindingProps({
             props,
         }) {

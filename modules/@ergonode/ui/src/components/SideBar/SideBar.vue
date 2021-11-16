@@ -7,7 +7,8 @@
         class="side-bar"
         :items="items"
         :expanded="expanded"
-        :render-ahead="8">
+        :render-ahead="8"
+        :option-key="optionKey">
         <template #header>
             <SideBarStickyHeader>
                 <slot name="header">
@@ -90,6 +91,13 @@ export default {
                 Boolean,
             ],
             default: false,
+        },
+        /**
+         * The key of the option
+         */
+        optionKey: {
+            type: String,
+            default: 'id',
         },
     },
     computed: {
