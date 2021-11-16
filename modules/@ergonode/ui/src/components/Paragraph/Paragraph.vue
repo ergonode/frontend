@@ -4,12 +4,25 @@
  */
 <script>
 import {
+    SIZE,
+} from '@Core/defaults/theme';
+import {
     isEmpty,
 } from '@Core/models/objectWrapper';
 
 export default {
     name: 'Paragraph',
     props: {
+        size: {
+            control: {
+                type: 'select',
+                options: [
+                    SIZE.SMALL,
+                    SIZE.REGULAR,
+                ],
+            },
+            defaultValue: SIZE.REGULAR,
+        },
         title: {
             type: String,
             required: true,
@@ -32,7 +45,10 @@ export default {
             });
         }
         return createElement('div', {
-            class: 'paragraph',
+            class: [
+                'paragraph',
+                `paragraph--${this.size}`,
+            ],
         }, [
             this.$slots.prepend,
             createElement('p', {
@@ -54,6 +70,13 @@ export default {
 
         &__content {
             color: $GRAPHITE_DARK;
+        }
+
+        &--small &__content {
+            font: $FONT_MEDIUM_12_16;
+        }
+
+        &--regular &__content {
             font: $FONT_MEDIUM_14_20;
         }
     }
