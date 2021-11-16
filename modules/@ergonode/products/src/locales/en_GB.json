@@ -52,6 +52,7 @@
           "title": "Add relations",
           "addRelationOption": "Add next relation",
           "removeRelationOption": "Remove this relation",
+          "removeAllRelationsOption": "Remove all relations",
           "navigateToRelationOption": "Navigate to this relation"
         },
         "UpdateProductTemplateButton": {

@@ -167,6 +167,10 @@ export default {
                     action: this.onRemoveRelation,
                 },
                 {
+                    text: this.$t('@Products.product.components.UploadProductRelations.removeAllRelationsOption'),
+                    action: this.onRemoveAllRelations,
+                },
+                {
                     text: this.$t('@Products.product.components.UploadProductRelations.navigateToRelationOption'),
                     action: this.onNavigateToRelation,
                 },
@@ -185,6 +189,11 @@ export default {
         },
         onShowModal() {
             this.isModalVisible = true;
+        },
+        onRemoveAllRelations() {
+            this.currentIndex = 0;
+
+            this.$emit('input', []);
         },
         onRemoveRelation() {
             const value = this.value.filter(id => id !== this.value[this.currentIndex]);
