@@ -153,7 +153,6 @@ export default {
             return RED;
         },
         presentationErrors() {
-            debugger;
             if (!this.errorsPresentationMapper) {
                 return this.errors;
             }
