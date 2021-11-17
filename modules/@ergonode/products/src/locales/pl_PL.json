@@ -52,6 +52,7 @@
           "title": "Dodaj relacje",
           "addRelationOption": "Dodaj kolejną relacje",
           "removeRelationOption": "Usuń tą relacje",
+          "removeAllRelationsOption": "Usuń wszystkie relacje",
           "navigateToRelationOption": "Idź do tej relacji"
         },
         "UpdateProductTemplateButton": {
