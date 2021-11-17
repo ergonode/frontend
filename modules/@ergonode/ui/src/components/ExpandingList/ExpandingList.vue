@@ -8,7 +8,7 @@
         <slot name="body">
             <DynamicScroller
                 :items="expandedItems"
-                :key-field="'id'"
+                :key-field="optionKey"
                 :prerender="prerender"
                 :min-item-size="estimatedHeight">
                 <template #default="{ item, index, active }">
@@ -70,7 +70,7 @@ export default {
          */
         optionKey: {
             type: String,
-            default: '',
+            default: 'id',
         },
     },
     data() {
