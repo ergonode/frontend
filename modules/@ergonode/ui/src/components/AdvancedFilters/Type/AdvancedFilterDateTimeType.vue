@@ -147,25 +147,10 @@ export default {
     },
     methods: {
         onValueChange({
-            from, to,
+            key,
+            value,
         }) {
-            const value = {
-                [FILTER_OPERATOR.GREATER_OR_EQUAL]: null,
-                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: null,
-            };
-
-            if (from) {
-                value[FILTER_OPERATOR.GREATER_OR_EQUAL] = from;
-            }
-
-            if (to) {
-                value[FILTER_OPERATOR.SMALLER_OR_EQUAL] = to;
-            }
-
-            this.localValue = {
-                ...this.localValue,
-                ...value,
-            };
+            this.localValue[key] = value;
         },
         onRemove(index) {
             this.$emit('remove', index);
