@@ -4,6 +4,9 @@
  */
 
 import {
+    GRID_LAYOUT,
+} from '@Core/defaults/grid';
+import {
     Components,
     Icons,
 } from '@ProductBatchActions/config/imports';
@@ -14,6 +17,10 @@ export default {
             {
                 component: Components.ProductsBatchActionsButton,
                 props: {},
+                layouts: [
+                    GRID_LAYOUT.COLLECTION,
+                    GRID_LAYOUT.TABLE,
+                ],
             },
         ],
         '@BatchActions/extends/notification/components/Notifications': {

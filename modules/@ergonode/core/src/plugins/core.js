@@ -56,6 +56,34 @@ export default ({
             });
         },
     });
+    inject('getExtendedLayoutSlot', ({
+        key, layout,
+    }) => {
+        const extendedSlot = app.$getExtendSlot(key);
+
+        if (Array.isArray(extendedSlot)) {
+            return extendedSlot.filter(
+                slot => !slot.layouts
+                    || slot.layouts.length === 0
+                    || slot.layouts.some(l => l === layout),
+            );
+        }
+
+        Object.keys(extendedSlot).reduce((prev, curr) => {
+            if (!extendedSlot[curr].layouts
+                || extendedSlot[curr].layouts.length === 0
+                || extendedSlot[curr].layouts.some(l => l === layout)) {
+                return {
+                    ...prev,
+                    [curr]: extendedSlot[curr],
+                };
+            }
+
+            return prev;
+        }, {});
+
+        return extendedSlot;
+    });
     inject('userCookies', {
         set(key, value) {
             app.$cookies.set(getCookieKey(store, key), value);
