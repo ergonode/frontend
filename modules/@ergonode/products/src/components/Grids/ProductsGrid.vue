@@ -230,13 +230,22 @@ export default {
             'disabledElements',
         ]),
         extendedActionHeader() {
-            return this.$getExtendSlot('@Products/components/Grids/ProductsGrid/actionHeader');
+            return this.$getExtendedLayoutSlot({
+                key: '@Products/components/Grids/ProductsGrid/actionHeader',
+                layout: this.layout,
+            });
         },
         extendedFooter() {
-            return this.$getExtendSlot('@Products/components/Grids/ProductsGrid/footer');
+            return this.$getExtendedLayoutSlot({
+                key: '@Products/components/Grids/ProductsGrid/footer',
+                layout: this.layout,
+            });
         },
         extendedAdvancedFilters() {
-            return this.$getExtendSlot('@Products/components/Grids/ProductsGrid/advancedFilters');
+            return this.$getExtendedLayoutSlot({
+                key: '@Products/components/Grids/ProductsGrid/advancedFilters',
+                layout: this.layout,
+            });
         },
         collectionCellBinding() {
             return {
