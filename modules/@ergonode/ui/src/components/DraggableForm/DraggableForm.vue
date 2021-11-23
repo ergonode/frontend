@@ -31,7 +31,8 @@
                     :index="index"
                     :item="item"
                     @remove-item="onRemoveItem"
-                    @swap="onSwapItems">
+                    @swap="onSwapItems"
+                    @drag-end="onDragEndItem">
                     <template #item>
                         <slot
                             name="item"
@@ -132,6 +133,13 @@ export default {
             type: Boolean,
             default: true,
         },
+        /**
+         * The key of the option
+         */
+        optionKey: {
+            type: String,
+            default: '',
+        },
     },
     data() {
         return {
@@ -144,9 +152,6 @@ export default {
             'draggedElement',
             'draggedElIndex',
         ]),
-        itemsOrder() {
-            return this.localItems.map(item => item.id);
-        },
         isPlaceholderItemVisible() {
             return this.hasDropPlaceholder && (!this.localItems.length
                 || (this.localItems.length === 1 && this.draggedElement && this.ghostIndex === -1));
@@ -210,7 +215,7 @@ export default {
             event.preventDefault();
         },
         onDrop(event) {
-            if (this.draggedElIndex === -1 && this.ghostIndex !== -1) {
+            if (this.ghostIndex !== -1 && this.localItems.length !== this.items.length) {
                 this.$emit('add-item', {
                     index: this.ghostIndex,
                     item: this.draggedElement,
@@ -228,6 +233,10 @@ export default {
                     key: 'ghostIndex',
                     value: -1,
                 });
+                this.__setState({
+                    key: 'draggedElIndex',
+                    value: -1,
+                });
             }
 
             if (this.ghostIndex !== -1) {
@@ -239,6 +248,18 @@ export default {
 
             event.preventDefault();
         },
+        onDragEndItem(index) {
+            const optionKey = this.optionKey || 'id';
+            const newItemId = this.localItems[index][optionKey];
+            const oldItemIndex = this.items.findIndex(item => item[optionKey] === newItemId);
+
+            if (index !== oldItemIndex) {
+                this.$emit('move-item', {
+                    index,
+                    items: this.localItems,
+                });
+            }
+        },
         onRemoveItem(item) {
             this.$emit('remove-item', item);
         },
@@ -247,9 +268,6 @@ export default {
             to,
         }) {
             this.localItems = swapItemPosition(this.localItems, from, to);
-            this.localItems = [
-                ...this.localItems,
-            ];
         },
     },
 };

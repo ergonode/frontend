@@ -13,6 +13,7 @@
                 :has-drop-placeholder="false"
                 :scope="scope"
                 :items="optionValues"
+                option-key="id"
                 @remove-item="onRemoveOption"
                 @move-item="onMoveItem">
                 <template #item="{ item }">
