@@ -10,9 +10,15 @@
         @dragover="onDragOver"
         @dragstart="onDragStart"
         @dragend="onDragEnd">
-        <IconDragDrop
-            ref="dragIcon"
-            class="draggable-form-item__drag-icon" />
+        <IconButton
+            class="draggable-form-item__drag-button"
+            ref="dragButton"
+            :size="smallSize"
+            :theme="secondaryPlainTheme">
+            <template #icon>
+                <IconDragDrop />
+            </template>
+        </IconButton>
         <div
             v-show="!isGhostVisible"
             class="draggable-form-item__body">
@@ -114,7 +120,7 @@ export default {
             this.$emit('remove-item', this.item);
         },
         onDragStart(event) {
-            if (isMouseOutsideElement(this.$refs.dragIcon.$el, event.x, event.y)) {
+            if (isMouseOutsideElement(this.$refs.dragButton.$el, event.x, event.y)) {
                 event.preventDefault();
                 event.stopPropagation();
 
@@ -158,6 +164,8 @@ export default {
                 });
 
                 this.$emit('remove-item', this.index);
+            } else {
+                this.$emit('drag-end', this.index);
             }
 
             this.__setState({
@@ -212,6 +220,10 @@ export default {
                 key: 'ghostIndex',
                 value: this.index,
             });
+            this.__setState({
+                key: 'draggedElIndex',
+                value: this.index,
+            });
         },
     },
 };
@@ -232,21 +244,16 @@ export default {
             display: none;
         }
 
-        &__drag-icon {
-            margin-top: 8px;
+        &__drag-button {
             cursor: grab;
         }
 
-        &__remove-button {
-            margin-top: 4px;
-        }
-
-        &__drag-icon, &__remove-button {
+        &__drag-button, &__remove-button {
             opacity: 0;
         }
 
         &:hover:not(&--disabled) {
-            #{$item}__drag-icon, #{$item}__remove-button {
+            #{$item}__drag-button, #{$item}__remove-button {
                 opacity: 1;
             }
         }
