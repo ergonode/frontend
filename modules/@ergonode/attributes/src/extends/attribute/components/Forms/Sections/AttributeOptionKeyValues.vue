@@ -143,6 +143,7 @@ export default {
                 type: OPTION_STATES.MOVE,
                 value: index,
             });
+
             this.setSortedOptions(items.map(item => item.fieldKey));
 
             this.onScopeValueChange({
