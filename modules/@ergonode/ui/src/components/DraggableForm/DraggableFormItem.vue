@@ -90,7 +90,6 @@ export default {
         ...mapState('draggable', [
             'draggedElement',
             'ghostIndex',
-            'draggedElIndex',
             'isOverDropZone',
         ]),
         classes() {
@@ -98,7 +97,6 @@ export default {
                 'draggable-form-item',
                 {
                     'draggable-form-item--disabled': this.draggedElement !== null,
-                    'draggable-form-item--hidden': this.draggedElIndex === this.index && this.ghostIndex === -1,
                 },
             ];
         },
@@ -138,10 +136,6 @@ export default {
                 value: deepClone(this.item),
             });
             this.__setState({
-                key: 'draggedElIndex',
-                value: this.index,
-            });
-            this.__setState({
                 key: 'draggedInScope',
                 value: this.scope,
             });
@@ -163,9 +157,7 @@ export default {
                     value: false,
                 });
 
-                this.$emit('remove-item', this.index);
-            } else {
-                this.$emit('drag-end', this.index);
+                this.$emit('remove-item', this.item);
             }
 
             this.__setState({
@@ -175,10 +167,6 @@ export default {
             this.__setState({
                 key: 'draggedInScope',
                 value: '',
-            });
-            this.__setState({
-                key: 'draggedElIndex',
-                value: -1,
             });
             this.__setState({
                 key: 'ghostIndex',
@@ -220,10 +208,6 @@ export default {
                 key: 'ghostIndex',
                 value: this.index,
             });
-            this.__setState({
-                key: 'draggedElIndex',
-                value: this.index,
-            });
         },
     },
 };
@@ -239,10 +223,6 @@ export default {
         grid-template-columns: max-content 1fr max-content;
         align-items: flex-start;
         grid-column-gap: 8px;
-
-        &--hidden {
-            display: none;
-        }
 
         &__drag-button {
             cursor: grab;
