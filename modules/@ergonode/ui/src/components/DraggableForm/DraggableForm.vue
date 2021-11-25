@@ -30,7 +30,8 @@
                     :index="index"
                     :item="item"
                     @remove-item="onRemoveItem"
-                    @swap="onSwapItems">
+                    @swap="onSwapItems"
+                    @drag-end="onDragEndItem">
                     <template #item>
                         <slot
                             name="item"
@@ -235,6 +236,18 @@ export default {
             }
 
             event.preventDefault();
+        },
+        onDragEndItem(index) {
+            const optionKey = this.optionKey || 'id';
+            const newItemId = this.localItems[index][optionKey];
+            const oldItemIndex = this.items.findIndex(item => item[optionKey] === newItemId);
+
+            if (index !== oldItemIndex) {
+                this.$emit('move-item', {
+                    index,
+                    items: this.localItems,
+                });
+            }
         },
         onRemoveItem(item) {
             this.$emit('remove-item', item);

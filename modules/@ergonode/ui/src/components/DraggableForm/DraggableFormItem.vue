@@ -158,6 +158,8 @@ export default {
                 });
 
                 this.$emit('remove-item', this.item);
+            } else {
+                this.$emit('drag-end', this.index);
             }
 
             this.__setState({
