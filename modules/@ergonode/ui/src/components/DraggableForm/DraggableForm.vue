@@ -5,9 +5,8 @@
 <template>
     <div
         class="draggable-form"
-        @dragenter="onDragEnter"
-        @dragleave="onDragLeave"
         @drop="onDrop"
+        @dragenter="onDragEnter"
         @dragover="onDragOver">
         <Form
             :title="title"
@@ -31,8 +30,7 @@
                     :index="index"
                     :item="item"
                     @remove-item="onRemoveItem"
-                    @swap="onSwapItems"
-                    @drag-end="onDragEndItem">
+                    @swap="onSwapItems">
                     <template #item>
                         <slot
                             name="item"
@@ -53,7 +51,6 @@ import DraggableFormItem from '@UI/components/DraggableForm/DraggableFormItem';
 import DraggableFormPlaceholderItem from '@UI/components/DraggableForm/DraggableFormPlaceholderItem';
 import {
     getFixedMousePosition,
-    isMouseOutsideElement,
 } from '@UI/models/mouse';
 import {
     mapActions,
@@ -150,7 +147,6 @@ export default {
         ...mapState('draggable', [
             'ghostIndex',
             'draggedElement',
-            'draggedElIndex',
         ]),
         isPlaceholderItemVisible() {
             return this.hasDropPlaceholder && (!this.localItems.length
@@ -165,6 +161,21 @@ export default {
                     ...this.items,
                 ];
             },
+        },
+        draggedElement(newValue, oldValue) {
+            if (!this.draggedElement && this.ghostIndex !== -1 && oldValue) {
+                this.$emit('add-item', {
+                    index: this.ghostIndex,
+                    item: oldValue,
+                });
+
+                this.localItems.splice(this.ghostIndex, 1);
+
+                this.__setState({
+                    key: 'ghostIndex',
+                    value: -1,
+                });
+            }
         },
     },
     methods: {
@@ -185,31 +196,12 @@ export default {
                 ? +formElement.getAttribute('index')
                 : 0;
 
-            if (this.draggedElIndex === -1) {
-                this.localItems = insertValueAtIndex(this.localItems, this.draggedElement, index);
-            }
+            this.localItems = insertValueAtIndex(this.localItems, this.draggedElement, index);
 
             this.__setState({
                 key: 'ghostIndex',
                 value: index,
             });
-        },
-        onDragLeave(event) {
-            const {
-                xPos,
-                yPos,
-            } = getFixedMousePosition(event);
-
-            if (isMouseOutsideElement(this.$el, xPos, yPos) && this.ghostIndex !== -1) {
-                if (this.draggedElIndex === -1) {
-                    this.localItems.splice(this.ghostIndex, 1);
-                }
-
-                this.__setState({
-                    key: 'ghostIndex',
-                    value: -1,
-                });
-            }
         },
         onDragOver(event) {
             event.preventDefault();
@@ -233,10 +225,6 @@ export default {
                     key: 'ghostIndex',
                     value: -1,
                 });
-                this.__setState({
-                    key: 'draggedElIndex',
-                    value: -1,
-                });
             }
 
             if (this.ghostIndex !== -1) {
@@ -247,18 +235,6 @@ export default {
             }
 
             event.preventDefault();
-        },
-        onDragEndItem(index) {
-            const optionKey = this.optionKey || 'id';
-            const newItemId = this.localItems[index][optionKey];
-            const oldItemIndex = this.items.findIndex(item => item[optionKey] === newItemId);
-
-            if (index !== oldItemIndex) {
-                this.$emit('move-item', {
-                    index,
-                    items: this.localItems,
-                });
-            }
         },
         onRemoveItem(item) {
             this.$emit('remove-item', item);
