@@ -101,7 +101,9 @@ export default {
     },
     methods: {
         onRemoveAlert() {
-            this.$emit('remove', this.id);
+            this.$emit('remove', {
+                id: this.id,
+            });
         },
     },
 };

@@ -72,11 +72,11 @@ export default {
     },
     computed: {
         ...mapState('statusTransition', [
-            'source',
-            'destination',
+            'from',
+            'to',
         ]),
         title() {
-            return `${this.source.value} -> ${this.destination.value}`;
+            return `${this.from.value} -> ${this.to.value}`;
         },
         extendedMainAction() {
             return this.$getExtendSlot('@Transitions/pages/status-transitions/_transition/mainAction');

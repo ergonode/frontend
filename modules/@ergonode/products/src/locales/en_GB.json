@@ -75,7 +75,7 @@
           "filtersButtonTitle": "FILTERS",
           "noFilterErrorMessage": "Attribute has no filter",
           "removeSuccessMessage": "Product removed",
-          "getErrorMessage": "Products haven’t been fetched properl"
+          "getErrorMessage": "Products haven’t been fetched properly"
         },
         "RestoreAttributeParentConfirmModal": {
           "confirmTitle": "Do you want to restore parent translation value of selected cell?",
