@@ -53,16 +53,16 @@ export const updateDefaultStatus = ({
 
 export const getTransition = ({
     $axios,
-    source,
-    destination,
-}) => $axios.$get(`workflow/default/transitions/${source}/${destination}`);
+    from,
+    to,
+}) => $axios.$get(`workflow/default/transitions/${from}/${to}`);
 
 export const updateTransition = ({
     $axios,
-    source,
-    destination,
+    from,
+    to,
     data,
-}) => $axios.$put(`workflow/default/transitions/${source}/${destination}`, data);
+}) => $axios.$put(`workflow/default/transitions/${from}/${to}`, data);
 
 export const updateTransitions = ({
     $axios,
@@ -71,6 +71,6 @@ export const updateTransitions = ({
 
 export const removeTransition = ({
     $axios,
-    source,
-    destination,
-}) => $axios.$delete(`workflow/default/transitions/${source}/${destination}`);
+    from,
+    to,
+}) => $axios.$delete(`workflow/default/transitions/${from}/${to}`);

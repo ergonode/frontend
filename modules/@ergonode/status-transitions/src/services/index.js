@@ -5,16 +5,16 @@
 
 export const get = ({
     $axios,
-    source,
-    destination,
-}) => $axios.$get(`workflow/default/transitions/${source}/${destination}`);
+    from,
+    to,
+}) => $axios.$get(`workflow/default/transitions/${from}/${to}`);
 
 export const update = ({
     $axios,
-    source,
-    destination,
+    from,
+    to,
     data,
-}) => $axios.$put(`workflow/default/transitions/${source}/${destination}`, data);
+}) => $axios.$put(`workflow/default/transitions/${from}/${to}`, data);
 
 export const create = ({
     $axios,
@@ -23,6 +23,6 @@ export const create = ({
 
 export const remove = ({
     $axios,
-    source,
-    destination,
-}) => $axios.$delete(`workflow/default/transitions/${source}/${destination}`);
+    from,
+    to,
+}) => $axios.$delete(`workflow/default/transitions/${from}/${to}`);

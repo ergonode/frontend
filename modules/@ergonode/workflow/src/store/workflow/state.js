@@ -10,8 +10,8 @@ export default () => ({
         isDefaultStatus: false,
     },
     transition: {
-        source: '',
-        destination: '',
+        from: '',
+        to: '',
         conditionSetId: '',
     },
     statuses: [],

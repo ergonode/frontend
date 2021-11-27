@@ -54,8 +54,8 @@ export default {
     },
     computed: {
         ...mapState('statusTransition', [
-            'source',
-            'destination',
+            'from',
+            'to',
         ]),
     },
     created() {
@@ -123,7 +123,7 @@ export default {
             this.$router.push({
                 name: ROUTE_NAME.STATUS_TRANSITION_EDIT_GENERAL,
                 params: {
-                    id: `${this.source.key}--${this.destination.key}`,
+                    id: `${this.from.key}--${this.to.key}`,
                 },
             });
         },

@@ -14,14 +14,12 @@ export default {
     name: 'Paragraph',
     props: {
         size: {
-            control: {
-                type: 'select',
-                options: [
-                    SIZE.SMALL,
-                    SIZE.REGULAR,
-                ],
-            },
-            defaultValue: SIZE.REGULAR,
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
         },
         title: {
             type: String,
