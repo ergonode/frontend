@@ -30,9 +30,6 @@ import {
     prepareTemplateData,
     setTemplateData,
 } from '@Attributes/extends/productTemplate/methods';
-import {
-    GRID_LAYOUT,
-} from '@Core/defaults/grid';
 
 const AttributeIcons = {
     [TYPES.NUMERIC]: [

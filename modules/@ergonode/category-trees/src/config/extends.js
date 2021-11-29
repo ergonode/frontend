@@ -4,9 +4,6 @@
  */
 
 import {
-    GRID_LAYOUT,
-} from '@Core/defaults/grid';
-import {
     Components,
     Icons,
 } from '@Trees/config/imports';
