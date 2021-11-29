@@ -30,10 +30,6 @@ export default {
                     value: $this.filters,
                     onValueChange: $this.onFiltersChange,
                 },
-                layouts: [
-                    GRID_LAYOUT.COLLECTION,
-                    GRID_LAYOUT.TABLE,
-                ],
             },
         ],
         '@Products/components/Modals/AddProductRelationsModalGrid/verticalTabs': ({
