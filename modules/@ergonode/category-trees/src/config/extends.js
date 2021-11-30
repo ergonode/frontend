@@ -4,9 +4,6 @@
  */
 
 import {
-    GRID_LAYOUT,
-} from '@Core/defaults/grid';
-import {
     Components,
     Icons,
 } from '@Trees/config/imports';
@@ -30,10 +27,6 @@ export default {
                     value: $this.filters,
                     onValueChange: $this.onFiltersChange,
                 },
-                layouts: [
-                    GRID_LAYOUT.COLLECTION,
-                    GRID_LAYOUT.TABLE,
-                ],
             },
         ],
         '@Products/components/Modals/AddProductRelationsModalGrid/verticalTabs': ({

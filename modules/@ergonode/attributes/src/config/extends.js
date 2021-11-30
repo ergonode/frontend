@@ -30,9 +30,6 @@ import {
     prepareTemplateData,
     setTemplateData,
 } from '@Attributes/extends/productTemplate/methods';
-import {
-    GRID_LAYOUT,
-} from '@Core/defaults/grid';
 
 const AttributeIcons = {
     [TYPES.NUMERIC]: [
@@ -186,10 +183,6 @@ export default {
                 props: {
                     scope: $this.scope,
                 },
-                layouts: [
-                    GRID_LAYOUT.TABLE,
-                    GRID_LAYOUT.COLLECTION,
-                ],
             },
             {
                 title: $this.$t('@Attributes.attributeExtend.components.SystemAttributesVerticalTab.title'),
@@ -198,10 +191,6 @@ export default {
                 props: {
                     scope: $this.scope,
                 },
-                layouts: [
-                    GRID_LAYOUT.TABLE,
-                    GRID_LAYOUT.COLLECTION,
-                ],
             },
         ],
         '@Products/components/Modals/AddProductRelationsModalGrid/verticalTabs': ({
