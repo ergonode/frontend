@@ -66,7 +66,6 @@ export default {
         ...mapState('attribute', [
             'options',
             'optionsOrder',
-            'optionsOrder',
         ]),
         smallSize() {
             return SIZE.SMALL;
