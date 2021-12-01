@@ -5,7 +5,7 @@
 <template>
     <FormSection :title="$t('@Attributes.attributeExtend.components.AttributeOptionValues.optionTitle')">
         <AttributeOptionValue
-            v-for="(id, i) in sortedOptions"
+            v-for="(id, i) in optionsOrder"
             :data-cy="`attribute-option_${languageCode}_${i}`"
             :key="id"
             :index="id"
@@ -43,7 +43,7 @@ export default {
     },
     computed: {
         ...mapState('attribute', [
-            'sortedOptions',
+            'optionsOrder',
             'options',
         ]),
     },

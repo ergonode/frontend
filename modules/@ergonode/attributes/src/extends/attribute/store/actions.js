@@ -32,9 +32,14 @@ export default {
             });
 
             const initOptions = getMappedArrayOptions(options);
+            const fieldKeys = Object.keys(initOptions);
+
+            commit('__SET_STATE', {
+                key: 'optionsOrder',
+                value: fieldKeys,
+            });
 
             commit(types.INITIALIZE_OPTIONS, initOptions);
-            commit(types.SET_SORTED_OPTION, Object.keys(initOptions));
         } catch (e) {
             onError(e);
         }
@@ -43,11 +48,6 @@ export default {
         commit,
     }, index) {
         commit(types.ADD_ATTRIBUTE_OPTION_KEY, index);
-    },
-    setSortedOptions({
-        commit,
-    }, options) {
-        commit(types.SET_SORTED_OPTION, options);
     },
     removeAttributeOptionKey({
         commit,

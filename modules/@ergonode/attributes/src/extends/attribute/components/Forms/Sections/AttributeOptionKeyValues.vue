@@ -44,10 +44,6 @@ import {
 } from '@Core/defaults/theme';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import {
-    insertValueAtIndex,
-    removeValueAtIndex,
-} from '@Core/models/arrayWrapper';
-import {
     getUUID,
 } from '@Core/models/stringWrapper';
 import {
@@ -69,28 +65,25 @@ export default {
     computed: {
         ...mapState('attribute', [
             'options',
-            'sortedOptions',
+            'optionsOrder',
+            'optionsOrder',
         ]),
         smallSize() {
             return SIZE.SMALL;
         },
         optionValues() {
-            return this.sortedOptions.map(key => ({
+            return this.optionsOrder.map(key => ({
                 fieldKey: key,
                 ...this.options[key],
             }));
         },
     },
-    mounted() {
-        this.setSortedOptions(Object.keys(this.options));
-    },
     methods: {
         ...mapActions('attribute', [
             'addAttributeOptionKey',
-            'removeAttributeOptionKey',
             'updateAttributeOptionKey',
             'setOptionState',
-            'setSortedOptions',
+            '__setState',
         ]),
         onUpdateOptionKey({
             key,
@@ -115,36 +108,39 @@ export default {
         onRemoveOption({
             fieldKey, id,
         }) {
-            const indexToRemove = this.sortedOptions.indexOf(fieldKey);
-            const tmpOptions = removeValueAtIndex(this.sortedOptions, indexToRemove);
+            this.__setState({
+                key: 'optionsOrder',
+                value: this.optionsOrder.filter(optionId => optionId !== fieldKey),
+            });
 
-            this.removeAttributeOptionKey(fieldKey);
             this.setOptionState({
                 key: fieldKey,
                 type: OPTION_STATES.DELETE,
-                value: id,
+                value: {
+                    fieldKey,
+                    id,
+                },
             });
             this.onScopeValueChange({
                 scope: this.scope,
                 fieldKey: 'attribute-remove-option',
                 value: this.options,
             });
-            this.setSortedOptions(tmpOptions);
         },
         onMoveItem({
-            index, items,
+            index,
+            items,
         }) {
-            const {
-                fieldKey,
-            } = items[index];
-
-            this.setOptionState({
-                key: fieldKey,
-                type: OPTION_STATES.MOVE,
-                value: index,
+            this.__setState({
+                key: 'optionsOrder',
+                value: items.map(item => item.fieldKey),
             });
 
-            this.setSortedOptions(items.map(item => item.fieldKey));
+            this.setOptionState({
+                key: items[index].fieldKey,
+                type: OPTION_STATES.MOVE,
+                value: items[index].fieldKey,
+            });
 
             this.onScopeValueChange({
                 scope: this.scope,
@@ -154,23 +150,26 @@ export default {
         },
         onAddOptionKey() {
             const fieldKey = getUUID();
-            const tmpOptions = insertValueAtIndex(
-                this.sortedOptions,
-                fieldKey,
-                this.sortedOptions.length,
-            );
+
+            this.__setState({
+                key: 'optionsOrder',
+                value: [
+                    ...this.optionsOrder,
+                    fieldKey,
+                ],
+            });
 
             this.addAttributeOptionKey(fieldKey);
             this.setOptionState({
                 key: fieldKey,
                 type: OPTION_STATES.ADD,
+                value: true,
             });
             this.onScopeValueChange({
                 scope: this.scope,
                 fieldKey: 'attribute-add-option',
                 value: this.options,
             });
-            this.setSortedOptions(tmpOptions);
         },
         dataCyGenerator(key) {
             return `attribute-option-${key}`;
