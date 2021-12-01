@@ -8,7 +8,6 @@ import {
 
 export const types = {
     SET_OPTION_STATE: 'SET_OPTION_STATE',
-    SET_SORTED_OPTION: 'SET_SORTED_OPTION',
     INITIALIZE_OPTIONS: 'INITIALIZE_OPTIONS',
     ADD_ATTRIBUTE_OPTION_KEY: 'ADD_ATTRIBUTE_OPTION_KEY',
     REMOVE_ATTRIBUTE_OPTION_KEY: 'REMOVE_ATTRIBUTE_OPTION_KEY',
@@ -39,9 +38,6 @@ export default {
     },
     [types.REMOVE_OPTIONS_STATE](state) {
         state.optionsState = {};
-    },
-    [types.SET_SORTED_OPTION](state, options) {
-        state.sortedOptions = options;
     },
     [types.INITIALIZE_OPTIONS](state, options = {}) {
         state.options = options;
@@ -95,10 +91,13 @@ export default {
         };
     },
     [types.SET_OPTION_VALUE](state, {
-        index, value,
+        index, value = null,
     }) {
-        state.options[index].value = value || null;
         state.options = {
+            [index]: {
+                ...state.options[index],
+                value,
+            },
             ...state.options,
         };
     },

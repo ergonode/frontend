@@ -12,7 +12,7 @@ import {
 } from '@Attributes/extends/attribute/services';
 
 export const createOptionHelper = async ({
-    $this, keyField, data,
+    $this, fieldKey, data,
 }) => {
     const {
         id: attributeId,
@@ -25,17 +25,21 @@ export const createOptionHelper = async ({
         data,
     }).then(({
         id: optionId,
-    }) => $this.dispatch('attribute/updateAttributeOptionKey',
-        {
-            index: keyField,
-            id: optionId,
-            key: options[keyField].key,
-        }))
+    }) => {
+        $this.dispatch('attribute/updateAttributeOptionKey',
+            {
+                index: fieldKey,
+                id: optionId,
+                key: options[fieldKey].key,
+            });
+
+        return optionId;
+    })
         .catch((e) => {
             throw {
                 data: {
                     errors: {
-                        [`option_${keyField}`]: e.data.errors.code,
+                        [`option_${fieldKey}`]: e.data.errors.code,
                     },
                 },
             };
@@ -43,7 +47,7 @@ export const createOptionHelper = async ({
 };
 
 export const moveOptionHelper = ({
-    $this, keyField, data,
+    $this, fieldKey, data,
 }) => {
     const {
         id: attributeId,
@@ -53,13 +57,13 @@ export const moveOptionHelper = ({
     return moveOption({
         $axios: $this.app.$axios,
         attributeId,
-        optionId: options[keyField].id,
+        optionId: options[fieldKey].id,
         data,
     }).catch((e) => {
         throw {
             data: {
                 errors: {
-                    [`option_${keyField}`]: e.data.errors.code,
+                    [`option_${fieldKey}`]: e.data.errors.code,
                 },
             },
         };
@@ -67,7 +71,7 @@ export const moveOptionHelper = ({
 };
 
 export const updateOptionHelper = ({
-    $this, keyField, data,
+    $this, fieldKey, data,
 }) => {
     const {
         id: attributeId,
@@ -77,13 +81,13 @@ export const updateOptionHelper = ({
     return updateOption({
         $axios: $this.app.$axios,
         attributeId,
-        optionId: options[keyField].id,
+        optionId: options[fieldKey].id,
         data,
     }).catch((e) => {
         throw {
             data: {
                 errors: {
-                    [`option_${keyField}`]: e.data.errors.code,
+                    [`option_${fieldKey}`]: e.data.errors.code,
                 },
             },
         };
@@ -91,7 +95,7 @@ export const updateOptionHelper = ({
 };
 
 export const removeOptionHelper = ({
-    $this, keyField, optionId,
+    $this, fieldKey, optionId,
 }) => {
     const {
         id: attributeId,
@@ -102,12 +106,12 @@ export const removeOptionHelper = ({
         attributeId,
         optionId,
     }).then(
-        () => $this.dispatch('attribute/removeAttributeOptionKey', keyField),
+        () => $this.dispatch('attribute/removeAttributeOptionKey', fieldKey),
     ).catch((e) => {
         throw {
             data: {
                 errors: {
-                    [`option_${keyField}`]: e.data.errors.code,
+                    [`option_${fieldKey}`]: e.data.errors.code,
                 },
             },
         };
