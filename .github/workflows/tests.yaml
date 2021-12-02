@@ -10,7 +10,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '14'
-          check-latest: true
+
       - name: Installing project dependencies
         run: npm ci
       - name: Setting up modules
