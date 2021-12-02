@@ -178,7 +178,10 @@ export const updateOptionsData = async ({
     await Promise.all(
         Object
             .keys(optionsState)
-            .filter(state => OPTION_STATES.DELETE in optionsState[state])
+            .filter(
+                state => OPTION_STATES.DELETE in optionsState[state]
+                    && optionsState[state][OPTION_STATES.DELETE].id !== null,
+            )
             .map(fieldKey => removeOptionHelper({
                 $this,
                 fieldKey,
