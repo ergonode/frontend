@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## CHANGELOG FOR v1.3.0
+feature [#1147](https://github.com/ergonode/frontend/pull/1147) Remove defined layouts (derpdead)
+
 ## CHANGELOG FOR v1.2.x
 
 #### 1.2.0
