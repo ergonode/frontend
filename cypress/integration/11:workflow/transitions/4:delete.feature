@@ -10,8 +10,8 @@ Feature: DELETE: Transition on workflow
     When On "workflow-designer" I can see the transition from "New" to "Processed"
     * On "workflow-designer" I click on the "edit" button for the transition from "New" to "Processed"
     * I see "workflow/transition/%UUID%/general" page
-    * I can see "transition-source" select with the "New" term
-    * I can see "transition-destination" select with the "Processed" term
+    * I can see "transition-from" select with the "New" term
+    * I can see "transition-to" select with the "Processed" term
     * I click on "delete-transition" button
     * I close modal
 
@@ -27,8 +27,8 @@ Feature: DELETE: Transition on workflow
     When On "workflow-designer" I can see the transition from "New" to "Processed"
     * On "workflow-designer" I click on the "edit" button for the transition from "New" to "Processed"
     * I see "workflow/transition/%UUID%/general" page
-    * I can see "transition-source" select with the "New" term
-    * I can see "transition-destination" select with the "Processed" term
+    * I can see "transition-from" select with the "New" term
+    * I can see "transition-to" select with the "Processed" term
     * I click on "delete-transition" button
     * I confirm modal
 

@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export function getSourceAndDestination(id) {
+export function getFromAndToTransition(id) {
     return id.split('--');
 }
 
@@ -43,9 +43,9 @@ export function getMappedLayoutElements({
     }
 
     return transitions.reduce((prev, current, index) => {
-        const transitionId = `${current.source}--${current.destination}`;
-        const from = statuses.findIndex(status => status.id === current.source);
-        const to = statuses.findIndex(status => status.id === current.destination);
+        const transitionId = `${current.from}--${current.to}`;
+        const from = statuses.findIndex(status => status.id === current.from);
+        const to = statuses.findIndex(status => status.id === current.to);
 
         return [
             ...prev,
@@ -64,18 +64,18 @@ export function getMappedStatusPositions({
 }) {
     return layoutElements.reduce((prev, current) => {
         const [
-            source,
-            destination,
-        ] = getSourceAndDestination(current.id);
-        const from = statuses.findIndex(status => status.id === source);
-        const to = statuses.findIndex(status => status.id === destination);
+            from,
+            to,
+        ] = getFromAndToTransition(current.id);
+        const fromTransition = statuses.findIndex(status => status.id === from);
+        const toTransition = statuses.findIndex(status => status.id === to);
 
         return [
             ...prev,
             {
                 ...current,
-                from,
-                to,
+                from: fromTransition,
+                to: toTransition,
             },
         ];
     }, []);
@@ -94,8 +94,8 @@ export function getRows(layoutElements) {
 
 export function getMappedTransitions(transitions) {
     return transitions.map(transition => ({
-        source: transition.source,
-        destination: transition.destination,
+        from: transition.from,
+        to: transition.to,
         roles: transition.roles,
         condition_set: transition.condition_set_id,
     }));

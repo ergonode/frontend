@@ -5,20 +5,20 @@
 
 export const transitions = [
     {
-        source: '0',
-        destination: '2',
+        from: '0',
+        to: '2',
         roles: [],
         condition_set_id: null,
     },
     {
-        source: '0',
-        destination: '3',
+        from: '0',
+        to: '3',
         roles: [],
         condition_set_id: null,
     },
     {
-        source: '0',
-        destination: '1',
+        from: '0',
+        to: '1',
         roles: [],
         condition_set_id: null,
     },
@@ -26,20 +26,20 @@ export const transitions = [
 
 export const transitionsToSend = [
     {
-        source: '0',
-        destination: '2',
+        from: '0',
+        to: '2',
         roles: [],
         condition_set: null,
     },
     {
-        source: '0',
-        destination: '3',
+        from: '0',
+        to: '3',
         roles: [],
         condition_set: null,
     },
     {
-        source: '0',
-        destination: '1',
+        from: '0',
+        to: '1',
         roles: [],
         condition_set: null,
     },

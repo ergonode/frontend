@@ -7,8 +7,8 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
+    getFromAndToTransition,
     getMappedTransitions,
-    getSourceAndDestination,
 } from '@Workflow/models/workflowDesigner';
 import {
     createStatus,
@@ -428,9 +428,9 @@ export default {
                 statuses,
             } = state;
             const [
-                source,
-                destination,
-            ] = getSourceAndDestination(id);
+                from,
+                to,
+            ] = getFromAndToTransition(id);
 
             // EXTENDED BEFORE METHOD
             await this.$getExtendMethod('@Workflow/store/workflow/action/getTransition/__before', {
@@ -443,8 +443,8 @@ export default {
 
             const data = await getTransition({
                 $axios: this.app.$axios,
-                source,
-                destination,
+                from,
+                to,
             });
             const {
                 condition_set_id: conditionSetId,
@@ -452,11 +452,11 @@ export default {
 
             const regex = /%20/g;
 
-            const sourceOption = statuses.find(
-                status => status.id === source.replace(regex, ' '),
+            const fromOption = statuses.find(
+                status => status.id === from.replace(regex, ' '),
             );
-            const destinationOption = statuses.find(
-                status => status.id === destination.replace(regex, ' '),
+            const toOption = statuses.find(
+                status => status.id === to.replace(regex, ' '),
             );
 
             dispatch('condition/__clearStorage', {}, {
@@ -466,20 +466,20 @@ export default {
             commit('__SET_STATE', {
                 key: 'transition',
                 value: {
-                    source: {
-                        id: sourceOption.id,
-                        key: sourceOption.code,
-                        value: sourceOption.name || `#${sourceOption.code}`,
-                        hint: sourceOption.name
-                            ? `#${sourceOption.code} ${userLanguageCode}`
+                    from: {
+                        id: fromOption.id,
+                        key: fromOption.code,
+                        value: fromOption.name || `#${fromOption.code}`,
+                        hint: fromOption.name
+                            ? `#${fromOption.code} ${userLanguageCode}`
                             : '',
                     },
-                    destination: {
-                        id: destinationOption.id,
-                        key: destinationOption.code,
-                        value: destinationOption.name || `#${destinationOption.code}`,
-                        hint: destinationOption.name
-                            ? `#${destinationOption.code} ${userLanguageCode}`
+                    to: {
+                        id: toOption.id,
+                        key: toOption.code,
+                        value: toOption.name || `#${toOption.code}`,
+                        hint: toOption.name
+                            ? `#${toOption.code} ${userLanguageCode}`
                             : '',
                     },
                     conditionSetId,
@@ -519,8 +519,8 @@ export default {
     ) {
         try {
             const {
-                source,
-                destination,
+                from,
+                to,
                 conditionSetId,
             } = state.transition;
             let data = {};
@@ -533,8 +533,8 @@ export default {
             const extendedData = await this.$getExtendMethod('@Workflow/store/workflow/action/updateTransition/__before', {
                 $this: this,
                 data: {
-                    source,
-                    destination,
+                    from,
+                    to,
                     ...data,
                 },
             });
@@ -548,8 +548,8 @@ export default {
 
             await updateTransition({
                 $axios: this.app.$axios,
-                source: source.id,
-                destination: destination.id,
+                from: from.id,
+                to: to.id,
                 data,
             });
 
@@ -651,24 +651,24 @@ export default {
     }) {
         try {
             const {
-                source,
-                destination,
+                from,
+                to,
             } = state.transition;
 
             // EXTENDED BEFORE METHOD
             await this.$getExtendMethod('@Workflow/store/workflow/action/removeTransition/__before', {
                 $this: this,
                 data: {
-                    source,
-                    destination,
+                    from,
+                    to,
                 },
             });
             // EXTENDED BEFORE METHOD
 
             await removeTransition({
                 $axios: this.app.$axios,
-                source: source.id,
-                destination: destination.id,
+                from: from.id,
+                to: to.id,
             });
 
             // EXTENDED AFTER METHOD

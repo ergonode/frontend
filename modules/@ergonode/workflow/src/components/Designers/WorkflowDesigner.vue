@@ -190,12 +190,12 @@ import {
     ROW_HEIGHT,
 } from '@Workflow/defaults/designer';
 import {
+    getFromAndToTransition,
     getMappedLayoutElements,
     getMappedRowPositions,
     getMappedStatusPositions,
     getObstacleColumns,
     getRows,
-    getSourceAndDestination,
     getValidColumnsToAddTransition,
 } from '@Workflow/models/workflowDesigner';
 import {
@@ -382,9 +382,9 @@ export default {
         },
         onRemoveTransition(id) {
             const [
-                source,
-                destination,
-            ] = getSourceAndDestination(id);
+                from,
+                to,
+            ] = getFromAndToTransition(id);
             this.layoutElements = removeValueAtIndex(
                 this.layoutElements,
                 this.getRowIndex(id),
@@ -393,8 +393,8 @@ export default {
             this.__setState({
                 key: 'transitions',
                 value: this.transitions.filter(
-                    transition => !(transition.source === source
-                        && transition.destination === destination),
+                    transition => !(transition.from === from
+                        && transition.to === to),
                 ),
             });
 
@@ -549,12 +549,12 @@ export default {
                 const editedIndex = this.getRowIndex(EDITED_ROW_ID);
                 const tmpElement = this.layoutElements[editedIndex];
                 const [
-                    prevSource,
-                    prevDestination,
-                ] = getSourceAndDestination(tmpElement.id);
-                const source = this.statuses[tmpElement.from].id;
-                const destination = this.statuses[column].id;
-                const transitionId = `${source}--${destination}`;
+                    prevFrom,
+                    prevTo,
+                ] = getFromAndToTransition(tmpElement.id);
+                const from = this.statuses[tmpElement.from].id;
+                const to = this.statuses[column].id;
+                const transitionId = `${from}--${to}`;
 
                 this.editedRow = -1;
                 this.validColumns = [];
@@ -567,8 +567,8 @@ export default {
                 };
 
                 const transitionIndex = this.transitions.findIndex(
-                    transition => transition.source === prevSource
-                        && transition.destination === prevDestination,
+                    transition => transition.from === prevFrom
+                        && transition.to === prevTo,
                 );
                 if (transitionIndex === -1) {
                     this.__setState({
@@ -576,8 +576,8 @@ export default {
                         value: [
                             ...this.transitions,
                             {
-                                source,
-                                destination,
+                                from,
+                                to,
                                 roles: [],
                                 condition_set: null,
                                 isSaved: false,
@@ -589,8 +589,8 @@ export default {
                         ...this.transitions,
                     ];
 
-                    transitions[transitionIndex].source = source;
-                    transitions[transitionIndex].destination = destination;
+                    transitions[transitionIndex].from = from;
+                    transitions[transitionIndex].to = to;
 
                     this.__setState({
                         key: 'transitions',
