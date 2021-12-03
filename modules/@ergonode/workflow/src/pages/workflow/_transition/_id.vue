@@ -55,14 +55,22 @@ export default {
         beforeRouteLeaveMixin,
         beforeRouteUpdateMixin,
     ],
+    validate({
+        params,
+    }) {
+        const uuidRgxString = '[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}';
+        const uuidRgx = new RegExp(`^${uuidRgxString}--${uuidRgxString}$`, 'i');
+
+        return uuidRgx.test(params.id);
+    },
     async fetch({
         app,
         store,
         params,
     }) {
-        await store.dispatch('workflow/getStatuses', {});
         await store.dispatch('workflow/getTransition', {
             id: params.id,
+            workflowId: params.workflowId,
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,

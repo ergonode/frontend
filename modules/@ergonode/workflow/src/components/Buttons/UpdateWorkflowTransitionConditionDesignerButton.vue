@@ -109,6 +109,7 @@ export default {
 
             await this.updateTransition({
                 scope: this.scope,
+                workflowId: this.$route.params.workflowId,
             });
 
             this.$addAlert({

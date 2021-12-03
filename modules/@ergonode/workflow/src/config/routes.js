@@ -41,7 +41,6 @@ export default [
                 icon: Icons.Flow,
             },
             isMenu: true,
-            menuPosition: 1,
             privileges: {
                 namespace: Privileges.WORKFLOW.namespace,
                 read: Privileges.WORKFLOW.read,
@@ -50,7 +49,7 @@ export default [
         children: [
             {
                 name: ROUTE_NAME.WORKFLOW_DESIGNER,
-                path: 'designer',
+                path: ':workflowId?',
                 component: Tabs.WorkflowDesignerTab,
                 meta: {
                     title: '',
@@ -118,7 +117,7 @@ export default [
     },
     {
         name: ROUTE_NAME.WORKFLOW_TRANSITION_EDIT,
-        path: '/workflow/transition/:id',
+        path: '/workflow/:workflowId?/transition/:id',
         component: Pages.WorkflowTransitionEdit,
         redirect: {
             name: ROUTE_NAME.WORKFLOW_TRANSITION_EDIT_GENERAL,

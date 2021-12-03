@@ -12,7 +12,6 @@ import {
 } from '@Workflow/models/workflowDesigner';
 import {
     createStatus,
-    getDefaultStatus,
     getStatus,
     getStatuses,
     getTransition,
@@ -22,7 +21,7 @@ import {
     updateDefaultStatus,
     updateStatus,
     updateTransition,
-    updateTransitions,
+    updateWorkflow,
 } from '@Workflow/services';
 
 export default {
@@ -62,6 +61,7 @@ export default {
     async getTransitions({
         commit,
     }, {
+        workflowId,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -70,6 +70,7 @@ export default {
                 collection,
             } = await getTransitions({
                 $axios: this.app.$axios,
+                workflowId,
             });
 
             commit('__SET_STATE', {
@@ -92,6 +93,7 @@ export default {
     async getWorkflow({
         dispatch,
     }, {
+        workflowId,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -99,7 +101,9 @@ export default {
             await Promise.all(
                 [
                     dispatch('getStatuses', {}),
-                    dispatch('getTransitions', {}),
+                    dispatch('getTransitions', {
+                        workflowId,
+                    }),
                 ],
             );
 
@@ -269,43 +273,6 @@ export default {
             });
         }
     },
-    async getDefaultStatus({
-        commit,
-        state,
-    }, {
-        onSuccess = () => {},
-        onError = () => {},
-    }) {
-        try {
-            const {
-                id,
-            } = state.status;
-
-            const {
-                default_id: defaultStatus,
-            } = await getDefaultStatus({
-                $axios: this.app.$axios,
-            });
-
-            if (defaultStatus === id) {
-                commit('__SET_STATE', {
-                    key: 'status',
-                    value: {
-                        ...state.status,
-                        isDefaultStatus: true,
-                    },
-                });
-            }
-
-            onSuccess();
-        } catch (e) {
-            if (this.app.$axios.isCancel(e)) {
-                return;
-            }
-
-            onError(e);
-        }
-    },
     async removeStatus({
         state,
     }, {
@@ -417,6 +384,7 @@ export default {
         },
         {
             id,
+            workflowId,
             onError = () => {},
         },
     ) {
@@ -443,6 +411,7 @@ export default {
 
             const data = await getTransition({
                 $axios: this.app.$axios,
+                workflowId,
                 from,
                 to,
             });
@@ -513,6 +482,7 @@ export default {
         },
         {
             scope,
+            workflowId,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -548,6 +518,7 @@ export default {
 
             await updateTransition({
                 $axios: this.app.$axios,
+                workflowId,
                 from: from.id,
                 to: to.id,
                 data,
@@ -576,13 +547,14 @@ export default {
             });
         }
     },
-    async updateTransitions(
+    async updateWorkflow(
         {
             state,
             commit,
         },
         {
             scope,
+            workflowId,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -594,7 +566,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$getExtendMethod('@Workflow/store/workflow/action/updateTransitions/__before', {
+            const extendedData = await this.$getExtendMethod('@Workflow/store/workflow/action/updateWorkflow/__before', {
                 $this: this,
                 data,
             });
@@ -606,8 +578,9 @@ export default {
             });
             // EXTENDED BEFORE METHOD
 
-            await updateTransitions({
+            await updateWorkflow({
                 $axios: this.app.$axios,
+                workflowId,
                 data,
             });
 
@@ -620,7 +593,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$getExtendMethod('@Workflow/store/workflow/action/updateTransitions/__after', {
+            await this.$getExtendMethod('@Workflow/store/workflow/action/updateWorkflow/__after', {
                 $this: this,
                 data,
             });
@@ -646,6 +619,7 @@ export default {
     async removeTransition({
         state,
     }, {
+        workflowId,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -667,6 +641,7 @@ export default {
 
             await removeTransition({
                 $axios: this.app.$axios,
+                workflowId,
                 from: from.id,
                 to: to.id,
             });

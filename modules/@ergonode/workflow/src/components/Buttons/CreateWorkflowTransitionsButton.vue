@@ -55,7 +55,7 @@ export default {
     },
     methods: {
         ...mapActions('workflow', [
-            'updateTransitions',
+            'updateWorkflow',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -63,8 +63,9 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.updateTransitions({
+            this.updateWorkflow({
                 scope: this.scope,
+                workflowId: this.$route.params.workflowId,
                 onSuccess: this.onCreateSuccess,
                 onError: this.onCreateError,
             });
