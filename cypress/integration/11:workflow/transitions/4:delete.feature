@@ -3,7 +3,7 @@ Feature: DELETE: Transition on workflow
   This feature allows delete transition on workflow
 
   Background:
-    Given I open "workflow/designer" page
+    Given I open "workflow" page
 
   @other
   Scenario: Delete workflow transition from edit page - give up
