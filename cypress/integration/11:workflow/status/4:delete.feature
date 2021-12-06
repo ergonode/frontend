@@ -3,7 +3,7 @@ Feature: DELETE: Status on workflow
   This feature allows delete status on workflow
 
   Background:
-    Given I open "/workflow/designer" page
+    Given I open "/workflow" page
 
   @other
   Scenario: Delete workflow status from edit page - give up
@@ -28,4 +28,4 @@ Feature: DELETE: Status on workflow
     * I can see "status-code" field as disabled
     * I click on "delete-status" button
     * I confirm modal
-    Then I see "/workflow/designer" page
+    Then I see "/workflow" page

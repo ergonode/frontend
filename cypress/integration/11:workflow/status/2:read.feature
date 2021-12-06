@@ -3,7 +3,7 @@ Feature: READ: Status on workflow
   This feature allows read status on workflow
 
   Background:
-    Given I open "/workflow/designer" page
+    Given I open "/workflow" page
 
   @success
   Scenario: Read statuses on designer - success
@@ -20,7 +20,7 @@ Feature: READ: Status on workflow
     * I can see "status-code" input with the "new" term
     * I can see "status-code" field as disabled
     Then I click back arrow
-    * I see "workflow/designer" page
+    * I see "workflow" page
 
   @success
   Scenario: Read status translation - success
@@ -39,4 +39,4 @@ Feature: READ: Status on workflow
     * I can see "status-description_pl_PL" textarea with the "Szkic" term
     * I can see "status-description_pl_PL" field as enabled
     Then I click back arrow
-    * I see "workflow/designer" page
+    * I see "workflow" page

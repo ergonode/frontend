@@ -52,6 +52,7 @@ export default {
             this.removeScopeErrors(this.scope);
             this.updateTransition({
                 scope: this.scope,
+                workflowId: this.$route.params.workflowId,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });

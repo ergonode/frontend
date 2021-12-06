@@ -65,6 +65,7 @@ export default {
         },
         onRemoveTransition() {
             this.removeTransition({
+                workflowId: this.$route.params.workflowId,
                 onSuccess: this.onRemoveSuccess,
                 onError: this.onRemoveError,
             });

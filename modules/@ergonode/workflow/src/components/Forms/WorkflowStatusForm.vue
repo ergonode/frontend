@@ -78,6 +78,9 @@ import WorkflowStatusBadge from '@Workflow/components/Badges/WorkflowStatusBadge
 import WorkflowStatusPreview from '@Workflow/components/Inputs/WorkflowStatusPreview';
 import PRIVILEGES from '@Workflow/config/privileges';
 import {
+    getWorkflow,
+} from '@Workflow/services';
+import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -92,6 +95,27 @@ export default {
         formActionsMixin,
         formFeedbackMixin,
     ],
+    async fetch() {
+        const {
+            id,
+        } = this.status;
+
+        const {
+            default_id: defaultStatus,
+        } = await getWorkflow({
+            $axios: this.$axios,
+        });
+
+        if (defaultStatus === id) {
+            this.__setState({
+                key: 'status',
+                value: {
+                    ...this.status,
+                    isDefaultStatus: true,
+                },
+            });
+        }
+    },
     computed: {
         ...mapState('workflow', [
             'status',
