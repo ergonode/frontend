@@ -167,9 +167,6 @@ export default {
                     id: this.id,
                     languageCode,
                 }),
-                this.getProductCollections({
-                    languageCode,
-                }),
             ];
 
             if (typeof this.templates[languageCode] === 'undefined') {

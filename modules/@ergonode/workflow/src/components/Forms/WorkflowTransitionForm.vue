@@ -17,27 +17,27 @@
         <template #body>
             <FormSection>
                 <Select
-                    :data-cy="dataCyGenerator(sourceFieldKey)"
-                    :value="transition.source"
+                    :data-cy="dataCyGenerator(fromFieldKey)"
+                    :value="transition.from"
                     :required="true"
                     :label="$t('@Workflow.workflow.components.WorkflowTransitionForm.fromLabel')"
-                    :options="sourceOptions"
+                    :options="fromOptions"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :error-messages="errors[sourceFieldKey]"
+                    :error-messages="errors[fromFieldKey]"
                     option-key="key"
                     option-value="value"
-                    @input="onSourceValueChange" />
+                    @input="onFromValueChange" />
                 <Select
-                    :data-cy="dataCyGenerator(destinationFieldKey)"
-                    :value="transition.destination"
+                    :data-cy="dataCyGenerator(toFieldKey)"
+                    :value="transition.to"
                     :required="true"
                     :label="$t('@Workflow.workflow.components.WorkflowTransitionForm.toLabel')"
-                    :options="destinationOptions"
+                    :options="toOptions"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :error-messages="errors[destinationFieldKey]"
+                    :error-messages="errors[toFieldKey]"
                     option-key="key"
                     option-value="value"
-                    @input="onDestinationValueChange" />
+                    @input="onToValueChange" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
                         :is="field.component"
@@ -57,7 +57,7 @@ import {
 } from '@Core/models/objectWrapper';
 import PRIVILEGES from '@Workflow/config/privileges';
 import {
-    getSourceAndDestination,
+    getFromAndToTransition,
 } from '@Workflow/models/workflowDesigner';
 import {
     mapActions,
@@ -86,21 +86,21 @@ export default {
                     id,
                 } = this.$route.params;
                 const [
-                    source,
-                    destination,
-                ] = getSourceAndDestination(id);
+                    from,
+                    to,
+                ] = getFromAndToTransition(id);
 
-                return Boolean(source) && Boolean(destination);
+                return Boolean(from) && Boolean(to);
             }
             return false;
         },
-        sourceOptions() {
-            return this.statuses.filter(status => !this.transition.destination
-                || status.id !== this.transition.destination.id);
+        fromOptions() {
+            return this.statuses.filter(status => !this.transition.to
+                || status.id !== this.transition.to.id);
         },
-        destinationOptions() {
-            return this.statuses.filter(status => !this.transition.source
-                || status.id !== this.transition.source.id);
+        toOptions() {
+            return this.statuses.filter(status => !this.transition.from
+                || status.id !== this.transition.from.id);
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
@@ -109,11 +109,11 @@ export default {
                 PRIVILEGES.WORKFLOW.create,
             ]));
         },
-        destinationFieldKey() {
-            return 'destination';
+        toFieldKey() {
+            return 'to';
         },
-        sourceFieldKey() {
-            return 'source';
+        fromFieldKey() {
+            return 'from';
         },
     },
     methods: {
@@ -131,31 +131,31 @@ export default {
                 ...props,
             };
         },
-        onSourceValueChange(value) {
+        onFromValueChange(value) {
             this.__setState({
                 key: 'transition',
                 value: {
                     ...this.transition,
-                    source: value,
+                    from: value,
                 },
             });
             this.onScopeValueChange({
                 scope: this.scope,
-                fieldKey: this.sourceFieldKey,
+                fieldKey: this.fromFieldKey,
                 value,
             });
         },
-        onDestinationValueChange(value) {
+        onToValueChange(value) {
             this.__setState({
                 key: 'transition',
                 value: {
                     ...this.transition,
-                    destination: value,
+                    to: value,
                 },
             });
             this.onScopeValueChange({
                 scope: this.scope,
-                fieldKey: this.destinationFieldKey,
+                fieldKey: this.toFieldKey,
                 value,
             });
         },

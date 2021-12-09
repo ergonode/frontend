@@ -18,11 +18,11 @@ Feature: READ: Status on workflow
     * I see "workflow/transition/%UUID%/general" page
     * Element "title-bar-header" is visible
     * I can see "New -> Processed" text on "title-bar-header" element
-    * Element "transition-source" is visible
-    * I can see "transition-source" select with the "New" term
-    * I can see "transition-source" field as disabled
-    * I can see "transition-destination" select with the "Processed" term
-    * I can see "transition-destination" field as disabled
+    * Element "transition-from" is visible
+    * I can see "transition-from" select with the "New" term
+    * I can see "transition-from" field as disabled
+    * I can see "transition-to" select with the "Processed" term
+    * I can see "transition-to" field as disabled
     * I can see "transition-roleId" select with the "" term
     * I can see "transition-roleId" field as enabled
     Then I click back arrow

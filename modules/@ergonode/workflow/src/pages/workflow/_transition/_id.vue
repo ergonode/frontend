@@ -76,7 +76,7 @@ export default {
             'transition',
         ]),
         title() {
-            return `${this.transition.source.value} -> ${this.transition.destination.value}`;
+            return `${this.transition.from.value} -> ${this.transition.to.value}`;
         },
         extendedMainAction() {
             return this.$getExtendSlot('@Workflow/pages/workflow/_transition/mainAction');

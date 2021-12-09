@@ -5,7 +5,8 @@
 <template>
     <SideBar
         :title="$t('@Templates.productTemplate.components.WidgetsSideBar.title')"
-        :items="widgets">
+        :items="widgets"
+        option-key="type">
         <template #item="{ item }">
             <WidgetSideBarElement
                 :scope="scope"

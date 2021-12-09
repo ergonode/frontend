@@ -8,8 +8,8 @@
         <slot name="body">
             <DynamicScroller
                 :items="expandedItems"
-                :key-field="'id'"
-                :prerender="renderAhead"
+                :key-field="optionKey"
+                :prerender="prerender"
                 :min-item-size="estimatedHeight">
                 <template #default="{ item, index, active }">
                     <DynamicScrollerItem
@@ -70,7 +70,7 @@ export default {
          */
         optionKey: {
             type: String,
-            default: '',
+            default: 'id',
         },
     },
     data() {
@@ -79,6 +79,13 @@ export default {
         };
     },
     computed: {
+        prerender() {
+            if (this.renderAhead > this.expandedItems.length) {
+                return 0;
+            }
+
+            return this.renderAhead;
+        },
         expandedItems() {
             const expandedItems = [];
             const expandedParents = {};

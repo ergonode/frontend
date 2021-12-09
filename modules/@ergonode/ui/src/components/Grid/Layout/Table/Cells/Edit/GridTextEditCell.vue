@@ -10,12 +10,16 @@
             :centered="true"
             :shadow="true">
             <TextField
+                v-if="!disabled"
                 v-model="localValue"
                 autofocus
                 :size="smallSize"
-                :disabled="disabled"
                 :type="underlineInputType"
                 :error-messages="errorMessages" />
+            <Paragraph
+                v-else
+                :title="localValue"
+                :size="smallSize" />
         </GridEditContentCell>
     </GridEditNavigationCell>
 </template>

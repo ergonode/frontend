@@ -32,8 +32,8 @@ export default {
                 statuses: statusOptions,
             } = rootState.productStatus;
             const [
-                source,
-                destination,
+                from,
+                to,
             ] = id.split('--');
 
             // EXTENDED BEFORE METHOD
@@ -47,8 +47,8 @@ export default {
 
             const data = await get({
                 $axios: this.app.$axios,
-                source,
-                destination,
+                from,
+                to,
             });
             const {
                 condition_set_id: conditionSetId,
@@ -56,11 +56,11 @@ export default {
 
             const regex = /%20/g;
 
-            const sourceOption = statusOptions.find(
-                status => status.id === source.replace(regex, ' '),
+            const fromOption = statusOptions.find(
+                status => status.id === from.replace(regex, ' '),
             );
-            const destinationOption = statusOptions.find(
-                status => status.id === destination.replace(regex, ' '),
+            const toOption = statusOptions.find(
+                status => status.id === to.replace(regex, ' '),
             );
 
             dispatch('__clearStorage');
@@ -69,12 +69,12 @@ export default {
             });
 
             commit('__SET_STATE', {
-                key: 'source',
-                value: sourceOption,
+                key: 'from',
+                value: fromOption,
             });
             commit('__SET_STATE', {
-                key: 'destination',
-                value: destinationOption,
+                key: 'to',
+                value: toOption,
             });
             commit('__SET_STATE', {
                 key: 'conditionSetId',
@@ -114,8 +114,8 @@ export default {
     ) {
         try {
             const {
-                source,
-                destination,
+                from,
+                to,
                 conditionSetId,
             } = state;
             let data = {};
@@ -128,8 +128,8 @@ export default {
             const extendedData = await this.$getExtendMethod('@Transitions/store/statusTransition/action/updateStatusTransition/__before', {
                 $this: this,
                 data: {
-                    source,
-                    destination,
+                    from,
+                    to,
                     ...data,
                 },
             });
@@ -143,8 +143,8 @@ export default {
 
             await update({
                 $axios: this.app.$axios,
-                source: source.id,
-                destination: destination.id,
+                from: from.id,
+                to: to.id,
                 data,
             });
 
@@ -183,12 +183,12 @@ export default {
     ) {
         try {
             const {
-                source,
-                destination,
+                from,
+                to,
             } = state;
             let data = {
-                source: isObject(source) ? source.id : null,
-                destination: isObject(destination) ? destination.id : null,
+                from: isObject(from) ? from.id : null,
+                to: isObject(to) ? to.id : null,
             };
             // EXTENDED BEFORE METHOD
             const extendedData = await this.$getExtendMethod('@Transitions/store/statusTransition/action/createStatusTransition/__before', {
@@ -245,24 +245,24 @@ export default {
     }) {
         try {
             const {
-                source,
-                destination,
+                from,
+                to,
             } = state;
 
             // EXTENDED BEFORE METHOD
             await this.$getExtendMethod('@Transitions/store/statusTransition/action/removeStatusTransition/__before', {
                 $this: this,
                 data: {
-                    source,
-                    destination,
+                    from,
+                    to,
                 },
             });
             // EXTENDED BEFORE METHOD
 
             await remove({
                 $axios: this.app.$axios,
-                source: source.id,
-                destination: destination.id,
+                from: from.id,
+                to: to.id,
             });
 
             // EXTENDED AFTER METHOD

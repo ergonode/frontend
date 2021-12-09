@@ -17,25 +17,25 @@
         <template #body>
             <FormSection>
                 <Select
-                    :value="source"
+                    :value="from"
                     :required="true"
                     :label="$t('@Transitions.transition.components.TransitionForm.fromLabel')"
-                    :options="sourceOptions"
+                    :options="fromOptions"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :error-messages="errors[sourceFieldKey]"
+                    :error-messages="errors[fromFieldKey]"
                     option-key="key"
                     option-value="value"
-                    @input="setSourceValue" />
+                    @input="setFromValue" />
                 <Select
-                    :value="destination"
+                    :value="to"
                     :required="true"
                     :label="$t('@Transitions.transition.components.TransitionForm.toLabel')"
-                    :options="destinationOptions"
+                    :options="toOptions"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :error-messages="errors[destinationFieldKey]"
+                    :error-messages="errors[toFieldKey]"
                     option-key="key"
                     option-value="value"
-                    @input="setDestinationValue" />
+                    @input="setToValue" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
                         :is="field.component"
@@ -67,8 +67,8 @@ export default {
     ],
     computed: {
         ...mapState('statusTransition', [
-            'source',
-            'destination',
+            'from',
+            'to',
         ]),
         ...mapState('productStatus', [
             'statuses',
@@ -84,21 +84,21 @@ export default {
                     id,
                 } = this.$route.params;
                 const [
-                    source,
-                    destination,
+                    from,
+                    to,
                 ] = id.split('--');
 
-                return Boolean(source) && Boolean(destination);
+                return Boolean(from) && Boolean(to);
             }
             return false;
         },
-        sourceOptions() {
-            return this.statuses.filter(status => !this.destination
-                || status.id !== this.destination.id);
+        fromOptions() {
+            return this.statuses.filter(status => !this.to
+                || status.id !== this.to.id);
         },
-        destinationOptions() {
-            return this.statuses.filter(status => !this.source
-                || status.id !== this.source.id);
+        toOptions() {
+            return this.statuses.filter(status => !this.from
+                || status.id !== this.from.id);
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
@@ -107,11 +107,11 @@ export default {
                 PRIVILEGES.WORKFLOW.create,
             ]));
         },
-        destinationFieldKey() {
-            return 'destination';
+        toFieldKey() {
+            return 'to';
         },
-        sourceFieldKey() {
-            return 'source';
+        fromFieldKey() {
+            return 'from';
         },
     },
     methods: {
@@ -129,25 +129,25 @@ export default {
                 ...props,
             };
         },
-        setSourceValue(value) {
+        setFromValue(value) {
             this.__setState({
-                key: this.sourceFieldKey,
+                key: this.fromFieldKey,
                 value,
             });
             this.onScopeValueChange({
                 scope: this.scope,
-                fieldKey: this.sourceFieldKey,
+                fieldKey: this.fromFieldKey,
                 value,
             });
         },
-        setDestinationValue(value) {
+        setToValue(value) {
             this.__setState({
-                key: this.destinationFieldKey,
+                key: this.toFieldKey,
                 value,
             });
             this.onScopeValueChange({
                 scope: this.scope,
-                fieldKey: this.destinationFieldKey,
+                fieldKey: this.toFieldKey,
                 value,
             });
         },

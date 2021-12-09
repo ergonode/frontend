@@ -17,10 +17,14 @@
                             width: '100%',
                         }">
                         <List>
-                            <ListElement
+                            <ListLinkElement
                                 v-for="file in value"
                                 :size="size"
-                                :key="file">
+                                :key="file"
+                                :to="{
+                                    name: resourceRouteName,
+                                    params: { id: file }
+                                }">
                                 <ListElementIcon>
                                     <IconFile :fill-color="greenColor" />
                                 </ListElementIcon>
@@ -39,7 +43,7 @@
                                         </template>
                                     </Fab>
                                 </ListElementAction>
-                            </ListElement>
+                            </ListLinkElement>
                             <div
                                 v-if="!disabled"
                                 class="centering-container">
@@ -86,6 +90,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import {
+    ROUTE_NAME,
+} from '@Media/config/routes';
 import {
     MEDIA_TYPE,
 } from '@Media/defaults';
@@ -159,6 +166,9 @@ export default {
         };
     },
     computed: {
+        resourceRouteName() {
+            return ROUTE_NAME.MEDIA_RESOURCE_EDIT_GENERAL;
+        },
         secondaryTheme() {
             return THEME.SECONDARY;
         },

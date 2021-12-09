@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    source: null,
-    destination: null,
+    from: null,
+    to: null,
     conditionSetId: null,
 });

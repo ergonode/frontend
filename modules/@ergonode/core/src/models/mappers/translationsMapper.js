@@ -19,7 +19,7 @@ export function getMappedObjectOption({
 
     return {
         id: option.id,
-        key: option.code,
+        key: option.code || option.id,
         value,
         hint,
     };

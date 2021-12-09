@@ -62,7 +62,7 @@
                     </InputController>
                 </template>
                 <RichTextEditorMenu
-                    v-if="!isSolidType"
+                    v-if="!isSolidType && !disabled"
                     :type="type"
                     :editor="editor"
                     :editor-width="editorWidth" />
@@ -301,7 +301,7 @@ export default {
     },
     methods: {
         onMouseDown(event) {
-            if (!this.isFocused) {
+            if (!this.isFocused && !this.disabled) {
                 event.preventDefault();
 
                 this.editor.focus();
@@ -314,17 +314,10 @@ export default {
 
             this.editorWidth = width;
         },
-        onFocus({
-            event,
-        }) {
-            if (this.disabled) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                return;
+        onFocus() {
+            if (!this.disabled) {
+                this.isFocused = true;
             }
-
-            this.isFocused = true;
         },
         onBlur() {
             if (!this.disabled) {
@@ -338,9 +331,9 @@ export default {
                 }
 
                 this.$emit('blur', html);
-            }
 
-            this.isFocused = false;
+                this.isFocused = false;
+            }
         },
     },
 };
