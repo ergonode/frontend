@@ -96,7 +96,7 @@ export default {
             return this.languageWorkflow.currentStatus.color;
         },
         title() {
-            return this.languageWorkflow.currentStatus.name;
+            return this.languageWorkflow.currentStatus.name || `#${this.languageWorkflow.currentStatus.code}`;
         },
         options() {
             return this.languageWorkflow.statuses;
