@@ -4,6 +4,7 @@
  */
 export default () => ({
     parameters: null,
+    optionsOrder: [],
     options: {},
-    updatedOptions: {},
+    optionsState: {},
 });

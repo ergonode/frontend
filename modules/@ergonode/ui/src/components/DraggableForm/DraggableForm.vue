@@ -5,9 +5,8 @@
 <template>
     <div
         class="draggable-form"
-        @dragenter="onDragEnter"
-        @dragleave="onDragLeave"
         @drop="onDrop"
+        @dragenter="onDragEnter"
         @dragover="onDragOver">
         <Form
             :title="title"
@@ -26,12 +25,13 @@
                 <DraggableFormPlaceholderItem v-if="isPlaceholderItemVisible" />
                 <DraggableFormItem
                     v-for="(item, index) in localItems"
-                    :key="`${item.id}|${item.languageCode}`"
+                    :key="`${item.id || item.fieldKey}|${item.languageCode || ''}`"
                     :scope="scope"
                     :index="index"
                     :item="item"
                     @remove-item="onRemoveItem"
-                    @swap="onSwapItems">
+                    @swap="onSwapItems"
+                    @drag-end="onDragEndItem">
                     <template #item>
                         <slot
                             name="item"
@@ -52,7 +52,6 @@ import DraggableFormItem from '@UI/components/DraggableForm/DraggableFormItem';
 import DraggableFormPlaceholderItem from '@UI/components/DraggableForm/DraggableFormPlaceholderItem';
 import {
     getFixedMousePosition,
-    isMouseOutsideElement,
 } from '@UI/models/mouse';
 import {
     mapActions,
@@ -125,6 +124,20 @@ export default {
             type: Function,
             default: null,
         },
+        /**
+         * Show drag & drop placeholder
+         */
+        hasDropPlaceholder: {
+            type: Boolean,
+            default: true,
+        },
+        /**
+         * The key of the option
+         */
+        optionKey: {
+            type: String,
+            default: '',
+        },
     },
     data() {
         return {
@@ -135,14 +148,10 @@ export default {
         ...mapState('draggable', [
             'ghostIndex',
             'draggedElement',
-            'draggedElIndex',
         ]),
-        itemsOrder() {
-            return this.localItems.map(item => item.id);
-        },
         isPlaceholderItemVisible() {
-            return !this.localItems.length
-                || (this.localItems.length === 1 && this.draggedElement && this.ghostIndex === -1);
+            return this.hasDropPlaceholder && (!this.localItems.length
+                || (this.localItems.length === 1 && this.draggedElement && this.ghostIndex === -1));
         },
     },
     watch: {
@@ -151,10 +160,23 @@ export default {
             handler() {
                 this.localItems = [
                     ...this.items,
-                ].sort(
-                    (a, b) => this.itemsOrder.indexOf(a.id) - this.itemsOrder.indexOf(b.id),
-                );
+                ];
             },
+        },
+        draggedElement(newValue, oldValue) {
+            if (!this.draggedElement && this.ghostIndex !== -1 && oldValue) {
+                this.$emit('add-item', {
+                    index: this.ghostIndex,
+                    item: oldValue,
+                });
+
+                this.localItems.splice(this.ghostIndex, 1);
+
+                this.__setState({
+                    key: 'ghostIndex',
+                    value: -1,
+                });
+            }
         },
     },
     methods: {
@@ -175,37 +197,18 @@ export default {
                 ? +formElement.getAttribute('index')
                 : 0;
 
-            if (this.draggedElIndex === -1) {
-                this.localItems = insertValueAtIndex(this.localItems, this.draggedElement, index);
-            }
+            this.localItems = insertValueAtIndex(this.localItems, this.draggedElement, index);
 
             this.__setState({
                 key: 'ghostIndex',
                 value: index,
             });
         },
-        onDragLeave(event) {
-            const {
-                xPos,
-                yPos,
-            } = getFixedMousePosition(event);
-
-            if (isMouseOutsideElement(this.$el, xPos, yPos) && this.ghostIndex !== -1) {
-                if (this.draggedElIndex === -1) {
-                    this.localItems.splice(this.ghostIndex, 1);
-                }
-
-                this.__setState({
-                    key: 'ghostIndex',
-                    value: -1,
-                });
-            }
-        },
         onDragOver(event) {
             event.preventDefault();
         },
         onDrop(event) {
-            if (this.draggedElIndex === -1 && this.ghostIndex !== -1) {
+            if (this.ghostIndex !== -1 && this.localItems.length !== this.items.length) {
                 this.$emit('add-item', {
                     index: this.ghostIndex,
                     item: this.draggedElement,
@@ -225,7 +228,26 @@ export default {
                 });
             }
 
+            if (this.ghostIndex !== -1) {
+                this.$emit('move-item', {
+                    index: this.ghostIndex,
+                    items: this.localItems,
+                });
+            }
+
             event.preventDefault();
+        },
+        onDragEndItem(index) {
+            const optionKey = this.optionKey || 'id';
+            const newItemId = this.localItems[index][optionKey];
+            const oldItemIndex = this.items.findIndex(item => item[optionKey] === newItemId);
+
+            if (index !== oldItemIndex) {
+                this.$emit('move-item', {
+                    index,
+                    items: this.localItems,
+                });
+            }
         },
         onRemoveItem(item) {
             this.$emit('remove-item', item);
@@ -235,9 +257,6 @@ export default {
             to,
         }) {
             this.localItems = swapItemPosition(this.localItems, from, to);
-            this.localItems = [
-                ...this.localItems,
-            ];
         },
     },
 };

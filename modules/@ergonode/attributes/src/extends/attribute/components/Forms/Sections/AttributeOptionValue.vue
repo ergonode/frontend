@@ -3,26 +3,32 @@
  * See LICENSE for license details.
  */
 <template>
-    <!--    TODO: ERROR MESSAGES     -->
     <TextField
         :value="translationOptionValue"
         :label="option.key"
         :size="smallSize"
         :disabled="disabled"
-        :error-messages="''"
+        :error-messages="errors[fieldKey]"
         @input="onOptionValueChange" />
 </template>
 
 <script>
 import {
+    OPTION_STATES,
+} from '@Attributes/defaults';
+import {
     SIZE,
 } from '@Core/defaults/theme';
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
     name: 'AttributeOptionValue',
+    mixins: [
+        formFeedbackMixin,
+    ],
     props: {
         index: {
             type: String,
@@ -43,7 +49,7 @@ export default {
     },
     computed: {
         fieldKey() {
-            return `option_${this.languageCode}_${this.index}`;
+            return `option_${this.languageCode}_${this.option.id}`;
         },
         smallSize() {
             return SIZE.SMALL;
@@ -58,6 +64,7 @@ export default {
     },
     methods: {
         ...mapActions('attribute', [
+            'setOptionState',
             'setOptionValueForLanguageCode',
         ]),
         onOptionValueChange(value) {
@@ -65,7 +72,19 @@ export default {
                 index: this.index,
                 languageCode: this.languageCode,
                 value,
-                id: this.option.id,
+            });
+
+            // TODO: Should be improved, When user is updating only the translation, the algo behind will not detect changes and will not update the traslation
+            this.setOptionState({
+                key: this.index,
+                type: OPTION_STATES.EDIT,
+                value: this.option.key,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.fieldKey,
+                value,
             });
         },
     },

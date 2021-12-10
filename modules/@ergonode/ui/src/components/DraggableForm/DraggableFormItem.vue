@@ -10,9 +10,15 @@
         @dragover="onDragOver"
         @dragstart="onDragStart"
         @dragend="onDragEnd">
-        <IconDragDrop
-            ref="dragIcon"
-            class="draggable-form-item__drag-icon" />
+        <IconButton
+            class="draggable-form-item__drag-button"
+            ref="dragButton"
+            :size="smallSize"
+            :theme="secondaryPlainTheme">
+            <template #icon>
+                <IconDragDrop />
+            </template>
+        </IconButton>
         <div
             v-show="!isGhostVisible"
             class="draggable-form-item__body">
@@ -84,7 +90,6 @@ export default {
         ...mapState('draggable', [
             'draggedElement',
             'ghostIndex',
-            'draggedElIndex',
             'isOverDropZone',
         ]),
         classes() {
@@ -92,7 +97,6 @@ export default {
                 'draggable-form-item',
                 {
                     'draggable-form-item--disabled': this.draggedElement !== null,
-                    'draggable-form-item--hidden': this.draggedElIndex === this.index && this.ghostIndex === -1,
                 },
             ];
         },
@@ -114,7 +118,7 @@ export default {
             this.$emit('remove-item', this.item);
         },
         onDragStart(event) {
-            if (isMouseOutsideElement(this.$refs.dragIcon.$el, event.x, event.y)) {
+            if (isMouseOutsideElement(this.$refs.dragButton.$el, event.x, event.y)) {
                 event.preventDefault();
                 event.stopPropagation();
 
@@ -130,10 +134,6 @@ export default {
             this.__setState({
                 key: 'draggedElement',
                 value: deepClone(this.item),
-            });
-            this.__setState({
-                key: 'draggedElIndex',
-                value: this.index,
             });
             this.__setState({
                 key: 'draggedInScope',
@@ -157,7 +157,9 @@ export default {
                     value: false,
                 });
 
-                this.$emit('remove-item', this.index);
+                this.$emit('remove-item', this.item);
+            } else {
+                this.$emit('drag-end', this.index);
             }
 
             this.__setState({
@@ -167,10 +169,6 @@ export default {
             this.__setState({
                 key: 'draggedInScope',
                 value: '',
-            });
-            this.__setState({
-                key: 'draggedElIndex',
-                value: -1,
             });
             this.__setState({
                 key: 'ghostIndex',
@@ -228,25 +226,16 @@ export default {
         align-items: flex-start;
         grid-column-gap: 8px;
 
-        &--hidden {
-            display: none;
-        }
-
-        &__drag-icon {
-            margin-top: 8px;
+        &__drag-button {
             cursor: grab;
         }
 
-        &__remove-button {
-            margin-top: 4px;
-        }
-
-        &__drag-icon, &__remove-button {
+        &__drag-button, &__remove-button {
             opacity: 0;
         }
 
         &:hover:not(&--disabled) {
-            #{$item}__drag-icon, #{$item}__remove-button {
+            #{$item}__drag-button, #{$item}__remove-button {
                 opacity: 1;
             }
         }
