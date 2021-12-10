@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 export default () => ({
+    id: null,
+    code: '',
+    defaultStatus: null,
     status: {
         id: '',
         code: '',
