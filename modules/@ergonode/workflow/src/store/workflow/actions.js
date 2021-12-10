@@ -16,6 +16,7 @@ import {
     getStatuses,
     getTransition,
     getTransitions,
+    getWorkflow,
     removeStatus,
     removeTransition,
     updateDefaultStatus,
@@ -90,6 +91,62 @@ export default {
             onError(e);
         }
     },
+    async getWorkflowById({
+        commit,
+    }, {
+        workflowId,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$getExtendMethod('@@Workflow/store/workflow/action/getWorkflowById/__before', {
+                $this: this,
+                data: {
+                    workflowId,
+                },
+            });
+            // EXTENDED BEFORE METHOD
+
+            const data = await getWorkflow({
+                $axios: this.app.$axios,
+                workflowId,
+            });
+            const {
+                id,
+                code,
+                default_id,
+            } = data;
+
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'code',
+                value: code,
+            });
+            commit('__SET_STATE', {
+                key: 'defaultStatus',
+                value: default_id,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$getExtendMethod('@@Workflow/store/workflow/action/getWorkflowById/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
+    },
     async getWorkflow({
         dispatch,
     }, {
@@ -102,6 +159,9 @@ export default {
                 [
                     dispatch('getStatuses', {}),
                     dispatch('getTransitions', {
+                        workflowId,
+                    }),
+                    dispatch('getWorkflowById', {
                         workflowId,
                     }),
                 ],
@@ -560,7 +620,13 @@ export default {
         },
     ) {
         try {
+            const {
+                defaultStatus,
+                code = 'default',
+            } = state;
             let data = {
+                code,
+                default_id: defaultStatus,
                 statuses: state.statuses.map(status => status.id),
                 transitions: getMappedTransitions(state.transitions),
             };
