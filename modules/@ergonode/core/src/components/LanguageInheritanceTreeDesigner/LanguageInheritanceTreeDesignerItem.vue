@@ -10,9 +10,9 @@
         :title="title"
         :subtitle="subtitle"
         :disabled="disabled"
-        :menu-items="menuItems"
+        :menu-items="menuItemsIds"
         :menu-position="{ right: '8px' }"
-        @select-menu-option="onSelectValue">
+        @select-menu-option="menuItemsAction">
         <template #prepend>
             <IconButton
                 v-if="hasChildren"
@@ -72,11 +72,19 @@ export default {
     data() {
         return {
             menuItems: [
-                'Remove',
+                {
+                    id: 'Remove',
+                    action: () => {
+                        this.$emit('remove-item', this.item);
+                    },
+                },
             ],
         };
     },
     computed: {
+        menuItemsIds() {
+            return this.menuItems.map(item => item.id);
+        },
         title() {
             return this.item.name || `#${this.item.code}`;
         },
@@ -104,6 +112,9 @@ export default {
     async mounted() {
         const extendedItems = await this.$getExtendMethod('@Core/components/LanguageInheritanceTreeDesigner/LanguageInheritanceTreeDesignerItem/menuItems', {
             $this: this,
+            props: {
+                item: this.item,
+            },
         });
 
         this.menuItems = [].concat(this.menuItems, ...extendedItems);
@@ -112,21 +123,8 @@ export default {
         onExpandItem() {
             this.$emit('expand-item', this.item);
         },
-        async onSelectValue(option) {
-            await this.$getExtendMethod('@Core/components/LanguageInheritanceTreeDesigner/LanguageInheritanceTreeDesignerItem/onSelectValue', {
-                $this: this,
-                props: {
-                    option,
-                    item: this.item,
-                },
-            });
-
-            switch (option) {
-            case 'Remove':
-                this.$emit('remove-item', this.item);
-                break;
-            default: break;
-            }
+        menuItemsAction(option) {
+            this.menuItems.find(item => item.id === option).action();
         },
     },
 };
