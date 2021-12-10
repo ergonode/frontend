@@ -100,7 +100,7 @@ export default {
     }) {
         try {
             // EXTENDED BEFORE METHOD
-            await this.$getExtendMethod('@@Workflow/store/workflow/action/getWorkflowById/__before', {
+            await this.$getExtendMethod('@Workflow/store/workflow/action/getWorkflowById/__before', {
                 $this: this,
                 data: {
                     workflowId,
@@ -132,7 +132,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$getExtendMethod('@@Workflow/store/workflow/action/getWorkflowById/__after', {
+            await this.$getExtendMethod('@Workflow/store/workflow/action/getWorkflowById/__after', {
                 $this: this,
                 data,
             });
