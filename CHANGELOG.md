@@ -5,6 +5,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## CHANGELOG FOR v1.2.x
 
+#### 1.2.1
+bugfix [#1136](https://github.com/ergonode/frontend/issues/1136) Datetime and Select / Multiselect advanced filter mapping (derpdead)
+
 #### 1.2.0
 bugfix [#1133](https://github.com/ergonode/frontend/issues/1133) Presenting validation errors for Import / Channel forms (derpdead)
 feature [#1131](https://github.com/ergonode/frontend/issues/1131) Remove all relations added to product (derpdead)
