@@ -1,6 +1,6 @@
 {
   "name": "@ergonode/channels",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": "Team Ergonode <team@ergonode.com>",
   "description": "Ergonode channels module",
   "license": "OSL-3.0",
