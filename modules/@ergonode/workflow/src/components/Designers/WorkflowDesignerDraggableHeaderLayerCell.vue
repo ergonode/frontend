@@ -114,8 +114,6 @@ export default {
         onDragStart(event) {
             const label = this.column.name || `#${this.column.code}`;
 
-            console.log('Hey!');
-
             addElementCopyToDocumentBody({
                 event,
                 id: this.column.id,
