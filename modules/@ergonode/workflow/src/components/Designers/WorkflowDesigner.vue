@@ -54,6 +54,8 @@
                                         <WorkflowDesignerHeaderLayerCell
                                             v-for="column in columns"
                                             :key="column"
+                                            :index="column - 1"
+                                            :scope="scope"
                                             :status="statuses[column - 1]"
                                             :has-right-border="column === columns" />
                                         <WorkflowDesignerGhostButton
@@ -82,7 +84,7 @@
                                                         onRemoveStartPointer(element.row)
                                                     " />
                                                 <WorkflowDesignerLayoutArrow
-                                                    v-if="isLayoutArrow(element)"
+                                                    v-if="isLayoutArrow(element) && !draggedElement"
                                                     :is-edited="isRowEdited(element.row)"
                                                     :is-revers="
                                                         isLayoutArrowRevers({
@@ -260,6 +262,9 @@ export default {
         ...mapState('workflow', [
             'statuses',
             'transitions',
+        ]),
+        ...mapState('draggable', [
+            'draggedElement',
         ]),
         isAllowedToCreate() {
             return this.$hasAccess([
