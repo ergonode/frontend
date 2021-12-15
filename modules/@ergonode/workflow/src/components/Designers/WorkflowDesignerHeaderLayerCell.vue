@@ -3,22 +3,27 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        :class="classes"
-        @mouseenter="onMouseEnter"
-        @mouseleave="onMouseLeave">
-        <WorkflowStatusBadge
-            :color="status.color"
-            :default-status="status.is_default" />
-        <span
-            class="workflow-designer-header-layer-cell__title"
-            v-text="title" />
-        <WorkflowDesignerEditStatusLink
-            v-if="isAllowedToUpdate"
-            data-cy="status-column-edit"
-            :status-id="status.id"
-            :visible="isHovered" />
-    </div>
+    <WorkflowDesignerDraggableHeaderLayerCell
+        :scope="scope"
+        :index="index"
+        :column="status">
+        <div
+            :class="classes"
+            @mouseenter="onMouseEnter"
+            @mouseleave="onMouseLeave">
+            <WorkflowStatusBadge
+                :color="status.color"
+                :default-status="status.is_default" />
+            <span
+                class="workflow-designer-header-layer-cell__title"
+                v-text="title" />
+            <WorkflowDesignerEditStatusLink
+                v-if="isAllowedToUpdate"
+                data-cy="status-column-edit"
+                :status-id="status.id"
+                :visible="isHovered" />
+        </div>
+    </WorkflowDesignerDraggableHeaderLayerCell>
 </template>
 
 <script>
@@ -27,17 +32,31 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import WorkflowStatusBadge from '@Workflow/components/Badges/WorkflowStatusBadge';
+import WorkflowDesignerDraggableHeaderLayerCell
+    from '@Workflow/components/Designers/WorkflowDesignerDraggableHeaderLayerCell';
 import WorkflowDesignerEditStatusLink
     from '@Workflow/components/Designers/WorkflowDesignerEditStatusLink';
 import PRIVILEGES from '@Workflow/config/privileges';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'WorkflowDesignerHeaderLayerCell',
     components: {
+        WorkflowDesignerDraggableHeaderLayerCell,
         WorkflowStatusBadge,
         WorkflowDesignerEditStatusLink,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        index: {
+            type: Number,
+            required: true,
+        },
         status: {
             type: Object,
             required: true,
@@ -53,15 +72,22 @@ export default {
         };
     },
     computed: {
+        ...mapState('draggable', [
+            'draggedElement',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.WORKFLOW.update,
             ]);
         },
+        isDragged() {
+            return this.draggedElement && this.draggedElement.id === this.status.id;
+        },
         classes() {
             return [
                 'workflow-designer-header-layer-cell',
                 {
+                    'workflow-designer-header-layer-cell--ghost': this.isDragged,
                     'workflow-designer-header-layer-cell--right-border': this.hasRightBorder,
                 },
             ];
@@ -101,6 +127,12 @@ export default {
 
         &--right-border {
             border-right: $BORDER_DASHED_GREY;
+        }
+
+        &--ghost {
+            background-color: $GREEN;
+            box-shadow: $ELEVATOR_HOLE;
+            color: $WHITE;
         }
 
         &__title {
