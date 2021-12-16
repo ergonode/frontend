@@ -73,7 +73,7 @@ export default {
                 message: this.$t('@Workflow.workflow.components.RemoveWorkflowStatusButton.successMessage'),
             });
             this.$router.push({
-                name: ROUTE_NAME.WORKFLOW_DESIGNER,
+                name: ROUTE_NAME.WORKFLOW,
             });
         },
         onRemoveError() {

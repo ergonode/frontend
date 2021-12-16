@@ -28,11 +28,15 @@ import {
 export default {
     async getStatuses({
         commit,
+        state,
     }, {
         onSuccess = () => {},
         onError = () => {},
     }) {
         try {
+            const {
+                defaultStatus,
+            } = state;
             const {
                 columns,
                 collection,
@@ -46,6 +50,7 @@ export default {
                 key: 'statuses',
                 value: collection.map(status => ({
                     ...status,
+                    is_default: defaultStatus === status.id,
                     color: statusColumn.filter.options[status.id].color,
                 })),
             });
@@ -155,17 +160,13 @@ export default {
         onError = () => {},
     }) {
         try {
-            await Promise.all(
-                [
-                    dispatch('getStatuses', {}),
-                    dispatch('getTransitions', {
-                        workflowId,
-                    }),
-                    dispatch('getWorkflowById', {
-                        workflowId,
-                    }),
-                ],
-            );
+            await dispatch('getWorkflowById', {
+                workflowId,
+            });
+            await dispatch('getStatuses', {});
+            await dispatch('getTransitions', {
+                workflowId,
+            });
 
             onSuccess();
         } catch (e) {
