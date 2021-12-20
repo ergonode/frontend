@@ -194,9 +194,9 @@ describe('arrayWrapper/arrayToObject', () => {
                 age: 21,
             },
         ];
-        const keyField = 'id';
+        const fieldKey = 'id';
         const value = 'name';
-        const result = arrayToObject(array, keyField, value);
+        const result = arrayToObject(array, fieldKey, value);
 
         expect(result).toStrictEqual({
             1: 'Maciek',

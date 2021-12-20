@@ -333,14 +333,14 @@ export function sumIntegers(array) {
  * Returns object from array with objects
  * @function
  * @param {Array} array
- * @param {string} keyField
+ * @param {string} fieldKey
  * @param {string} value
  * @returns {Object} Flat object
  */
-export function arrayToObject(array, keyField, value) {
+export function arrayToObject(array, fieldKey, value) {
     return array.reduce((prev, current) => ({
         ...prev,
-        [current[keyField]]: current[value],
+        [current[fieldKey]]: current[value],
     }), {});
 }
 

@@ -7,11 +7,11 @@ import {
 } from '@Core/models/objectWrapper';
 
 export const types = {
-    SET_UPDATED_OPTION: 'SET_UPDATED_OPTION',
+    SET_OPTION_STATE: 'SET_OPTION_STATE',
     INITIALIZE_OPTIONS: 'INITIALIZE_OPTIONS',
     ADD_ATTRIBUTE_OPTION_KEY: 'ADD_ATTRIBUTE_OPTION_KEY',
     REMOVE_ATTRIBUTE_OPTION_KEY: 'REMOVE_ATTRIBUTE_OPTION_KEY',
-    REMOVE_UPDATED_OPTION: 'REMOVE_UPDATED_OPTION',
+    REMOVE_OPTIONS_STATE: 'REMOVE_OPTIONS_STATE',
     SET_ATTRIBUTE_OPTION_KEY: 'SET_ATTRIBUTE_OPTION_KEY',
     SET_OPTION_LANGUAGE_CODE_FOR_VALUE: 'SET_OPTION_LANGUAGE_CODE_FOR_VALUE',
     SET_OPTION_VALUE_FOR_LANGUAGE_CODE: 'SET_OPTION_VALUE_FOR_LANGUAGE_CODE',
@@ -19,11 +19,25 @@ export const types = {
 };
 
 export default {
-    [types.SET_UPDATED_OPTION](state, id) {
-        state.updatedOptions[id] = true;
+    [types.SET_OPTION_STATE](state, {
+        key, type, value = null,
+    }) {
+        if (state.optionsState[key]) {
+            state.optionsState[key] = {
+                ...state.optionsState[key],
+                [type]: value,
+            };
+        } else {
+            state.optionsState = {
+                ...state.optionsState,
+                [key]: {
+                    [type]: value,
+                },
+            };
+        }
     },
-    [types.REMOVE_UPDATED_OPTION](state) {
-        state.updatedOptions = {};
+    [types.REMOVE_OPTIONS_STATE](state) {
+        state.optionsState = {};
     },
     [types.INITIALIZE_OPTIONS](state, options = {}) {
         state.options = options;
@@ -77,10 +91,13 @@ export default {
         };
     },
     [types.SET_OPTION_VALUE](state, {
-        index, value,
+        index, value = null,
     }) {
-        state.options[index].value = value || null;
         state.options = {
+            [index]: {
+                ...state.options[index],
+                value,
+            },
             ...state.options,
         };
     },

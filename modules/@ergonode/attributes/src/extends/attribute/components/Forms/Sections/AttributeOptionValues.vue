@@ -5,11 +5,12 @@
 <template>
     <FormSection :title="$t('@Attributes.attributeExtend.components.AttributeOptionValues.optionTitle')">
         <AttributeOptionValue
-            v-for="(index, i) in optionIndexes"
+            v-for="(id, i) in optionsOrder"
             :data-cy="`attribute-option_${languageCode}_${i}`"
-            :key="index"
-            :index="index"
-            :option="options[index]"
+            :key="id"
+            :index="id"
+            :option="options[id]"
+            :scope="scope"
             :disabled="disabled"
             :language-code="languageCode" />
     </FormSection>
@@ -35,14 +36,16 @@ export default {
             type: Boolean,
             required: true,
         },
+        scope: {
+            type: String,
+            required: true,
+        },
     },
     computed: {
         ...mapState('attribute', [
+            'optionsOrder',
             'options',
         ]),
-        optionIndexes() {
-            return Object.keys(this.options);
-        },
     },
 };
 </script>
