@@ -1,14 +1,20 @@
+/* eslint-disable cypress/no-unnecessary-waiting */
 /*
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 import {
+    And,
     Then,
+    When,
 } from 'cypress-cucumber-preprocessor/steps';
 
 import {
     MultiSteps,
 } from '../../../models/index';
+import {
+    checkGridRows,
+} from '../../../models/navigation';
 
 const url = /multimedia/;
 
@@ -43,4 +49,16 @@ MultiSteps([
         .get('@listElement')
         .get('.upload-file-list-element')
         .should('have.class', 'upload-file-list-element--error');
+});
+
+MultiSteps([
+    And,
+    Then,
+    When,
+], 'On {string} I can see rows with {string} values', (id, values) => {
+    cy.wait(50);
+    checkGridRows({
+        id,
+        values,
+    });
 });
