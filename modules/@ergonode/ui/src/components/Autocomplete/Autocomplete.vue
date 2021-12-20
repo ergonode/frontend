@@ -33,7 +33,11 @@
             <slot name="prepend" />
         </template>
         <template #value>
-            <span v-text="parsedValue" />
+            <slot
+                name="value"
+                :selected-options="selectedOptions">
+                <span v-text="parsedValue" />
+            </slot>
         </template>
         <template #append>
             <slot name="append" />
