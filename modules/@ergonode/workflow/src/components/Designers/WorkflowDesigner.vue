@@ -336,6 +336,7 @@ export default {
         ...mapActions('workflow', [
             'getWorkflow',
             'getStatuses',
+            'getWorkflowById',
             'updateWorkflow',
             '__setState',
         ]),
@@ -471,10 +472,14 @@ export default {
                 message: this.$t('@Workflow.workflow.components.WorkflowDesigner.updateErrorMessage'),
             });
         },
-        onWorkflowStatusCreated() {
+        async onWorkflowStatusCreated() {
             this.isFetchingData = true;
 
-            this.getStatuses({
+            await this.getWorkflowById({
+                workflowId: this.$route.params.workflowId,
+                onError: this.onFetchDataError,
+            });
+            await this.getStatuses({
                 onSuccess: this.onFetchStatusSuccess,
                 onError: this.onFetchDataError,
             });
