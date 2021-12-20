@@ -70,7 +70,7 @@ export default {
     },
     methods: {
         onAddListElement() {
-            this.$el.scrollIntoView(false);
+            this.$el.scrollIntoView(true);
             this.$emit('add');
         },
     },

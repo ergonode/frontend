@@ -1,11 +1,21 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-throw-literal */
 /*
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+
+import {
+    OPTION_STATES,
+} from '@Attributes/defaults';
+import {
+    createOptionHelper,
+    moveOptionHelper,
+    removeOptionHelper,
+    updateOptionHelper,
+} from '@Attributes/extends/attribute/methods/helpers';
 import {
     createOption,
-    updateOption,
 } from '@Attributes/extends/attribute/services';
 import {
     ALERT_TYPE,
@@ -80,15 +90,18 @@ export const prepareOptionsData = ({
 }) => {
     const {
         options,
+        optionsOrder,
     } = $this.state.attribute;
-    const optionKeys = Object.keys(options);
 
-    if (optionKeys.length > 0) {
-        const optionValues = Object.values(options);
+    if (optionsOrder.length > 0) {
+        const optionValues = optionsOrder.reduce((prev, curr) => [
+            ...prev,
+            options[curr],
+        ], []);
         const errors = {};
         let isAnyError = false;
 
-        optionKeys.forEach((optionKey) => {
+        optionsOrder.forEach((optionKey) => {
             const fieldKey = `option_${optionKey}`;
             const duplications = optionValues
                 .filter(({
@@ -123,101 +136,113 @@ export const createOptionsData = async ({
 }) => {
     const {
         options,
+        optionsOrder,
     } = $this.state.attribute;
     const {
-        id,
+        id: attributeId,
     } = data;
-    const errors = {};
+    const starterPromise = Promise.resolve(null);
 
-    await Promise.all(
-        Object.keys(options).map(key => createOption({
+    await optionsOrder.reduce((request, fieldKey) => request.then(() => {
+        const option = options[fieldKey];
+
+        return createOption({
             $axios: $this.app.$axios,
-            id,
+            attributeId,
             data: {
-                code: options[key].key,
+                code: option.key,
+                label: option.value,
             },
         }).catch((e) => {
-            errors[`option_${key}`] = e.data.errors.code;
-        })),
-    );
-
-    if (Object.keys(errors).length > 0) {
-        throw {
-            data: {
-                errors,
-            },
-        };
-    }
+            throw {
+                data: {
+                    errors: {
+                        [`option_${fieldKey}`]: e.data.errors.code,
+                    },
+                },
+            };
+        });
+    }), starterPromise);
 };
 
 export const updateOptionsData = async ({
     $this,
 }) => {
     const {
-        id,
         options,
-        updatedOptions,
+        optionsState,
+        optionsOrder,
     } = $this.state.attribute;
-    const optionKeys = Object.keys(options);
-    const addOptionsRequests = [];
-    const updateOptionsRequests = [];
-    const errors = {};
+    const createdOptions = {};
 
-    optionKeys.forEach((key) => {
-        const option = options[key];
-        const optionValue = option.value || null;
+    await Promise.all(
+        Object
+            .keys(optionsState)
+            .filter(
+                state => OPTION_STATES.DELETE in optionsState[state]
+                    && optionsState[state][OPTION_STATES.DELETE].id !== null,
+            )
+            .map(fieldKey => removeOptionHelper({
+                $this,
+                fieldKey,
+                optionId: options[fieldKey].id,
+            })),
+    );
 
-        if (!option.id) {
-            addOptionsRequests.push(
-                createOption({
-                    $axios: $this.app.$axios,
-                    id,
+    const starterPromise = Promise.resolve(null);
+
+    await optionsOrder.reduce((request, fieldKey, index) => request.then(async () => {
+        const optionStates = optionsState[fieldKey] || {};
+        const option = options[fieldKey];
+        const isAdded = OPTION_STATES.ADD in optionStates;
+        const isEdited = OPTION_STATES.EDIT in optionStates;
+        const isMoved = OPTION_STATES.MOVE in optionStates;
+        const prevIndex = Math.max(0, index - 1);
+        const positionId = index === 0
+            ? null
+            : createdOptions[optionsOrder[prevIndex]] || options[optionsOrder[prevIndex]].id;
+
+        if (isAdded) {
+            createdOptions[fieldKey] = await createOptionHelper({
+                $this,
+                fieldKey,
+                data: {
+                    code: option.key,
+                    label: option.value,
+                    after: index > 0,
+                    positionId,
+                },
+            });
+        } else {
+            const requests = [];
+
+            if (isMoved) {
+                requests.push(moveOptionHelper({
+                    $this,
+                    fieldKey,
+                    data: {
+                        after: index > 0,
+                        positionId,
+                    },
+                }));
+            }
+
+            if (isEdited) {
+                requests.push(updateOptionHelper({
+                    $this,
+                    fieldKey,
                     data: {
                         code: option.key,
-                        label: optionValue,
+                        label: option.value,
                     },
-                })
-                    .then(({
-                        id: optionId,
-                    }) => $this.dispatch('attribute/updateAttributeOptionKey',
-                        {
-                            index: key,
-                            id: optionId,
-                            key: option.key,
-                        }))
-                    .catch((e) => {
-                        errors[`option_${key}`] = e.data.errors.code;
-                    }),
-            );
-        } else if (updatedOptions[option.id]) {
-            updateOptionsRequests.push(
-                updateOption({
-                    $axios: $this.app.$axios,
-                    attributeId: id,
-                    optionId: option.id,
-                    data: {
-                        code: option.key,
-                        label: optionValue,
-                    },
-                }).catch((e) => {
-                    errors[`option_${key}`] = e.data.errors.code;
-                }),
-            );
+                }));
+            }
+
+            await Promise.all(requests);
         }
-    });
 
-    await Promise.all([
-        ...addOptionsRequests,
-        ...updateOptionsRequests,
-    ]);
-
-    if (Object.keys(errors).length > 0) {
-        throw {
-            data: {
-                errors,
-            },
-        };
-    }
+        return null;
+    }), starterPromise);
 };
 
 export const getAttributeOptions = async ({
