@@ -4,7 +4,12 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## CHANGELOG FOR v1.3.0
-feature [#1147](https://github.com/ergonode/frontend/pull/1147) Remove defined layouts (derpdead)
+bugfix [#1161](https://github.com/ergonode/frontend/issues/1161) Status code not displayed for Workflow action button at Product page (derpdead)
+feature [#1159](https://github.com/ergonode/frontend/issues/1159) Extend language settings items (bleto)
+bugfix [#1155](https://github.com/ergonode/frontend/issues/1155) Workflow routing change (bleto)
+feature [#1147](https://github.com/ergonode/frontend/issues/1146) Remove layouts definition for ProductsTab Sidebar (derpdead)
+feature [#1144](https://github.com/ergonode/frontend/issues/1144) Adapt naming for Transition from / to (derpdead)
+feature [#1139](https://github.com/ergonode/frontend/issues/1139) Extend slots per selected ProductsGrid layout (derpdead)
 
 ## CHANGELOG FOR v1.2.x
 
