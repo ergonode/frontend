@@ -18,7 +18,7 @@
                 @move-item="onMoveItem">
                 <template #item="{ item }">
                     <TextField
-                        :data-cy="dataCyGenerator(item.fieldKey)"
+                        :data-cy="dataCyGenerator(item.index)"
                         :value="item.key"
                         required
                         :size="smallSize"
@@ -71,8 +71,9 @@ export default {
             return SIZE.SMALL;
         },
         optionValues() {
-            return this.optionsOrder.map(key => ({
+            return this.optionsOrder.map((key, index) => ({
                 fieldKey: key,
+                index,
                 ...this.options[key],
             }));
         },

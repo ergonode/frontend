@@ -240,6 +240,7 @@ export default {
     },
     async fetch() {
         this.getWorkflow({
+            workflowId: this.$route.params.workflowId,
             onSuccess: this.onFetchDataSuccess,
             onError: this.onFetchDataError,
         });
@@ -335,7 +336,8 @@ export default {
         ...mapActions('workflow', [
             'getWorkflow',
             'getStatuses',
-            'updateTransitions',
+            'getWorkflowById',
+            'updateWorkflow',
             '__setState',
         ]),
         ...mapActions('feedback', [
@@ -418,8 +420,9 @@ export default {
                     applyTitle: this.$t('@Workflow.workflow.components.WorkflowDesigner.applyTitle'),
                     cancelTitle: this.$t('@Workflow.workflow.components.WorkflowDesigner.cancelTitle'),
                     action: async () => {
-                        await this.updateTransitions({
+                        await this.updateWorkflow({
                             scope: this.scope,
+                            workflowId: this.$route.params.workflowId,
                             onSuccess: () => {
                                 this.onUpdateSuccess(id);
                             },
@@ -430,13 +433,17 @@ export default {
                     },
                 });
             } else {
-                this.$router.push({
-                    name: ROUTE_NAME.WORKFLOW_TRANSITION_EDIT_GENERAL,
-                    params: {
-                        id,
-                    },
-                });
+                this.onTransitionRedirect(id);
             }
+        },
+        onTransitionRedirect(id) {
+            this.$router.push({
+                name: ROUTE_NAME.WORKFLOW_TRANSITION_EDIT_GENERAL,
+                params: {
+                    workflowId: this.$route.params.workflowId,
+                    id,
+                },
+            });
         },
         onRemoveStartPointer(row) {
             if (this.isRowEdited(row)) {
@@ -456,12 +463,7 @@ export default {
             });
 
             this.markChangeValuesAsSaved(this.scope);
-            this.$router.push({
-                name: ROUTE_NAME.WORKFLOW_TRANSITION_EDIT_GENERAL,
-                params: {
-                    id,
-                },
-            });
+            this.onTransitionRedirect(id);
         },
         onUpdateError(errors) {
             this.onError(errors);
@@ -470,10 +472,14 @@ export default {
                 message: this.$t('@Workflow.workflow.components.WorkflowDesigner.updateErrorMessage'),
             });
         },
-        onWorkflowStatusCreated() {
+        async onWorkflowStatusCreated() {
             this.isFetchingData = true;
 
-            this.getStatuses({
+            await this.getWorkflowById({
+                workflowId: this.$route.params.workflowId,
+                onError: this.onFetchDataError,
+            });
+            await this.getStatuses({
                 onSuccess: this.onFetchStatusSuccess,
                 onError: this.onFetchDataError,
             });

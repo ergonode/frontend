@@ -12,27 +12,31 @@ import {
 } from '@Workflow/models/workflowDesigner';
 import {
     createStatus,
-    getDefaultStatus,
     getStatus,
     getStatuses,
     getTransition,
     getTransitions,
+    getWorkflow,
     removeStatus,
     removeTransition,
     updateDefaultStatus,
     updateStatus,
     updateTransition,
-    updateTransitions,
+    updateWorkflow,
 } from '@Workflow/services';
 
 export default {
     async getStatuses({
         commit,
+        state,
     }, {
         onSuccess = () => {},
         onError = () => {},
     }) {
         try {
+            const {
+                defaultStatus,
+            } = state;
             const {
                 columns,
                 collection,
@@ -46,6 +50,7 @@ export default {
                 key: 'statuses',
                 value: collection.map(status => ({
                     ...status,
+                    is_default: defaultStatus === status.id,
                     color: statusColumn.filter.options[status.id].color,
                 })),
             });
@@ -62,6 +67,7 @@ export default {
     async getTransitions({
         commit,
     }, {
+        workflowId,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -70,6 +76,7 @@ export default {
                 collection,
             } = await getTransitions({
                 $axios: this.app.$axios,
+                workflowId,
             });
 
             commit('__SET_STATE', {
@@ -89,19 +96,77 @@ export default {
             onError(e);
         }
     },
-    async getWorkflow({
-        dispatch,
+    async getWorkflowById({
+        commit,
     }, {
+        workflowId,
         onSuccess = () => {},
         onError = () => {},
     }) {
         try {
-            await Promise.all(
-                [
-                    dispatch('getStatuses', {}),
-                    dispatch('getTransitions', {}),
-                ],
-            );
+            // EXTENDED BEFORE METHOD
+            await this.$getExtendMethod('@Workflow/store/workflow/action/getWorkflowById/__before', {
+                $this: this,
+                data: {
+                    workflowId,
+                },
+            });
+            // EXTENDED BEFORE METHOD
+
+            const data = await getWorkflow({
+                $axios: this.app.$axios,
+                workflowId,
+            });
+            const {
+                id,
+                code,
+                default_id,
+            } = data;
+
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'code',
+                value: code,
+            });
+            commit('__SET_STATE', {
+                key: 'defaultStatus',
+                value: default_id,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$getExtendMethod('@Workflow/store/workflow/action/getWorkflowById/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
+    },
+    async getWorkflow({
+        dispatch,
+    }, {
+        workflowId,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            await dispatch('getWorkflowById', {
+                workflowId,
+            });
+            await dispatch('getStatuses', {});
+            await dispatch('getTransitions', {
+                workflowId,
+            });
 
             onSuccess();
         } catch (e) {
@@ -269,43 +334,6 @@ export default {
             });
         }
     },
-    async getDefaultStatus({
-        commit,
-        state,
-    }, {
-        onSuccess = () => {},
-        onError = () => {},
-    }) {
-        try {
-            const {
-                id,
-            } = state.status;
-
-            const {
-                default_id: defaultStatus,
-            } = await getDefaultStatus({
-                $axios: this.app.$axios,
-            });
-
-            if (defaultStatus === id) {
-                commit('__SET_STATE', {
-                    key: 'status',
-                    value: {
-                        ...state.status,
-                        isDefaultStatus: true,
-                    },
-                });
-            }
-
-            onSuccess();
-        } catch (e) {
-            if (this.app.$axios.isCancel(e)) {
-                return;
-            }
-
-            onError(e);
-        }
-    },
     async removeStatus({
         state,
     }, {
@@ -417,6 +445,7 @@ export default {
         },
         {
             id,
+            workflowId,
             onError = () => {},
         },
     ) {
@@ -443,6 +472,7 @@ export default {
 
             const data = await getTransition({
                 $axios: this.app.$axios,
+                workflowId,
                 from,
                 to,
             });
@@ -513,6 +543,7 @@ export default {
         },
         {
             scope,
+            workflowId,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -548,6 +579,7 @@ export default {
 
             await updateTransition({
                 $axios: this.app.$axios,
+                workflowId,
                 from: from.id,
                 to: to.id,
                 data,
@@ -576,25 +608,32 @@ export default {
             });
         }
     },
-    async updateTransitions(
+    async updateWorkflow(
         {
             state,
             commit,
         },
         {
             scope,
+            workflowId,
             onSuccess = () => {},
             onError = () => {},
         },
     ) {
         try {
+            const {
+                defaultStatus,
+                code = 'default',
+            } = state;
             let data = {
+                code,
+                default_id: defaultStatus,
                 statuses: state.statuses.map(status => status.id),
                 transitions: getMappedTransitions(state.transitions),
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$getExtendMethod('@Workflow/store/workflow/action/updateTransitions/__before', {
+            const extendedData = await this.$getExtendMethod('@Workflow/store/workflow/action/updateWorkflow/__before', {
                 $this: this,
                 data,
             });
@@ -606,8 +645,9 @@ export default {
             });
             // EXTENDED BEFORE METHOD
 
-            await updateTransitions({
+            await updateWorkflow({
                 $axios: this.app.$axios,
+                workflowId,
                 data,
             });
 
@@ -620,7 +660,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$getExtendMethod('@Workflow/store/workflow/action/updateTransitions/__after', {
+            await this.$getExtendMethod('@Workflow/store/workflow/action/updateWorkflow/__after', {
                 $this: this,
                 data,
             });
@@ -646,6 +686,7 @@ export default {
     async removeTransition({
         state,
     }, {
+        workflowId,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -667,6 +708,7 @@ export default {
 
             await removeTransition({
                 $axios: this.app.$axios,
+                workflowId,
                 from: from.id,
                 to: to.id,
             });

@@ -65,6 +65,7 @@ export default {
         },
         onRemoveTransition() {
             this.removeTransition({
+                workflowId: this.$route.params.workflowId,
                 onSuccess: this.onRemoveSuccess,
                 onError: this.onRemoveError,
             });
@@ -75,7 +76,7 @@ export default {
                 message: this.$t('@Workflow.workflow.components.RemoveWorkflowTransitionButton.successMessage'),
             });
             this.$router.push({
-                name: ROUTE_NAME.WORKFLOW_DESIGNER,
+                name: ROUTE_NAME.WORKFLOW,
             });
         },
         onRemoveError() {
