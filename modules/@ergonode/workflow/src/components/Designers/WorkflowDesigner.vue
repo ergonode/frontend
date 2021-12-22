@@ -309,6 +309,11 @@ export default {
                 this.excludeRows = getRows(elements);
             },
         },
+        async $route(from, to) {
+            if (from.name !== to.name) {
+                await this.onWorkflowStatusCreated();
+            }
+        },
     },
     mounted() {
         document.documentElement.addEventListener(
