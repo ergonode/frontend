@@ -79,7 +79,11 @@ export default {
             return this.route.meta.icon;
         },
         isSelected() {
-            return this.$route.name === this.route.name;
+            return this.$route.name === this.route.name || (
+                this.route.children && this.route.children.some(({
+                    name,
+                }) => name === this.$route.name)
+            );
         },
         listIconFillColor() {
             return this.isSelected || this.isHovered ? WHITE : GREEN;
