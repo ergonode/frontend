@@ -51,12 +51,13 @@ MultiSteps([
         .should('have.class', 'upload-file-list-element--error');
 });
 
+// TODO: not waiting on upload action
 MultiSteps([
     And,
     Then,
     When,
 ], 'On {string} I can see rows with {string} values', (id, values) => {
-    cy.wait(50);
+    cy.wait(100);
     checkGridRows({
         id,
         values,
