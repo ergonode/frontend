@@ -65,6 +65,13 @@ export const getTransition = ({
     workflowId = 'default',
 }) => $axios.$get(`workflow/${workflowId}/transitions/${from}/${to}`);
 
+export const getTransitionConditions = ({
+    $axios,
+    from,
+    to,
+    workflowId = 'default',
+}) => $axios.$get(`workflow/${workflowId}/transitions/${from}/${to}/conditions`);
+
 export const updateTransition = ({
     $axios,
     from,
@@ -73,9 +80,29 @@ export const updateTransition = ({
     workflowId = 'default',
 }) => $axios.$put(`workflow/${workflowId}/transitions/${from}/${to}`, data);
 
+export const updateTransitionConditions = ({
+    $axios,
+    from,
+    to,
+    data,
+    workflowId = 'default',
+}) => $axios.$put(`workflow/${workflowId}/transitions/${from}/${to}/conditions`, data);
+
 export const removeTransition = ({
     $axios,
     from,
     to,
     workflowId = 'default',
 }) => $axios.$delete(`workflow/${workflowId}/transitions/${from}/${to}`);
+
+export const getCondition = ({
+    $axios,
+    type,
+}) => $axios.$get(`workflow/condition/${type}`);
+
+export const getDictionary = ({
+    $axios,
+    params,
+}) => $axios.$get('workflow/condition/dictionary', {
+    params,
+});

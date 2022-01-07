@@ -15,6 +15,7 @@ import {
     getStatus,
     getStatuses,
     getTransition,
+    getTransitionConditions,
     getTransitions,
     getWorkflow,
     removeStatus,
@@ -476,12 +477,13 @@ export default {
                 from,
                 to,
             });
-            const {
-                condition_set_id: conditionSetId,
-            } = data;
-
+            const conditions = await getTransitionConditions({
+                $axios: this.app.$axios,
+                workflowId,
+                from,
+                to,
+            });
             const regex = /%20/g;
-
             const fromOption = statuses.find(
                 status => status.id === from.replace(regex, ' '),
             );
@@ -489,7 +491,7 @@ export default {
                 status => status.id === to.replace(regex, ' '),
             );
 
-            dispatch('condition/__clearStorage', {}, {
+            dispatch('workflowConditions/__clearStorage', {}, {
                 root: true,
             });
 
@@ -512,13 +514,12 @@ export default {
                             ? `#${toOption.code} ${userLanguageCode}`
                             : '',
                     },
-                    conditionSetId,
                 },
             });
 
-            if (conditionSetId) {
-                await dispatch('condition/getConditionSet', {
-                    id: conditionSetId,
+            if (conditions) {
+                await dispatch('workflowConditions/setConditions', {
+                    conditions,
                 }, {
                     root: true,
                 });
@@ -552,13 +553,8 @@ export default {
             const {
                 from,
                 to,
-                conditionSetId,
             } = state.transition;
             let data = {};
-
-            if (conditionSetId) {
-                data.condition_set = conditionSetId;
-            }
 
             // EXTENDED BEFORE METHOD
             const extendedData = await this.$getExtendMethod('@Workflow/store/workflow/action/updateTransition/__before', {

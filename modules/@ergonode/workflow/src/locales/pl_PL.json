@@ -37,6 +37,15 @@
         }
       },
       "components": {
+        "ConditionsSideBar": {
+          "title": "Warunki"
+        },
+        "ConditionsVerticalTab": {
+          "title": "Warunki"
+        },
+        "ConditionSetTreeDesignerNoTypeItemParameter": {
+          "placeholderTitle": "Brak wsparcia dla {info} typu parametru warunku"
+        },
         "RemoveWorkflowTransitionButton": {
           "title": "Usuń przejście",
           "confirmTitle": "czy chcesz usunąć to przejście?",

@@ -24,11 +24,11 @@
 </template>
 
 <script>
-import ConditionSetTreeDesigner from '@Conditions/components/TreeDesigners/ConditionSetTreeDesigner';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
 import UpdateWorkflowTransitionConditionDesignerButton
     from '@Workflow/components/Buttons/UpdateWorkflowTransitionConditionDesignerButton';
+import ConditionSetTreeDesigner from '@Workflow/components/ConditionSetTreeDesigner/ConditionSetTreeDesigner';
 import RemoveTransitionConditionDropZone from '@Workflow/components/DropZones/RemoveTransitionConditionDropZone';
 import PRIVILEGES from '@Workflow/config/privileges';
 
