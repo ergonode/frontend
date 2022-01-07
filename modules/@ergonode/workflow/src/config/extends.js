@@ -5,21 +5,20 @@
 import {
     Components,
     Icons,
-} from '@Conditions/config/imports';
+} from '@Workflow/config/imports';
 
 export default {
     extendMethods: {
-        '@Transitions/components/Tabs/ConditionDesignerTab/verticalTabs': ({
+        '@Workflow/components/Tabs/WorkflowTransitionConditionDesignerTab/verticalTabs': ({
             $this,
             props,
         }) => [
             {
-                title: $this.$t('@Conditions.transitionExtend.methods.verticalTabTitle'),
+                title: $this.$t('@Workflow.workflow.components.ConditionsVerticalTab.title'),
                 component: Components.ConditionsVerticalTab,
-                icon: Icons.IconCategory,
+                icon: Icons.Category,
                 props: {
                     scope: $this.scope,
-                    group: 'workflow',
                     ...props,
                 },
             },

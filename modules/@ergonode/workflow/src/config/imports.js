@@ -16,6 +16,11 @@ export const Tabs = {
     WorkflowTransitionConditionDesignerTab: () => import('@Workflow/components/Tabs/WorkflowTransitionConditionDesignerTab').then(m => m.default || m),
 };
 
+export const Components = {
+    ConditionsVerticalTab: () => import('@Workflow/components/VerticalTabs/ConditionsVerticalTab').then(m => m.default || m),
+};
+
 export const Icons = {
     Flow: () => import('@Core/components/Icons/Menu/IconFlow').then(m => m.default || m),
+    Category: () => import('@UI/components/Icons/Others/IconCategory').then(m => m.default || m),
 };

@@ -72,9 +72,8 @@ export default {
             '__setState',
             'updateTransition',
         ]),
-        ...mapActions('condition', [
-            'createConditionSet',
-            'updateConditionSet',
+        ...mapActions('workflowConditions', [
+            'updateConditions',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -83,30 +82,14 @@ export default {
             this.isSubmitting = true;
 
             this.removeScopeErrors(this.scope);
-
-            if (!this.transition.conditionSetId) {
-                this.createConditionSet({
-                    scope: this.scope,
-                    onSuccess: this.onUpdateSuccess,
-                    onError: this.onUpdateError,
-                });
-            } else {
-                this.updateConditionSet({
-                    scope: this.scope,
-                    onSuccess: this.onUpdateSuccess,
-                    onError: this.onUpdateError,
-                });
-            }
-        },
-        async onUpdateSuccess(id) {
-            this.__setState({
-                key: 'transition',
-                value: {
-                    ...this.transition,
-                    conditionSetId: id,
-                },
+            this.updateConditions({
+                scope: this.scope,
+                workflowId: this.$route.params.workflowId,
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
             });
-
+        },
+        async onUpdateSuccess() {
             await this.updateTransition({
                 scope: this.scope,
                 workflowId: this.$route.params.workflowId,

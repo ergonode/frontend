@@ -15,7 +15,6 @@ export default () => ({
     transition: {
         from: '',
         to: '',
-        conditionSetId: '',
     },
     statuses: [],
     transitions: [],
