@@ -58,19 +58,11 @@ export default {
                 $axios: this.app.$axios,
                 type,
             });
-            // TODO: fix, BE don't sent type field
-            const param = configuration.parameters.map(p => ({
-                ...p,
-                type: p.options ? 'SELECT' : 'TEXT',
-            }));
-            const config = configuration;
-            config.parameters = param;
-            // TODO:
 
             commit(types.SET_CONDITIONS_VALUES, getMappedInitialTypeConditionsValues({
                 tree: state.tree,
                 type,
-                parameters: param,
+                parameters: configuration.parameters,
                 values: state.conditionsValues,
             }));
             commit(types.SET_CONDITIONS, {
