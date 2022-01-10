@@ -24,16 +24,13 @@
 </template>
 
 <script>
-import ConditionSetTreeDesigner from '@Conditions/components/TreeDesigners/ConditionSetTreeDesigner';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import PRIVILEGES from '@Statuses/config/privileges';
 import UpdateProductStatusConditionDesignerButton
     from '@Transitions/components/Buttons/UpdateProductStatusConditionDesignerButton';
 import RemoveConditionDropZone from '@Transitions/components/DropZones/RemoveConditionDropZone';
 import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
-import {
-    mapActions,
-} from 'vuex';
+import ConditionSetTreeDesigner from '@Workflow/components/ConditionSetTreeDesigner/ConditionSetTreeDesigner';
 
 export default {
     name: 'ConditionDesignerTab',
@@ -67,14 +64,6 @@ export default {
         });
 
         this.verticalTabs = [].concat(...extendedVerticalTabs);
-    },
-    beforeDestroy() {
-        this.__clearConditionStorage();
-    },
-    methods: {
-        ...mapActions('condition', {
-            __clearConditionStorage: '__clearStorage',
-        }),
     },
 };
 </script>

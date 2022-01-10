@@ -23,5 +23,19 @@ export default {
                 },
             },
         ],
+        '@Transitions/components/Tabs/ConditionDesignerTab/verticalTabs': ({
+            $this,
+            props,
+        }) => [
+            {
+                title: $this.$t('@Workflow.workflow.components.ConditionsVerticalTab.title'),
+                component: Components.ConditionsVerticalTab,
+                icon: Icons.Category,
+                props: {
+                    scope: $this.scope,
+                    ...props,
+                },
+            },
+        ],
     },
 };

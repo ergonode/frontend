@@ -12,6 +12,9 @@ import {
     getParsedConditions,
 } from '@Workflow/models/conditionDesigner/conditionSetMapper';
 import {
+    getFromAndToTransition,
+} from '@Workflow/models/workflowDesigner';
+import {
     getCondition,
     getDictionary,
     updateTransitionConditions,
@@ -123,10 +126,10 @@ export default {
     async updateConditions(
         {
             state,
-            rootState,
         },
         {
             workflowId,
+            transitionId,
             scope,
             onSuccess = () => {},
             onError = () => {},
@@ -138,12 +141,10 @@ export default {
                 tree,
                 conditionsValues,
             } = state;
-            const {
-                transition: {
-                    from,
-                    to,
-                },
-            } = rootState.workflow;
+            const [
+                from,
+                to,
+            ] = getFromAndToTransition(transitionId);
 
             let data = {
                 conditions: getParsedConditions({
@@ -169,8 +170,8 @@ export default {
             await updateTransitionConditions({
                 $axios: this.app.$axios,
                 workflowId,
-                from: from.id,
-                to: to.id,
+                from,
+                to,
                 data,
             });
 
@@ -186,7 +187,6 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 return;
             }
-            console.log(e);
 
             onError({
                 errors: e.data.errors,
