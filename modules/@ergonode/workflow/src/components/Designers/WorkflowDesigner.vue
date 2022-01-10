@@ -590,7 +590,6 @@ export default {
                                 from,
                                 to,
                                 roles: [],
-                                condition_set: null,
                                 isSaved: false,
                             },
                         ],

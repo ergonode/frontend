@@ -97,6 +97,5 @@ export function getMappedTransitions(transitions) {
         from: transition.from,
         to: transition.to,
         roles: transition.roles,
-        condition_set: transition.condition_set_id,
     }));
 }
