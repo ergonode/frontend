@@ -8,19 +8,16 @@ export const transitions = [
         from: '0',
         to: '2',
         roles: [],
-        condition_set_id: null,
     },
     {
         from: '0',
         to: '3',
         roles: [],
-        condition_set_id: null,
     },
     {
         from: '0',
         to: '1',
         roles: [],
-        condition_set_id: null,
     },
 ];
 
@@ -29,19 +26,16 @@ export const transitionsToSend = [
         from: '0',
         to: '2',
         roles: [],
-        condition_set: null,
     },
     {
         from: '0',
         to: '3',
         roles: [],
-        condition_set: null,
     },
     {
         from: '0',
         to: '1',
         roles: [],
-        condition_set: null,
     },
 ];
 
