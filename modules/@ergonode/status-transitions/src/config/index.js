@@ -7,8 +7,8 @@ export default {
     order: 150,
     relations: [
         '@ergonode/core',
-        '@ergonode/conditions',
         '@ergonode/product-statuses',
+        '@ergonode/workflow',
     ],
     aliases: {
         '@Transitions': '/',

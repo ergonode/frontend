@@ -37,7 +37,6 @@ import {
 import PRIVILEGES from '@Workflow/config/privileges';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -51,9 +50,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('workflow', [
-            'transition',
-        ]),
         saveChangesButtonFloatingStyle() {
             return {
                 bottom: '24px',
@@ -69,7 +65,6 @@ export default {
     },
     methods: {
         ...mapActions('workflow', [
-            '__setState',
             'updateTransition',
         ]),
         ...mapActions('workflowConditions', [
@@ -85,6 +80,7 @@ export default {
             this.updateConditions({
                 scope: this.scope,
                 workflowId: this.$route.params.workflowId,
+                transitionId: this.$route.params.id,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });

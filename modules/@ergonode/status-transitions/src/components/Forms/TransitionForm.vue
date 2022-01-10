@@ -55,6 +55,9 @@ import {
 } from '@Core/models/objectWrapper';
 import PRIVILEGES from '@Transitions/config/privileges';
 import {
+    getFromAndToTransition,
+} from '@Workflow/models/workflowDesigner';
+import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -86,7 +89,7 @@ export default {
                 const [
                     from,
                     to,
-                ] = id.split('--');
+                ] = getFromAndToTransition(id);
 
                 return Boolean(from) && Boolean(to);
             }
