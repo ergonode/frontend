@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 import {
@@ -13,7 +13,13 @@ import {
     get,
     remove,
     update,
-} from '@Transitions/services/index';
+} from '@Transitions/services';
+import {
+    getFromAndToTransition,
+} from '@Workflow/models/workflowDesigner';
+import {
+    getTransitionConditions,
+} from '@Workflow/services';
 
 export default {
     async getStatusTransition(
@@ -34,7 +40,7 @@ export default {
             const [
                 from,
                 to,
-            ] = id.split('--');
+            ] = getFromAndToTransition(id);
 
             // EXTENDED BEFORE METHOD
             await this.$getExtendMethod('@Transitions/store/statusTransition/action/getStatusTransition/__before', {
@@ -50,12 +56,12 @@ export default {
                 from,
                 to,
             });
-            const {
-                condition_set_id: conditionSetId,
-            } = data;
-
+            const conditions = await getTransitionConditions({
+                $axios: this.app.$axios,
+                from,
+                to,
+            });
             const regex = /%20/g;
-
             const fromOption = statusOptions.find(
                 status => status.id === from.replace(regex, ' '),
             );
@@ -64,7 +70,7 @@ export default {
             );
 
             dispatch('__clearStorage');
-            dispatch('condition/__clearStorage', {}, {
+            dispatch('workflowConditions/__clearStorage', {}, {
                 root: true,
             });
 
@@ -76,14 +82,10 @@ export default {
                 key: 'to',
                 value: toOption,
             });
-            commit('__SET_STATE', {
-                key: 'conditionSetId',
-                value: conditionSetId,
-            });
 
-            if (conditionSetId) {
-                await dispatch('condition/getConditionSet', {
-                    id: conditionSetId,
+            if (conditions) {
+                await dispatch('workflowConditions/setConditions', {
+                    conditions,
                 }, {
                     root: true,
                 });
@@ -116,13 +118,8 @@ export default {
             const {
                 from,
                 to,
-                conditionSetId,
             } = state;
             let data = {};
-
-            if (conditionSetId) {
-                data.condition_set = conditionSetId;
-            }
 
             // EXTENDED BEFORE METHOD
             const extendedData = await this.$getExtendMethod('@Transitions/store/statusTransition/action/updateStatusTransition/__before', {

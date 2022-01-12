@@ -3,7 +3,7 @@ Feature: CREATE: Transition on workflow
   This feature allows create transition on workflow
 
   Background:
-    Given I open "/workflow/designer" page
+    Given I open "/workflow" page
 
   @success
   Scenario: Add workflow transition - success

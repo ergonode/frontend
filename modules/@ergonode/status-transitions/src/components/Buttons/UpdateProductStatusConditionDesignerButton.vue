@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -37,7 +37,6 @@ import {
 } from '@UI/assets/scss/_js-variables/indexes.scss';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -51,9 +50,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('statusTransition', [
-            'conditionSetId',
-        ]),
         saveChangesButtonFloatingStyle() {
             return {
                 bottom: '24px',
@@ -69,12 +65,10 @@ export default {
     },
     methods: {
         ...mapActions('statusTransition', [
-            '__setState',
             'updateStatusTransition',
         ]),
-        ...mapActions('condition', [
-            'createConditionSet',
-            'updateConditionSet',
+        ...mapActions('workflowConditions', [
+            'updateConditions',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -83,27 +77,14 @@ export default {
             this.isSubmitting = true;
 
             this.removeScopeErrors(this.scope);
-
-            if (!this.conditionSetId) {
-                this.createConditionSet({
-                    scope: this.scope,
-                    onSuccess: this.onUpdateSuccess,
-                    onError: this.onUpdateError,
-                });
-            } else {
-                this.updateConditionSet({
-                    scope: this.scope,
-                    onSuccess: this.onUpdateSuccess,
-                    onError: this.onUpdateError,
-                });
-            }
-        },
-        async onUpdateSuccess(id) {
-            this.__setState({
-                key: 'conditionSetId',
-                value: id,
+            this.updateConditions({
+                scope: this.scope,
+                transitionId: this.$route.params.id,
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
             });
-
+        },
+        async onUpdateSuccess() {
             await this.updateStatusTransition({
                 scope: this.scope,
             });

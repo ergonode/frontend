@@ -3,7 +3,7 @@ Feature: UPDATE: Statuson workflow
   This feature allows update status on workflow
 
   Background:
-    Given I open "/workflow/designer" page
+    Given I open "/workflow" page
 
   @error
   Scenario: Update status from edit page - validation error (too long string)
@@ -30,4 +30,4 @@ Feature: UPDATE: Statuson workflow
     * I fill the "status-description" textarea with the "status_desc_PL" term for "pl_PL" translation
     * I "submit" the data and "update" is "correct"
     * I click back arrow
-    Then I see "workflow/designer" page
+    Then I see "workflow" page
