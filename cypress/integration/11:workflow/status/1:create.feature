@@ -3,7 +3,7 @@ Feature: CREATE: Status on workflow
   This feature allows create status on workflow
 
   Background:
-    Given I open "/workflow/designer" page
+    Given I open "/workflow" page
     When I click on "new-status" button
     Then Element "modal" is visible
 

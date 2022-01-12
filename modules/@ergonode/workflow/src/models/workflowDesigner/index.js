@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 export function getFromAndToTransition(id) {
@@ -97,6 +97,5 @@ export function getMappedTransitions(transitions) {
         from: transition.from,
         to: transition.to,
         roles: transition.roles,
-        condition_set: transition.condition_set_id,
     }));
 }

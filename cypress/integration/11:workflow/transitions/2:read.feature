@@ -3,7 +3,7 @@ Feature: READ: Status on workflow
   This feature allows read status on workflow
 
   Background:
-    Given I open "workflow/designer" page
+    Given I open "workflow" page
 
   @success
   Scenario: Read statuses on designer - success
@@ -26,4 +26,4 @@ Feature: READ: Status on workflow
     * I can see "transition-roleId" select with the "" term
     * I can see "transition-roleId" field as enabled
     Then I click back arrow
-    * I see "workflow/designer" page
+    * I see "workflow" page

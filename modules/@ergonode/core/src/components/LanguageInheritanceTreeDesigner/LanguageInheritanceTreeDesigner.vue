@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -9,24 +9,39 @@
         :columns="columns"
         :row-height="rowHeight"
         :disabled="!isAllowedToUpdate"
-        @remove-items="onRemoveItems"
+        @remove-items="onRemoveLanguageItems"
         @add-item="onAddItem"
         @input="onValueChange">
-        <template #itemDescription="{ item, childrenLength }">
-            <DesignerItemDescription
-                :title="item.name || `#${item.code}`"
-                :subtitle="itemSubtitle(childrenLength)" />
+        <template
+            #item="{
+                item,
+                gap,
+                disabled,
+                isExpanded,
+                childrenLength,
+                onExpandItem,
+                onRemoveItems,
+            }">
+            <LanguageInheritanceTreeDesignerItem
+                :key="item.id"
+                :item="item"
+                :gap="gap"
+                :children-length="childrenLength"
+                :is-expanded="isExpanded"
+                :disabled="disabled"
+                @expand-item="onExpandItem"
+                @remove-item="onRemoveItems" />
         </template>
     </TreeDesigner>
 </template>
 
 <script>
+import LanguageInheritanceTreeDesignerItem from '@Core/components/LanguageInheritanceTreeDesigner/LanguageInheritanceTreeDesignerItem';
 import PRIVILEGES from '@Core/config/privileges';
 import {
     COLUMNS,
     ROW_HEIGHT,
 } from '@Core/defaults/languagesDesigner';
-import DesignerItemDescription from '@UI/components/Designer/DesignerItemDescription';
 import {
     mapActions,
     mapState,
@@ -35,7 +50,7 @@ import {
 export default {
     name: 'LanguageInheritanceTreeDesigner',
     components: {
-        DesignerItemDescription,
+        LanguageInheritanceTreeDesignerItem,
     },
     props: {
         scope: {
@@ -101,7 +116,7 @@ export default {
             }
             return '';
         },
-        onRemoveItems(ids) {
+        onRemoveLanguageItems(ids) {
             ids.forEach((id) => {
                 this.removeDisabledScopeElement({
                     languageCode: this.languageCode,

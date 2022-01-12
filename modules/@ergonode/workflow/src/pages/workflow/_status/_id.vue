@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -59,7 +59,10 @@ export default {
     validate({
         params,
     }) {
-        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
+        const uuidRgxString = '^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$';
+        const uuidRgx = new RegExp(uuidRgxString, 'i');
+
+        return uuidRgx.test(params.id);
     },
     async fetch({
         app,
@@ -75,7 +78,6 @@ export default {
                 });
             },
         });
-        await store.dispatch('workflow/getDefaultStatus', {});
     },
     computed: {
         ...mapState('workflow', [

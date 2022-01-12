@@ -12,9 +12,9 @@ Feature: UPDATE: Category
     * I see "categories/category/%UUID%/general" page
     * I click tab with "Translations" text
     * I see "categories/category/%UUID%/translations" page
-    * I fill the "category-name" input with the "category_category_category_category_category_category_category_category_" term for "en_GB" translation
+    * I fill the "category-name" input with the "category_category_category_category_category_category_category_category_category_category_category_category_category_category_category_category_" term for "en_GB" translation
     * I "submit" the data and "update" is "incorrect"
-    Then I see a form validation error that says "['Category name is too long. It should contain 32 characters or less.']"
+    Then I see a form validation error that says "['Category name is too long. It should contain 128 characters or less.']"
 
   @success
   Scenario: Update category from edit page - success

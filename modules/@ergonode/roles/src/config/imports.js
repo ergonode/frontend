@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 export const Pages = {
@@ -23,9 +23,11 @@ export const Components = {
     GridPrivilegeRowCheckColumn: () => import('@Roles/extends/ui/components/Grid/Layout/Table/Columns/GridPrivilegeRowCheckColumn').then(m => m.default || m),
     UserFormRole: () => import('@Roles/extends/user/components/Forms/UserFormRole').then(m => m.default || m),
     TransitionFormRole: () => import('@Roles/extends/transition/components/Forms/TransitionFormRole').then(m => m.default || m),
+    WorkflowTransitionFormRole: () => import('@Roles/extends/workflow/components/Forms/WorkflowTransitionFormRole').then(m => m.default || m),
 };
 
 export const Store = {
     User: () => import('@Roles/extends/user/store').then(m => m.default || m),
     Transition: () => import('@Roles/extends/transition/store').then(m => m.default || m),
+    Workflow: () => import('@Roles/extends/workflow/store').then(m => m.default || m),
 };

@@ -12,9 +12,9 @@ Feature: UPDATE: Attribute groups
     * I see "attribute-groups/group/%UUID%/general" page
     * I click tab with "Translations" text
     * I see "attribute-groups/group/%UUID%/translations" page
-    * I fill the "attribute-group-name" input with the "attribute_group_attribute_group_attribute_group_attribute_group_" term for "en_GB" translation
+    * I fill the "attribute-group-name" input with the "attribute_group_attribute_group_attribute_group_attribute_group_attribute_group_attribute_group_attribute_group_attribute_group_attribute_group_attribute_group_" term for "en_GB" translation
     * I "submit" the data and "update" is "incorrect"
-    Then I see a form validation error that says "['Attribute group name is too long. It should contain 32 characters or less.']"
+    Then I see a form validation error that says "['Attribute group name is too long. It should contain 128 characters or less.']"
 
   @success
   Scenario: Update attribute group from edit page - success

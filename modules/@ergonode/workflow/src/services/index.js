@@ -1,21 +1,11 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 
 export const getStatuses = ({
     $axios,
 }) => $axios.$get('status', {
-    params: {
-        limit: 99999,
-        field: 'is_default',
-        order: 'DESC',
-    },
-});
-
-export const getTransitions = ({
-    $axios,
-}) => $axios.$get('workflow/default/transitions', {
     params: {
         limit: 99999,
     },
@@ -25,10 +15,6 @@ export const getStatus = ({
     $axios,
     id,
 }) => $axios.$get(`status/${id}`);
-
-export const getDefaultStatus = ({
-    $axios,
-}) => $axios.$get('workflow/default');
 
 export const removeStatus = ({
     $axios,
@@ -46,31 +32,77 @@ export const updateStatus = ({
     data,
 }) => $axios.$put(`status/${id}`, data);
 
+export const getTransitions = ({
+    $axios,
+    workflowId = 'default',
+}) => $axios.$get(`workflow/${workflowId}/transitions`, {
+    params: {
+        limit: 99999,
+    },
+});
+
+export const getWorkflow = ({
+    $axios,
+    workflowId = 'default',
+}) => $axios.$get(`workflow/${workflowId}`);
+
+export const updateWorkflow = ({
+    $axios,
+    data,
+    workflowId = 'default',
+}) => $axios.$put(`workflow/${workflowId}`, data);
+
 export const updateDefaultStatus = ({
     $axios,
     id,
-}) => $axios.$put(`workflow/default/status/${id}/default`);
+    workflowId = 'default',
+}) => $axios.$put(`workflow/${workflowId}/status/${id}/default`);
 
 export const getTransition = ({
     $axios,
     from,
     to,
-}) => $axios.$get(`workflow/default/transitions/${from}/${to}`);
+    workflowId = 'default',
+}) => $axios.$get(`workflow/${workflowId}/transitions/${from}/${to}`);
+
+export const getTransitionConditions = ({
+    $axios,
+    from,
+    to,
+    workflowId = 'default',
+}) => $axios.$get(`workflow/${workflowId}/transitions/${from}/${to}/conditions`);
 
 export const updateTransition = ({
     $axios,
     from,
     to,
     data,
-}) => $axios.$put(`workflow/default/transitions/${from}/${to}`, data);
+    workflowId = 'default',
+}) => $axios.$put(`workflow/${workflowId}/transitions/${from}/${to}`, data);
 
-export const updateTransitions = ({
+export const updateTransitionConditions = ({
     $axios,
+    from,
+    to,
     data,
-}) => $axios.$put('workflow/default', data);
+    workflowId = 'default',
+}) => $axios.$put(`workflow/${workflowId}/transitions/${from}/${to}/conditions`, data);
 
 export const removeTransition = ({
     $axios,
     from,
     to,
-}) => $axios.$delete(`workflow/default/transitions/${from}/${to}`);
+    workflowId = 'default',
+}) => $axios.$delete(`workflow/${workflowId}/transitions/${from}/${to}`);
+
+export const getCondition = ({
+    $axios,
+    type,
+}) => $axios.$get(`workflow/condition/${type}`);
+
+export const getDictionary = ({
+    $axios,
+    params,
+}) => $axios.$get('workflow/condition/dictionary', {
+    params,
+});

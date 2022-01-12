@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -37,7 +37,6 @@ import {
 import PRIVILEGES from '@Workflow/config/privileges';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -51,9 +50,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('workflow', [
-            'transition',
-        ]),
         saveChangesButtonFloatingStyle() {
             return {
                 bottom: '24px',
@@ -69,12 +65,10 @@ export default {
     },
     methods: {
         ...mapActions('workflow', [
-            '__setState',
             'updateTransition',
         ]),
-        ...mapActions('condition', [
-            'createConditionSet',
-            'updateConditionSet',
+        ...mapActions('workflowConditions', [
+            'updateConditions',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -83,32 +77,18 @@ export default {
             this.isSubmitting = true;
 
             this.removeScopeErrors(this.scope);
-
-            if (!this.transition.conditionSetId) {
-                this.createConditionSet({
-                    scope: this.scope,
-                    onSuccess: this.onUpdateSuccess,
-                    onError: this.onUpdateError,
-                });
-            } else {
-                this.updateConditionSet({
-                    scope: this.scope,
-                    onSuccess: this.onUpdateSuccess,
-                    onError: this.onUpdateError,
-                });
-            }
-        },
-        async onUpdateSuccess(id) {
-            this.__setState({
-                key: 'transition',
-                value: {
-                    ...this.transition,
-                    conditionSetId: id,
-                },
+            this.updateConditions({
+                scope: this.scope,
+                workflowId: this.$route.params.workflowId,
+                transitionId: this.$route.params.id,
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
             });
-
+        },
+        async onUpdateSuccess() {
             await this.updateTransition({
                 scope: this.scope,
+                workflowId: this.$route.params.workflowId,
             });
 
             this.$addAlert({

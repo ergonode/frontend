@@ -1,12 +1,13 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
     <WorkflowDesignerDraggableHeaderLayerCell
         :scope="scope"
         :index="index"
-        :column="status">
+        :column="status"
+        @swap="onSwapColumns">
         <div
             :class="classes"
             @mouseenter="onMouseEnter"
@@ -109,6 +110,9 @@ export default {
         onMouseLeave() {
             this.isHovered = false;
         },
+        onSwapColumns(payload) {
+            this.$emit('swap', payload);
+        },
     },
 };
 </script>
@@ -124,6 +128,7 @@ export default {
         font: $FONT_MEDIUM_12_16;
         border-left: $BORDER_DASHED_GREY;
         border-top: $BORDER_DASHED_GREY;
+        cursor: grab;
 
         &--right-border {
             border-right: $BORDER_DASHED_GREY;

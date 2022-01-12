@@ -1,5 +1,5 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * Copyright © Ergonode Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 <template>
@@ -33,7 +33,11 @@
             <slot name="prepend" />
         </template>
         <template #value>
-            <span v-text="parsedValue" />
+            <slot
+                name="value"
+                :selected-options="selectedOptions">
+                <span v-text="parsedValue" />
+            </slot>
         </template>
         <template #append>
             <slot name="append" />
