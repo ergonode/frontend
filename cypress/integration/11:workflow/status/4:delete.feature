@@ -7,11 +7,11 @@ Feature: DELETE: Status on workflow
 
   @other
   Scenario: Delete workflow status from edit page - give up
-    When On "workflow-designer" I can see column with "Processed" value
-    * On "workflow-designer" I click on "edit" button for column with "Processed" value
+    When On "workflow-designer" I can see column with "Draft" value
+    * On "workflow-designer" I click on "edit" button for column with "Draft" value
     * I see "workflow/status/%UUID%/general" page
     * Element "status-code" is visible
-    * I can see "status-code" input with the "processed" term
+    * I can see "status-code" input with the "draft" term
     * I can see "status-code" field as disabled
     * I click on "delete-status" button
     * I close modal

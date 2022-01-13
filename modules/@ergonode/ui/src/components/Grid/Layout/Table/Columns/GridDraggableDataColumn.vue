@@ -44,23 +44,25 @@
                     :row="rowsOffset + basicFiltersOffset"
                     :column="columnIndex" />
             </template>
-            <GridDataCell
-                v-for="(row, rowIndex) in rows"
-                :key="`${rowIds[rowIndex]}|${column.id}`"
-                :component="dataCellComponents[column.type]"
-                :data="row[column.id]"
-                :drafts="drafts"
-                :column="column"
-                :error-messages="errors[`${rowIds[rowIndex]}/${column.id}`]"
-                :row-id="rowIds[rowIndex]"
-                :column-index="columnIndex"
-                :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
-                :is-disabled="disabledRows[rowIds[rowIndex]]"
-                :is-locked="!(column.editable && isEditable)"
-                :is-copyable="column.editable && isEditable && !disabledRows[rowIds[rowIndex]]"
-                :is-selected="getSelectedRowState(rowIndex)"
-                @cell-value="onCellValueChange"
-                @edit-cell="onEditCell" />
+            <template v-if="isColumnInRow">
+                <GridDataCell
+                    v-for="(row, rowIndex) in rows"
+                    :key="`${rowIds[rowIndex]}|${column.id}`"
+                    :component="dataCellComponents[column.type]"
+                    :data="getRowData(row, column)"
+                    :drafts="drafts"
+                    :column="column"
+                    :error-messages="errors[`${rowIds[rowIndex]}/${column.id}`]"
+                    :row-id="rowIds[rowIndex]"
+                    :column-index="columnIndex"
+                    :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
+                    :is-disabled="disabledRows[rowIds[rowIndex]]"
+                    :is-locked="!(column.editable && isEditable)"
+                    :is-copyable="column.editable && isEditable && !disabledRows[rowIds[rowIndex]]"
+                    :is-selected="getSelectedRowState(rowIndex)"
+                    @cell-value="onCellValueChange"
+                    @edit-cell="onEditCell" />
+            </template>
         </GridColumn>
     </GridDraggableColumn>
 </template>
@@ -211,6 +213,11 @@ export default {
         basicFiltersOffset() {
             return this.isBasicFilter ? 1 : 0;
         },
+        isColumnInRow() {
+            return this.column && this.column.id
+                ? this.rows.every(row => this.column.id in row)
+                : false;
+        },
     },
     methods: {
         onRemoveColumn(payload) {
@@ -243,6 +250,11 @@ export default {
         getSelectedRowState(index) {
             return this.selectedRows[this.rowIds[index]]
                 || (this.isSelectedAll && !this.excludedFromSelectionRows[this.rowIds[index]]);
+        },
+        getRowData(row, column) {
+            const rowData = 'id' in column ? row[column.id] : null;
+
+            return rowData || {};
         },
     },
 };

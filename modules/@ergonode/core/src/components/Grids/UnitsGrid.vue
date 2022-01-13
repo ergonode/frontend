@@ -131,7 +131,7 @@ export default {
         },
     },
     watch: {
-        async $route(from, to) {
+        async $route(to, from) {
             if (from.name !== to.name || from.query.layout !== to.query.layout) {
                 return;
             }

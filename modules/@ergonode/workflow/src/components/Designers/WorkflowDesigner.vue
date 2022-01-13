@@ -309,7 +309,7 @@ export default {
                 this.excludeRows = getRows(elements);
             },
         },
-        async $route(from, to) {
+        async $route(to, from) {
             if (from.name !== to.name) {
                 await this.onWorkflowStatusCreated();
             }
