@@ -186,6 +186,7 @@ export default {
         }
 
         await Promise.all(requests);
+        this.isPrefetchingData = false;
 
         this.setDisabledScopeElements({
             scope: this.scope,
@@ -197,8 +198,6 @@ export default {
                 defaultLanguageCode: this.userLanguageCode,
             }),
         });
-
-        this.isPrefetchingData = false;
     },
     data() {
         const {
@@ -265,11 +264,12 @@ export default {
         },
     },
     watch: {
-        async $route(from, to) {
-            if (from.name !== to.name || from.query.layout !== to.query.layout) {
+        async $route(to, from) {
+            if (from.name !== to.name) {
                 return;
             }
 
+            this.isPrefetchingData = true;
             const {
                 filterValues,
                 advancedFilterValues,
@@ -316,8 +316,12 @@ export default {
         onLayoutChange(layout) {
             this.$emit('layout', layout);
         },
-        onProductCreated() {
-            this.onFetchData();
+        async onProductCreated() {
+            this.isPrefetchingData = true;
+
+            await this.onFetchData();
+
+            this.isPrefetchingData = false;
         },
         async extendedCustomLayouts() {
             const customLayouts = await this.$getExtendMethod('@Products/components/Grids/ProductsGrid/customLayouts', {
@@ -554,6 +558,7 @@ export default {
             };
         },
         async onProductsUpdated() {
+            this.isPrefetchingData = true;
             await this.onFetchData();
 
             const rows = [];
@@ -565,6 +570,7 @@ export default {
             });
 
             this.removeDrafts(rows);
+            this.isPrefetchingData = false;
         },
         onFiltersExpand() {
             this.isFiltersExpanded = !this.isFiltersExpanded;
@@ -728,12 +734,16 @@ export default {
 
             await Promise.all(requests);
         },
-        onRemoveRow() {
+        async onRemoveRow() {
+            this.isPrefetchingData = true;
+
+            await this.onFetchData();
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: this.$t('@Products.product.components.ProductsGrid.removeSuccessMessage'),
             });
-            this.onFetchData();
+
+            this.isPrefetchingData = false;
         },
         async onFetchData() {
             await getGridData({
@@ -778,8 +788,6 @@ export default {
             this.$router.replace({
                 query,
             });
-
-            this.isPrefetchingData = true;
         },
         onFilterChange(filters) {
             const query = {
