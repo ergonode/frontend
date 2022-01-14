@@ -36,7 +36,7 @@ export default {
     }) {
         try {
             const {
-                defaultStatus,
+                defaultStatus: workflowDefaultStatus,
             } = state;
             const {
                 columns,
@@ -44,14 +44,17 @@ export default {
             } = await getStatuses({
                 $axios: this.app.$axios,
             });
-
             const statusColumn = columns.find(column => column.id === 'status');
 
+            // INFO: overwrite default status from workflow end-point
             commit('__SET_STATE', {
                 key: 'statuses',
-                value: collection.map(status => ({
+                value: collection.map(({
+                    // eslint-disable-next-line no-unused-vars
+                    is_default, ...status
+                }) => ({
                     ...status,
-                    is_default: defaultStatus === status.id,
+                    isDefaultStatus: workflowDefaultStatus === status.id,
                     color: statusColumn.filter.options[status.id].color,
                 })),
             });
@@ -113,6 +116,7 @@ export default {
                 },
             });
             // EXTENDED BEFORE METHOD
+            console.log('run run ');
 
             const data = await getWorkflow({
                 $axios: this.app.$axios,
@@ -380,6 +384,7 @@ export default {
         }
     },
     async getStatus({
+        state,
         commit,
         dispatch,
     }, {
@@ -387,6 +392,9 @@ export default {
         onError = () => {},
     }) {
         try {
+            const {
+                defaultStatus: workflowDefaultStatus,
+            } = state;
             // EXTENDED BEFORE METHOD
             await this.$getExtendMethod('@Workflow/store/workflow/action/getStatus/__before', {
                 $this: this,
@@ -418,6 +426,7 @@ export default {
                     id,
                     color,
                     code,
+                    isDefaultStatus: workflowDefaultStatus === id,
                 },
             });
             dispatch('tab/setTranslations', translations, {

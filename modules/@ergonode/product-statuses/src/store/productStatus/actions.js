@@ -10,10 +10,10 @@ import {
     create,
     get,
     getAll,
-    getDefault,
+    getWorkflowByDefaultId,
     remove,
     update,
-    updateDefault,
+    updateWorkflowDefaultStatus,
 } from '@Statuses/services/index';
 
 export default {
@@ -28,7 +28,6 @@ export default {
             const {
                 language: userLanguageCode,
             } = rootState.authentication.user;
-
             const {
                 collection,
             } = await getAll({
@@ -73,6 +72,11 @@ export default {
             });
             // EXTENDED BEFORE METHOD
 
+            const {
+                default_id: workflowDefaultStatus,
+            } = await getWorkflowByDefaultId({
+                $axios: this.app.$axios,
+            });
             const data = await get({
                 $axios: this.app.$axios,
                 id,
@@ -90,7 +94,6 @@ export default {
             };
 
             dispatch('__clearStorage');
-
             commit('__SET_STATE', {
                 key: 'id',
                 value: id,
@@ -102,6 +105,10 @@ export default {
             commit('__SET_STATE', {
                 key: 'color',
                 value: color,
+            });
+            commit('__SET_STATE', {
+                key: 'isDefaultStatus',
+                value: workflowDefaultStatus === id,
             });
             dispatch('tab/setTranslations', translations, {
                 root: true,
@@ -117,40 +124,6 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 return;
             }
-            onError(e);
-        }
-    },
-    async getDefaultStatus({
-        commit,
-        state,
-    }, {
-        onSuccess = () => {},
-        onError = () => {},
-    }) {
-        try {
-            const {
-                id,
-            } = state;
-
-            const {
-                default_id: defaultStatus,
-            } = await getDefault({
-                $axios: this.app.$axios,
-            });
-
-            if (defaultStatus === id) {
-                commit('__SET_STATE', {
-                    key: 'isDefaultStatus',
-                    value: true,
-                });
-            }
-
-            onSuccess();
-        } catch (e) {
-            if (this.app.$axios.isCancel(e)) {
-                return;
-            }
-
             onError(e);
         }
     },
@@ -204,7 +177,7 @@ export default {
             ];
 
             if (isDefaultStatus) {
-                requests.push(updateDefault({
+                requests.push(updateWorkflowDefaultStatus({
                     $axios: this.app.$axios,
                     id,
                 }));
