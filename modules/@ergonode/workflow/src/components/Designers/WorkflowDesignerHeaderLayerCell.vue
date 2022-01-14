@@ -9,7 +9,7 @@
         @mouseleave="onMouseLeave">
         <WorkflowStatusBadge
             :color="status.color"
-            :default-status="status.is_default" />
+            :default-status="status.isDefaultStatus" />
         <span
             class="workflow-designer-header-layer-cell__title"
             v-text="title" />
