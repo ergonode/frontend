@@ -116,7 +116,6 @@ export default {
                 },
             });
             // EXTENDED BEFORE METHOD
-            console.log('run run ');
 
             const data = await getWorkflow({
                 $axios: this.app.$axios,
@@ -187,6 +186,7 @@ export default {
             state,
         },
         {
+            workflowId,
             scope,
             onSuccess = () => {},
             onError = () => {},
@@ -227,6 +227,7 @@ export default {
                 await updateDefaultStatus({
                     $axios: this.app.$axios,
                     id,
+                    workflowId,
                 });
             }
 
@@ -261,6 +262,7 @@ export default {
         state,
         rootState,
     }, {
+        workflowId,
         scope,
         onSuccess = () => {},
         onError = () => {},
@@ -310,6 +312,7 @@ export default {
                 requests.push(updateDefaultStatus({
                     $axios: this.app.$axios,
                     id,
+                    workflowId,
                 }));
             }
 

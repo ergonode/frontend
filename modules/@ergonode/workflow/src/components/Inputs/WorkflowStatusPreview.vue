@@ -22,7 +22,7 @@
                 <InputLabel
                     :floating="true"
                     :disabled="true"
-                    label="Status preview" />
+                    :label="$t('@Workflow.workflow.components.WorkflowStatusPreview.label')" />
             </InputController>
         </template>
     </InputSolidStyle>
