@@ -77,6 +77,7 @@ export default {
 
             this.removeScopeErrors(this.scope);
             this.createStatus({
+                workflowId: this.$route.params.workflowId,
                 scope: this.scope,
                 onSuccess: this.onCreateSuccess,
                 onError: this.onCreateError,
@@ -91,6 +92,7 @@ export default {
 
             this.removeScopeErrors(this.scope);
             this.createStatus({
+                workflowId: this.$route.params.workflowId,
                 scope: this.scope,
                 onSuccess: this.onProceedSuccess,
                 onError: this.onCreateError,

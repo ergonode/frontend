@@ -40,6 +40,9 @@
         "ConditionsSideBar": {
           "title": "Conditions"
         },
+        "WorkflowStatusPreview": {
+          "label": "Status preview"
+        },
         "ConditionsVerticalTab": {
           "title": "Conditions"
         },
