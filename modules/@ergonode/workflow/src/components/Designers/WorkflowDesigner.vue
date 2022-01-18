@@ -113,6 +113,16 @@
                                                     :style="{ gridColumn: elementWidth }" />
                                             </template>
                                         </WorkflowDesignerLayoutElement>
+                                        <WorkflowDesignerVirtualOverlay
+                                            v-if="draggedElement"
+                                            :rows="layoutElements"
+                                            :row-height="rowHeight"
+                                            :columns="columns">
+                                            <template #appendRowBody="{ column }">
+                                                <WorkflowDesignerLayoutPointer
+                                                    :color="statuses[column].color" />
+                                            </template>
+                                        </WorkflowDesignerVirtualOverlay>
                                     </DesignerDraggableLayer>
                                 </template>
                             </Designer>
@@ -151,7 +161,7 @@ import HorizontalFixedScroll from '@UI/components/Layout/Scroll/HorizontalFixedS
 import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
 import {
     getBackgroundItem,
-} from '@UI/models/designer/intex';
+} from '@UI/models/designer/index';
 import {
     getFixedMousePosition,
     isMouseOutsideElement,
@@ -164,6 +174,8 @@ import WorkflowDesignerLayoutElement
     from '@Workflow/components/Designers/LayoutElements/WorkflowDesignerLayoutElement';
 import WorkflowDesignerLayoutPointer
     from '@Workflow/components/Designers/LayoutElements/WorkflowDesignerLayoutPointer';
+import WorkflowDesignerVirtualOverlay
+    from '@Workflow/components/Designers/VirtualOverlay/WorkflowDesignerVirtualOverlay';
 import WorkflowDesignerBackgroundItem
     from '@Workflow/components/Designers/WorkflowDesignerBackgroundItem';
 import WorkflowDesignerDefaultStatusPlaceholder
@@ -222,6 +234,7 @@ export default {
         DesignerDraggableLayer,
         VerticalFixedScroll,
         HorizontalFixedScroll,
+        WorkflowDesignerVirtualOverlay,
     },
     mixins: [
         updateButtonFeedbackMixin,
@@ -353,6 +366,17 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
+        statusColor(row, isRevers) {
+            const [
+                fromId,
+                toId,
+            ] = getFromAndToTransition(row.id);
+            const statusId = isRevers ? fromId : toId;
+
+            return this.statuses.find(({
+                id,
+            }) => id === statusId).color;
+        },
         isOutOfBounds(event) {
             const {
                 xPos,
