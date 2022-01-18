@@ -104,7 +104,7 @@ import DesignerPlaceholderItem from '@UI/components/Designer/DesignerPlaceholder
 import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
 import {
     getBackgroundItem,
-} from '@UI/models/designer/intex';
+} from '@UI/models/designer/index';
 import {
     getFixedMousePosition,
     isMouseOutsideElement,

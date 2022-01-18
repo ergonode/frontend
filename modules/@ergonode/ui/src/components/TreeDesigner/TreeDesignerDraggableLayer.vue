@@ -25,7 +25,7 @@ import {
 import DesignerDraggableLayer from '@UI/components/Designer/DesignerDraggableLayer';
 import {
     getBackgroundItem,
-} from '@UI/models/designer/intex';
+} from '@UI/models/designer/index';
 import {
     getDraggedRowPositionState,
 } from '@UI/models/dragAndDrop/helpers';
