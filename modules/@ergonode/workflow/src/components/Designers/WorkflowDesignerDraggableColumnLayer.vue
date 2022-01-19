@@ -18,6 +18,8 @@ import {
     mapState,
 } from 'vuex';
 
+// const getColumnsTransform = () => import('@UI/models/dragAndDrop/getColumnsTransforms');
+
 export default {
     name: 'WorkflowDesignerDraggableColumnLayer',
     inject: [
@@ -156,6 +158,7 @@ export default {
         onDragEnd(event) {
             removeElementCopyFromDocumentBody(event);
 
+            // TODO: in next steps
             // if (this.ghostIndex !== this.draggedElIndex) {
             //     this.$emit('swap', {
             //         from: this.draggedElIndex,
@@ -163,6 +166,7 @@ export default {
             //     });
             // }
 
+            // this.removeColumnsTransform();
             this.resetDraggedElementCache();
         },
         onDragOver(event) {
@@ -187,22 +191,34 @@ export default {
             );
             // const fixedIndex = this.getColumnFixedIndex();
 
-            // if ((this.index === this.draggedElIndex && this.ghostIndex !== -1)
-            //         || (isBefore && this.ghostIndex === this.index - 1)
-            //         || (!isBefore && this.ghostIndex === this.index + 1)) {
-            //     event.preventDefault();
-            //     event.stopPropagation();
-
-            //     return false;
-            // }
-            if (this.index === this.ghostIndex
+            if ((this.index === this.draggedElIndex && this.ghostIndex !== -1)
                     || (isBefore && this.ghostIndex === this.index - 1)
                     || (!isBefore && this.ghostIndex === this.index + 1)) {
+                // event.preventDefault();
+                // event.stopPropagation();
+
                 return false;
             }
 
+            // TODO: in next steps
             // const targetGhostIndex = this.getTargetGhostIndex(isBefore);
             // const contentGrid = this.getGridContentElement();
+
+            // getColumnsTransform().then((response) => {
+            //     const transforms = response.default(
+            //         targetGhostIndex,
+            //         this.draggedElIndex,
+            //         this.ghostIndex,
+            //         contentGrid,
+            //     );
+
+            //     this.updateColumnsTransform(transforms);
+
+            //     this.__setState({
+            //         key: 'ghostIndex',
+            //         value: targetGhostIndex,
+            //     });
+            // });
 
             this.$emit('swap', {
                 from: this.ghostIndex,
@@ -215,8 +231,20 @@ export default {
 
             return true;
         },
+        updateColumnsTransform({
+            transforms,
+            updatedGhostTransform,
+        }) {
+            const contentGrid = this.getGridContentElement();
+
+            Object.keys(transforms).forEach((index) => {
+                contentGrid.children[index].style.transform = `translateX(${transforms[index]}px)`;
+            });
+
+            contentGrid.children[this.draggedElIndex].style.transform = `translateX(${updatedGhostTransform}px)`;
+        },
         getGridContentElement() {
-            return this.getWorkflowDesignerReference().querySelector('.grid-table-layout-columns-section');
+            return this.getWorkflowDesignerReference().$el;
         },
         getTargetGhostIndex(isBefore) {
             if (this.index < this.draggedElIndex) {
@@ -244,6 +272,13 @@ export default {
             } = this.$slots.default[0];
 
             return +elm.style.transform.replace(/[^0-9\-.,]/g, '');
+        },
+        removeColumnsTransform() {
+            const contentHeaderLayers = this.getGridContentElement().querySelectorAll('.workflow-designer-header-layer-cell');
+
+            for (let i = 0; i < contentHeaderLayers.length; i += 1) {
+                contentHeaderLayers[i].style.transform = null;
+            }
         },
         resetDraggedElementCache() {
             this.__setState({
