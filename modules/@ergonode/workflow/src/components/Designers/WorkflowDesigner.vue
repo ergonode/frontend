@@ -117,9 +117,10 @@
                                         </WorkflowDesignerLayoutElement>
                                         <WorkflowDesignerVirtualOverlay
                                             v-if="columnDraggedElement"
+                                            :scope="scope"
                                             :rows="layoutElements"
                                             :row-height="rowHeight"
-                                            :columns="columns"
+                                            :columns="localStatuses"
                                             @swap="onSwapColumns">
                                             <template #appendRowBody="{ column }">
                                                 <WorkflowDesignerLayoutPointer
@@ -721,8 +722,6 @@ export default {
             }
         },
         onMouseMove(event) {
-            event.preventDefault();
-
             if (this.editedRow !== -1) {
                 this.setGhostEndPointer(event);
             } else {

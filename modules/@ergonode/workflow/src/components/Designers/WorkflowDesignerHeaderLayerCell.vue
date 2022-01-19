@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <WorkflowDesignerDraggableHeaderLayerCell
+    <WorkflowDesignerDraggableColumnLayer
         :scope="scope"
         :index="index"
         :column="status"
@@ -24,7 +24,7 @@
                 :status-id="status.id"
                 :visible="isHovered" />
         </div>
-    </WorkflowDesignerDraggableHeaderLayerCell>
+    </WorkflowDesignerDraggableColumnLayer>
 </template>
 
 <script>
@@ -33,8 +33,8 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import WorkflowStatusBadge from '@Workflow/components/Badges/WorkflowStatusBadge';
-import WorkflowDesignerDraggableHeaderLayerCell
-    from '@Workflow/components/Designers/WorkflowDesignerDraggableHeaderLayerCell';
+import WorkflowDesignerDraggableColumnLayer
+    from '@Workflow/components/Designers/WorkflowDesignerDraggableColumnLayer';
 import WorkflowDesignerEditStatusLink
     from '@Workflow/components/Designers/WorkflowDesignerEditStatusLink';
 import PRIVILEGES from '@Workflow/config/privileges';
@@ -45,7 +45,7 @@ import {
 export default {
     name: 'WorkflowDesignerHeaderLayerCell',
     components: {
-        WorkflowDesignerDraggableHeaderLayerCell,
+        WorkflowDesignerDraggableColumnLayer,
         WorkflowStatusBadge,
         WorkflowDesignerEditStatusLink,
     },

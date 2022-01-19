@@ -19,7 +19,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'WorkflowDesignerDraggableHeaderLayerCell',
+    name: 'WorkflowDesignerDraggableColumnLayer',
     inject: [
         'getWorkflowDesignerReference',
     ],
