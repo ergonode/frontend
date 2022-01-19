@@ -11,12 +11,18 @@ import {
     removeElementCopyFromDocumentBody,
 } from '@Core/models/layout/ElementCopy';
 import {
+    getDraggedColumnPositionState,
+} from '@UI/models/dragAndDrop/helpers';
+import {
     mapActions,
     mapState,
 } from 'vuex';
 
 export default {
     name: 'WorkflowDesignerDraggableHeaderLayerCell',
+    inject: [
+        'getWorkflowDesignerReference',
+    ],
     props: {
         /**
          * Context scope
@@ -110,6 +116,7 @@ export default {
     methods: {
         ...mapActions('draggable', [
             '__setState',
+            'setGhostElXTranslation',
         ]),
         onDragStart(event) {
             const label = this.column.name || `#${this.column.code}`;
@@ -148,23 +155,95 @@ export default {
         },
         onDragEnd(event) {
             removeElementCopyFromDocumentBody(event);
-            if (this.ghostIndex !== this.draggedElIndex) {
-                this.$emit('swap', {
-                    from: this.draggedElIndex,
-                    to: this.ghostIndex,
-                });
-            }
+
+            // if (this.ghostIndex !== this.draggedElIndex) {
+            //     this.$emit('swap', {
+            //         from: this.draggedElIndex,
+            //         to: this.ghostIndex,
+            //     });
+            // }
 
             this.resetDraggedElementCache();
         },
         onDragOver(event) {
-            if (this.draggedElIndex === -1) {
+            if (this.draggedElIndex === -1 || !this.$slots.default[0].elm) {
                 return false;
             }
             event.preventDefault();
-            event.stopPropagation();
+
+            const {
+                elm,
+            } = this.$slots.default[0];
+            const {
+                pageX,
+            } = event;
+            const {
+                x: columnXPos, width: columnWidth,
+            } = elm.getBoundingClientRect();
+            const isBefore = getDraggedColumnPositionState(
+                pageX,
+                columnXPos,
+                columnWidth,
+            );
+            // const fixedIndex = this.getColumnFixedIndex();
+
+            // if ((this.index === this.draggedElIndex && this.ghostIndex !== -1)
+            //         || (isBefore && this.ghostIndex === this.index - 1)
+            //         || (!isBefore && this.ghostIndex === this.index + 1)) {
+            //     event.preventDefault();
+            //     event.stopPropagation();
+
+            //     return false;
+            // }
+            if (this.index === this.ghostIndex
+                    || (isBefore && this.ghostIndex === this.index - 1)
+                    || (!isBefore && this.ghostIndex === this.index + 1)) {
+                return false;
+            }
+
+            // const targetGhostIndex = this.getTargetGhostIndex(isBefore);
+            // const contentGrid = this.getGridContentElement();
+
+            this.$emit('swap', {
+                from: this.ghostIndex,
+                to: this.index,
+            });
+            this.__setState({
+                key: 'ghostIndex',
+                value: this.index,
+            });
 
             return true;
+        },
+        getGridContentElement() {
+            return this.getWorkflowDesignerReference().querySelector('.grid-table-layout-columns-section');
+        },
+        getTargetGhostIndex(isBefore) {
+            if (this.index < this.draggedElIndex) {
+                return isBefore ? this.index : this.index + 1;
+            }
+
+            return isBefore ? this.index - 1 : this.index;
+        },
+        getColumnFixedIndex() {
+            if (this.$slots.default[0].elm && this.$slots.default[0].elm.style.transform) {
+                const xTransform = this.getElementTransform();
+
+                if (xTransform) {
+                    if (xTransform > 0) return this.index + 1;
+
+                    return this.index - 1;
+                }
+            }
+
+            return this.index;
+        },
+        getElementTransform() {
+            const {
+                elm,
+            } = this.$slots.default[0];
+
+            return +elm.style.transform.replace(/[^0-9\-.,]/g, '');
         },
         resetDraggedElementCache() {
             this.__setState({
