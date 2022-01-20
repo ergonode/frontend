@@ -3,13 +3,13 @@
  * See LICENSE for license details.
  */
 
-function getColumnElBounds(contentGrid, index) {
+function getColumnElBounds(nodeList, index) {
     const {
         width,
-    } = contentGrid.children[index].getBoundingClientRect();
+    } = nodeList[index].getBoundingClientRect();
     const {
         transform,
-    } = contentGrid.children[index].style;
+    } = nodeList[index].style;
 
     return {
         colWidth: parseInt(width, 10),
@@ -18,7 +18,7 @@ function getColumnElBounds(contentGrid, index) {
 }
 
 function getLowerBoundsTransforms(
-    contentGrid,
+    nodeList,
     ghostWidth,
     ghostTransform,
     targetGhostIndex,
@@ -35,7 +35,7 @@ function getLowerBoundsTransforms(
         if (lowerBound !== draggedElIndex) {
             const {
                 colWidth, colTransform,
-            } = getColumnElBounds(contentGrid, index);
+            } = getColumnElBounds(nodeList, index);
 
             if (colTransform > 0) {
                 transforms[index] = 0;
@@ -60,7 +60,7 @@ function getLowerBoundsTransforms(
 }
 
 function getUpperBoundsTransforms(
-    contentGrid,
+    nodeList,
     ghostWidth,
     ghostTransform,
     targetGhostIndex,
@@ -77,7 +77,7 @@ function getUpperBoundsTransforms(
         if (upperBound !== draggedElIndex) {
             const {
                 colWidth, colTransform,
-            } = getColumnElBounds(contentGrid, index);
+            } = getColumnElBounds(nodeList, index);
 
             if (colTransform < 0) {
                 transforms[index] = 0;
@@ -101,17 +101,25 @@ function getUpperBoundsTransforms(
     };
 }
 
-export default function (targetGhostIndex, draggedElIndex, ghostIndex, columnsSection) {
+export default function ({
+    targetGhostIndex,
+    draggedElIndex,
+    ghostIndex,
+    columnsSection = null,
+    columnsNodeList = null,
+}) {
+    if (!columnsSection && !columnsNodeList) return false;
+    const nodeList = columnsSection ? columnsSection.children : columnsNodeList;
     const {
         width: ghostWidth,
-    } = columnsSection.children[draggedElIndex]
+    } = nodeList[draggedElIndex]
         .getBoundingClientRect();
-    const ghostTransform = +columnsSection.children[draggedElIndex].style.transform.replace(/[^0-9\-.,]/g, '');
+    const ghostTransform = +nodeList[draggedElIndex].style.transform.replace(/[^0-9\-.,]/g, '');
     let bounds = {};
 
     if (targetGhostIndex < ghostIndex) {
         bounds = getLowerBoundsTransforms(
-            columnsSection,
+            nodeList,
             ghostWidth,
             ghostTransform,
             targetGhostIndex,
@@ -120,7 +128,7 @@ export default function (targetGhostIndex, draggedElIndex, ghostIndex, columnsSe
         );
     } else {
         bounds = getUpperBoundsTransforms(
-            columnsSection,
+            nodeList,
             ghostWidth,
             ghostTransform,
             targetGhostIndex,

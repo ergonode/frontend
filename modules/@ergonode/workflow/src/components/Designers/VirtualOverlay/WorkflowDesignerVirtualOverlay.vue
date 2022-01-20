@@ -7,14 +7,20 @@
         :style="styles"
         class="designer-virtual-overlay">
         <WorkflowDesignerVirtualOverlayColumn
-            v-for="(column, columnIndex) in columns"
+            v-for="(columnEl, columnIndex) in columns"
             :key="`column_${columnIndex}`"
             :scope="scope"
             :column-index="columnIndex"
-            :column-data="column"
+            :column-data="columnEl"
             :rows="rows"
             :max-row-number="maxRowNumber"
-            @swap="onSwapColumns" />
+            @swap="onSwapColumns">
+            <template #appendRowBody="{ column }">
+                <slot
+                    name="appendRowBody"
+                    :column="column" />
+            </template>
+        </WorkflowDesignerVirtualOverlayColumn>
     </div>
 </template>
 <script>

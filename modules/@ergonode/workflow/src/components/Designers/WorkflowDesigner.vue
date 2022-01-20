@@ -73,7 +73,8 @@
                                             @mouseleave.native="onRowMouseLeave">
                                             <template #content="{ elementWidth, isRevers }">
                                                 <WorkflowDesignerLayoutPointer
-                                                    v-if="element.from !== undefined"
+                                                    v-if="element.from !== undefined
+                                                        && !columnDraggedElement"
                                                     :ref="isRowEdited(element.row)
                                                         ? 'designerDraggablePointerEdited'
                                                         : null"
@@ -108,7 +109,8 @@
                                                     </template>
                                                 </WorkflowDesignerLayoutArrow>
                                                 <WorkflowDesignerLayoutPointer
-                                                    v-if="element.to !== undefined"
+                                                    v-if="element.to !== undefined
+                                                        && !columnDraggedElement"
                                                     :color="localStatuses[
                                                         isRevers ? element.from : element.to
                                                     ].color"

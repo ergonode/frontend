@@ -18,7 +18,7 @@ import {
     mapState,
 } from 'vuex';
 
-// const getColumnsTransform = () => import('@UI/models/dragAndDrop/getColumnsTransforms');
+const getColumnsTransform = () => import('@UI/models/dragAndDrop/getColumnsTransforms');
 
 export default {
     name: 'WorkflowDesignerDraggableColumnLayer',
@@ -120,6 +120,12 @@ export default {
             '__setState',
             'setGhostElXTranslation',
         ]),
+        getGridContentNodeList() {
+            return this.getWorkflowDesignerReference().$el.querySelectorAll('.workflow-designer-header-layer-cell');
+        },
+        getOverlayColumnsNodeList() {
+            return this.getWorkflowDesignerReference().$el.querySelector('.designer-virtual-overlay');
+        },
         onDragStart(event) {
             const label = this.column.name || `#${this.column.code}`;
 
@@ -158,15 +164,15 @@ export default {
         onDragEnd(event) {
             removeElementCopyFromDocumentBody(event);
 
-            // TODO: in next steps
-            // if (this.ghostIndex !== this.draggedElIndex) {
-            //     this.$emit('swap', {
-            //         from: this.draggedElIndex,
-            //         to: this.ghostIndex,
-            //     });
-            // }
+            if (this.ghostIndex !== this.draggedElIndex) {
+                this.$emit('swap', {
+                    from: this.draggedElIndex,
+                    to: this.ghostIndex,
+                });
+            }
 
-            // this.removeColumnsTransform();
+            this.removeColumnsTransform();
+            this.removeOverlayColumnsTransform();
             this.resetDraggedElementCache();
         },
         onDragOver(event) {
@@ -189,44 +195,41 @@ export default {
                 columnXPos,
                 columnWidth,
             );
-            // const fixedIndex = this.getColumnFixedIndex();
+            const fixedIndex = this.getColumnFixedIndex();
 
             if ((this.index === this.draggedElIndex && this.ghostIndex !== -1)
-                    || (isBefore && this.ghostIndex === this.index - 1)
-                    || (!isBefore && this.ghostIndex === this.index + 1)) {
-                // event.preventDefault();
-                // event.stopPropagation();
+                    || (isBefore && this.ghostIndex === fixedIndex - 1)
+                    || (!isBefore && this.ghostIndex === fixedIndex + 1)) {
+                event.preventDefault();
+                event.stopPropagation();
 
                 return false;
             }
 
-            // TODO: in next steps
-            // const targetGhostIndex = this.getTargetGhostIndex(isBefore);
-            // const contentGrid = this.getGridContentElement();
+            const targetGhostIndex = this.getTargetGhostIndex(isBefore);
+            const contentGridNodeList = this.getGridContentNodeList();
+            const contentOverlayColumnsNodeList = this.getOverlayColumnsNodeList();
 
-            // getColumnsTransform().then((response) => {
-            //     const transforms = response.default(
-            //         targetGhostIndex,
-            //         this.draggedElIndex,
-            //         this.ghostIndex,
-            //         contentGrid,
-            //     );
+            getColumnsTransform().then((response) => {
+                const transforms = response.default({
+                    targetGhostIndex,
+                    draggedElIndex: this.draggedElIndex,
+                    ghostIndex: this.ghostIndex,
+                    columnsNodeList: contentGridNodeList,
+                });
+                const transformsOverlay = response.default({
+                    targetGhostIndex,
+                    draggedElIndex: this.draggedElIndex,
+                    ghostIndex: this.ghostIndex,
+                    columnsSection: contentOverlayColumnsNodeList,
+                });
 
-            //     this.updateColumnsTransform(transforms);
-
-            //     this.__setState({
-            //         key: 'ghostIndex',
-            //         value: targetGhostIndex,
-            //     });
-            // });
-
-            this.$emit('swap', {
-                from: this.ghostIndex,
-                to: this.index,
-            });
-            this.__setState({
-                key: 'ghostIndex',
-                value: this.index,
+                this.updateColumnsTransform(transforms);
+                this.updateOverlayColumnsTransform(transformsOverlay);
+                this.__setState({
+                    key: 'ghostIndex',
+                    value: targetGhostIndex,
+                });
             });
 
             return true;
@@ -235,16 +238,25 @@ export default {
             transforms,
             updatedGhostTransform,
         }) {
-            const contentGrid = this.getGridContentElement();
+            const contentGridNodeList = this.getGridContentNodeList();
 
             Object.keys(transforms).forEach((index) => {
-                contentGrid.children[index].style.transform = `translateX(${transforms[index]}px)`;
+                contentGridNodeList[index].style.transform = `translateX(${transforms[index]}px)`;
             });
 
-            contentGrid.children[this.draggedElIndex].style.transform = `translateX(${updatedGhostTransform}px)`;
+            contentGridNodeList[this.draggedElIndex].style.transform = `translateX(${updatedGhostTransform}px)`;
         },
-        getGridContentElement() {
-            return this.getWorkflowDesignerReference().$el;
+        updateOverlayColumnsTransform({
+            transforms,
+            updatedGhostTransform,
+        }) {
+            const contentOverlayColumnsNodeList = this.getOverlayColumnsNodeList();
+
+            Object.keys(transforms).forEach((index) => {
+                contentOverlayColumnsNodeList.children[index].style.transform = `translateX(${transforms[index]}px)`;
+            });
+
+            contentOverlayColumnsNodeList.children[this.draggedElIndex].style.transform = `translateX(${updatedGhostTransform}px)`;
         },
         getTargetGhostIndex(isBefore) {
             if (this.index < this.draggedElIndex) {
@@ -274,10 +286,17 @@ export default {
             return +elm.style.transform.replace(/[^0-9\-.,]/g, '');
         },
         removeColumnsTransform() {
-            const contentHeaderLayers = this.getGridContentElement().querySelectorAll('.workflow-designer-header-layer-cell');
+            const contentGridNodeList = this.getGridContentNodeList();
 
-            for (let i = 0; i < contentHeaderLayers.length; i += 1) {
-                contentHeaderLayers[i].style.transform = null;
+            for (let i = 0; i < contentGridNodeList.length; i += 1) {
+                contentGridNodeList[i].style.transform = null;
+            }
+        },
+        removeOverlayColumnsTransform() {
+            const contentOverlayColumnsNodeList = this.getOverlayColumnsNodeList();
+
+            for (let i = 0; i < contentOverlayColumnsNodeList.children.length; i += 1) {
+                contentOverlayColumnsNodeList.children[i].style.transform = null;
             }
         },
         resetDraggedElementCache() {
