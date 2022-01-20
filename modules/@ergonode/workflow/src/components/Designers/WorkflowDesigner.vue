@@ -16,7 +16,7 @@
                             <WorkflowDesignerDefaultStatusPlaceholder v-if="isPlaceholderVisible" />
                             <Designer
                                 data-cy="workflow-designer"
-                                :columns="statuses.length"
+                                :columns="localStatuses.length"
                                 :column-width="columnWidth"
                                 :row-height="rowHeight"
                                 :last-item-row="lastItemRow">
@@ -56,8 +56,9 @@
                                             :key="column"
                                             :index="column - 1"
                                             :scope="scope"
-                                            :status="statuses[column - 1]"
-                                            :has-right-border="column === columns" />
+                                            :status="localStatuses[column - 1]"
+                                            :has-right-border="column - 1 === columns"
+                                            @swap="onSwapColumns" />
                                         <WorkflowDesignerGhostButton
                                             v-if="ghostIndex !== null && isAllowedToCreate"
                                             v-bind="{ ...ghostButtonBounds }"
@@ -77,14 +78,15 @@
                                                         ? 'designerDraggablePointerEdited'
                                                         : null"
                                                     :is-edited="isRowEdited(element.row)"
-                                                    :color="statuses[
+                                                    :color="localStatuses[
                                                         isRevers ? element.to : element.from
                                                     ].color"
                                                     @click.native="
                                                         onRemoveStartPointer(element.row)
                                                     " />
                                                 <WorkflowDesignerLayoutArrow
-                                                    v-if="isLayoutArrow(element) && !draggedElement"
+                                                    v-if="isLayoutArrow(element)
+                                                        && !columnDraggedElement"
                                                     :is-edited="isRowEdited(element.row)"
                                                     :is-revers="
                                                         isLayoutArrowRevers({
@@ -107,20 +109,22 @@
                                                 </WorkflowDesignerLayoutArrow>
                                                 <WorkflowDesignerLayoutPointer
                                                     v-if="element.to !== undefined"
-                                                    :color="statuses[
+                                                    :color="localStatuses[
                                                         isRevers ? element.from : element.to
                                                     ].color"
                                                     :style="{ gridColumn: elementWidth }" />
                                             </template>
                                         </WorkflowDesignerLayoutElement>
                                         <WorkflowDesignerVirtualOverlay
-                                            v-if="draggedElement"
+                                            v-if="columnDraggedElement"
+                                            :scope="scope"
                                             :rows="layoutElements"
                                             :row-height="rowHeight"
-                                            :columns="columns">
+                                            :columns="localStatuses"
+                                            @swap="onSwapColumns">
                                             <template #appendRowBody="{ column }">
                                                 <WorkflowDesignerLayoutPointer
-                                                    :color="statuses[column].color" />
+                                                    :color="localStatuses[column].color" />
                                             </template>
                                         </WorkflowDesignerVirtualOverlay>
                                     </DesignerDraggableLayer>
@@ -147,6 +151,7 @@ import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbac
 import {
     getMaxValueObject,
     removeValueAtIndex,
+    swapItemPosition,
 } from '@Core/models/arrayWrapper';
 import {
     hasAnyChange,
@@ -270,6 +275,7 @@ export default {
             excludeRows: [],
             layoutElements: [],
             validColumns: [],
+            localStatuses: [],
         };
     },
     computed: {
@@ -277,16 +283,17 @@ export default {
             'statuses',
             'transitions',
         ]),
-        ...mapState('draggable', [
-            'draggedElement',
-        ]),
+        ...mapState('draggable', {
+            columnGhostIndex: 'ghostIndex',
+            columnDraggedElement: 'draggedElement',
+        }),
         isAllowedToCreate() {
             return this.$hasAccess([
                 PRIVILEGES.WORKFLOW.create,
             ]);
         },
         isPlaceholderVisible() {
-            return this.statuses.length < 2;
+            return this.localStatuses.length < 2;
         },
         columnWidth() {
             return `minmax(${COLUMN_WIDTH}px, max-content)`;
@@ -322,6 +329,14 @@ export default {
         },
     },
     watch: {
+        statuses: {
+            immediate: true,
+            handler() {
+                this.localStatuses = [
+                    ...this.statuses,
+                ];
+            },
+        },
         layoutElements: {
             handler(elements) {
                 this.excludeRows = getRows(elements);
@@ -366,16 +381,10 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
-        statusColor(row, isRevers) {
-            const [
-                fromId,
-                toId,
-            ] = getFromAndToTransition(row.id);
-            const statusId = isRevers ? fromId : toId;
-
-            return this.statuses.find(({
+        getStatusById(statusId) {
+            return this.localStatuses.find(({
                 id,
-            }) => id === statusId).color;
+            }) => id === statusId);
         },
         isOutOfBounds(event) {
             const {
@@ -415,6 +424,18 @@ export default {
             return this.layoutElements.findIndex(
                 element => element.id === id,
             );
+        },
+        onSwapColumns({
+            from,
+            to,
+        }) {
+            this.localStatuses = [
+                ...swapItemPosition(
+                    this.localStatuses,
+                    from,
+                    to,
+                ),
+            ];
         },
         onRemoveTransition(id) {
             const [
@@ -521,7 +542,7 @@ export default {
         onFetchStatusSuccess() {
             this.layoutElements = getMappedStatusPositions({
                 layoutElements: this.layoutElements,
-                statuses: this.statuses,
+                statuses: this.localStatuses,
             });
 
             this.isFetchingData = false;
@@ -534,7 +555,7 @@ export default {
 
             this.layoutElements = getMappedLayoutElements({
                 transitions: this.transitions,
-                statuses: this.statuses,
+                statuses: this.localStatuses,
                 rowsPositions,
             });
 
@@ -564,11 +585,11 @@ export default {
 
             if (this.editedRow === -1) {
                 this.validColumns = getValidColumnsToAddTransition({
-                    columnsNumber: this.statuses.length,
+                    columnsNumber: this.localStatuses.length,
                     obstacleColumns: getObstacleColumns({
                         from: column,
                         transitions: this.layoutElements,
-                        columns: this.statuses.length,
+                        columns: this.localStatuses.length,
                     }),
                 });
 
@@ -592,8 +613,8 @@ export default {
                     prevFrom,
                     prevTo,
                 ] = getFromAndToTransition(tmpElement.id);
-                const from = this.statuses[tmpElement.from].id;
-                const to = this.statuses[column].id;
+                const from = this.localStatuses[tmpElement.from].id;
+                const to = this.localStatuses[column].id;
                 const transitionId = `${from}--${to}`;
 
                 this.editedRow = -1;
@@ -701,8 +722,6 @@ export default {
             }
         },
         onMouseMove(event) {
-            event.preventDefault();
-
             if (this.editedRow !== -1) {
                 this.setGhostEndPointer(event);
             } else {
@@ -744,6 +763,14 @@ export default {
                 }
             }
         },
+        getWorkflowDesignerReference() {
+            return this.$refs.designerDraggableLayer;
+        },
+    },
+    provide() {
+        return {
+            getWorkflowDesignerReference: this.getWorkflowDesignerReference,
+        };
     },
 };
 </script>

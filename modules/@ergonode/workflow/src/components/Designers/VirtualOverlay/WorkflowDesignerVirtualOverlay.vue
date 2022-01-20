@@ -7,11 +7,14 @@
         :style="styles"
         class="designer-virtual-overlay">
         <WorkflowDesignerVirtualOverlayColumn
-            v-for="(column) in columns"
-            :key="`column_${column}`"
-            :column-index="column"
+            v-for="(column, columnIndex) in columns"
+            :key="`column_${columnIndex}`"
+            :scope="scope"
+            :column-index="columnIndex"
+            :column-data="column"
             :rows="rows"
-            :max-row-number="maxRowNumber" />
+            :max-row-number="maxRowNumber"
+            @swap="onSwapColumns" />
     </div>
 </template>
 <script>
@@ -31,6 +34,10 @@ export default {
         WorkflowDesignerVirtualOverlayColumn,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
         rows: {
             type: Array,
             required: true,
@@ -40,8 +47,8 @@ export default {
             default: ROW_HEIGHT,
         },
         columns: {
-            type: Number,
-            default: 0,
+            type: Array,
+            required: true,
         },
     },
     computed: {
@@ -53,6 +60,11 @@ export default {
                 top: `${HEADER_HEIGHT}px`,
                 height: `${(this.maxRowNumber + 1) * this.rowHeight}px`,
             };
+        },
+    },
+    methods: {
+        onSwapColumns(payload) {
+            this.$emit('swap', payload);
         },
     },
 };
