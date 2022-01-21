@@ -378,6 +378,7 @@ export default {
             'getStatuses',
             'getWorkflowById',
             'updateWorkflow',
+            'orderStatuses',
             '__setState',
         ]),
         ...mapActions('feedback', [
@@ -427,17 +428,22 @@ export default {
                 element => element.id === id,
             );
         },
-        onSwapColumns({
+        async onSwapColumns({
             from,
             to,
         }) {
-            this.localStatuses = [
-                ...swapItemPosition(
-                    this.localStatuses,
-                    from,
-                    to,
-                ),
-            ];
+            this.localStatuses = swapItemPosition(
+                this.localStatuses,
+                from,
+                to,
+            );
+            const statusIds = this.localStatuses.map(({
+                id,
+            }) => id);
+
+            await this.orderStatuses({
+                statusIds,
+            });
         },
         onRemoveTransition(id) {
             const [

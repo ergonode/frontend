@@ -26,6 +26,11 @@ export const createStatus = ({
     data,
 }) => $axios.$post('status', data);
 
+export const orderStatuses = ({
+    $axios,
+    data,
+}) => $axios.$post('status/order', data);
+
 export const updateStatus = ({
     $axios,
     id,
