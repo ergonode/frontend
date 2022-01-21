@@ -65,9 +65,10 @@
                                             @click.native="setTransitionPointer" />
                                         <WorkflowDesignerLayoutElement
                                             v-for="(element, index) in layoutElements"
-                                            :key="`${element.id}`"
+                                            :key="`${element.from}|${element.to}`"
                                             :index="index"
                                             :element="element"
+                                            :columns="localStatuses"
                                             :layout-width="columns"
                                             @mouseenter.native="onRowMouseEnter(element.row)"
                                             @mouseleave.native="onRowMouseLeave">
@@ -304,6 +305,7 @@ export default {
             return ROW_HEIGHT;
         },
         lastItemRow() {
+            const additionalRowsNumber = 1;
             const layoutElement = getMaxValueObject(this.layoutElements, 'row');
 
             if (!layoutElement) {
@@ -314,7 +316,7 @@ export default {
                 row,
             } = layoutElement;
 
-            return row + 1;
+            return (row + 1) + additionalRowsNumber;
         },
         ghostButtonBounds() {
             const {
@@ -384,11 +386,6 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
-        getStatusById(statusId) {
-            return this.localStatuses.find(({
-                id,
-            }) => id === statusId);
-        },
         isOutOfBounds(event) {
             const {
                 xPos,
@@ -437,6 +434,10 @@ export default {
                 from,
                 to,
             );
+            this.layoutElements = getMappedStatusPositions({
+                layoutElements: this.layoutElements,
+                statuses: this.localStatuses,
+            });
             const statusIds = this.localStatuses.map(({
                 id,
             }) => id);
@@ -462,6 +463,10 @@ export default {
                         && transition.to === to),
                 ),
             });
+            this.$cookies.set(
+                WORKFLOW_DESIGNER_ROWS,
+                getMappedRowPositions(this.layoutElements),
+            );
 
             this.onScopeValueChange({
                 scope: this.scope,
@@ -552,7 +557,6 @@ export default {
                 layoutElements: this.layoutElements,
                 statuses: this.localStatuses,
             });
-
             this.isFetchingData = false;
         },
         onFetchDataSuccess() {
@@ -566,7 +570,6 @@ export default {
                 statuses: this.localStatuses,
                 rowsPositions,
             });
-
             this.isFetchingData = false;
         },
         onFetchDataError() {

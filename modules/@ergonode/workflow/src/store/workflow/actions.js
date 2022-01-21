@@ -41,15 +41,16 @@ export default {
                 statuses,
             } = state;
 
+            commit('__SET_STATE', {
+                key: 'statuses',
+                value: statusIds.map(statusId => statuses.find(status => status.id === statusId)),
+            });
+
             await orderStatuses({
                 $axios: this.app.$axios,
                 data: {
                     statusIds,
                 },
-            });
-            commit('__SET_STATE', {
-                key: 'statuses',
-                value: statusIds.map(statusId => statuses.find(status => status.id === statusId)),
             });
 
             onSuccess();
