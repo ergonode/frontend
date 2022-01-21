@@ -119,7 +119,7 @@
                                             </template>
                                         </WorkflowDesignerLayoutElement>
                                         <WorkflowDesignerVirtualOverlay
-                                            v-if="columnDraggedElement"
+                                            v-if="columnDraggedElement && layoutElements.length"
                                             :scope="scope"
                                             :rows="layoutElements"
                                             :row-height="rowHeight"

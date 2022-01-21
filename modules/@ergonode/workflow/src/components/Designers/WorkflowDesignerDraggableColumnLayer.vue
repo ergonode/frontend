@@ -217,15 +217,18 @@ export default {
                     ghostIndex: this.ghostIndex,
                     columnsNodeList: contentGridNodeList,
                 });
-                const transformsOverlay = response.default({
-                    targetGhostIndex,
-                    draggedElIndex: this.draggedElIndex,
-                    ghostIndex: this.ghostIndex,
-                    columnsSection: contentOverlayColumnsNodeList,
-                });
-
                 this.updateColumnsTransform(transforms);
-                this.updateOverlayColumnsTransform(transformsOverlay);
+
+                if (contentOverlayColumnsNodeList) {
+                    const transformsOverlay = response.default({
+                        targetGhostIndex,
+                        draggedElIndex: this.draggedElIndex,
+                        ghostIndex: this.ghostIndex,
+                        columnsSection: contentOverlayColumnsNodeList,
+                    });
+
+                    this.updateOverlayColumnsTransform(transformsOverlay);
+                }
                 this.__setState({
                     key: 'ghostIndex',
                     value: targetGhostIndex,
@@ -295,8 +298,10 @@ export default {
         removeOverlayColumnsTransform() {
             const contentOverlayColumnsNodeList = this.getOverlayColumnsNodeList();
 
-            for (let i = 0; i < contentOverlayColumnsNodeList.children.length; i += 1) {
-                contentOverlayColumnsNodeList.children[i].style.transform = null;
+            if (contentOverlayColumnsNodeList) {
+                for (let i = 0; i < contentOverlayColumnsNodeList.children.length; i += 1) {
+                    contentOverlayColumnsNodeList.children[i].style.transform = null;
+                }
             }
         },
         resetDraggedElementCache() {
