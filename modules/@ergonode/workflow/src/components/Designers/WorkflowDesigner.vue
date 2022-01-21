@@ -73,7 +73,8 @@
                                             @mouseleave.native="onRowMouseLeave">
                                             <template #content="{ elementWidth, isRevers }">
                                                 <WorkflowDesignerLayoutPointer
-                                                    v-if="element.from !== undefined"
+                                                    v-if="element.from !== undefined
+                                                        && !columnDraggedElement"
                                                     :ref="isRowEdited(element.row)
                                                         ? 'designerDraggablePointerEdited'
                                                         : null"
@@ -108,7 +109,8 @@
                                                     </template>
                                                 </WorkflowDesignerLayoutArrow>
                                                 <WorkflowDesignerLayoutPointer
-                                                    v-if="element.to !== undefined"
+                                                    v-if="element.to !== undefined
+                                                        && !columnDraggedElement"
                                                     :color="localStatuses[
                                                         isRevers ? element.from : element.to
                                                     ].color"
@@ -376,6 +378,7 @@ export default {
             'getStatuses',
             'getWorkflowById',
             'updateWorkflow',
+            'orderStatuses',
             '__setState',
         ]),
         ...mapActions('feedback', [
@@ -425,17 +428,22 @@ export default {
                 element => element.id === id,
             );
         },
-        onSwapColumns({
+        async onSwapColumns({
             from,
             to,
         }) {
-            this.localStatuses = [
-                ...swapItemPosition(
-                    this.localStatuses,
-                    from,
-                    to,
-                ),
-            ];
+            this.localStatuses = swapItemPosition(
+                this.localStatuses,
+                from,
+                to,
+            );
+            const statusIds = this.localStatuses.map(({
+                id,
+            }) => id);
+
+            await this.orderStatuses({
+                statusIds,
+            });
         },
         onRemoveTransition(id) {
             const [

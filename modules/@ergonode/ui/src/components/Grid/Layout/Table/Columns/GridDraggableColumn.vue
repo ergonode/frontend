@@ -235,12 +235,12 @@ export default {
             const contentGrid = this.getGridContentElement();
 
             getColumnsTransform().then((response) => {
-                const transforms = response.default(
+                const transforms = response.default({
                     targetGhostIndex,
-                    this.draggedElIndex,
-                    this.ghostIndex,
-                    contentGrid,
-                );
+                    draggedElIndex: this.draggedElIndex,
+                    ghostIndex: this.ghostIndex,
+                    columnsSection: contentGrid,
+                });
 
                 this.updateColumnsTransform(transforms);
 
