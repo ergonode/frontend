@@ -8,7 +8,7 @@ export const get = ({
     id,
 }) => $axios.$get(`status/${id}`);
 
-export const getDefault = ({
+export const getWorkflowByDefaultId = ({
     $axios,
 }) => $axios.$get('workflow/default');
 
@@ -29,7 +29,7 @@ export const update = ({
     data,
 }) => $axios.$put(`status/${id}`, data);
 
-export const updateDefault = ({
+export const updateWorkflowDefaultStatus = ({
     $axios,
     id,
 }) => $axios.$put(`workflow/default/status/${id}/default`);

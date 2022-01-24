@@ -40,6 +40,9 @@
         "ConditionsSideBar": {
           "title": "Warunki"
         },
+        "WorkflowStatusPreview": {
+          "label": "Podgląd statusu"
+        },
         "ConditionsVerticalTab": {
           "title": "Warunki"
         },

@@ -7,8 +7,8 @@ Feature: UPDATE: Statuson workflow
 
   @error
   Scenario: Update status from edit page - validation error (too long string)
-    When On "workflow-designer" I can see column with "Blocked" value
-    * On "workflow-designer" I click on "edit" button for column with "Blocked" value
+    When On "workflow-designer" I can see column with "To correct" value
+    * On "workflow-designer" I click on "edit" button for column with "To correct" value
     * I see "workflow/status/%UUID%/general" page
     * I click tab with "Translations" text
     * I see "workflow/status/%UUID%/translations" page
@@ -18,8 +18,8 @@ Feature: UPDATE: Statuson workflow
 
   @success
   Scenario: Update status from edit page - success
-    When On "workflow-designer" I can see column with "Blocked" value
-    * On "workflow-designer" I click on "edit" button for column with "Blocked" value
+    When On "workflow-designer" I can see column with "To correct" value
+    * On "workflow-designer" I click on "edit" button for column with "To correct" value
     * I see "workflow/status/%UUID%/general" page
     * I click tab with "Translations" text
     * I see "workflow/status/%UUID%/translations" page

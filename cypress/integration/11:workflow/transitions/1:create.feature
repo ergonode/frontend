@@ -7,6 +7,6 @@ Feature: CREATE: Transition on workflow
 
   @success
   Scenario: Add workflow transition - success
-    When On "workflow-designer" in row 4 I create transition from "Processed" to "Draft"
+    When On "workflow-designer" in row 4 I create transition from "Published" to "Draft"
     * I click on "submit" button
-    Then On "workflow-designer" I can see the transition from "Processed" to "Draft"
+    Then On "workflow-designer" I can see the transition from "Published" to "Draft"

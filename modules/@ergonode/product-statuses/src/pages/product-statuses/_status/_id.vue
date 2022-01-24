@@ -74,12 +74,10 @@ export default {
                 });
             },
         });
-        await store.dispatch('productStatus/getDefaultStatus', {});
     },
     computed: {
         ...mapState('productStatus', [
             'code',
-            'isDefaultStatus',
         ]),
         extendedMainAction() {
             return this.$getExtendSlot('@Statuses/pages/product-statuses/_status/mainAction');
