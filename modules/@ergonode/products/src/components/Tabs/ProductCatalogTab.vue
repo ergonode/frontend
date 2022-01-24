@@ -22,13 +22,11 @@
 
 <script>
 import {
-    DEFAULT_PAGE,
     GRID_LAYOUT,
 } from '@Core/defaults/grid';
 import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import {
     getMappedFilters,
-    getParsedFilters,
 } from '@Core/models/mappers/gridDataMapper';
 import ProductsGrid from '@Products/components/Grids/ProductsGrid';
 import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
@@ -50,7 +48,7 @@ export default {
         };
     },
     watch: {
-        $route(from, to) {
+        $route(to, from) {
             if (from.name !== to.name || from.query.layout !== to.query.layout) {
                 return;
             }
@@ -82,20 +80,6 @@ export default {
             this.verticalTabs = []
                 .concat(...extendedVerticalTabs)
                 .filter(tab => typeof tab.layouts === 'undefined' || tab.layouts.some(layout => layout === this.layout));
-        },
-        onFiltersChange(filters) {
-            this.filters = filters;
-
-            this.$router.replace({
-                query: {
-                    ...this.$route.query,
-                    advancedFilter: getParsedFilters({
-                        ...getMappedFilters(this.$route.query.advancedFilter),
-                        ...this.filters,
-                    }),
-                    page: DEFAULT_PAGE,
-                },
-            });
         },
     },
 };

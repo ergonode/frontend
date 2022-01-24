@@ -69,6 +69,15 @@ export default {
         store,
         params,
     }) {
+        await store.dispatch('workflow/getWorkflowById', {
+            workflowId: params.workflowId,
+            onError: () => {
+                app.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: app.i18n.t('@Workflow.workflow.pages.id.getTransitionRequest'),
+                });
+            },
+        });
         await store.dispatch('workflow/getStatus', {
             id: params.id,
             onError: () => {

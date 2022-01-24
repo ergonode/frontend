@@ -66,7 +66,7 @@ export default [
     },
     {
         name: ROUTE_NAME.WORKFLOW_STATUS_EDIT,
-        path: '/workflow/status/:id',
+        path: '/workflow/:workflowId?/status/:id',
         component: Pages.WorkflowStatusEdit,
         redirect: {
             name: ROUTE_NAME.WORKFLOW_STATUS_EDIT_GENERAL,

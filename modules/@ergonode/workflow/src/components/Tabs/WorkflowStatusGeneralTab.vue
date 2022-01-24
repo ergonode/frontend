@@ -51,6 +51,7 @@ export default {
 
             this.removeScopeErrors(this.scope);
             this.updateStatus({
+                workflowId: this.$route.params.workflowId,
                 scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
