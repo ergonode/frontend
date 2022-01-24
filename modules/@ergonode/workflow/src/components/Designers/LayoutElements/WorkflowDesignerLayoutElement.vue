@@ -19,10 +19,6 @@
 </template>
 <script>
 
-import {
-    mapState,
-} from 'vuex';
-
 export default {
     name: 'WorkflowDesignerLayoutElement',
     props: {
@@ -38,6 +34,10 @@ export default {
             type: Number,
             required: true,
         },
+        columns: {
+            type: Array,
+            required: true,
+        },
     },
     data() {
         const {
@@ -51,15 +51,12 @@ export default {
         };
     },
     computed: {
-        ...mapState('workflow', [
-            'statuses',
-        ]),
         elementLayoutID() {
             const {
                 from = null,
                 to = null,
             } = this.element;
-            const statusName = index => this.statuses[index].name || `#${this.statuses[index].code}`;
+            const statusName = index => this.columns[index].name || `#${this.columns[index].code}`;
 
             if (from !== null && to !== null) {
                 return `layout-element-row:from:${statusName(from)}-to:${statusName(to)}`;

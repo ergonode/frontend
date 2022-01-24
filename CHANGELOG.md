@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## CHANGELOG FOR v1.3.0
+feature [#1179](https://github.com/ergonode/frontend/issues/1179) Move conditions to workflow module (bleto)
+feature [#1167](https://github.com/ergonode/frontend/issues/1167) Sorting statuses at WorkflowDesigner (bleto)
+bugfix [#1165](https://github.com/ergonode/frontend/issues/1165) Github action node version (bleto)
 bugfix [#1161](https://github.com/ergonode/frontend/issues/1161) Status code not displayed for Workflow action button at Product page (derpdead)
 feature [#1159](https://github.com/ergonode/frontend/issues/1159) Extend language settings items (bleto)
 bugfix [#1155](https://github.com/ergonode/frontend/issues/1155) Workflow routing change (bleto)

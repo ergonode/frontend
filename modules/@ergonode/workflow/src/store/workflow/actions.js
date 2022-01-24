@@ -18,6 +18,7 @@ import {
     getTransitionConditions,
     getTransitions,
     getWorkflow,
+    orderStatuses,
     removeStatus,
     removeTransition,
     updateDefaultStatus,
@@ -27,6 +28,40 @@ import {
 } from '@Workflow/services';
 
 export default {
+    async orderStatuses({
+        commit,
+        state,
+    }, {
+        statusIds,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const {
+                statuses,
+            } = state;
+
+            commit('__SET_STATE', {
+                key: 'statuses',
+                value: statusIds.map(statusId => statuses.find(status => status.id === statusId)),
+            });
+
+            await orderStatuses({
+                $axios: this.app.$axios,
+                data: {
+                    statusIds,
+                },
+            });
+
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
+    },
     async getStatuses({
         commit,
         state,

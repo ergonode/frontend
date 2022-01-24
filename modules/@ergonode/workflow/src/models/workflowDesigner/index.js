@@ -38,7 +38,7 @@ export function getMappedLayoutElements({
     rowsPositions,
 }) {
     let rowValues = rowsPositions;
-    if (rowsPositions && rowsPositions.length !== transitions.length) {
+    if (rowsPositions && Object.keys(rowsPositions).length !== transitions.length) {
         rowValues = null;
     }
 

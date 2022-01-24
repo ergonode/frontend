@@ -21,9 +21,9 @@ import {
 const getColumnsTransform = () => import('@UI/models/dragAndDrop/getColumnsTransforms');
 
 export default {
-    name: 'GridDraggableColumn',
+    name: 'WorkflowDesignerDraggableColumnLayer',
     inject: [
-        'getGridTableLayoutReference',
+        'getWorkflowDesignerReference',
     ],
     props: {
         /**
@@ -120,34 +120,19 @@ export default {
             '__setState',
             'setGhostElXTranslation',
         ]),
+        getGridContentNodeList() {
+            return this.getWorkflowDesignerReference().$el.querySelectorAll('.workflow-designer-header-layer-cell');
+        },
+        getOverlayColumnsNodeList() {
+            return this.getWorkflowDesignerReference().$el.querySelector('.designer-virtual-overlay');
+        },
         onDragStart(event) {
-            if (this.isResizing) return false;
-
-            const [
-                header,
-            ] = this.$el.children;
-            const isMouseAboveColumnHeader = event.offsetY < header.offsetHeight;
-
-            if (!isMouseAboveColumnHeader) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                return false;
-            }
-
-            this.$el.classList.remove('grid-column--hovered');
-
-            const [
-                code,
-                languageCode,
-            ] = this.column.id.split(':');
-            const title = this.column.label || `#${code}`;
-            const languageTitle = languageCode ? languageCode.toUpperCase() : '';
+            const label = this.column.name || `#${this.column.code}`;
 
             addElementCopyToDocumentBody({
                 event,
                 id: this.column.id,
-                label: `${title} ${languageTitle}`,
+                label,
             });
 
             this.__setState({
@@ -179,41 +164,32 @@ export default {
         onDragEnd(event) {
             removeElementCopyFromDocumentBody(event);
 
-            if (this.isOverDropZone && this.column.deletable) {
-                this.__setState({
-                    key: 'isOverDropZone',
-                    value: false,
-                });
-
-                this.$emit('remove', this.index);
-            } else if (this.ghostIndex !== this.draggedElIndex) {
+            if (this.ghostIndex !== this.draggedElIndex) {
                 this.$emit('swap', {
                     from: this.draggedElIndex,
                     to: this.ghostIndex,
                 });
             }
 
-            this.$el.classList.add('grid-column--hovered');
-
             this.removeColumnsTransform();
+            this.removeOverlayColumnsTransform();
             this.resetDraggedElementCache();
-            this.__setState({
-                key: 'isElementDragging',
-                value: null,
-            });
         },
         onDragOver(event) {
-            if (this.draggedElIndex === -1) {
+            if (this.draggedElIndex === -1 || !this.$slots.default[0].elm) {
                 return false;
             }
             event.preventDefault();
 
             const {
+                elm,
+            } = this.$slots.default[0];
+            const {
                 pageX,
             } = event;
             const {
                 x: columnXPos, width: columnWidth,
-            } = this.$el.getBoundingClientRect();
+            } = elm.getBoundingClientRect();
             const isBefore = getDraggedColumnPositionState(
                 pageX,
                 columnXPos,
@@ -223,8 +199,7 @@ export default {
 
             if ((this.index === this.draggedElIndex && this.ghostIndex !== -1)
                     || (isBefore && this.ghostIndex === fixedIndex - 1)
-                    || (!isBefore && this.ghostIndex === fixedIndex + 1)
-                    || this.isElementDragging === DRAGGED_ELEMENT.FILTER) {
+                    || (!isBefore && this.ghostIndex === fixedIndex + 1)) {
                 event.preventDefault();
                 event.stopPropagation();
 
@@ -232,18 +207,28 @@ export default {
             }
 
             const targetGhostIndex = this.getTargetGhostIndex(isBefore);
-            const contentGrid = this.getGridContentElement();
+            const contentGridNodeList = this.getGridContentNodeList();
+            const contentOverlayColumnsNodeList = this.getOverlayColumnsNodeList();
 
             getColumnsTransform().then((response) => {
                 const transforms = response.default({
                     targetGhostIndex,
                     draggedElIndex: this.draggedElIndex,
                     ghostIndex: this.ghostIndex,
-                    columnsSection: contentGrid,
+                    columnsNodeList: contentGridNodeList,
                 });
-
                 this.updateColumnsTransform(transforms);
 
+                if (contentOverlayColumnsNodeList) {
+                    const transformsOverlay = response.default({
+                        targetGhostIndex,
+                        draggedElIndex: this.draggedElIndex,
+                        ghostIndex: this.ghostIndex,
+                        columnsSection: contentOverlayColumnsNodeList,
+                    });
+
+                    this.updateOverlayColumnsTransform(transformsOverlay);
+                }
                 this.__setState({
                     key: 'ghostIndex',
                     value: targetGhostIndex,
@@ -256,16 +241,35 @@ export default {
             transforms,
             updatedGhostTransform,
         }) {
-            const contentGrid = this.getGridContentElement();
+            const contentGridNodeList = this.getGridContentNodeList();
 
             Object.keys(transforms).forEach((index) => {
-                contentGrid.children[index].style.transform = `translateX(${transforms[index]}px)`;
+                contentGridNodeList[index].style.transform = `translateX(${transforms[index]}px)`;
             });
 
-            contentGrid.children[this.draggedElIndex].style.transform = `translateX(${updatedGhostTransform}px)`;
+            contentGridNodeList[this.draggedElIndex].style.transform = `translateX(${updatedGhostTransform}px)`;
+        },
+        updateOverlayColumnsTransform({
+            transforms,
+            updatedGhostTransform,
+        }) {
+            const contentOverlayColumnsNodeList = this.getOverlayColumnsNodeList();
+
+            Object.keys(transforms).forEach((index) => {
+                contentOverlayColumnsNodeList.children[index].style.transform = `translateX(${transforms[index]}px)`;
+            });
+
+            contentOverlayColumnsNodeList.children[this.draggedElIndex].style.transform = `translateX(${updatedGhostTransform}px)`;
+        },
+        getTargetGhostIndex(isBefore) {
+            if (this.index < this.draggedElIndex) {
+                return isBefore ? this.index : this.index + 1;
+            }
+
+            return isBefore ? this.index - 1 : this.index;
         },
         getColumnFixedIndex() {
-            if (this.$el.style.transform) {
+            if (this.$slots.default[0].elm && this.$slots.default[0].elm.style.transform) {
                 const xTransform = this.getElementTransform();
 
                 if (xTransform) {
@@ -278,26 +282,26 @@ export default {
             return this.index;
         },
         getElementTransform() {
-            return +this.$el.style.transform.replace(/[^0-9\-.,]/g, '');
-        },
-        getGridContentElement() {
-            return this.getGridTableLayoutReference().querySelector('.grid-table-layout-columns-section');
-        },
-        getTargetGhostIndex(isBefore) {
-            if (this.index < this.draggedElIndex) {
-                return isBefore ? this.index : this.index + 1;
-            }
+            const {
+                elm,
+            } = this.$slots.default[0];
 
-            return isBefore ? this.index - 1 : this.index;
+            return +elm.style.transform.replace(/[^0-9\-.,]/g, '');
         },
         removeColumnsTransform() {
-            const contentGrid = this.getGridContentElement();
-            const {
-                length,
-            } = contentGrid.children;
+            const contentGridNodeList = this.getGridContentNodeList();
 
-            for (let i = 0; i < length; i += 1) {
-                contentGrid.children[i].style.transform = null;
+            for (let i = 0; i < contentGridNodeList.length; i += 1) {
+                contentGridNodeList[i].style.transform = null;
+            }
+        },
+        removeOverlayColumnsTransform() {
+            const contentOverlayColumnsNodeList = this.getOverlayColumnsNodeList();
+
+            if (contentOverlayColumnsNodeList) {
+                for (let i = 0; i < contentOverlayColumnsNodeList.children.length; i += 1) {
+                    contentOverlayColumnsNodeList.children[i].style.transform = null;
+                }
             }
         },
         resetDraggedElementCache() {
@@ -318,8 +322,8 @@ export default {
                 value: '',
             });
             this.__setState({
-                key: 'draggedInScope',
-                value: '',
+                key: 'isElementDragging',
+                value: null,
             });
         },
     },
