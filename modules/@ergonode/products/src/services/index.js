@@ -18,7 +18,9 @@ export const getWorkflow = ({
     $axios,
     id,
     languageCode,
-}) => $axios.$get(`products/${id}/workflow/${languageCode}`);
+}) => $axios.$get(`${languageCode}/products/${id}/workflow/${languageCode}`, {
+    withLanguage: false,
+});
 
 export const getCollections = ({
     $axios,
