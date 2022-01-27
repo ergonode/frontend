@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## CHANGELOG FOR v1.3.0
+bugfix [#1196](https://github.com/ergonode/frontend/issues/1196) Incorrect translation on status column in product grid (bleto)
 feature [#1179](https://github.com/ergonode/frontend/issues/1179) Move conditions to workflow module (bleto)
 feature [#1167](https://github.com/ergonode/frontend/issues/1167) Sorting statuses at WorkflowDesigner (bleto)
 bugfix [#1165](https://github.com/ergonode/frontend/issues/1165) Github action node version (bleto)

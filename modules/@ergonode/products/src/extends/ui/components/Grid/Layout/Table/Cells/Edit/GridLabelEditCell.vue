@@ -135,6 +135,19 @@ export default {
 
             this.localValue = this.options.find(option => option.id === this.value);
 
+            if (!this.localValue) {
+                const {
+                    code, label,
+                } = this.colors[this.value];
+
+                this.localValue = {
+                    hint: `#${code} ${this.languageCode}`,
+                    id: this.value,
+                    key: code,
+                    value: label,
+                };
+            }
+
             this.isFetchingData = false;
         },
         onFocus(isFocused) {
@@ -148,7 +161,8 @@ export default {
 
 <style lang="scss" scoped>
     .presentation-badge {
-        margin-right: 8px;
+        margin: 0 4px;
+        align-self: center;
     }
 
     .presentation-badge-option {
