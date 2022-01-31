@@ -241,6 +241,33 @@ describe('gridDataMapper/getParsedFiltersList', () => {
 
         expect(getParsedFiltersList(filters)).toStrictEqual(result);
     });
+
+    it('Validate filters with empty records', () => {
+        const filters = {
+            'code_2:en_GB': {
+                isEmptyRecord: true,
+            },
+            code_3: {
+                isEmptyRecord: true,
+            },
+        };
+
+        const result = [
+            {
+                column: 'code_2',
+                operator: '=',
+                value: null,
+                language: 'en_GB',
+            },
+            {
+                column: 'code_3',
+                operator: '=',
+                value: null,
+            },
+        ];
+
+        expect(getParsedFiltersList(filters)).toStrictEqual(result);
+    });
 });
 
 describe('gridDataMapper/getDraftsBasedOnCellValues', () => {
