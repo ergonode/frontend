@@ -36,7 +36,7 @@ How to do a release and publish modules:
   <a href="https://join.slack.com/t/ergonode/shared_invite/enQtNjI5NzU3NzM2MzU2LTY0ZGM4MGMyNGZjOGEyNDY5OGI1NzM5ZDNiMTY3YjA2YmRhMzY1OWE1MjJjZWEzM2YwOThkZDBjODZlZjY0ZmI">
     <img src="https://img.shields.io/badge/chat-on%20slack-e51670.svg" alt="Chat">
   </a>
-  <a href="https://docs.ergonode.com">
+  <a href="https://devs.ergonode.com">
     <img src="https://img.shields.io/badge/docs-read-ffc108.svg" alt="Docs">
   </a>
   <a href="https://github.com/ergonode/frontend/blob/master/LICENSE.txt">
@@ -118,7 +118,7 @@ On other browsers some functionalities may not work as intended.
 
 The project is in early stage and we have got a lot of milestones to develop.  We do our best to deliver great documentation, but - to be honest -  it is the hardest thing in open-source projects :)
 
-**Please find out what we've already prepared on [docs.ergonode.com][docs]**
+**Please find out what we've already prepared on [devs.ergonode.com][docs]**
 
 ## Technologies
 
@@ -152,10 +152,10 @@ Ergonode is open-source, and it can be brought to you only by great community an
 Ergonode source code is released under the [OSL 3.0 License][license].
 
 [slack]: https://join.slack.com/t/ergonode-community/shared_invite/zt-ibppxnyc-4Ykac1Gh64Qkk5SWy3sg3w
-[contribut]: http://docs.ergonode.com/#/community/contribution
+[contribut]: https://devs.ergonode.com/#/community/contribution
 [license]: ./LICENSE.txt
 [roadmap]: https://ergonode.com/features/#roadmap
-[docs]: https://docs.ergonode.com
+[docs]: https://devs.ergonode.com
 [ddd]: https://en.wikipedia.org/wiki/Domain-driven_design
 [cqrs]: https://en.wikipedia.org/wiki/Command%E2%80%93query_separation
 [es]: https://dev.to/barryosull/event-sourcing-what-it-is-and-why-its-awesome
