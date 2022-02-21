@@ -60,8 +60,8 @@ export function getParsedFiltersList(filters) {
                     && (value || value === 0))) {
                 const parsedFilter = {
                     column: code,
-                    operator,
-                    value,
+                    operator: operator === 'isEmptyRecord' ? '=' : operator,
+                    value: operator === 'isEmptyRecord' ? null : value,
                 };
 
                 if (language) {
