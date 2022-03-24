@@ -11,14 +11,14 @@
       },
       "components": {
         "EmptyDashboardPage": {
-          "title": "Stwórz swoje pordukty w 3 prostych krokach",
-          "subtitle": "Odwzoruj swoją kartę produktową w Ergonode! W pierwszej kolejności zacznij od stworzenia atrybutów, potem skonfiguruj szablon produktowy na bazie karty produktowej w systemie ecommerce a następnie uzupełnij ją!",
+          "title": "Stwórz swoje produkty w 3 prostych krokach",
+          "subtitle": "Odwzoruj swoją kartę produktową w Ergonode! W pierwszej kolejności zacznij od stworzenia atrybutów, potem skonfiguruj szablon produktowy na bazie karty produktowej w systemie e-commerce, a następnie uzupełnij ją!",
           "attributeTitle": "Nowy atrybut",
           "templateTitle": "Nowy szablon",
           "productTitle": "Nowy produkt",
           "first": {
             "subtitle": "Zacznij od atrybutów",
-            "description": "Atrybuty to najmniejsze elemnty, które opisują Twój produkt. Może to być na przykład kolor, opis, zdjęcie lub wymiar."
+            "description": "Atrybuty to najmniejsze elementy, które opisują Twój produkt. Może to być na przykład kolor, opis, zdjęcie lub wymiar."
           },
           "second": {
             "subtitle": "Skonfiguruj szablon produktowy",
