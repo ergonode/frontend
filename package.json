@@ -124,7 +124,7 @@
     "stylus": "^0.54.8",
     "stylus-loader": "^6.1.0",
     "vue-eslint-parser": "^7.10.0",
-    "vue-jest": "^3.0.7",
+    "vue-jest": "^4.0.1",
     "vuex-mock-store": "^0.0.8"
   },
   "_requiredModules": [
